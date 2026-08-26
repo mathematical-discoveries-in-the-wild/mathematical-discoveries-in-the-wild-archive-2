@@ -1,0 +1,322 @@
+\documentclass[11pt]{amsart}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\mdim}{\operatorname{mdim}}
+\newcommand{\relint}{\operatorname{relint}}
+
+\title{Sharp metric-dimension results around Geh\'er's Problem 1}
+\author{Automated proof attempt for arXiv:1507.05114}
+\date{August 13, 2026}
+
+\begin{document}
+\begin{abstract}
+For a $d$-dimensional normed space, we prove that every finite resolving set
+has at least $d+1$ points.  Norms whose unit ball has a facet have no finite
+resolving set at all.  At the opposite end, the metric dimension of
+$\ell_p^d$ is exactly $d+1$ for every $1<p<\infty$, with the standard simplex
+as an optimal resolving set.  We also prove the same conclusion for a
+quantitative $C^{1,1}$ neighbourhood of Euclidean norms containing genuinely
+non-Hilbert examples.  These results answer the literal non-strict question
+negatively and settle large strictly convex classes, but do not resolve the
+universal strictly convex version.
+\end{abstract}
+\maketitle
+
+\section{Source question and scope}
+
+Let $(X,\|\cdot\|)$ be a finite-dimensional real normed space.  A set
+$R\subset X$ \emph{resolves} $X$ if
+\[
+ \bigl(\|x-r\|\bigr)_{r\in R}=\bigl(\|y-r\|\bigr)_{r\in R}
+ \quad\Longrightarrow\quad x=y.
+\]
+We write $\mdim X$ for the least cardinality of a finite resolving set, and
+$\mdim X=\infty$ if none exists.
+
+Section 4, Problem 1 of Geh\'er~\cite{Geher} asks exactly:
+\begin{quote}
+``Is the metric dimension of every $d$-dimensional (strictly convex) normed
+space less than or equal to $d+1$?''
+\end{quote}
+The next paragraph says that it was not clear whether the metric dimension
+could be smaller than $d+1$.  The exact source context is reproduced below.
+
+\begin{center}
+\includegraphics[width=.96\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The parenthetical admits two natural readings: all normed spaces, or at least
+all strictly convex ones.  The first is false by Theorem~\ref{thm:facet}.  The
+second is verified here for broad classes but remains unresolved in full.
+
+\section{Proof intuition}
+
+There are three short mechanisms.
+\begin{enumerate}
+\item Distances to $m$ landmarks give a continuous coordinate map into
+$\R^m$.  Invariance of domain forbids injectivity when $m\le d$.
+\item A facet creates an open cone on which the norm is exactly linear.  Far
+inside that cone, a finite landmark set cannot detect motion tangent to the
+facet.
+\item In $\ell_p^d$, subtracting the equality at the origin from the equality
+at the $i$th coordinate landmark isolates one strictly monotone scalar
+function of the $i$th coordinate.  Near a Hilbert norm, the same relative
+distance map is an invertible linear map plus a strict Lipschitz contraction.
+\end{enumerate}
+
+\section{A universal sharp lower bound}
+
+\begin{theorem}[No $d$ landmarks]\label{thm:lower}
+Let $X$ be a real normed space of dimension $d\ge1$.  If $X$ has finite metric
+dimension, then
+\[
+ \mdim X\ge d+1.
+\]
+\end{theorem}
+
+\begin{proof}
+Identify $X$ linearly and topologically with $\R^d$.  Suppose that
+$R=\{r_1,\dots,r_m\}$ resolves $X$, where $m\le d$, and define
+\[
+ F:X\longrightarrow\R^m,\qquad
+ F(x)=(\|x-r_1\|,\dots,\|x-r_m\|).
+\]
+This map is continuous and injective.  Pad it with $d-m$ zero coordinates to
+obtain a continuous injection $\widetilde F:\R^d\to\R^d$.  By Brouwer's
+invariance-of-domain theorem, $\widetilde F(\R^d)$ is open.
+
+If $m<d$, this image lies in a proper coordinate subspace and hence has empty
+interior, a contradiction.  If $m=d$, then
+$F(X)\subset[0,\infty)^d$.  Moreover, the first coordinate of $F(r_1)$ is
+zero, so no Euclidean neighbourhood of $F(r_1)$ is contained in the
+nonnegative orthant.  Thus $F(X)$ is not open, again a contradiction.
+\end{proof}
+
+This proves the lower bound conjectured in the paragraph following Problem 1,
+without any convexity or smoothness assumption.
+
+\section{Facets force infinite metric dimension}
+
+Let $B$ be the closed unit ball.  By a \emph{facet} we mean an exposed face
+of affine dimension $d-1$.
+
+\begin{theorem}[Facet obstruction]\label{thm:facet}
+Let $d\ge2$.  If the unit ball of $X$ has a facet, then
+$\mdim X=\infty$.
+\end{theorem}
+
+\begin{proof}
+Choose $\varphi\in X^*$ such that $\varphi\le1$ on $B$ and
+\[
+ F=B\cap\{\varphi=1\}
+\]
+is a facet.  The cone
+\[
+ C=\{tz:t>0,\ z\in\relint F\}
+\]
+is a nonempty open subset of $X$, and
+\begin{equation}\label{eq:linearcone}
+ \|z\|=\varphi(z)\qquad(z\in C).
+\end{equation}
+
+Let $R\subset X$ be finite.  Fix $q\in C$ and a nonzero
+$w\in\ker\varphi$.  Since $C$ is open and conic, for all sufficiently large
+$T$ and all $r\in R$ both
+\[
+ Tq-r\quad\hbox{and}\quad Tq+w-r
+\]
+belong to $C$.  Put $x=Tq$ and $y=Tq+w$.  Then $x\ne y$, while
+\eqref{eq:linearcone} gives, for every $r\in R$,
+\[
+ \|x-r\|=\varphi(Tq-r)
+ =\varphi(Tq+w-r)=\|y-r\|.
+\]
+Thus $R$ does not resolve $X$.  Since $R$ was arbitrary, no finite resolving
+set exists.
+\end{proof}
+
+\begin{corollary}\label{cor:facet}
+Every polyhedral normed space of dimension at least two has infinite metric
+dimension.  Every non-strictly-convex normed plane has infinite metric
+dimension.
+\end{corollary}
+
+\begin{proof}
+A full-dimensional polytope has a facet.  In dimension two, every
+nondegenerate segment in the unit circle extends to a one-dimensional exposed
+face, which is a facet.
+\end{proof}
+
+In particular, $\ell_1^d$ and $\ell_\infty^d$ have infinite metric dimension.
+This also shows why strict convexity is indispensable in the planar version.
+
+\section{The exact value for \texorpdfstring{$\ell_p^d$}{ell-p spaces}}
+
+\begin{theorem}[Coordinate-power spaces]\label{thm:lp}
+For $d\ge1$ and $1<p<\infty$,
+\[
+ \mdim(\ell_p^d)=d+1.
+\]
+More precisely, $\{0,e_1,\dots,e_d\}$ resolves $\ell_p^d$.
+The same conclusion holds for every weighted norm
+\[
+ \|x\|=\left(\sum_{i=1}^d c_i|x_i|^p\right)^{1/p},\qquad c_i>0,
+\]
+and every invertible linear image of such a norm.
+\end{theorem}
+
+\begin{proof}
+It suffices to treat the weighted form.  Suppose $x,y\in\R^d$ have the same
+distances to $0,e_1,\dots,e_d$.  Equality at the origin says
+\begin{equation}\label{eq:base}
+ \sum_j c_j|x_j|^p=\sum_j c_j|y_j|^p.
+\end{equation}
+Equality at $e_i$, after taking $p$th powers and subtracting
+\eqref{eq:base}, gives
+\[
+ |x_i-1|^p-|x_i|^p=|y_i-1|^p-|y_i|^p.
+\]
+Set $h(t)=|t-1|^p-|t|^p$ and
+$j_p(t)=\operatorname{sgn}(t)|t|^{p-1}$.  Then
+\[
+ h'(t)=p\bigl(j_p(t-1)-j_p(t)\bigr)<0,
+\]
+because $j_p$ is strictly increasing and $t-1<t$.  Hence $h$ is strictly
+decreasing, so $x_i=y_i$.  This holds for every $i$, and therefore $x=y$.
+Theorem~\ref{thm:lower} proves optimality.  An invertible linear isometry
+transports resolving sets and metric dimension.
+\end{proof}
+
+\section{A smooth non-Hilbert neighbourhood}
+
+The next result is useful because it does not rely on coordinate-power
+separability.  All Euclidean norms and sufficiently small $C^{1,1}$
+perturbations satisfy it.
+
+\begin{theorem}[Quantitative near-Hilbert class]\label{thm:near}
+Let $N$ be a norm on $\R^d$ and write
+\[
+ \Phi(x)=N(x)^2=|x|_2^2+H(x).
+\]
+Assume that $H$ is continuously differentiable and that
+\[
+ |\nabla H(u)-\nabla H(v)|_2\le\eta|u-v|_2
+ \quad(u,v\in\R^d)
+\]
+for some $\eta<2/\sqrt d$.  Then $\{0,e_1,\dots,e_d\}$ resolves
+$(\R^d,N)$, and consequently
+\[
+ \mdim(\R^d,N)=d+1.
+\]
+\end{theorem}
+
+\begin{proof}
+Define the relative squared-distance map $G:\R^d\to\R^d$ by
+\[
+ G_i(x)=\Phi(x-e_i)-\Phi(x)=1-2x_i+E_i(x),
+ \qquad E_i(x)=H(x-e_i)-H(x).
+\]
+For $x,y\in\R^d$, the fundamental theorem of calculus on the segment from
+$y$ to $x$ yields
+\begin{align*}
+ E_i(x)-E_i(y)
+  =\int_0^1\!\langle
+  &\nabla H(y+t(x-y)-e_i)\\
+  &-\nabla H(y+t(x-y)),x-y\rangle\,dt.
+\end{align*}
+The two gradient arguments in the integrand are one unit apart.  Therefore
+\[
+ |E_i(x)-E_i(y)|\le\eta|x-y|_2,
+ \qquad |E(x)-E(y)|_2\le\sqrt d\,\eta|x-y|_2.
+\]
+If $G(x)=G(y)$, then
+\[
+ 2|x-y|_2=|E(x)-E(y)|_2
+ \le\sqrt d\,\eta|x-y|_2.
+\]
+Since $\sqrt d\eta<2$, this forces $x=y$.  Equal distances to the origin and
+the $e_i$ imply equality of all the $G_i$, so the landmarks resolve.  Apply
+Theorem~\ref{thm:lower} for optimality.
+\end{proof}
+
+\begin{corollary}[Explicit non-Hilbert examples]\label{cor:example}
+For every $d\ge2$, the norms
+\[
+ N_\varepsilon(x)
+ =\bigl(|x|_2^2+\varepsilon\|x\|_4^2\bigr)^{1/2}
+\]
+have metric dimension $d+1$ for all sufficiently small $\varepsilon>0$.
+They are smooth, strictly convex, and non-Hilbert.
+\end{corollary}
+
+\begin{proof}
+The $\ell_2$-sum of two norms is a norm, and the Euclidean term makes it
+strictly convex.  The function $x\mapsto\|x\|_4^2$ has globally Lipschitz
+gradient: away from zero its Hessian is homogeneous of degree zero and bounded
+on the Euclidean unit sphere, while the degree-one gradient extends
+Lipschitzly through zero.  Hence Theorem~\ref{thm:near} applies when
+$\varepsilon$ is small enough.  Finally, with $x=e_1$ and $y=e_2$, the two
+sides of the parallelogram identity contain respectively the unequal
+$\ell_4^2$ contributions $2\varepsilon\sqrt2$ and $4\varepsilon$.
+\end{proof}
+
+\section{Why the full strictly convex question is not claimed}
+
+Eight focused routes were checked.  The successful ones are the lower bound,
+facet cone, coordinate-power separation, and quantitative near-Hilbert
+argument above.  Four further routes identify genuine obstructions:
+\begin{itemize}
+\item Strictly convexifying a facet norm does not preserve its collisions:
+$\ell_q^d\to\ell_\infty^d$ as $q\to\infty$, yet every finite $q>1$ has metric
+dimension $d+1$.
+\item The topological obstruction ends exactly at $d$ target coordinates; an
+extra distance coordinate removes the invariance-of-domain contradiction.
+\item Strict planar bisectors are direction-dependent graphs, but their
+strips are not uniform over the unknown pair.  Incidence counting does not
+force a simplex avoiding every bisector.
+\item At infinity, smooth strictly convex norms encode direction through the
+dual Gauss map.  Without a quantitative curvature bound, uniform asymptotic
+approximation does not prevent folds at finite or intermediate scale.
+\end{itemize}
+Thus the packet neither proves nor disproves
+$\mdim X=d+1$ for every strictly convex $d$-dimensional normed space.
+
+\section{Verification, literature caution, and review}
+
+All arguments are exact and analytic; no numerical evidence is used.  The
+source was rebuilt from the cached arXiv file, and the displayed crop is taken
+from source PDF page 12.  Cheap run indexes and targeted searches found no
+later primary-source answer, but terminology is unusually ambiguous and older
+work often says \emph{determining set} or \emph{equidistant set}.  In
+particular, Kalisch--Straus~\cite{KalischStraus} should be checked by a human
+specialist before any novelty claim.  No priority claim is made.
+
+Human review should focus on the intended parenthetical scope of Problem 1,
+the openness of the cone over a facet, and the global $C^{1,1}$ hypothesis in
+Theorem~\ref{thm:near}.  The packet should not be cited as resolving the
+universal strictly convex case.
+
+\begin{thebibliography}{9}
+\bibitem{Geher}
+G. P. Geh\'er,
+\emph{Is it possible to determine a point lying in a simplex if we know the
+distances from the vertices?}, arXiv:1507.05114.
+
+\bibitem{KalischStraus}
+G. K. Kalisch and E. G. Straus,
+\emph{On the determination of points in a Banach space by their distances from
+the points of a given set}, An. Acad. Brasil. Ci. \textbf{29} (1957), 501--519.
+\end{thebibliography}
+
+\end{document}

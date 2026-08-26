@@ -1,0 +1,204 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=26mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage{enumitem}
+
+\definecolor{accent}{RGB}{36,80,112}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Fix}{\operatorname{Fix}}
+
+\title{Orbit-Barycenter Fixed Points for Affine Rotative Maps\\
+\large A substantial partial result for arXiv:1405.7872}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 8}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{accent}{accent!6}{\parbox{0.90\textwidth}{
+\textbf{Status.} Candidate substantial partial result, likely valid, pending human review.
+The unrestricted nonlinear threshold questions remain open.}}
+\end{center}
+
+\section{Source questions and scope}
+
+For a Banach space $X$, $n\geq2$, and $a\in[0,n)$, Pongsriiam and
+Termwuttipong define $\gamma(X,n,a)$ as the infimum of Lipschitz bounds for
+fixed-point-free $(n,a)$-rotative maps on closed convex subsets of $X$. Their
+Questions 3--6 ask for finiteness, exact values, the case $X=C[0,1]$ with
+$n=2$ and $a<1$, and continuity in $a$ \cite[p.~4]{PT14}.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.98\textwidth]{figures/open_questions_crop.png}
+  \caption{Questions 3--6 in \cite[p.~4]{PT14}.}
+\end{figure}
+
+This note completely classifies the affine subclass for all Banach spaces and all
+parameters: its threshold is always infinity. It also gives a quantified nonlinear
+extension. These results do not determine the unrestricted function $\gamma$.
+
+\section{Definitions and proof intuition}
+
+Let $C$ be a nonempty closed convex subset of a Banach space. A map $T:C\to C$
+is $(n,a)$-\emph{rotative} if
+\[
+ \|T^n x-x\|\leq a\|Tx-x\|\qquad(x\in C),
+ \quad n\geq2,\quad 0\leq a<n.
+\]
+Write $d_T(x)=\|Tx-x\|$ and form the length-$n$ orbit barycenter
+\[
+ B_nx=\frac1n\sum_{j=0}^{n-1}T^j x\in C.
+\]
+
+\paragraph{Proof intuition.}
+For an affine map, applying $T$ to this barycenter shifts every orbit term forward by
+one. All intermediate terms cancel when $TB_nx-B_nx$ is formed, leaving exactly
+$(T^nx-x)/n$. Rotativeness therefore reduces the displacement by the strict factor
+$a/n$. The move from $x$ to $B_nx$ is bounded by a fixed multiple of the current
+displacement, using only the Lipschitz constant. Repeating the barycenter operation gives
+geometrically decreasing displacement and summable moves, hence a Cauchy sequence whose
+limit is fixed.
+
+The same mechanism survives for a nonlinear map if its failure to commute with its own
+orbit barycenter is quantitatively smaller than the remaining contraction margin.
+
+\section{Main results}
+
+\begin{theorem}[Affine rotative fixed-point theorem]\label{thm:affine}
+Let $C$ be a nonempty closed convex subset of a Banach space and let $T:C\to C$
+be affine and $k$-Lipschitz for some finite $k\geq0$. If $T$ is $(n,a)$-rotative
+for $n\geq2$ and $0\leq a<n$, then $T$ has a fixed point.
+
+More precisely, for every $x_0\in C$, the iteration
+\[
+ x_{m+1}=B_nx_m=\frac1n\sum_{j=0}^{n-1}T^jx_m
+\]
+converges to a point of $\Fix T$.
+\end{theorem}
+
+\begin{proof}
+Affineness and convexity give
+\[
+ TB_nx=\frac1n\sum_{j=0}^{n-1}T^{j+1}x,
+ \qquad
+ TB_nx-B_nx=\frac{T^nx-x}{n}.
+\]
+Consequently, with $q=a/n<1$,
+\begin{equation}\label{eq:decay}
+ d_T(B_nx)\leq qd_T(x).
+\end{equation}
+
+Since $T^r$ is $k^r$-Lipschitz,
+\[
+ \|T^{r+1}x-T^rx\|\leq k^r d_T(x).
+\]
+Thus
+\begin{align*}
+ \|B_nx-x\|
+ &\leq\frac1n\sum_{j=1}^{n-1}\|T^jx-x\|\\
+ &\leq \underbrace{\frac1n\sum_{j=1}^{n-1}
+       \sum_{r=0}^{j-1}k^r}_{M_{n,k}}d_T(x).
+\end{align*}
+Applying \eqref{eq:decay} recursively yields
+\[
+ d_T(x_m)\leq q^m d_T(x_0),
+ \qquad
+ \|x_{m+1}-x_m\|\leq M_{n,k}q^m d_T(x_0).
+\]
+The second estimate is summable, so $(x_m)$ is Cauchy. Closedness of $C$ gives a
+limit $p\in C$. As $T$ is Lipschitz and $d_T(x_m)\to0$, we obtain $Tp=p$.
+\end{proof}
+
+Define the affine-restricted analogue of the source invariant by
+\[
+ \begin{aligned}
+ \gamma_{\mathrm{aff}}(X,n,a)=\inf\{k:\;&\text{some affine }T\in
+ \Phi(C,n,a,k)\text{ on a closed convex }C\subseteq X\\
+ &\text{has }\Fix T=\varnothing\},
+ \end{aligned}
+\]
+with $\inf\varnothing=\infty$.
+
+\begin{corollary}[Complete affine classification]\label{cor:class}
+For every Banach space $X$, every $n\geq2$, and every $a\in[0,n)$,
+\[
+ \gamma_{\mathrm{aff}}(X,n,a)=\infty.
+\]
+Hence every finite witness for $\gamma(X,n,a)$ must be genuinely nonlinear.
+\end{corollary}
+
+\begin{theorem}[Robust orbit-barycentric criterion]\label{thm:robust}
+Let $T:C\to C$ be $k$-Lipschitz and $(n,a)$-rotative. Suppose that some
+$\eta\geq0$ satisfies, for every $x\in C$,
+\begin{equation}\label{eq:defect}
+ \left\|T(B_nx)-\frac1n\sum_{j=1}^{n}T^jx\right\|
+ \leq\eta d_T(x).
+\end{equation}
+If $\eta+a/n<1$, then $T$ has a fixed point, and the iteration
+$x_{m+1}=B_nx_m$ converges to one.
+\end{theorem}
+
+\begin{proof}
+Combining \eqref{eq:defect} with the telescoping identity for the formal shifted
+barycenter gives
+\[
+ d_T(B_nx)\leq\left(\eta+\frac an\right)d_T(x).
+\]
+The bound $\|B_nx-x\|\leq M_{n,k}d_T(x)$ did not use affineness. With
+$q=\eta+a/n<1$, the same geometric-decay and summable-step proof as in
+Theorem~\ref{thm:affine} applies.
+\end{proof}
+
+\section{Scope, failed full-upgrade routes, and verification}
+
+The result eliminates every affine construction from Questions 3--6 and gives a stable
+nonlinear neighborhood measured by \eqref{eq:defect}. It does not compute the unrestricted
+$\gamma(X,n,a)$. In particular, at $a=0$ the source problem already contains the
+fixed-point theory of Lipschitz periodic maps; a 2017 paper still asks whether a
+fixed-point-free $2$-Lipschitz involution exists on a closed convex Banach subset
+\cite[Question~4.2]{Gornicki17}.
+
+Eight focused routes were audited: source-signal separation; arbitrary affine operators;
+the robust defect extension; positive unilateral-shift constructions; an alternating
+affine shift on $c_0$; direct contraction of orbit increments; periodic/involution
+constructions at $a=0$; and deformation arguments for continuity of $\gamma$. The two
+barycentric routes succeeded. Both shift families attain the forbidden ratio $2$, direct
+increment estimates lose the contraction, and no fixed-point-free nonlinear involution or
+parameter deformation was obtained.
+
+The proof is symbolic. Verification reduces to the affine telescoping identity, the
+finite constant $M_{n,k}$, and the geometric-series Cauchy estimate. The run's four cheap
+indexes and a bounded web search through 17 August 2026 used the exact arXiv id and the
+phrases ``affine rotative mapping'', ``orbit barycenter'', and
+``$\gamma(X,n,a)$''. The source, the 1999 rotative results, affine fixed-point searches,
+and the 2017 involution discussion were checked. No exact statement of
+Theorems~\ref{thm:affine} or \ref{thm:robust} was found. This is bounded evidence, not a
+priority claim.
+
+\paragraph{Human-review recommendation.}
+Promote for expert review as a substantial partial result. Check the normalization in
+\eqref{eq:defect}, the passage from displacement decay to a Cauchy sequence, and the
+novelty of the affine classification under older ``mean iteration'' terminology.
+
+\begin{thebibliography}{9}
+\small
+\bibitem{PT14}
+T. Pongsriiam and I. Termwuttipong,
+\emph{Fixed points of continuous rotative mappings on the real line},
+arXiv:1405.7872 (2014).
+
+\bibitem{Gornicki17}
+J. G\'ornicki,
+\emph{Fixed point theorems for Kannan type mappings},
+J. Fixed Point Theory Appl. 19 (2017), 2145--2152.
+\end{thebibliography}
+
+\end{document}

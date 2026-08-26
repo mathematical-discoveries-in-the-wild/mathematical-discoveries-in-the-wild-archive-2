@@ -1,0 +1,396 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=27mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage[final]{microtype}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\T}{\mathbb T}
+\newcommand{\CalC}{\mathcal C}
+\newcommand{\CalS}{\mathcal S}
+\newcommand{\vtwo}{\nu_2}
+\newcommand{\op}{\operatorname{op}}
+
+\title{The exact Riesz bounds of the ReLU tent-function basis\\
+\large A full solution of the optimal-bound problem in arXiv:2303.00076}
+\author{Automated mathematics run \texttt{fa\_banach\_001}\\Lane 14, agent \texttt{agent\_lane\_14}}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status: claimed full solution; likely valid, pending human review.}
+The optimal uniform Gram spectral interval is
+\(\boxed{[2/3,\,3/2]}\).  Thus the published lower estimate \(1/2\)
+improves to the sharp value \(2/3\), while the upper estimate \(3/2\) is
+already sharp.  The same exact constants hold for the normalized
+multivariate system in every dimension.}}
+\end{center}
+
+\section{Source and open problem}
+
+The source is Cornelia Schneider and Jan Vyb\'iral, \emph{A multivariate
+Riesz basis of ReLU neural networks}, arXiv:2303.00076, published in
+\emph{Applied and Computational Harmonic Analysis} \textbf{68} (2024),
+article 101605, DOI \href{https://doi.org/10.1016/j.acha.2023.101605}{10.1016/j.acha.2023.101605}
+\cite{SV}.  The question occurs in Remark 2.3(3) on PDF page 5, immediately
+after Theorem 2.2.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{Full-width crop of Theorem 2.2 and Remark 2.3 from source PDF
+  page 5.  The source's plots show the \emph{unnormalized} cosine Gram
+  eigenvalues; see Corollary~\ref{cor:unnormalized}.}
+  \label{fig:source-question}
+\end{figure}
+
+Writing
+\[
+ \overline{\mathcal R}_1^N
+ =\{1\}\cup\{\sqrt3\,\CalC_k,\sqrt3\,\CalS_k:1\leq k\leq N\},
+\]
+the source proves that its Gram spectrum lies in \([1/2,3/2]\), uniformly in
+\(N\), and asks whether those bounds are optimal.  It conjectures that there
+is room for improvement \cite[Remark 2.3(3)]{SV}.
+
+\section{Proof intuition}
+
+The Gram matrix is not merely sparse; it is multiplicative.  Indices having
+different powers of two are orthogonal.  Within one fixed \(2\)-adic block,
+remove the common power of two and write the remaining odd integers by their
+prime-exponent vectors.  The normalized cosine kernel then factors prime by
+prime:
+\[
+ \frac{\gcd(m,n)^4}{m^2n^2}
+ =\prod_{p\ \mathrm{odd}}p^{-2|v_p(m)-v_p(n)|}.
+\]
+For one prime this is the Toeplitz kernel \(r^{|a-b|}\), whose Fourier symbol
+has exact range
+\([\,(1-r)/(1+r),(1+r)/(1-r)\,]\).  Tensoring over the odd primes and
+evaluating the Euler products gives \([2/3,3/2]\).
+
+The inequalities alone would not prove optimality.  To reach both endpoints,
+take finite rectangular grids of prime exponents.  Constant coefficients
+concentrate the local Fourier mass at angle \(0\); alternating coefficients
+concentrate it at angle \(\pi\).  These are genuine finite coefficient
+vectors, hence occur inside sufficiently large initial Gram matrices.  The
+sine block is a diagonal sign conjugate of the cosine block.  Finally, in
+several variables, distinct primitive lattice rays are orthogonal and every
+ray carries exactly the same univariate block.
+
+\section{Statement of the result}
+
+Let \(G_N\) be the Gram matrix of the ordered normalized system
+\(\overline{\mathcal R}_1^N\).  Thus its diagonal entries are one.  The source
+uses Riesz constants in the squared-norm convention
+\[
+ A\sum_j|a_j|^2\leq \Bigl\|\sum_j a_j u_j\Bigr\|_2^2
+ \leq B\sum_j|a_j|^2.
+\]
+
+\begin{theorem}[Exact uniform constants]\label{thm:main}
+For every \(N\geq1\),
+\[
+ \sigma(G_N)\subseteq[2/3,3/2].
+\]
+Moreover,
+\[
+ \inf_{N\geq1}\lambda_{\min}(G_N)=\frac23,
+ \qquad
+ \sup_{N\geq1}\lambda_{\max}(G_N)=\frac32.
+\]
+Consequently the optimal Riesz bounds of the infinite normalized univariate
+system are exactly \(A=2/3\) and \(B=3/2\).
+
+For every \(d\geq1\), the normalized multivariate system of \cite{SV},
+\[
+ \{1\}\cup
+ \{\sqrt3\,\CalC(\alpha\cdot x):\alpha\in\Z^d,\ \alpha\mathbin{\triangleright}0\}
+ \cup
+ \{\sqrt3\,\CalS(\alpha\cdot x):\alpha\in\Z^d,\ \alpha\mathbin{\triangleright}0\},
+\]
+has the same exact optimal Riesz bounds \(2/3\) and \(3/2\), independently of
+\(d\).  Here \(\alpha\mathbin{\triangleright}0\) means that the first nonzero
+coordinate of \(\alpha\) is positive.
+\end{theorem}
+
+\section{Proof}
+
+\subsection{The source Gram formulas}
+
+Put \(C_N=(3\langle\CalC_i,\CalC_j\rangle)_{1\leq i,j\leq N}\) and define
+\(S_N\) analogously.  Lemma 2.1 of \cite{SV} gives
+\[
+ G_N=[1]\oplus C_N\oplus S_N,
+\]
+and states that the cosine entry is zero when \(\vtwo(i)\neq\vtwo(j)\).
+When \(\vtwo(i)=\vtwo(j)=a\), write \(i=2^am\) and \(j=2^an\) with \(m,n\)
+odd.  Then
+\begin{equation}\label{eq:odd-kernel}
+ (C_N)_{ij}
+ =\frac{\gcd(m,n)^4}{m^2n^2}
+ =\prod_{p\ \mathrm{odd}}p^{-2|v_p(m)-v_p(n)|}.
+\end{equation}
+Only finitely many factors in the last product differ from one.
+
+\subsection{The exact one-prime inequality}
+
+\begin{lemma}\label{lem:local}
+Let \(0<r<1\), and let \(A_r=(r^{|u-v|})_{u,v\geq0}\) act through its
+quadratic form on finitely supported vectors.  Then
+\begin{equation}\label{eq:local-bounds}
+ \frac{1-r}{1+r}\,\|x\|_2^2
+ \leq \sum_{u,v\geq0}r^{|u-v|}x_u\overline{x_v}
+ \leq \frac{1+r}{1-r}\,\|x\|_2^2.
+\end{equation}
+Both constants are optimal.
+\end{lemma}
+
+\begin{proof}
+The Poisson-type symbol with Fourier coefficients \(r^{|h|}\) is
+\[
+ f_r(\theta)=\sum_{h\in\Z}r^{|h|}e^{ih\theta}
+ =\frac{1-r^2}{1-2r\cos\theta+r^2}.
+\]
+For finitely supported \(x\), Parseval gives
+\[
+ \sum_{u,v\geq0}r^{|u-v|}x_u\overline{x_v}
+ =\int_0^{2\pi}f_r(\theta)
+   \left|\sum_{u\geq0}x_ue^{iu\theta}\right|^2\frac{d\theta}{2\pi}.
+\]
+The minimum and maximum of \(f_r\) occur at \(\pi\) and \(0\), respectively,
+and are precisely the two constants in \eqref{eq:local-bounds}.
+
+For sharpness, take the normalized vectors
+\(x_u=M^{-1/2}\) and \(x_u=M^{-1/2}(-1)^u\) for \(0\leq u<M\).  Their
+Rayleigh quotients are
+\begin{equation}\label{eq:qpm}
+ q_+(r,M)=1+\frac2M\sum_{h=1}^{M-1}(M-h)r^h,
+ \qquad
+ q_-(r,M)=1+\frac2M\sum_{h=1}^{M-1}(M-h)(-r)^h.
+\end{equation}
+As \(M\to\infty\), these tend to \((1+r)/(1-r)\) and
+\((1-r)/(1+r)\), respectively.
+\end{proof}
+
+\subsection{Tensoring over odd primes}
+
+Let \(F\) be a finite set of odd primes.  On
+\(\ell_2(\N_0^F)=\bigotimes_{p\in F}\ell_2(\N_0)\), define
+\[
+ A_F=\bigotimes_{p\in F}A_{p^{-2}}.
+\]
+Repeated application of Lemma~\ref{lem:local} gives
+\begin{equation}\label{eq:finiteF}
+ L_F I\leq A_F\leq U_F I,
+ \quad
+ L_F=\prod_{p\in F}\frac{1-p^{-2}}{1+p^{-2}},
+ \quad U_F=L_F^{-1}.
+\end{equation}
+
+Now let \(x\) be any finitely supported coefficient vector on the odd positive
+integers.  Choose \(F\) containing every prime divisor of every index in the
+support.  The map \(n\mapsto(v_p(n))_{p\in F}\) identifies its quadratic form
+from \eqref{eq:odd-kernel} with the restriction of the quadratic form of
+\(A_F\).  Therefore \eqref{eq:finiteF} applies even though the support need
+not be a rectangular exponent grid.
+
+The Euler products are
+\begin{align*}
+ \prod_{p\ \mathrm{odd}}(1-p^{-2})
+ &=\frac{1/\zeta(2)}{1-2^{-2}}=\frac8{\pi^2},\\
+ \prod_{p\ \mathrm{odd}}(1+p^{-2})
+ &=\frac{\prod_{p\ \mathrm{odd}}(1-p^{-4})}
+         {\prod_{p\ \mathrm{odd}}(1-p^{-2})}
+ =\frac{12}{\pi^2}.
+\end{align*}
+Consequently
+\begin{equation}\label{eq:global-products}
+ \prod_{p\ \mathrm{odd}}\frac{1-p^{-2}}{1+p^{-2}}=\frac23,
+ \qquad
+ \prod_{p\ \mathrm{odd}}\frac{1+p^{-2}}{1-p^{-2}}=\frac32.
+\end{equation}
+Since \(L_F\geq2/3\) and \(U_F\leq3/2\), every odd block is bounded between
+\(2/3\) and \(3/2\).  Every fixed \(2\)-adic block is a copy of the odd block,
+so
+\begin{equation}\label{eq:cosine-bound}
+ \frac23 I\leq C_N\leq\frac32 I
+\end{equation}
+for every \(N\).
+
+\subsection{The sine block is a sign conjugate}
+
+For \(k\geq1\), let \(k=2^{\vtwo(k)}k_{\mathrm{odd}}\) and set
+\[
+ \varepsilon_k=\chi_4(k_{\mathrm{odd}}),\qquad
+ \chi_4(t)=\begin{cases}1,&t\equiv1\pmod4,\\-1,&t\equiv3\pmod4.
+ \end{cases}
+\]
+Let \(D_N=\operatorname{diag}(\varepsilon_1,\ldots,\varepsilon_N)\).
+We claim that
+\begin{equation}\label{eq:sign-similarity}
+ S_N=D_NC_ND_N.
+\end{equation}
+Indeed, entries from different \(2\)-adic blocks vanish on both sides.  In one
+block write \(i=2^am\), \(j=2^an\), \(d=\gcd(m,n)\), and
+\(m_0=m/d,n_0=n/d\).  The sign rule in Lemma 2.1 of \cite{SV} says that the
+sine entry is negative exactly when \((m_0+n_0)/2\) is even.  For coprime odd
+\(m_0,n_0\), this is equivalent to
+\(\chi_4(m_0)\chi_4(n_0)=-1\).  Since \(\chi_4(d)^2=1\), this sign is
+\(\varepsilon_i\varepsilon_j\), proving \eqref{eq:sign-similarity}.
+Thus \(S_N\) and \(C_N\) have identical spectra.  This similarity was also
+proved independently in the later paper \cite{KLSV}; here the displayed
+argument derives it directly from the source formula.
+
+Combining \eqref{eq:cosine-bound}, \eqref{eq:sign-similarity}, and the scalar
+constant block proves \(\sigma(G_N)\subseteq[2/3,3/2]\).
+
+\subsection{Finite witnesses prove sharpness}
+
+Fix a finite set \(F\) of odd primes and \(M\geq1\).  Consider the finite
+index set
+\[
+ E_{F,M}=\left\{\prod_{p\in F}p^{a_p}:0\leq a_p<M\right\}.
+\]
+Give these indices either constant coefficients or coefficients
+\((-1)^{\sum_{p\in F}a_p}\), and normalize by \(|E_{F,M}|^{-1/2}\).
+The product structure makes their cosine Rayleigh quotients exactly
+\begin{equation}\label{eq:tensor-witnesses}
+ Q_+(F,M)=\prod_{p\in F}q_+(p^{-2},M),
+ \qquad
+ Q_-(F,M)=\prod_{p\in F}q_-(p^{-2},M).
+\end{equation}
+For fixed \(F\), equation \eqref{eq:qpm} yields
+\[
+ Q_+(F,M)\longrightarrow U_F,
+ \qquad Q_-(F,M)\longrightarrow L_F
+ \quad(M\to\infty).
+\]
+Then let \(F\) increase through the odd primes and use
+\eqref{eq:global-products}.  For every \(\delta>0\), this produces a finite
+coefficient vector with quotient greater than \(3/2-\delta\), and another
+with quotient less than \(2/3+\delta\).
+
+Every set \(E_{F,M}\) lies inside \(\{1,\ldots,N\}\) for some finite \(N\).
+Extend the witness by zeros on the other cosine indices and on the constant
+and sine blocks.  The min--max principle therefore gives
+\[
+ \sup_N\lambda_{\max}(G_N)\geq\frac32,
+ \qquad
+ \inf_N\lambda_{\min}(G_N)\leq\frac23.
+\]
+Together with the already proved inequalities, both are equalities.  This
+completes the univariate proof.
+
+\subsection{Multivariate upgrade}
+
+Every oriented nonzero lattice vector has a unique representation
+\(\alpha=k\gamma\), where \(k\in\N\) and \(\gamma\in\Z^d\) is primitive and
+oriented.  Lemma 3.1 of \cite{SV} states that functions indexed by non-collinear
+vectors are orthogonal, that cosine--sine cross terms vanish, and that along
+one ray \(\{k\gamma:k\geq1\}\) the normalized cosine and sine inner products
+are exactly the univariate ones.  Hence, after reordering, every finite
+multivariate Gram matrix is a compression of the orthogonal direct sum
+\[
+ [1]\ \oplus\!
+ \bigoplus_{\gamma\ \mathrm{primitive,oriented}}
+ \bigl(C\oplus S\bigr).
+\]
+The bounds \([2/3,3/2]\) therefore hold in every dimension.  The source
+already proves completeness, so these are Riesz-basis bounds.  Sharpness is
+realized asymptotically on the single primitive ray generated by
+\((1,0,\ldots,0)\), using the finite witnesses above.  Theorem~\ref{thm:main}
+is proved. \qed
+
+\begin{corollary}[Normalization of the source plots]\label{cor:unnormalized}
+For the unnormalized cosine and sine systems, whose Gram blocks are
+\((\langle\CalC_i,\CalC_j\rangle)\) and
+\((\langle\CalS_i,\CalS_j\rangle)\), the exact optimal uniform spectral
+interval is \([2/9,1/2]\).
+\end{corollary}
+\begin{proof}
+The normalized blocks are three times the unnormalized blocks.
+\end{proof}
+
+\section{Verification}
+
+The proof is analytic.  The included script \texttt{code/verify\_bounds.py}
+performs three independent numerical audits:
+\begin{enumerate}[leftmargin=*]
+\item it constructs normalized cosine Gram matrices for
+\(N=16,32,64,128,256,512\) and checks all eigenvalues against
+\([2/3,3/2]\);
+\item it constructs \(S_N=D_NC_ND_N\) and compares the complete cosine and
+sine spectra (worst mismatch: \(0.000\mathrm e{+00}\) in the run);
+\item on the first eight odd primes it evaluates the length-80 finite tensor
+witnesses, obtaining \(0.681311350825\) below and \(1.467744146372\) above,
+moving toward \(2/3\) and \(3/2\), respectively.
+\end{enumerate}
+The finite spectra at \(N=512\) were
+\(\lambda_{\min}=0.773698855226\) and
+\(\lambda_{\max}=1.280150591375\).  The reproducible command is
+\begin{verbatim}
+conda run --no-capture-output -n sandbox python \
+  code/verify_bounds.py
+\end{verbatim}
+These computations are consistency checks, not ingredients of the proof.
+
+\section{Novelty check, limitations, and review focus}
+
+\paragraph{Bounded novelty check.}
+A bounded search through 17 August 2026 used the exact source title and
+authors, citation links, arXiv:2303.00076, ``optimal Riesz bounds,'' ``Gram
+spectrum,'' and the candidate constants \(2/3\) and \(3/2\).  The strongest
+relevant follow-up found was Abdullo Kulbatov, Jan Lang, Cornelia Schneider,
+and Jan Vyb\'iral, \emph{Bases of Lebesgue spaces formed by neural networks},
+arXiv:2511.23179 \cite{KLSV}.  It proves the finite cosine/sine spectral
+coincidence and improves the known lower estimate to
+\[
+ \left\{\frac{4\sqrt6}{\pi^2}
+ \left(2-\frac{\pi^2}{8}\right)\right\}^2
+ =0.5787\ldots,
+\]
+in both the univariate and multivariate settings, while retaining upper bound
+\(3/2\).  It does not derive \(2/3\) or prove optimality.  A later paper using
+the basis for Sobolev and Barron approximation likewise did not provide the
+exact constants in the checked material.  No matching exact answer was found.
+This is a bounded negative search, not a claim of exhaustive novelty.
+
+\paragraph{Limitations.}
+The theorem determines the best constants uniform in \(N\); it does not give a
+closed formula for the extreme eigenvalues at each fixed \(N\), nor rates at
+which selected initial sections approach the endpoints.  The multivariate
+statement improves the constants for the precise lattice-ridge basis of
+\cite{SV}; it is not a claim about arbitrary ReLU dictionaries.
+
+\paragraph{Human-review recommendation.}
+Review the identification of a finitely supported odd-index quadratic form
+with a compression of the finite-prime tensor product, the order of the two
+limits in the explicit sharpness witnesses, and the primitive-ray direct-sum
+decomposition in the multivariate argument.  Also verify that the source's
+Riesz constants use the squared-norm convention, as adopted here.
+
+\begin{thebibliography}{9}
+\bibitem{SV}
+C. Schneider and J. Vyb\'iral,
+\emph{A multivariate Riesz basis of ReLU neural networks},
+Applied and Computational Harmonic Analysis \textbf{68} (2024), 101605;
+arXiv:2303.00076.
+
+\bibitem{KLSV}
+A. Kulbatov, J. Lang, C. Schneider, and J. Vyb\'iral,
+\emph{Bases of Lebesgue spaces formed by neural networks},
+arXiv:2511.23179 (2025).
+\end{thebibliography}
+
+\end{document}

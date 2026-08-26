@@ -1,0 +1,282 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.82in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,graphicx,microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage[T1]{fontenc}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\C}{\mathbb C}
+\newcommand{\T}{\mathbb T}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\Lin}{\mathcal L}
+
+\title{Complex Hilbert and classical-pair obstructions for
+$\mathbf L_{o,p}$\\
+\large A partial answer to Question 3 of arXiv:1905.13552}
+\author{Automated mathematical-discovery run \texttt{fa\_banach\_001}}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.} Partial result, likely valid, subject to human
+review.
+
+\section{Source question and the scalar-field gap}
+
+For Banach spaces $X,Y$, the pair $(X,Y)$ has property $\mathbf L_{o,p}$
+if, for every $\varepsilon>0$ and every fixed $x\in S_X$, there is
+$\eta(\varepsilon,x)>0$ such that every $T\in S_{\Lin(X,Y)}$ satisfying
+$\|Tx\|>1-\eta(\varepsilon,x)$ has a point $x_0\in S_X$ with
+\[
+  \|Tx_0\|=1,\qquad \|x_0-x\|<\varepsilon.
+\]
+On page 6, Dantas--Kim--Lee--Mazzitelli ask:
+
+\begin{quote}
+\textbf{Question 3.} Are there spaces $X,Y$ with
+$\dim X,\dim Y\ge2$ such that $(X,Y)$ satisfies property
+$\mathbf L_{o,p}$?
+\end{quote}
+
+\begin{center}
+\includegraphics[width=0.78\textwidth]{figures/open_question_crop.png}
+\end{center}
+
+The source works over either $\mathbb R$ or $\C$.  Its cited predecessor
+\cite{DKKLM} proves a stronger fixed-point obstruction for every pair of
+\emph{real} spaces of dimension at least two.  That theorem already makes
+the answer negative over $\mathbb R$, but its decisive reduction and arc
+argument are explicitly real.  The results below address the remaining
+complex territory.
+
+\section{Proof intuition}
+
+The Hilbert-domain construction turns the range geometry into a contraction
+from a Euclidean plane.  The maximal-volume ellipsoid in a complex
+two-dimensional range ball is automatically circled, and John's contact
+theorem provides two complex-independent points at which the contraction has
+norm one.  A Hilbert-space diagonal map can fix one contact line while
+shrinking every vector transverse to it.  Composing the two maps leaves that
+line as the entire norming set, while a second, separated contact vector is
+only shrunk by a factor tending to one.
+
+For $\ell_p^2\to\ell_q^2$, a diagonal map gives the same mechanism when
+$p\le q$.  When $p>q$, the unperturbed identity embedding has a torus of
+maximizers $|z_1|=|z_2|$.  A small symmetric off-diagonal perturbation breaks
+this degeneracy: its first variation on the torus is a positive multiple of
+the cosine of the relative phase, so exact maximizers select equal phases.
+The opposite-phase vector remains an almost maximizer because the
+perturbation tends to the identity.
+
+\section{Hilbert domains}
+
+\begin{theorem}[Universal complex obstruction for Hilbert domains]
+\label{thm:hilbert}
+Let $H$ be a complex Hilbert space and $Y$ a complex Banach space, with
+$\dim H,\dim Y\ge2$.  Then $(H,Y)$ fails property $\mathbf L_{o,p}$.
+More precisely, there are $x\in S_H$, $\delta>0$, and
+$T_n\in S_{\Lin(H,Y)}$ such that
+\[
+ \|T_nx\|\longrightarrow1,
+ \qquad
+ \dist\bigl(x,\{z\in S_H:\|T_nz\|=1\}\bigr)\ge\delta
+ \quad(n\ge2).
+\]
+\end{theorem}
+
+\begin{proof}
+Choose a complex two-dimensional subspace $Z\subset Y$.  Let $E$ be the
+John ellipsoid of the real four-dimensional centrally symmetric body $B_Z$.
+The John ellipsoid is unique.  Since $B_Z$ is invariant under multiplication
+by every scalar in $\T$, so is $E$.  Consequently $E$ is the unit ball of a
+Hermitian norm, and there is a complex-linear isomorphism
+$R:\ell_2^2\to Z$ with
+\[
+ R(B_{\ell_2^2})=E\subset B_Z,
+ \qquad \|R\|=1.
+\]
+The contact points $E\cap S_Z$ span $Z$ over $\mathbb R$ by the John
+contact theorem \cite{John,Schneider}.  They therefore cannot lie in one
+complex line.  Hence there are complex-linearly independent
+$u_1,u_2\in S_{\ell_2^2}$ such that
+$\|Ru_1\|=\|Ru_2\|=1$.
+
+Identify $\ell_2^2$ with a closed two-dimensional subspace $H_0$ of $H$,
+and let $Q:H\to H_0$ be the orthogonal projection.  For $n\ge2$, define the
+positive contraction $A_n$ on $H_0$ by
+\[
+ A_nu_2=u_2,qquad
+ A_nv=(1-1/n)v\quad(v\perp u_2),
+\]
+and put $T_n=RA_nQ$.  Since $\|T_nu_2\|=1$, every $T_n$ has norm one.  Also
+$A_nu_1\to u_1$, so $\|T_nu_1\|\to\|Ru_1\|=1$.
+
+If $z\in S_H$ and $\|T_nz\|=1$, then
+\[
+ 1=\|RA_nQz\|\le\|A_nQz\|\le\|Qz\|\le1.
+\]
+Equality in the last inequality forces $z\in H_0$, while equality for
+$A_n$ forces $z\in\C u_2$.  Thus the norming points of $T_n$ are exactly
+$\T u_2$.  Since $u_1$ and $u_2$ are complex-linearly independent,
+$\delta:=\dist(u_1,\T u_2)>0$, proving the claim with $x=u_1$.
+\end{proof}
+
+\section{All complex two-dimensional classical pairs}
+
+We use the convention $2^{-1/\infty}=1$.
+
+\begin{lemma}[Phase selection]
+\label{lem:phase}
+Let $1\le q<p\le\infty$, set $a=2^{-1/p}$, and define
+\[
+ A_t(z_1,z_2)=(z_1+t z_2,t z_1+z_2)
+ \qquad(0<t<1).
+\]
+If $t_j\downarrow0$ and $z_j\in S_{\ell_p^2}$ satisfies
+$\|A_{t_j}z_j\|_q=\|A_{t_j}\|$, then every cluster point of $(z_j)$
+belongs to $\T(a,a)$.
+\end{lemma}
+
+\begin{proof}
+Put
+\[
+ \Phi_t(z)=\|A_tz\|_q^q
+ =|z_1+t z_2|^q+|t z_1+z_2|^q.
+\]
+The maximum of $\Phi_0$ on $S_{\ell_p^2}$ is
+$2a^q$, and equality holds exactly when $|z_1|=|z_2|=a$.  (For
+$p=\infty$, this reads $|z_1|=|z_2|=1$.)  Compactness therefore shows that
+every cluster point $z$ of $(z_j)$ lies on this torus.
+
+On a neighborhood of the torus both coordinates are bounded away from zero,
+so $(\Phi_t-\Phi_0)/t$ converges uniformly there to the one-sided derivative
+at $t=0$.  At
+$z=a(e^{i\alpha},e^{i\beta})$ that derivative is
+\[
+ 2q a^q\cos(\beta-\alpha).
+\]
+This formula is also valid for $q=1$, since neither coordinate vanishes.
+Let $z_+=a(1,1)$.  Maximality of $z_j$ gives
+\begin{align*}
+ \frac{\Phi_{t_j}(z_j)-\Phi_0(z_j)}{t_j}
+ &\ge
+ \frac{\Phi_{t_j}(z_+)-\Phi_0(z_+)}{t_j}
+ +\frac{\Phi_0(z_+)-\Phi_0(z_j)}{t_j}\\
+ &\ge
+ \frac{\Phi_{t_j}(z_+)-\Phi_0(z_+)}{t_j}.
+\end{align*}
+Passing to the limit along a convergent subsequence forces
+$\cos(\beta-\alpha)\ge1$.  Thus the phases are equal and
+$z\in\T z_+$.
+\end{proof}
+
+\begin{theorem}[Every complex $\ell_p^2$--$\ell_q^2$ pair fails]
+\label{thm:lp}
+For all $1\le p,q\le\infty$, the complex pair
+$(\ell_p^2,\ell_q^2)$ fails property $\mathbf L_{o,p}$.
+\end{theorem}
+
+\begin{proof}
+Suppose first that $p\le q$.  For $n\ge2$ let
+\[
+ T_n(z_1,z_2)=((1-1/n)z_1,z_2).
+\]
+Since $\|w\|_q\le\|w\|_p$, with the usual interpretation for $q=\infty$,
+$\|T_n\|=1$.  Moreover, $\|T_ne_1\|=1-1/n\to1$.  Equality
+$\|T_nz\|_q=1$ for $z\in S_{\ell_p^2}$ forces $|z_2|=1$ (the first
+coordinate is strictly contracted), so every norming point remains at
+distance at least one from $e_1$.
+
+Now let $q<p$.  With $A_t$ as in Lemma \ref{lem:phase}, put
+$m_t=\|A_t\|_{\ell_p^2\to\ell_q^2}$ and $T_t=A_t/m_t$.  Let
+\[
+ x_-=a(1,-1),\qquad x_+=a(1,1),\qquad a=2^{-1/p}.
+\]
+The norm of the identity embedding is
+$c=2^{1/q-1/p}$, so $m_t\to c$, while
+\[
+ \|A_tx_-\|_q=(1-t)c.
+\]
+Consequently $\|T_tx_-\|_q=(1-t)c/m_t\to1$.
+
+Lemma \ref{lem:phase} and compactness imply that the norming set of $A_t$
+(and hence of $T_t$) converges, in the upper Hausdorff sense, to
+$\T x_+$.  Since $x_-\notin\T x_+$,
+$d:=\dist(x_-,\T x_+)>0$.  For all sufficiently small $t$, every norming
+point of $T_t$ is at distance at least $d/2$ from $x_-$.  A sequence
+$t\downarrow0$ therefore violates $\mathbf L_{o,p}$ at the fixed point
+$x_-$.
+\end{proof}
+
+\section{Scope and upgrade attempts}
+
+Theorem \ref{thm:hilbert} rules out every range once the domain is Hilbert;
+Theorem \ref{thm:lp} rules out all classical two-dimensional pairs, including
+the non-Hilbert cross pairs not covered by the source's diagonal
+self-pair argument.  These are negative subcases, not a full answer to
+Question 3.
+
+Six focused routes were checked.  First, the source and run indexes were
+audited for an existing answer.  Second, citation tracing isolated the real
+theorem \cite{DKKLM} and confirmed that its main result and proof are
+explicitly real.  Third, the John-ellipsoid construction yielded Theorem
+\ref{thm:hilbert}.  Fourth, the phase-selection perturbation upgraded the
+classical-space search to Theorem \ref{thm:lp}.  Fifth, a universal extension
+through a maximal-determinant contraction $X\to Y$ was pursued: it would
+suffice to produce two contact directions separated by a contractive
+one-sided perturbation, but nonsmooth common faces prevent the proposed
+perturbation from being certified.  Sixth, quotient and Dvoretzky reductions
+were checked.  Uniform property (P2) passes through the approximate-lifting
+argument in \cite{DKKLM}; $\mathbf L_{o,p}$ does not, because its modulus
+depends on the fixed lift and the approximate lifts vary.  No credible route
+past this obstruction remained.
+
+A bounded search through 13 August 2026 used the exact question, the strings
+``$\mathbf L_{o,p}$'', ``property (P2)'', ``operatorwise'', and ``complex
+Banach spaces'', the source authors, and all eight OpenAlex citations of
+\cite{DKKLM}.  The 2022 expert overview \cite{Overview} restates only the
+real universal theorem; no paper located states the complex extension or
+either theorem above.  Novelty is plausible but provisional.
+
+\section{Verification notes}
+
+The Hilbert proof uses only equality in a chain of contractions after the
+standard John contact theorem.  The $p\le q$ proof is an exact diagonal
+calculation.  The $p>q$ proof uses no numerical evidence: the only limiting
+step is uniform first-order expansion near a compact torus on which both
+coordinates are nonzero.  This includes $q=1$; compactness also includes
+$p=\infty$.
+
+\begin{thebibliography}{9}
+\bibitem{Source}
+S. Dantas, S. K. Kim, H. J. Lee, and M. Mazzitelli,
+\emph{On some local Bishop--Phelps--Bollob\'as properties},
+in The Mathematical Legacy of Victor Lomonosov, De Gruyter, 2020,
+109--122; arXiv:1905.13552.
+
+\bibitem{DKKLM}
+S. Dantas, V. Kadets, S. K. Kim, H. J. Lee, and M. Mart\'in,
+\emph{There is no operatorwise version of the
+Bishop--Phelps--Bollob\'as property},
+Linear Multilinear Algebra 68 (2020), 1767--1778;
+arXiv:1810.00684.
+
+\bibitem{John}
+F. John, \emph{Extremum problems with inequalities as subsidiary
+conditions}, in Studies and Essays Presented to R. Courant, Interscience,
+1948, 187--204.
+
+\bibitem{Schneider}
+R. Schneider, \emph{Convex Bodies: The Brunn--Minkowski Theory},
+2nd ed., Cambridge University Press, 2014.
+
+\bibitem{Overview}
+S. Dantas, D. Garc\'ia, M. Maestre, and O. Rold\'an,
+\emph{The Bishop--Phelps--Bollob\'as theorem: an overview},
+in Operator and Norm Inequalities and Related Topics, Birkh\"auser, 2022,
+241--295.
+\end{thebibliography}
+
+\end{document}

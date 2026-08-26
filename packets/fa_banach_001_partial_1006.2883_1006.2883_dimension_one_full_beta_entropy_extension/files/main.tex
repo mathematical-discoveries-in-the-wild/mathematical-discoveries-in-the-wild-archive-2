@@ -1,0 +1,246 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[margin=1in]{geometry}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\esssup}{\operatorname*{ess\,sup}}
+
+\title{The sharp Pareto entropy bound throughout the missing range in dimension one\\
+\large A partial answer to arXiv:1006.2883}
+\author{Autonomous proof search, lane 18}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Candidate substantial partial result, likely valid. The proof settles the
+source question for $n=1$ and every $\beta>1$. The case $n\geq2$ remains open
+here. Novelty is uncertain because a possibly overlapping 2024 inverse-Hölder
+preprint could not be inspected.}}
+\end{center}
+
+\section{Source question}
+
+Bobkov and Madiman~\cite{BM} prove that if a probability density on $\R^n$
+has the form
+\[
+ f=\varphi^{-\beta},
+\]
+where $\varphi$ is positive and convex and $\beta\geq n+1$, then fixing
+$\|f\|_\infty$ makes Shannon entropy maximal for the $n$-dimensional Pareto
+density. Equivalently,
+\begin{equation}\label{eq:sourcebound}
+ h(f)+\log\|f\|_\infty
+ \leq \beta\sum_{j=1}^n\frac1{\beta-j}.
+\end{equation}
+In their final discussion they ask whether the theorem can be improved to the
+full normalizable range $\beta>n$. The statement is on source PDF page 13:
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The result below proves the complete extension when $n=1$. In particular, it
+settles the entire range $1<\beta<2$ missing from the source theorem.
+
+\section{Proof intuition}
+
+The source proof is already valid below $n+1$ except at one inverse-Hölder
+step: it uses log-concavity of a normalized negative moment only on
+$p\geq n+1$. In one dimension the missing extension has an elementary
+geometric proof. The length $L(t)$ of the sublevel interval
+$\{\varphi<t\}$ is a concave function of $t$. Every nonnegative increasing
+concave function on a half-line is an affine term plus a positive superposition
+of hinges $\min(t-1,s-1)$. Layer cake turns these hinges into
+$1-s^{1-p}$. Consequently
+\[
+ (p-1)\int\varphi^{-p}
+\]
+is itself a positive concave function of $p-1$, hence is log-concave for every
+$p>1$. This is exactly the strengthened input needed by the source entropy
+argument.
+
+\section{A full-range one-dimensional negative-moment lemma}
+
+\begin{lemma}\label{lem:moment}
+Let $I\subset\R$ be an open interval and let
+$\varphi:I\to(0,\infty)$ be convex. Assume that
+$Z(p)=\int_I\varphi(x)^{-p}\,dx$ is finite in the range under discussion.
+Then
+\begin{equation}\label{eq:H}
+ p\longmapsto (p-1)Z(p)
+\end{equation}
+is log-concave on $p>1$.
+\end{lemma}
+
+\begin{proof}
+Multiplying $\varphi$ by a positive constant only multiplies \eqref{eq:H} by
+a log-affine function of $p$, so normalize $\inf_I\varphi=1$. Put
+\[
+ L(t)=\bigl|\{x\in I:\varphi(x)<t\}\bigr|,\qquad t\geq1.
+\]
+The sublevel sets are intervals. If $s,t\geq1$ and $0<\lambda<1$, convexity
+gives
+\[
+ (1-\lambda)\{\varphi<s\}+\lambda\{\varphi<t\}
+ \subseteq
+ \{\varphi<(1-\lambda)s+\lambda t\}.
+\]
+Length is affine under Minkowski addition of intervals, so $L$ is
+nonnegative, nondecreasing, and concave.
+
+Let $c=L(1+)$ and let $a\geq0$ be the limiting slope of $L$. Integrating the
+decreasing right derivative of $L$ gives a positive measure $\nu$ on
+$(1,\infty)$ such that
+\begin{equation}\label{eq:hinge}
+ L(t)=c+a(t-1)+\int_{(1,\infty)}\min\{t-1,s-1\}\,\nu(ds).
+\end{equation}
+The layer-cake formula and Tonelli's theorem yield
+\[
+ Z(p)=p\int_1^\infty L(t)t^{-p-1}\,dt.
+\]
+The three terms in \eqref{eq:hinge} can be integrated explicitly. For $p>1$,
+\begin{align*}
+ (p-1)Z(p)
+ &=c(p-1)+a
+   +\int_{(1,\infty)}\bigl(1-s^{1-p}\bigr)\,\nu(ds).
+\end{align*}
+Writing $x=p-1>0$, the right side is
+\[
+ cx+a+\int_{(1,\infty)}\bigl(1-e^{-x\log s}\bigr)\,\nu(ds).
+\]
+It is positive and concave in $x$: every integrand has nonpositive second
+derivative. Every positive concave function is log-concave, proving the
+lemma.
+\end{proof}
+
+\section{Sharp entropy bound for every \texorpdfstring{$\beta>1$}{beta > 1}}
+
+\begin{theorem}\label{thm:main}
+Let $\beta>1$, let $I\subset\R$ be an open interval, and let
+$f=\varphi^{-\beta}$ be a probability density on $I$, where
+$\varphi:I\to(0,\infty)$ is convex. Then
+\begin{equation}\label{eq:main}
+ h(f)+\log\|f\|_\infty\leq\frac{\beta}{\beta-1}.
+\end{equation}
+The constant is sharp. Equality holds for the one-sided Pareto family, up to
+affine changes of variable.
+\end{theorem}
+
+\begin{proof}
+The quantity on the left of \eqref{eq:main} is invariant under invertible
+affine changes of the variable. Normalize $\|f\|_\infty=1$. Then
+$\inf_I\varphi=1$ and, with
+\[
+ Z(p)=\int_I\varphi^{-p},
+\]
+we have $Z(\beta)=1$.
+
+We first record the elementary estimate used in the source proof:
+\begin{equation}\label{eq:shift}
+ Z(\beta+1)\geq1-\frac1\beta.
+\end{equation}
+Indeed, fix $y\in I$. Convexity of $\varphi$ and the change of variable
+$z=tx+(1-t)y$ give, for $0<t\leq1$,
+\[
+ t^{-1}
+ \geq\int_I\bigl[t\varphi(x)+(1-t)\varphi(y)\bigr]^{-\beta}\,dx,
+\]
+with equality at $t=1$. Comparing left derivatives at $t=1$ yields
+\[
+ \beta-1\leq\beta\varphi(y)Z(\beta+1).
+\]
+Choose $y$ with $\varphi(y)$ arbitrarily close to its infimum $1$ to obtain
+\eqref{eq:shift}.
+
+By Lemma~\ref{lem:moment},
+\[
+ R(p)=\log\bigl((p-1)Z(p)\bigr)
+\]
+is concave on $p>1$. Therefore
+\begin{align*}
+ R'(\beta)
+ &\geq R(\beta+1)-R(\beta)\\
+ &=\log\frac{\beta Z(\beta+1)}{(\beta-1)Z(\beta)}\geq0,
+\end{align*}
+where the last inequality uses \eqref{eq:shift} and $Z(\beta)=1$. Thus
+\[
+ \frac1{\beta-1}+Z'(\beta)\geq0.
+\]
+Since
+\[
+ h(f)=-\int_I f\log f
+     =\beta\int_I\varphi^{-\beta}\log\varphi
+     =-\beta Z'(\beta),
+\]
+we conclude that $h(f)\leq\beta/(\beta-1)$ under the normalization
+$\|f\|_\infty=1$. Undoing the affine change proves \eqref{eq:main}.
+
+Finally,
+\[
+ f_\beta(x)=\left(1+\frac{x}{\beta-1}\right)^{-\beta},
+ \qquad x>0,
+\]
+has mass $1$, supremum $1$, and entropy $\beta/(\beta-1)$. Hence the bound
+is sharp.
+\end{proof}
+
+\section{Verification, higher-dimensional obstruction, and novelty}
+
+All interchanges in Lemma~\ref{lem:moment} involve nonnegative integrands, so
+Tonelli applies. For $\beta>1$, convexity plus finite mass ensures the
+logarithmic moment is finite; alternatively the conclusion follows first by
+truncation and then by monotone convergence. The equality density is checked
+by the substitution $u=1+x/(\beta-1)$.
+
+For $n\geq2$, the same sublevel argument only shows that
+$L(t)^{1/n}$ is concave. Raising the hinge representation to the $n$th power
+does not preserve the direct concavity argument. The full source question
+would follow from log-concavity of
+\[
+ (p-1)\cdots(p-n)\int\varphi^{-p}
+ \quad\text{for every }p>n,
+\]
+but this packet does not prove that assertion. The included script tests exact
+piecewise-affine sublevel-radius models in dimensions $2$--$4$ and finds no
+counterexample; this is non-proof evidence only.
+
+A bounded literature search used the exact title and arXiv id, the phrase
+``improved to only require $\beta>n$'', arXiv's API, Crossref, OpenAlex, and
+author publication pages. No explicit later answer was found. However, a 2024
+paper~\cite{FM} cites an unpublished/preprint work by Bobkov, Fradelizi,
+Langharst, Li, and Madiman titled \emph{When can one invert Hölder's
+inequality? (and why one may want to)}. Its text was not located, and it may
+overlap with Lemma~\ref{lem:moment} or its higher-dimensional analogue.
+Novelty confidence is therefore moderate rather than high.
+
+\paragraph{Human-review recommendation.}
+Check the hinge representation \eqref{eq:hinge} and compare the result with
+the cited inverse-Hölder preprint before asserting priority. The mathematical
+proof itself is short and should be reviewed as a sharp one-dimensional
+partial answer.
+
+\begin{thebibliography}{9}
+\bibitem{BM}
+S. G. Bobkov and M. Madiman,
+\emph{The entropy per coordinate of a random vector is highly constrained
+under convexity conditions}, IEEE Trans. Inform. Theory \textbf{57} (2011),
+4940--4954; arXiv:1006.2883; DOI: 10.1109/TIT.2011.2158475.
+
+\bibitem{FM}
+M. Fradelizi, M. Madiman, A. Marsiglietti, and A. Zvavitch,
+\emph{Forward and reverse entropy power inequalities in convex geometry},
+Int. Math. Res. Not. \textbf{2024} (2024), 11426--11454, especially the
+reference to the 2024 inverse-Hölder preprint.
+\end{thebibliography}
+
+\end{document}

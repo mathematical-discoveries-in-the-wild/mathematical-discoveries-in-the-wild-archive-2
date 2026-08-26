@@ -1,0 +1,209 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\emergencystretch=3em
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\Ga}{\Gamma}
+
+\title{A Three-State Counterexample:\\
+Infinitesimal Optimality Does Not Imply\\
+Global Markovian-Coupling Optimality}
+\author{A full counterexample to Remark 2.20 of arXiv:2509.23086}
+\date{August 11, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Kang and Lim ask whether a coupling generator that minimizes the instantaneous
+cost derivative at every state must minimize the expected cost at every later
+time.  We give a counterexample on the three-point discrete space.  Both
+marginal chains have deterministic unit-rate jumps, the cost has nonnegative
+integer entries, and the instantaneous optimizer is unique at all nine joint
+states.  Nevertheless, at time $t=2$ it is strictly worse than a coupling that
+differs at only one state.  Uniformization gives the exact gap
+$2e^{-4}(e^2-5)>0$.
+\end{abstract}
+
+\noindent\textbf{Status.}
+\texttt{full counterexample; likely valid}.  Human review is recommended.
+
+\section{The source question}
+
+Let $\mathcal A,\mathcal B$ be Feller generators on a state space $\Pi$, let
+$c:\Pi^2\to[0,\infty)$, and write $\Ga(\mathcal A,\mathcal B)$ for their
+Feller coupling generators.  The source calls $\mathcal J_*$ $c$-optimal when
+it attains, simultaneously at every $(x,y)$,
+\[
+ (\mathcal J_*c)(x,y)
+ =\inf_{\mathcal J\in\Ga(\mathcal A,\mathcal B)}(\mathcal Jc)(x,y).
+\]
+Global-in-time optimality is the stronger condition
+\begin{equation}\label{eq:global}
+ (e^{t\mathcal J_*}c)(x,y)\le(e^{t\mathcal J}c)(x,y)
+ \quad(t\ge0,\ (x,y)\in\Pi^2,\ \mathcal J\in\Ga(\mathcal A,\mathcal B)).
+\end{equation}
+Proposition 2.19 proves that \eqref{eq:global} implies $c$-optimality;
+Remark 2.20 requests a counterexample to the converse.
+
+\begin{center}
+\includegraphics[width=.96\linewidth]{figures/open_question_crop.png}
+\end{center}
+
+\section{Construction}
+
+Take $\Pi=\{0,1,2\}$ with the discrete topology, and define
+\[
+ f=(1,2,0),\qquad g=(1,0,1).
+\]
+Thus the marginal generators are
+\[
+ (\mathcal A\varphi)(x)=\varphi(f(x))-\varphi(x),\qquad
+ (\mathcal B\psi)(y)=\psi(g(y))-\psi(y).
+\]
+Use the cost matrix, with rows indexed by $x$ and columns by $y$,
+\begin{equation}\label{eq:cost}
+ C=(c(x,y))_{x,y=0}^2=
+ \begin{pmatrix}7&6&0\\10&2&10\\6&9&1\end{pmatrix}.
+\end{equation}
+
+Every coupling generator is determined at each $(x,y)$ by one number
+$s_{xy}\in[0,1]$.  Its three possible transition rates are
+\[
+ q((x,y),(f(x),g(y)))=s_{xy},\quad
+ q((x,y),(f(x),y))=q((x,y),(x,g(y)))=1-s_{xy}.
+\]
+Indeed, the two marginal rate constraints force exactly this form.  Conversely,
+every such choice defines a coupling generator.  Since the space is finite and
+discrete, all these generators are Feller and $c$ lies in all their domains.
+
+Define $\mathcal J_*$ by
+\begin{equation}\label{eq:star}
+ (s^*_{xy})=
+ \begin{pmatrix}1&0&1\\0&1&0\\1&0&1\end{pmatrix}.
+\end{equation}
+Thus $s=1$ means a simultaneous jump, while $s=0$ means that the two possible
+one-coordinate jumps each occur at rate one.
+
+\section{The generator is the unique instantaneous optimizer}
+
+Put
+\[
+ D_{xy}=c(f(x),g(y))-c(f(x),y)-c(x,g(y))+c(x,y).
+\]
+For fixed $(x,y)$, the value $(\mathcal Jc)(x,y)$ is an affine function of
+$s_{xy}$ whose coefficient is $D_{xy}$.  Direct substitution in
+\eqref{eq:cost} gives
+\begin{equation}\label{eq:D}
+ (D_{xy})=
+ \begin{pmatrix}-7&7&-14\\11&-11&16\\-4&4&-2\end{pmatrix}.
+\end{equation}
+Every entry is nonzero.  The unique minimizer is therefore $s_{xy}=1$ when
+$D_{xy}<0$ and $s_{xy}=0$ when $D_{xy}>0$, which is precisely
+\eqref{eq:star}.  Hence $\mathcal J_*$ is the unique $c$-optimal coupling
+generator in the source's infinitesimal sense.
+
+Now let $\mathcal L$ agree with $\mathcal J_*$ at every joint state except
+\[
+ s^{\mathcal L}_{22}=0
+ \quad\text{instead of}\quad s^*_{22}=1.
+\]
+We prove that $\mathcal L$ beats $\mathcal J_*$ at $(2,2)$ and time $2$.
+
+\section{Exact failure at time two}
+
+Uniformize at rate two.  Put
+\[
+ R_*=2I+\mathcal J_*,\qquad R_{\mathcal L}=2I+\mathcal L.
+\]
+Both $R_*/2$ and $R_{\mathcal L}/2$ are stochastic matrices.  For
+$S=(2,2)$ set
+\[
+ \Delta_k=(R_*^k c)(S)-(R_{\mathcal L}^k c)(S).
+\]
+
+We record a short exact recurrence.  Label
+\[
+ A=01,\ B=11,\ C=00,\ D=20,\ E=02,\ F=21.
+\]
+These six states never reach $S$, and the two matrices agree on them.  If
+$X_k=(R^kc)(X)$ for one of these common states, then
+\begin{align*}
+ A_{k+1}&=B_k+C_k,& B_{k+1}&=B_k+D_k,&
+ C_{k+1}&=C_k+B_k,\\
+ D_{k+1}&=D_k+A_k,& E_{k+1}&=E_k+B_k,&
+ F_{k+1}&=A_k+D_k.
+\end{align*}
+The initial values are
+\[
+ (A_0,B_0,C_0,D_0,E_0,F_0)=(6,2,7,6,0,9).
+\]
+Under $R_*$ the $S$-row is $v_S+v_A$; under $R_{\mathcal L}$ it is
+$v_E+v_F$.  Thus a direct calculation gives
+\[
+ \Delta_0=0,\qquad \Delta_1=-2,\qquad \Delta_2=2.
+\]
+For completeness, the displayed recurrences imply $A_k=C_k$ for $k\ge1$ and
+\[
+ F_k-F_{k-1}=A_{k-1}=C_{k-1}\qquad(k\ge2).
+\]
+Together with $E_k-E_{k-1}=B_{k-1}$, this shows that from $k=2$ onward the
+two $S$-iterates have the same increment $A_k$.  Hence
+\begin{equation}\label{eq:deltas}
+ \Delta_k=2\qquad(k\ge2).
+\end{equation}
+
+The uniformization series is absolutely convergent and gives
+\begin{align*}
+ \bigl((e^{2\mathcal J_*}-e^{2\mathcal L})c\bigr)(S)
+ &=e^{-4}\sum_{k=0}^{\infty}\frac{2^k}{k!}\Delta_k\\
+ &=e^{-4}\left(-4+2\sum_{k=2}^{\infty}\frac{2^k}{k!}\right)\\
+ &=2e^{-4}(e^2-5)>0.
+\end{align*}
+The last inequality follows already from the strict Taylor bound
+$e^2>1+2+2^2/2=5$.  Thus
+\[
+ (e^{2\mathcal J_*}c)(2,2)>(e^{2\mathcal L}c)(2,2),
+\]
+contradicting \eqref{eq:global}.
+
+\begin{theorem}
+Infinitesimal $c$-optimality of a Feller coupling generator does not, in
+general, imply global-in-time $c$-optimality.  This remains false even on a
+three-point state space, with deterministic unit-rate marginals, a
+nonnegative integer cost, and a unique instantaneous optimizer.
+\end{theorem}
+
+\section{Verification and scope}
+
+The accompanying script recomputes \eqref{eq:D}, enumerates all $2^9$ extreme
+coupling policies to audit pointwise minimality, and checks the integer
+recurrence \eqref{eq:deltas}.  No floating-point computation is used in the
+proof.  The counterexample concerns a general finite-state cost and therefore
+does not contradict the source's positive all-time result for translation-
+invariant L\'evy generators under quadratic Euclidean cost.
+
+A bounded search of the exact question, its distinctive wording, the arXiv
+identifier, and later coupling literature found special simultaneous-
+optimality theorems but no matching explicit counterexample.  Human
+mathematical and literature review is nevertheless recommended.
+
+\begin{thebibliography}{9}
+\bibitem{KangLim}
+W. Y. Kang and T. S. Lim,
+\emph{On Optimal Markovian Couplings of L\'evy Processes},
+arXiv:2509.23086 (2025), Remark 2.20.
+\url{https://arxiv.org/abs/2509.23086}
+
+\bibitem{KMM}
+W. S. Kendall, M. B. Majka, and A. Mijatovi\'c,
+\emph{Optimal Markovian coupling for finite activity L\'evy processes},
+Bernoulli 30 (2024), 2821--2845.
+\end{thebibliography}
+
+\end{document}
+

@@ -1,0 +1,244 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx,microtype,enumitem,xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\newcommand{\B}{\mathbb B}
+\newcommand{\Sph}{\mathbb S}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Gammaf}{\Gamma}
+
+\title{The Sharp Lipschitz Exponent for Ball-PSWF Heat Kernels\\When $\gamma\ge0$}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 7}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.} Substantial partial result,
+likely valid, pending human review.  The exponent in the source question is
+proved to be the maximal value $\alpha=1$ for every $\gamma\ge0$.  The range
+$-\tfrac12<\gamma<0$ remains open here.}}
+\end{center}
+
+\section{Source question and result}
+
+Bonami, Kerkyacharian and Petrushev consider on the unit ball $\B^d$,
+$d\ge2$, the measure
+\[
+ d\mu_\gamma(x)=(1-|x|^2)^{\gamma-1/2}\,dx,
+ \qquad \gamma>-\tfrac12,
+\]
+and the positive ball-PSWF operator
+\[
+ L_c=-\Delta+\sum_{i,j=1}^d x_ix_j\partial_i\partial_j
+          +(d+2\gamma)x\cdot\nabla+c^2|x|^2.
+\]
+Its intrinsic distance is
+\[
+ \rho(x,y)=\arccos\!\left(x\cdot y+sqrt{1-|x|^2}\sqrt{1-|y|^2}\right).
+\]
+Writing $p_t^c(x,y)$ for the heat kernel of $e^{-tL_c}$ and
+$V(x,r)=\mu_\gamma(B_\rho(x,r))$, the source proves that some
+$0<\alpha\le1$ satisfies its Gaussian H\"older estimate (8.23), and asks for
+the dependence of $\alpha$ on $\gamma$ \cite[p.~40]{BKP2022}:
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{Equation (8.23) and the open question in \cite[p.~40]{BKP2022}.}
+\end{figure}
+
+\begin{theorem}[Nonnegative-parameter answer]\label{thm:main}
+Let $d\ge2$, $\gamma\ge0$, and $c\ge0$.  There are constants $C,c_0>0$
+such that, whenever $\rho(x,x')\le\sqrt t$,
+\begin{equation}\label{eq:lip}
+ |p_t^c(x,y)-p_t^c(x',y)|
+ \le C\frac{\rho(x,x')}{\sqrt t}
+ \frac{\exp\!\left(-\rho(x,y)^2/(c_0t)\right)}
+ {[V(x,\sqrt t)V(y,\sqrt t)]^{1/2}}.
+\end{equation}
+Thus the exponent in the source question can be chosen to be
+\[
+                              \boxed{\alpha=1}
+\]
+throughout the range $\gamma\ge0$.
+\end{theorem}
+
+Since no H\"older exponent larger than $1$ is under consideration, this is
+the sharp value of the exponent on this parameter range.
+
+\section{Proof intuition}
+
+The source's distance is not ad hoc: the map
+\[
+ x\longmapsto \bigl(x,s(x)\bigr),
+ \qquad s(x)=\sqrt{1-|x|^2},
+\]
+identifies the ball with the upper hemisphere.  Under this map, the ball
+measure becomes spherical measure weighted by $s^{2\gamma}$, and $-L_0$ is
+the corresponding weighted Laplacian.
+
+For $\gamma\ge0$ this weighted sphere has nonnegative Bakry--\'Emery
+curvature.  The resulting reverse Poincar\'e inequality bounds the intrinsic
+gradient of the heat kernel by $t^{-1/2}$ times a Gaussian kernel profile.
+Integrating the gradient along the short spherical geodesic from $x$ to
+$x'$ gives the Lipschitz factor $\rho(x,x')/\sqrt t$.  The source paper's
+bounded-potential transfer theorem then carries exactly the same exponent
+from $L_0$ to $L_c=L_0+c^2|x|^2$.
+
+\section{The weighted hemisphere}
+
+Let
+\[
+ H^d_+=\{(x,s)\in\Sph^d:s>0\},\qquad s=s(x)=\sqrt{1-|x|^2}.
+\]
+The pullback of spherical distance is precisely $\rho$.  Spherical volume in
+the $x$ chart is $d\mathrm{vol}_{\Sph}=s^{-1}dx$, and hence
+\begin{equation}\label{eq:measure}
+ s^{2\gamma}\,d\mathrm{vol}_{\Sph}
+       =(1-|x|^2)^{\gamma-1/2}\,dx=d\mu_\gamma(x).
+\end{equation}
+The weighted spherical diffusion is
+\[
+ \mathcal L_\gamma
+   =\Delta_{\Sph^d}+2\gamma\,\nabla\log s\cdot\nabla.
+\]
+In the $x$ chart,
+\[
+ \mathcal L_\gamma
+ =\sum_{i,j}(\delta_{ij}-x_ix_j)\partial_i\partial_j
+      -(d+2\gamma)x\cdot\nabla=-L_0.
+\]
+Thus the unperturbed heat kernel from the source is the heat kernel of this
+weighted hemisphere diffusion (with its natural weighted-Neumann closure).
+
+Put $e^{-W}=s^{2\gamma}$, so $W=-2\gamma\log s$.  On the unit sphere,
+\[
+ \operatorname{Ric}=(d-1)g,
+ \qquad \operatorname{Hess}(\log s)
+       =-g-\frac{ds\otimes ds}{s^2}.
+\]
+Therefore its Bakry--\'Emery tensor is
+\begin{equation}\label{eq:ricci}
+ \operatorname{Ric}_W
+ =\operatorname{Ric}+\operatorname{Hess}W
+ =(d-1+2\gamma)g+2\gamma\frac{ds\otimes ds}{s^2}\ge0
+\end{equation}
+for every $\gamma\ge0$.  Equivalently, the diffusion satisfies
+$\mathrm{CD}(0,\infty)$.  Formula \eqref{eq:ricci} can also be checked
+directly on the polynomial core by the Bochner identity.  The associated
+gradient inequality and its reverse-Poincar\'e consequence pass to the
+closed Markov semigroup; see \cite[Chapters 3--4]{BGL2014}.  At $\gamma=0$
+this is simply the ordinary spherical semigroup restricted to functions even
+across the equator.
+
+\section{From curvature and Gaussian bounds to Lipschitz bounds}
+
+We isolate the short argument that retains the Gaussian localization.  Let
+$P_t=e^{-tL_0}$, let $q_t$ be its heat kernel, and write
+$\Gammaf(u)=|\nabla u|_g^2$.  The $\mathrm{CD}(0,\infty)$ reverse Poincar\'e
+inequality is
+\begin{equation}\label{eq:rp}
+ 2a\,\Gammaf(P_a f)
+ \le P_a(f^2)-(P_af)^2\le P_a(f^2).
+\end{equation}
+Fix $t>0$ and $y$, put $a=t/2$, and apply \eqref{eq:rp} to
+$f(z)=q_{t/2}(z,y)$.  Positivity and the semigroup identity give
+\begin{align}
+ \Gammaf_x(q_t(x,y))
+ &\le \frac1t P_{t/2}\big(q_{t/2}(\cdot,y)^2\big)(x)\notag\\
+ &\le \frac1t\|q_{t/2}(\cdot,y)\|_\infty q_t(x,y).
+ \label{eq:kernel-rp}
+\end{align}
+
+The Gaussian upper estimate already proved in the source, together with
+doubling, has the standard asymmetric consequences
+\[
+ \|q_{t/2}(\cdot,y)\|_\infty\le \frac{C}{V(y,\sqrt t)},
+ \qquad
+ q_t(x,y)\le \frac{C}{V(y,\sqrt t)}
+       e^{-\rho(x,y)^2/(Ct)}.
+\]
+Taking square roots in \eqref{eq:kernel-rp} yields
+\begin{equation}\label{eq:gradient}
+ |\nabla_xq_t(x,y)|_g
+ \le \frac{C}{\sqrt t\,V(y,\sqrt t)}
+       e^{-\rho(x,y)^2/(Ct)}.
+\end{equation}
+
+Let $\delta=\rho(x,x')\le\sqrt t$ and integrate
+\eqref{eq:gradient} along the minimizing spherical geodesic joining $x$ to
+$x'$.  Along this segment, the triangle inequality preserves the Gaussian
+factor after enlarging its denominator constant.  Hence
+\[
+ |q_t(x,y)-q_t(x',y)|
+ \le C\frac{\delta}{\sqrt t\,V(y,\sqrt t)}
+       e^{-\rho(x,y)^2/(Ct)}.
+\]
+Doubling gives, for some $Q>0$,
+\[
+ V(x,r)\le C\left(1+\frac{\rho(x,y)}r\right)^Q V(y,r).
+\]
+The polynomial factor is absorbed by the Gaussian, converting the last
+display to
+\begin{equation}\label{eq:q-lip}
+ |q_t(x,y)-q_t(x',y)|
+ \le C\frac{\rho(x,x')}{\sqrt t}
+ \frac{e^{-\rho(x,y)^2/(Ct)}}
+ {[V(x,\sqrt t)V(y,\sqrt t)]^{1/2}}.
+\end{equation}
+
+Finally, $L_c=L_0+c^2|x|^2$ is a bounded nonnegative potential
+perturbation.  The source's H\"older-transfer theorem
+\cite[Theorem~2.2]{BKP2022} preserves the exponent in
+\eqref{eq:q-lip}; its application in Section 8.3 is precisely what produces
+equation (8.23).  It therefore gives \eqref{eq:lip} with $\alpha=1$, proving
+Theorem~\ref{thm:main}. \qed
+
+\section{Verification, limitations, and novelty boundary}
+
+The proof is analytic and has no computational dependency.  The generator
+calculation agrees term by term with the source's $L_0$.  The key sign is in
+\eqref{eq:ricci}: both additional terms are nonnegative exactly when
+$\gamma\ge0$.  The kernel substitution in \eqref{eq:kernel-rp} then uses only
+positivity, the semigroup law, the source's Gaussian bound, and doubling.
+
+For $-\tfrac12<\gamma<0$, the normal curvature term
+$2\gamma\,ds\otimes ds/s^2$ tends to $-\infty$ at the equator.  Thus this
+proof supplies no uniform reverse Poincar\'e estimate.  The regular branch of
+the one-dimensional Bessel boundary model suggests that $\alpha=1$ may still
+be true, but a global scale-invariant gradient estimate was not obtained.
+Eight focused attempts, including parameter-shift and spectral-kernel routes,
+are recorded in the attempt log.
+
+Bounded searches on 17 August 2026 covered the run indexes, exact source
+metadata and question wording, weighted-ball gradient and Lipschitz phrases,
+and the published source's citation list.  Its sole OpenAlex-listed citing
+paper is unrelated to this exponent.  No explicit later determination was
+found.  Novelty confidence is moderate because the weighted curvature method
+is standard once the hemisphere identification is made.
+
+Human review is recommended, focusing on the Markov closure at the equator
+for $0<\gamma<1/2$, the pointwise use of reverse Poincar\'e, and the final
+application of the source's perturbation theorem.
+
+\begin{thebibliography}{9}
+\bibitem{BKP2022}
+A. Bonami, G. Kerkyacharian and P. Petrushev,
+\emph{Gaussian bounds for the heat kernel associated to prolate spheroidal
+wave functions with applications},
+Constr. Approx. 56 (2022), 517--567; arXiv:2108.12917.
+
+\bibitem{BGL2014}
+D. Bakry, I. Gentil and M. Ledoux,
+\emph{Analysis and Geometry of Markov Diffusion Operators},
+Grundlehren der mathematischen Wissenschaften 348, Springer, 2014.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,190 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[margin=0.88in]{geometry}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\sphere}{\mathbb S}
+\newcommand{\Harm}{\mathcal H}
+\newcommand{\Poly}{\mathcal P}
+
+\title{Finite Families of Subspaces of Codimension at Least Two\\
+Are Never Helmholtz Uniqueness Sets}
+\author{Run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_11}}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source Question and Status}
+
+Fern\'andez-Bertolin, Gr\"ochenig, and Jaming prove nonuniqueness for an
+arbitrary finite collection of lines in $\R^d$.  Immediately afterwards
+they write: ``We do not know what happens for restrictions of the Helmholtz
+equation to $k$-dimensional subspaces when $2\leq k\leq d-2$ and $d\geq4$''
+\cite[p.~18]{FGJ}.
+
+\begin{center}
+\includegraphics[width=0.96\linewidth]{figures/open_question_crop.png}
+\end{center}
+
+In the fixed finite-family setting of their preceding general problem, the
+answer is always negative.  In fact, no finite family of linear subspaces
+of codimension at least two is a uniqueness set, for any real wave number.
+The same construction disproves the associated sphere/subspace Heisenberg
+uniqueness property.  Status: \emph{candidate full counterexample theorem,
+likely valid}, subject to human review.
+
+\section*{Proof Intuition}
+
+Vanishing on a whole $k$-plane imposes more than finitely many point
+conditions, but at a fixed homogeneous degree it still imposes only
+$O(m^{k-1})$ linear conditions.  Degree-$m$ spherical harmonics in $d$
+variables have dimension $O(m^{d-2})$.  When $k\leq d-2$, a finite number
+of restriction maps therefore cannot detect every high-degree spherical
+harmonic.  A common kernel harmonic gives a harmonic counterexample
+directly.  Multiplying it by the regular radial Helmholtz power series gives
+the same counterexample at every wave number, without a singularity at the
+origin.
+
+\section*{Main Result}
+
+Let $\Harm_m^d$ be the real vector space of homogeneous harmonic
+polynomials of degree $m$ on $\R^d$, and let $\Poly_m(E)$ be the homogeneous
+degree-$m$ polynomials on a linear space $E$.
+
+\begin{theorem}[finite subspaces are not unique]\label{thm:main}
+Let $d\geq3$, let $E_1,\ldots,E_N\subset\R^d$ be linear subspaces with
+$1\leq k_j:=\dim E_j\leq d-2$, and let $\lambda\in\R$.  There exists a
+nonzero real entire function $u$ on $\R^d$ such that
+\[
+ (\Delta+\lambda^2)u=0,
+ \qquad
+ u|_{E_1\cup\cdots\cup E_N}=0.
+\]
+Consequently, for $d\geq4$ and $2\leq k\leq d-2$, no finite collection of
+$k$-dimensional linear subspaces is a uniqueness set for Helmholtz
+solutions.
+\end{theorem}
+
+\begin{proof}
+For each $m\geq1$, consider the direct-sum restriction map
+\[
+ \mathcal R_m:\Harm_m^d\longrightarrow
+       \bigoplus_{j=1}^N\Poly_m(E_j),
+ \qquad H\longmapsto(H|_{E_1},\ldots,H|_{E_N}).
+\]
+The Fischer decomposition of homogeneous polynomials gives
+\begin{align}
+ \dim\Harm_m^d
+ &=\binom{m+d-1}{d-1}-\binom{m+d-3}{d-1}\label{eq:hdim}\\
+ &=\binom{m+d-2}{d-2}+\binom{m+d-3}{d-2}
+   =\frac{2}{(d-2)!}m^{d-2}+O(m^{d-3}).\nonumber
+\end{align}
+On the other hand,
+\begin{equation}\label{eq:rdim}
+ \dim\Poly_m(E_j)=\binom{m+k_j-1}{k_j-1}=O(m^{k_j-1})
+ =O(m^{d-3}).
+\end{equation}
+Since $N$ is fixed, equations \eqref{eq:hdim}--\eqref{eq:rdim} show that
+for all sufficiently large $m$,
+\[
+ \dim\Harm_m^d>
+ \sum_{j=1}^N\dim\Poly_m(E_j).
+\]
+Hence $\ker\mathcal R_m$ contains a nonzero real polynomial $H$.  Thus
+$H|_{E_j}=0$ for every $j$.
+
+Put $s=|x|^2$ and define the entire scalar function
+\begin{equation}\label{eq:radial}
+ \Phi_m(s)=\sum_{\ell=0}^{\infty}
+ \frac{(-\lambda^2s/4)^\ell}{\ell!\,(m+d/2)_\ell},
+ \qquad u(x)=H(x)\Phi_m(|x|^2),
+\end{equation}
+where $(a)_\ell$ is the rising factorial.  The series has infinite radius
+of convergence and $\Phi_m(0)=1$, so $u$ is entire and nonzero.  Since $H$
+is homogeneous of degree $m$ and harmonic,
+\begin{equation}\label{eq:laplace}
+ \Delta\bigl(H(x)\Phi(|x|^2)\bigr)
+ =H(x)\{4s\Phi''(s)+(4m+2d)\Phi'(s)\}.
+\end{equation}
+If $a_\ell$ denotes the coefficient of $s^\ell$ in \eqref{eq:radial},
+then
+\[
+ 4(\ell+1)(\ell+m+d/2)a_{\ell+1}+\lambda^2a_\ell=0.
+\]
+Substitution in \eqref{eq:laplace} gives
+$(\Delta+\lambda^2)u=0$.  Finally, the factor $H$ shows that $u$ vanishes
+identically on every $E_j$.
+\end{proof}
+
+\section*{Heisenberg Uniqueness Consequence}
+
+\begin{corollary}\label{cor:hup}
+Under the assumptions of Theorem~\ref{thm:main},
+$(\sphere^{d-1},E_1\cup\cdots\cup E_N)$ is not a Heisenberg uniqueness
+pair.  More strongly, there are two distinct finite positive measures on
+$\sphere^{d-1}$ whose Fourier transforms agree on every $E_j$.
+\end{corollary}
+
+\begin{proof}
+Choose $m\geq1$ and $0\neq H\in\ker\mathcal R_m$ as above, and let
+$Y=H|_{\sphere^{d-1}}$.  After scaling, the measures
+\[
+ d\mu_\pm(\theta)=
+ \left(1\pm\frac{Y(\theta)}{\|Y\|_\infty}\right)d\sigma(\theta)
+\]
+are positive and distinct.  The Funk--Hecke formula gives, for a nonzero
+constant $c_{m,d}$ and $r>0$,
+\[
+ \widehat{Y\,\sigma}(r\omega)
+ =c_{m,d}\,r^{-(d-2)/2}J_{m+(d-2)/2}(r)Y(\omega).
+\]
+If $r\omega\in E_j$, then $Y(\omega)=0$.  At the origin the transform also
+vanishes because every positive-degree spherical harmonic has mean zero.
+Thus $\widehat{\mu_+}=\widehat{\mu_-}$ on each $E_j$.
+\end{proof}
+
+\section*{Scope, Novelty Check, and Verification}
+
+The result answers the source's stated intermediate-dimensional linear-
+subspace case for every finite configuration.  It does not claim
+nonuniqueness for infinitely many subspaces or for arbitrary curved
+lower-dimensional manifolds.  The codimension threshold is sharp for this
+argument: when $\dim E=d-1$, the source proves uniqueness for two generic
+intersecting hypersurfaces, and the domain and restriction dimensions have
+the same polynomial order.
+
+The run's cheap indexes contained no answer.  Exact-sentence and concept
+searches through 17 August 2026 found the source, its published version,
+and related HUP/PDE literature, but no later answer to this finite-family
+question.  The companion script checks the exact dimension identities,
+finds kernel-producing degrees across a grid of dimensions and family
+sizes, and verifies the radial coefficient recurrence using rational
+arithmetic.  These are consistency checks; the proof above is exact.
+
+\section*{Human Review Recommendation}
+
+Check that the source's open sentence inherits the finite-family setting
+from the preceding general problem, and verify the rank bound
+$\operatorname{rank}(H\mapsto H|_E)\leq\dim\Poly_m(E)$.  Once those two
+points are accepted, the dimension gap and the radial recurrence settle the
+linear-subspace problem.
+
+\begin{thebibliography}{9}
+\small
+\bibitem{FGJ}
+A. Fern\'andez-Bertolin, K. Gr\"ochenig, and P. Jaming,
+\emph{From Heisenberg uniqueness pairs to properties of the Helmholtz and
+Laplace equations}, Journal of Mathematical Analysis and Applications
+\textbf{469} (2019), 202--219; arXiv:1711.05520;
+doi:10.1016/j.jmaa.2018.09.008.
+\end{thebibliography}
+
+\end{document}

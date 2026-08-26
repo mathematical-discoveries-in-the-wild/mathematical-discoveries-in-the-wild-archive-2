@@ -1,0 +1,256 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\U}{\mathcal U}
+\newcommand{\fall}[2]{(#1)^{\underline{#2}}}
+
+\title{A Direct Proof of the Heisenberg Singular-Vector Factorization}
+\author{Run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_05}}
+\date{August 11, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source problem and answer}
+
+K\v{r}i\v{z}ka and Somberg study the Heisenberg parabolic of
+$\mathfrak{sl}(n+2,\mathbb C)$.  In their notation the opposite nilradical
+$\bar{\mathfrak u}$ has basis $f_1,\ldots,f_n,g_1,\ldots,g_n,c$, with
+\[
+ [f_i,g_j]=-\delta_{ij}c,\qquad c\text{ central}.
+\]
+On p.~35, after verifying the cases $a=1,2$, they conjecture that whenever
+\[
+ \lambda=\lambda_1\omega_1+\lambda_2\omega_{n+1},\qquad
+ \mu=(\lambda_1-a)\omega_1+(\lambda_2-a)\omega_{n+1},
+ \qquad \lambda_1+\lambda_2+n=a-1,
+\]
+the scalar singular vector factors as
+\begin{equation}
+ \varphi(v_\mu)=
+ \prod_{j=0}^{a-1}\left(
+   \sum_{i=1}^n f_i g_i+
+   \frac{\lambda_1-\lambda_2+n-a+2j+1}{2}c
+ \right)v_\lambda .                                                    \tag{F}
+\end{equation}
+They write that they do not know a direct proof.  The answer is affirmative.
+The proof below derives (F) directly from their polynomial formula for the
+singular vector and the Weyl-to-normal ordering transform.
+
+\begin{center}
+\includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Proof intuition}
+
+Put $A=\sum_i f_i g_i$.  The weight relation makes the $j$th conjectured
+factor simply $A+(j-\lambda_2)c$, so the right side of (F) is a rising
+factorial in $A/c-\lambda_2$.
+
+The source constructs the same singular vector on the commutative Fourier
+side as $T_{a,a}^{\lambda}(q^a)$, where $q=\sum_i x_i y_i$ and the
+coefficients of $T$ have an explicit generating function.  The only apparent
+difficulty is converting this commutative polynomial back through
+symmetrization.  Exponential generating functions remove it: the exact
+symmetrization of $e^{uq}$ is
+\[
+ \beta(e^{uq})=(1-cu/2)^{-n}
+ \left(\frac{1+cu/2}{1-cu/2}\right)^{A/c}.
+\]
+After inserting the source coefficient generating function, the desired
+vector becomes one coefficient of a two-binomial product.  A fractional
+linear change of variable turns that coefficient into
+$\binom{A/c-\lambda_2+a-1}{a}$, which is precisely the conjectured product.
+
+\section*{Statement}
+
+\begin{theorem}[Factorization conjecture (3.140)]
+Let $n>2$, $a\in\mathbb N$, and
+$\lambda_1+\lambda_2+n=a-1$.  Under the conventions and the normalization of
+K\v{r}i\v{z}ka--Somberg, the singular vector represented on the Fourier side
+by
+\[
+ P_\lambda=T_{a,a}^{\lambda}(q^a)
+\]
+has the exact PBW factorization
+\[
+ \varphi(v_\mu)=
+ \prod_{j=0}^{a-1}\bigl(A+(j-\lambda_2)c\bigr)v_\lambda,
+ \qquad A=\sum_{i=1}^n f_i g_i.
+\]
+Equivalently, formula \emph{(F)} holds for every parameter allowed by the
+source statement.
+\end{theorem}
+
+\section*{Proof}
+
+We use formal power series only as coefficient-extraction devices; every
+coefficient used below is a polynomial identity in $A$ and $c$.
+
+\subsection*{1. The source polynomial and the Fourier sign}
+
+Let $\beta:S(\bar{\mathfrak u})\to U(\bar{\mathfrak u})$ be symmetrization.
+Theorem 2.4 and the algebraic Fourier transform of the source imply, for a
+homogeneous commutative monomial $p$ of ordinary degree $d$,
+\[
+ (\tau\circ\Phi_{\lambda+\rho})(\beta(p)v_\lambda)=(-1)^d p.
+\]
+The source defines
+\[
+ T_{a,a}^{\lambda}
+ =\sum_{k\ge0}\frac{\alpha_k}{2^k}(z\partial_q)^k,
+ \qquad
+ g(w):=\sum_{k\ge0}\alpha_k w^k
+ =(1+w)^{a-\lambda_1-1}(1-w)^{a-\lambda_2-1}.
+\]
+Writing $\fall{a}{k}=a!/(a-k)!$, we therefore obtain the normalized preimage
+of $P_\lambda$ as
+\begin{equation}
+ V_a=\beta\left(
+   \sum_{k=0}^a\frac{(-1)^k\alpha_k}{2^k}\fall{a}{k}
+      c^kq^{a-k}
+ \right)v_\lambda.                                                     \tag{1}
+\end{equation}
+Indeed, $z^kq^{a-k}$ has ordinary degree $2a-k$, hence Fourier sign
+$(-1)^k$.  The leading term in (1) is normalized to $A^a$, so no undetermined
+scalar remains.
+
+The weight relation gives
+\begin{equation}
+ g(w)=(1+w)^{\lambda_2+n}(1-w)^{\lambda_1+n}.                           \tag{2}
+\end{equation}
+
+\subsection*{2. Exact symmetrization of the radial exponential}
+
+Let $N$ denote normal ordering: all $f_i$ are put to the left of all $g_i$.
+Set $q=\sum_i f_i g_i$ in the symmetric algebra and
+$\Delta=\sum_i\partial_{f_i}\partial_{g_i}$.  The central commutator and the
+Baker--Campbell--Hausdorff formula give the standard ordering identity
+\begin{equation}
+ N^{-1}\beta(p)=\exp\left(\frac c2\Delta\right)p.                       \tag{3}
+\end{equation}
+For completeness, (3) follows by applying both sides to
+$e^{\sum_i(\xi_i f_i+\eta_i g_i)}$: the discrepancy between the Weyl and
+normal exponentials is $e^{(c/2)\sum_i\xi_i\eta_i}$.
+
+Solving the elementary heat equation produced by (3) gives
+\[
+ \exp\left(\frac c2\Delta\right)e^{uq}
+ =(1-cu/2)^{-n}\exp\left(\frac{u}{1-cu/2}q\right).
+\]
+For $A_i=f_i g_i$, the relations imply
+\[
+ f_i^m g_i^m=\prod_{r=0}^{m-1}(A_i-rc),
+ \qquad
+ N(e^{vq})=\prod_i(1+cv)^{A_i/c}=(1+cv)^{A/c}.
+\]
+Consequently
+\begin{equation}
+ \boxed{\displaystyle
+ \beta(e^{uq})=(1-cu/2)^{-n}
+ \left(\frac{1+cu/2}{1-cu/2}\right)^{A/c}.}                            \tag{4}
+\end{equation}
+The temporary localization at $c$ in the exponent is harmless: each
+coefficient of (4), and the final identity, lies in $\mathbb C[A,c]$.
+
+\subsection*{3. Coefficient extraction}
+
+The expression inside $\beta$ in (1) is
+\[
+ a![u^a],g(-cu/2)e^{uq}.
+\]
+Combining (2) and (4) therefore yields
+\begin{align}
+ V_a/v_\lambda
+ &=a![u^a]
+   (1-cu/2)^{\lambda_2-A/c}
+   (1+cu/2)^{\lambda_1+n+A/c}.                                        \tag{5}
+\end{align}
+Put
+\[
+ X=A/c,\qquad Y=X-\lambda_2,\qquad t=cu.
+\]
+Since $\lambda_1+n=a-1-\lambda_2$, equation (5) becomes
+\begin{equation}
+ V_a/v_\lambda
+ =c^a a![t^a](1-t/2)^{-Y}(1+t/2)^{a-1+Y}.                              \tag{6}
+\end{equation}
+
+It remains to evaluate one universal coefficient.  Make the formal change
+\[
+ v=\frac{t}{1-t/2},\qquad t=\frac{v}{1+v/2}.
+\]
+Then
+\begin{align*}
+ (1-t/2)^{-Y}(1+t/2)^{a-1+Y}
+   &=(1+v)^{a-1+Y}(1+v/2)^{-(a-1)},\
+ \frac{dt}{t^{a+1}}
+   &=(1+v/2)^{a-1}\frac{dv}{v^{a+1}}.
+\end{align*}
+Taking formal residues, the two extra factors cancel and give
+\begin{equation}
+ [t^a](1-t/2)^{-Y}(1+t/2)^{a-1+Y}
+ =[v^a](1+v)^{a-1+Y}
+ =\binom{a-1+Y}{a}=\frac{(Y)_a}{a!}.                                  \tag{7}
+\end{equation}
+Equations (6)--(7) now imply
+\[
+ V_a/v_\lambda=c^a(Y)_a
+ =\prod_{j=0}^{a-1}\bigl(A+(j-\lambda_2)c\bigr).                       \tag{8}
+\]
+Finally, the source coefficient simplifies as
+\[
+ \frac{\lambda_1-\lambda_2+n-a+2j+1}{2}=j-\lambda_2
+\]
+under $a=\lambda_1+\lambda_2+n+1$.  Thus (8) is exactly (F), completing
+the proof. \qed
+
+\section*{Verification notes}
+
+The script \texttt{code/verify\_factorization.py} performs two independent
+exact checks.  First it verifies the universal coefficient identity (7)
+symbolically for $1\le a\le10$.  Second, for several rational parameter
+choices, it reconstructs the source coefficients $\alpha_k$, applies (4)
+term by term to (1), and compares the result with the product in (8).  All
+checks pass over exact rational polynomial arithmetic.
+
+The most sensitive review points are the signs.  They are fixed by
+$[f_i,g_i]=-c$, which gives $\beta(f_i g_i)=f_i g_i+c/2$, and by the fact
+that $z^kq^{a-k}$ has ordinary degree $2a-k$ under Theorem 2.4, producing
+the $(-1)^k$ in (1).  The formulas reproduce the source's displayed cases
+$a=1$ and $a=2$.
+
+\section*{Novelty boundary and human-review recommendation}
+
+A bounded search through August 11, 2026 used arXiv id \texttt{1502.07095},
+the exact title and authors, exact phrases around ``direct proof'' and
+``factorization property,'' and formula/core-keyword variants.  The run's
+cheap indexes were also searched.  The arXiv source and the authors' public
+bibliography were checked; a nearby later paper by Pand\v{z}i\'c and Somberg
+on $\mathfrak{sl}_2$-actions was inspected and treats different
+commutative-nilradical examples.  No later proof of (3.140) was located.
+This is a bounded novelty check, not a guarantee of priority.
+
+Recommendation: review as a likely valid full solution.  A human verifier
+should focus first on the source-to-(1) Fourier sign and then on the normal
+ordering identity (3); after those two conventions are confirmed, the rest
+is a formal coefficient identity.
+
+\begin{thebibliography}{2}
+\bibitem{KS}
+L. K\v{r}i\v{z}ka and P. Somberg,
+\emph{Algebraic analysis on scalar generalized Verma modules of Heisenberg
+parabolic type I.: $A_n$-series}, Transform. Groups 22 (2017), 403--451;
+arXiv:1502.07095.
+
+\bibitem{PS}
+P. Pand\v{z}i\'c and P. Somberg,
+\emph{Branching problems and $\mathfrak{sl}(2,\mathbb C)$-actions},
+Archivum Math. (Brno) 51 (2015), 331--346; arXiv:1511.03048.
+\end{thebibliography}
+
+\end{document}

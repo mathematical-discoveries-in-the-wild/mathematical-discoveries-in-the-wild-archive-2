@@ -1,0 +1,373 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[margin=0.92in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\T}{\mathbb T}
+\newcommand{\cb}{c_{\mathrm b}}
+\newcommand{\artanh}{\operatorname{artanh}}
+
+\title{The Exact Bochnak Complexification Constant of the Real $\ell_1$ Plane\\
+\large Full answer to the exact-value question in arXiv:2311.03531}
+\author{Discovery run \texttt{fa\_banach\_001} -- \texttt{agent\_lane\_13}}
+\date{August 17, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{\textbf{Status: candidate full solution.}
+The argument gives matching upper and lower bounds.  The lower bound uses the
+classical weighted Siciak--Zakharyuta theorem after an explicit verification
+that the relevant harmonic function glues subharmonically across the unit
+circle.  Independent expert review is recommended.}}
+\end{center}
+
+\section{Source question}
+
+Rodr\'iguez defines the Bochnak complexification constants
+\[
+ \cb(k,\ell_1^2(\R))
+ =\sup\{\|\widetilde P\|:P\in\mathcal P({}^k\ell_1^2(\R)),\ \|P\|\le1\}
+\]
+and
+\[
+ \cb(\ell_1^2(\R))
+ =\limsup_{k\to\infty}\cb(k,\ell_1^2(\R))^{1/k}.
+\]
+The source says that its exact value is unknown and records only
+$2^{1/4}\le \cb(\ell_1^2(\R))\le\sqrt2$ \cite[p.~3]{RodriguezSource}.
+
+\begin{figure}[ht]
+ \centering
+ \includegraphics[width=0.97\textwidth]{source_question.png}
+ \caption{Definition, exact-value question, and published bounds in
+ arXiv:2311.03531v2, PDF page 3.}
+\end{figure}
+
+\section{Result}
+
+Let
+\[
+ G=\sum_{n=0}^{\infty}\frac{(-1)^n}{(2n+1)^2}
+   =0.915965594177219\ldots
+\]
+be Catalan's constant.
+
+\begin{theorem}\label{thm:main}
+The exact Bochnak complexification constant of the real $\ell_1$ plane is
+\[
+ \boxed{\displaystyle
+ \cb(\ell_1^2(\R))=\frac{e^{2G/\pi}}{\sqrt2}}
+ =1.2668686397429209\ldots .
+\]
+In fact, for every $k\ge1$,
+\[
+ \cb(k,\ell_1^2(\R))
+ \le \left(\frac{e^{2G/\pi}}{\sqrt2}\right)^k,
+\]
+and a sequence of real homogeneous polynomials asymptotically attains this
+bound after taking $k$th roots.
+\end{theorem}
+
+\section{Proof intuition}
+
+The upper bound is a one-complex-variable argument.  Restrict a real
+homogeneous polynomial to the complex line $x+\zeta y$ and apply
+Poisson--Jensen at $\zeta=i$.  Maximizing the resulting logarithmic integral
+over the complex $\ell_1$ unit sphere is an elementary concavity problem; the
+unique geometric maximum occurs when the two coordinates have equal modulus
+and phase difference $\pi/2$.
+
+For sharpness, rotate the real diamond into a square by
+$u=x+y$, $v=x-y$.  Homogeneous polynomials then become one-variable
+polynomials bounded by $\max(1,|t|)^k$ on the real line.  A Cayley transform
+turns this into a compact weighted problem on $\T$ with weight
+$W(w)=\max(|1-w|,|1+w|)$.  Its weighted extremal at the disk center is the
+Poisson mean of $\log W$, namely $2G/\pi$.  The only subtle point is to show
+that this Poisson solution is the global weighted extremal; an explicit
+positive jump-density computation supplies that check.
+
+\section{The sharp upper bound}
+
+Let $P$ be a real $k$-homogeneous polynomial on $\ell_1^2(\R)$ with
+$\|P\|\le1$, and take $z=x+iy\in\ell_1^2(\C)$ with $\|z\|_1\le1$.
+The latter is precisely the Bochnak complexification used in the source
+\cite[p.~3]{RodriguezSource}.  Apply Poisson--Jensen in the upper half-plane
+to
+\[
+ F(\zeta)=\widetilde P(x+\zeta y).
+\]
+For real $t$, homogeneity and the real norm bound give
+$|F(t)|\le\|x+ty\|_1^k$.  Therefore
+\begin{equation}\label{eq:PJ}
+ \log|\widetilde P(z)|
+ \le \frac{k}{\pi}\int_{\R}
+       \frac{\log\|x+ty\|_1}{1+t^2}\,dt.
+\end{equation}
+Zeros only improve the inequality; degenerate cases follow by continuity.
+
+Multiplication of $z$ by a common unimodular scalar preserves its norm and
+changes $\widetilde P(z)$ only by a unimodular factor.  On the unit sphere we
+may consequently write
+\[
+ z=(r,se^{i\delta}),\qquad r,s\ge0,\qquad r+s=1.
+\]
+With $t=\tan\theta$ and $g(\theta)=|\cos\theta|$, the integral in
+\eqref{eq:PJ}, divided by $k$, becomes
+\begin{equation}\label{eq:J}
+ J(r,\delta)=\log2+\frac1\pi\int_{-\pi/2}^{\pi/2}
+ \log\bigl(rg(\theta)+s g(\theta-\delta)\bigr)\,d\theta.
+\end{equation}
+For fixed $\delta$, the integral is concave in $r$.  Reflection
+$\theta\mapsto\delta-\theta$ shows that it is unchanged by
+$r\leftrightarrow1-r$, hence it is maximized at $r=s=1/2$.
+
+The evenness and $\pi$-periodicity of $g$ reduce the phase difference to
+$\delta=2h$ with $0\le h\le\pi/4$.  Splitting the integral at the zeros of
+the cosine terms yields
+\begin{align*}
+ J(1/2,2h)&=\log2+A(h),\\
+ A(h)&=\frac2\pi\biggl[
+  \left(\frac\pi2-h\right)\log\cos h+h\log\sin h\\
+ &\hspace{22mm}+\int_0^{\pi/2-h}\log\cos t\,dt
+  +\int_0^h\log\cos t\,dt\biggr].
+\end{align*}
+Differentiation cancels all four free logarithmic terms and gives
+\[
+ A'(h)=\frac2\pi\left[h\cot h-\left(\frac\pi2-h\right)\tan h\right].
+\]
+This is nonnegative exactly when
+\begin{equation}\label{eq:chord}
+ h\ge\frac\pi2\sin^2h.
+\end{equation}
+On $[0,\pi/4]$ the function $\sin^2h$ is convex, so it lies below the chord
+joining $(0,0)$ and $(\pi/4,1/2)$; this is precisely \eqref{eq:chord}.
+Thus the maximum occurs at $h=\pi/4$.  The standard Catalan integral
+\[
+ \int_0^{\pi/4}\log\cos t\,dt
+ =-\frac\pi4\log2+\frac G2
+\]
+then gives
+\begin{equation}\label{eq:Jmax}
+ \max_{r,\delta}J(r,\delta)
+ =\frac{2G}{\pi}-\frac12\log2.
+\end{equation}
+Combining \eqref{eq:PJ} and \eqref{eq:Jmax} proves, for every $k$,
+\begin{equation}\label{eq:upper}
+ \cb(k,\ell_1^2(\R))
+ \le\left(\frac{e^{2G/\pi}}{\sqrt2}\right)^k.
+\end{equation}
+
+\section{A weighted polynomial lemma}
+
+\begin{lemma}\label{lem:weighted}
+For $k\ge1$, let
+\[
+ M_k=\sup\left\{|p(i)|:\deg p\le k,\quad
+ |p(t)|\le\max(1,|t|)^k\quad(t\in\R)\right\},
+\]
+where complex coefficients are allowed.  Then
+\[
+ \lim_{k\to\infty}M_k^{1/k}=e^{2G/\pi}.
+\]
+The same limit holds when only real-coefficient polynomials are allowed.
+\end{lemma}
+
+\begin{proof}
+Use the Cayley transform
+\[
+ w=\frac{t-i}{t+i},\qquad
+ t=i\frac{1+w}{1-w},
+\]
+and set
+\[
+ q(w)=(1-w)^k p\left(i\frac{1+w}{1-w}\right).
+\]
+Then $\deg q\le k$, $q(0)=p(i)$, and the real-line constraint is equivalent
+to
+\begin{equation}\label{eq:circleweight}
+ |q(w)|\le W(w)^k\quad(w\in\T),
+ \qquad W(w)=\max(|1-w|,|1+w|).
+\end{equation}
+
+Put $\varphi(\theta)=\log W(e^{i\theta})$ and let $H$ be its Poisson
+extension to the unit disk.  Since
+\[
+ W(e^{i\theta})=2\max\bigl(|\sin(\theta/2)|,
+                               |\cos(\theta/2)|\bigr),
+\]
+symmetry and the Catalan integral give
+\begin{equation}\label{eq:H0}
+ H(0)=\frac1{2\pi}\int_0^{2\pi}\varphi(\theta)\,d\theta
+ =\frac4\pi\int_0^{\pi/4}\log(2\cos u)\,du
+ =\frac{2G}{\pi}.
+\end{equation}
+
+We next verify that $H$ is not merely a harmonic upper bound but the
+weighted extremal.  Define on the plane
+\[
+ U(w)=\begin{cases}
+ H(w),&|w|\le1,\\
+ \log|w|+H(1/\overline w),&|w|\ge1.
+ \end{cases}
+\]
+It is continuous, has logarithmic growth, and equals $\varphi$ on $\T$.
+Its distributional Laplacian off $\T$ vanishes.  Across $\T$, the outward
+radial derivative jump is
+\[
+ 1-2\Lambda\varphi(\theta),
+\]
+where $\Lambda$ is the circular Dirichlet-to-Neumann operator.  On
+$-\pi/2<\theta<\pi/2$ one has
+$\varphi(\theta)=\log(2\cos(\theta/2))$, and a direct periodic
+Hilbert-transform calculation gives
+\begin{equation}\label{eq:density}
+ 1-2\Lambda\varphi(\theta)
+ =\frac2\pi\frac{\artanh(\sin\theta)}{\sin\theta}\ge0.
+\end{equation}
+The quotient has limiting value $1$ at zero and the expression extends
+$\pi$-periodically; its logarithmic endpoint singularities are integrable.
+For reference, if $b=\tan(\theta/2)$, the principal-value integral reduces
+to
+\[
+ \Lambda\varphi(\theta)
+ =\frac12-\frac1\pi\artanh(b)(b+b^{-1})
+ =\frac12-\frac1\pi\frac{\artanh(\sin\theta)}{\sin\theta}.
+\]
+Thus \eqref{eq:density} proves that $U$ is subharmonic on $\C$ and belongs
+to the Lelong class.
+
+Let $V_{\T,\varphi}$ be the weighted Siciak extremal.  The function $U$ is
+admissible, so $V_{\T,\varphi}\ge H$ in the disk.  Conversely, every
+Lelong-class subharmonic function bounded above by $\varphi$ on $\T$ is at
+most the Poisson solution $H$ in the disk.  Hence
+\begin{equation}\label{eq:VeqH}
+ V_{\T,\varphi}=H\qquad\text{on the unit disk}.
+\end{equation}
+
+The weighted Siciak--Zakharyuta theorem for a compact set and a continuous
+weight identifies this extremal with the logarithm of the asymptotic
+weighted polynomial extremal \cite[Theorem~1.1, standard grading]{MSS}.
+At zero, \eqref{eq:circleweight}, \eqref{eq:H0}, and \eqref{eq:VeqH}
+therefore give
+\[
+ \lim_{k\to\infty}M_k^{1/k}=e^{H(0)}=e^{2G/\pi}.
+\]
+
+Finally write any admissible complex-coefficient polynomial as $p=a+ib$
+coefficientwise, where $a,b$ have real coefficients.  On $\R$ both
+$|a|$ and $|b|$ are bounded by $|p|$, and
+\[
+ \max(|a(i)|,|b(i)|)\ge\frac12|p(i)|.
+\]
+The constant factor disappears after taking $k$th roots.  This proves the
+same asymptotic statement for real coefficients.
+\end{proof}
+
+\section{Sharpness and conclusion}
+
+Use real linear coordinates
+\[
+ u=x+y,\qquad v=x-y.
+\]
+Then
+\begin{equation}\label{eq:square}
+ |x|+|y|=\max(|u|,|v|).
+\end{equation}
+Given a real polynomial $p_k$ supplied by Lemma~\ref{lem:weighted}, form the
+real $k$-homogeneous polynomial
+\[
+ Q_k(u,v)=u^k p_k(v/u),
+\]
+interpreted by its homogeneous coefficient expansion.  For real $u,v$,
+the defining bound for $p_k$ gives
+\[
+ |Q_k(u,v)|\le\max(|u|,|v|)^k.
+\]
+Thus $P_k(x,y)=Q_k(x+y,x-y)$ has norm at most one on the real $\ell_1$
+unit ball by \eqref{eq:square}.
+
+Evaluate its complexification at
+\[
+ z_0=(1/2,i/2),\qquad \|z_0\|_1=1.
+\]
+At this point
+\[
+ u_0=\frac{1+i}{2},\qquad v_0=\frac{1-i}{2},\qquad
+ \frac{v_0}{u_0}=-i,\qquad |u_0|=2^{-1/2}.
+\]
+Real coefficients imply $|p_k(-i)|=|p_k(i)|$, so
+\[
+ \|\widetilde P_k\|
+ \ge 2^{-k/2}|p_k(-i)|.
+\]
+Lemma~\ref{lem:weighted} yields
+\[
+ \limsup_{k\to\infty}\cb(k,\ell_1^2(\R))^{1/k}
+ \ge\frac{e^{2G/\pi}}{\sqrt2}.
+\]
+Together with \eqref{eq:upper}, this proves Theorem~\ref{thm:main}.
+
+\section{Verification and novelty audit}
+
+\begin{enumerate}[leftmargin=*]
+\item \textbf{Poisson--Jensen sign and normalization.}  For
+$F(\zeta)=\zeta+i$, the formula at $i$ is an equality with value $\log2$;
+this checks the half-plane kernel and the absence of a missing growth term.
+\item \textbf{Geometric maximization.}  Concavity first eliminates the
+coordinate moduli, and the derivative computation then eliminates the phase.
+The maximizing point is exactly $(1/2,i/2)$, the point used for the lower
+bound.
+\item \textbf{Weighted-extremal gluing.}  A first proof draft used the
+unbounded real-line weight directly.  The compact circle reformulation and
+the positive density \eqref{eq:density} remove both the weak-admissibility
+issue at infinity and the possible failure of harmonic gluing.
+\item \textbf{Coefficient field.}  Passing from complex to real coefficients
+costs at most a factor of two, which is harmless for the asymptotic constant.
+\item \textbf{Numerical check.}  Independent semi-infinite LP reconnaissance
+at $z_0$ gives kth roots $1.19627$, $1.22386$, $1.23090$, and $1.23595$
+for $k=12,20,24,28$, respectively, increasing toward
+$1.2668686\ldots$.  These computations are not used in the proof.
+\end{enumerate}
+
+A bounded novelty search on August 17, 2026 used the arXiv identifier, the
+exact problem language, the decimal value, the Catalan-constant formula, and
+the terms ``Bochnak complexification'' and ``$\ell_1^2$''.  The 2025 follow-up
+paper \cite{Rodriguez2025} proves that infinite-dimensional $\ell_1$ has the
+largest Bochnak constants, but its Proposition 2.8 still records only the
+$2^{1/4}$ lower bound for $\ell_1^2$ and contains no Catalan-constant formula.
+No prior resolution of this exact-value problem was found.  The main novelty
+risk is therefore an uncatalogued equivalent computation in weighted
+approximation theory.
+
+\begin{thebibliography}{9}
+\bibitem{RodriguezSource}
+J. T. Rodr\'iguez,
+\emph{A $2$-dimensional real Banach space with constant of analyticity less
+than one}, arXiv:2311.03531v2 (2025).
+
+\bibitem{Rodriguez2025}
+J. T. Rodr\'iguez,
+\emph{On the norm of the complexification of polynomials},
+Studia Math. \textbf{282} (2025), 1--23,
+\href{https://doi.org/10.4064/sm230615-15-4}{doi:10.4064/sm230615-15-4}.
+
+\bibitem{MSS}
+B. S. Magn\'usson, \`A. E. Sigur{\dh}ard\'ottir, and R. Sigur{\dh}sson,
+\emph{Polynomials with exponents in compact convex sets and associated
+weighted extremal functions: the Siciak--Zakharyuta theorem},
+arXiv:2305.08260v3 (2024).
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,319 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\E}{\mathbb E}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\Om}{\Omega}
+
+\title{The Neumann stochastic square in the planar CH/AC homotopy}
+\author{Candidate solution packet for arXiv:2204.09545}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\linewidth}{\textbf{Status.} Candidate full answer for
+smooth bounded planar domains, likely valid, awaiting specialist review.}}
+\end{center}
+
+\section{Source problem}
+
+Bl\"omker and T\"olle isolate the following missing estimate in Section 6 of
+\cite{BT}, on page 18 of the source PDF.
+
+\begin{center}
+\includegraphics[width=\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+We prove the requested convergence for every connected bounded
+$C^\infty$ domain in $\mathbb R^2$.  The proof also quantifies the exact
+noise scaling and limiting constant.
+
+\section{Statement}
+
+Let $L=-\Delta_N$ be the nonnegative Neumann Laplacian on $L^2(\Om)$.
+Write
+\[
+ Le_j=\mu_j e_j,\qquad
+ e_0=|\Om|^{-1/2},\quad \mu_0=0,
+\]
+and work first on the mean-zero subspace, so indices below start at $1$.
+For $0<\varepsilon<1/2$, put
+\[
+ a_\varepsilon=1-\varepsilon,
+ \qquad B_\varepsilon=L(a_\varepsilon+\varepsilon L),
+ \qquad
+ \lambda_j^\varepsilon=\mu_j(a_\varepsilon+\varepsilon\mu_j).
+\]
+If $W_0$ is cylindrical white noise on the mean-zero subspace, define the
+zero-initial stochastic convolution
+\[
+ Z_\varepsilon(t)
+ =\sigma_\varepsilon\int_0^t
+   e^{-(t-s)B_\varepsilon}\,dW_0(s).
+\]
+For fixed $\varepsilon$, the fourth-order regularization makes the ordinary
+square $Z_\varepsilon^2$ well-defined.
+
+We use the Bessel-potential norm
+$\|f\|_{H^{-1}}=\|(I+L)^{-1/2}f\|_2$.
+
+\begin{theorem}\label{thm:main}
+Suppose
+\[
+ \sigma_\varepsilon^2\log(1/\varepsilon)\longrightarrow\kappa
+ \quad\text{for some }\kappa\in[0,\infty).
+\]
+Then for every $T<\infty$, $1\leq p<\infty$, and
+$q\geq\max\{2,p\}$,
+\[
+ \left(\E\left[
+ \left\|Z_\varepsilon^2-\frac{\kappa}{8\pi}\right\|_
+ {L^p(0,T;H^{-1}(\Om))}^{q}
+ \right]\right)^{1/q}\longrightarrow0.
+\]
+More precisely, with constants depending on $\Om,T,p,q$ but not on
+$\varepsilon$,
+\begin{equation}\label{eq:rate}
+ \left(\E\left[
+ \left\|Z_\varepsilon^2-\frac{\kappa}{8\pi}\right\|_
+ {L^pH^{-1}}^{q}
+ \right]\right)^{1/q}
+ \leq C_{p,q,T}
+ \left(\left|\sigma_\varepsilon^2\log(1/\varepsilon)-\kappa\right|
+       +\sigma_\varepsilon^2\right).
+\end{equation}
+In particular the convergence holds in probability in every finite
+$L^p(0,T;H^{-1})$.
+\end{theorem}
+
+The source suppresses the constant Fourier mode on the torus.  The same
+convention is used here.  Restoring the one-dimensional Neumann kernel adds
+terms that are $O(\sigma_\varepsilon)$ in the relevant Gaussian norms and
+does not alter the conclusion.
+
+\section{Proof intuition}
+
+Although products of Neumann eigenfunctions have no Fourier convolution law,
+the linear operator is still a function of the Neumann Laplacian.  Its
+covariance is therefore an integral of the ordinary Neumann heat kernel.  On
+the diagonal, the interior heat kernel contributes the universal
+$(8\pi)^{-1}\log(1/\varepsilon)$ divergence.  The reflected boundary term is
+large only in a shrinking collar and leaves an $L^2$-bounded remainder.
+
+After subtracting the mean, Wick's formula turns the $H^{-1}$ variance of the
+square into the integral of three kernels: one Bessel Green kernel and two
+covariance kernels.  Each has only a logarithmic diagonal singularity, and a
+logarithmic cube is integrable in two dimensions.  The remaining factor is
+$\sigma_\varepsilon^4$, so the random part vanishes.  This replaces the
+torus-specific Fourier cancellation by a domain-independent heat-kernel
+argument.
+
+\section{Two heat-kernel estimates}
+
+Let $p_s(x,y)$ be the Neumann heat kernel and
+$p_s^0(x,y)=p_s(x,y)-|\Om|^{-1}$.  We use two standard consequences of the
+Gaussian estimate and the not-feeling-the-boundary estimate
+\cite{LiStrohmaier}.  If $d(x)=\operatorname{dist}(x,\partial\Om)$, then,
+for $0<s\leq1$,
+\begin{align}
+ |p_s(x,y)|&\leq Cs^{-1}e^{-|x-y|^2/(Cs)},\label{eq:gauss}\\
+ \left|p_s(x,x)-(4\pi s)^{-1}\right|
+ &\leq Cs^{-1}e^{-d(x)^2/(Cs)}+Cs^{-1/2}.\label{eq:nfb}
+\end{align}
+The second term is the harmless lower-order parametrix remainder.  For
+$s\geq1$, $p_s^0$ decays exponentially by the spectral gap.
+
+Define the unit-amplitude stationary covariance kernel
+\begin{equation}\label{eq:Qdef}
+ Q_\varepsilon(x,y)
+ =\sum_{j\geq1}\frac{e_j(x)e_j(y)}{2\lambda_j^\varepsilon}.
+\end{equation}
+
+\begin{lemma}\label{lem:heat}
+Uniformly for $0<\varepsilon<1/2$,
+\begin{align}
+ Q_\varepsilon(x,x)
+ &=\frac{1}{8\pi}\log(1/\varepsilon)+R_\varepsilon(x),
+ &\sup_\varepsilon\|R_\varepsilon\|_{L^2(\Om)}&<\infty,
+ \label{eq:diag}\\
+ |Q_\varepsilon(x,y)|
+ &\leq C\bigl(1+|\log|x-y||\bigr),&&x\neq y.
+ \label{eq:offdiag}
+\end{align}
+The kernel $G_1$ of $(I+L)^{-1}$ obeys the same off-diagonal logarithmic
+bound and is nonnegative.
+\end{lemma}
+
+\begin{proof}
+For $\mu>0$, partial fractions and the Laplace transform give
+\[
+ \frac1{\mu(a_\varepsilon+\varepsilon\mu)}
+ =\frac1{a_\varepsilon}
+   \int_0^\infty(1-e^{-a_\varepsilon s/\varepsilon})e^{-\mu s}\,ds.
+\]
+Consequently,
+\begin{equation}\label{eq:heat-rep}
+ Q_\varepsilon(x,y)
+ =\frac1{2a_\varepsilon}\int_0^\infty
+ (1-e^{-a_\varepsilon s/\varepsilon})p_s^0(x,y)\,ds.
+\end{equation}
+Estimate \eqref{eq:gauss}, followed by the change of variables
+$u=|x-y|^2/s$, proves \eqref{eq:offdiag}.  The same heat representation,
+without the cutoff factor, proves the assertion for $G_1$.
+
+On the diagonal, substitute $(4\pi s)^{-1}$ in the part of
+\eqref{eq:heat-rep} with $0<s<1$.  Since $a_\varepsilon\in[1/2,1]$,
+\[
+ \frac1{8\pi a_\varepsilon}\int_0^1
+ (1-e^{-a_\varepsilon s/\varepsilon})\frac{ds}{s}
+ =\frac1{8\pi}\log(1/\varepsilon)+O(1).
+\]
+The large-time and constant-mode terms are uniformly bounded.  By
+\eqref{eq:nfb}, the absolute value of the remaining boundary term is bounded
+by a constant plus
+\[
+ H_\varepsilon(d(x))
+ :=\int_0^1\min\{1,s/\varepsilon\}\,
+ s^{-1}e^{-d(x)^2/(Cs)}\,ds.
+\]
+For $d\leq\sqrt\varepsilon$, this is at most $C\log(1/\varepsilon)$;
+for $d>\sqrt\varepsilon$, it is at most $C(1+|\log d|)$.  Smooth boundary
+normal coordinates therefore give
+\[
+ \sup_{\varepsilon<1/2}\int_\Om H_\varepsilon(d(x))^2\,dx<\infty,
+\]
+because $\sqrt\varepsilon\log^2(1/\varepsilon)$ is bounded and
+$\int_0^1|\log r|^2dr<\infty$.  This proves \eqref{eq:diag}.
+\end{proof}
+
+\section{The deterministic mean}
+
+Set $m_\varepsilon(t,x)=\E Z_\varepsilon(t,x)^2$.  Spectral calculus gives
+\begin{equation}\label{eq:mean}
+ m_\varepsilon(t,x)
+ =\sigma_\varepsilon^2 Q_\varepsilon(x,x)
+ -D_\varepsilon(t,x),
+\quad
+ D_\varepsilon(t,x)
+ =\sigma_\varepsilon^2\sum_{j\geq1}
+ \frac{e^{-2t\lambda_j^\varepsilon}}{2\lambda_j^\varepsilon}e_j(x)^2.
+\end{equation}
+Lemma~\ref{lem:heat} shows
+\begin{equation}\label{eq:stationary-mean}
+ \left\|\sigma_\varepsilon^2Q_\varepsilon(\cdot,\cdot)|_{x=y}
+ -\frac\kappa{8\pi}\right\|_{H^{-1}}
+ \leq C\left(
+ |\sigma_\varepsilon^2\log(1/\varepsilon)-\kappa|
+ +\sigma_\varepsilon^2\right).
+\end{equation}
+
+Since $\lambda_j^\varepsilon\geq\mu_j/2$,
+\[
+ 0\leq \frac{D_\varepsilon(t,x)}{\sigma_\varepsilon^2}
+ \leq\sum_{j\geq1}\frac{e^{-t\mu_j}}{\mu_j}e_j(x)^2
+ =\int_t^\infty p_s^0(x,x)\,ds
+ \leq C_T(1+|\log t|),
+\]
+where the final bound follows from \eqref{eq:gauss} and the spectral gap.
+Thus, for every finite $p$,
+\begin{equation}\label{eq:mean-bound}
+ \left\|m_\varepsilon-\frac\kappa{8\pi}\right\|_{L^p(0,T;H^{-1})}
+ \leq C_{p,T}\left(
+ |\sigma_\varepsilon^2\log(1/\varepsilon)-\kappa|
+ +\sigma_\varepsilon^2\right).
+\end{equation}
+
+\section{The centered square}
+
+Let $Y_\varepsilon(t)=Z_\varepsilon(t)^2-m_\varepsilon(t)$.  First truncate
+the Neumann expansion at a finite index.  Wick's formula gives
+\begin{align}
+ \E\|Y_\varepsilon(t)\|_{H^{-1}}^2
+ &=2\sum_{i,j\geq1}c_i(t)c_j(t)
+ \left\langle e_ie_j,(I+L)^{-1}(e_ie_j)\right\rangle,
+ \label{eq:wicksum}
+\end{align}
+where
+\[
+ c_j(t)=\frac{\sigma_\varepsilon^2
+ (1-e^{-2t\lambda_j^\varepsilon})}{2\lambda_j^\varepsilon}
+ \leq\frac{\sigma_\varepsilon^2}{2\lambda_j^\varepsilon}.
+\]
+Every summand in \eqref{eq:wicksum} is nonnegative.  Hence monotone passage
+from finite truncations and the kernel identity yield
+\begin{align*}
+ \E\|Y_\varepsilon(t)\|_{H^{-1}}^2
+ &\leq2\sigma_\varepsilon^4
+ \iint_{\Om^2}G_1(x,y)Q_\varepsilon(x,y)^2\,dx\,dy\\
+ &\leq C\sigma_\varepsilon^4.
+\end{align*}
+The last integral is uniformly finite by Lemma~\ref{lem:heat}, since
+$(1+|\log|x-y||)^3$ is locally integrable in two dimensions.
+
+The random variable $Y_\varepsilon(t)$ takes values in the second homogeneous
+Wiener chaos.  Vector-valued Gaussian hypercontractivity therefore gives,
+for every $q\geq2$,
+\[
+ \left(\E\|Y_\varepsilon(t)\|_{H^{-1}}^q\right)^{1/q}
+ \leq C_q\sigma_\varepsilon^2.
+\]
+For $q\geq p$, Minkowski's integral inequality now implies
+\begin{equation}\label{eq:centered}
+ \left(\E\|Y_\varepsilon\|_{L^p(0,T;H^{-1})}^q\right)^{1/q}
+ \leq C_{p,q,T}\sigma_\varepsilon^2.
+\end{equation}
+Combining \eqref{eq:mean-bound} and \eqref{eq:centered} proves
+Theorem~\ref{thm:main}.
+
+\section{Scope, verification, and novelty}
+
+The theorem supplies precisely the domain-dependent estimate isolated in the
+source paper, for arbitrary smooth shape rather than a square or torus.  It
+also clarifies that the nontrivial regime is expressed invariantly as
+$\sigma_\varepsilon^2\log(1/\varepsilon)\to\kappa$; whether a paper denotes
+noise amplitude or variance by $\sigma_\varepsilon$ can otherwise obscure a
+square root.
+
+The smooth-boundary hypothesis is used only in the boundary-collar form of
+the heat-kernel estimate.  We make no claim here for rough domains or colored
+noise operators that fail to commute with $L$.  A numerical companion checks
+the coefficient $1/(8\pi)$ from Neumann eigenvalues on the unit square; it is
+not part of the proof.
+
+A bounded novelty search through 13 August 2026 covered the run registry,
+local full sources, the exact open phrase, arXiv:2204.09545, and web searches
+combining CH/AC homotopy, Neumann boundary, general domain, stochastic
+convolution, and Wick square.  No later explicit resolution was found.  This
+is not an exhaustive priority search.
+
+\paragraph{Human-review recommendation.}
+Verify first Lemma~\ref{lem:heat}, especially the uniform $L^2$ treatment of
+the boundary collar.  Next verify the nonnegative spectral expansion
+\eqref{eq:wicksum} and its kernel identity.  These are the only substantive
+points; the remaining bounds are direct.
+
+\begin{thebibliography}{9}
+\bibitem{BT}
+D. Bl\"omker and J. M. T\"olle,
+\emph{Singular limits for stochastic equations},
+Stochastics and Dynamics (2023), DOI: 10.1142/S0219493723500405;
+arXiv:2204.09545.
+
+\bibitem{LiStrohmaier}
+L. Li and A. Strohmaier,
+\emph{Heat kernel estimates for general boundary problems},
+J. Spectr. Theory 6 (2016), 903--919;
+arXiv:1604.00784.
+\end{thebibliography}
+
+\end{document}

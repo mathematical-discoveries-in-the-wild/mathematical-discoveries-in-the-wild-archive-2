@@ -1,0 +1,219 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue]{hyperref}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.65em}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\A}{\mathcal A}
+\newcommand{\B}{\mathcal B}
+\newcommand{\Hh}{\mathcal H}
+\newcommand{\K}{\mathcal K}
+\newcommand{\BH}{\mathcal B(\Hh)}
+\newcommand{\UCP}{\operatorname{UCP}}
+
+\title{The nonseparable $C^*$-Krein--Milman theorem\\
+\large Finite BW localization and pure extensions}
+\author{Run \texttt{fa\_banach\_001} --- \texttt{agent\_lane\_11}}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\textbf{Status.} \texttt{candidate\_full\_solution\_likely\_valid}.
+The argument answers one explicit open question in \cite{BK}; it should receive
+expert review before being treated as established literature.
+
+\section*{The source question}
+
+For a unital $C^*$-algebra $\A$ and a separable Hilbert space $\Hh$, write
+\[
+ S_{\Hh}(\A)=\UCP(\A,\BH).
+\]
+The bounded weak (BW) topology is pointwise weak-operator convergence. Bhat and
+Kumar prove that $S_{\Hh}(\A)$ is the BW-closure of the $C^*$-convex hull of its
+$C^*$-extreme points when $\A$ is separable or a type I factor. On source-PDF
+page 19 they state that the result is unknown for general nonseparable
+$C^*$-algebras \cite[Section 5]{BK}.
+
+\begin{center}
+\includegraphics[width=0.97\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Proof intuition}
+
+BW approximation is local: a basic neighborhood tests only finitely many elements
+of $\A$, and those elements generate a separable subalgebra $\B$. The source theorem
+therefore supplies a $C^*$-convex approximation on $\B$.
+
+The subtle point is extension. An arbitrary $C^*$-extreme map on $\B$ need not be
+known to have a $C^*$-extreme extension. Fortunately, the source proof uses much more
+structured extreme maps. Each is built from a pure UCP map and a one-dimensional
+pure compression of that same map. Pure UCP maps have pure extensions. Extending the
+first map and taking the same vector compression recreates the structured block on
+$\A$, where the source's direct-sum theorem again makes it $C^*$-extreme. Thus the
+same operator coefficients lift the local approximation to all of $\A$.
+
+\section*{Two extension lemmas}
+
+Recall that a completely positive map $\alpha$ is \emph{pure} if
+$0\leq\gamma\leq\alpha$ implies $\gamma=t\alpha$ for some $t\in[0,1]$.
+
+\begin{lemma}[pure extension]\label{lem:pure-extension}
+Let $\B\subseteq\A$ be unital $C^*$-algebras and let
+$\alpha:\B\to\mathcal B(\K)$ be pure and unital completely positive. Then
+$\alpha$ has a pure UCP extension
+$\widetilde\alpha:\A\to\mathcal B(\K)$.
+\end{lemma}
+
+\begin{proof}
+By Arveson's extension theorem \cite{Arveson}, the set
+\[
+ \mathcal F=\{\beta\in\UCP(\A,\mathcal B(\K)):\beta|_{\B}=\alpha\}
+\]
+is nonempty. It is BW-compact and convex. It is also a face of
+$\UCP(\A,\mathcal B(\K))$: if
+$t\beta_1+(1-t)\beta_2\in\mathcal F$, with $0<t<1$, then
+$t\beta_1|_{\B}\leq\alpha$. Purity gives
+$t\beta_1|_{\B}=s\alpha$; evaluation at $1$ gives $s=t$, hence
+$\beta_1|_{\B}=\alpha$, and similarly for $\beta_2$.
+
+Choose an extreme point $\widetilde\alpha$ of $\mathcal F$. Since $\mathcal F$
+is a face, it is linearly extreme in the full UCP set. Suppose
+$0\leq\gamma\leq\widetilde\alpha$. Purity of the restriction gives
+$\gamma|_{\B}=s\alpha$. Thus $\gamma(1)=sI$. If $0<s<1$, then
+\[
+ \widetilde\alpha
+ =s\,(s^{-1}\gamma)+(1-s)\bigl((1-s)^{-1}(\widetilde\alpha-\gamma)\bigr)
+\]
+is a convex decomposition into UCP maps. Linear extremality forces
+$\gamma=s\widetilde\alpha$. The cases $s=0,1$ follow because a CP map vanishing
+at the unit is zero. Hence $\widetilde\alpha$ is pure.
+\end{proof}
+
+The next lemma isolates precisely the blocks appearing in the proof of
+\cite[Lemma 5.1]{BK}.
+
+\begin{lemma}[lifting the source blocks]\label{lem:block}
+Let $\K\subseteq\Hh$, let $\alpha:\B\to\mathcal B(\K)$ be pure UCP, and let
+$h\in\K$ be a unit vector. Put
+\[
+ \vartheta(b)=\langle h,\alpha(b)h\rangle,
+ \qquad
+ \xi(b)=\alpha(b)\oplus\vartheta(b)I_{\K^\perp}.
+\]
+Assume (as for the source blocks) that $\vartheta$ is a pure state. Then $\xi$
+has a $C^*$-extreme UCP extension
+$\widetilde\xi:\A\to\BH$.
+\end{lemma}
+
+\begin{proof}
+Take a pure extension $\widetilde\alpha$ from Lemma~\ref{lem:pure-extension} and
+define
+$\widetilde\vartheta(a)=\langle h,\widetilde\alpha(a)h\rangle$.
+The minimal Stinespring representation of a pure CP map is irreducible
+\cite{Arveson}. Every nonzero vector in an irreducible representation is cyclic;
+therefore $\widetilde\vartheta$ is a pure state and extends $\vartheta$.
+
+Set
+\[
+ \widetilde\xi(a)=\widetilde\alpha(a)
+       \oplus\widetilde\vartheta(a)I_{\K^\perp}.
+\]
+The scalar summand is a compression of the same irreducible Stinespring
+representation as $\widetilde\alpha$. Their Stinespring ranges are nested, and the
+one-type multiplicity nest has countable completion. The direct-sum criterion
+\cite[Theorem 3.6]{BK} therefore makes $\widetilde\xi$ $C^*$-extreme. Plainly
+$\widetilde\xi|_{\B}=\xi$.
+\end{proof}
+
+The same lemma includes the fixed residual block needed below: choose a pure state
+$\omega$ of $\B$. Then $b\mapsto\omega(b)I_{\Hh}$ is a one-type amplification,
+hence $C^*$-extreme by the same direct-sum criterion, and a pure extension of
+$\omega$ gives a $C^*$-extreme extension of this block.
+
+\section*{Main theorem}
+
+\begin{theorem}\label{thm:main}
+Let $\A$ be any unital $C^*$-algebra and let $\Hh$ be separable. Then
+\[
+ \boxed{
+ S_{\Hh}(\A)=
+ \overline{\operatorname{co}_{C^*}
+ \bigl(\operatorname{Cext}S_{\Hh}(\A)\bigr)}^{\mathrm{BW}}.}
+\]
+Thus the full-generality question in \cite{BK} has an affirmative answer.
+\end{theorem}
+
+\begin{proof}
+Fix $\phi\in S_{\Hh}(\A)$ and a basic BW neighborhood $\mathcal N$ of $\phi$.
+It is enough to consider finitely many tests
+\[
+ |\langle(\psi(a_r)-\phi(a_r))u_s,v_s\rangle|<\varepsilon
+ \quad(1\leq r\leq m,\ 1\leq s\leq q).
+\]
+Let $\B=C^*(1,a_1,\ldots,a_m)$. This is a separable unital $C^*$-subalgebra,
+so the separable case of \cite[Theorem 5.3]{BK} applies to
+$\phi_0=\phi|_{\B}$.
+
+We use one feature visible in the proof of that theorem. Its Case I first
+approximates $\phi_0$ by a compression of a countable direct sum of irreducible
+representations. That compression is a WOT-sum of pure CP maps. The proof of
+\cite[Lemma 5.1]{BK} then approximates it by finite $C^*$-convex combinations
+\[
+ \eta=\sum_{j=0}^{N}T_j^*\xi_j(\mathord\cdot)T_j,
+ \qquad \sum_{j=0}^{N}T_j^*T_j=I_{\Hh},                         \tag{1}
+\]
+where every non-residual $\xi_j$ is, up to a unitary, exactly a block from
+Lemma~\ref{lem:block}. The residual coefficient tends strongly to zero and its
+map may be chosen as $\omega(\mathord\cdot)I_{\Hh}$ for a pure state $\omega$
+of $\B$. Choosing the two approximation stages sufficiently accurately gives
+$\eta$ satisfying all the tests defining $\mathcal N$.
+
+By Lemma~\ref{lem:block}, extend each $\xi_j$ to a $C^*$-extreme
+$\widetilde\xi_j\in S_{\Hh}(\A)$; use the pure-state amplification extension for
+the residual block. Keep the coefficients in (1) and define
+\[
+ \widetilde\eta=\sum_{j=0}^{N}T_j^*\widetilde\xi_j(\mathord\cdot)T_j.
+\]
+This belongs to the $C^*$-convex hull of the $C^*$-extreme points of
+$S_{\Hh}(\A)$, and $\widetilde\eta|_{\B}=\eta$. Since every tested $a_r$ lies in
+$\B$, the map $\widetilde\eta$ belongs to $\mathcal N$.
+
+Every basic BW neighborhood of every $\phi$ therefore meets the stated hull,
+which is precisely the asserted BW-closure identity.
+\end{proof}
+
+\section*{Verification, limitations, and novelty check}
+
+The proof deliberately does not assert that arbitrary $C^*$-extreme maps extend.
+It lifts only the pure/compression blocks actually constructed in the source's
+Lemma 5.1. The compact extension-fiber argument uses nets and needs no
+metrizability. The conclusion is local BW closure, so no diagonal sequence over
+all of a nonseparable algebra is required.
+
+The result retains the source convention that $\Hh$ is separable. It removes the
+separability and type I assumptions on $\A$; it does not address the paper's other
+questions about the structure of normal $C^*$-extreme maps or whether every
+$C^*$-extreme map is linearly extreme.
+
+A bounded novelty search on 13 August 2026 covered the run indexes, the parsed
+arXiv corpus, exact-title citations, and primary-source searches for the full
+nonseparable BW theorem and the pure-extension route. It found later work on
+specialized classes but no statement of Theorem~\ref{thm:main}. This supports
+candidate novelty but is not an exhaustive priority claim.
+
+\begin{thebibliography}{9}
+\bibitem{Arveson}
+W. Arveson, \emph{Subalgebras of $C^*$-algebras}, Acta Math. 123 (1969),
+141--224. In particular, the CP extension and pure-extension machinery.
+
+\bibitem{BK}
+B. V. Rajarama Bhat and M. Kumar, \emph{$C^*$-extreme maps and nests},
+arXiv:2103.09600; J. Funct. Anal. 282 (2022), Paper No. 109397.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,422 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{definition}[theorem]{Definition}
+\newcommand{\X}{X}
+\newcommand{\m}{\mathfrak m}
+\newcommand{\Lip}{\operatorname{Lip}}
+\newcommand{\Der}{\operatorname{Der}}
+\newcommand{\diver}{\boldsymbol{\operatorname{div}}}
+\newcommand{\PlanBar}{\operatorname{Bar}}
+\newcommand{\supp}{\operatorname{supp}}
+
+\title{Local-plan duality for divergence measures\\
+\large A candidate completion of Remark 5.13 in arXiv:2510.12424}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 10}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+Candidate full solution, likely valid, pending expert review.  The mathematical
+content is a formal completion of a route explicitly suggested by the source,
+not a claim that the cited local superposition theorem is new here.
+
+\section{Source question}
+
+Ambrosio, Ikonen, Lu\v{c}i\'c, and Pasqualetto define, for a metric measure
+space $(\X,d,\m)$ and $q\in(1,\infty]$, the dual dynamic cost
+\[
+ \mathsf D_q(\mu)=\inf\bigl\{\|b\|_{\Der^q(\X)}:
+ b\in\Der^q_{\mathfrak M}(\X),\ \diver b=\mu\bigr\}.
+\]
+For finite $\m$ and finite signed $\mu$, their Proposition 5.12 identifies
+this with a cost $\mathsf B_q(\mu)$ over compact rectifiable curves.  After
+explaining the obstruction when $\m(\X)=\infty$, Remark 5.13 says:
+
+\begin{quote}
+When $\m$ has infinite measure, in light of the superposition principle in
+[13], the natural extension is to plans which are concentrated on locally
+rectifiable curves and which have a barycenter on $L^q(\m)$.  We leave the
+details for future work.
+\end{quote}
+
+The passage occurs on PDF page 59 of arXiv:2510.12424; see
+Figure~\ref{fig:question}.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+  \caption{Remark 5.13 in the official arXiv PDF.}
+  \label{fig:question}
+\end{figure}
+
+\section{Definitions}
+
+Throughout, $(\X,d,\m)$ is a complete separable metric space equipped with a
+boundedly-finite Borel measure, as in the source.  Let
+$q\in(1,\infty]$ and let $p\in[1,\infty)$ be its conjugate exponent.
+Write $\mathfrak M(\X)$ for the boundedly-finite signed Borel measures.
+
+Let $\Gamma(\X)$ be the open-ended curve space of
+Ambrosio--Renzi--Vitillaro~\cite{ARV}: its elements are increasing-
+reparametrization classes of maps
+\[
+ \gamma\in\Lip_{\mathrm{loc}}((0,1);\X)
+\]
+whose length inside every bounded open subset of $\X$ is finite.  At either
+end, such a curve has a limit in $\X$ or escapes every bounded set.  The curve
+defines a locally normal one-current $T_\gamma$.  Its boundary is
+\[
+ \partial T_\gamma=\delta_{e_1(\gamma)}-\delta_{e_0(\gamma)},
+ \tag{2.1}\label{eq:curve-boundary}
+\]
+where a Dirac mass is omitted when the corresponding end escapes to infinity.
+
+\begin{definition}[Local plan and barycenter]
+A \emph{local plan} is a positive Borel measure $\eta$ on the nonconstant
+curves in $\Gamma(\X)$ for
+which the following two locally finite objects exist.
+\begin{enumerate}[label=(\roman*)]
+\item Its arclength occupation measure is
+\[
+ \nu_\eta(A)=\int_{\Gamma(\X)}\int_\gamma {\bf1}_A\,ds\,d\eta(\gamma).
+\]
+\item Its finite-endpoint boundary is the signed measure
+\[
+ \beta_\eta=\int_{\Gamma(\X)}\partial T_\gamma\,d\eta(\gamma),
+ \tag{2.2}\label{eq:plan-boundary}
+\]
+where local absolute integrability is required:
+$\int\|\partial T_\gamma\|(A)\,d\eta(\gamma)<\infty$ for every bounded
+Borel set $A$.
+\end{enumerate}
+We say that $\eta$ has $L^q$ barycenter if
+$\nu_\eta=h\m$ for some $h\in L^q(\m)^+$, and then write
+$\PlanBar(\eta)=h$.
+\end{definition}
+
+The measurability requirement in this definition is intrinsic: equivalently,
+the displayed occupation and endpoint integrals are required to define Borel
+measures.  On the injective curves furnished by~\cite{ARV}, arclength measure
+equals $\|T_\gamma\|$, whose Borel measurability is part of their construction.
+
+For $\mu\in\mathfrak M(\X)$ define
+\[
+ \mathsf B_q^{\mathrm{loc}}(\mu)
+ :=\inf\left\{\|\PlanBar(\eta)\|_{L^q(\m)}:
+ \eta\text{ is a local plan},\ \beta_\eta=-\mu,\
+ \PlanBar(\eta)\in L^q(\m)\right\}.
+ \tag{2.3}\label{eq:Bloc}
+\]
+The sign in \eqref{eq:Bloc} agrees with the source: an ordinary plan starting
+at $\mu^+$ and ending at $\mu^-$ has current boundary
+$\mu^--\mu^+=-\mu$.
+
+\section{Proof intuition}
+
+The missing object is already present in the two cited papers.  A derivation
+$b$ produces a locally normal current by integrating $b(g)$ against the
+coefficient of the one-form.  Bounded cutoffs reduce this correspondence to
+the finite-mass correspondence proved in the source, showing that the current
+has mass exactly $|b|\m$ and boundary $-\diver b$.
+
+The source also proves that a norm-minimizing derivation exists and is
+acyclic.  Therefore its local current is acyclic.  The local superposition
+theorem~\cite{ARV} then decomposes it into injective, possibly unbounded
+curves, with no cancellation of either mass or boundary.  Thus the curve
+occupation density is exactly $|b|$, and finite curve ends give exactly
+$-\mu$.  This constructs an optimal local plan.  In the other direction,
+integrating any admissible local plan produces a current, hence a derivation,
+whose norm is bounded by the barycenter.  These are the two cost inequalities.
+
+\section{The local derivation--current correspondence}
+
+Denote by $\mathbf N^q_{1,b}(\X;\m)$ the locally normal one-currents $T$ for
+which
+\[
+ \|T\|=h\m\quad\text{for some }h\in L^q(\m)^+.
+\]
+
+\begin{lemma}[Localized isometric correspondence]\label{lem:local-t}
+The formula
+\[
+ \mathfrak t_{\mathrm{loc}}(b)(f,dg)=\int f\,b(g)\,d\m,
+ \qquad f\in\Lip_{bs}(\X),
+ \tag{4.1}\label{eq:tloc}
+\]
+defines a linear bijection
+\[
+ \mathfrak t_{\mathrm{loc}}:\Der^q_{\mathfrak M}(\X)
+ \longrightarrow \mathbf N^q_{1,b}(\X;\m)
+\]
+satisfying
+\[
+ \|\mathfrak t_{\mathrm{loc}}(b)\|=|b|\m,
+ \qquad
+ \partial\mathfrak t_{\mathrm{loc}}(b)=-\diver b.
+ \tag{4.2}\label{eq:isometry}
+\]
+Moreover, subderivations correspond to subcurrents, cycles correspond to
+cycles, and hence $b$ is acyclic if and only if
+$\mathfrak t_{\mathrm{loc}}(b)$ is acyclic.
+\end{lemma}
+
+\begin{proof}
+The upper mass bound and boundary identity follow directly from weak locality
+and integration by parts:
+\[
+ |\mathfrak t_{\mathrm{loc}}(b)(f,dg)|
+ \leq\int |f|\,|b|\,\operatorname{lip}_a(g)\,d\m,
+ \qquad
+ \partial\mathfrak t_{\mathrm{loc}}(b)(g)
+ =\int b(g)\,d\m=-\int g\,d\diver b.
+\]
+Here one localizes $g$ by a cutoff equal to one near $\supp f$, so
+\eqref{eq:tloc} is meaningful with the local-current test class.
+
+It remains to see that the mass bound is exact and that the map is onto.  Let
+$U$ be bounded and choose $\chi\in\Lip_{bs}(\X)$ with $\chi=1$ on a
+neighborhood of $U$.  Then $\chi b\in\Der^1(\X)\cap\Der^q(\X)$, while
+\[
+ \diver(\chi b)=\chi\diver b+b(\chi)\m
+\]
+is finite.  The finite-mass isometric correspondence in Theorem 4.21 of the
+source~\cite{AIKP} gives
+$\|\mathfrak t(\chi b)\|=|\chi b|\m$.  On $U$ this current agrees with
+$\mathfrak t_{\mathrm{loc}}(b)$, and locality of current mass gives
+\[
+ \|\mathfrak t_{\mathrm{loc}}(b)\|\mathbin{\vrule height 1.4ex depth -0.2ex
+ width .08ex\vrule height .08ex depth 0ex width .7ex}U
+ =|b|\m\mathbin{\vrule height 1.4ex depth -0.2ex width .08ex
+ \vrule height .08ex depth 0ex width .7ex}U.
+\]
+An exhaustion by bounded sets proves the first identity in
+\eqref{eq:isometry}.
+
+Conversely, for $T\in\mathbf N^q_{1,b}(\X;\m)$, multiply $T$ by bounded-
+support cutoffs.  Each resulting finite normal current belongs to the class in
+Theorem 4.21 of~\cite{AIKP}, hence comes from a unique integrable derivation.
+On regions where two cutoffs equal one, injectivity of the finite
+correspondence makes these derivations agree.  They therefore glue to a unique
+$b\in\Der^q_{\mathfrak M}(\X)$ with $T=\mathfrak t_{\mathrm{loc}}(b)$.
+The already proved mass identity yields $|b|\m=\|T\|$, and the boundary
+identity yields $\diver b=-\partial T$.
+
+Finally, the mass identity turns
+$|b-c|+|c|=|b|$ into
+\[
+ \|\mathfrak t_{\mathrm{loc}}(b-c)\|
+ +\|\mathfrak t_{\mathrm{loc}}(c)\|
+ =\|\mathfrak t_{\mathrm{loc}}(b)\|,
+\]
+which is exactly the subcurrent relation.  The boundary identity identifies
+zero-divergence derivations with boundaryless currents.  This proves the last
+claim.
+\end{proof}
+
+\section{Full local-plan duality}
+
+\begin{theorem}[Local-plan completion of Remark 5.13]\label{thm:main}
+Let $(\X,d,\m)$ be any metric measure space in the sense of~\cite{AIKP}, let
+$q\in(1,\infty]$, and let $p$ be conjugate to $q$.  Then, for every
+$\mu\in\mathfrak M(\X)$,
+\[
+ \boxed{\quad
+ \mathsf B_q^{\mathrm{loc}}(\mu)
+ =\mathsf D_q(\mu)
+ =\mathsf F_p(\mu).
+ \quad}
+ \tag{5.1}\label{eq:main}
+\]
+Whenever this value is finite, the infimum defining
+$\mathsf B_q^{\mathrm{loc}}(\mu)$ is attained.  It has a minimizer $\eta$
+concentrated on injective curves and satisfying the no-cancellation identities
+\[
+ \nu_\eta=|b_\mu|\m,
+ \qquad
+ \int_{\Gamma(\X)}\|\partial T_\gamma\|\,d\eta(\gamma)=|\mu|,
+ \tag{5.2}\label{eq:exact}
+\]
+as identities of boundedly-finite measures, where $b_\mu$ is a
+$\mathsf D_q(\mu)$-minimizer.
+\end{theorem}
+
+\begin{proof}
+First let $\eta$ be admissible in \eqref{eq:Bloc}, and put
+$h=\PlanBar(\eta)$.  Integrating the curve currents gives
+\[
+ T_\eta:=\int_{\Gamma(\X)}T_\gamma\,d\eta(\gamma).
+\]
+The occupation identity and the elementary mass estimate for a curve current
+give
+\[
+ \|T_\eta\|\leq\nu_\eta=h\m.
+ \tag{5.3}\label{eq:massbound}
+\]
+The local absolute integrability in \eqref{eq:plan-boundary} permits Fubini's
+theorem for the boundary, so
+\[
+ \partial T_\eta=\beta_\eta=-\mu.
+\]
+Lemma~\ref{lem:local-t} supplies $b_\eta\in\Der^q_{\mathfrak M}(\X)$ with
+$T_\eta=\mathfrak t_{\mathrm{loc}}(b_\eta)$.  Equations
+\eqref{eq:isometry} and \eqref{eq:massbound} imply
+\[
+ \diver b_\eta=\mu,
+ \qquad |b_\eta|\leq h\quad\m\text{-a.e.}
+\]
+Therefore
+\[
+ \mathsf D_q(\mu)\leq\|b_\eta\|_{\Der^q}
+ \leq\|h\|_{L^q(\m)}.
+\]
+Taking the infimum over $\eta$ proves
+$\mathsf D_q(\mu)\leq\mathsf B_q^{\mathrm{loc}}(\mu)$.
+
+Conversely, suppose $\mathsf D_q(\mu)<\infty$.  Theorem 5.9 of~\cite{AIKP}
+provides a minimizer $b_\mu$ and proves that every such minimizer is acyclic.
+Set $T=\mathfrak t_{\mathrm{loc}}(b_\mu)$.  By
+Lemma~\ref{lem:local-t},
+\[
+ \|T\|=|b_\mu|\m,
+ \qquad \partial T=-\mu,
+ \qquad T\text{ is acyclic}.
+ \tag{5.4}\label{eq:Tdata}
+\]
+The metric space $\X$ is Polish, so Theorem 1.4 of
+Ambrosio--Renzi--Vitillaro~\cite{ARV} applies to $T$.  It yields a positive
+Borel measure $\eta$ on $\Gamma(\X)$ such that
+\[
+ T=\int T_\gamma\,d\eta(\gamma),
+ \qquad
+ \|T\|=\int\|T_\gamma\|\,d\eta(\gamma).
+ \tag{5.5}\label{eq:ARVmass}
+\]
+Because $T$ is acyclic, their theorem also says that $\eta$-almost every
+curve is injective and that
+\[
+ \|\partial T\|=int\|\partial T_\gamma\|\,d\eta(\gamma).
+ \tag{5.6}\label{eq:ARVboundary}
+\]
+For an injective locally rectifiable curve, current mass is arclength.
+Combining \eqref{eq:Tdata} and \eqref{eq:ARVmass} therefore gives
+$\nu_\eta=|b_\mu|\m$.  Equation \eqref{eq:ARVboundary} gives the required
+local absolute integrability of the endpoint boundary, and weak integration
+in \eqref{eq:ARVmass} gives
+$\beta_\eta=\partial T=-\mu$.  Hence $\eta$ is admissible and
+\[
+ \mathsf B_q^{\mathrm{loc}}(\mu)
+ \leq\|\PlanBar(\eta)\|_{L^q}
+ =\|b_\mu\|_{\Der^q}
+ =\mathsf D_q(\mu).
+\]
+This proves equality and attainment.  If $\mathsf D_q(\mu)=\infty$, the first
+inequality shows that no finite-cost local plan exists, so equality holds in
+the extended sense.  Finally,
+$\mathsf D_q=\mathsf F_p$ is Theorem 5.9 of~\cite{AIKP}.
+\end{proof}
+
+\section{Endpoint characterization and compatibility}
+
+For the optimal plan in Theorem~\ref{thm:main}, let $\eta_B$ be its restriction
+to curves with two finite endpoints, let $\eta_{BL}$ be the restriction to
+curves with only a finite left endpoint, and let $\eta_{BR}$ be the restriction
+to curves with only a finite right endpoint.  Acyclicity rules out a
+bi-infinite component.  Remark 4.19 of~\cite{ARV}, together with
+$\partial T=-\mu$, gives
+\[
+ (e_0)_\#\eta_B+(e_0)_\#\eta_{BL}=\mu^+,
+ \qquad
+ (e_1)_\#\eta_B+(e_1)_\#\eta_{BR}=\mu^-.
+ \tag{6.1}\label{eq:endpoints}
+\]
+Thus the theorem is not merely a cost identity: it characterizes the positive
+and negative parts of every divergence measure as finite endpoints of a
+no-cancellation family of local curves.  When $\mu$ is finite,
+\[
+ \mu^+(\X)-\mu^-(\X)
+ =\eta_{BL}(\Gamma(\X))-\eta_{BR}(\Gamma(\X)),
+ \tag{6.2}\label{eq:infinity-balance}
+\]
+so the total-mass imbalance is exactly net transport to infinity.
+
+If $\m(\X)<\infty$ and $\mu$ is finite, then
+$L^q(\m)\subseteq L^1(\m)$.  The optimal plan has finite total arclength,
+hence almost every curve has finite length and extends, by completeness, to a
+compact rectifiable curve.  Boundary noncancellation and finiteness of $\mu$
+also make the plan itself finite.  Theorem~\ref{thm:main} then reduces to
+Proposition 5.12 of~\cite{AIKP}.  Thus the local definition is a genuine
+extension rather than a competing normalization.
+
+\section{Sanity checks and edge cases}
+
+\paragraph{Why rays are essential.}
+Take $\X=[0,\infty)$ with Lebesgue measure, $q=\infty$, and
+$b(f)=f'$ almost everywhere.  Then $|b|=1$ and
+\[
+ \int_0^\infty f'(x)\,dx=-f(0),
+\]
+so $\diver b=\delta_0$.  The increasing ray from $0$ to infinity has
+barycenter $1$ and current boundary $-\delta_0$.  Compact curves cannot have a
+single finite endpoint.  The local curve space is therefore indispensable.
+
+\paragraph{The source's non-$L^1$ example.}
+In Remark 5.10 of~\cite{AIKP}, an interval of length $n^2$ carries curve weight
+$n^{-2}$.  The barycenter has squared $L^2$ norm
+$\sum_n n^2n^{-4}=\sum_n n^{-2}<\infty$, while its $L^1$ norm is
+$\sum_n n^2n^{-2}=\infty$.  This local plan consists of compact curves but is
+excluded from the original dynamic-plan class, exactly as expected.
+
+\paragraph{The endpoint $q=\infty$.}
+No global integrability is used.  An $L^\infty$ barycenter is integrable on
+bounded sets because $\m$ is boundedly finite, which is precisely what is
+needed to define the local current and all cutoff arguments.
+
+\section{Verification and novelty status}
+
+The proof was checked against the exact source statements: Theorems 4.21 and
+5.9 and Remark 5.13 of~\cite{AIKP}, and Theorem 1.4 plus Remark 4.19
+of~\cite{ARV}.  Separate audits were made of the current/divergence sign,
+cutoff integrability, the $q=\infty$ endpoint, boundary variation, and mass
+escaping to infinity.  The accompanying script checks the two explicit
+arithmetic/sign examples; it is not used as proof.
+
+A bounded literature search on 13 August 2026 used the arXiv id and exact
+title of the source, the exact future-work phrase, author names, and the terms
+``local dynamic cost'', ``locally rectifiable plan'', ``divergence measure'',
+and ``$L^q$ barycenter''.  It checked arXiv, the authors' publication pages,
+CVGMT, and the journal page for~\cite{ARV}.  No separate paper claiming this
+completion was found; the journal page for~\cite{ARV} listed no citing papers.
+Novelty confidence is \emph{moderate}: the full statement and proof were not
+found, but the source explicitly points to the decisive theorem and calls the
+remaining work ``details''.
+
+The main human-review focus should be Lemma~\ref{lem:local-t}, especially the
+cutoff/gluing passage for the inverse map, and the local absolute-integrability
+condition in Definition 2.1.  No unproved mathematical dependency remains in
+the packet.
+
+\begin{thebibliography}{9}
+\bibitem{AIKP}
+L. Ambrosio, T. Ikonen, D. Lu\v{c}i\'c, and E. Pasqualetto,
+\emph{Metric Sobolev spaces II: dual energies and divergence measures},
+arXiv:2510.12424, 2025.
+
+\bibitem{ARV}
+L. Ambrosio, F. Renzi, and F. Vitillaro,
+\emph{The superposition principle for local 1-dimensional currents},
+Nonlinear Analysis \textbf{262} (2026), 113913;
+arXiv:2503.18157; doi:10.1016/j.na.2025.113913.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,178 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.78in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\RF}{R^{\mathrm F}}
+
+\title{The Bounded-Trajectory Conditioning in Conjecture 3.18 Is Null}
+\author{fa\_banach\_001 / agent\_lane\_00}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+\vspace{-1.1em}
+
+\noindent\textbf{Status: candidate full negative resolution as written.}
+
+\section{The conjecture}
+
+Jorgensen and Pearse define a resistance network to be a connected weighted
+graph with symmetric conductances $c_{zw}\geq0$ and
+$c(z):=\sum_w c_{zw}<\infty$.  Its random walk has transition probabilities
+$p(z,w)=c_{zw}/c(z)$.  Their Conjecture~3.18 asks for the identity
+\begin{equation}\label{eq:source}
+ v_x(y)=\RF(o,x)\,
+ \PP_y\!\left[\tau_x<\tau_o\mid |\gamma|<\infty\right],
+\end{equation}
+where $|\gamma|<\infty$ means that the entire infinite trajectory is
+contained in some finite subnetwork \cite[p.~22, Conj.~3.18]{JP}.
+
+\begin{center}
+\includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section{Proof intuition}
+
+An irreducible walk cannot be trapped forever in a finite portion of an
+infinite connected graph.  From each vertex of a finite set there is a
+positive-probability finite path to the outside.  Finiteness lets us choose
+one common time bound and one common positive lower bound for the chance of
+escape.  Repeating the estimate in time blocks makes eternal survival have
+probability zero.  The event in \eqref{eq:source} is a countable union of
+such null events, so ordinary conditioning on it is undefined.
+
+\section{The null-event theorem}
+
+Let $(X_n)_{n\geq0}$ be the network random walk and, for a vertex set $F$,
+write $\tau_{F^c}:=\inf\{n\geq0:X_n\notin F\}$.
+
+\begin{theorem}\label{thm:null}
+Let $(G,c)$ be an infinite connected resistance network in the sense of
+\cite{JP}.  For every starting vertex $y$ and every finite vertex set $F$,
+\[
+ \PP_y(X_n\in F\text{ for every }n\geq0)=0.
+\]
+Consequently,
+\[
+ \PP_y(|\gamma|<\infty)=0.
+\]
+\end{theorem}
+
+\begin{proof}
+If $y\notin F$, the first assertion is immediate, so suppose $y\in F$.
+For every $z\in F$, connectedness and infinitude give a finite path
+\[
+ z=z^{(z)}_0,z^{(z)}_1,\ldots,z^{(z)}_{\ell_z}
+\]
+whose last vertex is outside $F$ and whose earlier vertices lie in $F$.
+Every edge on this path has positive conductance and hence positive
+transition probability.  Put
+\[
+ L:=\max_{z\in F}\ell_z,
+ \qquad
+ q:=\min_{z\in F}\prod_{j=0}^{\ell_z-1}
+ p\bigl(z^{(z)}_j,z^{(z)}_{j+1}\bigr).
+\]
+The minima and maxima are over a finite set, so $L<\infty$ and $q>0$.
+Starting from any $z\in F$, following the selected path shows
+\[
+ \PP_z(\tau_{F^c}\leq L)\geq q.
+\]
+Applying the Markov property at the deterministic times $L,2L,\ldots$
+therefore yields, for every $m\geq1$,
+\[
+ \PP_y(\tau_{F^c}>mL)\leq(1-q)^m.
+\]
+Letting $m\to\infty$ proves that the walk cannot stay in $F$ forever.
+
+The paper fixes an increasing exhaustion $G=\bigcup_{k\geq1}G_k$ by finite
+subgraphs.  A trajectory has finite range if and only if its range is
+contained in some $G_k$.  Thus
+\[
+ \{|\gamma|<\infty\}
+ =\bigcup_{k\geq1}\{X_n\in G_k\text{ for every }n\geq0\}.
+\]
+Every event on the right is null by the first part, and the union is
+countable.  This proves the second assertion.
+\end{proof}
+
+\begin{corollary}\label{cor:resolution}
+Under the usual definition
+$\PP(A\mid B)=\PP(A\cap B)/\PP(B)$ for $\PP(B)>0$, the right-hand side of
+\eqref{eq:source} is undefined on every infinite resistance network.
+Therefore Conjecture~3.18 is not a valid probabilistic identity as stated.
+The same problem affects every conditional probability
+$\PP_y[\tau_x<\tau_o\mid\gamma\subseteq G_k^{\mathrm F}]$ in the proposed
+equation (3.27).
+\end{corollary}
+
+\begin{proof}
+Theorem~\ref{thm:null} gives zero probability to the conditioning event in
+\eqref{eq:source}.  It also gives zero probability to eternal containment in
+the finite vertex set of each $G_k^{\mathrm F}$.  Both conditional
+probabilities are therefore $0/0$ expressions under ordinary conditioning.
+\end{proof}
+
+\section{What a correct replacement would require}
+
+The finite free-network law $\PP_y^{G_k^{\mathrm F}}$ is a different Markov
+law, not a conditional version of $\PP_y$: deleting outward edges changes a
+boundary transition from $p(z,w)=c_{zw}/c(z)$ to
+\[
+ p_k(z,w)=\frac{c_{zw}}{\sum_{u\in G_k}c_{zu}}.
+\]
+This is exactly the boundary discrepancy noted in Remark~3.19 of the source.
+One may define a meaningful substitute using a specified limit of the laws
+$\PP_y^{G_k^{\mathrm F}}$, a finite-time survival conditioning, a Doob
+transform, or another zero-event regularization.  Such choices need not be
+equivalent, and none is specified in Conjecture~3.18.  The null-event theorem
+therefore resolves the statement as written while leaving open the design and
+analysis of a revised probabilistic representation.
+
+Weihrauch and Bachmann later proved that a different simple hitting-probability
+representation attributed to Corollaries~3.13 and 3.15 of \cite{JP} fails in
+general, and characterized its validity for transient locally finite graphs
+\cite{WB}.  Their result reinforces the need to distinguish finite-network
+laws from the original infinite-network law, but it does not define or repair
+the null conditioning in Conjecture~3.18.
+
+\section*{Verification, novelty, and scope}
+
+The proof uses only connectedness, infinitude, positive transition
+probability along edges, and a countable finite exhaustion; it does not
+require local finiteness, transience, or recurrence.  The uniform escape
+constant is valid even when vertices have infinite degree because only one
+finite path per vertex of $F$ is selected.
+
+The novelty search was bounded to the run's lightweight indexes and web/arXiv
+searches for the source identifier, exact title, ``bounded trajectory'',
+``finite subnetwork'', ``probabilistic representation'', and citations to the
+source paper.  It found \cite{WB}, which explicitly treats a different formula,
+but no later source explicitly addressing Conjecture~3.18's null event.
+Novelty is therefore provisional.  Human review should verify the source
+interpretation and the finite-set escape estimate, and should keep the result
+scoped to ordinary conditioning; a separately specified limiting
+conditioning would constitute a revised problem.
+
+\begin{thebibliography}{9}
+\bibitem{JP}
+P.~E.~T. Jorgensen and E.~P.~J. Pearse,
+\emph{A Hilbert space approach to effective resistance metric},
+Complex Analysis and Operator Theory 4 (2010), 975--1013;
+arXiv:0906.2535v3.
+
+\bibitem{WB}
+T.~Weihrauch and S.~Bachmann,
+\emph{On the Probabilistic Representation of the Free Effective Resistance
+of Infinite Graphs}, Journal of Theoretical Probability 36 (2023),
+1956--1971; arXiv:1902.01110.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,238 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+
+\title{Classification and Ulam stability of the absolute radical equation}
+\author{Candidate full answer to Question 1 of arXiv:2007.01454}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\linewidth}{\textbf{Status.}
+Candidate full answer, likely valid, pending independent expert and novelty
+review.  It classifies all algebraic solutions for every positive integer
+$n$ and proves uniform Hyers--Ulam stability in every real Banach target,
+with an explicit constant.}}
+\end{center}
+
+\section{Question and notation}
+
+Fix $n\in\N$ and nonzero $a,b,c,d\in\R$.  The source asks for the solution
+and Ulam stability of
+\begin{equation}\label{eq:E}
+ f\!\left(\sqrt[n]{\abs{ax^n+by^n}}\right)
+ +f\!\left(\sqrt[n]{\abs{ax^n-by^n}}\right)
+ =cf(x)+df(y),\qquad x,y\in\R.
+\end{equation}
+
+\begin{center}
+\includegraphics[width=0.97\linewidth]{figures/open_question_crop.png}
+\end{center}
+
+Put $A=|a|$ and $B=|b|$.  A mapping $Q:\R\to V$ into a real vector space
+is called quadratic when
+\begin{equation}\label{eq:quadratic}
+ Q(u+v)+Q(u-v)=2Q(u)+2Q(v)\qquad(u,v\in\R).
+\end{equation}
+Equivalently, $Q(t)=S(t,t)$ for a symmetric biadditive map
+$S:\R^2\to V$.  In particular $Q$ is even.
+
+\section{Complete algebraic classification}
+
+\begin{theorem}[All exact solutions]\label{thm:classification}
+Let $V$ be any real vector space.  A function $f:\R\to V$ satisfies
+\eqref{eq:E} if and only if
+\begin{equation}\label{eq:form}
+ f(x)=Q(x^n)+w\qquad(x\in\R),
+\end{equation}
+where $Q:\R\to V$ is quadratic, $w\in V$, and
+\begin{equation}\label{eq:scales}
+ 2Q(At)=cQ(t),\qquad 2Q(Bt)=dQ(t)\qquad(t\in\R),
+\end{equation}
+together with
+\begin{equation}\label{eq:constant}
+ (2-c-d)w=0.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Changing $x$ to $-x$ leaves the unordered pair of the two terms on the
+left of \eqref{eq:E} unchanged: for even $n$ the terms are individually
+unchanged, and for odd $n$ they are interchanged.  Since $c\ne0$, every
+solution is even.  The same conclusion also follows by changing $y$.
+
+For $s\geq0$ set
+\[
+ g(s)=f(s^{1/n}).
+\]
+For $s,t\geq0$, the unordered pair
+$\{\abs{as+bt},\abs{as-bt}\}$ equals
+$\{As+Bt,\abs{As-Bt}\}$.  Thus \eqref{eq:E} becomes
+\begin{equation}\label{eq:g}
+ g(As+Bt)+g(\abs{As-Bt})=cg(s)+dg(t).
+\end{equation}
+Let $w=g(0)$ and $h=g-w$.  Putting $s=t=0$ gives
+\eqref{eq:constant}.  Putting in turn $t=0$ and $s=0$, and using
+\eqref{eq:constant}, gives
+\begin{equation}\label{eq:hscales}
+ 2h(As)=ch(s),\qquad 2h(Bt)=dh(t).
+\end{equation}
+Now substitute $s=u/A$, $t=v/B$ in \eqref{eq:g} and eliminate the two
+right-hand terms using \eqref{eq:hscales}.  One obtains
+\begin{equation}\label{eq:halfquad}
+ h(u+v)+h(\abs{u-v})=2h(u)+2h(v)\qquad(u,v\geq0).
+\end{equation}
+The even extension $Q(r)=h(|r|)$ satisfies \eqref{eq:quadratic}, because
+the unordered pair $\{|x+y|,|x-y|\}$ equals
+$\{|x|+|y|,\,||x|-|y||\}$.  Equation \eqref{eq:hscales} extends by
+evenness to \eqref{eq:scales}.  Finally, evenness of $f$ gives
+$f(x)=Q(x^n)+w$ for every sign of $x$.
+
+Conversely, let \eqref{eq:form}--\eqref{eq:constant} hold.  Evenness of
+$Q$ removes both absolute values, \eqref{eq:quadratic} changes the left
+side into
+$2Q(ax^n)+2Q(by^n)+2w$, and \eqref{eq:scales}--\eqref{eq:constant}
+turn this into the right side of \eqref{eq:E}.
+\end{proof}
+
+\begin{corollary}[Continuous solutions]\label{cor:continuous}
+If $V$ is a real topological vector space and $f$ is continuous, then
+\[
+ f(x)=x^{2n}v+w
+\]
+for $v,w\in V$ satisfying
+\[
+ (2A^2-c)v=(2B^2-d)v=(2-c-d)w=0.
+\]
+In a real Banach space, the same conclusion follows from any standard
+regularity assumption forcing a quadratic Cauchy map to be continuous.
+\end{corollary}
+
+\begin{proof}
+The quadratic map in Theorem~\ref{thm:classification} is continuous and
+hence $Q(t)=t^2Q(1)$.  Substitute this into \eqref{eq:scales}.
+\end{proof}
+
+\section{Uniform Hyers--Ulam stability}
+
+For a map $f:\R\to Y$, define its defect $D_f(x,y)$ as the left side of
+\eqref{eq:E} minus $cf(x)+df(y)$.
+
+\begin{theorem}[Explicit Ulam bound]\label{thm:stability}
+Let $Y$ be a real Banach space and suppose
+\begin{equation}\label{eq:defect}
+ \norm{D_f(x,y)}\leq\varepsilon\qquad(x,y\in\R).
+\end{equation}
+Put $M=\max\{|c|,|d|\}$.  There is an exact solution
+$F(x)=Q(x^n)+w$ of \eqref{eq:E} such that
+\begin{equation}\label{eq:bound}
+ \sup_{x\in\R}\norm{f(x)-F(x)}
+ \leq \frac{4}{3}\varepsilon+\frac{2}{M}\varepsilon
+ +\begin{cases}
+ 0,&c+d=2,\\[2pt]
+ \displaystyle\frac{\varepsilon}{|2-c-d|},&c+d\ne2.
+ \end{cases}
+\end{equation}
+One can take $w=f(0)$ in the resonant case $c+d=2$, and $w=0$ otherwise.
+The quadratic part is explicitly
+\begin{equation}\label{eq:limit}
+ Q(t)=\lim_{k\to\infty}4^{-k}
+ \left[f\!\left((2^k|t|)^{1/n}\right)-f(0)\right].
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+As in the exact proof, changing one sign leaves the radical sum unchanged.
+Comparing the two defects gives
+\begin{equation}\label{eq:evenerror}
+ \norm{f(x)-f(-x)}\leq\frac{2\varepsilon}{M}.
+\end{equation}
+Define $g(s)=f(s^{1/n})$ for $s\geq0$, put $g_0=g(0)$ and
+$h=g-g_0$.  The transformed defect is
+\begin{equation}\label{eq:Eg}
+ E(s,t)=g(As+Bt)+g(|As-Bt|)-cg(s)-dg(t),\qquad
+ \norm{E(s,t)}\leq\varepsilon.
+\end{equation}
+For $u,v\geq0$ set
+\[
+ R_A(u)=E(u/A,0),\quad R_B(v)=E(0,v/B),\quad R_0=E(0,0).
+\]
+Direct cancellation gives the key identity
+\begin{align}\label{eq:keyidentity}
+ &h(u+v)+h(|u-v|)-2h(u)-2h(v)\\
+ &\hspace{35mm}=E(u/A,v/B)-R_A(u)-R_B(v)+R_0.\nonumber
+\end{align}
+Hence the norm of the left side is at most $4\varepsilon$.
+
+Extend $h$ evenly to $H:\R\to Y$ by $H(t)=h(|t|)$.  Then $H(0)=0$ and
+\[
+ \norm{H(x+y)+H(x-y)-2H(x)-2H(y)}\leq4\varepsilon.
+\]
+Putting $y=x$ shows that $4^{-k}H(2^kt)$ is Cauchy.  Its limit is the
+$Q$ in \eqref{eq:limit}; the telescoping series gives
+\begin{equation}\label{eq:quadbound}
+ \norm{H(t)-Q(t)}
+ \leq\sum_{k=0}^{\infty}\frac{4\varepsilon}{4^{k+1}}
+ =\frac{4}{3}\varepsilon.
+\end{equation}
+Dividing the approximate quadratic identity at $(2^kx,2^ky)$ by $4^k$
+and passing to the limit proves that $Q$ is exactly quadratic.
+
+The one-variable defects in \eqref{eq:Eg} also give
+\[
+ \norm{2h(As)-ch(s)}\leq2\varepsilon,\qquad
+ \norm{2h(Bs)-dh(s)}\leq2\varepsilon.
+\]
+Apply these at $2^ks$, divide by $4^k$, and pass to the limit.  Thus $Q$
+satisfies the exact scaling laws \eqref{eq:scales}.
+
+If $c+d=2$, choose $w=g_0$.  Otherwise choose $w=0$; since
+$\norm{(2-c-d)g_0}\leq\varepsilon$, we have
+$\norm{g_0-w}\leq\varepsilon/|2-c-d|$.  Theorem~\ref{thm:classification}
+shows that $F(x)=Q(x^n)+w$ is exact.  For $x\geq0$, the asserted distance
+follows from \eqref{eq:quadbound} and the bound on $g_0-w$; for $x<0$ add
+\eqref{eq:evenerror}.  This is exactly \eqref{eq:bound}.
+\end{proof}
+
+\section{Scope and novelty status}
+
+Theorem~\ref{thm:classification} is algebraic and retains all discontinuous
+quadratic solutions.  Theorem~\ref{thm:stability} answers the canonical
+uniform Hyers--Ulam problem in Banach targets for every $n$ and every
+nonzero parameter quadruple, including the resonant constant family when
+$c+d=2$.  Generalized Rassias controls and quasi-$(2,\beta)$ targets are
+separate refinements, not needed for the stated uniform result.
+
+Exact-equation, absolute-radical, title, parameter, and Ulam-stability
+searches through 11 August 2026 found adjacent radical quadratic/quartic
+stability papers but no later source giving this all-$n$ classification and
+uniform theorem.  The packet should therefore be treated as a candidate new
+result until an expert completes a citation audit.
+
+\begin{thebibliography}{9}
+\bibitem{ELF}
+I.~El-Fassi,
+\emph{A new fixed point approach to hyperstability of radical-type
+functional equations in quasi-$(2,\beta)$-Banach spaces},
+arXiv:2007.01454v1, 2020.
+
+\bibitem{AD}
+J.~Acz\'{e}l and J.~Dhombres,
+\emph{Functional Equations in Several Variables}, Cambridge University
+Press, 1989.
+\end{thebibliography}
+
+\end{document}

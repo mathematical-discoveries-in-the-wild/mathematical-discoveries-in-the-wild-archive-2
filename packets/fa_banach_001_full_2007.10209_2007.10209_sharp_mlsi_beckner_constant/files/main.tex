@@ -1,0 +1,230 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\E}{\mathcal E}
+\newcommand{\Ent}{\operatorname{Ent}}
+\newcommand{\R}{\mathbb R}
+
+\title{The Sharp Universal Constant in the Modified Log-Sobolev--Beckner Comparison}
+\author{Candidate full solution for arXiv:2007.10209}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{\textbf{Status.} Candidate full proof, likely valid, pending human review. Under Assumption~1 of the source, the optimal universal constant is exactly $K_p^{\mathrm{opt}}=1/2$ for every $p\in(1,2]$.}}
+\end{center}
+
+\section{Source and answer}
+
+R. Adamczak, B. Polaczyk, and M. Strzelecki,
+\emph{Modified log-Sobolev inequalities, Beckner inequalities and moment
+estimates}, arXiv:2007.10209 \cite{source}, ask for the best universal
+constant $K_p^{\mathrm{opt}}$ in the implication
+\[
+ \rho_0\Ent_\mu(f)\leq \E(f,\log f)
+ \quad\Longrightarrow\quad
+ \alpha_p\bigl(\mu(f^p)-\mu(f)^p\bigr)
+ \leq \frac p2\E(f,f^{p-1}),
+ \qquad \alpha_p\geq K_p^{\mathrm{opt}}\rho_0.
+\]
+Their setting is a probability space with a symmetric nonnegative bilinear
+form satisfying their Assumption~1: contractions preserve its domain, and
+pointwise comparison of products of increments implies comparison of the
+corresponding energies.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_question_crop.png}
+  \caption{The exact open question in the source, PDF page 12.}
+\end{figure}
+
+The answer is independent of $p$.
+
+\section{Proof intuition}
+Power entropy is a positive Stieltjes mixture of logarithmic entropies of
+the shifts $f+s$.  Applying mLSI to every shift and integrating converts the
+entropy side exactly into $\mu(f^p)-\mu(f)^p$ and the energy side exactly
+into $\frac p2\mathcal E(f,f^{p-1})$, giving the universal factor $1/2$.
+The symmetric two-point form attains that ratio, so no larger universal
+constant is possible.
+
+\begin{theorem}\label{thm:main}
+In the abstract setting of the source, for every $p\in(1,2]$,
+\[
+ \alpha_p^{\mathrm{opt}}\geq \frac{\rho_0^{\mathrm{opt}}}{2}.
+\]
+The factor $1/2$ is attained by the symmetric two-point space. Consequently,
+\[
+ \boxed{K_p^{\mathrm{opt}}=\frac12\qquad(1<p\leq2).}
+\]
+\end{theorem}
+
+\section{A positive mixture of shifted logarithmic entropies}
+
+Fix $1<p<2$, put $r=p-1\in(0,1)$, and define
+\[
+ C_p=\frac{\pi}{p(p-1)\sin(\pi(p-1))}.
+\]
+The elementary Stieltjes identity
+\begin{equation}\label{eq:stieltjes}
+ \int_0^\infty \frac{s^{p-2}}{x+s}\,ds
+ =\frac{\pi x^{p-2}}{\sin(\pi(p-1))},\qquad x>0,
+\end{equation}
+is the main point. For $\phi_s(x)=(x+s)\log(x+s)$, integrate the Bregman
+remainder of $\phi_s$ and use \eqref{eq:stieltjes} twice. For all $x,m\geq0$,
+\begin{align}
+ &\int_0^\infty s^{p-2}
+ \bigl[\phi_s(x)-\phi_s(m)-\phi_s'(m)(x-m)\bigr],ds \notag\\
+ &\hspace{35mm}=C_p\bigl[x^p-m^p-pm^{p-1}(x-m)\bigr].
+ \label{eq:bregman}
+\end{align}
+Thus, for every bounded nonnegative $f$,
+\begin{equation}\label{eq:entropy-mixture}
+ \int_0^\infty s^{p-2}\Ent_\mu(f+s)\,ds
+ =C_p\bigl[\mu(f^p)-\mu(f)^p\bigr].
+\end{equation}
+All integrands in \eqref{eq:bregman} are nonnegative, so Tonelli's theorem
+applies without subtracting divergent affine terms.
+
+The companion identity, obtained by integrating \eqref{eq:stieltjes} from
+$b$ to $a$, is
+\begin{equation}\label{eq:log-mixture}
+ \int_0^\infty s^{p-2}\bigl[\log(a+s)-\log(b+s)\bigr],ds
+ =pC_p\bigl(a^{p-1}-b^{p-1}\bigr)
+\end{equation}
+for $a,b\geq0$, with the boundary cases understood by monotone limits.
+
+\section{Integrating mLSI}
+
+Let $f$ be bounded and nonnegative, with $f,f^{p-1}\in\operatorname{Dom}(\E)$.
+For each $s>0$, the shifted function $f+s$ belongs to the domain. Also
+$\log(f+s)$ belongs to it: on the range of $f$, this logarithm is Lipschitz,
+and a scaled Lipschitz extension is a contraction. Hence mLSI gives
+\begin{equation}\label{eq:shifted-mlsi}
+ \rho_0\Ent_\mu(f+s)\leq \E(f,\log(f+s)).
+\end{equation}
+
+We record the minor domain point behind integrating \eqref{eq:shifted-mlsi}.
+For $0<\varepsilon<R<\infty$, set
+\[
+ H_{\varepsilon,R}(x)=\int_\varepsilon^R
+ s^{p-2}\log(x+s)\,ds.
+\]
+This function is Lipschitz on the range of $f$, so
+$H_{\varepsilon,R}(f)\in\operatorname{Dom}(\E)$. Positive Riemann sums of
+\eqref{eq:shifted-mlsi} converge to
+\[
+ \rho_0\int_\varepsilon^R s^{p-2}\Ent_\mu(f+s)\,ds
+ \leq \E(f,H_{\varepsilon,R}(f)).
+\]
+This passage does not require an unstated continuity of $\E$: the derivatives
+of the Riemann-sum kernels converge uniformly on the bounded range of $f$,
+and Assumption~1 squeezes their energies between $(1\pm o(1))$ times the
+energy of $H_{\varepsilon,R}$.
+
+For every $a,b\geq0$, positivity and \eqref{eq:log-mixture} give
+\begin{align*}
+ &(a-b)\bigl(H_{\varepsilon,R}(a)-H_{\varepsilon,R}(b)\bigr)\\
+ &\quad\leq pC_p(a-b)(a^{p-1}-b^{p-1}).
+\end{align*}
+The pointwise-comparison clause of Assumption~1 therefore yields
+\[
+ \E(f,H_{\varepsilon,R}(f))
+ \leq pC_p\E(f,f^{p-1}).
+\]
+Letting $\varepsilon\downarrow0$ and $R\uparrow\infty$, monotone convergence
+and \eqref{eq:entropy-mixture} imply
+\begin{equation}\label{eq:sharp-implication}
+ \rho_0\bigl[\mu(f^p)-\mu(f)^p\bigr]
+ \leq p\E(f,f^{p-1}).
+\end{equation}
+Comparing \eqref{eq:sharp-implication} with the source's normalization of the
+Beckner inequality gives $\alpha_p\geq\rho_0/2$.
+
+The bounded restriction is harmless: the source's truncation lemma extends a
+Beckner inequality proved for bounded functions, with the same constant, to
+all functions in its stated domain. At $p=2$, the conclusion follows by
+linearizing mLSI at $f=1$: $\rho_0\operatorname{Var}_\mu(g)/2\leq\E(g,g)$.
+This proves the lower bound in Theorem~\ref{thm:main}.
+
+\section{Sharpness on two points}
+
+Let $\mathcal X=\{0,1\}$, let $\mu$ be uniform, and for $\gamma>0$ define
+\[
+ \E_\gamma(u,v)=\gamma\,[u(1)-u(0)][v(1)-v(0)].
+\]
+This form satisfies Assumption~1. We compute both optimal constants.
+
+By homogeneity, write the two values of a positive function as
+$m(1+x),m(1-x)$, where $|x|<1$. Then
+\begin{align*}
+ \Ent_\mu(f)
+ &=m\sum_{n\geq1}\frac{x^{2n}}{2n(2n-1)},\\
+ \E_\gamma(f,\log f)
+ &=4\gamma m\sum_{n\geq1}\frac{x^{2n}}{2n-1}
+ \geq 8\gamma\Ent_\mu(f).
+\end{align*}
+The ratio tends to $8\gamma$ as $x\to0$, hence
+$\rho_0^{\mathrm{opt}}=8\gamma$.
+
+For the power entropy put
+\[
+ D_p(x)=\frac{(1+x)^p+(1-x)^p}{2}-1
+ =\sum_{n\geq1}\binom p{2n}x^{2n}.
+\]
+All displayed coefficients are nonnegative for $1<p\leq2$, and therefore
+$xD_p'(x)\geq2D_p(x)$. Since
+\[
+ \E_\gamma(f,f^{p-1})
+ =2\gamma m^p x\bigl[(1+x)^{p-1}-(1-x)^{p-1}\bigr],
+\]
+the preceding inequality is exactly
+\[
+ 4\gamma\bigl[\mu(f^p)-\mu(f)^p\bigr]
+ \leq \frac p2\E_\gamma(f,f^{p-1}).
+\]
+Again the ratio tends to equality as $x\to0$, so
+$\alpha_p^{\mathrm{opt}}=4\gamma$. Thus
+$\alpha_p^{\mathrm{opt}}/\rho_0^{\mathrm{opt}}=1/2$, proving sharpness.
+
+\section{Verification and novelty scope}
+
+\begin{enumerate}[leftmargin=*,itemsep=0.35em]
+ \item The Stieltjes constants were checked both by differentiation and by
+ numerical quadrature at several non-endpoint values of $p$.
+ \item The proof uses only the source's Assumption~1; no Markov generator,
+ closedness, chain rule, or integral representation of $\E$ is added.
+ \item The finite-mixture argument explicitly avoids assuming continuity of
+ the abstract bilinear form.
+ \item The endpoints, the source's domain condition on $f^{p-1}$, and exact
+ normalization factors were checked separately.
+\end{enumerate}
+
+The local run indexes were searched for the arXiv identifier, exact question,
+``best constants'', and the mLSI--Beckner comparison. A bounded external
+search on 11 August 2026 used the exact question and Stieltjes-mixture terms.
+It found the source and related work on power entropies and curvature, but no
+explicit solution of this sharp universal-constant question. This is not an
+exhaustive MathSciNet or citation-graph review, so originality remains a
+candidate claim pending expert checking.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+R. Adamczak, B. Polaczyk, and M. Strzelecki,
+\newblock Modified log-Sobolev inequalities, Beckner inequalities and moment
+estimates,
+\newblock \emph{J. Funct. Anal.} 282 (2022), 109349;
+arXiv:2007.10209,
+\href{https://doi.org/10.1016/j.jfa.2021.109349}{doi:10.1016/j.jfa.2021.109349}.
+\end{thebibliography}
+
+\end{document}

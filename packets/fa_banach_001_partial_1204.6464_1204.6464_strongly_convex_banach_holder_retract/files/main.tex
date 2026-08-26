@@ -1,0 +1,254 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Fix}{\operatorname{Fix}}
+\newcommand{\E}{\mathcal E}
+\newcommand{\Q}{\mathcal Q}
+
+\title{H\"older Fixed-Point Retractions from Strong Convexity}
+\author{Run fa\_banach\_001, agent\_lane\_01}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status and source question}
+
+This is a \texttt{candidate\_partial\_likely\_valid} result for the final
+problem in Andrzej Wi\'snicki, \emph{H\"older continuous retractions and
+amenable semigroups of uniformly Lipschitzian mappings in Hilbert spaces},
+arXiv:1204.6464 \cite{Wisnicki}.  The source recalls the Goebel--Kirk theorem:
+if $X$ is uniformly convex, $C\subset X$ is bounded, closed, and convex,
+$T:C\to C$ is uniformly $k$-Lipschitzian, and
+\[
+ k\bigl(1-\delta_X(1/k)\bigr)<1,
+\]
+then $T$ has a fixed point.  On PDF page~6 it asks whether the fixed-point
+set is a Lipschitz or H\"older retract.  The displayed problem writes
+$\Fix\mathcal S$ although the referenced theorem concerns one map; the
+surrounding discussion makes $\Fix T$ the natural single-map reading.
+
+\begin{center}
+\includegraphics[width=0.98\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+The arbitrary uniformly convex case is not settled here.  We prove a
+quantitative strong-convexity criterion and obtain a genuine non-Hilbert
+subcase in $L^p$, $3/2<p<2$.
+
+\section*{Strong convexity and proof intuition}
+
+Assume that $X$ is reflexive and that for some $c\in(0,1]$ and every $v\in X$
+there is $j(v)\in X^*$ such that
+\begin{equation}\label{eq:sc}
+ \|u\|^2\ge \|v\|^2+2\langle j(v),u-v\rangle+c\|u-v\|^2
+ \qquad(u\in X).
+\end{equation}
+This says that the squared norm has Bregman strong-convexity constant $c$.
+In a Hilbert space $c=1$ and \eqref{eq:sc} is the variance identity with a
+nonnegative remainder.  In $L^p$, $1<p\le2$, one may take $c=p-1$ by the
+sharp Ball--Carlen--Lieb inequality \cite{BCL}.
+
+For a left amenable semigroup, average an orbit using an invariant mean and
+call its vector barycenter $Lx$.  Unlike an asymptotic-center map, $L$ is
+automatically $k$-Lipschitz.  Inequality \eqref{eq:sc} replaces the exact
+Hilbert variance identity and proves that the variance about the next
+barycenter contracts by
+\[
+ \rho=\frac{k^2-c}{c}.
+\]
+When $k^2<2c$, the iterates of $L$ have geometrically decaying increments.
+Their uniform limit is H\"older because $L^n$ is $k^n$-Lipschitz.
+
+\section*{Main partial theorem}
+
+\begin{theorem}[strongly convex amenable actions]\label{thm:main}
+Let $X$ be a reflexive Banach space satisfying \eqref{eq:sc}, let $C$ be a
+nonempty bounded closed convex subset of $X$, and let $S$ be a discrete left
+amenable semigroup.  Suppose
+$\mathcal S=\{T_s:s\in S\}$ acts on $C$, with
+$T_{st}=T_sT_t$, and is uniformly $k$-Lipschitzian:
+\[
+ \|T_sx-T_sy\|\le k\|x-y\|
+ \qquad(s\in S,\ x,y\in C).
+\]
+If $k^2<2c$, then the common fixed-point set
+\[
+ \Fix\mathcal S=\{x\in C:T_sx=x\text{ for every }s\in S\}
+\]
+is nonempty and is a H\"older continuous retract of $C$.
+\end{theorem}
+
+\begin{proof}
+Let $\mu$ be a left invariant mean on $\ell^\infty(S)$.  Reflexivity and the
+Riesz-style barycenter construction used in \cite{Wisnicki} define $Lx\in C$
+by
+\begin{equation}\label{eq:L}
+ \langle Lx,x^*\rangle
+ =\mu_t\langle T_tx,x^*\rangle\qquad(x^*\in X^*).
+\end{equation}
+Indeed $Lx$ lies in the weakly closed convex hull of the orbit.  Moreover,
+duality immediately gives
+\begin{equation}\label{eq:Llip}
+ \|Lx-Ly\|\le k\|x-y\|.
+\end{equation}
+
+Set
+\[
+ \Q(x)=\mu_t\|T_tx-Lx\|^2,
+ \qquad
+ \E(x)=\mu_t\|T_tx-x\|^2.
+\]
+Fix $s\in S$.  Apply \eqref{eq:sc} with
+\[
+ u=T_{st}x-T_sLx,
+ \qquad v=Lx-T_sLx,
+\]
+and then take the mean in $t$.  Left invariance makes the barycenter of
+$(T_{st}x)_t$ equal to $Lx$, so the linear term has mean zero and
+$\mu_t\|T_{st}x-Lx\|^2=\Q(x)$.  The Lipschitz bound for $T_s$ therefore gives
+\begin{align}
+ \|T_sLx-Lx\|^2+c\Q(x)
+ &\le \mu_t\|T_{st}x-T_sLx\|^2 \\
+ &\le k^2\mu_t\|T_tx-Lx\|^2=k^2\Q(x).
+\end{align}
+Taking the mean in $s$ yields
+\begin{equation}\label{eq:Ebound}
+ \E(Lx)\le(k^2-c)\Q(x).
+\end{equation}
+
+Apply \eqref{eq:sc} once more to the orbit $(T_sLx)_s$, whose barycenter is
+$L^2x$, now with reference point $Lx$.  Again the linear term vanishes:
+\begin{equation}\label{eq:secondvariance}
+ \E(Lx)\ge \|L^2x-Lx\|^2+c\Q(Lx).
+\end{equation}
+Combining \eqref{eq:Ebound} and \eqref{eq:secondvariance} gives
+\begin{equation}\label{eq:Qcontract}
+ \Q(Lx)\le\rho\Q(x),
+ \qquad \rho=\frac{k^2-c}{c}<1.
+\end{equation}
+The case $\rho=0$ makes $Lx$ fixed after one step and is immediate, so assume
+$0<\rho<1$.
+
+Write $x_m=L^mx$ and $D=\operatorname{diam}C$.  Jensen's inequality for the
+mean, \eqref{eq:Ebound}, and \eqref{eq:Qcontract} show, for $m\ge1$, that
+\begin{align}
+ \|x_{m+1}-x_m\|^2
+ &\le \E(x_m)=\E(Lx_{m-1}) \\
+ &\le(k^2-c)\Q(x_{m-1})
+ \le(k^2-c)\rho^{m-1}D^2.\label{eq:increments}
+\end{align}
+Thus $L^mx$ converges uniformly in $x$ to a map $Rx\in C$.
+
+Put $\gamma=\sqrt\rho$.  From \eqref{eq:increments}, the tail after the
+$n$-th iterate is $O(\gamma^n)$, while \eqref{eq:Llip} gives
+$\|L^nx-L^ny\|\le k^n\|x-y\|$.  Balancing these two bounds proves that $R$
+is H\"older.  Explicitly, for $k>1$ one may take
+\begin{equation}\label{eq:alpha}
+ \alpha=\frac{\log(1/\gamma)}{\log k+\log(1/\gamma)}\in(0,1),
+\end{equation}
+and when $k=1$, the uniform limit is nonexpansive.
+
+It remains to identify the range.  From \eqref{eq:Ebound} and
+\eqref{eq:Qcontract}, $\E(x_m)\to0$.  For every $t$,
+\[
+ \|T_tRx-Rx\|^2
+ \le3k^2\|Rx-x_m\|^2+3\|T_tx_m-x_m\|^2
+       +3\|x_m-Rx\|^2.
+\]
+Taking the mean and then letting $m\to\infty$ gives $\E(Rx)=0$.  For fixed
+$s\in S$, the triangle inequality and left invariance give
+\begin{align*}
+ \|T_sRx-Rx\|^2
+ &\le2\mu_t\|T_sRx-T_tRx\|^2+2\E(Rx)\\
+ &=2\mu_t\|T_sRx-T_{st}Rx\|^2+2\E(Rx)\\
+ &\le2(k^2+1)\E(Rx)=0.
+\end{align*}
+Hence $Rx\in\Fix\mathcal S$.  If $x\in\Fix\mathcal S$, then \eqref{eq:L}
+gives $Lx=x$, and consequently $Rx=x$.  Thus $R$ is the asserted retraction.
+\end{proof}
+
+\begin{corollary}[$L^p$ subcase]\label{cor:lp}
+Let $3/2<p\le2$, let $C$ be a nonempty bounded closed convex subset of a real
+$L^p$ space, and let a discrete left amenable semigroup act on $C$ by
+uniformly $k$-Lipschitzian maps.  If
+\[
+ k<\sqrt{2(p-1)},
+\]
+then its common fixed-point set is a H\"older retract of $C$.  In particular,
+the same conclusion holds for the fixed-point set of one uniformly
+$k$-Lipschitzian map, by applying the result to its power semigroup.
+\end{corollary}
+
+\begin{proof}
+For $1<p\le2$, the Ball--Carlen--Lieb inequality says
+\[
+ \frac{\|a+b\|_p^2+\|a-b\|_p^2}{2}
+ \ge \|a\|_p^2+(p-1)\|b\|_p^2.
+\]
+Equivalently, $x\mapsto\|x\|_p^2$ is strongly convex.  Passing from the
+midpoint inequality to the standard two-point inequality and differentiating
+at one endpoint gives \eqref{eq:sc} with $c=p-1$.  Theorem~\ref{thm:main}
+applies.  The strict range is nonempty for $k\ge1$ precisely when $p>3/2$.
+\end{proof}
+
+\section*{Scope, verification, and remaining obstruction}
+
+Corollary~\ref{cor:lp} gives a non-Hilbert family of affirmative cases.  For
+the source's exact formulation, one may additionally impose its Goebel--Kirk
+inequality; Theorem~\ref{thm:main} itself does not need that separate fixed
+point criterion.
+
+The full problem for arbitrary uniformly convex spaces remains open in this
+packet.  The published asymptotic-center construction gives geometric convergence, but its
+continuity is governed by $\delta_X^{-1}$ near zero.  A uniformly convex norm
+need not have a power-type modulus, so that argument does not automatically
+give a H\"older exponent.  The invariant-mean method above instead stops at
+$k^2=2c$.  No claim is made that this threshold is sharp.
+
+The included regression script checks the Ball--Carlen--Lieb midpoint
+inequality on randomized finite-dimensional $\ell^p$ vectors and audits the
+sign of $\rho$ throughout sampled admissible ranges.  It is not used as proof.
+
+Eight focused attempts are recorded in the accompanying attempt note.
+Bounded run-index and web/arXiv searches on 17 August 2026 used the exact
+source problem, the paper title and author, and the phrases \emph{uniformly
+Lipschitzian fixed point H\"older retract}, \emph{$L^p$ H\"older retract},
+and \emph{invariant mean strong convexity uniformly Lipschitzian}.  They found
+continuous-retract results, the Hilbert theorem, and asymptotically regular
+variants, but no explicit statement of this criterion.  Novelty confidence is
+moderate pending specialist review.
+
+\paragraph{Human-review recommendation.}
+Check the passage from the Ball--Carlen--Lieb midpoint inequality to
+\eqref{eq:sc}, and the use of a finitely additive invariant mean in the two
+strong-convexity averages.  Also search the nonlinear ergodic literature for
+an equivalent variance-contraction criterion.
+
+\begin{thebibliography}{9}
+\bibitem{Wisnicki}
+A.~Wi\'snicki,
+\emph{H\"older continuous retractions and amenable semigroups of uniformly
+Lipschitzian mappings in Hilbert spaces},
+Topol. Methods Nonlinear Anal. 43 (2014), 89--96; arXiv:1204.6464.
+
+\bibitem{BCL}
+K.~Ball, E.~A.~Carlen, and E.~H.~Lieb,
+\emph{Sharp uniform convexity and smoothness inequalities for trace norms},
+Invent. Math. 115 (1994), 463--482.
+
+\bibitem{SedlakWisnicki}
+E.~S\k{e}dlak and A.~Wi\'snicki,
+\emph{On the structure of fixed-point sets of uniformly Lipschitzian
+mappings}, Topol. Methods Nonlinear Anal. 30 (2007), 345--350.
+\end{thebibliography}
+
+\end{document}

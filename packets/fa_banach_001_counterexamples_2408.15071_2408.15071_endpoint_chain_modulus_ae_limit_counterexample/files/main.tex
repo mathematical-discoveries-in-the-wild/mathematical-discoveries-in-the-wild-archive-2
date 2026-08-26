@@ -1,0 +1,148 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Mod}{\operatorname{Mod}}
+
+\title{Endpoint weak chain upper gradients are not stable\\under almost-everywhere limits}
+\author{Autonomous counterexample packet for arXiv:2408.15071}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Caputo--Cavallucci ask whether their almost-everywhere limit stability
+proposition for weak chain upper gradients remains true for the
+asymmetric endpoint integrals $\lambda=0,1$.  It does not.  On the real
+line, change the a.e. limit representative at the single endpoint $0$.
+For $\lambda=1$, all one-edge chains $(x,0)$ detect that change, and
+their endpoint modulus is infinite because admissibility forces
+$\rho(x)\ge1/|x|$.  Reversing the construction gives the same negative
+answer for $\lambda=0$.
+\end{abstract}
+
+\section{The endpoint question}
+
+Fix $p\ge1$ and $\varepsilon>0$.  For a chain
+$\mathsf c=(q_0,\ldots,q_N)$, the source defines
+\[
+ \int_{\mathsf c}^{\lambda}g
+ =\sum_{i=0}^{N-1}
+   \bigl(\lambda g(q_i)+(1-\lambda)g(q_{i+1})\bigr)
+   d(q_i,q_{i+1}).
+\]
+Thus $\lambda=1$ samples the left endpoint of each edge, while
+$\lambda=0$ samples the right endpoint.  A Borel $g\ge0$ is a weak
+$(\varepsilon,\lambda)$-upper gradient of $u$ when
+\[
+ u(q_N)-u(q_0)\le\int_{\mathsf c}^{\lambda}g
+\]
+outside a family of chains of $(\varepsilon,\lambda,p)$-modulus zero.
+
+Proposition 5.9 proves, for the symmetric integral, that if
+$u_j\to u$ pointwise a.e., $g_j$ are weak upper gradients of $u_j$, and
+$g_j\to g$ in $L^p$, then $g$ is a weak upper gradient of $u$.  The
+source says it does not know whether this remains true at $\lambda=1$
+(and treats $\lambda=0$ as analogous):
+
+\begin{center}
+\includegraphics[width=.94\textwidth]{figures/open_question_crop.png}
+\end{center}
+
+\section{A modulus calculation}
+
+Let $X=\R$ with Euclidean distance and Lebesgue measure, and put
+$r=\min\{\varepsilon/2,1\}$.  For $0<|x|<r$, let
+\[
+ \mathsf c_x^+=(x,0),\qquad
+ \mathsf c_x^-=(0,x).
+\]
+Both are $\varepsilon$-chains.  Define
+$\Gamma_+=\{\mathsf c_x^+:0<|x|<r\}$ and
+$\Gamma_-=\{\mathsf c_x^-:0<|x|<r\}$.
+
+\begin{theorem}\label{thm:modulus}
+For every $p\ge1$,
+\[
+ \Mod^{\varepsilon,1}_p(\Gamma_+)=\infty,
+ \qquad
+ \Mod^{\varepsilon,0}_p(\Gamma_-)=\infty.
+\]
+\end{theorem}
+
+\begin{proof}
+If $\rho$ is admissible for $\Gamma_+$ at $\lambda=1$, then for every
+$0<|x|<r$,
+\[
+ 1\le\int_{\mathsf c_x^+}^{1}\rho=\rho(x)|x|.
+\]
+Hence $\rho(x)\ge |x|^{-1}$ throughout the punctured interval, and
+\[
+ \int_{\R}\rho^p\,dx
+ \ge2\int_0^r x^{-p}\,dx=\infty.
+\]
+Every admissible function therefore has infinite $L^p$ cost, proving
+the first equality.  For $\Gamma_-$ at $\lambda=0$ the sampled endpoint
+is again $x$, so
+$\int_{\mathsf c_x^-}^{0}\rho=\rho(x)|x|$ and the same proof applies.
+\end{proof}
+
+\section{Counterexamples to limit stability}
+
+\begin{theorem}\label{thm:counterexample}
+The endpoint analogues of Proposition 5.9 fail on $\R$ for every
+$p\ge1$ and every $\varepsilon>0$, both for $\lambda=1$ and for
+$\lambda=0$.
+\end{theorem}
+
+\begin{proof}
+For $\lambda=1$, take
+\[
+ u_j\equiv0,\qquad g_j\equiv0,
+ \qquad u=\mathbf1_{\{0\}},\qquad g\equiv0.
+\]
+Then $u_j\to u$ pointwise Lebesgue-a.e. and $g_j\to g$ in $L^p$.
+Because every $u_j$ is constant, $g_j=0$ satisfies the endpoint upper
+gradient inequality on every chain.  However, for each
+$\mathsf c_x^+=(x,0)\in\Gamma_+$,
+\[
+ u(0)-u(x)=1>0=\int_{\mathsf c_x^+}^{1}g.
+\]
+The whole family $\Gamma_+$ is a failure family and has infinite
+modulus by Theorem~\ref{thm:modulus}; it cannot be discarded.  Thus
+$g\notin\mathrm{WUG}^{\varepsilon,1}_p(u)$.
+
+For $\lambda=0$, instead take $u=-\mathbf1_{\{0\}}$ while keeping
+$u_j=g_j=g=0$.  Along every $\mathsf c_x^-=(0,x)\in\Gamma_-$,
+\[
+ u(x)-u(0)=1>0=\int_{\mathsf c_x^-}^{0}g.
+\]
+Again Theorem~\ref{thm:modulus} prevents discarding the failure family,
+so $g\notin\mathrm{WUG}^{\varepsilon,0}_p(u)$.
+\end{proof}
+
+\section{Why the symmetric proof breaks}
+
+For $0<\lambda<1$, chains meeting a measure-zero exceptional set form
+a modulus-zero family, which makes a.e. convergence sufficient.  At
+$\lambda=1$, the integral ignores the terminal vertex, so a null-set
+change at the terminal endpoint can be detected by a family of positive
+or infinite modulus; at $\lambda=0$ the same issue occurs at the initial
+vertex.  A repaired endpoint statement would need convergence outside
+an endpoint-exceptional set of zero endpoint modulus, rather than merely
+outside a measure-zero set.
+
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{CC}
+E. Caputo and N. Cavallucci,
+\emph{Sobolev spaces via chains in metric measure spaces},
+arXiv:2408.15071, Proposition 5.9 and the remark on PDF page 22.
+\end{thebibliography}
+
+\end{document}

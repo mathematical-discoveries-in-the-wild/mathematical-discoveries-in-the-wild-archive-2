@@ -1,0 +1,277 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=0.93in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+
+\setlist{nosep}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\newcommand{\A}{\mathcal A}
+\newcommand{\C}{C(X)}
+\newcommand{\Fix}{\operatorname{Fix}}
+\newcommand{\dist}{\operatorname{dist}}
+
+\title{Diliberto--Straus Convergence Without Closedness\\for Two-Point Fibres}
+\author{Independent research note}
+\date{August 17, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Asgarova and Ismailov ask whether their Diliberto--Straus residual algorithm
+converges to the uniform approximation error without assuming that the sum
+of the two algebras is closed.  We prove a positive answer whenever every
+quotient fibre of both algebras has at most two points.  Under the paper's
+$C$-property, these fibres are the orbits of continuous involutions, so the
+midrange maps become linear.  A Laurent-polynomial calculation then gives
+an $O(n^{-1/2})$ decay estimate on each summand.  We also construct two such
+algebras whose sum is not closed, showing that the result genuinely passes
+beyond the source theorem.
+\end{abstract}
+
+\section*{Packet status}
+
+\begin{description}[leftmargin=3.0cm,style=nextline]
+\item[Run] \texttt{fa\_banach\_001}, lane 13.
+\item[Source] arXiv:1603.07073, Theorem~2.3 and the question on PDF page~7 \cite{AI}.
+\item[Classification] Candidate strong partial result, likely valid subject to human review.
+\item[Scope] A complete answer for the two-point-fibre class; no claim for arbitrary fibres.
+\end{description}
+
+\begin{center}
+\includegraphics[width=0.94\textwidth]{figures/source_question.png}
+\end{center}
+
+\section{Set-up and statement}
+
+Let $X$ be compact Hausdorff and let $\A_1,\A_2$ be closed unital real
+subalgebras of $\C$.  Write $s_i:X\to X_i$ for the quotient maps induced
+by equality of all functions in $\A_i$.  The source assumes the
+\emph{$C$-property}: for every $h\in\C$, the maximum and minimum of $h$ on
+each $s_i$-fibre vary continuously on $X_i$.  Its proximity maps are the
+fibre midranges
+\[
+ F_i h(x)=\frac12\left(
+ \max_{s_i(y)=s_i(x)}h(y)+\min_{s_i(y)=s_i(x)}h(y)\right).
+\]
+Starting with $h_1=h$, the algorithm alternately sets
+\[
+ h_{2n}=h_{2n-1}-F_1h_{2n-1},\qquad
+ h_{2n+1}=h_{2n}-F_2h_{2n}.
+\]
+Put $E(h)=\dist(h,\A_1+\A_2)$.
+
+\begin{theorem}[two-point-fibre convergence]\label{thm:main}
+Assume the $C$-property and
+\[
+ \#s_i^{-1}(s_i(x))\le2\qquad(x\in X,\ i=1,2).
+\]
+Then, whether or not $\A_1+\A_2$ is closed,
+\[
+ \lim_{j\to\infty}\|h_j\|_\infty=E(h)
+ \qquad(h\in\C).
+\]
+More precisely, there are continuous involutions $\sigma,\tau:X\to X$
+such that $\A_1=\Fix S_\sigma$, $\A_2=\Fix S_\tau$, where
+$S_\sigma h=h\circ\sigma$.  If
+\[
+ T=\frac{I-S_\tau}{2}\frac{I-S_\sigma}{2},
+\]
+then $h_{2n+1}=T^nh$, and for every $v\in\A_2$,
+\begin{equation}\label{eq:rate}
+ \|T^nv\|_\infty\le \frac{\|v\|_\infty}{\sqrt n}
+ \qquad(n\ge1).
+\end{equation}
+\end{theorem}
+
+\section*{Idea of the proof}
+
+There are two rigidities hidden in the two-point hypothesis.  First, the
+source's $C$-property forces the operation that swaps the two members of a
+fibre to be continuous.  Each midrange map is therefore the average of the
+identity with an isometric involution.  Second, alternating the complementary
+half-differences produces a fixed linear contraction $T$.  On a function
+fixed by the second involution, every iterate of $T$ is a Laurent polynomial
+in the product of the two involutions.  Its coefficients are discrete
+derivatives of a symmetric binomial distribution and have total variation
+$O(n^{-1/2})$.  The limiting residual norm is consequently a seminorm that
+vanishes on both algebras and their closure.  Since every residual is in the
+same quotient class as the initial function, this seminorm must equal the
+distance to the algebraic sum.
+
+\section{Two-point fibres are involution orbits}
+
+\begin{lemma}\label{lem:involution}
+Let $s:X\to Y$ be one of the algebra quotients, assume its fibres have at
+most two points, and assume the $C$-property.  The map $\sigma$ that swaps
+the two points of every doubleton fibre and fixes singleton fibres is a
+continuous involution.  The associated algebra is $\Fix S_\sigma$, and its
+midrange map is $(I+S_\sigma)/2$.
+\end{lemma}
+
+\begin{proof}
+For $f\in\C$, let $Mf$ be its fibre midrange, regarded as a continuous
+function on $X$ via $s$.  On a singleton or doubleton fibre,
+\[
+ f(\sigma(x))=2Mf(x)-f(x).
+\]
+Thus $f\circ\sigma$ is continuous for every $f\in\C$.  Continuous real
+functions determine the topology of a compact Hausdorff space, so $\sigma$
+is continuous.  It is visibly an involution and its orbits are exactly the
+fibres.  By Stone--Weierstrass, the closed unital algebra is all continuous
+functions on its Hausdorff quotient; hence it consists exactly of the
+$\sigma$-invariant functions.  The displayed identity also gives the
+formula for the midrange map.
+\end{proof}
+
+This lemma also proves the converse description: a continuous involution
+has one- or two-point orbits, its invariant algebra has the $C$-property,
+and fibre maximum and minimum are
+\[
+ \frac{f+f\circ\sigma\pm|f-f\circ\sigma|}{2}.
+\]
+
+\section{The decay identity}
+
+Set $U=S_\sigma$, $V=S_\tau$ and
+\[
+ P=\frac{I-U}{2},\qquad Q=\frac{I-V}{2},\qquad T=QP.
+\]
+These are contractions on $\C$, $U^2=V^2=I$, and
+$h_{2n+1}=T^nh$.  Put
+\[
+ R=VU,\qquad D=\frac{R-R^{-1}}4,
+ \qquad L=\frac{2I+R+R^{-1}}4.
+\]
+Here $R$ and every $R^k$ are surjective isometries.
+
+If $v\in\Fix V$, a direct expansion gives $Tv=Dv$.  The range of $T$ lies
+in the anti-invariant space $\{x:Vx=-x\}$, and on that space another direct
+expansion gives $Tx=Lx$.  Therefore
+\begin{equation}\label{eq:LD}
+ T^nv=L^{n-1}Dv\qquad(n\ge1,\ v\in\Fix V).
+\end{equation}
+For $m=n-1$, the binomial theorem yields
+\[
+ L^m=\sum_{k=-m}^{m}p_m(k)R^k,
+ \qquad
+ p_m(k)=4^{-m}\binom{2m}{m+k},
+\]
+where $p_m(k)=0$ outside $[-m,m]$.  The coefficient of $R^k$ in $L^mD$ is
+\[
+ q_m(k)=\frac{p_m(k-1)-p_m(k+1)}4.
+\]
+The sequence $p_m$ is symmetric and unimodal, so its two tails telescope:
+\begin{equation}\label{eq:l1}
+ \sum_k|q_m(k)|
+ =\frac{p_m(0)+p_m(1)}2
+ \le p_m(0)
+ =4^{-m}\binom{2m}{m}
+ \le\frac1{\sqrt{m+1}}.
+\end{equation}
+The last elementary central-binomial bound also follows immediately by
+induction.  Equations~\eqref{eq:LD}--\eqref{eq:l1}, together with
+$\|R^k\|=1$, prove~\eqref{eq:rate}.
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Lemma~\ref{lem:involution} supplies $U,V$.  Since $T$ is linear and
+contractive, the decreasing limit
+\[
+ \rho(h)=\lim_{n\to\infty}\|T^nh\|_\infty
+\]
+is a seminorm satisfying $\rho(h)\le\|h\|_\infty$.  If $u\in\A_1$, then
+$Tu=0$; if $v\in\A_2$, estimate~\eqref{eq:rate} gives $\rho(v)=0$.
+Therefore $\rho$ vanishes on $\A_1+\A_2$ and, being 1-Lipschitz, on its
+closure.  It follows that
+\[
+ \rho(h)=\rho(h-w)\le\|h-w\|_\infty
+ \quad(w\in\A_1+\A_2),
+\]
+so $\rho(h)\le E(h)$.  In the other direction, every update subtracts an
+element of one algebra, hence $h-T^nh\in\A_1+\A_2$ and
+$E(h)\le\|T^nh\|_\infty$.  Passing to the limit proves $\rho(h)=E(h)$.
+The norms of the entire residual sequence are decreasing, while its odd
+subsequence has this limit, so the same is true of all $\|h_j\|_\infty$.
+\end{proof}
+
+\section{A genuinely nonclosed example}
+
+The closedness hypothesis is not automatic in Theorem~\ref{thm:main}.
+Let $N_j\to\infty$ be even integers and let $X$ be the one-point
+compactification of the disjoint union of cycles
+$C_{N_j}=\mathbb Z/N_j\mathbb Z$.  On every cycle define
+\[
+ \sigma(k)=-k,\qquad \tau(k)=1-k,
+\]
+and fix the point at infinity.  These are continuous involutions.  Let
+$\A_1=\Fix S_\sigma$ and $\A_2=\Fix S_\tau$.
+
+On $C_N$, with $\theta=2\pi/N$, put
+\[
+ u_N(k)=\cos(\theta k),\qquad
+ v_N(k)=-\cos\bigl(\theta(k-\tfrac12)\bigr).
+\]
+Then $u_N\in\A_1|_{C_N}$, $v_N\in\A_2|_{C_N}$, and
+\begin{equation}\label{eq:witness}
+ \|u_N+v_N\|_\infty\le\frac\pi N.
+\end{equation}
+Define $y(\infty)=0$ and
+$y|_{C_{N_j}}=u_{N_j}+v_{N_j}$.  By~\eqref{eq:witness}, $y$ is continuous,
+and truncating to finitely many cycles shows
+$y\in\overline{\A_1+\A_2}$.
+
+Suppose $y=a+b$ with $a\in\A_1$, $b\in\A_2$.  Shift a constant between
+$a$ and $b$ so that both vanish at infinity.  On each cycle,
+$a-u_N=-(b-v_N)$ is fixed by both involutions.  The involutions generate
+the transitive dihedral action because their product is a one-step
+rotation, so their common fixed functions on $C_N$ are constants.  Since
+$N$ is even, $u_N$ takes the values $1$ and $-1$ and has distance one from
+the constants.  Hence the restriction of $a$ to every cycle has distance
+one from the constants, contradicting $\|a|_{C_{N_j}}\|_\infty\to0$.
+Thus $y\notin\A_1+\A_2$, and the sum is not closed.  Nevertheless
+Theorem~\ref{thm:main} proves convergence for every $h\in C(X)$.
+
+\section{Boundary of the result}
+
+For fibres of size at least three, the midrange depends on the currently
+active maximum and minimum and is no longer a fixed average.  The residual
+iteration is then nonlinear, so $\rho(h)=\lim\|h_{2n+1}\|$ need not be a
+seminorm and the Laurent cancellation above has no fixed isometry on which
+to act.  Eight focused routes were audited: bounded larger fibres, the
+source's open-bolt correction, later infinite-bolt duality \cite{AI2}, an
+abstract asymptotic functional, and long finite gadgets.  The first four
+all encounter this switching-extrema obstruction, while long two-point
+gadgets are ruled out by~\eqref{eq:l1}.  No full proof or counterexample for
+arbitrary fibres is claimed.
+
+The exact coefficient identity was checked for $0\le m\le100$, and all
+operator formulas, the rate, and the nonclosed witnesses were independently
+tested on finite dihedral cycles.  A bounded literature audit on August 17,
+2026 found no later explicit resolution of the source question or the
+two-point-fibre theorem.  The result should be treated as a candidate new
+partial answer pending expert review.
+
+\begin{thebibliography}{9}
+\bibitem{AI}
+A.~Kh.~Asgarova and V.~E.~Ismailov,
+\emph{On the Diliberto--Straus algorithm for the uniform approximation by a
+sum of two algebras}, arXiv:1603.07073 (2016).
+
+\bibitem{AI2}
+A.~Kh.~Asgarova and V.~E.~Ismailov,
+\emph{A note on approximation by a sum of two algebras},
+arXiv:2405.09815 (2024).
+\end{thebibliography}
+
+\end{document}

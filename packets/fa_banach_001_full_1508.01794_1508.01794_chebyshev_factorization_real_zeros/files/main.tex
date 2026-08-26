@@ -1,0 +1,198 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,graphicx,microtype}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\rt}{\sqrt2}
+\setlength{\emergencystretch}{2em}
+
+\title{A period-eight Chebyshev factorization\\
+for the zeros of a Jacobi-type pencil}
+\author{Mathematical discovery run \texttt{fa\_banach\_001}}
+\date{21 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+Candidate full solution, independently rechecked and likely valid, pending
+expert review.
+
+\section{Source problem}
+
+For the basic Jacobi-type pencil $\Theta_1$, Zagorodnyuk defines degree-$n$
+polynomials $p_n$ and proves the representation
+\begin{equation}\label{eq:source}
+ q_n(t):=p_n(\rt t-1)
+ =T_n(t)+tU_{n-1}(t)
+ -\frac12\frac{U_{n-1}(t)-U_{n-1}(-1/\rt)}{t+1/\rt},
+\end{equation}
+initially away from $t=-1/\rt$ and hence everywhere by polynomial
+continuation.  Here $T_j,U_j$ are the Chebyshev polynomials of the first and
+second kind and $U_{-1}=0$.  The source asks for the zero distribution and
+conjectures that all zeros are real \cite[formula (8) and PDF p.~6]{Z}.
+
+\begin{center}
+\includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section{Idea of the proof}
+
+The divided difference in \eqref{eq:source} hides a periodic factorization.
+Multiplication by $2(t+1/\rt)$ turns $q_n$ into
+$U_{n+1}+\rt U_n+c_n$, where
+$c_n=\rt\sin(3\pi n/4)$ depends only on $n$ modulo eight.  Elementary
+sum-to-product identities then factor this numerator into Chebyshev factors
+and fixed real combinations of consecutive Chebyshev polynomials.  Such a
+combination has only simple real zeros by strict interlacing.  The known
+linear factor $t+1/\rt$ can therefore be removed without losing
+real-rootedness.  Endpoint signs locate the unique exceptional zero below
+$-1$.
+
+\section{Factorization and real-rootedness}
+
+Put
+\[
+ a=-\frac1{\rt},\qquad
+ R_j(t)=U_j(t)+\rt U_{j-1}(t),\qquad
+ S_j(t)=T_j(t)+\rt T_{j-1}(t).
+\]
+
+\begin{lemma}\label{lem:combination}
+For every $j\geq1$, both $R_j$ and $S_j$ have $j$ distinct real zeros.
+All zeros lie below $1$.  The polynomial $R_j$ has one zero below $-1$
+exactly when $j\geq3$, whereas $S_j$ always has exactly one zero below $-1$.
+All remaining zeros lie in $(-1,1)$.
+\end{lemma}
+
+\begin{proof}
+The zeros of consecutive members of either Chebyshev family are simple and
+strictly interlace.  More generally, if $P_j,P_{j-1}$ are consecutive
+members of a real orthogonal-polynomial family with positive leading
+coefficients, then $P_j+cP_{j-1}$ has one zero in every component of
+$\R\setminus Z(P_{j-1})$: at each zero of $P_{j-1}$ its sign is the sign of
+$P_j$, and those signs alternate, including against the signs at
+$\pm\infty$.  This supplies $j$ distinct real roots and exhausts the degree.
+Apply this with $c=\rt$ to $U_j,U_{j-1}$ and $T_j,T_{j-1}$.
+
+At $1$, all four Chebyshev values occurring here are positive, so the largest
+root is below $1$.  At the other endpoint,
+\[
+ R_j(-1)=(-1)^j\bigl(j+1-\rt j\bigr),\qquad
+ S_j(-1)=(-1)^j(1-\rt).
+\]
+The sign at $-\infty$ is $(-1)^j$.  Thus the leftmost root of $R_j$
+crosses below $-1$ precisely when $j+1-\rt j<0$, i.e. $j\geq3$; the
+leftmost root of $S_j$ is always below $-1$.
+\end{proof}
+
+\begin{theorem}\label{thm:main}
+For every $n\geq0$, all zeros of $p_n$ are real and simple.  More precisely,
+write $n=2m-1$ when $n$ is odd and $n=2m$ when it is even.  Then
+\begin{equation}\label{eq:numerator}
+ 2(t-a)q_n(t)=U_{n+1}(t)+\rt U_n(t)+c_n,
+ \qquad c_n=\rt\sin\frac{3\pi n}{4},
+\end{equation}
+and the numerator has the following factorization:
+\begin{center}
+\begin{tabular}{ccl}
+\toprule
+condition & $c_n$ & $2(t-a)q_n(t)$ \\
+\midrule
+$n\equiv0\pmod4$ & $0$ & $R_{n+1}(t)$ \\
+$n=2m-1$, $c_n=1$ & $1$ & $2T_m(t)R_m(t)$ \\
+$n=2m-1$, $c_n=-1$ & $-1$ & $2U_{m-1}(t)S_{m+1}(t)$ \\
+$n=2m$, $c_n=-\rt$ & $-\rt$ & $2T_{m+1}(t)R_m(t)$ \\
+$n=2m$, $c_n=\rt$ & $\rt$ & $2U_m(t)S_{m+1}(t)$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+For $n=1,2,3$, all $n$ zeros of $q_n$ lie in $(-1,1)$.  For every
+$n\geq4$, exactly one zero lies in $(-\infty,-1)$ and the remaining $n-1$
+lie in $(-1,1)$.  Consequently, for $n\geq4$, $p_n$ has exactly one zero
+below $-1-\rt$ and all other zeros in $(-1-\rt,-1+\rt)$.  Finally,
+$\lambda=-2$ is a zero of $p_n$ exactly when $n\equiv2\pmod4$.
+\end{theorem}
+
+\begin{proof}
+The identity $T_n+tU_{n-1}=U_n$ and the recurrence
+$U_{n+1}=2tU_n-U_{n-1}$ turn \eqref{eq:source} into
+\eqref{eq:numerator}.  Since $a=\cos(3\pi/4)$,
+\[
+ U_{n-1}(a)=\frac{\sin(3\pi n/4)}{\sin(3\pi/4)}
+ =\rt\sin\frac{3\pi n}{4};
+\]
+the values for $n=0,\ldots,7$ modulo eight are
+$0,1,-\rt,1,0,-1,\rt,-1$.
+
+The displayed factorization table follows from the standard product
+identities
+\[
+\begin{aligned}
+2T_mU_m&=U_{2m}+1,&2T_mU_{m-1}&=U_{2m-1},\\
+2U_{m-1}T_{m+1}&=U_{2m}-1,&2U_{m-1}T_m&=U_{2m-1},\\
+2T_{m+1}U_m&=U_{2m+1},&2T_{m+1}U_{m-1}&=U_{2m}-1,\\
+2U_mT_{m+1}&=U_{2m+1},&2U_mT_m&=U_{2m}+1.
+\end{aligned}
+\]
+Every factor is real-rooted by Lemma~\ref{lem:combination} and the usual
+Chebyshev zero formulas.  The numerator always vanishes at $a$, so division
+by $t-a$ proves real-rootedness of $q_n$.
+
+It remains to check multiplicities.  A zero common to $T_m$ and $R_m$, or to
+$U_{m-1}$ and $S_{m+1}$, would force $\cos\theta=-\rt$, which is impossible.
+In the two even rows, the same trigonometric calculation shows that a common
+zero can only be $a=\cos(3\pi/4)$; it occurs exactly when
+$m\equiv1$ or $3\pmod4$, respectively, equivalently
+$n\equiv2\pmod4$.  Thus the numerator has a double zero at $a$ in precisely
+that congruence class, and division leaves one simple zero there.  When
+$n\equiv0\pmod4$, Lemma~\ref{lem:combination} says the root $a$ of
+$R_{n+1}$ is simple and division removes it.  All other numerator roots are
+simple and belong to only one factor.  This proves simplicity and the final
+criterion $\lambda=\rt a-1=-2$.
+
+Finally, Lemma~\ref{lem:combination} shows that the $R$ or $S$ factor has
+exactly one root below $-1$ in every case with $n\geq4$, while every ordinary
+$T$ or $U$ factor has its roots in $(-1,1)$.  The removable root $a$ lies in
+$(-1,1)$.  Directly, $q_1,q_2,q_3$ have all roots in $(-1,1)$.  The affine
+map $\lambda=\rt t-1$ gives the stated intervals for $p_n$.
+\end{proof}
+
+\section{Verification and novelty bounds}
+
+The accompanying script checks the table by exact symbolic arithmetic for
+$0\leq n\leq80$ and checks real-rootedness, simplicity, and endpoint counts
+for the consecutive combinations through degree $200$.  The command
+\begin{quote}\small\ttfamily
+conda run --no-capture-output -n sandbox python\\
+code/verify\_factorizations.py
+\end{quote}
+returns a pass for 81 exact factorizations and for the real-root/location
+checks through degree 200.  These are regression checks; the proof above is
+exact.
+
+A bounded novelty search on 21 August 2026 covered the four run indexes,
+exact arXiv-id and title searches, the source question's exact zero-distribution
+phrases, and later primary work on Jacobi-type pencils that cites the source.
+No later paper stating this factorization or resolving this exact zero problem
+was located.  Novelty therefore remains subject to expert literature review.
+
+\paragraph{Human review recommendation.}
+Check the five factorization rows, the common-zero calculation at
+$a=-1/\rt$, and the endpoint sign count in Lemma~\ref{lem:combination}.
+
+\begin{thebibliography}{9}
+\bibitem{Z}
+S. M. Zagorodnyuk,
+\emph{Orthogonal polynomials related to some Jacobi-type pencils},
+Ukrainian Math. J. \textbf{68} (2016), 1353--1365;
+arXiv:1508.01794.
+\bibitem{Szego}
+G. Szeg\H{o}, \emph{Orthogonal Polynomials}, 4th ed.,
+American Mathematical Society, 1975.
+\end{thebibliography}
+
+\end{document}

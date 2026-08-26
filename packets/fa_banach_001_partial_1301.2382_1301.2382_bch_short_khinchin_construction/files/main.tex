@@ -1,0 +1,226 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=0.88in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\F}{\mathbb F}
+\newcommand{\E}{\mathbb E}
+\newcommand{\R}{\mathbb R}
+
+\title{Explicit BCH short Khinchin sets\\at every even exponent}
+\author{Partial-solution packet for arXiv:1301.2382}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\linewidth}{\textbf{Candidate substantial partial result.}
+For every even $p\ge2$ there is a deterministic set
+$V\subset\{-1,1\}^n$ of optimal cardinality $O_p(n^{p/2})$ whose
+$p$th moments of all linear forms agree \emph{exactly} with those on the
+full cube.  The same construction gives deterministic polynomial-size
+short Khinchin sets for every real $p\ge1$.}}
+\end{center}
+
+\section{The problem}
+
+Rudelson's survey asks, for fixed $p\ge1$, for a small deterministic set
+$V\subset\{-1,1\}^n$ and constants $\alpha_p,\beta_p>0$ such that
+\begin{equation}\label{eq:short}
+ \alpha_p\|a\|_2
+ \le \left(\frac1{|V|}\sum_{x\in V}|\langle a,x\rangle|^p\right)^{1/p}
+ \le \beta_p\|a\|_2
+ \qquad(a\in\R^n).
+\end{equation}
+The survey says that deterministic constructions of reasonably small
+cardinality are unknown.  Its probabilistic construction uses
+$N\ge n^{p/2}$ for $p>2$, and it notes that this order is optimal.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.92\linewidth]{figures/open_problem_crop.png}
+\caption{The short Khinchin construction problem on page 23 of the
+official arXiv PDF.}
+\end{figure}
+
+\section{Statement of the result}
+
+Let $B_s$ denote any valid upper constant in the classical Khinchin
+inequality at exponent $s$.
+
+\begin{theorem}\label{thm:main}
+For every $n\ge1$ the following deterministic constructions exist.
+\begin{enumerate}
+ \item If $p=2m$ is even, there is
+ $V_{n,m}\subset\{-1,1\}^n$ with
+ \[
+   |V_{n,m}|\le [2(n+1)]^m
+ \]
+ such that, for every $a\in\R^n$,
+ \begin{equation}\label{eq:exact}
+  \frac1{|V_{n,m}|}\sum_{x\in V_{n,m}}|\langle a,x\rangle|^{2m}
+  =2^{-n}\sum_{x\in\{-1,1\}^n}|\langle a,x\rangle|^{2m}.
+ \end{equation}
+ Consequently \eqref{eq:short} holds with the classical constants and
+ cardinality $O_p(n^{p/2})$.
+
+ \item If $p\ge2$ is arbitrary and $2m$ is the least even integer at
+ least $p$, the same $V_{n,m}$ satisfies
+ \[
+  \|a\|_2\le
+  \left(\frac1{|V_{n,m}|}\sum_{x\in V_{n,m}}
+       |\langle a,x\rangle|^p\right)^{1/p}
+  \le B_{2m}\|a\|_2.
+ \]
+
+ \item If $1\le p\le2$, a deterministic set of cardinality at most
+ $[2(n+1)]^2$ satisfies
+ \[
+  \frac1{\sqrt3}\|a\|_2\le
+  \left(\frac1{|V|}\sum_{x\in V}|\langle a,x\rangle|^p\right)^{1/p}
+  \le\|a\|_2.
+ \]
+\end{enumerate}
+\end{theorem}
+
+Thus the deterministic cardinality has the optimal $n^{p/2}$ order at
+every even $p>2$.  The theorem is partial relative to the sharp general
+problem: it gives $O(n^2)$ rather than the probabilistic $O(n)$ scale at
+$p=1$, and rounds $p/2$ upward for non-even $p>2$.
+
+\section{The BCH-type sign set}
+
+Fix $m\ge1$.  Let $Q=2^r$ be the least power of two with $Q-1\ge n$,
+so $Q<2(n+1)$, and choose distinct nonzero
+$t_1,\ldots,t_n\in\F_Q$.  Write
+$\operatorname{Tr}:\F_Q\to\F_2$ for the field trace.  For a seed
+$u=(u_1,\ldots,u_m)\in\F_Q^m$, set
+\begin{equation}\label{eq:signs}
+ \varepsilon_j(u)=(-1)^{\operatorname{Tr}
+  (\sum_{\ell=1}^m u_\ell t_j^{2\ell-1})},
+ \qquad 1\le j\le n.
+\end{equation}
+Let $V_{n,m}$ be the set of distinct sign vectors
+$(\varepsilon_1(u),\ldots,\varepsilon_n(u))$ as $u$ varies.  This is an
+explicit primitive-BCH orthogonal array in trace coordinates.  Plainly
+\begin{equation}\label{eq:size}
+ |V_{n,m}|\le Q^m<[2(n+1)]^m.
+\end{equation}
+
+\begin{lemma}\label{lem:ind}
+The uniform distribution on $V_{n,m}$ is $2m$-wise independent.
+\end{lemma}
+
+\begin{proof}
+The bit map underlying \eqref{eq:signs} is linear over $\F_2$, so the
+uniform seed pushes forward to the uniform distribution on its image.
+It remains to prove that every set of at most $2m$ coordinate
+functionals is linearly independent.
+
+Otherwise, for some nonempty $S\subset\{1,\ldots,n\}$ with
+$s=|S|\le2m$, summing the corresponding bits would vanish for every
+seed.  Nondegeneracy of the trace pairing then gives
+\begin{equation}\label{eq:odd}
+ \sum_{j\in S}t_j^{2\ell-1}=0,
+ \qquad 1\le\ell\le m.
+\end{equation}
+In characteristic two, an even power sum is the square of the power sum
+at half its exponent.  Iterating this fact and using \eqref{eq:odd}
+shows
+\[
+ \sum_{j\in S}t_j^h=0,\qquad 1\le h\le2m.
+\]
+In particular these identities hold for $1\le h\le s$.  But the square
+matrix $(t_j^h)_{1\le h\le s,\,j\in S}$ has determinant
+\[
+ \left(\prod_{j\in S}t_j\right)
+ \prod_{i<j,\ i,j\in S}(t_j-t_i)\ne0.
+\]
+It cannot annihilate the all-ones vector.  This contradiction proves the
+claimed independence.
+\end{proof}
+
+\section{Proof of Theorem~\ref{thm:main}}
+
+Let $p=2m$.  Expanding
+$(\sum_{j=1}^n a_j\varepsilon_j)^{2m}$ produces monomials involving at
+most $2m$ distinct signs.  Lemma~\ref{lem:ind} says their expectations
+under the uniform measure on $V_{n,m}$ equal their expectations under
+independent Rademacher signs.  Since the exponent is even, this proves
+the exact identity \eqref{eq:exact}.  The classical Khinchin inequality
+and \eqref{eq:size} prove part 1.
+
+For part 2, let $2m$ be the least even integer at least $p$.  Pairwise
+independence gives, for
+$S_a(x)=\langle a,x\rangle$,
+\[
+ \|S_a\|_{L_2(V_{n,m})}=\|a\|_2.
+\]
+Monotonicity of normalized finite-measure norms and part 1 give
+\[
+ \|a\|_2=\|S_a\|_2\le\|S_a\|_p
+ \le\|S_a\|_{2m}\le B_{2m}\|a\|_2.
+\]
+
+Finally use $V_{n,2}$ when $1\le p\le2$.  Its second and fourth moments
+match the full cube, so
+\[
+ \|S_a\|_2=\|a\|_2,
+ \qquad
+ \|S_a\|_4^4
+ =3\|a\|_2^4-2\sum_j a_j^4
+ \le3\|a\|_2^4.
+\]
+Log-convexity between $L_1,L_2,L_4$ yields
+\[
+ \|S_a\|_1\ge\frac{\|S_a\|_2^3}{\|S_a\|_4^2}
+ \ge\frac1{\sqrt3}\|a\|_2.
+\]
+Now $\|S_a\|_1\le\|S_a\|_p\le\|S_a\|_2$, completing the proof.
+
+\section{Verification, novelty, and scope}
+
+The construction is algebraic and uses no numerical evidence.  The key
+compression from $O(n^{2m})$ naive polynomial seeds to $O(n^m)$ is the
+odd-power BCH trace map; Lemma~\ref{lem:ind} includes the full
+Vandermonde verification.  Passing from seeds to distinct sign vectors is
+legitimate because a linear map has equal-size fibers.
+
+The run indexes, parsed corpus, exact phrase, and bounded searches through
+11 August 2026 for short Khinchin constructions, BCH codes, orthogonal
+arrays, $k$-wise independent Rademachers, and explicit Euclidean
+subspaces were checked.  Pass and Spektor \cite{PassSpektor} study
+Khintchine inequalities under $k$-wise independence, while coding theory
+standardly supplies the required arrays; no source directly presenting
+the synthesis above as an answer to Rudelson's construction question was
+located.  Novelty confidence is moderate-to-low because both ingredients
+are classical, although the stated consequence appears absent from the
+bounded search.
+
+Human review should focus on the intended meaning of ``reasonably small''
+in the survey.  The even-exponent theorem achieves the source's optimal
+order and is a sharp solved subcase.  The all-$p$ extension is polynomial
+but is not claimed sharp outside even exponents.
+
+\begin{thebibliography}{2}
+\bibitem{Rudelson}
+M.~Rudelson,
+\newblock \emph{Recent developments in non-asymptotic theory of random
+matrices},
+\newblock arXiv:1301.2382 (2013).
+
+\bibitem{PassSpektor}
+B.~Pass and S.~Spektor,
+\newblock \emph{On Khintchine type inequalities for $k$-wise independent
+Rademacher random variables},
+\newblock Statistics and Probability Letters \textbf{132} (2018), 35--39;
+arXiv:1708.08775.
+\end{thebibliography}
+
+\end{document}

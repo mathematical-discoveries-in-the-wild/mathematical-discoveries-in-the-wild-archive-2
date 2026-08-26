@@ -1,0 +1,343 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newcommand{\R}{\mathbb R}
+\newcommand{\E}{\mathbb E}
+\newcommand{\g}{\gamma}
+\newcommand{\T}{\mathcal T}
+\newcommand{\Pp}{\mathcal P}
+\newcommand{\bmo}{\mathrm{bmo}}
+\newcommand{\BMO}{\mathrm{BMO}}
+\newcommand{\Ga}{\Gamma}
+
+\title{Gaussian drift separates the intrinsic semigroup BMO norms}
+\author{Automated mathematics run \texttt{fa\_banach\_001}\\
+Lane 10 --- candidate counterexample for expert review}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{
+\textbf{Status.} Candidate counterexample, likely valid.  For the classical
+one-dimensional Ornstein--Uhlenbeck semigroup, bounded coordinate truncations
+have uniformly bounded $\bmo(\T)$ norm while their $\BMO(\T)$ norms and
+$\sup_t\|T_tf-T_{2t}f\|_\infty$ diverge.  The coordinate also separates
+$\BMO(\Ga)$ from $\BMO(\Pp)$ and $\BMO(\partial)$.  This answers the universal
+readings of open problem (ii)(a),(c),(c') of Junge--Mei negatively, but does
+not characterize all semigroups for which the comparisons hold.
+}}
+\end{center}
+
+\section{Source question and definitions}
+
+Let $\T=(T_t)_{t\geq0}$ be a standard Markov semigroup.  In the commutative
+case, the two norms in open problem (ii)(c) of Junge and Mei
+\cite{JungeMei} are
+\begin{align}
+ \|f\|_{\bmo(\T)}^2
+  &=\sup_{t>0}\big\|T_t|f|^2-|T_tf|^2\big\|_\infty,\label{eq:bmo}\\
+ \|f\|_{\BMO(\T)}^2
+  &=\sup_{t>0}\big\|T_t|f-T_tf|^2\big\|_\infty.\label{eq:BMO}
+\end{align}
+They ask for conditions under which these norms are equivalent, and single
+out the estimate
+\begin{equation}\label{eq:cprime}
+ \sup_{t>0}\|T_tf-T_{2t}f\|_\infty
+ \leq C\|f\|_{\bmo(\T)}.
+\end{equation}
+Part (a) asks for comparison of the Poisson-semigroup norm $\BMO(\Pp)$,
+the vertical square-function norm $\BMO(\partial)$, and the carré-du-champ
+norm $\BMO(\Ga)$.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.98\textwidth]{figures/open_problem_crop.png}
+  \caption{Open problem (ii) on printed page 33 of the source paper
+  \cite{JungeMei}.}
+\end{figure}
+
+We prove that even the strongest standard regularity package does not imply
+(a), (c), or (c').  Work on the probability space
+\[
+ d\g(x)=(2\pi)^{-1/2}e^{-x^2/2}\,dx
+\]
+with the Ornstein--Uhlenbeck semigroup
+\begin{equation}\label{eq:mehler}
+ T_tf(x)=\E f\!\left(e^{-t}x+\sqrt{1-e^{-2t}}\,Z\right),
+ \qquad Z\sim N(0,1).
+\end{equation}
+It is a symmetric, ergodic, analytic and hypercontractive Markov semigroup.
+For its positive generator $A=-\partial_x^2+x\partial_x$,
+$\Ga(f)=|f'|^2$ and
+\[
+ \Ga_2(f)=|f''|^2+|f'|^2\geq \Ga(f).
+\]
+Thus the example satisfies strictly more than the $\Ga_2\geq0$ hypothesis
+used in the source.
+
+\section{Proof intuition}
+
+Mehler's formula turns the expression in \eqref{eq:bmo} into the conditional
+variance of $f$ under a Gaussian transition kernel.  The truncations
+$f_R(x)=\max(-R,\min(x,R))$ are $1$-Lipschitz, so their transition variances
+never exceed the variance $1-e^{-2t}$ of the Gaussian input.  Their
+$\bmo(\T)$ norms are therefore uniformly bounded.
+
+The other norm sees something that conditional variance misses: the OU drift
+of the mean.  On the untruncated coordinate $h(x)=x$, the mean changes from
+$e^{-t}x$ to $e^{-2t}x$, an unbounded function of $x$.  Since $f_R\to h$ in
+$L_2(\g)$, the same mean-drift term for $f_R$ must have unbounded
+$L_\infty$ norm as $R\to\infty$.  Kadison's inequality puts this drift term
+below the $\BMO(\T)$ norm.  This proves both failures using bounded functions.
+
+For the subordinated Poisson semigroup, the carré du champ sees only the
+bounded derivative of the coordinate, while the oscillation and vertical
+derivative norms still see its unbounded drift.  That is the mechanism behind
+the separation in part (a).
+
+\section{The bounded counterexample to (c) and (c')}
+
+For $R>0$, set
+\begin{equation}\label{eq:trunc}
+ f_R(x)=(-R)\vee x\wedge R.
+\end{equation}
+
+\begin{theorem}\label{thm:main}
+For the Ornstein--Uhlenbeck semigroup \eqref{eq:mehler}:
+\begin{enumerate}[label=\textup{(\roman*)},leftmargin=2.3em]
+\item $\|f_R\|_{\bmo(\T)}\leq1$ for every $R>0$;
+\item for every fixed $t>0$,
+\[
+ \|(T_t-T_{2t})f_R\|_\infty\longrightarrow\infty
+ \qquad(R\to\infty);
+\]
+\item consequently $\|f_R\|_{\BMO(\T)}\to\infty$.
+\end{enumerate}
+Hence \eqref{eq:cprime} is false and the two norms in open problem (ii)(c)
+are not equivalent, even on bounded functions for one fixed classical
+semigroup satisfying $\Ga_2\geq\Ga$.
+\end{theorem}
+
+\begin{proof}
+Fix $t>0$ and $x\in\R$, and let
+\[
+ Y=e^{-t}x+\sqrt{1-e^{-2t}}\,Z.
+\]
+The quantity in \eqref{eq:bmo} is
+\[
+ T_tf_R^2(x)-(T_tf_R(x))^2=\operatorname{Var}(f_R(Y)).
+\]
+If $Y'$ is an independent copy of $Y$, then the $1$-Lipschitz property gives
+\[
+ \operatorname{Var}(f_R(Y))
+ =\frac12\E|f_R(Y)-f_R(Y')|^2
+ \leq\frac12\E|Y-Y'|^2
+ =1-e^{-2t}\leq1.
+\]
+Taking the two suprema proves (i).
+
+Let $h(x)=x$.  Since $f_R\to h$ in $L_2(\g)$ and every $T_s$ is an
+$L_2$ contraction,
+\begin{equation}\label{eq:L2limit}
+ (T_t-T_{2t})f_R
+ \longrightarrow (e^{-t}-e^{-2t})h
+ \quad\hbox{in }L_2(\g).
+\end{equation}
+The limit is essentially unbounded.  If the $L_\infty$ norms on the left did
+not tend to infinity, some subsequence would be bounded in $L_\infty$ by one
+constant.  An $L_2$-convergent sub-subsequence converges almost everywhere,
+forcing the limit in \eqref{eq:L2limit} to have the same $L_\infty$ bound, a
+contradiction.  This proves (ii).
+
+Finally, positivity and Kadison's inequality give, pointwise,
+\begin{align*}
+ |T_tf_R-T_{2t}f_R|^2
+ &=|T_t(f_R-T_tf_R)|^2\\
+ &\leq T_t|f_R-T_tf_R|^2.
+\end{align*}
+Thus $\|(T_t-T_{2t})f_R\|_\infty\leq\|f_R\|_{\BMO(\T)}$, and (iii)
+follows.
+\end{proof}
+
+The separation also occurs at the level of the natural $L_2$ spaces, without
+truncation.
+
+\begin{proposition}\label{prop:strict}
+For $h(x)=x$,
+\[
+ \|h\|_{\bmo(\T)}=1,
+ \qquad
+ \|h\|_{\BMO(\T)}=\infty.
+\]
+In particular, on centered $L_2(\g)$ elements one has a strict inclusion
+$\BMO(\T)\subsetneq\bmo(\T)$.
+\end{proposition}
+
+\begin{proof}
+Mehler's formula gives
+\[
+ T_th=e^{-t}h,
+ \qquad
+ T_th^2=e^{-2t}h^2+1-e^{-2t}.
+\]
+The first assertion follows immediately from \eqref{eq:bmo}.  On the other
+hand,
+\[
+ T_t|h-T_th|^2
+ =(1-e^{-t})^2\big(e^{-2t}h^2+1-e^{-2t}\big),
+\]
+which is unbounded for every $t>0$.  The source proves under $\Ga_2\geq0$
+that $\bmo\lesssim\BMO$ \cite[Proposition 2.4]{JungeMei}, so the inclusion
+holds; the coordinate makes it strict.
+\end{proof}
+
+\section{Separation of the norms in part (a)}
+
+Let $P_s=e^{-s\sqrt A}$ be the Poisson semigroup subordinated to $T$.  The
+source defines
+\begin{align*}
+ \|f\|_{\BMO(\Ga)}^2
+ &=\sup_{t>0}\left\|P_t\int_0^t\Ga(P_sf)\,s\,ds\right\|_\infty,\\
+ \|f\|_{\BMO(\partial)}^2
+ &=\sup_{t>0}\left\|P_t\int_0^t|\partial_sP_sf|^2s\,ds\right\|_\infty.
+\end{align*}
+
+\begin{theorem}\label{thm:poisson}
+For $h(x)=x$,
+\[
+ \|h\|_{\BMO(\Ga)}=\frac12,
+ \qquad
+ \|h\|_{\BMO(\Pp)}=\|h\|_{\BMO(\partial)}=\infty.
+\]
+Furthermore,
+\[
+ \sup_R\|f_R\|_{\BMO(\Ga)}\leq\frac12,
+ \qquad
+ \|f_R\|_{\BMO(\Pp)}\longrightarrow\infty.
+\]
+Thus symmetry, ergodicity, analyticity, hypercontractivity and
+$\Ga_2\geq\Ga$ do not suffice for the triple equivalence in open problem
+(ii)(a), and the failure is visible through bounded approximants.
+\end{theorem}
+
+\begin{proof}
+The coordinate lies in the first Wiener chaos: $Ah=h$.  Also
+$A(h^2-1)=2(h^2-1)$.  Hence
+\begin{equation}\label{eq:poisson-eigs}
+ P_sh=e^{-s}h,
+ \qquad
+ P_th^2=1+e^{-\sqrt2t}(h^2-1).
+\end{equation}
+Since $\Ga(P_sh)=e^{-2s}$,
+\[
+ \|h\|_{\BMO(\Ga)}^2
+ =\sup_{t>0}\int_0^t e^{-2s}s\,ds=\frac14.
+\]
+But
+\[
+ P_t|h-P_th|^2=(1-e^{-t})^2P_th^2
+\]
+is unbounded by \eqref{eq:poisson-eigs}; this is the $\BMO(\Pp)$ assertion.
+Similarly,
+\[
+ P_t\int_0^t|\partial_sP_sh|^2s\,ds
+ =\left(\int_0^t e^{-2s}s\,ds\right)P_th^2
+\]
+is unbounded, proving the $\BMO(\partial)$ assertion.
+
+For the bounded truncations, subordination and the Mehler derivative identity
+give
+\[
+ |(P_sf_R)'|
+ \leq\int_0^\infty\eta_s(u)|(T_uf_R)'|\,du
+ \leq\int_0^\infty\eta_s(u)e^{-u}\,du=e^{-s},
+\]
+where $\eta_s$ is the positive subordination density.  Therefore
+$\Ga(P_sf_R)\leq e^{-2s}$ and
+$\|f_R\|_{\BMO(\Ga)}\leq1/2$.
+
+Finally $f_R\to h$ in $L_2(\g)$ and
+$(P_t-P_{2t})h=(e^{-t}-e^{-2t})h$.  Repeating the $L_2$-limit argument in
+\eqref{eq:L2limit} shows
+$\|(P_t-P_{2t})f_R\|_\infty\to\infty$ for every fixed $t>0$.  Kadison's
+inequality for $P_t$ yields
+\[
+ \|(P_t-P_{2t})f_R\|_\infty\leq\|f_R\|_{\BMO(\Pp)},
+\]
+and completes the proof.
+\end{proof}
+
+\section{Verification, scope, and novelty bounds}
+
+The proof uses only Mehler's formula, Gaussian $L_2$ convergence, positive
+subordination, and Kadison's inequality.  No computation is needed.  The
+included script \texttt{code/verify\_ou\_truncations.py} evaluates the first
+two moments of a clipped Gaussian exactly in terms of the normal cdf and
+checks on a finite grid that the transition variance is at most one while the
+fixed-time drift grows linearly with $R$.  This is a diagnostic, not evidence
+for the proof.
+
+The result fully refutes the universal estimates (c) and (c').  It also shows
+that the strong hypotheses listed in Theorem \ref{thm:poisson} are
+insufficient for (a).  The broad request for a complete characterization of
+all semigroups remains open.  Part (b) is not challenged: the source already
+proves its Poisson comparison under $\Ga_2\geq0$.
+
+A bounded novelty search on 9 August 2026 covered the run's registry,
+solution, attempt, and proof-gap indexes; exact and close-variant arXiv
+searches combining the displayed norm comparison, the $T_t-T_{2t}$ term, and
+Ornstein--Uhlenbeck; the original paper; Mei's follow-up
+\cite{MeiDuality}; the Poisson $H^\infty$ paper \cite{FergusonMeiSimanek};
+and the later algebraic Calderón--Zygmund treatment of Gaussian semigroup BMO
+\cite{JungeMeiParcetXia}.  The follow-up explicitly says the two norms may
+differ, proves equality under extra assumptions, and notes that OU fails one
+of those assumptions, but the searched sources did not contain the explicit
+coordinate/truncation separation above or the part-(a) separation.  Novelty
+is therefore provisional; this was not an exhaustive MathSciNet or zbMATH
+priority search.
+
+\textbf{Human-review recommendation.} High priority.  Verify the source's
+domain conventions, the Lipschitz conditional-variance estimate, and the
+subordination gradient bound.  The bounded sequence $f_R$ makes the failure
+of (c),(c') independent of whether the source's completed BMO spaces are
+defined from $L_\infty$ or $L_2$.
+
+\sloppy
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{JungeMei}
+M. Junge and T. Mei,
+\emph{BMO spaces associated with semigroups of operators},
+Math. Ann. 352 (2012), 691--743; arXiv:1111.6194.
+\url{https://arxiv.org/abs/1111.6194}.
+
+\bibitem{MeiDuality}
+T. Mei,
+\emph{An $H^1$--BMO duality theory for semigroups of operators},
+arXiv:1204.5082 (2012).
+\url{https://arxiv.org/abs/1204.5082}.
+
+\bibitem{FergusonMeiSimanek}
+T. Ferguson, T. Mei, and B. Simanek,
+\emph{$H^\infty$-calculus for semigroup generators on BMO},
+Adv. Math. 347 (2019), 408--441; arXiv:1701.06623.
+\url{https://arxiv.org/abs/1701.06623}.
+
+\bibitem{JungeMeiParcetXia}
+M. Junge, T. Mei, J. Parcet, and R. Xia,
+\emph{Algebraic Calderón--Zygmund theory},
+Adv. Math. 376 (2021), 107443; arXiv:1907.07375.
+\url{https://arxiv.org/abs/1907.07375}.
+\end{thebibliography}
+
+\end{document}

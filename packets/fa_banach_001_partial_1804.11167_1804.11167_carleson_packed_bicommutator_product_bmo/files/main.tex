@@ -1,0 +1,288 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\BMO}{\mathrm{BMO}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\cI}{\mathcal I}
+
+\title{Carleson-Packed Product-BMO Lower Bounds\\for Bi-Commutators}
+\author{Run \texttt{fa\_banach\_001}, lane 8}
+\date{August 11, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status and source question}
+
+\textbf{Status:} candidate substantial partial result, likely valid; human
+review requested.
+
+Hytönen records in Section 1.6(2), printed page 7, that the diagonal
+$L^p\to L^p$ characterization of the bi-commutator
+\[
+  [T_1,[M_b,T_2]]
+\]
+remains open after a gap was found in the Ferguson--Lacey theorem and its
+extensions \cite{Hy}.  The exact source passage is reproduced below.
+
+\begin{center}
+\includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+For the Hilbert transforms on $\R^2$, the missing direction is the lower
+bound
+\[
+ \|b\|_{\BMO_{\rm prod}}\lesssim
+ \|[H_1,[M_b,H_2]]\|_{L^2\to L^2}.
+\]
+Airta, Hytönen, Li, Martikainen, and Oikari explain the false
+Fourier-quadrant step and prove the surviving lower bound by rectangular BMO
+for general nondegenerate kernels \cite{AHLMO}.  This packet upgrades that
+bound to product BMO for a new support-packing class, and separately settles
+all pure tensor symbols.  The unrestricted problem remains open.
+
+\section*{Idea of the proof}
+
+Rectangular BMO says that after a first-coordinate interval $I$ is fixed, the
+remaining coefficients indexed by $J$ form a one-parameter Carleson sequence
+with constant at most $B^2|I|$.  For an arbitrary open set $\Omega$, let
+$\Omega_I$ collect the $J$ for which $I\times J\subset\Omega$.  The slice
+coefficient mass is at most $B^2|I||\Omega_I|$.
+
+The only issue is summing this over $I$.  If the active $I$'s form a Carleson
+family, layer cake bounds the sum by the packing constant times $|\Omega|$.
+This produces exactly the open-set Carleson inequality defining product BMO.
+It identifies arbitrary depth of incomparable rectangles as the obstruction
+left in the full problem.
+
+For $b=u\otimes v$, the same layer-cake argument is weighted by the Haar
+coefficients of $u$, themselves a Carleson sequence.  Simultaneously, the
+bi-commutator factors into the tensor product of the two one-parameter
+commutators, giving a dimension-free result without any scale restriction.
+
+\section*{Definitions}
+
+Fix a tensor-product dyadic or Meyer wavelet basis
+$\{w_I\otimes w_J:I,J\in\mathcal D\}$, and put
+\[
+ b_{I,J}=\langle b,w_I\otimes w_J\rangle.
+\]
+The coefficient forms of dyadic product and rectangular BMO are
+\begin{align*}
+ \|b\|_{\BMO_{\rm prod}}^2
+ &=\sup_{0<|\Omega|<\infty}\frac1{|\Omega|}
+   \sum_{I\times J\subset\Omega}|b_{I,J}|^2,\\
+ \|b\|_{\BMO_{\rm rect}}^2
+ &=\sup_{I_0,J_0}\frac1{|I_0||J_0|}
+   \sum_{I\subset I_0,\,J\subset J_0}|b_{I,J}|^2.
+\end{align*}
+For a standard Meyer system these norms are equivalent to the corresponding
+continuous Chang--Fefferman and rectangular norms, with constants depending
+only on the fixed system \cite{CF}.
+
+Define the first-coordinate active family
+\[
+ \cI_b=\{I\in\mathcal D:b_{I,J}\ne0\text{ for some }J\}.
+\]
+Its packing constant is
+\[
+ \Lambda_1(\cI_b)=
+ \sup_{0<|E|<\infty}\frac1{|E|}
+ \sum_{I\in\cI_b,\,I\subset E}|I|,
+\]
+where $E\subset\R$ ranges over open sets.  Define $\Lambda_2$ symmetrically.
+
+\section*{Packing theorem}
+
+\begin{theorem}[Support-packing upgrade]\label{thm:packing}
+If $\Lambda_1(\cI_b)<\infty$, then
+\[
+ \|b\|_{\BMO_{\rm prod}}
+ \le \sqrt{\Lambda_1(\cI_b)}\,
+       \|b\|_{\BMO_{\rm rect}}.
+\]
+The symmetric estimate holds with $\Lambda_2$.  Hence the better of the two
+finite packing constants may be used.
+\end{theorem}
+
+\begin{proof}
+Write $B=\|b\|_{\BMO_{\rm rect}}$.  For fixed $I$ and every dyadic $J_0$,
+\[
+ \sum_{J\subset J_0}|b_{I,J}|^2
+ \le \sum_{I'\subset I,\,J\subset J_0}|b_{I',J}|^2
+ \le B^2|I||J_0|.                                      \tag{1}
+\]
+Thus $\{|b_{I,J}|^2\}_J$ is a one-parameter Carleson sequence with constant
+at most $B^2|I|$.
+
+Fix an open $\Omega\subset\R^2$ of finite measure, and let $\Omega_I$ be the
+union of all dyadic intervals $J$ such that $I\times J\subset\Omega$.
+Decompose $\Omega_I$ into maximal dyadic intervals.  Applying (1) on these
+disjoint intervals gives
+\[
+ \sum_{J:I\times J\subset\Omega}|b_{I,J}|^2
+ \le B^2|I||\Omega_I|.                                  \tag{2}
+\]
+
+Put $g_I=|\Omega_I|$ and
+$E_t=\bigcup\{I\in\cI_b:g_I>t\}$.  Layer cake and the packing hypothesis
+give
+\begin{align*}
+ \sum_{I\in\cI_b}|I|g_I
+ &=\int_0^\infty\sum_{I:g_I>t}|I|\,dt\\
+ &\le\Lambda_1\int_0^\infty|E_t|\,dt.                  \tag{3}
+\end{align*}
+If $x\in E_t$, then $x\in I$ for an interval with $|\Omega_I|>t$, and
+$\Omega_I$ is contained, up to endpoints, in the vertical section
+$\Omega_x$.  Therefore $E_t\subset\{x:|\Omega_x|>t\}$, and Fubini gives
+\[
+ \int_0^\infty|E_t|\,dt
+ \le\int_{\R}|\Omega_x|\,dx=|\Omega|.                  \tag{4}
+\]
+Summing (2), then using (3)--(4), proves
+\[
+ \sum_{I\times J\subset\Omega}|b_{I,J}|^2
+ \le B^2\Lambda_1|\Omega|.
+\]
+Taking the supremum over $\Omega$ completes the proof.  The other coordinate
+is identical.
+\end{proof}
+
+\begin{corollary}[Finite one-coordinate scale complexity]
+If the active wavelet coefficients use at most $M$ distinct scales in either
+coordinate, then
+\[
+ \|b\|_{\BMO_{\rm prod}}
+ \le\sqrt M\,\|b\|_{\BMO_{\rm rect}}.                  \tag{5}
+\]
+Consequently, for symmetrically nondegenerate Calderón--Zygmund operators in
+the two coordinates,
+\[
+ \|b\|_{\BMO_{\rm prod}}
+ \lesssim\sqrt M\,
+ \|[T_1,[M_b,T_2]]\|_{L^2\to L^2}.                    \tag{6}
+\]
+Together with the standard product-BMO upper bound, (6) is a full
+boundedness characterization on this finite-complexity class.
+\end{corollary}
+
+\begin{proof}
+At each fixed scale, the dyadic intervals contained in an open set are
+disjoint, so their lengths sum to at most the measure of the set.  Hence an
+$M$-scale active family has packing constant at most $M$.  Apply
+Theorem~\ref{thm:packing}; then use the rectangular lower bound of
+\cite[Proposition 5.3]{AHLMO}, whose off-support constant is dominated by the
+operator norm.
+\end{proof}
+
+\section*{Pure tensor theorem}
+
+\begin{theorem}[Rank-one symbols]\label{thm:tensor}
+For one-parameter functions $u,v$,
+\[
+ \|u\otimes v\|_{\BMO_{\rm prod}}
+ \asymp \|u\|_{\BMO}\|v\|_{\BMO}.                    \tag{7}
+\]
+Moreover,
+\[
+ [T_1,[M_{u\otimes v},T_2]]
+   =[T_1,M_u]\otimes[M_v,T_2].                         \tag{8}
+\]
+In particular, for $T_1,T_2$ having the usual one-parameter commutator
+characterization of BMO (including the Hilbert transforms), diagonal
+bi-commutator boundedness is equivalent to product BMO on all pure tensor
+symbols, with no scale restriction.
+\end{theorem}
+
+\begin{proof}
+Let $a_I=\langle u,w_I\rangle$ and $c_J=\langle v,w_J\rangle$.
+Testing the product-BMO norm on $I_0\times J_0$ and approximating the two
+one-parameter suprema proves the lower bound in (7).
+
+For the upper bound, fix $\Omega$ and define $\Omega_I$ as above.  The
+Carleson property of $\{|c_J|^2\}$ gives
+\[
+ \sum_{J:I\times J\subset\Omega}|a_Ic_J|^2
+ \le |a_I|^2\|v\|_{\BMO}^2|\Omega_I|.                 \tag{9}
+\]
+Using layer cake again, now with the Carleson weights $|a_I|^2$, yields
+\begin{align*}
+ \sum_I|a_I|^2|\Omega_I|
+ &=\int_0^\infty\sum_{I:|\Omega_I|>t}|a_I|^2\,dt\\
+ &\le\|u\|_{\BMO}^2
+   \int_0^\infty|\{x:|\Omega_x|>t\}|\,dt\\
+ &=\|u\|_{\BMO}^2|\Omega|.                           \tag{10}
+\end{align*}
+Equations (9)--(10) prove the upper bound in (7).
+
+Identity (8) follows directly because $T_1$ and $T_2$ act in separate
+coordinates.  Operator norms multiply on Hilbert tensor products.  The
+one-parameter commutator theorem \cite{CRW} and (7) finish the proof.
+\end{proof}
+
+\section*{Verification, upgrade attempts, and limitations}
+
+The proof is analytic and uses no computation.  Eight focused upgrade routes
+were checked before promotion: current-literature status, summing all Fourier
+quadrants, modulation/reflection, replacing bounded overlap by Carleson
+packing, exploiting small rectangular BMO in the old bootstrap, Rademacher
+randomization, smooth symbol-frequency projections, and finite tensor-rank
+factorization.  The first four produced Theorem~\ref{thm:packing}; the last
+route produced Theorem~\ref{thm:tensor}.  The remaining routes fail to control
+arbitrarily deep incomparable rectangle families uniformly.
+
+Holmes--Treil--Volberg prove a different dyadic partial theorem under an
+alternating-scale condition on the Haar support \cite{HTV}.  That result does
+not contain the Carleson-packed support class and does not repair the
+continuous Hilbert-transform theorem.  Conversely, this packet does not
+contain their infinite alternating-scale class.  The unrestricted diagonal
+problem remains open.
+
+A bounded search through August 11, 2026 covered the run's four lightweight
+indexes, the local sources of \cite{Hy,HTV}, the current version of
+\cite{AHLMO}, and official-arXiv queries using the exact problem and the terms
+``product BMO'', ``rectangular BMO'', ``finite scales'', and ``Carleson
+family''.  No matching support-packing statement was found.  This is not a
+priority claim.
+
+Human review should focus on the equivalence between the fixed wavelet
+rectangular norm and the oscillation norm used in \cite{AHLMO}, the maximal
+dyadic decomposition of $\Omega_I$, and the weighted layer-cake step in
+Theorem~\ref{thm:tensor}.
+
+\small
+\begin{thebibliography}{9}
+\bibitem{Hy}
+T. Hytönen,
+\emph{The $L^p$-to-$L^q$ boundedness of commutators with applications to the
+Jacobian operator}, arXiv:1804.11167, especially Section 1.6(2).
+
+\bibitem{AHLMO}
+E. Airta, T. Hytönen, K. Li, H. Martikainen, and T. Oikari,
+\emph{Off-diagonal estimates for bi-commutators},
+Int. Math. Res. Not. IMRN 2022, no. 23, 18766--18832;
+arXiv:2005.03548.
+
+\bibitem{HTV}
+I. Holmes, S. Treil, and A. Volberg,
+\emph{Dyadic bi-parameter repeated commutator and dyadic product BMO},
+arXiv:2101.00763.
+
+\bibitem{CF}
+S.-Y. A. Chang and R. Fefferman,
+\emph{A continuous version of duality of $H^1$ with BMO on the bidisc},
+Ann. of Math. (2) 112 (1980), 179--201.
+
+\bibitem{CRW}
+R. Coifman, R. Rochberg, and G. Weiss,
+\emph{Factorization theorems for Hardy spaces in several variables},
+Ann. of Math. (2) 103 (1976), 611--635.
+\end{thebibliography}
+
+\end{document}

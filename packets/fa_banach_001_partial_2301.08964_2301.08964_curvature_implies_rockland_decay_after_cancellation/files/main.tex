@@ -1,0 +1,247 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=27mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[final]{microtype}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\Rcal}{\mathcal R}
+\newcommand{\wideG}{\widehat G}
+\newcommand{\op}{\mathrm{op}}
+
+\title{Curvature implies Rockland decay after cancellation\\
+\large A rigorous one-way answer to the comparison problem in arXiv:2301.08964}
+\author{Automated mathematics run \texttt{fa\_banach\_001}}
+\date{21 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{\textbf{Status: substantial partial theorem, likely valid, pending human review.}
+The curvature assumption implies the full two-sided Rockland estimate after
+the necessary mean-zero correction.  The converse is not proved.}}
+\end{center}
+
+\begin{abstract}
+Cardona--Delgado--Ruzhansky ask how their Rockland Fourier condition is
+related to the curvature assumption of Govindan Sheri--Hickman--Wright.
+We prove one direction.  After subtracting a smooth function with the same
+mass, the curvature assumption gives both positive- and negative-order
+Rockland estimates, for the measure and its reflection.  The proof isolates
+an operator-theoretic root lemma and keeps track of the noncommutative order
+of every alternating convolution.  No converse is claimed.
+\end{abstract}
+
+\section{Source problem and normalization}
+
+Let $G$ be a graded group, let $\sigma$ be a compactly supported finite
+measure, and write $\widetilde\sigma(E)=\overline{\sigma(E^{-1})}$ (omit the
+complex conjugate for positive measures).  The source asks for the relation
+between the curvature assumption (CA) of \cite{GHW} and
+\begin{equation}\label{eq:CDR}
+ \sup_{\pi\in\wideG}
+ \left\|\pi(\Rcal)^{\pm a/\nu}\widehat\sigma(\pi)\right\|_{\op}<\infty,
+\end{equation}
+where $\Rcal$ is a positive Rockland operator of degree $\nu$.
+
+\begin{figure}[ht]
+ \centering
+ \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+ \caption{The comparison problem in Remark 1.9 of \cite{CDR}.}
+\end{figure}
+
+We use the Fourier convention
+\[
+ \widehat{\mu*\eta}(\pi)=\widehat\eta(\pi)\widehat\mu(\pi),
+ \qquad \widehat{\widetilde\mu}(\pi)=\widehat\mu(\pi)^*.
+\]
+Starting with $\sigma^{(0)}=\sigma$, Definition 1.1 of \cite{GHW} sets
+\[
+ \sigma^{(N)}=
+ \begin{cases}
+  \sigma^{(N-1)}*\widetilde\sigma,&N\text{ odd},\\
+  \sigma^{(N-1)}*\sigma,&N\text{ even}.
+ \end{cases}
+\]
+CA says that some $\sigma^{(N)}=h\,dx$ and, for some $\gamma>0$,
+\begin{equation}\label{eq:CA}
+ \int_G|h(xy^{-1})-h(x)|\,dx+
+ \int_G|h(y^{-1}x)-h(x)|\,dx\le C|y|^\gamma.
+\end{equation}
+Convolving once more if necessary preserves this estimate and makes $N$ odd.
+Thus we may take $N=2m-1$, in which case the order is exactly
+\begin{equation}\label{eq:parity}
+ \sigma^{(2m-1)}=(\sigma*\widetilde\sigma)^m,
+ \qquad
+ \widehat{\sigma^{(2m-1)}}=(A^*A)^m,\qquad A=\widehat\sigma(\pi).
+\end{equation}
+This order matters: in a noncommutative representation it cannot be replaced
+by $(AA^*)^m$.
+
+\section{Proof intuition}
+CA turns an alternating convolution power into an $L^1$ density with a
+translation H\"older modulus, hence with a small positive Rockland
+derivative.  For an odd iterate its transform is exactly $(A^*A)^m$; a
+dyadic spectral root argument transfers this derivative first to $A^*$ and,
+after reflection, to $A$.  Subtracting a smooth function of the same mass
+preserves those high-frequency estimates, while the resulting cancellation
+allows the heat-kernel representation of negative Rockland powers.  This
+proves the forward implication only.
+
+\section{Three lemmas}
+
+\begin{lemma}[CA gives a fractional Rockland derivative]\label{lem:frac}
+If $h\in L^1(G)$ satisfies \eqref{eq:CA}, then, for every positive Rockland
+operator $\Rcal$ and every sufficiently small $s>0$,
+\[
+ \sup_{\pi\in\wideG}
+ \|\pi(\Rcal)^{s/\nu}\widehat h(\pi)\|_{\op}<\infty.
+\]
+\end{lemma}
+\begin{proof}
+The translation modulus in \eqref{eq:CA}, integrated against the heat kernel,
+gives
+\[
+ \|(I-e^{-t\Rcal})h\|_1\lesssim t^{\gamma_0/\nu}
+ \quad(0<t\le1)
+\]
+for some $0<\gamma_0\le\min(\gamma,1)$.  The standard semigroup formula for
+$\Rcal^{s/\nu}$, split at $t=1$, is integrable whenever
+$0<s<\gamma_0$.  Hence $\Rcal^{s/\nu}h\in L^1(G)$.  Taking its group Fourier
+transform proves the assertion.
+\end{proof}
+
+\begin{lemma}[Root lemma]\label{lem:root}
+Let $L$ be positive self-adjoint on a Hilbert space, let $T$ be bounded with
+$\|T\|\le1$, and suppose
+\[
+ L^s(TT^*)^q\in\mathcal B(H)
+\]
+for $s>0$ and $q\in\mathbb N$.  Then $L^tT\in\mathcal B(H)$ for every
+$0<t<s/(2q)$.
+\end{lemma}
+\begin{proof}
+Put $C=TT^*$ and let
+$E_j=\mathbf1_{(2^{-j-1},2^{-j}]}(C)$ for $j\ge0$; the kernel of $C$ makes
+no contribution to $T$.  Since
+\[
+ L^sE_j=L^sC^q(C^{-q}E_j),
+\]
+we have $\|L^sE_j\|\lesssim2^{jq}$.  Interpolation for powers of the positive
+operator $L$ gives $\|L^tE_j\|\lesssim2^{jqt/s}$.  Also
+\[
+ \|E_jT\|^2=\|T^*E_jT\|=\|E_jTT^*E_j\|\le2^{-j}.
+\]
+Consequently
+\[
+ \sum_{j\ge0}\|L^tE_jT\|
+ \lesssim\sum_{j\ge0}2^{-j(1/2-qt/s)}<\infty
+\]
+when $t<s/(2q)$.  The spectral sum therefore converges in operator norm to
+$L^tT$.
+\end{proof}
+
+\begin{lemma}[Cancellation gives the negative power]\label{lem:low}
+If $\mu$ is compactly supported, finite, and $\mu(G)=0$, then for every
+positive Rockland operator $\Rcal$ there is $b>0$ such that
+\[
+ \sup_{\pi\in\wideG}
+ \|\pi(\Rcal)^{-b/\nu}\widehat\mu(\pi)\|_{\op}<\infty.
+\]
+The same statement holds for $\widetilde\mu$.
+\end{lemma}
+\begin{proof}
+Let $p_t$ be the heat kernel of $\Rcal$.  At small times
+$\|\mu*p_t\|_1\le\|\mu\|$.  At large times, $\mu(G)=0$, heat-kernel scaling,
+and a first positive translation modulus give, for some $\delta>0$,
+\[
+ \|\mu*p_t\|_1\lesssim t^{-\delta/\nu}
+ \quad(t\ge1).
+\]
+Thus the Bochner integral
+\[
+ \Rcal^{-b/\nu}\mu=
+ c_b\int_0^\infty t^{b/\nu-1}\mu*p_t\,dt
+\]
+converges in $L^1$ whenever $0<b<\delta$.  Its Fourier transform is the
+operator in the statement.  Reflection gives the last assertion.
+\end{proof}
+
+\section{The one-way comparison theorem}
+
+\begin{theorem}\label{thm:main}
+Let $\sigma$ be a compactly supported finite measure on a graded group $G$
+and suppose that $\sigma$ satisfies CA.  Choose
+$\phi\in C_c^\infty(G)$ with $\int_G\phi=1$ and put
+\[
+ \mu=\sigma-\sigma(G)\phi.
+\]
+For every positive Rockland operator $\Rcal$ of degree $\nu$ there is $a>0$
+such that
+\begin{align*}
+ \sup_{\pi\in\wideG}
+ \|\pi(\Rcal)^{\pm a/\nu}\widehat\mu(\pi)\|_{\op}&<\infty,\\
+ \sup_{\pi\in\wideG}
+ \|\pi(\Rcal)^{\pm a/\nu}\widehat{\widetilde\mu}(\pi)\|_{\op}&<\infty.
+\end{align*}
+Thus the mass-corrected measure and its reflection satisfy the Rockland
+condition in \cite{CDR}.
+\end{theorem}
+\begin{proof}
+Use the odd iterate \eqref{eq:parity}.  Lemma \ref{lem:frac} gives, uniformly
+in $\pi$,
+\[
+ \pi(\Rcal)^{s/\nu}(A^*A)^m\in\mathcal B(H_\pi).
+\]
+After a harmless common normalization of $A$, Lemma \ref{lem:root} with
+$T=A^*$ and $q=m$ yields a positive Rockland estimate for $A^*$.
+
+For completeness, CA also passes to $\widetilde\sigma$.  Indeed,
+$(\widetilde\sigma*\sigma)^{m+1}
+=\widetilde\sigma*(\sigma*\widetilde\sigma)^m*\sigma$; convolution of the
+density $h$ on the left and right by compactly supported finite measures
+preserves the two translation estimates in \eqref{eq:CA}.  Applying the same
+argument to $\widetilde\sigma$, whose transform is $A^*$, gives the positive
+Rockland estimate for $A$.
+
+The correction by $\phi$ preserves both positive estimates because every
+positive Rockland power of a compactly supported smooth function is in
+$L^1$.  Since $\mu(G)=0$, Lemma \ref{lem:low} gives the two negative
+estimates.  Take $a$ smaller than the four exponents obtained above.
+\end{proof}
+
+\section{Scope and obstruction}
+
+The correction is not cosmetic.  A negative Rockland power at the trivial
+representation forces zero mass; hence an arbitrary nonzero-mass surface
+measure cannot satisfy the symmetric condition before cancellation.  The
+smooth maximal term introduced by the correction is controlled by the usual
+Hardy--Littlewood maximal operator, exactly as in \cite{GHW}.
+
+No converse is proved.  Abstractly, a one-sided estimate $L^aA\in\mathcal
+B(H)$ does not control a positive derivative of $A^*A$: take
+$Le_n=2^ne_n$ and a rank-one map with smooth range but with adjoint range
+outside every positive Sobolev domain.  Realizing such a field as the group
+Fourier transform of a compact measure is a separate problem, so this is an
+operator-theoretic warning rather than a group counterexample.
+
+The result is therefore classified as a substantial partial answer: it proves
+CA $\Rightarrow$ mass-corrected Rockland decay, but neither the reverse
+implication nor the weak $(1,1)$ endpoint.
+
+\begin{thebibliography}{9}
+\bibitem{CDR}
+F.~Cardona, S.~Delgado, and M.~Ruzhansky,
+\emph{Boundedness of the dyadic maximal function on graded Lie groups},
+arXiv:2301.08964v2 (2024).
+\bibitem{GHW}
+A.~Govindan Sheri, J.~Hickman, and J.~Wright,
+\emph{Lacunary maximal functions on homogeneous groups},
+J. Funct. Anal. 286 (2024), 110250; arXiv:2305.04700.
+\end{thebibliography}
+
+\end{document}

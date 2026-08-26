@@ -1,0 +1,426 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue]{hyperref}
+\emergencystretch=2em
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\cN}{\mathcal N}
+\newcommand{\covN}{\operatorname{cov}(\mathcal N)}
+\newcommand{\cNM}{\mathcal{NM}}
+\newcommand{\cNF}{\mathcal{NF}}
+\newcommand{\cND}{\mathcal{ND}}
+\newcommand{\cAN}{\mathcal{AN}}
+\newcommand{\cANM}{\mathcal{ANM}}
+\newcommand{\esssup}{\operatorname*{ess\,sup}}
+\newcommand{\essinf}{\operatorname*{ess\,inf}}
+\newcommand{\finc}{\mathfrak c}
+
+\title{The Sharp \(\operatorname{cov}(\mathcal N)\) Threshold\\
+for Three Families of Pathological Nets}
+\author{Math discovery candidate partial result}
+\date{August 17, 2026}
+
+\begin{document}
+\maketitle
+
+\section{Status and source questions}
+
+This packet gives a candidate substantial partial answer to Questions Q1--Q3
+in D.~L. Rodr\'iguez-Vidanes,
+\emph{Lineability on nets and uncountable sequences of functions in measure
+theory}, arXiv:2306.\allowbreak03862v1 \cite{source}.  The questions occur in Section 4,
+printed page 26:
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The result completely determines the smallest-cardinality clause of Q1 and
+Q2 for every dimension requested there, and of Q3 up to dimension
+\(\finc\).  It does not classify all directed sets.
+
+\section{Definitions}
+
+Write \(\cN\) for the ideal of Lebesgue-null subsets of \([0,1]\), and
+\(\covN\) for the least cardinality of a subfamily of \(\cN\) covering
+\([0,1]\).  Let \(\mathcal A\) be a directed set.  We use the source paper's
+families:
+\begin{itemize}[leftmargin=*]
+\item \(\cNM_{\mathcal A}\) consists of a.e.-increasing nets
+  \((f_a)_{a\in\mathcal A}\) of nonnegative measurable functions which
+  converge pointwise a.e. to an integrable \(f\), but for which monotone
+  convergence of the integrals fails.
+\item \(\cNF_{\mathcal A}\) consists of nets of a.e.-nonnegative measurable
+  functions for which
+  \[
+     \int \liminf_{a\in\mathcal A} f_a
+       > \liminf_{a\in\mathcal A}\int f_a,
+  \]
+  with the pointwise net liminf integrable.
+\item \(\cND_{\mathcal A}\) consists of nets \((f_a)\), dominated a.e. at
+  every index by one integrable function, which converge pointwise a.e. to
+  an integrable \(f\), but for which
+  \(\int|f_a-f|\not\to0\).
+\end{itemize}
+All integrals below are over \([0,1]\).
+
+\section{Proof intuition}
+
+The usual sequence proofs conceal a countability step.  In the Lebesgue
+measure algebra, even an uncountable essential union or essential supremum is
+determined by a countable subfamily.  If a dominated net has large
+\(L^1\)-error arbitrarily far out, every index tail therefore has a
+positive-measure essential union of large-error sets, and the essential
+tail-limsup still has positive measure.  Pointwise convergence forces each
+point of that limsup into a null exceptional set attached to some index.
+Thus the index set supplies a null cover of a positive-measure set, requiring
+at least \(\covN\) indices.
+
+For monotone nets, compare the literal pointwise limit with the essential
+supremum of all terms.  For Fatou, compare the literal tail infima with the
+essential tail infima.  The same null-cover obstruction makes these objects
+agree in the direction needed for the classical integral inequalities.
+
+\section{Measure-algebra lemmas}
+
+\begin{lemma}[Positive measurable sets have covering number \(\covN\)]
+\label{lem:positive-cover}
+If \(E\subset[0,1]\) is measurable and \(\lambda(E)>0\), and
+\(E\subset\bigcup_{\xi<\kappa}N_\xi\) with every \(N_\xi\in\cN\), then
+\(\kappa\ge\covN\).
+\end{lemma}
+
+\begin{proof}
+Work modulo \(1\) on the circle.  There are countably many translates of
+\(E\) whose union is conull.  Indeed, if \(R\) is the uncovered measurable
+remainder, averaging over translations \(t\) gives
+\[
+ \int \lambda\bigl(R\cap(E+t)\bigr)\,dt
+       =\lambda(R)\lambda(E).
+\]
+Choose a translate covering at least this proportion of \(R\), and iterate;
+the remainder decreases geometrically to a null set.
+
+If \(\kappa<\covN\), each selected translate of \(E\) is covered by
+\(\kappa\) translates of the \(N_\xi\)'s.  These null sets, together with
+the null remainder, form a cover of the circle by at most
+\(\kappa\cdot\aleph_0<\covN\) null sets, contradicting the definition of
+\(\covN\).
+\end{proof}
+
+\begin{lemma}[Countable determination]
+\label{lem:countable}
+Every essential union or essential intersection of an arbitrary family of
+Lebesgue-measurable sets is equal modulo null sets to the corresponding
+operation on a countable subfamily.  Consequently, every essential supremum
+or essential infimum of an arbitrary family of measurable extended-real
+functions is determined a.e. by a countable subfamily.
+\end{lemma}
+
+\begin{proof}
+For a family \(\mathcal E\) of measurable sets, let
+\[
+ s=\sup\left\{\lambda\left(\bigcup\mathcal F\right):
+                \mathcal F\subset\mathcal E\text{ finite}\right\}.
+\]
+Choose finite \(\mathcal F_n\subset\mathcal E\) for which the displayed
+measures tend to \(s\), and let
+\(U=\bigcup_n\bigcup\mathcal F_n\).  Then \(\lambda(U)=s\).  For every
+\(E\in\mathcal E\), one has \(\lambda(E\setminus U)=0\), since otherwise
+\(\lambda(U\cup E)>s\).  Hence \(U\) is the essential union.  Complements
+give essential intersections.
+
+For functions, apply the set statement to the rational superlevel sets
+\(\{h_i>q\}\), \(q\in\mathbb Q\), and take the union of the countably many
+resulting countable index sets.  Essential infima follow by reversing the
+inequalities.
+\end{proof}
+
+\begin{lemma}[A dominated bad net needs \(\covN\) indices]
+\label{lem:dominated}
+Let \((h_a)_{a\in\mathcal A}\) be measurable functions such that
+\(0\le h_a\le G\) a.e. for every \(a\), where \(G\in L^1[0,1]\), and suppose
+\(h_a\to0\) pointwise a.e.  If \(\int h_a\not\to0\), then
+\[
+          |\mathcal A|\ge\covN.
+\]
+\end{lemma}
+
+\begin{proof}
+There is an \(\varepsilon>0\) such that every index tail contains a
+\(b\) with \(\int h_b\ge\varepsilon\).  Choose \(M>0\) so that
+\(\int_{\{G>M\}}G<\varepsilon/4\), put
+\(\delta=\varepsilon/4\), and, for each such large \(b\), set
+\[
+ E_b=\{x:G(x)\le M,\ h_b(x)\ge\delta\}.
+\]
+The estimate
+\[
+ \varepsilon\le\int h_b
+ \le \frac{\varepsilon}{4}+\delta+M\lambda(E_b)
+\]
+shows that \(\lambda(E_b)\ge\eta:=\varepsilon/(2M)>0\).
+
+For \(a\in\mathcal A\), let \(U_a\) be the essential union of all \(E_b\)
+with \(b\ge a\) and \(\int h_b\ge\varepsilon\).  Every tail contains such a
+\(b\), so \(\lambda(U_a)\ge\eta\).  The family \((U_a)\) is
+down-directed.  Let
+\[
+       U=\essinf_{a\in\mathcal A}U_a.
+\]
+By Lemma~\ref{lem:countable}, a countable subfamily \(U_{a_n}\) determines
+\(U\).  Recursively choose \(c_n\) above \(c_{n-1}\) and \(a_n\).
+Then \(U_{c_n}\) decreases to \(U\) modulo null sets, and
+\[
+       \lambda(U)=\lim_n\lambda(U_{c_n})\ge\eta.
+\]
+
+Again by Lemma~\ref{lem:countable}, for each \(a\) choose a countable set
+\(C_a\) of large indices \(b\ge a\) such that
+\[
+       U_a=\bigcup_{b\in C_a}E_b\quad\text{modulo null sets}.
+\]
+Thus
+\[
+       D_a:=U\setminus\bigcup_{b\in C_a}E_b
+\]
+is null.  Outside the fixed null set where \(h_a\not\to0\), every
+\(x\in U\) has an index \(a_x\) after which \(h_b(x)<\delta\).
+Consequently \(x\notin E_b\) for \(b\in C_{a_x}\), so \(x\in D_{a_x}\).
+We have covered the positive-measure set \(U\) by one fixed null set and
+the family \((D_a)_{a\in\mathcal A}\).  Lemma~\ref{lem:positive-cover}
+gives \(|\mathcal A|\ge\covN\).
+\end{proof}
+
+\section{The sharp lower bound}
+
+\begin{theorem}
+\label{thm:empty}
+If \(\mathcal A\) is a directed set with
+\(|\mathcal A|<\covN\), then
+\[
+       \cNM_{\mathcal A}
+       =\cNF_{\mathcal A}
+       =\cND_{\mathcal A}
+       =\varnothing.
+\]
+\end{theorem}
+
+\begin{proof}
+\textbf{The dominated family.}
+If \((f_a)\in\cND_{\mathcal A}\) has pointwise a.e. limit \(f\) and
+\(|f_a|\le g\) a.e., apply Lemma~\ref{lem:dominated} to
+\[
+       h_a=|f_a-f|,\qquad G=g+|f|.
+\]
+This contradicts \(|\mathcal A|<\covN\).
+
+\medskip
+\noindent
+\textbf{The monotone family.}
+Suppose \((f_a)\in\cNM_{\mathcal A}\) has pointwise a.e. limit \(f\).
+Set
+\[
+                    u=\esssup_{a\in\mathcal A}f_a.
+\]
+Choose \(a_n\) determining this essential supremum and recursively choose
+\(c_n\) above \(c_{n-1}\) and \(a_n\).  The a.e. order makes
+\((f_{c_n})\) increasing modulo null sets, with supremum \(u\).  Ordinary
+monotone convergence yields
+\[
+       \int u=\sup_n\int f_{c_n}
+             =\sup_{a\in\mathcal A}\int f_a.
+\tag{1}
+\]
+
+We claim that \(f=u\) a.e.  Since \(\{f_a>u\}\) is null for every \(a\),
+pointwise convergence gives
+\[
+ \{f>u\}\subset N\cup\bigcup_{a\in\mathcal A}\{f_a>u\},
+\tag{2}
+\]
+where \(N\) is the null convergence-exception set.  Lemma
+\ref{lem:positive-cover} and \(|\mathcal A|<\covN\) imply
+\(\lambda\{f>u\}=0\).
+
+For the reverse inequality, fix \(n\).  If
+\(x\in\{f_{c_n}>f\}\setminus N\), convergence supplies an index after which
+the values are strictly below \(f_{c_n}(x)\).  Taking a common upper bound
+with \(c_n\) shows
+\[
+ \{f_{c_n}>f\}\subset
+ N\cup\bigcup_{b\ge c_n}\{f_{c_n}>f_b\}.
+\tag{3}
+\]
+Every set in the last union is null by the a.e. monotonicity.  The same
+covering argument makes \(\{f_{c_n}>f\}\) null.  Taking the countable
+supremum gives \(u\le f\) a.e.  Thus \(u=f\) a.e., and (1) is precisely
+the monotone-convergence conclusion, a contradiction.
+
+\medskip
+\noindent
+\textbf{The Fatou family.}
+Let \((f_a)\) be a net of a.e.-nonnegative measurable functions.  Define
+the literal and essential tail infima by
+\[
+ q_a(x)=\inf_{b\ge a}f_b(x),\qquad
+ g_a=\essinf_{b\ge a}f_b,
+\]
+and put
+\[
+ f=\sup_{a\in\mathcal A}q_a
+      =\liminf_{a\in\mathcal A}f_a,\qquad
+ g=\esssup_{a\in\mathcal A}g_a.
+\]
+Assume, as in the definition of \(\cNF_{\mathcal A}\), that \(f\) is
+integrable.
+
+For each \(a\), a countable tail subfamily determines \(g_a\), so
+\(q_a\le g_a\le g\) outside a null set \(D_a\).  Therefore
+\[
+       \{f>g\}\subset\bigcup_{a\in\mathcal A}D_a.
+\]
+The left side is measurable; Lemma~\ref{lem:positive-cover} implies that it
+is null.  Hence \(f\le g\) a.e.
+
+The net \((g_a)\) is increasing in the directed order.  Countably determine
+its essential supremum and take successive common upper bounds as before.
+Ordinary monotone convergence then gives
+\[
+\begin{aligned}
+ \int f
+ &\le \int g
+  = \sup_{a\in\mathcal A}\int g_a                                      \\
+ &\le \sup_{a\in\mathcal A}\inf_{b\ge a}\int f_b
+  = \liminf_{a\in\mathcal A}\int f_a.
+\end{aligned}
+\]
+This is Fatou's inequality and contradicts membership in
+\(\cNF_{\mathcal A}\).
+\end{proof}
+
+\section{Consequences for Q1--Q3}
+
+\begin{corollary}[Exact minimum in Q1 and Q2]
+\label{cor:q12}
+For every cardinal \(1\le\mu\le2^{\finc}\), the smallest possible
+cardinality of a directed set in Q1 is
+\[
+                         \boxed{\covN}.
+\]
+The same is true for Q2.
+\end{corollary}
+
+\begin{proof}
+The lower bound follows from Theorem~\ref{thm:empty}, since even one nonzero
+member of any requested cone would make the relevant family nonempty.
+
+For the upper bound, Theorem 2.4 of the source paper \cite{source} constructs
+in ZFC a directed set of cardinality \(\covN\) and a positive cone of
+dimension \(2^{\finc}\) contained simultaneously in
+\(\cNM_{\mathcal A}\), \(\cNF_{\mathcal A}\), and
+\(\cND_{\mathcal A}\), after adjoining zero.  Selecting \(\mu\) generators
+gives every smaller requested dimension.  For Q2, note additionally that
+\(\cND_{\mathcal A}\) is symmetric under multiplication by \(-1\), so the
+same generators also give the negative cone required by the source's
+definition of coneability.
+\end{proof}
+
+\begin{corollary}[Exact minimum in Q3 through \(\finc\)]
+\label{cor:q3}
+For every cardinal \(1\le\mu\le\finc\), the smallest possible cardinality
+in Q3 is
+\[
+                         \boxed{\covN}.
+\]
+This remains true if Q3 is read as requiring one common directed set for all
+three families.
+\end{corollary}
+
+\begin{proof}
+The family \(\cND_{\mathcal A}\) occurring in Q3 forces the lower bound by
+Theorem~\ref{thm:empty}.
+
+For the upper bound, the source constructs directed sets of cardinality
+\(\covN\) on which, respectively,
+\(\cAN_{\mathcal A}\) is strongly \(2^{\finc}\)-algebrable,
+\(\cND_{\mathcal A}\) is strongly \(\finc\)-algebrable, and
+\(\cANM_{\mathcal A}\setminus\cND_{\mathcal A}\) is strongly
+\(\finc\)-algebrable; see its Theorems 2.17, 2.13, and 2.8
+\cite{source}.  Let these index sets be
+\(\mathcal A_1,\mathcal A_2,\mathcal A_3\), and give
+\[
+              \mathcal A
+              =\mathcal A_1\times\mathcal A_2\times\mathcal A_3
+\]
+the coordinatewise order.  Its cardinality is still \(\covN\).
+
+Pull a net on \(\mathcal A_i\) back along the \(i\)-th coordinate
+projection.  That projection is order preserving and cofinal, so the
+pointwise limit and every relevant eventual integral or convergence
+property are unchanged.  The pullback is an injective algebra
+homomorphism, hence preserves freeness.  Thus the three source algebras live
+on one common \(\mathcal A\).  Restricting their free generating sets gives
+every \(1\le\mu\le\finc\).
+\end{proof}
+
+\section{Verification, novelty, and limitations}
+
+The proof is structural and uses no numerical computation.  It was audited
+for the two points most likely to hide a countability assumption:
+Lemma~\ref{lem:countable} explicitly reduces essential suprema and infima to
+sequences, while Lemma~\ref{lem:dominated} never assumes a countable cofinal
+subset of \(\mathcal A\).  Equations (2) and (3) keep the varying a.e.
+exception sets visible rather than silently choosing common
+representatives.
+
+A bounded novelty search through August 17, 2026 used the exact title,
+arXiv id, author, the phrase \emph{smallest possible cardinality}, and
+combinations of \(\covN\), nets, dominated convergence, monotone convergence,
+and lineability.  It located the 2025 journal publication of the source and
+a later paper by Dantas--Rodr\'iguez-Vidanes on different net pathologies,
+but no source stating Theorem~\ref{thm:empty} or Corollaries
+\ref{cor:q12}--\ref{cor:q3}.  Novelty is therefore plausible, not certified.
+
+The result leaves open:
+\begin{itemize}[leftmargin=*]
+\item the classification of all directed sets in Q1--Q3;
+\item Q3 for \(\finc<\mu\le2^{\finc}\);
+\item the regular-cardinal Questions Q4--Q6.
+\end{itemize}
+The first remaining issue depends on the cofinal/Tukey structure of the
+index set, not only its cardinality.  Above \(\finc\), attempts to combine
+the source's maximal Bernstein coding with dominated-convergence failure
+meet a genuine cardinal-arithmetic bottleneck.
+
+\section{Human-review recommendation}
+
+The packet should receive mathematical review as a candidate substantial
+partial result.  The priority checks are:
+\begin{enumerate}[leftmargin=*]
+\item the passage from the down-directed tail essential unions to the
+positive-measure set \(U\) in Lemma~\ref{lem:dominated};
+\item the literal-versus-essential liminf comparison in the Fatou case;
+\item the interpretation and cofinal pullback used for Q3.
+\end{enumerate}
+
+\begin{thebibliography}{9}
+\bibitem{source}
+D. L. Rodr\'iguez-Vidanes,
+\emph{Lineability on nets and uncountable sequences of functions in measure
+theory},
+arXiv:2306.03862v1 (2023); published in
+Rev. R. Acad. Cienc. Exactas F\'is. Nat. Ser. A Mat. 119 (2025), Article 35,
+DOI: 10.1007/s13398-024-01696-8.
+\end{thebibliography}
+
+\end{document}

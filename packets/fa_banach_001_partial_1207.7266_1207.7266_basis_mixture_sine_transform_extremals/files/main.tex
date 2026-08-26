@@ -1,0 +1,201 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.82in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,graphicx,microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage[T1]{fontenc}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Sph}{S^{n-1}}
+\newcommand{\vol}{V}
+
+\title{Basis-mixture extremals for the sine transform\\
+\large A partial answer to Maresch--Schuster (arXiv:1207.7266)}
+\author{Automated mathematical-discovery run \texttt{fa\_banach\_001}}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.} Partial result, likely valid, subject to human review.
+
+\section{Source conjecture}
+
+For a finite Borel measure $\mu$ on $\Sph$, its sine transform is
+\[
+ (\mathcal S\mu)(x)=\int_{\Sph}\sqrt{\lVert x\rVert^2-(x\cdot u)^2}\,d\mu(u).
+\]
+If $\mu$ is even and isotropic,
+$\int u\otimes u\,d\mu(u)=I_n$, this is the support function of a
+centrally symmetric convex body denoted $S_\mu$; its polar is
+$S_\mu^*$.  For an orthonormal basis $E=(e_1,\dots,e_n)$, write
+\[
+ \nu_E=\frac12\sum_{i=1}^n(\delta_{e_i}+\delta_{-e_i})
+\]
+for the associated cross measure.  On page 14, after Theorem 4.3,
+Maresch and Schuster conjecture:
+
+\begin{quote}
+Among even isotropic measures, $V(S_\mu^*)$ is maximized precisely by
+cross measures, while $V(S_\mu)$ is minimized precisely by cross measures.
+\end{quote}
+
+\begin{center}
+\includegraphics[width=0.91\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section{New partial theorem}
+
+Call an even measure an \emph{orthogonal-basis mixture} if there is a
+Borel probability measure $\pi$ on $O(n)$ such that
+\begin{equation}\label{eq:mixture}
+ \mu=\int_{O(n)}R_\#\nu_E\,d\pi(R).
+\end{equation}
+This is exactly the closed convex hull of the cross measures.  It includes
+finite and continuous mixtures (for example normalized spherical Lebesgue
+measure), but is a proper subclass of the even isotropic measures.
+
+\begin{theorem}[Both conjectured inequalities on the basis-mixture class]
+\label{thm:main}
+Let $n\ge3$, let $\nu_E$ be a cross measure, and let $\mu$ have the
+representation \eqref{eq:mixture}.  Then
+\[
+ \vol(S_\mu^*)\le \vol(S_{\nu_E}^*)
+ \qquad\text{and}\qquad
+ \vol(S_\mu)\ge \vol(S_{\nu_E}).
+\]
+Equality in either inequality holds if and only if $\mu$ itself is a
+cross measure.
+\end{theorem}
+
+\section{Proof intuition}
+
+All cross measures are rotations of one model, so all their sine-transform
+bodies are rotated copies of one body $K_0$.  Because the sine transform is
+linear in the measure, $S_\mu$ is the Minkowski average of these rotated
+copies.  Volume to the power $1/n$ grows under Minkowski averaging, which
+gives the minimum of the primal volume.  Polar volume has the integral
+formula $\frac1n\int h^{-n}$; strict convexity of $t\mapsto t^{-n}$ makes it
+shrink under averaging.  The equality cases force almost every rotated body
+in the mixture to be the same.  Injectivity of the sine transform on even
+measures then forces the measure, not only its body, to be a single cross.
+
+\section{Proof}
+
+Put $K_0=S_{\nu_E}$ and $K_R=RK_0=S_{R_\#\nu_E}$.  Every
+$R_\#\nu_E$ is even and isotropic, hence so is $\mu$.  Linearity and
+orthogonal equivariance of the sine transform give
+\begin{equation}\label{eq:Minkowski}
+ h_{S_\mu}(x)=\int_{O(n)}h_{K_R}(x)\,d\pi(R).
+\end{equation}
+Thus $\overline K:=S_\mu$ is the Minkowski integral of the $K_R$.
+
+For the polar inequality, the polar-coordinate volume formula and Jensen's
+inequality yield
+\begin{align*}
+ \vol(\overline K^*)
+ &=\frac1n\int_{\Sph}\left(\int h_{K_R}(u)\,d\pi(R)\right)^{-n}du\\
+ &\le \int_{O(n)}\frac1n\int_{\Sph}h_{K_R}(u)^{-n}\,du\,d\pi(R)
+ =\vol(K_0^*).
+\end{align*}
+
+For the primal inequality, multilinearity and continuity of mixed volume give
+\[
+ \vol(\overline K)
+ =\int_{O(n)}V(\overline K[n-1],K_R)\,d\pi(R).
+\]
+Minkowski's first inequality, and $\vol(K_R)=\vol(K_0)$, imply
+\[
+ V(\overline K[n-1],K_R)
+ \ge \vol(\overline K)^{(n-1)/n}\vol(K_0)^{1/n}.
+\]
+After integration and division by the positive common factor,
+$\vol(\overline K)^{1/n}\ge\vol(K_0)^{1/n}$.
+
+It remains to check rigidity.  Equality in the polar argument and strict
+convexity of $t^{-n}$ imply that $h_{K_R}(u)$ is independent of $R$ for
+$\pi$-almost every $R$ and almost every $u$.  Continuity of support functions
+then makes the bodies $K_R$ identical almost surely.  In the primal argument,
+equality makes the nonnegative gap in Minkowski's first inequality vanish
+almost surely.  Hence almost every $K_R$ is homothetic to $\overline K$.
+All $K_R$ are centrally symmetric about the origin and have the same volume;
+under equality $\overline K$ has that volume as well.  The homotheties
+therefore have ratio one and no translation, so again the $K_R$ are identical
+almost surely.
+
+Finally, the sine transform is injective on even measures
+\cite[Proposition 2.1]{MS}.  Thus equality of $K_R=S_{R_\#\nu_E}$ implies
+that the measures $R_\#\nu_E$ are identical almost surely.  Equation
+\eqref{eq:mixture} then says that $\mu$ is that cross measure.  The converse
+is immediate. \qed
+
+\section{A discrete criterion}
+
+Let $\mu$ be supported on finitely many antipodal lines $L_1,\dots,L_N$,
+and let $a_j$ be its total mass on $L_j$.  Form the hypergraph whose edges
+are the $n$-element subsets $B$ of pairwise orthogonal lines (hence
+orthonormal bases after choosing unit representatives).
+
+\begin{corollary}[Fractional orthogonal-basis decomposition]
+If there are numbers $\lambda_B\ge0$ such that
+\[
+ \sum_B\lambda_B=1,
+ \qquad
+ a_j=\sum_{B\ni L_j}\lambda_B\quad(1\le j\le N),
+\]
+then both inequalities and both equality conclusions of Theorem
+\ref{thm:main} hold for $\mu$.
+\end{corollary}
+
+\begin{proof}
+The displayed equations say exactly that $\mu$ is the convex combination,
+with coefficients $\lambda_B$, of the cross measures carried by the basis
+edges $B$.  Apply Theorem \ref{thm:main}.
+\end{proof}
+
+\section{Scope, upgrade attempts, and novelty}
+
+The theorem does not settle the full conjecture.  A regular-simplex tight
+frame is isotropic but its support contains no orthogonal basis, so it cannot
+belong to the basis-mixture class.  Moreover, that class is closed: it is the
+continuous image of the compact space of probability measures on $O(n)$.
+Thus a density argument cannot remove the obstruction.
+
+The attack also tested the most immediate counterexample route.  In dimension
+three, deterministic spherical sampling put the polar volume of the regular
+tetrahedral frame below that of the cross, and random searches over Parseval
+frames with four through nine lines found no violation.  A separate zonoid
+determinant computation put the tetrahedral primal volume above the cross
+value.  These computations are evidence only; the proof above does not use
+them.
+
+A bounded literature search through 11 August 2026 found no full resolution.
+The complex analogue still described both the real and complex problems as
+open in 2015 \cite{HH}.  Li--Xi--Zhang's Grassmannian theorem proves sharp
+reverse inequalities when the Grassmann rank divides the dimension and
+explicitly leaves the non-divisible case open \cite[Theorem 1.2]{LXZ}.
+The sine transform has rank $n-1$, which does not divide $n$ for $n\ge3$.
+Exact-title, exact-conjecture, author/citation, and
+``basis/mixture of cross measures'' searches found no prior version of the
+partial theorem.  Novelty is therefore plausible but provisional.
+
+\begin{thebibliography}{9}
+\bibitem{MS}
+G. Maresch and F. E. Schuster,
+\emph{The sine transform of isotropic measures},
+Int. Math. Res. Not. IMRN 2012 (2012), 717--739;
+arXiv:1207.7266.
+
+\bibitem{HH}
+Q. Huang and B. He,
+\emph{Volume inequalities for complex isotropic measures},
+Geom. Dedicata 177 (2015), 401--428.
+
+\bibitem{LXZ}
+A.-J. Li, D. Xi, and G. Zhang,
+\emph{Volume inequalities of convex bodies from cosine transforms on
+Grassmann manifolds}, Adv. Math. 304 (2017), 494--538.
+\end{thebibliography}
+
+\end{document}

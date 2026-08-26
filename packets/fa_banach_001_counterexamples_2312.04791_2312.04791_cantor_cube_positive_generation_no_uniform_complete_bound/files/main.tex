@@ -1,0 +1,288 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem*{sourcequestion}{Source Question 7.3}
+
+\newcommand{\MIN}{\operatorname{MIN}}
+\newcommand{\MAX}{\operatorname{MAX}}
+\newcommand{\sa}{\mathrm{sa}}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+
+\title{A Positively Generated Function System with No\\
+Uniform Complete Positive-Generation Bound}
+\author{Run \texttt{fa\_banach\_001} --- lane 2}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{
+\textbf{Status: candidate counterexample, likely valid, human review required.}
+Question~7.3 of Humeniuk--Kennedy--Manor asks whether positive generation of a
+function system forces complete $\alpha$-generation for one uniform
+$\alpha$.  The explicit Cantor-cube function system below is positively
+generated but has no such uniform constant, giving a negative answer.
+}}
+\end{center}
+
+\section{Source question}
+
+Humeniuk, Kennedy, and Manor study dualizability and positive decomposition
+for possibly nonunital operator systems in arXiv:2312.04791, later published
+in the \emph{Journal of Functional Analysis} \textbf{289} (2025), 111153
+\cite{source}.  Their published Question~7.3, on arXiv PDF page~24, is:
+
+\begin{center}
+\includegraphics[width=0.97\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\begin{sourcequestion}
+If $S\subseteq C(X)$ is a positively generated function system, is $S$
+completely $\alpha$-generated for some $\alpha>0$?
+\end{sourcequestion}
+
+Here a function system may be nonunital.  An ordered $*$-Banach space $E$ is
+$\alpha$-generated if every $x\in E^\sa$ has a decomposition $x=y-z$ with
+$y,z\in E^+$ and
+\[
+  \|y\|+\|z\|\leq \alpha\|x\|.
+\]
+A matrix ordered operator space is completely $\alpha$-generated if the same
+constant works in every $M_n(E)$.
+
+\section{Proof Intuition}
+
+The source already constructs a matrix ordered version of $\MIN(\ell^1)$
+whose positive cones are coordinatewise and whose complete positive-generation
+constants are unbounded.  Its unresolved issue is that the example is not
+known there to be a function system.
+
+The key observation is that an equivalent norm makes precisely this ordered
+space concrete and commutative.  On the Cantor cube $K=\{0,1\}^{\mathbb N}$,
+send $z\in\ell^1$ to the continuous subset-sum function
+$f_z(\varepsilon)=\sum_k\varepsilon_kz_k$.  Singleton points recover each
+coefficient, so positivity at every matrix level is exactly coordinatewise
+positivity.  The resulting norm is equivalent to $\|z\|_1$, and both the
+concrete function system and $\MIN(\ell^1)$ are minimal operator spaces.
+Thus their coefficient identification is a completely bounded complete order
+isomorphism.  A uniform generation constant would transfer through it,
+contradicting the source's example.
+
+\section{Counterexample}
+
+Let
+\[
+  K=\{0,1\}^{\mathbb N}
+\]
+with the product topology.  For $z=(z_k)\in\ell^1$ define
+\[
+  f_z(\varepsilon)=\sum_{k=1}^{\infty}\varepsilon_k z_k,
+  \qquad \varepsilon=(\varepsilon_k)\in K,
+\]
+and put
+\[
+  S=\{f_z:z\in\ell^1\}\subseteq C(K).
+\]
+
+\begin{theorem}
+The space $S$ is a closed, selfadjoint, positively generated function system.
+It is not completely $\alpha$-generated for any $\alpha>0$.  Consequently,
+Question~7.3 has a negative answer.
+\end{theorem}
+
+We separate the one external obstruction used in the proof.
+
+\begin{lemma}[Humeniuk--Kennedy--Manor]
+Let $X=\MIN(\ell^1)$, equipped at every matrix level with the coordinatewise
+positive cone
+\[
+ M_n(X)^+=\{(A_k)_{k\geq1}:A_k\in M_n^+\}.
+\]
+Then $X$ is not completely $\beta$-generated for any finite $\beta$.
+\end{lemma}
+
+\begin{proof}
+This is Example~8.6 on arXiv PDF pages~28--29 of the source \cite{source}.
+For completeness, its obstruction is recalled here.  The dual matrix ordered
+operator space is $X^*=\MAX(\ell^\infty)$ with the usual coordinatewise
+ordering.  If $X$ were completely $\beta$-generated, the source's
+Proposition~5.5 would make $X^*$ completely $2\beta$-normal.
+
+The minimal and maximal operator-space structures on the infinite-dimensional
+space $\ell^\infty$ are not completely equivalent
+\cite[Theorem~14.3]{paulsen}.  Hence, for arbitrarily large $R$, there are
+$n$ and $u\in M_n(\ell^\infty)$ with
+\[
+ \|u\|_{\min}\leq1,
+ \qquad \|u\|_{\max}>4R.
+\]
+In the C$^*$-algebra $M_n(\ell^\infty)$, write $u$ as the linear combination
+of the four positive and negative parts of $\operatorname{Re}u$ and
+$\operatorname{Im}u$.  Each of these four positive elements has minimal norm
+at most one, and one of them, say $y$, has maximal norm greater than $R$.
+Thus
+\[
+ 0\leq y\leq 1,
+ \qquad \|1\|_{\max}=1,
+ \qquad \|y\|_{\max}>R.
+\]
+This violates every uniform complete normality constant.  Taking
+$R>2\beta$ gives the desired contradiction.
+\end{proof}
+
+\begin{proof}[Proof of the theorem]
+\textbf{Step 1: $S$ is a closed function system.}
+The series defining $f_z$ converges uniformly, because its tail is bounded by
+the corresponding $\ell^1$ tail.  Thus $f_z\in C(K)$.  The map
+$z\mapsto f_z$ is complex linear, injective (evaluate at the singleton
+points), and respects conjugation.
+
+We have the upper estimate
+\[
+ \|f_z\|_\infty\leq\|z\|_1.
+\]
+For the reverse estimate, given $\theta\in[0,2\pi]$, let
+\[
+ E_\theta=\{k:\operatorname{Re}(e^{-i\theta}z_k)\geq0\}
+\]
+and let $1_{E_\theta}\in K$ be its characteristic sequence.  Then
+\[
+ \bigl|f_z(1_{E_\theta})\bigr|
+ \geq \sum_k\max\{\operatorname{Re}(e^{-i\theta}z_k),0\}.
+\]
+The average over $\theta$ of the $k$th summand is $|z_k|/\pi$.
+Tonelli's theorem therefore gives some $\theta$ for which
+\[
+  \|f_z\|_\infty\geq\frac1\pi\|z\|_1.
+\]
+The coefficient map is consequently a Banach-space isomorphism, so its image
+$S$ is closed.  Hence $S$ is a concrete (possibly nonunital) function system.
+
+\textbf{Step 2: determine all matrix cones.}
+If $f_z=f_z^*$, singleton evaluations show that every $z_k$ is real.
+Furthermore,
+\[
+ f_z\geq0 \text{ on }K
+ \quad\Longleftrightarrow\quad z_k\geq0\text{ for every }k.
+\]
+The forward implication again uses singleton points, and the reverse
+implication is immediate.  Thus $f_z=f_{z^+}-f_{z^-}$ for selfadjoint $f_z$,
+and $S$ is positively generated.
+
+More generally, an element $F\in M_n(S)$ has a unique absolutely summable
+coefficient sequence $(A_k)$ in $M_n$ and
+\[
+ F(\varepsilon)=\sum_k\varepsilon_kA_k.
+\]
+If $F\geq0$, evaluation at the singleton point $e_k\in K$ gives $A_k\geq0$.
+Conversely, if every $A_k\geq0$, every subset sum above is positive.  Hence
+\[
+  M_n(S)^+\quad\text{is exactly the coordinatewise cone for every }n.
+\]
+
+\textbf{Step 3: compare completely with the obstruction space.}
+Let $X=\MIN(\ell^1)$ with the coordinatewise matrix cones from the lemma, and
+define the coefficient map
+\[
+ T:S\longrightarrow X,
+ \qquad T(f_z)=z.
+\]
+Step~2 says that $T$ and $T^{-1}$ preserve positivity at every matrix level,
+so $T$ is a complete order isomorphism.
+
+Every concrete subspace of a commutative C$^*$-algebra has its minimal
+operator-space structure \cite[Proposition~3.3.1]{paulsen}; hence $S$ is
+minimal, while $X$ is minimal by definition.  The universal property of
+minimal operator spaces says that every bounded map into a minimal operator
+space is completely bounded with the same norm \cite{blecher}.  The scalar
+estimates from Step~1 therefore imply
+\[
+ \|T\|_{\mathrm{cb}}\leq\pi,
+ \qquad \|T^{-1}\|_{\mathrm{cb}}\leq1.
+\]
+
+\textbf{Step 4: transfer a hypothetical uniform constant.}
+Suppose that $S$ were completely $\alpha$-generated.  Given
+$x\in M_n(X)^\sa$, put $s=T_n^{-1}x$ and write $s=p-q$ with $p,q\geq0$ and
+\[
+ \|p\|+\|q\|\leq\alpha\|s\|.
+\]
+Then $x=T_np-T_nq$ is a positive decomposition in $M_n(X)$ and
+\[
+ \|T_np\|+\|T_nq\|
+ \leq \|T\|_{\mathrm{cb}}\alpha\|T^{-1}\|_{\mathrm{cb}}\|x\|
+ \leq \pi\alpha\|x\|.
+\]
+The same constant works for every $n$, so $X$ would be completely
+$\pi\alpha$-generated.  This contradicts the lemma.  Therefore no finite
+complete generation constant exists for $S$.
+\end{proof}
+
+\section{Verification}
+
+The reusable script \texttt{code/verifier.py} exhaustively evaluates all
+subsets in seeded finite-coordinate examples.  It checks the exact real norm
+formula, the complex $1/\pi$ lower bound, and the matrix singleton-cone
+mechanism.  Run it with
+\begin{verbatim}
+conda run --no-capture-output -n sandbox python \
+  runs/fa_banach_001/solutions/counterexamples/\
+  2312.04791_cantor_cube_positive_generation_no_uniform_complete_bound/\
+  code/verifier.py
+\end{verbatim}
+These finite checks are sanity tests, not a proof of the infinite-dimensional
+MIN/MAX obstruction.  The complete proof is the argument above.  The separate
+\texttt{VERIFIER\_REPORT.md} records the review checklist and output.
+
+\section{Novelty, limitations, and review recommendation}
+
+A bounded search through 11 August 2026 checked the run's four lightweight
+indexes, the exact wording of published Question~7.3, the phrases
+``positively generated function system'', ``completely alpha-generated'',
+and ``MIN($\ell^1$) function system'', and later sources citing
+arXiv:2312.04791.  The 2025 JFA version still states the question as open.
+No later answer or matching Cantor-cube construction was found.  Novelty is
+therefore plausible but not certified.
+
+The counterexample is nonunital, exactly within the source's convention that
+function systems may be nonunital.  It does not address a strengthened unital
+variant.  It also does not quantify the optimal generation constant at each
+fixed matrix level.
+
+Human review is recommended, with priority on two standard but decisive
+points: the complete-order identification of the coordinate cones, and the
+minimal-operator-space universal property used to promote scalar norm
+equivalence to cb norm equivalence.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+A. Humeniuk, M. Kennedy, and N. Manor,
+\emph{An extension property for noncommutative convex sets and duality for
+operator systems}, J. Funct. Anal. \textbf{289} (2025), 111153;
+arXiv:2312.04791.
+
+\bibitem{paulsen}
+V. Paulsen,
+\emph{Completely Bounded Maps and Operator Algebras},
+Cambridge Studies in Advanced Mathematics 78, Cambridge University Press,
+2002.
+
+\bibitem{blecher}
+D. P. Blecher,
+\emph{Introduction to Operator Spaces}, lecture notes, Fields Institute;
+minimal-operator-space universal property in Section~1.2.
+\end{thebibliography}
+
+\end{document}

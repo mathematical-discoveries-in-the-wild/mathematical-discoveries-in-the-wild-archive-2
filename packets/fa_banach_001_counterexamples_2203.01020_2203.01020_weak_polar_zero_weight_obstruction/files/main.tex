@@ -1,0 +1,247 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\emergencystretch=3em
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{remark}{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Sph}{\mathbb S}
+\newcommand{\Rp}{R_p(h,O)}
+\newcommand{\calR}{\mathcal R_p(O)}
+
+\title{Zero Coordinate Weights Break the Weak-Polar Implication\\
+and a Radial Positivity Hypothesis Repairs It}
+\author{Run \texttt{fa\_banach\_001}}
+\date{2026-08-17}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+Candidate full counterexample and corrected result, likely valid, for the
+statements surrounding Theorem~1.3 of the source paper.
+
+\section{Source statement and definition}
+Koskela and Nguyen define a weak polar coordinate system
+$(\Sph,\sigma,\Gamma^O,h)$ by requiring a probability measure $\sigma$, a
+family of infinite curves $\gamma^O_\xi$ starting from $O$, a weight
+$h:X\to[0,\infty)$, and a constant $C>0$ such that
+\begin{equation}\label{polar}
+ \int_{\Sph}\int_{\gamma^O_\xi}|f|h\,ds\,d\sigma(\xi)
+ \le C\int_X|f|\,d\mu
+\end{equation}
+for every integrable $f$~\cite{KN}.  They explicitly note that $h$ is not
+assumed strictly positive.
+
+For $A_{2^j}(O)=B(O,2^{j+1})\setminus B(O,2^j)$, they set
+\begin{align*}
+ R_p(h,O)&=\int_{X\setminus B(O,1)}h^{-p/(p-1)}\,d\mu,
+ &&p>1,\\
+ \mathcal R_p(O)&=\sum_{j\in\mathbb N}
+ (2^j)^{p/(p-1)}\mu(A_{2^j}(O))^{-1/(p-1)},
+ &&p>1,
+\end{align*}
+with the corresponding $p=1$ definitions
+\[
+ R_1(h,O)=\|h^{-1}\|_{L^\infty_\mu(X\setminus B(O,1))},
+ \qquad
+ \mathcal R_1(O)=\sup_j\frac{2^j}{\mu(A_{2^j}(O))}.
+\]
+
+Theorem~1.3(I) states that $R_p(h,O)<\infty$ suffices for five radial-limit
+and modulus properties.  Immediately afterward the authors infer
+$R_p(h,O)<\infty\Rightarrow\mathcal R_p(O)<\infty$ and ask for a simple
+direct proof~\cite[p.~3]{KN}.
+
+\begin{center}
+\includegraphics[width=0.98\linewidth]{figures/theorem_and_direct_proof_request_crop.png}
+\end{center}
+
+The decisive point in the printed definition is visible on source page~5:
+\begin{center}
+\includegraphics[width=0.96\linewidth]{figures/weak_polar_zero_weight_definition_crop.png}
+\end{center}
+
+\section{Proof intuition}
+The inequality~\eqref{polar} only sees the weighted line measure $h\,ds$.
+If $h$ vanishes on every selected radial curve, the left side is identically
+zero and the condition places no geometric restriction on the family.  The
+negative-power integral $R_p$, however, is computed using $\mu$ and ignores
+an infinite value on a $\mu$-null ray.  This mismatch gives a counterexample.
+
+The natural repair is exactly the positivity mentioned after the source
+definition.  Once $h>0$ along almost every radial point, test~\eqref{polar}
+with a truncated version of $\mathbf1_A/h$.  It recovers unweighted curve
+length.  Every radial curve must spend length at least $2^j$ crossing the
+$j$th dyadic annulus, and one application of H\"older gives the corresponding
+summand of $\mathcal R_p$.
+
+\section{Counterexample}
+\begin{theorem}\label{counterexample}
+Under the printed definition of weak polar coordinates,
+\[
+ R_p(h,O)<\infty\quad\Longrightarrow\quad\mathcal R_p(O)<\infty
+\]
+is false.  Moreover, Theorem~1.3(I) of the source is false as printed.
+\end{theorem}
+
+\begin{proof}
+Take
+\[
+ X=\R^2,\qquad d=d_E,\qquad d\mu=dx,
+ \qquad O=0,\qquad p=2.
+\]
+This is a doubling metric measure space supporting a $2$-Poincar\'e
+inequality and the annular chain property.  Let $\Sph=\{\ast\}$ with its
+unit point mass and choose the single radial curve
+\[
+ \gamma_\ast^O(t)=(t,0),\qquad t\ge0.
+\]
+Writing $L=\{(t,0):t\ge0\}$, define the Borel coordinate weight
+\[
+ h(x)=\begin{cases}
+  0,&x\in L,\\
+  e^{|x|},&x\notin L.
+ \end{cases}
+\]
+For every integrable $f$, the left side of~\eqref{polar} is
+\[
+ \int_0^\infty |f(t,0)|h(t,0)\,dt=0.
+\]
+Thus this is a weak polar coordinate system, even with $C=1$.
+
+The ray $L$ is Lebesgue-null, so $h^{-2}=e^{-2|x|}$ almost everywhere.
+Consequently
+\[
+ R_2(h,0)=\int_{\R^2\setminus B(0,1)}h^{-2}\,dx
+ =2\pi\int_1^\infty r e^{-2r}\,dr
+ =\frac{3\pi}{2}e^{-2}<\infty.
+\]
+On the other hand,
+\[
+ \mu(A_{2^j}(0))
+ =\pi\bigl((2^{j+1})^2-(2^j)^2\bigr)
+ =3\pi4^j,
+\]
+and hence
+\[
+ \mathcal R_2(0)
+ =\sum_{j\in\mathbb N}\frac{(2^j)^2}{\mu(A_{2^j}(0))}
+ =\sum_{j\in\mathbb N}\frac1{3\pi}=\infty.
+\]
+This disproves the asserted implication.
+
+It also directly contradicts Theorem~1.3(I).  The tail family
+$\widehat\Gamma^O(\Sph)$ consists of one shifted ray.  The indicator of its
+first unit segment is admissible for its $2$-modulus, has line integral one,
+and has zero planar $L^2$ norm.  Therefore
+\[
+ \operatorname{Mod}_2(\widehat\Gamma^O(\Sph))=0,
+\]
+whereas property~4 in the source theorem asserts strict positivity.
+\end{proof}
+
+\section{Corrected direct theorem}
+The counterexample exploits only the omitted positivity condition.  The
+following statement supplies both a repair and the requested elementary
+proof.
+
+\begin{proposition}\label{repair}
+Assume the source's weak polar-coordinate inequality~\eqref{polar}, and in
+addition assume
+\[
+ h(\gamma^O_\xi(t))>0
+ \quad\text{for }ds\,d\sigma(\xi)\text{-almost every radial point.}
+\]
+Then, whenever the right side is finite,
+\[
+ \mathcal R_p(O)\le C^{p/(p-1)}R_p(h,O)\quad(p>1),
+ \qquad
+ \mathcal R_1(O)\le C R_1(h,O).
+\]
+In particular, $R_p(h,O)<\infty$ directly implies
+$\mathcal R_p(O)<\infty$.  No doubling, Poincar\'e, or annular-chain
+hypothesis is used in this numerical implication beyond the standing
+finiteness of the annular measures.
+\end{proposition}
+
+\begin{proof}
+Fix $j$ and abbreviate $A_j=A_{2^j}(O)$.  Every infinite continuous curve
+from $O$ reaches radii $2^j$ and $2^{j+1}$.  Taking the last visit to the
+inner sphere before a first subsequent visit to the outer sphere shows that
+the intervening subcurve lies in $A_j$ apart from its endpoints and has
+length at least $2^j$.  Thus
+\begin{equation}\label{crossing}
+ \int_{\gamma^O_\xi}\mathbf1_{A_j}\,ds\ge2^j
+ \qquad(\xi\in\Sph).
+\end{equation}
+
+Apply~\eqref{polar} to the bounded integrable functions
+\[
+ f_N=\mathbf1_{A_j}\min\{N,h^{-1}\}.
+\]
+Radial almost-everywhere positivity and monotone convergence give
+\[
+ 2^j
+ \le\int_{\Sph}\int_{\gamma^O_\xi}\mathbf1_{A_j}\,ds\,d\sigma
+ \le C\int_{A_j}h^{-1}\,d\mu.
+\]
+For $p>1$, write $q=p/(p-1)$.  H\"older's inequality yields
+\[
+ \int_{A_j}h^{-1}\,d\mu
+ \le\mu(A_j)^{1/p}
+     \left(\int_{A_j}h^{-q}\,d\mu\right)^{1/q}.
+\]
+Raising to the power $q$ and rearranging,
+\[
+ (2^j)^q\mu(A_j)^{-1/(p-1)}
+ \le C^q\int_{A_j}h^{-q}\,d\mu.
+\]
+The annuli are disjoint, so summation over $j$ gives
+$\mathcal R_p(O)\le C^qR_p(h,O)$.
+
+For $p=1$, the same crossing argument gives
+\[
+ 2^j\le C\int_{A_j}h^{-1}\,d\mu
+ \le C R_1(h,O)\mu(A_j).
+\]
+Taking the supremum over $j$ proves the endpoint estimate.
+\end{proof}
+
+\section{Scope, novelty, and verification}
+Theorem~\ref{counterexample} concerns the literal published definition and
+statement.  Proposition~\ref{repair} does not assert that radial positivity
+is the weakest possible repair, but it is natural, is already flagged as
+important immediately after the source definition, and exactly removes the
+zero-weight mechanism.
+
+A bounded search on 2026-08-17 covered arXiv:2203.01020, the 2023 accepted
+and journal versions, the exact phrase ``do not know a simple direct proof'',
+the theorem title and authors together with ``erratum'' and ``correction'',
+and weak-polar/coordinate-weight keywords.  The accepted version retains the
+same definition and request; no erratum, later explicit direct proof, or
+record of this zero-weight counterexample was found.  This is not a priority
+claim.  Novelty confidence is moderate and mathematical-validity confidence
+is high.
+
+The exact integral and annular-term calculations are checked by the
+accompanying verification script; it is only a sanity check.  The independent
+audit is in \texttt{VERIFICATION.md}.
+Human review should focus on the literal absence of radial positivity; the
+source itself explicitly emphasizes that strict positivity was not assumed.
+
+\begin{thebibliography}{9}
+\bibitem{KN}
+P. Koskela and K. Nguyen,
+\emph{Existence and uniqueness of limits at infinity for homogeneous
+Sobolev functions}, J. Funct. Anal. 285 (2023), no.~11, 110154;
+arXiv:2203.01020.
+\end{thebibliography}
+
+\end{document}

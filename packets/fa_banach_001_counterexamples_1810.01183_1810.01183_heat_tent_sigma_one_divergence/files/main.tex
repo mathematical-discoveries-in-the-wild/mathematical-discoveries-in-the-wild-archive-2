@@ -1,0 +1,148 @@
+\documentclass[10pt]{article}
+\usepackage[margin=0.86in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newcommand{\R}{\mathbb R}
+\newcommand{\cS}{\mathcal S}
+
+\title{The first-order heat tent square function has\\
+a sharp threshold at $\sigma=1$}
+\author{Run \texttt{fa\_banach\_001} --- \texttt{agent\_lane\_11}}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.} Candidate full counterexample; likely valid subject
+to human review. It answers negatively the all-$\sigma$ tent/Sobolev
+equivalence asked by Portal and Veraar~\cite{source}.
+
+\section{The question}
+
+For a rough time-dependent divergence-form operator, let $\Gamma(t,s)$ be its
+evolution family. The source defines
+\[
+ \|g\|_{T^{p,2}_\sigma}^p
+ =\int_{\R^d}\left(\int_0^\infty
+ \frac1{|B(x,\sqrt t)|}\int_{B(x,\sqrt t)}|g(y,t)|^2\,dy\,
+ \frac{dt}{t^{1+\sigma}}\right)^{p/2}dx
+\]
+and asks, for $\sigma\geq0$, whether
+\begin{equation}\label{eq:question}
+ \|(-\Delta)^{\sigma/2}f\|_{L^p(\R^d)}
+ \asymp
+ \|(t,x)\mapsto\sqrt t\,\nabla\Gamma(t,0)f(x)\|_{T^{p,2}_\sigma}.
+\end{equation}
+
+\begin{center}
+\includegraphics[width=0.94\textwidth]{figures/source_question_crop.png}
+\end{center}
+
+As written for every $\sigma\geq0$, the answer is no in the simplest possible
+case.
+
+\begin{theorem}\label{thm:negative}
+Take identity coefficients, so that $\Gamma(t,0)=e^{t\Delta}$, and take
+$p=2$. For every $\sigma\geq1$ and every nonzero
+$f\in\cS(\R^d)$, the left side of \eqref{eq:question} is finite and the right
+side is infinite. Consequently \eqref{eq:question} fails for every
+$\sigma\geq1$ even for the ordinary heat equation.
+\end{theorem}
+
+\section{The endpoint obstruction}
+
+At $p=2$, Fubini removes the spatial averaging in the tent norm. Therefore
+\begin{align}
+ &\|(t,x)\mapsto\sqrt t\,\nabla e^{t\Delta}f(x)\|_{T^{2,2}_\sigma}^{,2}
+ \notag\\
+ &\hspace{35mm}=
+ \int_0^\infty t^{-\sigma}\|\nabla e^{t\Delta}f\|_2^2\,dt.
+ \label{eq:time}
+\end{align}
+
+\begin{proof}[Proof of Theorem~\ref{thm:negative}]
+The heat semigroup is strongly continuous on $H^1(\R^d)$, and hence
+\[
+ \nabla e^{t\Delta}f\longrightarrow\nabla f
+ \quad\text{in }L^2(\R^d)\qquad(t\downarrow0).
+\]
+A nonzero $L^2$ Schwartz function cannot have zero gradient. Thus there are
+$c,\delta>0$ such that
+$\|\nabla e^{t\Delta}f\|_2^2\geq c$ for $0<t<\delta$. Formula
+\eqref{eq:time} is bounded below by
+\[
+ c\int_0^\delta t^{-\sigma}\,dt=\infty
+ \qquad(\sigma\geq1).
+\]
+On the other hand, $f\in\cS$ implies
+$(-\Delta)^{\sigma/2}f\in L^2$ for every $\sigma\geq0$.
+\end{proof}
+
+This is not a rough-coefficient pathology: identity coefficients satisfy all
+ellipticity and measurability hypotheses of the source. Nor is it an endpoint
+convention: for every $\sigma>1$ the divergence is stronger.
+
+\section{The sharp positive range for the heat model}
+
+The same calculation identifies the exact threshold and verifies all powers.
+
+\begin{proposition}\label{prop:positive}
+For $0\leq\sigma<1$ and $f\in\cS(\R^d)$,
+\begin{equation}\label{eq:exact}
+ \|(t,x)\mapsto\sqrt t\,\nabla e^{t\Delta}f(x)\|_{T^{2,2}_\sigma}^{,2}
+ =2^{\sigma-1}\Gamma(1-\sigma)
+ \|(-\Delta)^{\sigma/2}f\|_2^2.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+By Plancherel, Tonelli, and $\lambda=|\xi|^2$,
+\begin{align*}
+ \int_0^\infty t^{-\sigma}\|\nabla e^{t\Delta}f\|_2^2dt
+ &=\int_{\R^d}|\widehat f(\xi)|^2|\xi|^2
+   \left(\int_0^\infty t^{-\sigma}e^{-2t|\xi|^2}dt\right)d\xi\\
+ &=2^{\sigma-1}\Gamma(1-\sigma)
+   \int_{\R^d}|\xi|^{2\sigma}|\widehat f(\xi)|^2d\xi.
+\end{align*}
+The gamma integral is finite exactly when $\sigma<1$.
+\end{proof}
+
+Thus a corrected first-order formulation can only ask about
+$0\leq\sigma<1$. At and above one, a square-function kernel with additional
+small-time cancellation (for example, more powers of $t(-\Delta)$) is needed.
+This also shows that the all-$\sigma$ ``change of square function'' heuristic
+immediately preceding the source question cannot apply to the displayed
+first-order square function at $\sigma\geq1$.
+
+\section{Verification, novelty, and limitation}
+
+The included script checks the subcritical gamma identity and the logarithmic
+and power divergences of truncated time integrals. These computations are
+sanity checks; equations \eqref{eq:time}--\eqref{eq:exact} are the proof.
+
+A bounded search on 13 August 2026 used the exact formula, paper title, and
+tent/Sobolev terminology. It found both the arXiv and published source, which
+repeat the same question, but no later record of this correction. The novelty
+verdict is therefore \emph{apparently new within the bounded search}, not an
+exhaustive bibliographic claim.
+
+The theorem fully answers the question as quantified over all
+$\sigma\geq0$. It does not decide the corrected and substantially deeper
+problem for $0<\sigma<1$, rough time-dependent coefficients, and general
+$p$.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+P. Portal and M. Veraar,
+\emph{Stochastic maximal regularity for rough time-dependent problems},
+Stoch. Partial Differ. Equ. Anal. Comput. \textbf{7} (2019), 541--597;
+arXiv:1810.01183, p.~35;
+\href{https://doi.org/10.1007/s40072-019-00134-w}{doi:10.1007/s40072-019-00134-w}.
+\end{thebibliography}
+
+\end{document}

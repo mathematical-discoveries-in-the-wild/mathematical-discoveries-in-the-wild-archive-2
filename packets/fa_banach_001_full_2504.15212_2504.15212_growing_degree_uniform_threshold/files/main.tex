@@ -1,0 +1,489 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\vol}{\operatorname{vol}}
+
+\title{The Growing-Degree Threshold for\\
+Geometric Embeddings of Trees}
+\author{FA/Banach run \texttt{fa\_banach\_001}}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This packet records a candidate full answer to Problem~1.6 of
+Altschuler--Dodos--Tikhomirov--Tyros \cite{ADTT}. The proof combines their
+random embedding and local-lemma architecture with the
+Brascamp--Lieb--Luttinger rearrangement inequality \cite{BLL}. The current
+verdict is
+\[
+ \boxed{\textbf{likely valid full result; human review requested.}}
+\]
+The result determines the threshold up to universal constant factors for the
+entire range $3\leq\Delta\leq N-1$. It does not optimize the constants and
+does not address the separate optimal-constants Problem~1.5 of \cite{ADTT}.
+
+\section*{Source problem}
+
+A graph $G=(V,E)$ is \emph{geometrically embeddable} into a normed space $X$
+if there is a map $\zeta:V\to X$ such that, for all distinct $u,v\in V$,
+\[
+ \|\zeta(u)-\zeta(v)\|_X\leq1
+ \quad\Longleftrightarrow\quad \{u,v\}\in E.
+\]
+The source proves a universal $\Theta(\bigl(\log N\bigr)/\log\log N)$
+threshold when the maximum degree $\Delta$ is fixed. On PDF page~3, in
+Problem~1.6, it asks for the threshold when $\Delta$ grows with $N$.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+In transcription, Problem~1.6 asks for an explicit function $m(N,\Delta)$
+and universal constants $\alpha_0,\alpha_1$ such that every $N$-vertex tree
+of maximum degree $\Delta$ embeds into every normed space of dimension at
+least $\alpha_1m$, while a complete tree of degree $\Delta$ does not embed
+below $\alpha_0m$.
+
+\section*{Proof Intuition}
+
+Put
+\[
+ H=\frac{\log N}{\log(\Delta-1)}.
+\]
+This is the height scale of a complete rooted degree-$\Delta$ tree with $N$
+vertices. Packing the images of a bipartite independent set in such a tree
+forces dimension of order
+\[
+ q(N,\Delta)=\frac{\log N}{\log(2+H)}.
+\]
+
+For the matching upper bound, the source attaches independent uniform vectors
+from the unit ball of the target norm to the tree edges, then adds a small
+independent Gaussian regularization. Its proof already works at dimension
+$Aq$ for every path except the finitely many shortest lengths. The published
+thin-shell estimate controls such a short path only by
+$\exp(-m^{\kappa/2})$, which cannot pay for a dependency neighborhood of size
+$\Delta^{O(1)}$ when $\Delta$ is large.
+
+The missing estimate is supplied by rearrangement. Conditional on all but two
+edge vectors, a short-path failure asks whether the sum of two independent
+uniform points of an arbitrary symmetric convex body lies in a translate of a
+slightly enlarged copy of that body. The Brascamp--Lieb--Luttinger inequality
+says that this probability is maximized by a Euclidean ball. In the Euclidean
+ball, radii are exponentially concentrated near the boundary, while two
+independent directions have exponentially small probability of making the
+fixed obtuse angle required for their sum to have norm near one. Consequently
+the short-path probability is $O(e^{-cm})$, uniformly over every norm.
+
+This exponential estimate pays for $\Delta^{O(1)}$ in the sparse-dependency
+regime. If $\Delta$ is so large that the local lemma uses its dense $N^2$
+dependency bound instead, then $H=O(1)$ and $q\asymp\log N$, so the same
+estimate pays for $N^2$. All remaining path lengths are controlled by the
+source's $\exp(-cm\log k)$ estimate and its Gaussian completion.
+
+\section*{The full theorem}
+
+\begin{theorem}[Growing-degree threshold]\label{thm:main}
+There are universal constants $A<\infty$ and $N_0\in\mathbb N$ with the
+following property. Let $N\geq N_0$ and $3\leq\Delta\leq N-1$, and define
+\begin{equation}\label{eq:qdef}
+ q(N,\Delta)=
+ \frac{\log N}{
+ \log\!\left(2+\dfrac{\log N}{\log(\Delta-1)}\right)}.
+\end{equation}
+Then:
+\begin{enumerate}[label=(\roman*)]
+ \item every tree on $N$ vertices with maximum degree at most $\Delta$
+ geometrically embeds into every normed space of dimension at least
+ $\lceil A q(N,\Delta)\rceil$;
+ \item the breadth-first truncation to $N$ vertices of the complete rooted
+ degree-$\Delta$ tree does not geometrically embed into any normed space of
+ dimension less than $q(N,\Delta)/4$.
+\end{enumerate}
+At the cardinalities of full complete rooted trees, the witness in (ii) is
+the full complete tree. Thus Problem~1.6 is answered by the explicit threshold
+function $m(N,\Delta)=q(N,\Delta)$, with universal constants
+$\alpha_0=1/4$ and $\alpha_1=A$.
+\end{theorem}
+
+\section*{Proof}
+
+We first prove the norm-uniform estimate that removes the only fixed-degree
+step from the source proof.
+
+\begin{lemma}[Exponential short-path estimate]\label{lem:short}
+Let $\kappa\in(0,1)$ be the absolute exponent in Theorem~2.2 of \cite{ADTT}.
+There are absolute constants $c,C>0$ and $m_\ast\in\mathbb N$ such that the
+following holds. Let $X=(\mathbb R^m,\|\cdot\|_X)$ be any normed space with
+$m\geq m_\ast$, and let $Y_1,\ldots,Y_k$ be independent random vectors
+uniformly distributed in its unit ball, where $k\geq2$. Then
+\begin{equation}\label{eq:short}
+ \mathbb P\!\left(
+  \left\|\sum_{i=1}^kY_i\right\|_X
+  \leq1+\frac{1}{2m^{1-\kappa}}
+ \right)\leq Ce^{-cm}.
+\end{equation}
+The same estimate holds with arbitrary fixed signs in the sum.
+\end{lemma}
+
+\begin{proof}
+Write $K=B_X$ and
+\[
+ t=1+\frac{1}{2m^{1-\kappa}}.
+\]
+The body $K$ is centrally symmetric. After increasing $m_\ast$, we may
+assume $t\leq9/8$.
+
+Condition on $Z=Y_3+\cdots+Y_k$ (with $Z=0$ if $k=2$). For every realization
+$Z=z$, the conditional probability in \eqref{eq:short} is
+\begin{equation}\label{eq:threeint}
+ \frac{1}{\vol(K)^2}
+ \int_{\mathbb R^m}\!\int_{\mathbb R^m}
+ \mathbf 1_K(x)\mathbf 1_K(y)
+ \mathbf 1_{tK-z}(x+y)\,dx\,dy.
+\end{equation}
+Let $B$ be the centered Euclidean ball having the same volume as $K$. The
+Riesz rearrangement inequality, equivalently the three-function case of the
+Brascamp--Lieb--Luttinger inequality \cite{BLL}, bounds
+\eqref{eq:threeint} by
+\[
+ \frac{1}{\vol(B)^2}
+ \int_{\mathbb R^m}\!\int_{\mathbb R^m}
+ \mathbf 1_B(x)\mathbf 1_B(y)\mathbf 1_{tB}(x+y)\,dx\,dy.
+\]
+Here the symmetric decreasing rearrangements of $K,K,tK-z$ are respectively
+$B,B,tB$. By scaling, the last display is
+\begin{equation}\label{eq:euclprob}
+ \mathbb P\bigl(\|U+V\|_2\leq t\bigr),
+\end{equation}
+where $U,V$ are independent and uniform in the Euclidean unit ball.
+
+Write $U=R\Theta$ and $V=S\Phi$, where the directions are independent and
+uniform on $S^{m-1}$, independent also of the radii. Since
+\[
+ \mathbb P(R<15/16)=\mathbb P(S<15/16)=(15/16)^m,
+\]
+the probability that either radius is smaller than $15/16$ is at most
+$2(15/16)^m$. On the complementary event, if
+$\|R\Theta+S\Phi\|_2\leq9/8$, then
+\[
+ \langle\Theta,\Phi\rangle
+ \leq
+ \frac{(9/8)^2-R^2-S^2}{2RS}
+ \leq
+ \frac{(9/8)^2-2(15/16)^2}{2(15/16)^2}
+ =-\frac7{25}.
+\]
+The middle expression is decreasing in each of $R,S\in[15/16,1]$.
+
+For a fixed direction, the first coordinate of a uniform point on
+$S^{m-1}$ has density
+\[
+ c_m(1-s^2)^{(m-3)/2}\mathbf1_{[-1,1]}(s),
+ \qquad
+ c_m=\frac{\Gamma(m/2)}{\sqrt\pi\,\Gamma((m-1)/2)}\leq\sqrt m.
+\]
+It follows, for an absolute $c_0>0$, that
+\[
+ \mathbb P\bigl(\langle\Theta,\Phi\rangle\leq-7/25\bigr)
+ \leq \sqrt m\left(1-\frac{49}{625}\right)^{(m-3)/2}
+ \leq C_0e^{-c_0m}.
+\]
+Together with the radial estimate, this bounds \eqref{eq:euclprob} by
+$Ce^{-cm}$, uniformly in $z$ and $k$. Averaging over $Z$ proves
+\eqref{eq:short}. Fixed signs do not alter the distribution because the
+$Y_i$ are symmetric.
+\end{proof}
+
+We now prove Theorem~\ref{thm:main}. Put
+\[
+ D=\log(\Delta-1),\qquad
+ H=\frac{\log N}{D},\qquad
+ L=\log(2+H),\qquad
+ q=\frac{\log N}{L}.
+\]
+Because $3\leq\Delta\leq N-1$, we have $H\geq1$. Uniformly over this entire
+range,
+\begin{equation}\label{eq:qrange}
+ c\frac{\log N}{\log\log N}\leq q\leq C\log N.
+\end{equation}
+Also, since $H\mapsto\log(2+H)/H$ is decreasing on $[1,\infty)$,
+\begin{equation}\label{eq:Dq}
+ D=\frac{\log N}{H}\leq(\log3)q.
+\end{equation}
+
+Retain the source parameters
+\[
+ c_1=\frac14,
+ \qquad
+ c_2=\min\left\{\frac14,\frac\kappa4\right\},
+ \qquad
+ \ell_0=\exp\bigl((\log N)^{c_2}\bigr),
+\]
+and its absolute integer $k_0\geq3$ from (4.7). Set
+\[
+ m=\lceil Aq\rceil,
+ \qquad
+ k_1=\lfloor H\rfloor,
+\]
+where the absolute constant $A$ will be chosen sufficiently large. From
+\eqref{eq:qrange}, uniformly in $\Delta$,
+\begin{equation}\label{eq:small}
+ \log\ell_0=(\log N)^{c_2}=o(q),
+ \qquad
+ k_1<\ell_0
+\end{equation}
+for all sufficiently large $N$.
+
+We use the independent uniform edge vectors, path events, dependency graph,
+and random embedding from Sections~4.1--4.3 of \cite{ADTT}. For a path of
+length $k$, let the uniform-vector bad event be
+\[
+ \mathcal L_{u,v}=
+ \begin{cases}
+ \left\{\left\|\sum_{e\in P(u,v)}\!\!\pm Y_e\right\|_X
+ \leq1+\dfrac{1}{2m^{1-\kappa}}\right\},&2\leq k\leq k_0,\\[8pt]
+ \left\{\left\|\sum_{e\in P(u,v)}\!\!\pm Y_e\right\|_X
+ \leq k^{c_1}\right\},&k_0<k\leq\ell_0.
+ \end{cases}
+\]
+The signs depend on the position of the root, but do not change the
+distribution. Assign every length-$k$ event the local-lemma weight
+\begin{equation}\label{eq:bk}
+ b_k=
+ \begin{cases}
+ \displaystyle\frac{1}{2^{k+1}6\ell_0k(\Delta-1)^k},
+ &2\leq k\leq k_1,\\[7pt]
+ \displaystyle\frac{3}{2\pi^2k^2N^2},
+ &k_1<k\leq\ell_0.
+ \end{cases}
+\end{equation}
+The first range is allowed to be empty.
+
+For $k\leq k_1$, $(\Delta-1)^k\leq N$. Since
+$k\leq H=O(\log N)$ and $\ell_0=N^{o(1)}$, uniformly
+\begin{equation}\label{eq:dependency}
+ 6k\ell_0(\Delta-1)^k\leq N^2
+\end{equation}
+for all sufficiently large $N$. Claim~4.1 and the calculation in (4.16) of
+\cite{ADTT} therefore give, for every path-event $\mathcal L_{u,v}$,
+\begin{equation}\label{eq:product}
+ \prod_{\mathcal L_{u',v'}\sim\mathcal L_{u,v}}
+ (1-b_{\dist(u',v')})\geq\frac12.
+\end{equation}
+
+It remains to show
+\begin{equation}\label{eq:compare}
+ \mathbb P(\mathcal L_{u,v})\leq\frac{b_k}{2}
+ \qquad (2\leq k\leq\ell_0).
+\end{equation}
+We record three elementary comparisons. Their constants depend only on the
+absolute integer $k_0$:
+\begin{align}
+ k_0<k\leq k_1
+ &\quad\Longrightarrow\quad
+ k\log(2\Delta-2)\leq Cq\log k,
+ \label{eq:sparsecost}\\
+ k>k_0\ \hbox{and}\ k>k_1
+ &\quad\Longrightarrow\quad
+ q\log k\geq c\log N,
+ \label{eq:densegain}\\
+ 2\leq k\leq k_0\ \hbox{and}\ k>k_1
+ &\quad\Longrightarrow\quad
+ q\geq c\log N.
+ \label{eq:shortdense}
+\end{align}
+Indeed, for \eqref{eq:sparsecost}, monotonicity of $x/\log x$ gives
+\[
+ \frac{kD}{\log k}\leq\frac{HD}{\log H}
+ =\frac{\log N}{\log H}\leq Cq,
+\]
+because $H\geq k>k_0$ and $L/\log H$ is then bounded; also
+$\log(2\Delta-2)\leq2D$. For \eqref{eq:densegain}, if $H\geq k_0$, then
+$k>k_1$ implies $k>H$ and $\log k/L\geq c$; if $H<k_0$, use
+$k>k_0$ and $L\leq\log(k_0+2)$. Finally, \eqref{eq:shortdense} follows
+because $k>k_1$ implies $H<k\leq k_0$, so $L$ is bounded.
+
+Suppose first that $2\leq k\leq k_0$. Lemma~\ref{lem:short} gives
+\begin{equation}\label{eq:shortprob}
+ \mathbb P(\mathcal L_{u,v})\leq Ce^{-cm}\leq Ce^{-cAq}.
+\end{equation}
+If $k\leq k_1$, then \eqref{eq:Dq}, \eqref{eq:small}, and
+\eqref{eq:bk} give
+\[
+ \log\frac2{b_k}\leq Cq.
+\]
+If $k>k_1$, then \eqref{eq:shortdense} gives the same conclusion from
+$\log(2/b_k)\leq2\log N+o(\log N)$. Thus \eqref{eq:compare} follows in
+the short range once $A$ is a sufficiently large absolute constant.
+
+Next assume $k_0<k\leq k_1$. Lemma~3.2 of \cite{ADTT}, with $c_1=1/4$,
+gives
+\begin{equation}\label{eq:midprob}
+ \mathbb P(\mathcal L_{u,v})
+ \leq\exp\left(-\frac m8\log k\right).
+\end{equation}
+By \eqref{eq:sparsecost}, \eqref{eq:small}, and \eqref{eq:bk},
+\[
+ \log\frac2{b_k}\leq Cq\log k.
+\]
+Choosing $A>8C$ proves \eqref{eq:compare} in this range.
+
+Finally assume $k>k_0$ and $k>k_1$. The estimate \eqref{eq:midprob} still
+holds, while \eqref{eq:densegain} yields
+\[
+ \frac m8\log k\geq cA\log N.
+\]
+On the other hand,
+\[
+ \log\frac2{b_k}
+ =2\log N+2\log k+O(1)
+ =(2+o(1))\log N,
+\]
+because $k\leq\ell_0=N^{o(1)}$. A final universal enlargement of $A$
+proves \eqref{eq:compare}. The cases are exhaustive.
+
+Combining \eqref{eq:compare} with \eqref{eq:product}, the asymmetric
+Lovasz local lemma gives positive probability to the event $\mathcal L$ on
+which every nonadjacent pair at tree distance at most $\ell_0$ has the
+required uniform-vector separation.
+
+It remains to check that the Gaussian completion in Section~4.3 of
+\cite{ADTT} is uniform in $\Delta$. From \eqref{eq:qrange}, our dimension
+satisfies
+\begin{equation}\label{eq:mrange}
+ c_A\frac{\log N}{\log\log N}\leq m\leq C_A\log N.
+\end{equation}
+The source uses
+\[
+ \delta=
+ \exp\left(-\left(\frac12-\frac{c_1}{2}\right)(\log N)^{c_2}\right).
+\]
+For adjacent pairs, for distances $2\leq k\leq k_0$, and for distances
+$k_0<k\leq\ell_0$, its Gaussian upper-tail thresholds contain respectively
+the factors
+\[
+ \frac{\delta^{-1}}{\sqrt m\log N},
+ \qquad
+ \frac{\delta^{-1}}{m^{3/2-\kappa}},
+ \qquad
+ \frac{\exp((c_1/2)(\log N)^{c_2})}{\sqrt m}.
+\]
+The exponential in $(\log N)^{c_2}$ dominates every displayed power of
+$m$ and $\log N$ uniformly on \eqref{eq:mrange}. Equations (4.29)--(4.31)
+of \cite{ADTT} therefore bound each corresponding conditional bad
+probability by $N^{-2}$. For $k>\ell_0$, equations (4.32)--(4.35) give the
+bound
+\[
+ \exp\bigl(-c\,m(\log N)^{c_2}\bigr)\leq N^{-2},
+\]
+again uniformly by \eqref{eq:mrange}. These estimates use only the Gaussian
+variables and are unchanged after conditioning on $\mathcal L$.
+
+There are fewer than $N^2/2$ unordered vertex pairs. Conditioned on
+$\mathcal L$, the union bound is strictly less than $1/2$, so the random map
+is a geometric embedding with positive probability. If the ambient normed
+space has dimension larger than $m$, carry out the construction in any
+$m$-dimensional subspace. This proves part~(i).
+
+For part~(ii), use the breadth-first truncated complete tree from part~(A) of
+Theorem~1.1 of \cite{ADTT}. It has $N$ vertices, maximum degree at most
+$\Delta$, a root $r$, and radius
+\[
+ h_0=\left\lceil
+ \frac{\log\left((N-1)(\Delta-2)/\Delta+1\right)}
+ {\log(\Delta-1)}
+ \right\rceil\leq H+1.
+\]
+Suppose it geometrically embeds into a $d$-dimensional normed space. Since
+the tree is bipartite, it has an independent set $V_0$ with
+$|V_0|\geq N/2$. The radius-$1/2$ balls centered at the images of vertices
+of $V_0$ are pairwise disjoint, and all lie in the radius-$(h_0+1/2)$ ball
+about the image of $r$. Comparing Lebesgue volumes gives
+\[
+ \frac N2\leq(2h_0+1)^d\leq(2H+3)^d.
+\]
+For $N\geq4$, using $2H+3\leq(H+2)^2$, we obtain
+\[
+ d\geq\frac{\log(N/2)}{\log(2H+3)}
+ \geq\frac{\log N}{4\log(H+2)}=\frac q4.
+\]
+Thus no such embedding exists in dimension less than $q/4$. At full
+complete-tree cardinalities no truncation occurs. This proves part~(ii) and
+the theorem. \hfill$\Box$
+
+\section*{Verification notes}
+
+The proof was audited against Sections~3 and~4 of the source. The new input is
+only Lemma~\ref{lem:short}; it replaces Lemma~3.3 of the source in the finite
+range $2\leq k\leq k_0$. The event threshold is identical, so no later part
+of the random embedding changes.
+
+The degree-dependent checks are:
+\begin{enumerate}
+ \item the sparse path-dependency inequality \eqref{eq:dependency};
+ \item the short sparse comparison, paid for by \eqref{eq:Dq};
+ \item the short dense comparison, where $H=O(1)$ forces
+ $q\asymp\log N$;
+ \item the transition at $k_1=\lfloor H\rfloor$, covered by
+ \eqref{eq:sparsecost}--\eqref{eq:shortdense}.
+\end{enumerate}
+All Gaussian estimates are degree-free and use only the uniform dimension
+window \eqref{eq:mrange}. No numerical experiment is used as proof.
+
+The main human-review focus should be the application of rearrangement to the
+translated third body in \eqref{eq:threeint}, and the four exhaustive
+local-lemma subranges (short/sparse, short/dense, long/sparse, long/dense).
+
+\section*{Novelty search and limitations}
+
+A bounded literature search on 9 August 2026 checked arXiv:2504.15212, its
+May 2026 Combinatorica publication, the exact title, the exact phrase
+``Problem 1.6 (Trees of growing maximal degree)'', the authors, and keyword
+combinations involving geometric embeddings, trees, growing maximum degree,
+normed spaces, rearrangement, and kissing probability. It found the source
+paper and the classical rearrangement theorem, but no separate paper claiming
+to answer Problem~1.6 or giving the threshold \eqref{eq:qdef}. Novelty
+confidence is moderate rather than definitive because the source is recent.
+
+The proof uses a classical theorem in a new place; it does not claim the
+rearrangement inequality itself as new. The constant $A$ is universal but is
+not numerically optimized, since the source constant $k_0$ already depends on
+implicit absolute constants in the slicing estimates. The result also does
+not settle the optimal universal constants asked in Problem~1.5.
+
+\section*{Human-review recommendation}
+
+Review Lemma~\ref{lem:short} first. If its translated-set rearrangement step
+and spherical-cap estimate pass, check the four local-lemma comparisons and
+the assertion that Section~4.3 of the source is uniform on
+\eqref{eq:mrange}. If those checks pass, this packet gives a complete
+constant-factor answer to Problem~1.6 for all growing degrees.
+
+\small
+\begin{thebibliography}{9}
+\bibitem{ADTT}
+D.~J. Altschuler, P.~Dodos, K.~Tikhomirov, and K.~Tyros,
+\emph{A universal threshold for geometric embeddings of trees},
+Combinatorica 46 (2026), article 20; arXiv:2504.15212v2,
+\url{https://arxiv.org/abs/2504.15212}.
+
+\bibitem{BLL}
+H.~J. Brascamp, E.~H. Lieb, and J.~M. Luttinger,
+\emph{A general rearrangement inequality for multiple integrals},
+J. Funct. Anal. 17 (1974), 227--237,
+\url{https://doi.org/10.1016/0022-1236(74)90013-5}.
+\end{thebibliography}
+
+\end{document}

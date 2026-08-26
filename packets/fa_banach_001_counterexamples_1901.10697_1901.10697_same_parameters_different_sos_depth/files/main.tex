@@ -1,0 +1,207 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.9in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathrsfs}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem*{theorem}{Theorem}
+\newtheorem*{lemma}{Exact finite certificate lemma}
+\newcommand{\E}{\mathscr E}
+\newcommand{\C}{\mathscr C}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\R}{\mathbb R}
+\setlength{\emergencystretch}{3em}
+\graphicspath{{figures/}}
+
+\begin{document}
+
+\begin{center}
+{\Large ETF SOS Depth Is Not Determined by $(N,r)$}\\[0.45em]
+{\large An exact counterexample to Question 4.1 of arXiv:1901.10697}\\[0.35em]
+{\small Lane 19, agent\_lane\_19, model GPT5.6}
+\end{center}
+
+\paragraph{Status.}
+\texttt{candidate\_full\_counterexample\_likely\_valid}.  The finite part of
+the proof is certified with exact integer and rational arithmetic, rather than
+floating-point SDP output.
+
+\paragraph{Source question.}
+Bandeira--Kunisky, arXiv:1901.10697, Question 4.1 on PDF page 12 asks for the
+largest even $d$ such that the Gram matrix of a real ETF of $N$ vectors in
+$\R^r$ belongs to the degree-$d$ generalized elliptope $\E_d^N$, and asks
+whether this largest degree depends only on $N$ and $r$.
+
+\begin{center}
+\includegraphics[width=0.96\textwidth]{open_problem_crop.png}
+\end{center}
+
+\paragraph{Definitions.}
+The cut polytope is
+\[
+ \C^N=\operatorname{conv}\{zz^\top:z\in\{\pm1\}^N\}.
+\]
+The generalized elliptopes form the decreasing SOS hierarchy
+\[
+ \E_2^N\supseteq\E_4^N\supseteq\cdots\supseteq
+ \E_{N+\mathbf1\{N\text{ odd}\}}^N=\C^N.                       \tag{1}
+\]
+For a graph with adjacency matrix $A$, its Seidel matrix is
+$S=\one\one^\top-I-2A$.
+
+\paragraph{Proof intuition.}
+Strongly regular graphs with parameters $(26,10,3,4)$ all have Seidel
+spectrum $\{5^{(13)},-5^{(13)}\}$.  Consequently $I+S/5$ is always the Gram
+matrix of a real $(26,13)$ ETF.  What varies with the switching class is the
+population of sign vectors in the $+5$ eigenspace.  In the first example that
+population is rich enough that its uniform covariance is the ETF Gram matrix.
+In the second, there are only fourteen sign lines.  Positivity forces any cut
+decomposition to use only those lines, but their unique affine representation
+of the Gram matrix assigns one line negative mass.  This gives two identical
+frame parameter pairs but different terminal SOS membership.
+
+\begin{theorem}
+There exist two real equiangular tight frames with the same parameters
+$(N,r)=(26,13)$ whose Gram matrices have different largest generalized-
+elliptope degrees.  One Gram matrix belongs to $\E_{26}^{26}=\C^{26}$, while
+the other does not.  Hence the answer to the second sentence of Question 4.1
+does not depend only on $N$ and $r$.
+\end{theorem}
+
+\paragraph{The two exact graphs.}
+Let $G_c,G_n$ be the graphs encoded by the following graph6 strings,
+respectively:
+\begin{verbatim}
+Y}qCCmMlDSIPRCXPKSQhHQooE^`E`pHQoQuHBRc_oo}EHSMILOkEWXB_
+Y}qCCmMlDSIQRBWokcadAROKE]XEXPHecTJ_AlWGooveDEcISRDEX_p_
+\end{verbatim}
+They are the first two entries in Brendan McKay's catalogue of the ten
+strongly regular graphs with parameters $(26,10,3,4)$.  Write $A_c,A_n$ for
+their adjacency matrices and
+\[
+ S_\bullet=\one\one^\top-I-2A_\bullet,
+ \qquad X_\bullet=I+\frac15S_\bullet.                            \tag{2}
+\]
+
+\begin{lemma}
+The following identities hold exactly.
+\begin{enumerate}
+\item Both graphs are $\operatorname{SRG}(26,10,3,4)$ and
+      $S_c^2=S_n^2=25I$.
+\item Up to replacing $z$ by $-z$, the set
+      $Z_c=\{z\in\{\pm1\}^{26}:S_cz=5z\}$ has 130 elements and
+      \[
+        5\sum_{z\in Z_c}zz^\top=130(5I+S_c).                    \tag{3}
+      \]
+\item The analogous set $Z_n$ has 14 elements.  The fourteen vectors
+      \[
+       F(z)=\bigl(1,(z_i z_j)_{0\le i<j<26}\bigr)\in\R^{326}
+      \]
+      are linearly independent.  The unique coefficients satisfying
+      \[
+       \bigl(1,((S_n)_{ij}/5)_{i<j}\bigr)
+       =\sum_{z\in Z_n}w_zF(z)                                  \tag{4}
+      \]
+      are, in a deterministic lexicographic ordering,
+      \[
+        -\frac3{10},\underbrace{\frac1{10},\ldots,\frac1{10}}_{13\ \mathrm{times}}.
+                                                                    \tag{5}
+      \]
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}[Verification of the lemma]
+The accompanying script \texttt{code/verify\_counterexample.py} decodes the
+two embedded graph6 strings and checks the degree and common-neighbor
+conditions, as well as $S^2=25I$, with integer arithmetic.
+
+For each $S$, it computes a rational basis of $\ker(S-5I)$ and selects thirteen
+pivot coordinates on which restriction is invertible.  Every sign vector in
+the eigenspace is therefore uniquely determined by one of the $2^{13}$ sign
+assignments on those coordinates.  A common-denominator integer
+reconstruction exhausts these assignments, proving the counts 130 and 14.
+It verifies (3) entry by entry.  In the second case it computes the exact
+rational rank of the $14\times326$ feature matrix, solves a nonsingular
+$14\times14$ subsystem, obtains (5), and verifies all 326 equations in (4).
+The deterministic output is saved as
+\texttt{code/exact\_certificate.json}.
+\end{proof}
+
+\begin{proof}[Proof of the theorem]
+Because $S_\bullet^2=25I$ and $\operatorname{tr}(S_\bullet)=0$, the eigenvalues
+of each $S_\bullet$ are $+5$ and $-5$, each with multiplicity 13.  Thus
+\[
+ P_{\bullet,+}=\frac12\left(I+\frac15S_\bullet\right)
+\]
+is the rank-13 orthogonal projector onto the $+5$ eigenspace and
+$X_\bullet=2P_{\bullet,+}$.  In particular, $X_\bullet$ is positive
+semidefinite, has diagonal one, has all off-diagonal entries of modulus $1/5$,
+and has nonzero eigenvalue $2=26/13$.  It is therefore the Gram matrix of a
+real ETF of 26 vectors in $\R^{13}$.
+
+Dividing (3) by 650 gives
+\[
+ X_c=\frac1{130}\sum_{z\in Z_c}zz^\top,
+\]
+so $X_c\in\C^{26}=\E_{26}^{26}$.  Its largest hierarchy degree is 26.
+
+Suppose instead that $X_n\in\C^{26}$.  Then
+\[
+ X_n=\sum_{z\in\{\pm1\}^{26}}\lambda_z zz^\top,
+ \qquad \lambda_z\ge0,\quad\sum_z\lambda_z=1.                  \tag{6}
+\]
+If $u\in\ker X_n$ then
+\[
+ 0=u^\top X_nu=\sum_z\lambda_z(u^\top z)^2.
+\]
+Hence every $z$ with $\lambda_z>0$ is orthogonal to $\ker X_n$, so it belongs
+to $\operatorname{ran}X_n=\ker(S_n-5I)$.  Up to sign, (6) can therefore use
+only the fourteen lines $Z_n$ in the lemma.  Taking diagonal and
+off-diagonal entries in (6) produces exactly (4), so linear independence
+forces the unique weights (5).  One is negative, contradicting (6).  Thus
+$X_n\notin\C^{26}=\E_{26}^{26}$.
+
+The hierarchy levels are even, so the largest degree for $X_n$ is at most 24,
+whereas that for $X_c$ is 26.  Both frames nevertheless have the same
+$(N,r)=(26,13)$, proving the claim.
+\end{proof}
+
+\paragraph{Scope and limitations.}
+This completely answers the yes/no parameter-dependence sentence of Question
+4.1 in the negative.  It does not determine the exact largest degree for
+$X_n$; the source's degree-4 criterion gives $X_n\in\E_4^{26}$ because
+$26<13\cdot14/2$, so its depth lies between 4 and 24.  Nor does the result
+classify all real ETFs or all regular two-graph switching classes.
+
+\paragraph{Novelty search.}
+The run indexes had no exact or core-question match.  Bounded searches through
+2026-08-13 used the exact Question 4.1 wording and the terms
+``ETF generalized elliptope'', ``regular two-graph cut polytope'',
+``SRG(26,10,3,4) cut polytope'', and ``(26,13) equiangular tight frame cut
+polytope''.  They found the cited ETF/SOS papers, Laurent's hierarchy lower
+bound, the graph catalogues, and general $(26,13)$ ETF constructions, but no
+same-parameter counterexample or the exact affine certificate (5).
+
+\paragraph{Human-review recommendation.}
+Check first the kernel-support implication following (6), then independently
+rerun the exact verifier and inspect its pivot-coordinate exhaustiveness and
+the 326-equation affine certificate.  Subject to those checks, the
+counterexample is ready for expert review.
+
+\paragraph{References.}
+\begin{itemize}
+\item A. S. Bandeira and D. Kunisky, \emph{Sum-of-Squares Optimization and the
+Sparsity Structure of Equiangular Tight Frames}, arXiv:1901.10697 (2019).
+\item A. S. Bandeira and D. Kunisky, \emph{A Gramian Description of the
+Degree 4 Generalized Elliptope}, arXiv:1812.11583 (2018).
+\item M. Laurent, \emph{Lower Bound for the Number of Iterations in
+Semidefinite Hierarchies for the Cut Polytope}, Math. Oper. Res. 28 (2003),
+871--883.
+\item B. D. McKay, \emph{Combinatorial Data: Strongly Regular Graphs},
+\url{https://users.cecs.anu.edu.au/~bdm/data/graphs.html}, catalogue file
+\texttt{sr261034.g6}, accessed 2026-08-13.
+\end{itemize}
+
+\end{document}
+

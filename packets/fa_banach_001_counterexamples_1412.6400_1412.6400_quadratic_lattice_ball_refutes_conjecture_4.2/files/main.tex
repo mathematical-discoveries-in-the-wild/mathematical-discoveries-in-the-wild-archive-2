@@ -1,0 +1,195 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+
+\title{Lattice balls refute the exponent restriction in Conjecture 4.2\\
+\large A counterexample to arXiv:1412.6400 as printed}
+\author{Automated Mathematics Run \texttt{fa\_banach\_001}, lane 12}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{blue!55!black}{blue!4}{\parbox{0.89\textwidth}{
+\textbf{Status.} Candidate full counterexample, subject to human
+verification.  In dimension $3$, the polynomial
+\[
+ P(x)=1+x_1^2+x_2^2+x_3^2
+\]
+has finite lattice sublevel sets with cardinality comparable to $t^{3/2}$.
+Conjecture 4.2 permits only powers $t^{\alpha/\beta}$ with
+$0<\alpha\le\beta$, hence exponent at most $1$.}}
+\end{center}
+
+\section{Source and exact conjecture}
+
+The source is P.~L.~Combettes and D.~D\~ung,
+\emph{Kolmogorov $n$-Widths of Function Classes Induced by a Non-Degenerate
+Differential Operator: A Convex Duality Approach}~\cite{CD},
+arXiv:1412.6400, published in \emph{Set-Valued and Variational Analysis}
+24 (2016), 83--99.
+
+For a real polynomial $P$ on $\R^d$, the source defines
+\[
+ K(t)=\{k\in\Z^d:|P(k)|\le t\}.
+\]
+Conjecture 4.2, in Section 4.6 on source PDF page 19, states:
+
+\begin{quote}
+If $K(t)$ is finite for every $t\ge0$, then there exist integers
+$\alpha,\beta,\nu$ with
+\[
+ 0<\alpha\le\beta,\qquad 0\le\nu<d,
+\]
+such that, for all sufficiently large $t$,
+\begin{equation}\label{eq:conjecture}
+ \#K(t)\asymp t^{\alpha/\beta}(\log t)^\nu.
+\end{equation}
+\end{quote}
+Here $A(t)\asymp B(t)$ means that their ratio stays between two positive
+constants for all sufficiently large $t$.  Figure~\ref{fig:conjecture}
+shows the exact printed statement.
+
+\begin{figure}[ht]
+ \centering
+ \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+ \caption{Conjecture 4.2 on page 19 of the source paper~\cite{CD}.}
+ \label{fig:conjecture}
+\end{figure}
+
+The restriction $\alpha\le\beta$ forces $\alpha/\beta\le1$.  This is
+violated already by ordinary lattice balls.
+
+\section{Proof intuition}
+
+Use a positive coercive polynomial whose sublevel sets are dilates of a
+fixed full-dimensional body.  In $d$ dimensions, a degree-$m$ polynomial
+of the form
+\[
+ 1+x_1^m+\cdots+x_d^m\qquad(m\ \text{even})
+\]
+has sublevel sets of radius $t^{1/m}$.  A full-dimensional lattice ball of
+that radius contains and is contained in coordinate cubes of comparable
+side length, so it has about $(t^{1/m})^d=t^{d/m}$ lattice points.  Taking
+$d>m$ makes the power larger than one, while every sublevel set remains
+finite.  Thus the example satisfies the sole hypothesis of the conjecture
+and violates its permitted conclusion.
+
+\section{Counterexample}
+
+\begin{theorem}[An infinite counterexample family]\label{thm:family}
+Let $m\ge2$ be even and let $d>m$.  Define
+\[
+ P_{d,m}(x_1,\ldots,x_d)=1+\sum_{j=1}^d x_j^m.
+\]
+Then $K_{d,m}(t)=\{k\in\Z^d:|P_{d,m}(k)|\le t\}$ is finite for every
+$t\ge0$, but
+\begin{equation}\label{eq:growth}
+ \#K_{d,m}(t)\asymp t^{d/m}.
+\end{equation}
+Consequently $P_{d,m}$ refutes Conjecture 4.2 as printed.
+\end{theorem}
+
+\begin{proof}
+Because $m$ is even,
+\[
+ P_{d,m}(k)=1+\sum_{j=1}^d |k_j|^m\ge1.
+\]
+Thus $K_{d,m}(t)$ is empty for $t<1$, while for $t\ge1$ it is the
+lattice $\ell_m$-ball
+\begin{equation}\label{eq:ball}
+ K_{d,m}(t)=\left\{k\in\Z^d:
+       \sum_{j=1}^d|k_j|^m\le t-1\right\}.
+\end{equation}
+In particular every such set is finite.
+
+Put $R=(t-1)^{1/m}$.  The elementary inclusions
+\begin{equation}\label{eq:cubes}
+ \left[-\frac{R}{d^{1/m}},\frac{R}{d^{1/m}}\right]^d
+ \subseteq\left\{x\in\R^d:\sum_{j=1}^d|x_j|^m\le R^m\right\}
+ \subseteq[-R,R]^d
+\end{equation}
+give, after counting integer points,
+\[
+ \left(2\left\lfloor\frac{R}{d^{1/m}}\right\rfloor+1\right)^d
+ \le \#K_{d,m}(t)
+ \le (2\lfloor R\rfloor+1)^d.
+\]
+For sufficiently large $t$, both outer expressions are constant multiples
+of $R^d$.  Hence
+\[
+ \#K_{d,m}(t)\asymp R^d=(t-1)^{d/m}\asymp t^{d/m},
+\]
+proving \eqref{eq:growth}.
+
+Suppose the conclusion of Conjecture 4.2 held.  Set
+$r=\alpha/\beta$.  Since $0<\alpha\le\beta$, we have $0<r\le1$;
+also $0\le\nu<d$.  But $d/m>1$, and therefore
+\[
+ \frac{\#K_{d,m}(t)}{t^r(\log t)^\nu}
+ \asymp\frac{t^{d/m-r}}{(\log t)^\nu}\longrightarrow\infty.
+\]
+This contradicts the upper comparison required by
+\eqref{eq:conjecture}.
+\end{proof}
+
+\begin{corollary}[Smallest simple instance]
+For
+\[
+ d=3,\qquad P(x_1,x_2,x_3)=1+x_1^2+x_2^2+x_3^2,
+\]
+every $K(t)$ is finite and $\#K(t)\asymp t^{3/2}$.  Hence this single
+quadratic polynomial refutes Conjecture 4.2.
+\end{corollary}
+
+\section{Verification, interpretation, and novelty}
+
+No external theorem or numerical computation is used.  The hypothesis is
+verified directly by coercivity, and the two cube inclusions
+\eqref{eq:cubes} prove the exact growth order.  A reviewer only needs to
+check that Conjecture 4.2 indeed includes the printed restriction
+$0<\alpha\le\beta$; both the arXiv PDF and the authors' currently available
+published-version PDF contain that restriction.
+
+The counterexample is deliberately scoped to the statement as printed.  If
+the intended conjecture merely asked for an arbitrary positive rational
+power, with no requirement $\alpha\le\beta$, this family would satisfy the
+corrected conclusion by taking $\alpha=d$, $\beta=m$, and $\nu=0$.
+Therefore the packet does not refute that natural corrected conjecture.
+
+A bounded search through 9 August 2026 used arXiv:1412.6400, the exact
+paper title, the authors' names, ``Conjecture 4.2'', ``card $K(t)$'', and
+the displayed $\alpha/\beta$ formula.  It located the arXiv record, the
+2016 publication metadata, and the authors' published-version PDF, which
+still prints the same inequality.  No erratum, later correction, or paper
+stating this counterexample was found.  Novelty is plausible, but the
+most likely interpretation is a persistent typographical restriction rather
+than a failure of the broader lattice-counting program.
+
+\paragraph{Human-review recommendation.}
+Verify whether the authors intended to omit $\alpha\le\beta$ or to reverse
+it.  As a mathematical statement, Conjecture 4.2 in both located versions
+is false by Theorem~\ref{thm:family}.
+
+\begin{thebibliography}{9}
+\bibitem{CD}
+P.~L.~Combettes and D.~D\~ung,
+\emph{Kolmogorov $n$-Widths of Function Classes Induced by a Non-Degenerate
+Differential Operator: A Convex Duality Approach},
+Set-Valued and Variational Analysis \textbf{24} (2016), 83--99;
+arXiv:1412.6400.
+\end{thebibliography}
+
+\end{document}

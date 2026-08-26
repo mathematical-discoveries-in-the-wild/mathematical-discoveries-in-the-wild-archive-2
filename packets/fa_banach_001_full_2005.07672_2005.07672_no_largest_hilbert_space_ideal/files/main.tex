@@ -1,0 +1,266 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newcommand{\Space}{\operatorname{Space}}
+\newcommand{\Opp}{\operatorname{Op}^{<\omega}}
+\newcommand{\Id}{\operatorname{Id}}
+\newcommand{\ran}{\operatorname{ran}}
+\newcommand{\cH}{\mathcal H}
+\newcommand{\cJ}{\mathcal J}
+
+\title{No largest operator ideal with Hilbert identity spaces\\
+\large A candidate full negative answer to Question 6.2 of arXiv:2005.07672}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 5}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Candidate full solution, likely valid, requiring expert human review.
+The argument answers the question negatively over both real and complex
+scalars.}}
+\end{center}
+
+\section{Source question}
+
+Ferenczi's paper \cite{Ferenczi} asks on page 22, Question 6.2, whether
+there is a largest operator ideal whose identity spaces are exactly the
+separable Hilbert spaces.  Here is the source passage.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{Question 6.2 and its context in \cite[p.~22]{Ferenczi}.}
+\end{figure}
+
+Writing $\cH$ for the space ideal of separable Banach spaces isomorphic to a
+Hilbert space, the question is:
+\begin{quote}
+Does there exist a largest operator ideal $\mathcal U$ with
+$\cH=\Space(\mathcal U)$?
+\end{quote}
+
+\section{Definitions and imported facts}
+
+Fix one scalar field $\mathbb K\in\{\mathbb R,\mathbb C\}$ and put
+$H=\ell_2(\mathbb K)$. For a Banach space $E$, let $\Opp(E)$ be the operator
+ideal consisting of all operators which factor through $E^n$ for some
+$n\geq 1$. If $\mathcal U$ is an operator ideal, then
+\[
+  \Space(\mathcal U)=\{Z:\Id_Z\in\mathcal U\}.
+\]
+
+We use four established inputs.
+\begin{enumerate}[label=(\roman*)]
+\item Gowers and Maurey's shift space $X=X_S(\mathbb K)$ contains no
+unconditional basic sequence \cite[Section~5.2]{GM}. In particular, it
+contains no infinite-dimensional Hilbert space.
+\item Ferenczi constructs, for $t\in\{1,-1\}$, a compact operator $K_t$ such
+that
+\[
+ T_t=\Id_X-tS+K_t,\qquad Y_t=\ran T_t,
+\]
+where $Y_t$ has infinite codimension in $X$ \cite[Section~4]{Ferenczi}.
+Moreover, if $m,n\geq1$, then no infinite-dimensional complemented subspace
+of $X^m$ is isomorphic to a subspace of $Y_t^n$ \cite[Proposition~4.4]{Ferenczi}.
+\item If $E$ and $F$ are essentially incomparable, then every complemented
+subspace of $E\oplus F$ is isomorphic to $E_0\oplus F_0$ for complemented
+subspaces $E_0\subseteq E$ and $F_0\subseteq F$ \cite{Gonzalez}.
+\item Strictly singular perturbations preserve the upper semi-Fredholm
+class. Equivalently, if $A$ is upper semi-Fredholm and $R$ is strictly
+singular, then $A+R$ is upper semi-Fredholm \cite[Chapter~2]{LT}.
+\end{enumerate}
+
+Recall also that strictly singular operators are inessential. Thus, if every
+operator in both directions between two spaces is strictly singular, those
+spaces are essentially incomparable.
+
+\section{Proof intuition}
+
+Ferenczi destroys a hypothetical largest \emph{proper} ideal using two
+factorization ideals associated with $X$ and with $Y_t$. To preserve exactly
+the Hilbert identity spaces, adjoin a common Hilbert summand before repeating
+the construction:
+\[
+ \cJ_t=\Opp(H\oplus X)\cap\Opp(H\oplus Y_t).
+\]
+The common $H$ makes every Hilbert identity belong to $\cJ_t$. The point is
+that it adds no other identity. Indeed, a space whose identity belongs to
+$\cJ_t$ is complemented in both $H\oplus X^m$ and $H\oplus Y_t^n$.
+Essential incomparability separates each complemented copy into a Hilbert
+piece and an exotic piece. Comparing the two decompositions forces the exotic
+piece, modulo a finite-dimensional kernel, to embed from $X^m$ into $Y_t^n$.
+Ferenczi's rigidity theorem rules this out. Hence the common identity spaces
+are exactly Hilbertian, while the two operators $T_1,T_{-1}$ still belong to
+the corresponding ideals and still have a Fredholm sum.
+
+\section{The common-complemented-subspace argument}
+
+\begin{lemma}\label{lem:nohilbert}
+For every $m,n\geq1$, neither $X^m$ nor $Y_t^n$ contains a subspace
+isomorphic to $H$.
+\end{lemma}
+
+\begin{proof}
+The space $X$ contains no unconditional basic sequence, hence no copy of
+$H$. Suppose $H$ embedded into $X^m$. Each coordinate of the embedding is
+strictly singular: otherwise it would be bounded below on an
+infinite-dimensional subspace of $H$, and every such subspace is isomorphic
+to $H$, producing a copy of $H$ in $X$. The column embedding, being a finite
+sum of strictly singular operators after the coordinate inclusions, would
+then be strictly singular, contradicting that it is bounded below. Thus
+$X^m$ contains no $H$. Since $Y_t^n$ is a subspace of $X^n$, the second
+assertion follows.
+\end{proof}
+
+\begin{lemma}\label{lem:decompose}
+For each $m,n\geq1$, the pairs $(H,X^m)$ and $(H,Y_t^n)$ are essentially
+incomparable. Consequently every complemented subspace of $H\oplus X^m$ is
+isomorphic to $H_0\oplus E_0$, where $H_0$ is Hilbertian and $E_0$ is
+complemented in $X^m$; the analogous assertion holds for $H\oplus Y_t^n$.
+\end{lemma}
+
+\begin{proof}
+If an operator $A:H\to X^m$ were not strictly singular, it would be bounded
+below on an infinite-dimensional subspace of $H$, hence would put a copy of
+$H$ in $X^m$, contrary to Lemma~\ref{lem:nohilbert}. If
+$B:X^m\to H$ were not strictly singular, the subspace on which it is bounded
+below would itself be Hilbertian, giving the same contradiction. Thus all
+cross operators are strictly singular and therefore inessential. The same
+argument applies to $Y_t^n$. The stated decompositions now follow from
+Gonzalez's theorem \cite{Gonzalez}.
+\end{proof}
+
+\begin{lemma}\label{lem:common}
+If a Banach space $Z$ is isomorphic to a complemented subspace of both
+$H\oplus X^m$ and $H\oplus Y_t^n$, then $Z$ is Hilbertian.
+\end{lemma}
+
+\begin{proof}
+By Lemma~\ref{lem:decompose}, there are decompositions
+\[
+ Z\simeq H_0\oplus E_0\simeq H_1\oplus F_0,
+\]
+where $H_0,H_1$ are Hilbertian, $E_0$ is complemented in $X^m$, and $F_0$
+is complemented in $Y_t^n$. Let
+$R:H_0\oplus E_0\to H_1\oplus F_0$ be an isomorphism. On $E_0$, write
+\[
+ R|_{E_0}=(A,B),\qquad A:E_0\to H_1,\quad B:E_0\to F_0.
+\]
+The operator $A$ is strictly singular. Indeed, otherwise $A$ would be
+bounded below on an infinite-dimensional subspace of $E_0$, making that
+subspace Hilbertian and contradicting Lemma~\ref{lem:nohilbert}.
+
+The column $(A,B):E_0\to H_1\oplus F_0$ is bounded below, hence upper
+semi-Fredholm. It is a strictly singular perturbation of $(0,B)$, so $(0,B)$,
+and equivalently $B$, is upper semi-Fredholm. Therefore $B$ has finite
+dimensional kernel and closed range. Choose a closed complement $E_1$ of
+$\ker B$ in $E_0$. Then $E_1$ is finite codimensional in $E_0$, is
+complemented in $X^m$, and $B|_{E_1}$ is an isomorphic embedding into
+$F_0\subseteq Y_t^n$. Ferenczi's Proposition~4.4 forces $E_1$ to be finite
+dimensional. Hence $E_0$ is finite dimensional, and
+$Z\simeq H_0\oplus E_0$ is Hilbertian.
+\end{proof}
+
+\section{Full negative answer}
+
+\begin{theorem}\label{thm:main}
+Over either the real or complex scalars, there is no largest operator ideal
+$\mathcal U$ satisfying $\Space(\mathcal U)=\cH$.
+\end{theorem}
+
+\begin{proof}
+For $t\in\{1,-1\}$ define
+\[
+ \cJ_t:=\Opp(H\oplus X)\cap\Opp(H\oplus Y_t).
+\]
+We first show
+\begin{equation}\label{eq:space}
+ \Space(\cJ_t)=\cH.
+\end{equation}
+Every separable Hilbert space is finite dimensional or isomorphic to $H$, so
+its identity factors through the common $H$ summand and belongs to $\cJ_t$.
+Conversely, suppose $\Id_Z\in\cJ_t$. A factorization of an identity through a
+space realizes its domain as a complemented subspace of that space. Hence,
+for some $m,n\geq1$, the space $Z$ is isomorphic to a complemented subspace of
+both
+\[
+ (H\oplus X)^m\simeq H\oplus X^m
+ \quad\text{and}\quad
+ (H\oplus Y_t)^n\simeq H\oplus Y_t^n.
+\]
+Lemma~\ref{lem:common} says that $Z$ is Hilbertian. This proves
+\eqref{eq:space}.
+
+Assume now that a largest ideal $\mathcal U$ with
+$\Space(\mathcal U)=\cH$ exists. By \eqref{eq:space}, it contains both
+$\cJ_1$ and $\cJ_{-1}$. The operator $T_t:X\to Y_t$, also viewed as an
+operator $X\to X$, factors through $X$ and through $Y_t$. It therefore
+factors through both $H\oplus X$ and $H\oplus Y_t$, so $T_t\in\cJ_t$.
+Consequently $T_1,T_{-1}\in\mathcal U$ and
+\[
+ F:=T_1+T_{-1}=2\Id_X+K_1+K_{-1}\in\mathcal U(X,X).
+\]
+The operator $F$ is Fredholm. Choose a parametrix $R$ with
+$RF=\Id_X-Q$ for a finite-rank operator $Q$. Ideality gives $RF\in\mathcal U$,
+and every operator ideal contains $Q$; hence $\Id_X=RF+Q\in\mathcal U$.
+Thus $X\in\Space(\mathcal U)=\cH$, impossible because $X$ contains no
+unconditional basic sequence and so is not Hilbertian. This contradiction
+proves the theorem.
+\end{proof}
+
+\section{Verification and limitations}
+
+The proof is non-computational. The exact source question, the construction
+of $Y_t$, Proposition 4.4, and the Fredholm identity for $T_1+T_{-1}$ were
+checked against the source TeX and PDF. The no-unconditional-basic-sequence
+statement was checked in the primary Gowers--Maurey source
+\cite[Section~5.2]{GM}, and the direct-sum theorem against Gonzalez's article
+record and abstract \cite{Gonzalez}.
+
+A bounded novelty search on 9 August 2026 covered the run registry, cheap
+arXiv source indexes, and indexed web/arXiv results for the exact question and
+the phrases ``largest operator ideal'', ``Hilbert space ideal'', and
+``$\Space(\mathcal U)=\cH$''. It found the source paper and later citations of
+its proper-ideal theorem, but no claimed resolution of Question 6.2. This is
+not exhaustive, so novelty confidence is moderate. The result should be cited
+only as a candidate full solution until an expert independently checks the
+three imported structural facts, especially the semi-Fredholm perturbation
+step in Lemma~\ref{lem:common}.
+
+\begin{thebibliography}{9}
+
+\bibitem{Ferenczi}
+V. Ferenczi,
+\emph{There is no largest proper operator ideal},
+arXiv:2005.07672v2; Math. Ann. 387 (2023), 1043--1072.
+
+\bibitem{GM}
+W. T. Gowers and B. Maurey,
+\emph{Banach spaces with small spaces of operators},
+Math. Ann. 307 (1997), 543--568; arXiv:math/9407209.
+
+\bibitem{Gonzalez}
+M. Gonzalez,
+\emph{On essentially incomparable Banach spaces},
+Math. Z. 215 (1994), 621--629.
+
+\bibitem{LT}
+J. Lindenstrauss and L. Tzafriri,
+\emph{Classical Banach Spaces I and II},
+Springer, 1996 reprint.
+
+\end{thebibliography}
+
+\end{document}

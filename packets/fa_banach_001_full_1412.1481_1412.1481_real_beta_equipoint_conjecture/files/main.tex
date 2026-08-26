@@ -1,0 +1,239 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[margin=1in]{geometry}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\B}{\mathrm B}
+\newcommand{\Prob}{\mathbb P}
+
+\title{A Full Solution of the Real Beta Equipoint Conjecture}
+\author{Run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_11}}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{
+\textbf{Status.} Candidate full solution, likely valid, pending human review.
+This packet proves Conjecture~1.13 of Helton--Klep--McCullough--Schweighofer;
+it does not address their separate Conjecture~1.16.
+}}
+\end{center}
+
+\section{Source problem}
+
+For $a,b>0$, write $X_{a,b}$ for a beta random variable, with density
+\[
+  \frac{x^{a-1}(1-x)^{b-1}}{\B(a,b)},\qquad 0<x<1.
+\]
+The source defines an equipoint $e_{a,b}$ and states that its inequality
+$e_{a,b}\leq a/(a+b)$ is equivalent to the following comparison of beta
+tails. Conjecture~1.13 on printed and PDF page~13 asks whether the comparison
+holds for all real $a\geq b>0$~\cite{source}.
+
+\begin{center}
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\noindent\textbf{Transcription.}
+For $a,b\in\mathbb R_{>0}$ with $a\geq b$, prove
+\begin{equation}
+ \Prob\!\left(X_{a,b+1}\geq \frac{a}{a+b}\right)
+ \leq
+ \Prob\!\left(X_{a+1,b}\leq \frac{a}{a+b}\right).
+ \label{eq:C}
+\end{equation}
+Equivalently, prove $e_{a,b}\leq a/(a+b)$.
+
+\section{Proof intuition}
+
+The two sides of \eqref{eq:C} initially look like unrelated incomplete-beta
+tails. Passing to odds, $z=x/(1-x)$, places both tails on the beta-prime
+line, separated at $q=a/b$. Scaling the lower half by $z=qu$ and inverting
+the upper half by $z=q/u$ puts both integrals on $(0,1)$.
+
+The resulting integrand difference has one sign change: it is negative near
+zero and positive afterward. There is also an exact weighted cancellation
+with weight $(1-u)/u$. That cancellation is the zero first centered moment of
+a beta-prime density whose mean is $q$. Because the weight is strictly
+decreasing, cancellation under that weight can occur only if the unweighted
+positive area is larger than the unweighted negative area. This is exactly
+the desired inequality.
+
+\section{The theorem}
+
+\begin{theorem}\label{thm:main}
+For every $a\geq b>0$, inequality \eqref{eq:C} holds. Equality holds when
+$a=b$, and the inequality is strict when $a>b$. Consequently,
+\[
+  e_{a,b}\leq \frac{a}{a+b}
+  \qquad(a\geq b>0),
+\]
+with equality exactly in the symmetric case $a=b$.
+\end{theorem}
+
+\section{Proof}
+
+Put
+\[
+ d=a+b,\qquad m=\frac ad,
+ \qquad q=\frac ab=\frac{m}{1-m}.
+\]
+The beta recurrences
+\[
+ \B(a+1,b)=\frac ad\B(a,b),\qquad
+ \B(a,b+1)=\frac bd\B(a,b)
+\]
+show that the right side of \eqref{eq:C} minus the left side has the sign of
+\begin{equation}
+ \frac1a\int_0^m x^a(1-x)^{b-1}\,dx
+ -\frac1b\int_m^1x^{a-1}(1-x)^b\,dx.
+ \label{eq:first}
+\end{equation}
+With the odds substitution $z=x/(1-x)$, expression \eqref{eq:first} becomes
+\begin{equation}
+ \frac1a\int_0^q\frac{z^a}{(1+z)^{d+1}}\,dz
+ -\frac1b\int_q^\infty\frac{z^{a-1}}{(1+z)^{d+1}}\,dz.
+ \label{eq:odds}
+\end{equation}
+
+In the first integral set $z=qu$; in the second set $z=q/u$. Since
+$q/a=1/b$, the two resulting positive prefactors agree. Therefore
+\eqref{eq:odds} has the sign of
+\begin{equation}
+ H:=\int_0^1\bigl(P(u)-Q(u)\bigr)\,du,
+ \label{eq:H}
+\end{equation}
+where
+\begin{equation}
+ P(u)=\frac{u^a}{(1+qu)^{d+1}},
+ \qquad
+ Q(u)=\frac{u^b}{(q+u)^{d+1}}.
+ \label{eq:PQ}
+\end{equation}
+
+We first prove an exact weighted cancellation. Let
+$w(u)=(1-u)/u$. Undoing the two substitutions above gives
+\begin{align*}
+ \frac{q^a}{b}\int_0^1w(u)P(u)\,du
+ &=\frac1a\int_0^q(q-z)\frac{z^{a-1}}{(1+z)^{d+1}}\,dz,\\
+ \frac{q^a}{b}\int_0^1w(u)Q(u)\,du
+ &=\frac1a\int_q^\infty(z-q)\frac{z^{a-1}}{(1+z)^{d+1}}\,dz.
+\end{align*}
+The density kernel
+\[
+ \varphi(z)=\frac{z^{a-1}}{(1+z)^{d+1}}
+\]
+has mean $q$ after normalization, because
+\[
+ \frac{\int_0^\infty z\varphi(z)\,dz}
+      {\int_0^\infty \varphi(z)\,dz}
+ =\frac{\B(a+1,b)}{\B(a,b+1)}=\frac ab=q.
+\]
+Its lower and upper first deviations about $q$ are consequently equal.
+Thus
+\begin{equation}
+ \int_0^1 w(u)\bigl(P(u)-Q(u)\bigr)\,du=0.
+ \label{eq:weightedzero}
+\end{equation}
+All integrals here are finite for $a,b>0$; near zero the only potentially
+singular weighted term is of order $u^{b-1}$.
+
+It remains to determine the sign pattern of $P-Q$. If $a=b$, then $q=1$ and
+$P=Q$, so equality follows. Suppose $a>b$, hence $q>1$. For $0<u<1$, set
+\[
+ R(u)=\frac{P(u)}{Q(u)}
+ =u^{a-b}\left(\frac{q+u}{1+qu}\right)^{d+1},
+ \qquad g(u)=\log R(u).
+\]
+We have $g(u)\to-\infty$ as $u\downarrow0$ and $g(1)=0$. Moreover,
+\begin{align}
+ g'(u)
+ &=(a-b)\frac1u
+   -(d+1)\frac{q^2-1}{(q+u)(1+qu)} \notag\\
+ &=(q-1)\left[
+   \frac bu-\frac{(q+1)(d+1)}{(q+u)(1+qu)}
+   \right].
+ \label{eq:gprime}
+\end{align}
+The sign of the bracket is the sign of
+\begin{equation}
+ N(u)=bq u^2-(2bq+q+1)u+bq.
+ \label{eq:N}
+\end{equation}
+The two roots of $N$ have product one and sum
+\[
+ 2+\frac{q+1}{bq}>2.
+\]
+Hence exactly one root lies in $(0,1)$ and the other lies in $(1,\infty)$.
+It follows that $g$ first increases and then decreases on $(0,1)$. Since
+$g(1)=0$ and $g'(1)<0$, $g$ is positive immediately to the left of one.
+Consequently there is a unique $c\in(0,1)$ such that
+\begin{equation}
+ P(u)-Q(u)<0\quad(0<u<c),
+ \qquad
+ P(u)-Q(u)>0\quad(c<u<1).
+ \label{eq:crossing}
+\end{equation}
+
+Finally, $w(u)=(1-u)/u$ is strictly decreasing. Using
+\eqref{eq:weightedzero} and the crossing point $c$, we obtain
+\[
+ 0=\int_0^1\bigl(w(u)-w(c)\bigr)(P(u)-Q(u))\,du+w(c)H.
+\]
+By \eqref{eq:crossing}, the first integral is strictly negative: on each side
+of $c$, its two factors have opposite signs. Since $w(c)>0$, this forces
+$H>0$. Equations \eqref{eq:first}--\eqref{eq:H} now give the strict form of
+\eqref{eq:C} when $a>b$. The source proves the equivalence with the equipoint
+formulation, completing the proof of Theorem~\ref{thm:main}. \qed
+
+\section{Verification report}
+
+\begin{center}
+\begin{tabular}{p{0.24\textwidth}p{0.12\textwidth}p{0.52\textwidth}}
+\textbf{Step} & \textbf{Status} & \textbf{Verifier note}\\ \hline
+Beta normalization & valid & Both recurrence factors are positive; the desired probability difference has exactly the sign of \eqref{eq:first}.\\
+Tail substitutions & valid & Odds, scaling, and inversion give the common factor $q^a/b>0$ and functions \eqref{eq:PQ}.\\
+Weighted identity & valid & It is equivalent to the zero centered first moment of the beta-prime kernel; integrability also holds when a parameter is below one.\\
+One crossing & valid & The derivative numerator has reciprocal positive roots, exactly one of them in $(0,1)$.\\
+Final sign & valid & A decreasing weight and a negative-to-positive single crossing make the centered weighted integral strictly negative, forcing $H>0$.\\
+Endpoint case & valid & For $a=b$, symmetry gives $P=Q$ and $e_{a,a}=1/2$.\\
+\end{tabular}
+\end{center}
+
+\noindent\textbf{Verdict:} likely valid; candidate full solution. The included
+script \texttt{code/verify\_equipoint.py} compares the original incomplete-beta
+gap with the transformed integrals, checks \eqref{eq:weightedzero}, verifies
+the crossing pattern, and runs a fixed-seed scan of 250,000 parameter pairs.
+No numerical contradiction was found. These computations are diagnostics,
+not dependencies of the proof.
+
+\section{Novelty, scope, and review recommendation}
+
+The run indexes were searched for arXiv:1412.1481, the exact conjecture label,
+equipoints, Simmons' theorem, and the incomplete-beta inequality. A bounded
+external search used the exact label and wording, source title and authors,
+equipoint notation, and close incomplete-beta phrases. It found the source
+arXiv, AMS, and author-hosted versions, plus adjacent incomplete-beta work,
+but no later proof, counterexample, or claimed resolution of Conjecture~1.13.
+
+This packet resolves Conjecture~1.13 only. The distinct monotonicity
+Conjecture~1.16 on the next page remains outside its scope. Human review should
+focus on the common prefactor in \eqref{eq:H} and the direction of the final
+decreasing-weight comparison.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+J. W. Helton, I. Klep, S. McCullough, and M. Schweighofer,
+\emph{Dilations, Linear Matrix Inequalities, the Matrix Cube Problem and Beta
+Distributions}, arXiv:1412.1481; Mem. Amer. Math. Soc. 257 (2019), no. 1232,
+\href{https://doi.org/10.1090/memo/1232}{doi:10.1090/memo/1232}.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,114 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=2.05cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\setlength{\emergencystretch}{3em}
+
+\definecolor{ink}{HTML}{172033}
+\definecolor{accent}{HTML}{385B7A}
+\definecolor{soft}{HTML}{EEF5FA}
+\color{ink}
+
+\newtheorem*{theorem}{Literature-implied theorem}
+\newcommand{\E}{\mathbb E}
+
+\title{The full power growth of $k$-wise Khinchine constants}
+\author{Literature-implied answer to the questions in arXiv:1412.7859}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{accent}{soft}{\parbox{0.91\textwidth}{
+\textbf{Status: literature-implied full asymptotic answer.}
+For fixed $k\ge2$, $p\ge2$, and $m=\lfloor k/2\rfloor$,
+\[
+ C(N,p,k)\asymp_{p,k}N^{\max\{0,\,1/2-m/p\}}.
+\]
+In particular, for every fixed $p>k$, the constants are unbounded and their growth rate is $N^{1/2-\lfloor k/2\rfloor/p}$.}}
+\end{center}
+
+\section*{Source questions}
+For a $k$-wise independent Rademacher vector $\varepsilon=(\varepsilon_i)_{i=1}^N$, the source defines
+\[
+C(N,p,k)=\sup_{\substack{\|a\|_2=1\\ \varepsilon\ k\text{-wise independent}}}
+ \left(\E\left|\sum_{i=1}^N a_i\varepsilon_i\right|^p\right)^{1/p}.
+\]
+On source PDF page 2 it asks whether this is bounded for fixed $p,k$ and, if not, for its growth rate.  Page 3 says that understanding $k\ge4$ remains open \cite{PSsource}.  The revised paper restricts the numbered question to $p>k$ and proves the required general upper estimate for even $k$, while again leaving sharpness for $k\ge4$ open \cite{PSrevised}.
+
+\begin{theorem}
+Fix $k\ge2$ and $p\ge2$, and put $m=\lfloor k/2\rfloor$.  As $N\to\infty$,
+\[
+C(N,p,k)\asymp_{p,k}N^{\max\{0,\,1/2-m/p\}}.
+\]
+Hence $C(N,p,k)$ is bounded in $N$ exactly when $p\le2m$.
+\end{theorem}
+
+\section*{Upper bound}
+Set $r=2m\le k$.  Any $k$-wise independent Rademacher vector is $r$-wise independent.  If
+$f=|\sum_i a_i\varepsilon_i|$, then expansion of the even power and $r$-wise independence give exactly the independent-sign moment:
+\[
+ \|f\|_r\le C(r)\|a\|_2.
+\]
+Also $\|f\|_\infty\le\|a\|_1\le\sqrt N\|a\|_2$.  Thus, for $p\ge r$,
+\[
+ \|f\|_p^p\le \|f\|_\infty^{p-r}\|f\|_r^r,
+ \qquad
+ \|f\|_p\le C(r)^{r/p}N^{1/2-r/(2p)}\|a\|_2.
+\]
+This is Proposition 2.1 of \cite{PSrevised}, applied at the largest even order not exceeding $k$.  If $2\le p\le r$, monotonicity of $L_q$ norms gives instead $\|f\|_p\le\|f\|_r\le C(r)\|a\|_2$.  These are the claimed upper bounds in both regimes.
+
+\section*{Lower bound from the maximal endpoint atom}
+Let $M(N,k,1/2)$ be the largest possible probability of the all-ones vector under a $k$-wise independent law on $N$ fair bits.  Peled--Yadin--Yehudayoff prove, for every fixed $k$, the sharp asymptotic order
+\begin{equation}\label{eq:endpoint}
+ M(N,k,1/2)\asymp_k N^{-\lfloor k/2\rfloor}=N^{-m};
+\end{equation}
+see the odd-$k$ reduction (1.1), Theorem 1.1, and the fixed-$k$ conclusion after Corollary 1.3 on supporting PDF pages 4--7 \cite{PYY}.
+
+Choose a law attaining the maximum (the feasible polytope is compact), write its bits as $X_i\in\{0,1\}$, and set $\varepsilon_i=2X_i-1$.  Then $\varepsilon$ is a $k$-wise independent Rademacher vector.  With $a_i=N^{-1/2}$, on the all-ones event
+\[
+ \sum_{i=1}^N a_i\varepsilon_i=\sqrt N.
+\]
+Consequently, by \eqref{eq:endpoint},
+\[
+ C(N,p,k)^p\ge M(N,k,1/2)N^{p/2}gtrsim_k N^{p/2-m},
+\]
+and therefore
+\[
+ C(N,p,k)\gtrsim_{p,k}N^{1/2-m/p}.
+\]
+This supplies the matching lower bound whenever $p>2m$.  When $p\le2m$, taking $a=e_1$ gives $C(N,p,k)\ge1$, matching the bounded upper estimate.  The theorem follows.
+
+\section*{Proof intuition}
+Limited independence fixes every moment only up to the largest even order $2m\le k$.  Interpolating that controlled moment with the deterministic ceiling $\sqrt N$ produces the upper exponent.  The complementary extremal law spends probability about $N^{-m}$ at the most distant Hamming vertex.  Equal coefficients turn this small atom into a value $\sqrt N$; its $p$th-moment contribution is exactly the missing power.  The two estimates meet because both are governed by the same number $m$ of controlled even moments.
+
+\section*{Provenance and scope}
+The endpoint estimate \eqref{eq:endpoint} predates the source, but neither \cite{PYY} nor the later Khinchine paper states the combined conclusion above.  Conversely, the revised Pass--Spektor paper gives the matching upper bound but does not cite the endpoint estimate as a lower-bound mechanism.  The result is therefore a direct implication of established literature, not a new construction.
+
+The notation $\asymp_{p,k}$ means two-sided bounds by positive constants depending only on fixed $p,k$.  This fully answers ``bounded or not'' and ``growth rate'' in the usual asymptotic-order sense; it does not determine an exact finite-$N$ optimizer or an exact leading constant for $k\ge4$.
+
+{\raggedright
+\begin{thebibliography}{9}
+\bibitem{PSsource}
+B. Pass and S. Spektor,
+\emph{On Khintchine type inequalities for pairwise independent Rademacher random variables},
+arXiv:1412.7859v1 (2014), pp.~2--3.
+
+\bibitem{PYY}
+R. Peled, A. Yadin, and A. Yehudayoff,
+\emph{The Maximal Probability that $k$-wise Independent Bits are All 1},
+arXiv:0801.0059v3 (2011), Theorem~1.1 and Corollary~1.3.
+
+\bibitem{PSrevised}
+B. Pass and S. Spektor,
+\emph{On Khintchine type inequalities for $k$-wise independent Rademacher random variables},
+arXiv:1708.08775v1 (2017), Proposition~2.1.
+\end{thebibliography}
+\par}
+
+\end{document}

@@ -1,0 +1,356 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{definition}{Definition}
+\newcommand{\R}{\mathbb R}
+\newcommand{\SX}{S_X}
+\newcommand{\BX}{B_X}
+\newcommand{\perpI}{\mathrel{\perp_I}}
+\newcommand{\perpP}{\mathrel{\perp_P}}
+\newcommand{\Lcal}{\mathcal L}
+
+\title{A universal orthogonality-transfer principle\\
+for geometric constants}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 10}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{
+\textbf{Status: candidate full structural answer, likely valid; novelty not
+certified.}  Under the literal meaning of ``equivalently expressed'', all
+finite-point unit-sphere constants admit exact isosceles-orthogonal
+coordinates.  This gives arbitrary many-parameter extensions of
+$L'_{\mathrm{YJ}}$, a necessary-and-sufficient criterion for other
+orthogonalities, a new Pythagorean-orthogonality transfer, and exact operator
+versions.  The source questions are informal, so claims about which formulas
+are \emph{natural} or \emph{useful} remain outside the result.
+}}
+\end{center}
+
+\section{Current source questions and version boundary}
+
+Wang, Liu, and Bao \cite{WangLiuBao} ask in Problems~5.8--5.12 which geometric
+constants have orthogonality-based representations, whether their
+two-parameter $L'_{\mathrm{YJ}}$ construction has more-parameter analogues,
+whether unit-ball or unit-sphere restrictions can generally be encoded by
+isosceles orthogonality, whether other orthogonalities work, and how operator
+versions should be treated.
+
+The current source is arXiv:2507.17122v5, revised 18 July 2026.  This matters:
+v5 itself adds a Birkhoff--James rectification theorem and exact formulas for
+several constants.  Those results are prior source material here, not claimed
+as new.  The five questions below remain on printed page~22 of v5.
+
+\begin{figure}[ht]
+ \centering
+ \includegraphics[width=\textwidth]{figures/open_problems_crop.png}
+ \caption{Problems~5.8--5.12 in arXiv:2507.17122v5, printed page~22.}
+\end{figure}
+
+\section{Proof intuition}
+
+There is an exact, norm-independent change of coordinates behind every
+isosceles formula in the source.  Given two unit vectors $p,q$, their half-sum
+$u=(p+q)/2$ and half-difference $v=(p-q)/2$ satisfy
+$\|u+v\|=\|u-v\|=1$; hence $u\perpI v$.  Conversely $p=u+v$ and $q=u-v$.
+This is a bijection, not an inequality.  Therefore every function, constraint,
+parameter, supremum, or infimum on two sphere points transfers exactly.
+
+For another orthogonality relation, the corresponding issue is precisely
+surjectivity: can every vector $z$ be written as a longitudinal part
+$\beta x$ plus a part $y$ orthogonal to $x$?  This ``rectifiability'' is both
+necessary and sufficient for universal transfer.  Birkhoff--James
+rectifiability is proved in v5 of the source.  Pythagorean orthogonality is a
+new example: a one-dimensional convex forward-difference argument always
+chooses the required $\beta$.
+
+\section{The Hadamard transfer theorem}
+
+Let $X$ be a nonzero real normed space and define the normalized isosceles
+cone
+\[
+ \mathcal I_X:=\{(u,v)\in X^2:u\perpI v,\ \|u+v\|=1\}.
+\]
+The orthogonality condition automatically also gives $\|u-v\|=1$.
+
+\begin{theorem}[Universal two-point transfer]\label{thm:hadamard}
+The map
+\[
+ H:\SX^2\longrightarrow\mathcal I_X,
+ \qquad H(p,q)=\left(\frac{p+q}{2},\frac{p-q}{2}\right)
+\]
+is a bijection with inverse $H^{-1}(u,v)=(u+v,u-v)$.  Consequently, for every
+set of parameters $\Theta$ and every extended-real function
+$F:\Theta\times\SX^2\to[-\infty,\infty]$,
+\begin{align*}
+ \sup_{\theta\in\Theta,\ p,q\in\SX}F(\theta,p,q)
+ &=\sup_{\theta\in\Theta,\ (u,v)\in\mathcal I_X}
+   F(\theta,u+v,u-v),\\
+ \inf_{\theta\in\Theta,\ p,q\in\SX}F(\theta,p,q)
+ &=\inf_{\theta\in\Theta,\ (u,v)\in\mathcal I_X}
+   F(\theta,u+v,u-v).
+\end{align*}
+The same is true after imposing any predicate on the original variables and
+its pullback under $H$.
+\end{theorem}
+
+\begin{proof}
+If $p,q\in\SX$ and $(u,v)=H(p,q)$, then $u+v=p$ and $u-v=q$, so
+$\|u+v\|=\|u-v\|=1$.  Thus $(u,v)\in\mathcal I_X$.  Conversely, if
+$(u,v)\in\mathcal I_X$, then $p=u+v$ and $q=u-v$ belong to $\SX$, and the two
+displayed linear maps undo each other.  Every assertion about functions,
+extrema, parameters, and predicates follows by reindexing along this
+bijection.
+\end{proof}
+
+\begin{corollary}[Finite sphere and ball constants]\label{cor:finite}
+Every functional of finitely many unit vectors has an exact representation
+using finitely many isosceles-orthogonal pairs, by applying
+Theorem~\ref{thm:hadamard} to successive pairs of variables (and adding one
+ignored dummy sphere variable if their number is odd).
+
+Moreover, for every extended-real $G:\BX^2\to[-\infty,\infty]$,
+\[
+ \sup_{x,y\in\BX}G(x,y)
+ =\sup_{\substack{(u,v)\in\mathcal I_X\\r,s\in[0,1]}}
+ G\bigl(r(u+v),s(u-v)\bigr),
+\]
+and similarly for infima and constraints.
+\end{corollary}
+
+\begin{proof}
+Only the ball formula needs comment.  Write a nonzero $x\in\BX$ as
+$x=r p$, where $r=\|x\|\in(0,1]$ and $p\in\SX$; if $x=0$, take $r=0$ and
+any $p\in\SX$.  Do the same for $y=sq$, and apply
+Theorem~\ref{thm:hadamard} to $(p,q)$.  The converse inclusion is immediate.
+\end{proof}
+
+Thus, in the exact reparameterization sense, Problems~5.8 and 5.10 have the
+maximal answer: all finite-point sphere constants transfer, and all
+finite-point ball constants transfer after retaining their radial variables.
+
+\section{Arbitrarily many parameters}
+
+For an integer $N\geq1$ and a nonzero matrix
+$A=(a_{\ell j})\in\R^{N\times2}$, define
+\begin{equation}\label{eq:matrixconstant}
+ \Lcal_A(X):=\frac{1}{\|A\|_{F}^{2}}
+ \sup_{p,q\in\SX}\sum_{\ell=1}^{N}
+ \|a_{\ell1}p+a_{\ell2}q\|^2.
+\end{equation}
+Up to common scaling, this is a family with $2N-1$ scalar parameters.
+
+\begin{theorem}[Matrix-coefficient $L_{\mathrm{YJ}}$ family]\label{thm:matrix}
+For every nonzero $A\in\R^{N\times2}$,
+\begin{equation}\label{eq:matrixiso}
+ \Lcal_A(X)=\frac{1}{\|A\|_F^2}
+ \sup_{\substack{u\perpI v\\(u,v)\ne(0,0)}}
+ \frac{\displaystyle\sum_{\ell=1}^{N}
+ \|(a_{\ell1}+a_{\ell2})u+(a_{\ell1}-a_{\ell2})v\|^2}
+ {\|u+v\|^2}.
+\end{equation}
+For
+\[
+ A=\begin{pmatrix}\tau&\upsilon\\ \upsilon&-\tau\end{pmatrix},
+\]
+the constant in \eqref{eq:matrixconstant} is exactly
+$L'_{\mathrm{YJ}}(\tau,\upsilon,X)$ from the source.
+\end{theorem}
+
+\begin{proof}
+For a nonzero isosceles pair put $r=\|u+v\|=\|u-v\|>0$ and
+$p=(u+v)/r$, $q=(u-v)/r$.  Then
+\[
+ a_{\ell1}p+a_{\ell2}q
+ =\frac{(a_{\ell1}+a_{\ell2})u+(a_{\ell1}-a_{\ell2})v}{r}.
+\]
+Theorem~\ref{thm:hadamard} gives \eqref{eq:matrixiso}.  For the displayed
+two-row matrix, $\|A\|_F^2=2(\tau^2+\upsilon^2)$, and the numerator in
+\eqref{eq:matrixconstant} is
+$\|\tau p+\upsilon q\|^2+\|\upsilon p-\tau q\|^2$, which is the defining
+formula for $L'_{\mathrm{YJ}}$.
+\end{proof}
+
+Since $N$ is arbitrary, Theorem~\ref{thm:matrix} answers Problem~5.9 with a
+single family containing arbitrarily many independent coefficients.
+
+\section{Which other orthogonalities transfer?}
+
+Let $\mathrel{\perp_R}$ be any relation between a nonzero first vector and a
+second vector in $X$.
+
+\begin{definition}
+The relation $\perp_R$ is \emph{rectifiable} if, for every $x\ne0$ and every
+$z\in X$, there are $\beta\in\R$ and $y\in X$ such that
+\[
+ z=\beta x+y,\qquad x\perp_R y.
+\]
+It is \emph{sphere-rectifiable} if the same property holds whenever
+$x=(p+q)/2\ne0$ and $z=(p-q)/2$ for $p,q\in\SX$.
+\end{definition}
+
+\begin{theorem}[Rectifiability characterization]\label{thm:rectification}
+The following are equivalent for a relation $\perp_R$.
+\begin{enumerate}
+ \item The relation is rectifiable.
+ \item The coordinate map
+ \[
+ (x,y,\beta)\longmapsto(x,\beta x+y),\qquad x\perp_R y,
+ \]
+ is onto $(X\setminus\{0\})\times X$.
+ \item For every bounded function $\Phi:(X\setminus\{0\})\times X\to\R$,
+ \[
+ \sup_{x\ne0,z\in X}\Phi(x,z)
+ =\sup_{\substack{x\perp_R y\\x\ne0,\ \beta\in\R}}
+ \Phi(x,\beta x+y),
+ \]
+ and likewise for infima.
+\end{enumerate}
+The analogous universal transfer on $\SX^2$ holds if and only if the relation
+is sphere-rectifiable, with antipodal pairs $(p,-p)$ included as a separate
+boundary component.  Every rectifiable relation is sphere-rectifiable.
+\end{theorem}
+
+\begin{proof}
+The first two assertions are the same surjectivity statement.  Surjectivity
+implies the extrema identities by substitution.  Conversely, if a pair
+$(x_0,z_0)$ is missed, take $\Phi$ to be its indicator: the left supremum is
+$1$ and the right one is $0$.  The sphere statement applies the same argument
+to
+\[
+ p=\frac{(1+\beta)x+y}{r},\qquad
+ q=\frac{(1-\beta)x-y}{r},
+\]
+where the two numerator norms have the same positive value $r$.  A non-antipodal
+pair has $x=(p+q)/2\ne0$ and is reached exactly when its half-difference can be
+rectified.  Antipodal pairs have $x=0$ and form the stated boundary component.
+\end{proof}
+
+This is a necessary-and-sufficient formal answer to Problem~5.11.  The current
+source proves that Birkhoff--James orthogonality is rectifiable by a norming
+functional.  The next lemma supplies a different named example.
+
+\begin{lemma}[Pythagorean orthogonality is rectifiable]\label{lem:pythagorean}
+Define $x\perpP y$ by
+\[
+ \|x-y\|^2=\|x\|^2+\|y\|^2.
+\]
+Then $\perp_P$ is rectifiable on every real normed space.
+\end{lemma}
+
+\begin{proof}
+Fix $x\ne0$ and $z\in X$, and put $q(t)=\|z-tx\|^2$.  The function $q$ is
+continuous, convex, and satisfies
+\[
+ \frac{q(t)}{t^2}\longrightarrow\|x\|^2\qquad(|t|\to\infty).
+\]
+Its forward difference $d(t)=q(t+1)-q(t)$ is continuous and nondecreasing.
+For $t>0$, convexity gives
+\[
+ d(t)\geq\frac{q(t)-q(0)}{t}\longrightarrow+\infty.
+\]
+For $t<-1$, comparison of the secant slopes on $[t,t+1]$ and $[t+1,0]$
+gives
+\[
+ d(t)\leq\frac{q(0)-q(t+1)}{-t-1}\longrightarrow-\infty.
+\]
+Hence there is $\beta\in\R$ with $d(\beta)=\|x\|^2$.  Set
+$y=z-\beta x$.  Since
+\[
+ \|y\|^2=q(\beta),\qquad \|x-y\|^2=q(\beta+1),
+\]
+we obtain $\|x-y\|^2=\|x\|^2+\|y\|^2$, as required.
+\end{proof}
+
+Theorems~\ref{thm:rectification} and Lemma~\ref{lem:pythagorean} now produce
+exact Pythagorean-orthogonal representations for every two-vector full-space
+constant, and—with the equal-radius endpoint condition—for every sphere
+constant.
+
+\section{Operator constants and moduli}
+
+\begin{corollary}[Universal operator transfer]\label{cor:operator}
+Let $T:X\to Y$ be a bounded linear operator, let $\Theta$ be any parameter
+set, and let $\Psi:\Theta\times Y^2\to[-\infty,\infty]$.  Then
+\[
+ \sup_{\theta\in\Theta,\ p,q\in\SX}\Psi(\theta,Tp,Tq)
+ =\sup_{\theta\in\Theta,\ (u,v)\in\mathcal I_X}
+ \Psi\bigl(\theta,T(u+v),T(u-v)\bigr),
+\]
+with identical statements for infima and arbitrary constraints.  Pairwise
+application gives the same result for every finite-point operator constant or
+modulus, and Corollary~\ref{cor:finite} gives unit-ball versions.
+\end{corollary}
+
+\begin{proof}
+Apply Theorem~\ref{thm:hadamard} to
+$F(\theta,p,q)=\Psi(\theta,Tp,Tq)$.  Linearity gives the displayed form.
+Products of the bijection handle more variables, and predicates pull back
+exactly.
+\end{proof}
+
+For example, \eqref{eq:matrixconstant} has the operator analogue
+\[
+ \Lcal_A(T):=\frac1{\|A\|_F^2}\sup_{p,q\in\SX}
+ \sum_{\ell=1}^N\|T(a_{\ell1}p+a_{\ell2}q)\|_Y^2,
+\]
+and Theorem~\ref{thm:matrix} remains valid after applying $T$ to every vector
+in its numerator.  Constraints appearing in operator moduli of convexity or
+smoothness transfer just as exactly.  This answers Problem~5.12 at the level
+of every finite-configuration operator invariant.
+
+\section{Verification, limitations, and novelty}
+
+The proof uses only explicit bijections, surjectivity, and one-variable
+convexity.  The main checks are: the zero half-sum occurs exactly at antipodal
+sphere pairs and is retained as a boundary component; a nonzero isosceles pair
+has $\|u+v\|>0$; the matrix normalization recovers the source denominator; and
+the Pythagorean forward difference has the correct two infinite limits.  No
+computational or unproved dependency remains.
+
+The result gives a full answer only under the precise interpretation that an
+``equivalent expression'' means an exact reparameterization, with auxiliary
+scalar variables allowed.  The source does not define a narrower notion such
+as formula complexity, naturality, or usefulness.  If one of those was
+intended, the theorem is instead a complete structural baseline: it says
+existence is automatic and identifies what additional criterion must be
+specified for a nontrivial classification.
+
+The run indexes and a bounded arXiv/web search through 17 August 2026 found
+many particular orthogonal constants but no universal finite-point theorem,
+arbitrary matrix family, rectifiability characterization, or Pythagorean
+transfer.  Searches used the exact title and problems, $L'_{\mathrm{YJ}}$ with
+matrix/multiple parameters, unit-sphere transfer, other orthogonalities, and
+operator versions; close papers included arXiv:2111.08392, 2504.00826,
+2509.23319, 2602.13974, 2606.01064, and 2606.01068.  Novelty is plausible, not
+certified.
+
+Human review should focus on whether the literal formalization matches the
+authors' intended breadth, the necessity direction of
+Theorem~\ref{thm:rectification}, and the secant-slope limits in
+Lemma~\ref{lem:pythagorean}.  Subject to those checks and a specialist search,
+promote as a full structural resolution of Problems~5.8--5.12.
+
+\begingroup
+\raggedright
+\begin{thebibliography}{9}
+\bibitem{WangLiuBao}
+Q.~Liu, Y.~Wang, and M.~Bao,
+\emph{How orthogonality influences geometric constants},
+arXiv:2507.17122v5, Problems~5.8--5.12 (2025--2026).
+\end{thebibliography}
+\endgroup
+
+\end{document}

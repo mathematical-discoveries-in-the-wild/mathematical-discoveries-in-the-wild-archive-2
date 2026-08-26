@@ -1,0 +1,211 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+
+\title{Improved Bounds for the Critical Parameter of the Multiplicative Hilbert Family}
+\author{Run fa\_banach\_001, agent\_lane\_14}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status and source problem}
+
+This is a \texttt{candidate\_partial\_likely\_valid} result for Karl-Mikael
+Perfekt and Alexander Pushnitski, \emph{On the spectrum of the multiplicative
+Hilbert matrix}, arXiv:1705.01959 \cite{PP}.
+
+For $a>0$, the source considers the positive Helson matrix on
+$\ell^2(\N)$
+\[
+ M(g_a)_{m,n}=\frac{1}{\sqrt{mn}\,(a+\log(mn))},\qquad m,n\geq1.
+\]
+Its Theorem 1.2 produces a critical number $a_*>0$: if $a\geq a_*$,
+$M(g_a)$ has no eigenvalue above $\pi$, whereas if $0<a<a_*$ it has exactly
+one simple eigenvalue above $\pi$.  On PDF page 3 the authors say that they
+cannot explicitly compute $a_*$ and give only
+\[
+ \frac1\pi\leq a_*\leq2.
+\]
+The same passage asks for an explicit diagonalization of $M(g_a)$ and of the
+multiplicative Hilbert matrix $M_2(g_0)$.
+
+\section*{Main result}
+
+\begin{theorem}\label{thm:main}
+Let $a_*$ be the critical parameter in \cite[Theorem 1.2]{PP}, and let
+$\gamma$ denote the Euler--Mascheroni constant.  Then
+\[
+ \boxed{\quad \frac13<a_*\leq2\gamma\quad}.
+\]
+Numerically, $2\gamma=1.1544313298\ldots$.  Both inequalities strictly
+improve the source estimates.
+\end{theorem}
+
+\section*{Proof intuition}
+
+The two bounds use different representations.  At the matrix level, a
+two-dimensional compression already detects an eigenvalue above $\pi$ at
+$a=1/3$; deliberately coarse rational bounds for $\pi$ and $\log 2$ suffice
+to certify the sign of its characteristic polynomial.
+
+For the upper bound, the source factors $M(g_a)$ through an integral Hankel
+operator with kernel
+\[
+ h_a(t)=e^{-at/2}\zeta(1+t).
+\]
+The logarithmic derivative of $t\zeta(1+t)$ is a decreasing function whose
+limit at zero is $\gamma$.  Thus $t\zeta(1+t)\leq e^{\gamma t}$.  When
+$a\geq2\gamma$, this cancels the exponential in $h_a$ and leaves the
+Carleman majorant $1/t$, whose Hankel operator has norm $\pi$.
+
+\section*{Upper bound}
+
+We use a recent real-axis zeta inequality.
+
+\begin{lemma}[Garcia--Greni\'e--Molteni \cite{GGM}]\label{lem:zeta}
+The function
+\[
+ s\longmapsto \frac{\zeta'(s)}{\zeta(s)}+\frac{1}{s-1}
+\]
+is decreasing on $(1,\infty)$.
+\end{lemma}
+
+This is Theorem 5 of arXiv:2607.08342.  Define
+\[
+ \Phi(t)=\log\bigl(t\zeta(1+t)\bigr),\qquad t>0.
+\]
+The Laurent expansion $\zeta(1+t)=t^{-1}+\gamma+O(t)$ gives
+$\Phi(0+)=0$ and $\Phi'(0+)=\gamma$.  Moreover,
+\[
+ \Phi'(t)=\frac1t+\frac{\zeta'(1+t)}{\zeta(1+t)}.
+\]
+Lemma~\ref{lem:zeta} says that $\Phi'$ is decreasing.  Therefore
+\begin{equation}\label{eq:zetaexp}
+ \Phi(t)\leq\gamma t,
+ \qquad\text{equivalently}\qquad
+ t\zeta(1+t)\leq e^{\gamma t}quad(t>0).
+\end{equation}
+
+The source's Theorem 2.2 identifies the nonzero part of $M(g_a)$ unitarily
+with the integral Hankel operator $H(h_a)$ on $L^2(\R_+)$, where
+$h_a(t)=e^{-at/2}\zeta(1+t)$.  If $a\geq2\gamma$, then
+\[
+ 0<h_a(t)\leq e^{-\gamma t}\frac{e^{\gamma t}}t=\frac1t.
+\]
+The source's Carleman estimate (Lemma 2.1) consequently gives
+$\lVert H(h_a)\rVert\leq\pi$, hence
+$\lVert M(g_a)\rVert\leq\pi$.  There can be no eigenvalue above $\pi$, so
+the defining dichotomy for $a_*$ yields
+\begin{equation}\label{eq:upper}
+ a_*\leq2\gamma.
+\end{equation}
+
+This use of pointwise Carleman domination cannot improve the constant:
+\[
+ e^{-at/2}t\zeta(1+t)
+ =1+(\gamma-a/2)t+O(t^2),
+\]
+so the needed pointwise inequality fails near zero for every $a<2\gamma$.
+
+\section*{Lower bound}
+
+Set $a=1/3$ and compress $M(g_a)$ to
+$\operatorname{span}\{e_1,e_2\}$.  Its matrix is
+\[
+ A=\begin{pmatrix}
+ 3 & \dfrac{1}{\sqrt2(1/3+\log2)}\\[6pt]
+ \dfrac{1}{\sqrt2(1/3+\log2)}
+   & \dfrac{1}{2(1/3+\log4)}
+ \end{pmatrix}.
+\]
+We show that $\det(\pi I-A)<0$.  Since $3<\pi<22/7$ and the lower-right
+entry of $A$ is positive,
+\[
+ (\pi-3)\left(\pi-\frac{1}{2(1/3+\log4)}\right)
+ <\pi(\pi-3)<\frac{22}{49}.
+\]
+Also $\log2<7/10$.  For completeness, the latter follows from
+\[
+ e^{7/10}>1+\frac7{10}+\frac{(7/10)^2}{2}
+                 +\frac{(7/10)^3}{6}>2.
+\]
+Consequently,
+\[
+ A_{12}^2
+ =\frac{1}{2(1/3+\log2)^2}
+ >\frac{1}{2(31/30)^2}
+ =\frac{450}{961}
+ >\frac{22}{49}.
+\]
+It follows that
+\[
+ \det(\pi I-A)
+ =(\pi-A_{11})(\pi-A_{22})-A_{12}^2<0.
+\]
+For a real symmetric $2\times2$ matrix this says that its two eigenvalues
+straddle $\pi$; in particular $\lambda_{\max}(A)>\pi$.  The maximal Rayleigh
+quotient of the full operator $M(g_{1/3})$ is therefore greater than $\pi$.
+By the spectral dichotomy in \cite[Theorem 1.2]{PP}, $M(g_{1/3})$ has its
+simple eigenvalue above $\pi$, and hence
+\begin{equation}\label{eq:lower}
+ \frac13<a_*.
+\end{equation}
+Combining \eqref{eq:upper} and \eqref{eq:lower} proves
+Theorem~\ref{thm:main}.
+
+\section*{Verification, upgrade attempts, and limitations}
+
+The lower estimate is a finite exact certificate; no floating-point spectral
+calculation enters the proof.  The only external input beyond the source
+operator theory is Lemma~\ref{lem:zeta}.  Its variable substitution is exact:
+$s=1+t$ makes its left-hand side equal to $\Phi'(t)$.
+
+Before locating Lemma~\ref{lem:zeta}, an elementary midpoint estimate for the
+convex function $x^{-1-t}$ gave
+\[
+ t\zeta(1+t)\leq t+(3/2)^{-t}
+ \leq e^{(1-\log(3/2))t},
+\]
+and hence the weaker new upper bound
+$a_*\leq2(1-\log(3/2))$.  The monotonicity theorem upgrades this to the
+method-sharp constant $2\gamma$.
+
+The packet does not determine $a_*$, compute the eigenvalue $\lambda(a)$,
+or explicitly diagonalize either matrix.  Higher finite compressions can
+numerically strengthen the lower endpoint, but no similarly transparent
+closed certificate was retained here.  The bounded-symbol endpoint mentioned
+on the same source page is a distinct question already covered by the run
+attempt
+\path{2005.11951_multiplicative_hilbert_h1_endpoint_attempt.md}.
+
+A bounded novelty search used the exact phrases \texttt{critical value
+multiplicative Hilbert matrix}, \texttt{M(g\_a) critical value}, the source
+arXiv id, and the constants in the preliminary bound.  It found the source
+estimate but no later improvement.  The July 2026 zeta paper was found through
+a separate search for real-axis bounds on $(s-1)\zeta(s)$; no application of
+its Theorem 5 to this Helson family was located.  Novelty confidence is
+moderate.  Human review should focus on the use of the source's critical
+dichotomy at $a=1/3$ and on the bibliographic novelty check.
+
+\begin{thebibliography}{9}
+\bibitem{PP}
+K.-M. Perfekt and A. Pushnitski,
+\emph{On the spectrum of the multiplicative Hilbert matrix},
+Ark. Mat. 56 (2018), 163--183; arXiv:1705.01959.
+
+\bibitem{GGM}
+S. R. Garcia, L. Greni\'e, and G. Molteni,
+\emph{Explicit upper and lower bounds on certain functions related to
+$\zeta(s)$ for $s>1$}, arXiv:2607.08342 (2026).
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,266 @@
+\documentclass[10pt]{article}
+\usepackage[margin=0.76in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Mor}{\mathcal L}
+\newcommand{\WMor}{W\mathcal L}
+\newcommand{\avgint}{\mathop{\rlap{\raisebox{0.18ex}{--}}\!\int}}
+
+\title{Distance-to-Subspace Weights Disprove the Proposed\\
+Muckenhoupt--Reverse-Hölder Sufficiency\\
+\large A full negative answer to the final question of arXiv:1910.13285}
+\author{Automated proof attempt\\
+\texttt{agent\_lane\_03} \quad model: GPT5.6}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{red!55!black}{red!4}{\parbox{0.92\linewidth}{
+\textbf{Status: full counterexample, likely valid, pending human verification.}
+The proposed sufficiency of
+$A_{p+\lambda/n}\cap RH_{n/(n-\lambda)}$ is false.  In fact, a family of
+distance-to-subspace power weights in that class makes the Hardy--Littlewood
+maximal operator fail even from strong to weak weighted Morrey space.}}
+\end{center}
+
+\section*{Source question}
+
+For $1\le p<\infty$ and $0<\lambda<n$, the source defines
+\[
+ \|f\|_{\Mor^{p,\lambda}(w)}
+ =\sup_{x\in\R^n,r>0}
+ \left(r^{-\lambda}\int_{B(x,r)}|f|^p w\right)^{1/p},
+\]
+and
+\[
+ \|g\|_{\WMor^{p,\lambda}(w)}
+ =\sup_{x,r,a>0}
+ \left(r^{-\lambda}a^p
+ w\{u\in B(x,r):|g(u)|>a\}\right)^{1/p}.
+\]
+After establishing shifted sharp ranges for point powers, the authors ask
+whether the whole class
+\begin{equation}\label{eq:asked-class}
+ A_{p+\lambda/n}\cap RH_{n/(n-\lambda)}
+\end{equation}
+is sufficient in their Theorem 1.1 \cite{source}.  Since the pair
+$(|f|,Mf)$ satisfies the theorem's weighted hypothesis, this would in
+particular imply Morrey boundedness of the Hardy--Littlewood maximal operator
+for every weight in \eqref{eq:asked-class}.  The appended crop reproduces the
+question exactly from page 16.
+
+\section*{Proof intuition}
+
+The point powers treated in the source vanish at a zero-dimensional set.  A
+ball larger than that small low-weight region pays for spreading its mass in
+every direction.  The proposed weight classes do not encode this geometry.
+
+Replace the point by a positive-dimensional subspace and use a power of the
+transverse distance.  A thin tube is very cheap in weighted Morrey norm
+because the weight vanishes across its transverse thickness.  Its ordinary
+Lebesgue mass is only one power of that thickness smaller, and the maximal
+operator spreads this mass over a fixed ball.  If the subspace has enough
+tangential dimension to absorb the Morrey normalization, the two scalings
+are incompatible.  The strict gap in the $A_{p+\lambda/n}$ range supplies
+exactly the exponents needed for the contradiction.
+
+\section*{A weight-class calculation}
+
+We use the following standard subspace-power fact, including a short proof to
+fix all endpoint conventions.
+
+\begin{lemma}[Powers of transverse distance]\label{lem:weight}
+Write $\R^n=\R^d\times\R^m$, where $d+m=n$ and $m\ge1$, and let
+\(w(y,z)=|z|^\beta\).  For $q>1$,
+\[
+ w\in A_q(\R^n)\quad\Longleftrightarrow\quad
+ -m<\beta<m(q-1).
+\]
+If $\beta\ge0$, then $w\in RH_s(\R^n)$ for every finite $s>1$.
+\end{lemma}
+
+\begin{proof}
+For every $\gamma>-m$ and every ball
+$B=B((y_0,z_0),r)\subset\R^d\times\R^m$, scaling the transverse variable
+in the section integral gives
+\begin{equation}\label{eq:power-average}
+ \frac1{|B|}\int_B |z|^\gamma\,dy\,dz
+ \asymp (|z_0|+r)^\gamma.
+\end{equation}
+Indeed, when $|z_0|\ge2r$ the integrand is pointwise comparable to
+$|z_0|^\gamma$.  When $|z_0|<2r$, scale by $r$; the remaining integrals have
+translation parameter in a compact set and are uniformly positive and
+finite precisely for $\gamma>-m$.
+
+Apply \eqref{eq:power-average} first with $\gamma=\beta$ and then with
+$\gamma=-\beta/(q-1)$.  Their powers cancel in the $A_q$ product, and the
+second integral is locally finite exactly when $\beta<m(q-1)$; local
+integrability of $w$ itself requires $\beta>-m$.  For $RH_s$, apply
+\eqref{eq:power-average} with $\gamma=\beta s$ and $\gamma=\beta$.
+When $\beta\ge0$ both are admissible and the two sides of the reverse
+Hölder inequality are comparable to $(|z_0|+r)^\beta$.
+\end{proof}
+
+\section*{The counterexample family}
+
+\begin{theorem}[Failure throughout a strict parameter strip]\label{thm:main}
+Let $1\le p<\infty$, $0<\lambda<n$, and write
+$\R^n=\R^d\times\R^m$ with
+\[
+ d+m=n,\qquad m\ge1,\qquad d\ge\lambda.
+\]
+Choose
+\begin{equation}\label{eq:beta-range}
+ m(p-1)<\beta<m\left(p-1+\frac{\lambda}{n}\right),
+ \qquad w(y,z)=|z|^\beta.
+\end{equation}
+Then
+\[
+ w\in A_{p+\lambda/n}\cap RH_{n/(n-\lambda)},
+\]
+but the Hardy--Littlewood maximal operator is not bounded
+\[
+ M:\Mor^{p,\lambda}(w)\longrightarrow\WMor^{p,\lambda}(w).
+\]
+Consequently it is not bounded on $\Mor^{p,\lambda}(w)$ either.
+\end{theorem}
+
+\begin{proof}
+Put $q=p+\lambda/n$.  The upper inequality in \eqref{eq:beta-range} is
+$\beta<m(q-1)$, while the lower one gives $\beta>0$.  Lemma
+\ref{lem:weight} therefore proves membership in both required classes.
+
+For $0<t<1$, set
+\[
+ E_t=B_d(0,1)\times B_m(0,t),\qquad f_t=\chi_{E_t}.
+\]
+We first estimate the strong input norm.  Let $B=B((a,b),r)$ be any ball.
+If $r\le t$, then on $B\cap E_t$ one has $w\le t^\beta$, and hence
+\[
+ r^{-\lambda}\int_B f_t^p w
+ \le C r^{n-\lambda}t^\beta
+ \le C t^{n-\lambda+\beta}
+ \le C t^{m+\beta};
+\]
+the last inequality uses $n-\lambda=d+m-\lambda\ge m$ and $t<1$.
+If $t<r\le1$, transverse integration and the bound by a tangential
+$d$-ball of radius $r$ give
+\[
+ r^{-\lambda}\int_B f_t^p w
+ \le C r^{d-\lambda}\int_{|z|<t}|z|^\beta dz
+ \le C t^{m+\beta},
+\]
+because $d\ge\lambda$.  Finally, if $r\ge1$, use the total weighted mass
+of $E_t$ and $r^{-\lambda}\le1$.  Uniformly in all cases,
+\begin{equation}\label{eq:input}
+ \|f_t\|_{\Mor^{p,\lambda}(w)}le C t^{(m+\beta)/p}.
+\end{equation}
+
+For every $x\in B_n(0,1)$, the ball $B_n(x,3)$ contains $E_t$.  Since
+$|E_t|=c_{d,m}t^m$, the centered (and therefore also the usual)
+Hardy--Littlewood maximal operator satisfies
+\begin{equation}\label{eq:point-lower}
+ Mf_t(x)\ge c t^m\qquad (x\in B_n(0,1)).
+\end{equation}
+Choose the weak-norm level $a=ct^m/2$ and the unit ball in its definition.
+Because $0<w(B_n(0,1))<\infty$, \eqref{eq:point-lower} yields
+\begin{equation}\label{eq:output}
+ \|Mf_t\|_{\WMor^{p,\lambda}(w)}\ge c' t^m.
+\end{equation}
+Combining \eqref{eq:input} and \eqref{eq:output}, the operator-norm quotient
+is at least
+\[
+ c''t^{,m-(m+\beta)/p}
+ =c''t^{[m(p-1)-\beta]/p}\longrightarrow\infty
+ \qquad(t\downarrow0),
+\]
+by the strict lower inequality in \eqref{eq:beta-range}.  This proves failure
+even into weak Morrey space.
+\end{proof}
+
+\begin{corollary}[A concrete strong-type disproof]\label{cor:explicit}
+In $\R^2$, take
+\[
+ p=2,\qquad\lambda=1,\qquad
+ w(x_1,x_2)=|x_2|^{5/4}.
+\]
+Then $w\in A_{5/2}\cap RH_2$, but $M$ is not bounded on
+$\Mor^{2,1}(w)$; indeed it is not bounded from that space to
+$\WMor^{2,1}(w)$.
+\end{corollary}
+
+\begin{proof}
+Use Theorem \ref{thm:main} with $d=m=1$ and $\beta=5/4$.  The two strict
+conditions are
+\[
+ 1=m(p-1)<\frac54<\frac32
+ =m\left(p-1+\frac\lambda n\right).
+\]
+More explicitly, horizontal strips satisfy
+\(|f_t|_{\Mor^{2,1}(w)}=O(t^{9/8})\), whereas
+\(|Mf_t|_{\WMor^{2,1}(w)}\ge ct\); their quotient grows as
+$t^{-1/8}$.
+\end{proof}
+
+\section*{Scope, verification, and literature boundary}
+
+Corollary \ref{cor:explicit} alone fully answers the proposed universal
+sufficiency negatively, without relying on the weak endpoint $p=1$.  Theorem
+\ref{thm:main} shows that the obstruction is robust and even defeats the
+strong-to-weak estimate.  The construction requires an integer codimension
+$m\le n-\lambda$; it makes no claim about parameter regimes without such an
+$m$, nor about a replacement characterization of all admissible weights.
+
+The script \path{code/check_scaling.py} checks the exact rational inequalities
+and the $t^{-1/8}$ quotient in the explicit example.  It is not used in the
+proof.  The ball estimates above were also checked at the three scale regimes
+$r\le t$, $t<r\le1$, and $r\ge1$; both boundary exponents match.
+
+The bounded novelty audit searched the run indexes; exact class and source
+phrases; title/author citations; and hyperplane-power, subspace-distance, and
+weighted-Morrey maximal-operator terms through 11 August 2026.  No matching
+resolution was found.  The authors' later intrinsic-weight paper
+\cite{followup2020} gives necessary conditions and sufficiency with an extra
+local $A_p$ hypothesis, while Lerner's 2022 note \cite{lerner2022} still
+describes the broader global intrinsic characterization as open.  Neither
+contains this construction.  This is a bounded audit, not an exhaustive
+priority claim.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+J. Duoandikoetxea and M. Rosenthal,
+\emph{Boundedness of operators on certain power-weighted Morrey spaces beyond
+the Muckenhoupt weights}, Potential Anal. \textbf{53} (2020), 1255--1268;
+arXiv:1910.13285.  Included as \texttt{source\_paper.pdf}.
+
+\bibitem{followup2020}
+J. Duoandikoetxea and M. Rosenthal,
+\emph{Muckenhoupt-type conditions on weighted Morrey spaces},
+J. Fourier Anal. Appl. \textbf{27} (2021), Article 32;
+arXiv:2010.00250.  Included as \texttt{supporting\_2010.00250.pdf}.
+
+\bibitem{lerner2022}
+A. K. Lerner,
+\emph{A note on the maximal operator on weighted Morrey spaces},
+arXiv:2211.07974 (2022).  Included as
+\texttt{supporting\_2211.07974.pdf}.
+\end{thebibliography}
+
+\clearpage
+\section*{Exact source excerpt: final open question (page 16)}
+\begin{center}
+\includegraphics[width=0.96\linewidth,keepaspectratio]{figures/open_question_crop.png}
+\end{center}
+
+\end{document}

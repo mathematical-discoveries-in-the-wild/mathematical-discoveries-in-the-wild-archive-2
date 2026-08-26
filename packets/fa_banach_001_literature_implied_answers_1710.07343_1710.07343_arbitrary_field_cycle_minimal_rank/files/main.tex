@@ -1,0 +1,269 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\emergencystretch=3em
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\F}{\mathbb F}
+\newcommand{\mr}{\operatorname{mr}}
+\newcommand{\rank}{\operatorname{rank}}
+
+\title{Arbitrary-Field Minimal Rank for a Block Cycle:\\
+Literature Identification and an Independent Constructive Proof}
+\author{Resolution packet for arXiv:1710.07343}
+\date{August 11, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Grossmann--Woerdeman ask whether the equality case in their block-cycle
+Theorem 3.2 remains true over an arbitrary field when the block size is
+$n-1$ and the cycle holonomy has no fixed vector.  A theorem of
+Cohen--Pereira, as explicitly summarized in Grossmann's 2019 thesis, already
+supplies the required arbitrary-field upper bound; combined with the lower
+bound in the source, it answers the question.  We also give a short independent
+construction.  It proves the stronger formula that the normalized cycle has
+minimal rank $n-1$ when its holonomy is the identity and $n$ for every other
+invertible holonomy, over every field.
+\end{abstract}
+
+\noindent\textbf{Status.}
+\texttt{literature\_implied\_answer}, with an independent constructive proof.
+No novelty is claimed for the minimal-rank value itself.
+
+\section{Source question}
+
+Let $n\geq2$, let $k=n-1$, and consider the normalized partial block matrix
+over a field $\F$
+\begin{equation}\label{eq:cycle}
+ \mathcal A_H=
+ \begin{bmatrix}
+ I&I&?&\
+ ?&I&I&\
+ &\ddots&\ddots&\ddots\\
+ &&I&I\\
+ H&?&\cdots&I
+ \end{bmatrix},\qquad H\in GL_k(\F).
+\end{equation}
+Thus the diagonal blocks and the blocks immediately above the diagonal are
+$I_k$, and the lower-left block is $H$.
+
+Theorem 3.2 of Grossmann--Woerdeman \cite{GW} proves
+\begin{equation}\label{eq:lower}
+ \mr(\mathcal A_H)\geq \frac{nk-d}{n-1},
+ \qquad d=\dim\ker(H-I),
+\end{equation}
+and obtains equality $\mr(\mathcal A_H)=n$ when $k=n-1$, $d=0$, and all
+eigenvalues of $H$ lie in $\F$.  Section 5.2, Problem 1, asks whether that
+conclusion holds over every field, without the eigenvalue-splitting hypothesis.
+
+\begin{center}
+\includegraphics[width=.92\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section{Why the question is already answered in the literature}
+
+Cohen--Pereira \cite{CP} study precisely a bipartite cycle with invertible
+specified blocks over an arbitrary base field and obtain a tight upper bound.
+The direct bridge is recorded by Grossmann himself in his 2019 thesis
+\cite[pp.~64--65]{Gthesis}: for the partial matrix in the source theorem,
+Cohen--Pereira give a completion whose rank is at most
+\begin{equation}\label{eq:CPbound}
+ \frac{nk-d}{n-1}.
+\end{equation}
+In the open-problem regime $k=n-1$ and $d=0$, this is the integer $n$.
+Together with \eqref{eq:lower}, it gives
+\[
+ \mr(\mathcal A_H)=n
+\]
+over every field.  Cohen--Pereira do not appear to frame their theorem as an
+answer to the later numbered question, so this packet records an implication
+rather than an explicit answer claim.
+
+\begin{center}
+\includegraphics[width=.92\linewidth]{figures/supporting_bound_crop.png}
+\end{center}
+
+\section{Idea of the independent proof}
+
+A rank-$n$ completion follows from factoring every completed block as
+$P_iQ_j$, where the $Q_j$ are $(k+1)\times k$ frames and each $P_i$ is a
+common left inverse of two consecutive frames.  The cycle condition turns
+this into a path from $[I;0]$ to $[H^{-1};0]$ made of $k+1$ transverse
+rank-one steps.
+
+The path is constructed using one extra coordinate.  First conjugate
+$H^{-1}$ so that all its leading principal minors are nonzero.  Lift the
+standard frame by a bottom row $r$.  Then replace its columns one at a time
+by the target columns.  Choosing the entries of $r$ backwards makes each
+replacement transverse: at stage $j$ the relevant determinant is affine in
+$r_j$, with nonzero coefficient equal to the $j$th leading principal minor.
+
+\section{The constructive frame lemmas}
+
+\begin{lemma}[Strong leading-minor basis]\label{lem:strong}
+For every $T\in GL_k(\F)$ there is an ordered basis in which every leading
+principal minor of the matrix of $T$ is nonzero.
+\end{lemma}
+
+\begin{proof}
+We induct on $k$.  Choose $v\ne0$.  There is a functional $f$ with
+$f(v)=1$ and $f(Tv)\ne0$: if $v,Tv$ are independent, prescribe the two
+values to be $1$; if $Tv=\lambda v$, any $f(v)=1$ works because
+$\lambda\ne0$.  Put $W=\ker f$.  In a basis beginning with $v$ and followed
+by a basis of $W$, write
+\[
+ T=\begin{bmatrix}a&b\\c&D\end{bmatrix},\qquad a=f(Tv)\ne0.
+\]
+The Schur complement $S=D-ca^{-1}b$ is invertible because
+$\det T=a\det S$.  By induction, choose a basis of $W$ in which all leading
+principal minors of $S$ are nonzero.  In the resulting basis of the whole
+space, the leading minor of order $j\ge2$ of $T$ is $a$ times the leading
+minor of order $j-1$ of $S$; the first one is $a$.  All are nonzero.
+\end{proof}
+
+Call full-column-rank $(k+1)\times k$ matrices $X,Y$ \emph{adjacent} when
+$\rank(Y-X)=1$ and $\rank[X\ Y]=k+1$.
+
+\begin{lemma}[Lift-and-replace path]\label{lem:path}
+For every $M\in GL_k(\F)$ there exist full-column-rank frames
+\[
+ X_0=[I_k;0],X_1,\ldots,X_{k+1}=[M;0]
+\]
+such that every consecutive pair is adjacent.
+\end{lemma}
+
+\begin{proof}
+Adjacency is preserved by left and right multiplication by invertible
+matrices.  Lemma \ref{lem:strong} therefore lets us assume that every leading
+principal minor $\Delta_j$ of $M$ is nonzero.  Let $e_1,\ldots,e_k$ be the
+standard basis.  We shall choose a row $r=(r_1,\ldots,r_k)$ and use
+\[
+ X_0=\begin{bmatrix}I\\0\end{bmatrix},\qquad
+ X_1=\begin{bmatrix}I\\r\end{bmatrix}.
+\]
+For $1\le j\le k$, obtain $X_{j+1}$ from $X_j$ by replacing column $j$
+of $X_j$ by $[Me_j;0]$.  Before that replacement the columns are
+\[
+ [Me_1;0],\ldots,[Me_{j-1};0],
+ [e_j;r_j],\ldots,[e_k;r_k].
+\]
+The replacement is transverse precisely when the determinant of these $k$
+columns together with $[Me_j;0]$ is nonzero.  After reordering columns and
+expanding in the bottom row, this determinant is a linear expression in
+$r_j,\ldots,r_k$ whose coefficient of $r_j$, up to sign, is
+\[
+ \det[Me_1\ \cdots\ Me_j\ e_{j+1}\ \cdots\ e_k]=\Delta_j\ne0.
+\]
+Choose $r_k,r_{k-1},\ldots,r_1$ in that order.  At each stage there is exactly
+one forbidden value for the new coordinate, so another value is available
+over any field.  At $j=k$ this also forces $r_k\ne0$, hence $r\ne0$ and the
+first lift is a rank-one transverse step.  Every later difference changes
+one column and has rank one; the nonzero determinant proves transversality
+and preserves full column rank.  The final frame is $[M;0]$.
+
+If the preliminary similarity was $C=S^{-1}MS$, apply the construction to
+$C$ and send every frame $X$ to $\operatorname{diag}(S,1)XS^{-1}$.  This fixes
+$[I;0]$ and sends $[C;0]$ to $[M;0]$.
+\end{proof}
+
+\begin{lemma}[Common left inverse]\label{lem:left}
+Adjacent frames $X,Y$ have a common left inverse: there is a
+$k\times(k+1)$ matrix $P$ such that $PX=PY=I_k$.
+\end{lemma}
+
+\begin{proof}
+Write $Y-X=w\varphi$ with $w\ne0$ and $\varphi\ne0$.  Adjacency says
+$w\notin\operatorname{im}X$, so $[X\ w]$ is invertible.  Define
+$P=[I_k\ 0][X\ w]^{-1}$.  Then $PX=I_k$, $Pw=0$, and hence $PY=I_k$.
+\end{proof}
+
+\section{Stronger arbitrary-field formula}
+
+\begin{theorem}\label{thm:main}
+For the normalized block cycle \eqref{eq:cycle}, over an arbitrary field,
+\[
+ \mr(\mathcal A_H)=
+ \begin{cases}
+ n-1,&H=I_{n-1},\\
+ n,&H\ne I_{n-1}.
+ \end{cases}
+\]
+In particular, the source question has an affirmative answer.
+\end{theorem}
+
+\begin{proof}
+Put $k=n-1$ and apply Lemma \ref{lem:path} to $M=H^{-1}$.  Thus
+\[
+ X_0=[I;0],X_1,\ldots,X_n=[H^{-1};0].
+\]
+Set $Q_j=X_{j-1}$ for $1\le j\le n$.  For $i<n$, Lemma \ref{lem:left}
+gives $P_i$ with $P_iQ_i=P_iQ_{i+1}=I$.  For the final edge, it gives $P_n$
+with
+\[
+ P_nQ_n=I,\qquad P_n(Q_1H^{-1})=I,
+\]
+so $P_nQ_1=H$.  Therefore the block matrix
+\[
+ C=(P_iQ_j)_{i,j=1}^n
+ =\begin{bmatrix}P_1\\ \vdots\\P_n\end{bmatrix}
+   \begin{bmatrix}Q_1&\cdots&Q_n\end{bmatrix}
+\]
+is a completion of $\mathcal A_H$ and has rank at most $k+1=n$.
+
+If $H\ne I$, then $d=\dim\ker(H-I)\le k-1=n-2$.  The source lower bound
+\eqref{eq:lower} is strictly larger than $n-1$, so the integer rank of every
+completion is at least $n$.  Hence it equals $n$.  If $H=I$, filling every
+block by $I_k$ gives rank $k=n-1$, and the specified identity block gives the
+matching lower bound.
+\end{proof}
+
+The source normalizes an arbitrary cycle with invertible specified blocks by
+invertible block row and column operations.  Hence Theorem \ref{thm:main}
+also applies to the original formulation, with $H$ equal to the source's
+ordered product of specified blocks.
+
+\section{Verification, scope, and review recommendation}
+
+The accompanying script performs two checks.  First, a breadth-first search
+over the entire frame graph finds the optimal $k+1$ distance for every
+fixed-point-free endpoint for $(k,|\F|)=(1,3),(2,2),(2,3),(3,2)$.  Second,
+it implements Lemmas \ref{lem:strong} and \ref{lem:path} and verifies the
+constructed path for every invertible $2\times2$ matrix over $\F_2$ and
+$\F_3$, and every invertible $3\times3$ matrix over $\F_2$ (168 endpoints).
+These computations are checks, not dependencies of the proof.
+
+The literature classification rests on the exact upper-bound attribution in
+Grossmann's thesis and the matching scope of Cohen--Pereira.  The original
+Cohen--Pereira article is closed access in the sources checked; a reviewer
+should compare its theorem statement directly before final archival.  The
+independent proof does not depend on that article, but it uses the lower bound
+from Theorem 3.2 of the source.  Recommended status:
+\texttt{literature\_implied\_answer; constructive proof likely valid}.
+
+\begin{thebibliography}{9}
+\bibitem{GW}
+B. W. Grossmann and H. J. Woerdeman,
+\emph{Fractional minimal rank},
+Linear and Multilinear Algebra 69 (2021), 19--39;
+arXiv:1710.07343.  See Theorem 3.2 and Section 5.2, Problem 1.
+
+\bibitem{CP}
+N. Cohen and E. Pereira,
+\emph{The cyclic rank completion problem with regular blocks},
+Linear and Multilinear Algebra 66 (2018), 861--868,
+\href{https://doi.org/10.1080/03081087.2017.1330863}{doi:10.1080/03081087.2017.1330863}.
+
+\bibitem{Gthesis}
+B. W. Grossmann,
+\emph{Rank in Matrix Analysis: On the Preservers of Maximally Entangled
+States and Fractional Minimal Rank}, Ph.D. thesis, Drexel University, 2019,
+\href{https://doi.org/10.17918/etd-9532}{doi:10.17918/etd-9532}.
+\end{thebibliography}
+
+\end{document}

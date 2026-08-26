@@ -1,0 +1,272 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\D}{\mathbb D}
+\newcommand{\Hcal}{\mathcal H}
+
+\title{The critical local free log-Sobolev inequality\\
+\large A candidate full solution to Open Problem 1 of arXiv:1209.2970}
+\author{Automated mathematical discovery run \texttt{fa\_banach\_001}\\
+Lane 16, model GPT5.6}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Candidate full solution, likely valid, subject to expert review.  The proof is
+analytic and has no computational dependency.}}
+\end{center}
+
+\section{Source problem and answer}
+
+Popescu's \emph{Local Functional Inequalities in One Dimensional Free
+Probability} \cite{Popescu} defines, for probability measures on $[-2,2]$,
+\[
+ \Hcal(\mu,\nu)
+ =-\iint\log|x-y|\,d(\mu-\nu)(x)d(\mu-\nu)(y),
+\]
+the semicircle law
+\[
+ d\alpha(x)=\frac{\sqrt{4-x^2}}{2\pi}\,dx,
+\]
+and the Hilbert transform
+\[
+ H\sigma(x)=\operatorname{p.v.}\int\frac{2}{x-y}\,d\sigma(y).
+\]
+Open Problem 1 in Section 6 asks whether there is a universal $C>0$ such
+that
+\begin{equation}\label{eq:source}
+ C\Hcal(\mu,\nu)
+ \leq \left(\int_{-2}^2|H\mu-H\nu|^{3/2}\,d\alpha\right)^{4/3}.
+\end{equation}
+The paper proves that no analogous inequality holds when $p<3/2$ and asks,
+in Open Problem 2, for the smallest valid $p\in(3/2,2)$ if the endpoint
+fails. Figure~\ref{fig:problem} reproduces the source statement and its
+equivalent sine-series formulation.
+
+\begin{figure}[ht]
+ \centering
+ \includegraphics[width=0.98\textwidth]{figures/open_problem_crop.png}
+ \caption{Open Problems 1--2 and equation (6.2), source paper p.~16.}
+ \label{fig:problem}
+\end{figure}
+
+\begin{theorem}[Endpoint and optimal exponent]\label{thm:main}
+There is a universal constant $C_*>0$ such that \eqref{eq:source} holds for
+all probability measures $\mu,\nu$ on $[-2,2]$ (with the usual extended-value
+interpretation). Consequently the smallest exponent in the source's equation
+(6.1) is exactly $p=3/2$.
+\end{theorem}
+
+\section{Proof intuition}
+
+The singular weight in the source's trigonometric reformulation is not an
+obstruction; it is a conformal Jacobian.  Weighted duality changes the
+$p=3/2$ estimate into
+\[
+ \|G\|_{L^3((0,\pi),dt/\sin t)}
+ \lesssim \left(\sum_{k\geq1}k|b_k|^2\right)^{1/2},
+ \qquad G(t)=\sum b_k\sin kt.
+\]
+Extend $G$ harmonically to the upper half-disk.  Its Dirichlet energy is
+exactly $(\pi/2)\sum k|b_k|^2$.  The conformal map
+\[
+ z\longmapsto\log\frac{1+z}{1-z}
+\]
+sends the half-disk to a strip, the diameter (where the sine extension
+vanishes) to the strip's bottom, and the semicircle to its top with
+$|dx|=dt/\sin t$.  On a fixed strip, the bottom Dirichlet condition makes the
+top trace an inhomogeneous $H^{1/2}(\R)$ function, hence an $L^3(\R)$
+function.  This proves the dual estimate.  The Chebyshev/logarithmic-potential
+identities in the source then carry it back to arbitrary measures.
+
+\section{The critical weighted trace estimate}
+
+\begin{lemma}[Half-disk/strip trace]\label{lem:trace}
+For every finite real sine polynomial $G(t)=\sum_{k=1}^n b_k\sin(kt)$,
+\begin{equation}\label{eq:trace}
+ \left(\int_0^\pi |G(t)|^3\frac{dt}{\sin t}\right)^{1/3}
+ \leq C\left(\sum_{k=1}^n k b_k^2\right)^{1/2}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+On the upper half-disk
+$D_+=\{re^{it}:0<r<1,\ 0<t<\pi\}$, set
+\[
+ u(r,t)=\sum_{k=1}^n b_k r^k\sin(kt).
+\]
+Orthogonality and a direct polar-coordinate calculation give
+\begin{equation}\label{eq:energy}
+ \int_{D_+}|\nabla u|^2,dA=\frac\pi2\sum_{k=1}^n k b_k^2.
+\end{equation}
+Indeed, the $k$th radial and angular terms together contribute
+$\pi k^2\int_0^1r^{2k-1}dr=\pi k/2$.
+
+The map
+\[
+ \Phi(z)=\log\frac{1+z}{1-z}
+\]
+maps $D_+$ conformally onto
+$S=\R\times(0,a)$, $a=\pi/2$.  It sends the diameter to $y=0$.  On the
+semicircle,
+\[
+ \Phi(e^{it})=\log\cot(t/2)+i\pi/2,
+ \qquad
+ \left|\frac{d}{dt}\log\cot(t/2)\right|=\frac1{\sin t}.
+\]
+Let $v=u\circ\Phi^{-1}$.  Conformal invariance of planar Dirichlet energy
+and \eqref{eq:energy} show that $v=0$ on $y=0$ and
+\[
+ \int_S|\nabla v|^2=\frac\pi2\sum_{k=1}^n k b_k^2.
+\]
+Its top trace $h(x)=v(x,a)$ satisfies $h(\log\cot(t/2))=G(t)$.
+
+For completeness, we prove the needed strip trace bound. Fourier transform
+in $x$.  Among functions $V$ with $V(0)=0$ and $V(a)=\widehat h(\xi)$, the
+minimum of
+\[
+ \int_0^a\bigl(|V'(y)|^2+\xi^2|V(y)|^2\bigr)dy
+\]
+is
+$|\xi|\coth(a|\xi|)|\widehat h(\xi)|^2$, with limiting value
+$a^{-1}|\widehat h(0)|^2$ at zero.  Hence, up to Fourier-normalization
+constants,
+\begin{equation}\label{eq:hhalf}
+ \int_\R(1+\xi^2)^{1/2}|\widehat h(\xi)|^2d\xi
+ \leq C_a\int_S|\nabla v|^2.
+\end{equation}
+Hausdorff--Young followed by Holder gives
+\[
+ \|h\|_3\leq C\|\widehat h\|_{3/2}
+ \leq C\left(\int_\R(1+\xi^2)^{1/2}
+ |\widehat h(\xi)|^2d\xi\right)^{1/2};
+\]
+the last step uses
+$\int_\R(1+\xi^2)^{-3/2}d\xi<\infty$.
+Combining this with \eqref{eq:hhalf}, conformal invariance, and
+$dx=dt/\sin t$ proves \eqref{eq:trace}.
+\end{proof}
+
+\begin{lemma}[Endpoint sine inequality]\label{lem:sine}
+For every finite real sequence $(a_k)_{k=1}^n$,
+\begin{equation}\label{eq:sine}
+ \sum_{k=1}^n\frac{a_k^2}{k}
+ \leq C
+ \left(\int_0^\pi\left|\sum_{k=1}^n a_k\sin(kt)\right|^{3/2}
+ \sin^{1/2}t\,dt\right)^{4/3}.
+\end{equation}
+The same estimate holds, by duality, for every
+$F\in L^{3/2}((0,\pi),\sin^{1/2}t,dt)$, with the left side interpreted as
+the weighted square sum of its sine coefficients.
+\end{lemma}
+
+\begin{proof}
+Write $F=\sum a_k\sin kt$ and $G=\sum b_k\sin kt$. Orthogonality and
+weighted Holder yield
+\begin{align*}
+ \left|\sum_{k=1}^n a_kb_k\right|
+ &=\frac2\pi\left|\int_0^\pi F(t)G(t)dt\right|\\
+ &\leq C
+ \left(\int_0^\pi|F|^{3/2}\sin^{1/2}t\,dt\right)^{2/3}
+ \left(\int_0^\pi|G|^3\frac{dt}{\sin t}\right)^{1/3}\\
+ &\leq C
+ \left(\int_0^\pi|F|^{3/2}\sin^{1/2}t\,dt\right)^{2/3}
+ \left(\sum_{k=1}^n k b_k^2\right)^{1/2},
+\end{align*}
+where Lemma~\ref{lem:trace} gives the last line. Taking the supremum over
+$\sum k b_k^2\leq1$ and squaring proves \eqref{eq:sine}. The same dual
+argument defines and bounds all finite coefficient truncations for a general
+weighted $L^{3/2}$ function; monotone convergence of the square sums gives
+the last assertion.
+\end{proof}
+
+\section{Passage to probability measures}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Let $\sigma=\mu-\nu$ and
+\[
+ m_k=\int_{-2}^2T_k(x/2)\,d\sigma(x),\qquad k\geq1.
+\]
+We recall the standard Chebyshev expansion of the logarithmic kernel. If
+$x=2\cos t$ and $y=2\cos s$, then, in Abel-regularized form,
+\begin{equation}\label{eq:logkernel}
+ -\log|x-y|
+ =2\sum_{k\geq1}\frac{\cos(kt)\cos(ks)}{k}.
+\end{equation}
+Constants disappear because $\sigma([-2,2])=0$. Consequently
+\begin{equation}\label{eq:energyseries}
+ \Hcal(\mu,\nu)=2\sum_{k\geq1}\frac{m_k^2}{k},
+\end{equation}
+with value $+\infty$ when the series diverges.  This is also the
+Chebyshev-energy identity used in the source's derivation of equation (6.2).
+
+Put
+\[
+ U(t)=-\int_{-2}^2\log|2\cos t-y|\,d\sigma(y),
+ \qquad F(t)=\sin t\,H\sigma(2\cos t).
+\]
+Differentiating the Abel-regularized expansion distributionally gives
+\begin{equation}\label{eq:fcoeff}
+ F=U'=-2\sum_{k\geq1}m_k\sin(kt).
+\end{equation}
+Thus the sine coefficients of $F$ are $a_k=-2m_k$. Also, under
+$x=2\cos t$,
+\begin{equation}\label{eq:measurechange}
+ \int_{-2}^2|H\sigma|^{3/2}d\alpha
+ =\frac2\pi\int_0^\pi|F(t)|^{3/2}\sin^{1/2}t\,dt.
+\end{equation}
+
+If the right side of \eqref{eq:source} is infinite, there is nothing to
+prove. Otherwise Lemma~\ref{lem:sine}, in its dual form, applies to $F$.
+Equations \eqref{eq:energyseries}--\eqref{eq:measurechange} yield
+\[
+ \Hcal(\mu,\nu)
+ =\frac12\sum_{k\geq1}\frac{a_k^2}{k}
+ \leq C
+ \left(\int_{-2}^2|H\mu-H\nu|^{3/2}d\alpha\right)^{4/3}.
+\]
+This proves Open Problem 1. Popescu proves failure for every $p<3/2$.
+Because $\alpha$ is a probability measure, $\|f\|_{L^p(\alpha)}$ is
+nondecreasing in $p$; hence the endpoint also implies all $p\geq3/2$.
+The optimal exponent is therefore exactly $3/2$.
+\end{proof}
+
+\section{Verification, scope, and novelty}
+
+The proof is dimension-free and uses no positivity or smooth-density
+hypothesis beyond what is encoded in the extended-value formulation. Abel
+regularization justifies \eqref{eq:logkernel}--\eqref{eq:fcoeff} for arbitrary
+finite signed measure differences; alternatively, one may first prove the
+claim for smooth arcsine densities exactly as in the source's equivalence
+argument and pass to the limit.
+
+A bounded novelty search checked the exact title and arXiv id, quoted text of
+Open Problem 1, the precise weights in equation (6.2), searches combining
+``free Log-Sobolev'' with ``$3/2$'', and the author's later
+arXiv:1511.05274. No later paper claiming the endpoint or the conformal-strip
+argument was found. Novelty confidence is moderate rather than definitive.
+
+The principal review targets are: (i) the zero-frequency limit in the strip
+multiplier, which is what makes the trace norm inhomogeneous; and (ii) the
+standard Abel identity \eqref{eq:energyseries} under the source's convention
+for logarithmic energy. Neither is an unproved dependency.
+
+\begin{thebibliography}{9}
+\bibitem{Popescu}
+I. Popescu,
+\emph{Local Functional Inequalities in One Dimensional Free Probability},
+J. Funct. Anal. \textbf{264} (2013), no.~6, 1456--1479;
+\href{https://arxiv.org/abs/1209.2970}{arXiv:1209.2970}.
+\end{thebibliography}
+
+\end{document}

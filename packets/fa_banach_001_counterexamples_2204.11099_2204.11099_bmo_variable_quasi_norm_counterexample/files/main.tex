@@ -1,0 +1,286 @@
+\documentclass[10pt]{article}
+\usepackage[margin=0.78in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\BMO}{\mathrm{BMO}}
+\newcommand{\avg}[1]{\langle #1\rangle}
+\newcommand{\R}{\mathbb R}
+
+\title{Cube-Dependent Function Norms Separate Generalized BMO from BMO\\
+\large Full negative answers to Questions 6.1 and 6.2 of arXiv:2204.11099}
+\author{Automated proof attempt\\
+\texttt{agent\_lane\_03} \quad model: GPT5.6}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{red!55!black}{red!4}{\parbox{0.92\linewidth}{
+\textbf{Status: full counterexamples, likely valid, pending human verification.}
+Question 6.1 fails even for Banach local spaces.  Question 6.2 and its
+explicitly proposed stronger version both fail for quasi-Banach local spaces:
+we construct a normalized family $X=\{X_Q\}$ such that
+\(BMO\hookrightarrow\BMO_X\), while $x\mapsto x_1$ belongs to
+\(\BMO_X^*\) and not to classical \(\BMO\).}}
+\end{center}
+
+\section*{Source questions and answer}
+
+For every axis-parallel cube $Q\subset\R^n$, the source assigns a local
+quasi-Banach function space $X_Q$ with
+\(\|\chi_Q\|_{X_Q}\simeq1\), and defines
+\[
+ \|f\|_{\BMO_X}=\sup_Q\|f-\avg f_Q\|_{X_Q},\qquad
+ \|f\|_{\BMO_X^*}=\sup_Q\inf_{c\in\R}\|f-c\|_{X_Q}.
+\]
+Question 6.1 asks whether \(\BMO_X\hookrightarrow\BMO\) can fail.
+Question 6.2 asks whether \(\BMO\hookrightarrow\BMO_X\) forces that
+converse; its stronger version replaces \(\BMO_X\) by \(\BMO_X^*\) in the
+conclusion \cite{source}.  The appended source crop reproduces the questions.
+
+\begin{theorem}[Answers to Questions 6.1 and 6.2]\label{thm:main}
+For every $n\ge1$:
+\begin{enumerate}
+\item There is a normalized family of Banach function spaces $X_Q$ and a
+locally integrable $f\in\BMO_X\setminus\BMO$.
+\item There is a normalized family of quasi-Banach function spaces $X_Q$
+such that
+\[
+ \BMO\hookrightarrow\BMO_X,
+ \qquad
+ \BMO_X^*\not\hookrightarrow\BMO.
+\]
+Indeed $f(x)=x_1$ belongs to \(\BMO_X^*\) in the second construction.
+Consequently both the ordinary and stronger forms of Question 6.2 have
+negative answers.
+\end{enumerate}
+\end{theorem}
+
+\section*{Proof intuition}
+
+The family in the definition may depend on the cube, with no compatibility
+between different cubes.  For Question 6.1, a weighted $L^1$ norm can look
+only near the central hyperplane of each cube.  The affine function $x_1$
+then has bounded weighted oscillation although its ordinary oscillation grows
+linearly with the side length.
+
+The additional embedding in Question 6.2 makes this harder: concentrating a
+fixed $L^1$ weight would detect the logarithmic drift of BMO averages
+between a large cube and its tiny centre.  The remedy is a power mean with an
+exponent $p_Q\downarrow0$.  Such a mean approaches a geometric mean.  We
+balance a diffuse scale $L$ and a tiny central scale $s$ so their weighted
+geometric mean is exactly constant.  The average drift of any BMO function is
+only logarithmic, and the same vanishing exponent absorbs it uniformly.
+
+\section*{A Banach-space counterexample for Question 6.1}
+
+Let $Q$ have centre $c_Q$ and side length $L$.  Define the probability
+measure
+\[
+ d\nu_Q(x)=Z_Q^{-1}e^{-|x_1-(c_Q)_1|}\,dx\quad(x\in Q),
+ \qquad X_Q=L^1(Q,\nu_Q).
+\]
+These are Banach function spaces over Lebesgue measure because the densities
+are strictly positive; moreover \(\|\chi_Q\|_{X_Q}=1\).
+
+Take $f(x)=x_1$.  Its Lebesgue average on $Q$ is $(c_Q)_1$.  Writing
+\(A=L/2\), integration in the first coordinate gives
+\[
+ \|f-\avg f_Q\|_{X_Q}
+ =\frac{\int_0^A t e^{-t}\,dt}{\int_0^A e^{-t}\,dt}
+ =1-\frac{A}{e^A-1}\le1.
+\]
+Thus $f\in\BMO_X$.  On the other hand,
+\[
+ \frac1{|Q|}\int_Q|f-\avg f_Q|\,dx=\frac{L}{4},
+\]
+which is unbounded as $L\to\infty$.  Hence $f\notin\BMO$, proving the
+first assertion of Theorem \ref{thm:main}.
+
+\section*{A stronger quasi-Banach counterexample for Question 6.2}
+
+Fix $n\ge1$, and put $L_0=\exp(\exp(n+4))$.  If a cube $Q$ has side
+length $L\le L_0$, let
+\[
+ X_Q=L^1\bigl(Q,dx/|Q|\bigr).
+\]
+Suppose now that $L>L_0$, and set
+\begin{equation}\label{eq:parameters}
+ a=\log L,\qquad b=\log a,\qquad q=\frac1b,
+ \qquad p=\frac1{a^2b},\qquad s=L^{-(b-1)}.
+\end{equation}
+Let $J_Q$ be the cube concentric with $Q$ and of side length $s$.  Since
+\(b>1\), it is a proper subcube.  Define
+\begin{equation}\label{eq:measure}
+ \mu_Q=(1-q)\frac{\chi_Q\,dx}{|Q|}
+       +q\frac{\chi_{J_Q}\,dx}{|J_Q|},
+ \qquad X_Q=L^p(Q,\mu_Q).
+\end{equation}
+The measure is a probability and its density is positive almost everywhere
+on $Q$.  Thus $X_Q$ is a quasi-Banach function space over $Q$, with the
+lattice and Fatou properties and weak order unit \(\chi_Q\).  Also
+\(\|\chi_Q\|_{X_Q}=1\) exactly.  Hence the whole family is normalized.
+
+We use the standard nested-average estimate.  If $U\subset V$ are
+concentric cubes with side-length ratio at most two, then
+\[
+ |\avg h_U-\avg h_V|
+ \le \frac{|V|}{|U|}\frac1{|V|}\int_V|h-\avg h_V|
+ \le2^n\|h\|_{\BMO}.
+\]
+Iterating through concentric doublings from $J_Q$ to $Q$ yields
+\begin{equation}\label{eq:nested}
+ \frac1{|J_Q|}\int_{J_Q}|h-\avg h_Q|
+ \le C_n\bigl(1+\log(L/s)\bigr)\|h\|_{\BMO}.
+\end{equation}
+For definiteness, the doubling chain above permits
+\(C_n=1+2^n(1+1/\log2)<2^{n+2}\).
+
+\begin{lemma}[The forward embedding]\label{lem:forward}
+The family \eqref{eq:measure} satisfies
+\(\BMO\hookrightarrow\BMO_X\).
+\end{lemma}
+
+\begin{proof}
+Let $N=\|h\|_{\BMO}$.  The assertion is immediate on cubes with
+$L\le L_0$.  On a large cube, the monotonicity of probability power means
+for $0<p<1$, followed by \eqref{eq:nested}, gives
+\[
+ \left(\frac1{|Q|}\int_Q|h-\avg h_Q|^p\right)^{1/p}\le N,
+ \quad
+ \left(\frac1{|J_Q|}\int_{J_Q}|h-\avg h_Q|^p\right)^{1/p}
+ \le RN,
+\]
+where $R=C_n(1+D)$ and
+\begin{equation}\label{eq:D}
+ D=\log(L/s)=ab,\qquad pD=\frac1a.
+\end{equation}
+Therefore
+\begin{equation}\label{eq:mixfactor}
+ \|h-\avg h_Q\|_{X_Q}
+ \le N\bigl((1-q)+qR^p\bigr)^{1/p}.
+\end{equation}
+
+It remains only to see that the last factor is uniform.  Since
+\(D=ab>1\), \(1+D\le2ab\).  The displayed choice of $C_n$, together with
+\(b\ge n+4\), gives
+\[
+ \log R\le\log(2C_n)+\log a+\log b\le3b.
+\]
+Consequently
+\[
+ q\log R\le3,
+ \qquad v:=p\log R\le\frac3{a^2}<1.
+\]
+For $0\le v\le1$, $e^v-1\le2v$.  Hence
+\[
+ \frac1p\log\bigl((1-q)+qR^p\bigr)
+ \le\frac1p\log(1+2qv)
+ \le2q\log R\le6.
+\]
+The factor in \eqref{eq:mixfactor} is at most $e^6$, independently of
+$Q$.  Taking the supremum proves the embedding.
+\end{proof}
+
+\begin{lemma}[The affine witness]\label{lem:affine}
+For the same family, $f(x)=x_1$ belongs to \(\BMO_X^*\), but
+$f\notin\BMO$.
+\end{lemma}
+
+\begin{proof}
+Let $c=(c_Q)_1=\avg f_Q$.  On cubes with $L\le L_0$,
+\(\|f-c\|_{X_Q}=L/4\le L_0/4\).  On a large cube, direct integration of the
+first coordinate gives, with $A=L/2$ and $B=s/2$,
+\begin{equation}\label{eq:affineexact}
+ \|f-c\|_{X_Q}
+ =\frac1{(p+1)^{1/p}}
+   \bigl((1-q)A^p+qB^p\bigr)^{1/p}.
+\end{equation}
+The parameter choice makes the weighted geometric mean constant:
+\begin{equation}\label{eq:geomean}
+ A^{1-q}B^q=\frac12L^{1-q}s^q=\frac12.
+\end{equation}
+To compare the positive power mean with this limit, let
+\(u=p\log(A/B)=pD=1/a\).  Factoring the right side of
+\eqref{eq:affineexact} by the geometric mean produces
+\[
+ H=e^{qu}\bigl((1-q)+qe^{-u}\bigr).
+\]
+The elementary inequalities $e^{-u}\le1-u+u^2/2$ and
+\(\log(1+t)\le t\) imply
+\[
+ \log H
+ \le qu+\log(1-qu+qu^2/2)
+ \le\frac{qu^2}{2}.
+\]
+Using \eqref{eq:parameters},
+\[
+ \frac{qu^2}{2p}=\frac12.
+\]
+Since $(p+1)^{-1/p}<1$, equations \eqref{eq:affineexact}--
+\eqref{eq:geomean} give
+\[
+ \|f-c\|_{X_Q}\le\frac{e^{1/2}}2
+\]
+on every large cube.  The supremum over all cubes is finite, and choosing
+this $c$ in the best-constant infimum proves $f\in\BMO_X^*$.  Finally,
+the classical mean oscillation is $L/4$ on every cube of side $L$, so
+$f\notin\BMO$.
+\end{proof}
+
+Lemmas \ref{lem:forward} and \ref{lem:affine} prove the second assertion of
+Theorem \ref{thm:main}.  Notice that the same witness also lies in
+\(\BMO_X\), because the chosen constant is its Lebesgue cube average.
+
+\section*{Scope, checks, and literature boundary}
+
+The first construction strengthens Question 6.1 by using Banach spaces.  The
+second fully answers Question 6.2 as written and refutes its strongest stated
+variant.  It uses exponents $p_Q<1$; the analogous Banach-only version of
+Question 6.2 is not claimed here.  Fixed weighted $L^1$ norms, intersections,
+and normalized sums with \(\exp L\) were also examined, but either fail the
+forward embedding or lose uniform normalization.
+
+The script \path{code/verify_parameters.py} evaluates the exact power means
+stably at scales as large as \(\log L=10^6\).  It verifies
+\(D=ab\), $pD=1/a$, the geometric balance \eqref{eq:geomean}, and generous
+forms of both uniform estimates.  The proof above is analytic and has no
+computational dependency.
+
+The source appeared in \emph{Mathematische Annalen} in 2024.  Exact-ID,
+exact-question, citation, and core-keyword searches through 11 August 2026
+found no prior matching counterexample.  The directly related later preprint
+\cite{followup} develops additional sufficient median and sparse testing
+criteria and still presents characterization directions as open; it does not
+contain either construction above.  This is a bounded novelty audit, not an
+exhaustive priority claim.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+A. K. Lerner, E. Lorist, and S. Ombrosi,
+\emph{BMO with respect to Banach function spaces},
+Math. Ann. \textbf{388} (2024), 4053--4082;
+arXiv:2204.11099.  Included as \texttt{source\_paper.pdf}.
+
+\bibitem{followup}
+S. Hashemi Sababe,
+\emph{Sharp median testing and sparse criteria for generalized BMO spaces},
+arXiv:2606.01688 (2026).  Included as
+\texttt{supporting\_2606.01688.pdf}.
+\end{thebibliography}
+
+\clearpage
+\section*{Exact source excerpt: Questions 6.1 and 6.2}
+\begin{center}
+\includegraphics[width=0.94\linewidth,keepaspectratio]{figures/questions_6_1_6_2_crop.png}
+\end{center}
+
+\end{document}

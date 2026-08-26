@@ -1,0 +1,261 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{xcolor}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+
+\title{Continuous-Time Stabilization by Compact Memory:\\
+A Counterexample Suggested by arXiv:2211.15121}
+\author{Automatic mathematics run \texttt{fa\_banach\_001}}
+\date{17 August 2026}
+
+\begin{document}
+\setlength{\emergencystretch}{3em}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{
+\textbf{Status.} Candidate counterexample, likely valid.  At the continuity
+level of the source's discrete example, a positive essential spectral bound,
+a compact nonlinear perturbation, and a quadratically small perturbation do
+\emph{not} force continuous-time instability.  The compact map below is not
+locally Lipschitz at zero, so stronger regularity variants are not addressed.
+}}
+\end{center}
+
+\section{Source question}
+
+The source is V. M\"uller, R. Schnaubelt, and Y. Tomilov,
+\emph{On growth and instability for semilinear evolution equations: an
+abstract approach}, arXiv:2211.15121v3 \cite{source}.  Its Example~5.3
+constructs a stable discrete system
+\[
+ x_{n+1}=(A+K+G)x_n
+\]
+on an infinite-dimensional Hilbert space, although $r_e(A)>1$, $K$ is a
+continuous compact map, and $G(x)=O(\|x\|^2)$ at zero.  Immediately afterward,
+on printed page~19, the authors write:
+\begin{quote}
+``We are short of a similar construction for continuous time. However, we
+suspect that an example similar to the above for (1.1) may not exist.''
+\end{quote}
+The same page recalls the continuous equation and the paper's definition of
+stability.  The complete context is reproduced below.
+
+\begin{center}
+\includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The precise analogue tested here is whether the zero solution of
+\begin{equation}\label{eq:abstract}
+ x'(t)=Ax(t)+K(x(t))+G(x(t))
+\end{equation}
+must be unstable when the essential spectral bound of $A$ is positive, $K$ is
+continuous and compact with $K(0)=0$, and $G(x)=O(\|x\|^{1+\delta})$ for some
+$\delta>0$.  The answer is no.
+
+\section{Idea of the proof}
+
+The compact perturbation uses only one scalar ``memory'' coordinate.  If $y$
+is the component in the infinite-dimensional unstable subspace, the memory
+grows at speed $\sqrt{\|y\|}$.  It therefore becomes much larger than $\|y\|$
+near zero.  A damping term of size at most $2|a|^2$, hence quadratic in the
+full state, can then reverse the growth of $y$ before it leaves a small
+neighborhood.
+
+After setting $w=\sqrt{\|y\|}$ and writing $a=u+iv$, the entire stability
+question becomes a planar phase estimate.  The memory variable satisfies
+$u'=w$, and, with $u$ as the independent variable, the unstable amplitude
+satisfies $dw/du=q/2$ for a coefficient $q\in[-1,1]$.  Once
+$u^2+v^2\ge w^2$, that region is invariant and $w$ cannot increase.  Soon
+afterward $dw/du\le-1/4$, which bounds the total memory accumulation.  This
+gives a uniform square-root stability modulus.
+
+\section{Counterexample}
+
+\begin{theorem}\label{thm:main}
+Let $H_0$ be any infinite-dimensional complex Hilbert space and put
+$H=H_0\oplus\C$ with its Hilbert norm.  There are a bounded generator
+$A\in\mathcal B(H)$, a continuous compact map $K:H\to H$, and a continuous
+map $G:H\to H$ such that:
+\begin{enumerate}
+\item $\sigma_e(A)=\{1\}$, so the essential spectral bound of $A$ is $1$;
+\item $K(0)=G(0)=0$ and $\|G(x)\|\le2\|x\|^2$ for every $x\in H$;
+\item equation~\eqref{eq:abstract} has a unique global classical solution for
+every initial state;
+\item the zero solution is Lyapunov stable.  More precisely, if
+$\eta=\|x(0)\|\le1$, then
+\[
+ \sup_{t\ge0}\|x(t)\|\le50\sqrt{\eta}.
+\]
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Write $x=(y,a)\in H_0\oplus\C$ and $s=\|y\|$.  Define
+\begin{align*}
+ A(y,a)&=(y,0),\\
+ K(y,a)&=(0,\sqrt{s}),\\
+ G(y,a)&=\left(-\frac{2|a|^2}{s+|a|^2}\,y,0\right),
+\end{align*}
+where the last expression is defined to be zero at $(0,0)$.  The operator
+$A$ generates the semigroup $(y,a)\mapsto(e^t y,a)$.  Moreover, $A-I$ has an
+infinite-dimensional kernel, while $A$ is Fredholm: its kernel and cokernel
+are both one-dimensional.  Since $A-\lambda I$ is invertible for
+$\lambda\notin\{0,1\}$, it follows directly from the Fredholm definition that
+$\sigma_e(A)=\{1\}$.
+
+The map $K$ is continuous.  On a bounded set its image is contained in a
+bounded subset of the one-dimensional space $\{0\}\oplus\C$, so it is
+precompact; hence $K$ is a compact map.  The apparent singularity in $G$ is
+harmless, since
+\begin{equation}\label{eq:Gbound}
+ \|G(y,a)\|=\frac{2|a|^2s}{s+|a|^2}
+ \le2|a|^2\le2\|(y,a)\|^2.
+\end{equation}
+This estimate also proves continuity at the origin; continuity elsewhere is
+immediate (including points $(0,a)$, because the scalar coefficient is
+bounded by $2$).
+
+The differential equation is
+\begin{equation}\label{eq:system}
+ y'=q(s,a)y,\qquad a'=\sqrt{s},\qquad
+ q(s,a)=\frac{s-|a|^2}{s+|a|^2},
+\end{equation}
+with the evident value at $(0,0)$.  Notice that $|q|\le1$.  If $y(0)=0$,
+Gronwall's inequality applied to the first equation forces $y\equiv0$, and
+then $a$ is constant.  If $y(0)\ne0$, the first equation gives
+$y(t)=\exp(\int_0^t q(\tau)\,d\tau)y(0)$, so $y$ never vanishes and its
+direction is fixed.  The variables $s=\|y\|$, $u=\operatorname{Re}a$, and
+$v=\operatorname{Im}a$ obey a smooth finite-dimensional system on $s>0$:
+\[
+ s'=qs,\qquad u'=\sqrt{s},\qquad v'=0.
+\]
+It is locally unique there.  Since $s(0)e^{-t}\le s(t)\le s(0)e^t$ and
+$u'=\sqrt{s}$, no component can blow up in finite time.  This proves unique
+global well-posedness.
+
+It remains to prove stability.  Assume $s(0)>0$ and set
+\[
+ w=\sqrt{s},\qquad a=u+iv,\qquad
+ q=\frac{w^2-u^2-v^2}{w^2+u^2+v^2}.
+\]
+Then
+\begin{equation}\label{eq:phase}
+ w'=\frac q2w,\qquad u'=w,
+ \qquad v'=0.
+\end{equation}
+Thus $u$ is strictly increasing and
+\begin{equation}\label{eq:dwdU}
+ \frac{dw}{du}=\frac q2\le\frac12.
+\end{equation}
+
+First consider any part of the orbit with $u<0$.  Either $u$ stays negative
+forever, in which case \eqref{eq:dwdU} already bounds $w$ and all the state
+variables, or $u$ first reaches zero with
+\[
+ w\le w(0)+\frac{|u(0)|}{2}.
+\]
+Accordingly, start (either at time zero if $u(0)\ge0$, or at this first
+zero) with $u_\ast\ge0$ and $w_\ast>0$.  Introduce the convenient initial
+bound
+\[
+ B=w(0)+|u(0)|+|v|;
+\]
+then $u_\ast\le B$ and $w_\ast\le B$.
+
+Let
+\[
+ D=u^2+v^2-w^2.
+\]
+Where $D\ge0$, one has $q\le0$ and
+\[
+ D'=2uw-qw^2=2uw+\frac{D w^2}{w^2+u^2+v^2}\ge0.
+\]
+Hence this region is forward invariant.  Before the orbit enters it,
+\eqref{eq:dwdU} implies
+$w(u)\le w_\ast+(u-u_\ast)/2$.  By
+$u=u_\ast+2w_\ast$ we have $u\ge2w_\ast$ and $w\le2w_\ast$, so $D\ge0$.
+Thus entry occurs at some $(u_1,w_1)$ satisfying
+\begin{equation}\label{eq:entry}
+ u_1\le3B,\qquad w_1\le2B.
+\end{equation}
+After entry, $w$ is non-increasing.  If
+$u\ge\sqrt3\,w_1$, then
+$u^2+v^2\ge3w^2$ and therefore $q\le-1/2$.  On that part of the orbit,
+\[
+ \frac{dw}{du}\le-\frac14.
+\]
+Nonnegativity of $w$ shows that, after $u$ reaches
+$\max(u_1,\sqrt3\,w_1)$, it can increase by at most $4w_1$.  Together with
+\eqref{eq:entry}, this yields, for all $t\ge0$,
+\begin{equation}\label{eq:bounds}
+ w(t)\le2B,\qquad |u(t)|\le12B,\qquad |v(t)|\le B.
+\end{equation}
+
+Finally let $\eta=\|(y(0),a(0))\|\le1$.  Since
+$s(0)\le\eta$, $w(0)\le\sqrt\eta$, and $|a(0)|\le\eta$,
+\[
+ B\le\sqrt\eta+\sqrt2\,\eta<\frac52\sqrt\eta.
+\]
+Equations~\eqref{eq:bounds} give
+$\|y(t)\|=w(t)^2\le25\eta$ and
+$|a(t)|\le13B<\frac{65}{2}\sqrt\eta$.  Consequently
+\[
+ \|(y(t),a(t))\|<50\sqrt\eta
+\]
+for all $t\ge0$.  The case $s(0)=0$ was already seen to be stationary.  Given
+$\varepsilon>0$, choosing
+$\eta<\min\{1,(\varepsilon/50)^2\}$ proves Lyapunov stability of zero.
+\end{proof}
+
+\section{Verification and limitations}
+
+The proof is self-contained.  The separate verifier report audits compactness,
+essential spectrum, well-posedness, and every phase-plane inequality.  A small
+deterministic Runge--Kutta script in \texttt{code/simulate\_reduced.py}
+checks representative initial phases and scales; it is a sanity check, not
+part of the proof.
+
+The construction depends essentially on the sublinear memory law
+$\sqrt{\|y\|}$.  The compact map $K$ is continuous (indeed, $1/2$-H\"older in
+the radial variable) but is not locally Lipschitz or Fr\'echet differentiable
+at zero.  Therefore this packet does not answer a version imposing local
+Lipschitz, $C^1$, or specified differentiability hypotheses on the compact
+perturbation.  It also does not contradict the source's positive instability
+theorems, which concern compact nonlinearities without the additional
+noncompact metrically small term $G$ or invoke stronger local hypotheses.
+
+\section{Novelty check and review recommendation}
+
+A bounded search through 17 August 2026 covered the run's four lightweight
+indexes, the source text and bibliography, the exact quoted sentence, the
+paper title and author names, and web/arXiv-oriented combinations of
+``continuous time,'' ``compact perturbation,'' ``metrically small,''
+``essential spectral bound,'' and ``stable zero solution.''  It found the
+source paper and general linearized-instability literature, but no later
+paper giving this construction or explicitly resolving the quoted suspicion.
+The novelty claim is therefore limited to this explicit continuity-level
+counterexample.
+
+Human review should focus on two points: whether ``similar construction'' is
+intended to include compact maps that are merely continuous at zero, as in the
+discrete setup; and the uniqueness argument at the non-Lipschitz equilibrium.
+The latter is supplied directly by the bounded scalar coefficient in the
+$y$ equation, not by a general Banach-space existence theorem.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+V. M\"uller, R. Schnaubelt, and Y. Tomilov,
+\emph{On growth and instability for semilinear evolution equations: an
+abstract approach}, Mathematische Annalen 389 (2024), 3885--3933;
+arXiv:2211.15121v3.
+\end{thebibliography}
+
+\end{document}

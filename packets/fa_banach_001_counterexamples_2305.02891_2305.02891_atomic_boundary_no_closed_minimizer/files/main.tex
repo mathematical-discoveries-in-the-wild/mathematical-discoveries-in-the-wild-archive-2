@@ -1,0 +1,213 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\Per}{\operatorname{Per}}
+\newcommand{\Leb}{\mathcal L^1}
+\newcommand{\lip}{\operatorname{lip}_a}
+
+\title{An atomic-boundary minimizer with no closed representative\\
+\large A counterexample to Question 5.2 of arXiv:2305.02891}
+\author{Autonomous proof attempt, lane 6}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.90\textwidth}{\textbf{Status: candidate full counterexample,
+likely valid.}  Question 5.2 has a negative answer for both functionals in
+the general class of metric measure spaces stated by the source.}}
+\end{center}
+
+\section{The source question}
+
+For a bounded domain $\Omega$ in a metric measure space
+$(X,d,\mathfrak m)$, Koivu, Lu\v ci\'c, and Rajala consider
+\[
+ M_\lambda(A)=\Per(A)+\lambda\mathfrak m(\Omega\setminus A)
+ \quad(A\subset\Omega)
+\]
+and
+\[
+ \widetilde M_\lambda(A)
+ =\Per(A)+\lambda\mathfrak m(\Omega\mathbin\triangle A)
+ \quad(A\subset X).
+\]
+Their Question 5.2 asks whether a Borel minimizer of either functional must
+have a closed representative \cite[Question 5.2]{KLR}.  Here
+\emph{representative} means equality up to an $\mathfrak m$-null set.  The
+exact question appears on PDF page 17 of the source and is reproduced in
+Figure~\ref{fig:question}.
+
+\section{Proof intuition}
+
+Put positive atoms exactly at the two boundary points of an interval.
+Because convergence in $L^1(\mathfrak m)$ detects the atoms, every Lipschitz
+approximation to the indicator of the open interval must be near zero at both
+endpoints and near one somewhere inside.  It therefore pays at least one unit
+of variation going up and one going down.  Thus the open interval has
+perimeter two and no non-null competitor can have smaller perimeter.
+
+For a fidelity weight $\lambda\ge2$, deleting the interval costs at least
+$\lambda$, while including either endpoint in the symmetric-difference
+problem also costs at least $\lambda$.  The open interval is consequently a
+minimizer of both functionals.  But a closed set equal to the interval almost
+everywhere would have to exclude the two positive-mass endpoints; closedness
+then forces it to omit an entire one-sided neighborhood, of positive Lebesgue
+measure.  Hence no closed representative exists.
+
+\section{The counterexample}
+
+Let
+\[
+ X=\mathbb R,\qquad d(s,t)=|s-t|,\qquad
+ \mathfrak m=\Leb+\delta_0+\delta_1,
+ \qquad \Omega=(0,1).
+\]
+This is a complete separable metric measure space, its Borel measure is finite
+on bounded sets and has full support, and $\Omega$ is a bounded domain.  We
+write $\Per(A)=|D\chi_A|(X)$ for the relaxed metric perimeter used in the
+source.
+
+\begin{lemma}\label{lem:perimeter}
+\begin{enumerate}
+\item $\Per(\Omega)=2$.
+\item If $A\subset X$ is Borel, $0,1\notin A$, and
+      $\Leb(A\cap(0,1))>0$, then $\Per(A)\ge2$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+For the upper bound in (1), let $0<\varepsilon<1/4$ and choose the piecewise
+linear function $u_\varepsilon$ which is zero outside
+$(\varepsilon,1-\varepsilon)$, rises linearly from zero to one on
+$[\varepsilon,2\varepsilon]$, equals one on
+$[2\varepsilon,1-2\varepsilon]$, and falls linearly to zero on
+$[1-2\varepsilon,1-\varepsilon]$.  Then
+$u_\varepsilon\to\chi_\Omega$ in $L^1(\mathfrak m)$.  It is constant near
+both atoms, so their contributions to
+$\int_X\lip(u_\varepsilon)\,d\mathfrak m$ vanish, while the Lebesgue
+contribution is exactly two.  Hence $\Per(\Omega)\le2$.
+
+For the lower bound, consider any Lipschitz relaxation sequence $u_j$ for
+$\chi_A$.  Composing with the truncation onto $[0,1]$ does not increase the
+asymptotic slope, so assume $0\le u_j\le1$.  Since the measure has atoms at
+$0$ and $1$ and these points are not in $A$,
+\[
+ u_j(0)\longrightarrow0,\qquad u_j(1)\longrightarrow0.
+ \tag{1}
+\]
+If $\Leb(A\cap(0,1))>0$, convergence in the Lebesgue part of
+$L^1(\mathfrak m)$ gives points $t_j\in A\cap(0,1)$ for which
+$u_j(t_j)\to1$.  The fundamental theorem for Lipschitz functions and the
+inequality $|u_j'|\le\lip(u_j)$ almost everywhere give
+\begin{align*}
+ \int_X\lip(u_j)\,d\mathfrak m
+ &\ge \int_0^1\lip(u_j)\,dx\\
+ &\ge |u_j(t_j)-u_j(0)|+|u_j(1)-u_j(t_j)|.
+\end{align*}
+Taking the lower limit and using (1) proves $\Per(A)\ge2$.  Applying this to
+$A=\Omega$ gives the reverse inequality in (1).
+\end{proof}
+
+\begin{theorem}\label{thm:counterexample}
+For every $\lambda\ge2$, the Borel set $E=\Omega$ is a minimizer of both
+$M_\lambda$ among Borel subsets of $\Omega$ and
+$\widetilde M_\lambda$ among Borel subsets of $X$.  Nevertheless, $E$ has no
+closed representative.  Therefore Question 5.2 of \cite{KLR} has a negative
+answer for both functionals.
+\end{theorem}
+
+\begin{proof}
+First consider $M_\lambda$.  If $A\subset\Omega$ and $\Leb(A)>0$, then
+Lemma~\ref{lem:perimeter} gives
+\[
+ M_\lambda(A)\ge\Per(A)\ge2.
+\]
+If $\Leb(A)=0$, then $A$ is $\mathfrak m$-null, because neither endpoint
+belongs to $\Omega$.  Consequently
+\[
+ M_\lambda(A)=\lambda\mathfrak m(\Omega)=\lambda\ge2.
+\]
+On the other hand,
+$M_\lambda(\Omega)=\Per(\Omega)=2$, so $\Omega$ is a minimizer.
+
+Now consider an arbitrary Borel $A\subset X$ for
+$\widetilde M_\lambda$.  If $0\in A$ or $1\in A$, then the corresponding
+unit atom lies in $\Omega\triangle A$, and hence
+\[
+ \widetilde M_\lambda(A)\ge\lambda\ge2.
+\]
+If neither endpoint lies in $A$ and $\Leb(A\cap\Omega)>0$, then
+Lemma~\ref{lem:perimeter} again yields
+$\widetilde M_\lambda(A)\ge2$.  In the remaining case
+$0,1\notin A$ and $\Leb(A\cap\Omega)=0$, the whole Lebesgue mass of $\Omega$
+is missing, so
+\[
+ \widetilde M_\lambda(A)\ge
+ \lambda\mathfrak m(\Omega\setminus A)=\lambda\ge2.
+\]
+Since $\widetilde M_\lambda(\Omega)=2$, the same $E=\Omega$ minimizes the
+second functional.
+
+Suppose finally that a closed $F\subset X$ were a representative of
+$\Omega$.  Equality modulo $\mathfrak m$ forces $0,1\notin F$, since both
+points have positive atomic mass and lie outside $\Omega$.  Since $F$ is
+closed and $0\notin F$, some interval $(-r,r)$ is disjoint from $F$.
+Then $(0,r)\subset\Omega\setminus F$ has positive Lebesgue measure,
+contradicting $\mathfrak m(F\triangle\Omega)=0$.  Thus no closed
+representative exists.
+\end{proof}
+
+\section{Verification and scope}
+
+The proof uses only the source definitions.  The lower perimeter bound is
+insensitive to behavior outside $[0,1]$: endpoint atoms force the two endpoint
+values in every relaxation sequence, and one interior point with value
+approaching one forces total variation at least two.  The explicit tent
+sequence proves sharpness and has zero asymptotic slope at the atoms.
+
+The example is deliberately outside the PI setting.  This is necessary for
+the $\widetilde M_\lambda$ part, because the source already proves that
+$\widetilde M_\lambda$ minimizers have closed representatives in PI-spaces.
+Question 5.2, however, is stated for arbitrary metric measure spaces, exactly
+the class containing the example.
+
+A bounded novelty search covered the run indexes and the exact wording of
+Question 5.2.  It also covered arXiv:2305.02891, its published IMRN version,
+and the later arXiv:2503.15716 paper by overlapping authors.  No source
+resolving Question 5.2 was found.  The IMRN version still labels it open.
+This is a bounded search, not a definitive novelty certification.
+
+\paragraph{Human-review recommendation.}
+Review as a likely valid full counterexample.  The central check is the
+relaxed-perimeter lower bound in Lemma~\ref{lem:perimeter}; all minimization
+and representative claims then follow by a three-case comparison.
+
+\clearpage
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+  \caption{Question 5.2 on PDF page 17 of arXiv:2305.02891.}
+  \label{fig:question}
+\end{figure}
+\clearpage
+
+\begin{thebibliography}{9}
+\bibitem{KLR}
+J. Koivu, D. Lu\v ci\'c, and T. Rajala,
+\emph{Approximation by BV-extension sets via perimeter minimization in metric
+spaces}, arXiv:2305.02891 (2023); Int. Math. Res. Not. IMRN 2024, no. 11,
+9359--9375.
+\end{thebibliography}
+
+\end{document}

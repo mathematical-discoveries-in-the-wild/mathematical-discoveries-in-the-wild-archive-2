@@ -1,0 +1,276 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newcommand{\C}{\mathbb C}
+\newcommand{\M}{M}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+
+\title{A Flat-Discrepancy Prefix Criterion for the\\
+Commutator Majorization Conjecture}
+\author{Run \texttt{fa\_banach\_001}, lane 7}
+\date{August 9, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This packet records a likely valid partial result for Conjecture 7.1 of
+Habib Zadeh--Sra \cite{HZS}.  It proves the conjectured inequality at any
+prefix where one input has constant discrepancy values.  In particular it
+settles the first two prefixes when one input is a normal \(3\times3\) matrix.
+It does not settle the final trace-norm prefix in that case and is not a full
+solution of the conjecture.
+
+\section*{Source problem}
+
+For \(T\in\M_n(\C)\), write
+
+\[
+  \norm{T}_{(k)}=\sum_{j=1}^k\sigma_j(T)
+\]
+
+for the Ky Fan \(k\)-norm.  The discrepancy values of \cite{HZS} are
+characterized by
+
+\begin{equation}
+ \sum_{j=1}^k\delta_j(T)
+   =\min_{z\in\C}\norm{T-zI}_{(k)}.
+ \label{eq:variational}
+\end{equation}
+
+Conjecture 7.1 on source PDF page 20 asks whether, for all \(A,B\in\M_n(\C)\),
+
+\begin{equation}
+ \sigma([A,B])\prec_w 2\,\delta(A)\delta(B),
+ \label{eq:conjecture}
+\end{equation}
+
+where the product on the right is entrywise.  Equivalently, for every
+\(1\leq k\leq n\),
+
+\[
+ \norm{[A,B]}_{(k)}
+ \leq 2\sum_{j=1}^k\delta_j(A)\delta_j(B).
+\]
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Proof intuition}
+
+The conjecture is invariant under independent scalar shifts of \(A\) and
+\(B\).  At a fixed prefix \(k\), shift one matrix to minimize its operator
+norm and the other to minimize its Ky Fan \(k\)-norm.  The ideal property of
+Ky Fan norms then bounds the commutator by twice the product of those two
+minima.  Formula \eqref{eq:variational} identifies the minima as
+\(\delta_1(A)\) and \(\sum_{j\leq k}\delta_j(B)\).  If the first \(k\)
+discrepancy values of \(A\) are equal, this product is exactly the conjectured
+right-hand side, with no loss.
+
+For a normal \(3\times3\) matrix the first two discrepancy values are
+automatically equal.  This is a three-point planar fact: the minimum of the
+largest eigenvalue distance is the smallest-enclosing-circle radius \(R\),
+and the minimum of the sum of the two largest distances is \(2R\).
+
+\section*{Formal result and proof}
+
+We use only the standard Ky Fan ideal inequalities
+
+\begin{equation}
+ \norm{XY}_{(k)}\leq \norm{X}\norm{Y}_{(k)},\qquad
+ \norm{YX}_{(k)}\leq \norm{Y}_{(k)}\norm{X}.
+ \label{eq:ideal}
+\end{equation}
+
+Indeed, each follows from
+\(\sigma_j(XY)\leq\norm{X}\sigma_j(Y)\), respectively its right-multiplication
+version, after summing over \(j\leq k\).
+
+\begin{theorem}[Flat-prefix criterion]
+\label{thm:flat}
+Let \(A,B\in\M_n(\C)\) and \(1\leq k\leq n\).  If
+
+\[
+  \delta_1(A)=\delta_2(A)=\cdots=\delta_k(A),
+\]
+
+then the \(k\)-th weak-majorization inequality in
+\eqref{eq:conjecture} holds:
+
+\[
+ \norm{[A,B]}_{(k)}
+ \leq 2\sum_{j=1}^k\delta_j(A)\delta_j(B).
+\]
+
+The same conclusion holds if the flat-prefix assumption is imposed on \(B\)
+instead.
+\end{theorem}
+
+\begin{proof}
+Put \(a=\delta_1(A)\).  By \eqref{eq:variational}, choose scalars
+\(\alpha,\beta\in\C\) such that
+
+\[
+ \norm{A-\alpha I}=a,
+ \qquad
+ \norm{B-\beta I}_{(k)}=\sum_{j=1}^k\delta_j(B).
+\]
+
+The minima exist because the displayed norm functions are continuous and
+coercive.  Set \(X=A-\alpha I\) and \(Y=B-\beta I\).  Scalar shifts do not
+change a commutator, so the triangle inequality and \eqref{eq:ideal} give
+
+\begin{align*}
+ \norm{[A,B]}_{(k)}
+ &=\norm{XY-YX}_{(k)}\\
+ &\leq \norm{XY}_{(k)}+\norm{YX}_{(k)}\\
+ &\leq 2\norm{X}\norm{Y}_{(k)}\\
+ &=2a\sum_{j=1}^k\delta_j(B).
+\end{align*}
+
+Under the flat-prefix hypothesis, \(a=\delta_j(A)\) for every \(j\leq k\),
+and the final expression is
+\(2\sum_{j=1}^k\delta_j(A)\delta_j(B)\), as required.  Interchanging \(A\)
+and \(B\) proves the symmetric assertion.
+\end{proof}
+
+\begin{lemma}[Three normal eigenvalues]
+\label{lem:normal}
+If \(A\in\M_3(\C)\) is normal and \(R(A)\) is the radius of the smallest
+closed disk containing its spectrum, then
+
+\[
+ \delta_1(A)=\delta_2(A)=R(A).
+\]
+\end{lemma}
+
+\begin{proof}
+Let the eigenvalues be \(\lambda_1,\lambda_2,\lambda_3\).  Normality implies
+that the singular values of \(A-zI\) are the three distances
+
+\[
+ r_i(z)=|\lambda_i-z|.
+\]
+
+Arrange these at each \(z\) as \(r_1\geq r_2\geq r_3\).  Formula
+\eqref{eq:variational} for \(k=1\) gives
+
+\[
+ \delta_1(A)=\min_z r_1(z)=R(A).
+\]
+
+We claim that \(\min_z(r_1(z)+r_2(z))=2R(A)\).  For the lower bound, fix
+\(z\), choose a farthest eigenvalue \(p\) with \(|p-z|=r_1\), and suppose
+first that \(r_1>0\).  The disk centered at
+
+\[
+ c=z+\frac{r_1-r_2}{2r_1}(p-z)
+\]
+
+with radius \((r_1+r_2)/2\) contains \(p\).  It also contains each of the
+other two eigenvalues \(q\), since
+
+\[
+ |q-c|\leq |q-z|+|z-c|
+ \leq r_2+\frac{r_1-r_2}{2}
+ =\frac{r_1+r_2}{2}.
+\]
+
+Thus \(R(A)\leq(r_1+r_2)/2\).  The case \(r_1=0\) is immediate.  Conversely,
+a smallest disk containing a finite set has at least two boundary points
+(with the zero-radius case again immediate), so at its center the two largest
+distances both equal \(R(A)\).  This proves the claim.  Applying
+\eqref{eq:variational} for \(k=2\) now yields
+
+\[
+ \delta_1(A)+\delta_2(A)=2R(A),
+\]
+
+and hence \(\delta_2(A)=R(A)=\delta_1(A)\).
+\end{proof}
+
+\begin{corollary}[Normal \(3\times3\) first two prefixes]
+\label{cor:normal}
+Let \(A\in\M_3(\C)\) be normal and let \(B\in\M_3(\C)\) be arbitrary.  Then
+Conjecture 7.1 holds at \(k=1\) and \(k=2\):
+
+\[
+ \sum_{j=1}^k\sigma_j([A,B])
+ \leq 2\sum_{j=1}^k\delta_j(A)\delta_j(B),
+ \qquad k=1,2.
+\]
+\end{corollary}
+
+\begin{proof}
+The case \(k=1\) is Theorem \ref{thm:flat} with a one-term prefix.  Lemma
+\ref{lem:normal} supplies the flat-prefix hypothesis for \(k=2\), so the same
+theorem applies again.
+\end{proof}
+
+\section*{Verification and stress testing}
+
+The formal proof reduces to three directly checkable ingredients:
+
+\begin{enumerate}
+ \item the scalar-shift variational formula \eqref{eq:variational}, which is
+       Theorem 4.3 of the source paper;
+ \item the Ky Fan triangle and ideal inequalities;
+ \item the explicit enclosing-disk construction in Lemma \ref{lem:normal}.
+\end{enumerate}
+
+The included script \texttt{code/random\_search.py} independently minimizes
+the scalar-shifted Ky Fan norms numerically and tests all majorization
+prefixes.  Across 14,620 matrix pairs in dimensions \(3,4,5\), including
+integer real and complex matrices, rank-one and rank-two matrices, triangular
+and weighted-shift matrices, normal matrices, and perturbations of the sharp
+pair \(E_{12},E_{21}\), it found no positive margin.  These experiments are
+only a stress test; nonsmooth numerical minimization is not used in the proof
+and does not establish the still-open prefixes.
+
+\section*{Limitations and novelty check}
+
+The result is prefixwise.  It proves no assertion at a prefix where neither
+matrix has flat discrepancy values.  In particular, for a normal
+\(3\times3\) matrix the third discrepancy value is generally controlled by a
+geometric-median problem rather than the smallest enclosing circle.  The
+argument therefore does not prove the \(k=3\) trace-norm inequality, even when
+one input is normal, and the full conjecture remains open.
+
+A bounded check on August 9, 2026 searched the run indexes, arXiv, and general
+web indexes using arXiv:2111.11855, the exact title and authors, “Conjecture
+7.1,” “discrepancy values,” “commutator majorization,” and normal
+\(3\times3\) variants.  It found the source paper but no later full resolution
+and no statement of the flat-prefix criterion or Corollary
+\ref{cor:normal}.  Novelty confidence is moderate rather than definitive;
+the claim should be reviewed as an elementary new consequence of the source
+variational formula and standard Ky Fan inequalities.
+
+\enlargethispage{5\baselineskip}
+\paragraph{Human-review recommendation.}
+
+Review as a likely-valid partial result.  The most useful checks are that the
+two scalar shifts may indeed be chosen independently without changing the
+commutator, and that the disk in Lemma \ref{lem:normal} covers all three
+eigenvalues.  Do not promote this packet as a full solution unless the
+remaining prefixes are supplied by a separate argument.
+
+\begin{thebibliography}{9}
+
+\bibitem{HZS}
+P. Habib Zadeh and S. Sra,
+\emph{Introducing discrepancy values of matrices with application to bounding
+norms of commutators},
+Linear Algebra Appl. 651 (2022), 359--384;
+arXiv:2111.11855.
+
+\end{thebibliography}
+
+\end{document}

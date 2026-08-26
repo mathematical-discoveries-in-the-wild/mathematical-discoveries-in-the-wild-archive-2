@@ -1,0 +1,312 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=0.9in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+
+\setlist{nosep}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\newcommand{\T}{\mathbb T}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\R}{\mathcal R}
+\newcommand{\ran}{\operatorname{ran}}
+\newcommand{\dom}{\operatorname{dom}}
+\newcommand{\rhoA}{\rho}
+
+\title{Delayed Smoothing Defeats Global\\One-Sided Resolvent Propagation}
+\author{Independent research note}
+\date{August 17, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Arora and Glück ask whether a one-sided rank-one estimate for a resolvent at
+one real point propagates to every real point of the resolvent set when their
+general domain-smoothing exponents are used.  We give a negative answer to
+both the lower- and upper-estimate versions.  On three copies of
+$L^2(\T)$, a positive cyclic operator transfers two components unchanged and
+applies Poisson smoothing on the third transition.  Its cube, and the cube of
+its adjoint, have the required smoothing, but moving the resolvent parameter
+to the forbidden side exposes a negative identity channel.  Indicator
+functions of shrinking arcs show that this channel cannot be bounded by the
+prescribed rank-one operator.  The example satisfies the source hypotheses
+with $m_1=m_2=3$.
+\end{abstract}
+
+\section*{Packet status}
+
+\begin{description}[leftmargin=3.0cm,style=nextline]
+\item[Run] \texttt{fa\_banach\_001}, lane 13.
+\item[Source] Arora--Glück, arXiv:2104.12205, question after
+Proposition~4.7 on PDF page~15 \cite{AG}.
+\item[Classification] Candidate counterexample, likely valid subject to
+human review.
+\item[Answer] Neither order restriction in Theorem~4.5 can be removed in the
+generality of Setting~1.1.
+\end{description}
+
+\begin{center}
+\includegraphics[width=0.98\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section{The source question}
+
+Let $A$ be a closed, densely defined real operator on a complex Banach
+lattice $E$.  The source fixes $u\in E_+$ and a strictly positive
+$\varphi\in E'_+$, and assumes that, for some nonnegative integers $m_1,m_2$,
+\[
+ \dom(A^{m_1})\subseteq E_u,
+ \qquad
+ \dom((A')^{m_2})\subseteq (E')_\varphi.                 \tag{1}
+\]
+It also imposes a positive spectral hypothesis at a real eigenvalue.
+Writing $P=u\otimes\varphi$ and
+$\R(\mu,A)=(\mu-A)^{-1}$, Theorem~4.5 proves
+\begin{align*}
+ \R(\mu_0,A)\succeq-P, \mu\leq\mu_0
+     &\quad\Longrightarrow\quad \R(\mu,A)\succeq-P,\\
+ \R(\mu_0,A)\preceq P, \mu\geq\mu_0
+     &\quad\Longrightarrow\quad \R(\mu,A)\preceq P.
+                                                               \tag{2}
+\end{align*}
+Here $S\succeq-P$ means $S\geq-cP$ for some $c>0$, and similarly
+for $\preceq$.  Proposition~4.7 removes the restrictions on $\mu$ when
+$m_1=m_2=1$.  The source asks whether they can also be dropped for general
+$m_1,m_2$ \cite[p.~15]{AG}.
+
+\section*{Idea of the proof}
+
+The source assumptions only require eventual smoothing by powers of the
+operator and its adjoint.  We therefore place two unsmoothed identity
+transfers before one smoothing step in a three-phase cycle.  Cubing the cycle
+gives Poisson smoothing in every phase, so (1) holds with $m_1=m_2=3$.
+At the initial resolvent point the cycle itself is positive.  But the exact
+resolvent identity on the other side begins with $Q-\delta Q^2$; the
+$-\delta Q^2$ term transports one component unchanged into a phase where the
+$Q$ term vanishes.  A rank-one integral operator sees an indicator of a small
+arc only through its small measure, whereas this negative identity channel
+retains pointwise size one.  This mismatch violates every possible rank-one
+lower bound.  Changing $A$ to $-A$ gives the upper-bound failure.
+
+\section{The delayed-smoothing operator}
+
+Give $\T=\mathbb R/\mathbb Z$ normalized Lebesgue measure.  Fix
+$r\in(0,1)$, for example $r=1/2$, and let $K$ be convolution on $L^2(\T)$
+with the Poisson kernel
+\[
+ p_r(x)=\frac{1-r^2}{1-2r\cos(2\pi x)+r^2},
+ \qquad \widehat{p_r}(n)=r^{|n|}.                            \tag{3}
+\]
+Thus $K$ is positive, self-adjoint, injective, has dense range, satisfies
+$K\one=\one$, and has no other fixed vectors.  Since $p_r\in L^2(\T)$,
+Young's inequality gives $K:L^2(\T)\to L^\infty(\T)$ boundedly.
+
+Set
+\[
+ E=L^2(\T)^3,
+ \qquad
+ \varphi(f)=\frac13\sum_{j=0}^2\int_\T f_j,
+ \qquad u=(\one,\one,\one),
+\]
+and use the coordinatewise lattice order.  Then $\varphi$ is strictly
+positive and $E_u=L^\infty(\T)^3$ (as a set).  Define
+\[
+ Q(f_0,f_1,f_2)=(f_1,f_2,Kf_0).                             \tag{4}
+\]
+
+\begin{lemma}\label{lem:Q}
+$Q$ is a bounded positive real operator, is injective, and has dense range.
+Moreover,
+\[
+ Q^3=\operatorname{diag}(K,K,K),
+ \qquad
+ Q'(g_0,g_1,g_2)=(Kg_2,g_0,g_1),
+ \qquad
+ (Q')^3=\operatorname{diag}(K,K,K).                         \tag{5}
+\]
+The fixed spaces of both $Q$ and $Q'$ consist precisely of the global
+constant triples $(c\one,c\one,c\one)$.
+\end{lemma}
+
+\begin{proof}
+Positivity and (5) follow directly from (4).  Injectivity follows from that of
+$K$.  The range is $L^2(\T)\times L^2(\T)\times\ran K$, which is dense
+because $K$ is self-adjoint and injective.  If $Qf=f$, the first two
+coordinates give $f_0=f_1=f_2$, and the last gives $Kf_0=f_0$; (3) then makes
+$f_0$ constant.  The same calculation with the displayed formula for $Q'$
+proves the adjoint assertion.
+\end{proof}
+
+Because $Q$ is injective with dense range, its inverse is a closed densely
+defined operator.  Put
+\[
+ A=I-Q^{-1},\qquad \dom A=\ran Q.                           \tag{6}
+\]
+
+\begin{lemma}\label{lem:hyp}
+$A$ satisfies all domination and spectral hypotheses of Setting~1.1 in the
+source with $m_1=m_2=3$, $u$ and $\varphi$ as above, and $\lambda_0=0$.
+\end{lemma}
+
+\begin{proof}
+$A$ is closed, densely defined, and real.  If $C$ is a closed operator, then
+induction gives
+\[
+ \dom((I-C)^k)=\dom(C^k)                                   \tag{7}
+\]
+for every positive integer $k$: once $x\in\dom C$, membership of
+$(I-C)x$ in $\dom(C^{k-1})$ is equivalent, by linearity and induction, to
+membership of $Cx$ there.  With $C=Q^{-1}$, (5)--(7) yield
+\[
+ \dom(A^3)=\dom(Q^{-3})=\ran(Q^3)
+ \subseteq L^\infty(\T)^3=E_u.                             \tag{8}
+\]
+The standard inverse-adjoint identity gives
+$(Q^{-1})'=(Q')^{-1}$, and the same argument using $(Q')^3$ proves
+\[
+ \dom((A')^3)\subseteq L^\infty(\T)^3=(E')_\varphi.        \tag{9}
+\]
+Finally, $Af=0$ is equivalent to $Qf=f$, so Lemma~\ref{lem:Q} makes zero a
+geometrically simple eigenvalue with eigenvector $u$.  Its adjoint fixed-space
+statement gives the required eigenfunctional, represented by the constant
+one and hence equal to $\varphi$ up to normalization.  Thus the required
+strong comparisons with $u$ and $\varphi$ hold as equalities.
+\end{proof}
+
+\section{Failure of the lower estimate}
+
+Let $P=u\otimes\varphi$.  Since
+\[
+ 1-A=Q^{-1},\qquad \R(1,A)=Q\geq0\geq-P,                  \tag{10}
+\]
+the premise of the lower-estimate question holds at $\mu_0=1$.
+
+\begin{lemma}\label{lem:failure}
+For every $\delta>0$, the number $1+\delta$ belongs to $\rhoA(A)$, but
+\[
+ \R(1+\delta,A)\not\succeq-P.                             \tag{11}
+\]
+\end{lemma}
+
+\begin{proof}
+The polynomial identity
+\[
+ (I+\delta Q)(I-\delta Q+\delta^2Q^2)=I+\delta^3Q^3       \tag{12}
+\]
+and (5) show that $I+\delta Q$ is invertible, because
+$I+\delta^3K$ is invertible.  From (6) and (12),
+\[
+ \R(1+\delta,A)
+  =Q(I+\delta Q)^{-1}
+  =(Q-\delta Q^2+\delta^2Q^3)(I+\delta^3Q^3)^{-1}.         \tag{13}
+\]
+Write $H=(I+\delta^3K)^{-1}$.  For $h\in L^2(\T)$, (13) gives
+\[
+ \R(1+\delta,A)(0,0,h)
+   =(-\delta Hh,\ Hh,\ \delta^2KHh).                       \tag{14}
+\]
+
+The operator
+\[
+ M=\delta^3K(I+\delta^3K)^{-1}
+\]
+is convolution with a bounded continuous kernel: its Fourier coefficients are
+\[
+ \frac{\delta^3 r^{|n|}}{1+\delta^3r^{|n|}},
+\]
+which are absolutely summable.  Let $C$ be the supremum norm of this kernel.
+Since $H=I-M$, for every measurable arc $B\subset\T$ and almost every $x\in B$,
+\[
+ H\one_B(x)\geq 1-C|B|.                                   \tag{15}
+\]
+
+Suppose that $\R(1+\delta,A)\geq-cP$ for some $c>0$.  Apply this operator
+inequality to the positive vector $(0,0,\one_B)$.  Its $P$-image is the global
+constant $|B|/3$, whereas (14)--(15) show, whenever $C|B|\leq1/2$, that the
+first component of its resolvent image is at most $-\delta/2$ on $B$.  The
+assumed lower bound would force
+\[
+ -\frac{\delta}{2}\geq-\frac{c|B|}{3}.
+\]
+Choosing a positive-length arc with
+$|B|<\min\{1/(2C),3\delta/(2c)\}$ contradicts this inequality.  No $c$ exists,
+which proves (11).
+\end{proof}
+
+\section{Answer to both parts}
+
+\begin{theorem}[negative answer to the source question]\label{thm:main}
+In the generality of Setting~1.1 of Arora--Glück, neither the condition
+$\mu\leq\mu_0$ in Theorem~4.5(a) nor the condition $\mu\geq\mu_0$ in
+Theorem~4.5(b) can be dropped.  This already fails with
+$m_1=m_2=3$ on the Hilbert lattice $L^2(\T)^3$.
+\end{theorem}
+
+\begin{proof}
+Lemmas~\ref{lem:hyp} and \ref{lem:failure}, together with (10), give the
+counterexample to part~(a): the lower estimate holds at $\mu_0=1$ but fails
+at every $\mu=1+\delta>\mu_0$.
+
+For part~(b), replace $A$ by $B=-A$.  The domination and spectral hypotheses
+are unchanged.  At $\nu_0=-1$,
+\[
+ \R(-1,B)=-\R(1,A)=-Q\leq0\leq P,
+\]
+so the upper estimate holds.  At $\nu=-1-\delta<\nu_0$,
+\[
+ \R(-1-\delta,B)=-\R(1+\delta,A).
+\]
+If this were bounded above by a positive multiple of $P$, then
+$\R(1+\delta,A)$ would be bounded below by a negative multiple of $P$,
+contradicting Lemma~\ref{lem:failure}.
+\end{proof}
+
+\section{Verification, limitations, and novelty}
+
+The accompanying script discretizes $\T$ by cyclic grids of sizes
+$12,24,48,96,192$.  It verifies (5) and (13) to machine precision and computes
+the least constants in the finite-dimensional inequalities $S\geq-cP$.
+They are approximately
+\[
+ 17.473,\ 35.473,\ 71.473,\ 143.473,\ 287.473,
+\]
+and their ratio to grid size tends to $1.5$.  This is consistent with, but is
+not a substitute for, the shrinking-arc proof.
+
+The construction is an abstract Banach-lattice operator, not a differential
+operator.  That is enough to answer the source's question in its stated
+general setting, but it does not show that the side restrictions are necessary
+for any narrower elliptic or semigroup class.  It also does not determine the
+minimal smoothing exponents at which failure can first occur.
+
+On August 17, 2026, the run's four lightweight indexes were searched by the
+arXiv id, exact title, and core terms.  Bounded web searches used the exact
+question, theorem terminology, title, authors, and variants of one-sided
+rank-one resolvent domination.  They found the source and related later work
+on eventual domination and individual maximum principles, but no explicit
+resolution or this construction.  This is a bounded novelty check, not an
+exhaustive priority claim.
+
+The recommended human-review focus is (7)--(9) and the conversion of
+(14)--(15) into failure of operator order.  The remaining phase algebra and
+the sign reversal are direct.
+
+\begin{thebibliography}{9}
+\bibitem{AG}
+S.~Arora and J.~Glück,
+\emph{An operator theoretic approach to uniform (anti-)maximum principles},
+J. Differential Equations \textbf{310} (2022), 164--197;
+arXiv:2104.12205.
+\end{thebibliography}
+
+\end{document}

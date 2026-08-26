@@ -1,0 +1,334 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\HH}{\mathfrak H}
+\newcommand{\cC}{\mathcal C}
+\newcommand{\cX}{\mathcal X}
+\newcommand{\cZ}{\mathcal Z}
+\newcommand{\cL}{\mathcal L}
+\newcommand{\cG}{\mathcal G}
+\newcommand{\ip}[2]{\left\langle #1,#2\right\rangle}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+
+\title{A Higher-Regularity Cochain Extension by Contracting Homotopy}
+\author{Automated Math Discovery Candidate Proof}
+\date{August 9, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Candidate full solution to Open question 1 of Nilsson--Pitassi,
+likely valid pending expert review.  The result answers the literal
+fixed-domain boundedness question.  It does not claim a sharp bound uniform
+over varying families of Lipschitz domains.}}
+\end{center}
+
+\section*{Source Question}
+
+Nilsson and Pitassi ask in Section 6, Open question 1, pages 19--20 of
+arXiv:2604.04927v2~\cite{NilssonPitassi}, whether their cochain extension has
+a strict higher-regularity analogue.  For $m\in\mathbb N_0$, put
+\[
+ \cX_m^k(\Omega):=H^{(m,m)}\Lambda^k(\Omega)
+ =\{\omega\in H^m\Lambda^k(\Omega):d\omega\in
+ H^m\Lambda^{k+1}(\Omega)\}
+\]
+with its graph norm, and
+\[
+ \cC_m^k(\Omega):=\cX_m^k(\Omega)\cap\HH^k(\Omega)^\perp,
+\]
+where $\HH^k(\Omega)$ is the absolute $L^2$ harmonic space used in the
+source paper.  The question asks for bounded operators
+\[
+ E_m^k:\cC_m^k(\Omega)\longrightarrow\cX_m^k(K)
+\]
+which extend the datum and commute strictly with $d$.  It also asks whether,
+when $\Omega\Subset K$, the extensions can have vanishing outer traces and
+therefore extend by zero to the whole space.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop_page19.png}
+
+\medskip
+\includegraphics[width=\textwidth]{figures/open_problem_crop_page20.png}
+\end{center}
+
+\section*{Proof Intuition}
+
+The construction separates the problem into an internal homological step on
+$\Omega$ and an arbitrary degreewise Sobolev extension.  Maximal regularity
+for the de Rham complex implies that the harmonic-orthogonal graph-Sobolev
+complex $\cC_m^\bullet(\Omega)$ is exact.  Since it is an exact Hilbert
+complex with closed differentials, it has a bounded contracting homotopy
+$h$, meaning
+\[
+                         dh+hd=I.
+\]
+Let $S^k$ be any bounded extension in degree $k$; it need not commute with
+$d$.  The two-term formula
+\[
+                 E_m^k=dS^{k-1}h^k+S^kh^{k+1}d
+\]
+repairs it.  Restriction to $\Omega$ gives $dh+hd=I$, while applying $d$ to
+the formula makes the cochain identity automatic because $d^2=0$.
+
+The only delicate point is exactness at higher regularity.  An exact $H^m$
+form has an $H^{m+1}$ potential by Costabel--McIntosh.  That potential need
+not initially be orthogonal to the $L^2$ harmonic fields, but their smooth
+cohomology representatives allow a finite-dimensional closed correction
+which enforces the orthogonality without changing the derivative.
+
+\section*{Main Result}
+
+\begin{theorem}\label{thm:main}
+Let $\Omega\subset\R^n$ be a bounded Lipschitz open set and let
+$K\subset\R^n$ be a bounded open set containing $\Omega$.  For every
+$m\in\mathbb N_0$ and $0\leq k\leq n$, there is a bounded linear operator
+\[
+ E_m^k:\cX_m^k(\Omega)\cap\HH^k(\Omega)^\perp
+       \longrightarrow \cX_m^k(K)
+\]
+such that
+\begin{align*}
+ (E_m^k\omega)|_\Omega&=\omega,\\
+ dE_m^k\omega&=E_m^{k+1}(d\omega).
+\end{align*}
+Here the spaces in degrees outside $\{0,\dots,n\}$ and the corresponding
+operators are understood to be zero.
+
+If $\Omega\Subset K$, the operators may be chosen so that every
+$E_m^k\omega$ is supported in a fixed compact subset of $K$.  Consequently
+all outer traces which occur in the graph-Sobolev setting vanish, and
+extension by zero defines a bounded operator into
+$H^{(m,m)}\Lambda^k(\R^n)$.
+\end{theorem}
+
+\begin{remark}
+The theorem is slightly stronger topologically than the question: the
+construction does not use any condition on $K\setminus\overline\Omega$.
+Its norm is finite for each fixed domain pair.  No quantitative uniformity
+over varying domain families is asserted.
+\end{remark}
+
+\section*{The Harmonic-Orthogonal Sobolev Complex}
+
+We use two standard facts.  First, the $L^2$ Hodge decomposition in the
+notation of the source paper is
+\begin{equation}\label{eq:hodge}
+ L^2\Lambda^k(\Omega)
+ =\HH^k(\Omega)\oplus d(H\Lambda^{k-1}(\Omega))
+  \oplus\ker(d|_\Omega)^\perp.
+\end{equation}
+Second, Costabel and McIntosh prove maximal regularity and regularity of
+cohomology on bounded Lipschitz domains~\cite[Corollary 4.7 and
+Theorem 4.9]{CostabelMcIntosh}.  In particular:
+\begin{enumerate}
+\item if $z\in H^m\Lambda^k(\Omega)$ is exact with an $L^2$ potential, then
+there is $v\in H^{m+1}\Lambda^{k-1}(\Omega)$ with $dv=z$;
+\item there is a finite-dimensional space
+$\cG^k\subset C^\infty(\overline\Omega,\Lambda^k)$ of closed forms which
+represents de Rham cohomology at every Sobolev order.
+\end{enumerate}
+
+\begin{lemma}\label{lem:exact}
+For every $m\in\mathbb N_0$, the spaces $\cC_m^k(\Omega)$ form an exact
+Hilbert complex under $d$.
+\end{lemma}
+
+\begin{proof}
+The space $\cC_m^k(\Omega)$ is closed in the Hilbert graph space
+$\cX_m^k(\Omega)$.  If $q\in\HH^{k+1}(\Omega)$ and
+$\omega\in\cC_m^k(\Omega)$, the Green identity used in the source paper
+gives
+\[
+ \ip{d\omega}{q}_{L^2}
+ =\ip{\operatorname t\omega}{\operatorname n q}_{\partial\Omega}
+   -\ip{\omega}{\delta q}_{L^2}=0.
+\]
+Thus $d\omega\perp\HH^{k+1}(\Omega)$, and $\cC_m^\bullet$ is a complex.
+
+Let $z\in\cC_m^k(\Omega)$ satisfy $dz=0$.  By
+\eqref{eq:hodge}, the two conditions $dz=0$ and
+$z\perp\HH^k(\Omega)$ imply that $z=du_0$ for some
+$u_0\in H\Lambda^{k-1}(\Omega)$.  Costabel--McIntosh maximal regularity,
+applied with Sobolev indices $s=m$ and $t=0$, yields
+$v\in H^{m+1}\Lambda^{k-1}(\Omega)$ with $dv=z$.  In particular
+$v\in\cX_m^{k-1}(\Omega)$.
+
+It remains to impose $v\perp\HH^{k-1}(\Omega)$.  Let $P_{\HH}$ be the
+$L^2$ orthogonal projection onto $\HH^{k-1}(\Omega)$.  The restriction
+\[
+                   P_{\HH}|_{\cG^{k-1}}:
+                   \cG^{k-1}\longrightarrow\HH^{k-1}(\Omega)
+\]
+is an isomorphism.  Indeed, both spaces have dimension equal to the relevant
+Betti number.  If $g\in\cG^{k-1}$ has $P_{\HH}g=0$, then $g$ is closed and
+harmonic-orthogonal, so \eqref{eq:hodge} makes it exact.  Maximal regularity
+gives a Sobolev potential, and the direct-sum property of $\cG^{k-1}$ in
+\cite[Theorem 4.9]{CostabelMcIntosh} forces $g=0$.
+
+Set
+\[
+ g=(P_{\HH}|_{\cG^{k-1}})^{-1}P_{\HH}v,
+ \qquad u=v-g.
+\]
+Then $g$ is smooth and closed, hence $u\in\cC_m^{k-1}(\Omega)$, and
+$du=dv=z$.  This proves exactness.  At degree zero, a closed function is
+locally constant and therefore belongs to $\HH^0(\Omega)$, so the same
+statement says that the harmonic-orthogonal cycle space is zero.
+\end{proof}
+
+\section*{A Bounded Contracting Homotopy}
+
+\begin{lemma}\label{lem:contraction}
+There are bounded linear maps
+\[
+ h^k:\cC_m^k(\Omega)\longrightarrow\cC_m^{k-1}(\Omega)
+\]
+such that
+\begin{equation}\label{eq:contract}
+                     dh^k+h^{k+1}d=I
+                     \quad\hbox{on }\cC_m^k(\Omega).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Let
+\[
+ \cZ_m^k=\ker(d:\cC_m^k\to\cC_m^{k+1}),
+ \qquad \cL_m^k=(\cZ_m^k)^\perp_{\cC_m^k},
+\]
+where orthogonality is taken in the graph-space Hilbert norm.  Lemma
+\ref{lem:exact} implies that
+\[
+       d:\cL_m^{k-1}\longrightarrow\cZ_m^k
+\]
+is a bounded bijection.  Its inverse $Q^k$ is bounded by the bounded inverse
+theorem.  Let $P_{\cZ}^k$ be the graph-orthogonal projection onto
+$\cZ_m^k$ and define
+\[
+                         h^k=Q^kP_{\cZ}^k.
+\]
+If $\omega=z+\ell$ is the decomposition in
+$\cZ_m^k\oplus\cL_m^k$, then
+\[
+                   dh^k\omega=z,
+             \qquad h^{k+1}d\omega=\ell.
+\]
+Their sum is $\omega$, proving \eqref{eq:contract}.  We set
+$h^0=h^{n+1}=0$ at the endpoints.
+\end{proof}
+
+\section*{Construction of the Extension}
+
+\begin{proof}[Proof of Theorem \ref{thm:main}]
+The universal extension theorem of Hiptmair, Li and Zou supplies, for every
+degree, a bounded linear section
+\[
+ S^k:\cX_m^k(\Omega)\longrightarrow
+       \cX_m^k(\R^n)
+\]
+of restriction~\cite{HiptmairLiZou}; this is also the theorem recalled in
+the introduction of~\cite{NilssonPitassi}.  Restrict its values to $K$ and
+retain the notation $S^k$.  No cochain property of $S^\bullet$ is used.
+
+For $\omega\in\cC_m^k(\Omega)$, define
+\begin{equation}\label{eq:E}
+ E_m^k\omega
+   :=dS^{k-1}h^k\omega+S^kh^{k+1}d\omega.
+\end{equation}
+The first term is a closed $H^m$ $k$-form and hence belongs to
+$\cX_m^k(K)$; the second belongs there by boundedness of $S^k$.
+Consequently \eqref{eq:E} defines a bounded linear map in the graph norm.
+
+Let $r$ denote restriction from $K$ to $\Omega$.  Since $rS^j=I$ and
+restriction commutes with the distributional exterior derivative,
+Lemma~\ref{lem:contraction} gives
+\[
+ rE_m^k\omega=dh^k\omega+h^{k+1}d\omega=\omega.
+\]
+Moreover,
+\[
+ dE_m^k\omega=dS^kh^{k+1}d\omega
+ =dS^kh^{k+1}d\omega+S^{k+1}h^{k+2}d^2\omega
+ =E_m^{k+1}(d\omega).
+\]
+This proves the first assertion.
+
+Now suppose $\Omega\Subset K$.  Choose
+$\chi\in C_c^\infty(K)$ equal to one on a neighborhood of
+$\overline\Omega$ and replace each whole-space section $S^k$ by
+$\chi S^k$.  Multiplication by $\chi$ is bounded on every graph space
+$\cX_m^k(\R^n)$, and the new map is still a section of restriction.
+Formula \eqref{eq:E} now has support contained in the fixed compact set
+$\operatorname{supp}\chi\Subset K$.  It therefore vanishes near
+$\partial K$, and its extension by zero belongs to
+$\cX_m^k(\R^n)$ with the same bound.  This proves the second assertion.
+\end{proof}
+
+\section*{Verification and Limitations}
+
+The proof uses no computation.  The identities following
+\eqref{eq:E} are formal; the substantive review point is Lemma
+\ref{lem:exact}, specifically the compatibility between the absolute
+harmonic representatives in~\cite{NilssonPitassi} and the smooth de Rham
+cohomology complement in~\cite{CostabelMcIntosh}.  Both represent ordinary
+de Rham cohomology on a bounded Lipschitz domain, which makes
+$P_{\HH}|_{\cG}$ an isomorphism.
+
+The result gives bounded operators for each fixed $\Omega$, $K$, and $m$.
+The abstract bounded inverse used to construct $h$ does not by itself give a
+sharp estimate uniform over a varying class of domains.  Thus, if the phrase
+``analogue of Theorem 1'' was intended to demand the same quantitative
+dependence on a uniform Lipschitz character, that stronger quantitative
+problem is not resolved here.
+
+\paragraph{Novelty check.}
+On August 9, 2026, bounded searches used the exact source title and close
+variants of ``strict higher-regularity analogue,'' ``higher-regularity
+cochain extension,'' $H^{(m,m)}$ with ``cochain extension,'' and ``bounded
+contracting homotopy Sobolev de Rham Lipschitz extension.''  They found the
+three papers cited below but no explicit arbitrary-ambient higher-regularity
+cochain section answering Open question 1, and no occurrence of formula
+\eqref{eq:E} in this setting.  Novelty confidence is moderate because the
+argument is a short synthesis of established analytic and homological
+ingredients.
+
+\paragraph{Human-review recommendation.}
+Verify Lemma~\ref{lem:exact} first, then confirm that the intended question
+does not silently require uniform constants over domain families.  Once
+exactness is accepted, Lemma~\ref{lem:contraction} and formula
+\eqref{eq:E} complete the fixed-domain question.
+
+\begin{thebibliography}{9}
+
+\bibitem{NilssonPitassi}
+E.~Nilsson and S.~Pitassi,
+\emph{Uniformly Bounded Cochain Extensions and Uniform Poincar\'e
+Inequalities}, arXiv:2604.04927v2, 2026.
+
+\bibitem{CostabelMcIntosh}
+M.~Costabel and A.~McIntosh,
+\emph{On Bogovski\u{\i} and regularized Poincar\'e integral operators for
+de Rham complexes on Lipschitz domains},
+Math. Z. \textbf{265} (2010), 297--320; arXiv:0808.2614v2.
+
+\bibitem{HiptmairLiZou}
+R.~Hiptmair, J.~Li, and J.~Zou,
+\emph{Universal extension for Sobolev spaces of differential forms and
+applications}, J. Funct. Anal. \textbf{263} (2012), 364--382.
+
+\end{thebibliography}
+
+\end{document}

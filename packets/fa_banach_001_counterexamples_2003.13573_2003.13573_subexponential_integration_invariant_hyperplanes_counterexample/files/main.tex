@@ -1,0 +1,180 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\J}{\mathcal J}
+\newcommand{\Lam}{\Lambda}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+
+\title{Noncanonical invariant hyperplanes below exponential order\\
+\large Counterexamples for the family singled out in arXiv:2003.13573}
+\author{Automatic Mathematics Run \texttt{fa\_banach\_001}, lane 11}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.} Candidate counterexample, likely valid, pending human review. The proposed extension of the invariant-subspace classification fails for every subexponential power weight in both Hormander algebras and for the remaining infraexponential algebra at order one.}}
+\end{center}
+
+\section{Source question}
+
+The source is J.~Bonet and A.~Galbis, \emph{Invariant subspaces of the integration operators on H\"ormander algebras and Korenblum type spaces}, arXiv:2003.13573 \cite{BonetGalbis}. For a weight exponent $p$, the authors consider
+\[
+  A_p(\C)=\left\{f\in H(\C):\norm{f}_{a,p}:=
+  \sup_{z\in\C}|f(z)|e^{-a p(z)}<\infty
+  \text{ for some }a>0\right\}
+\]
+with its locally convex inductive-limit topology, and
+\[
+  A_p^0(\C)=\left\{f\in H(\C):\norm{f}_{a,p}<\infty
+  \text{ for every }a>0\right\}
+\]
+with its Frechet projective-limit topology. The integration operator is
+\[
+  \J f(z):=\int_0^z f(\zeta)\,d\zeta.
+\]
+
+Theorem~5.1 classifies every proper closed $\J$-invariant subspace, under the hypothesis $p'(r)\to\infty$, as
+\[
+  A_K^E=\{f\in E:f^{(j)}(0)=0,\ 0\leq j<K\},\qquad K\in\N.
+\]
+Remark~5.4, page~10, asks whether this conclusion remains true when the derivative hypothesis fails, particularly for $p(z)=|z|^s$, $0<s\leq1$, except for the exponential-type algebra handled positively in Theorem~5.3.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{Remark~5.4 on page~10 of the source paper, together with the end of the positive exponential-type argument.}
+\end{figure}
+
+\section{Proof intuition}
+
+Write an entire function in derivative coordinates $b_n=f^{(n)}(0)$. In these coordinates integration is the unilateral right shift:
+\[
+  (\J f)^{(0)}(0)=0,\qquad (\J f)^{(n)}(0)=b_{n-1}\quad(n\geq1).
+\]
+Below exponential order, Cauchy's estimate forces $(b_n)$ to decay faster than every geometric sequence. Consequently its generating function
+\[
+  \Lam_\mu(f)=\sum_{n=0}^\infty \mu^n b_n
+\]
+is a continuous linear functional for every $\mu\in\C$. It is an eigenvector of the transpose of $\J$, so its kernel is a closed invariant hyperplane. That hyperplane contains $z-\mu$, and therefore cannot be a vanishing-jet tail.
+
+At order one the same construction works on the zero-type (infraexponential) Frechet algebra, because its topology supplies exponential seminorms of arbitrarily small type. It correctly stops working on the full exponential-type algebra: functions such as $e^{az}$ make the derivative-generating series diverge when $|a\mu|\geq1$. This is exactly the case already covered positively by the source paper.
+
+\section{Counterexample theorem}
+
+For $s>0$, put $p_s(z)=|z|^s$, $A_s=A_{p_s}(\C)$, and $A_s^0=A_{p_s}^0(\C)$.
+
+\begin{theorem}\label{thm:main}
+Let $\mu\in\C\setminus\{0\}$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+  \item If $0<s<1$ and $E$ is either $A_s$ or $A_s^0$, then
+  \[
+    \Lam_\mu(f):=\sum_{n=0}^\infty \mu^n f^{(n)}(0)
+  \]
+  is a continuous nonzero linear functional on $E$.
+  \item If $s=1$ and $E=A_1^0$, the same conclusion holds.
+  \item In every case above,
+  \[
+    M_\mu:=\ker\Lam_\mu
+  \]
+  is a proper closed codimension-one $\J$-invariant subspace of $E$ which is not any canonical subspace $A_K^E$.
+\end{enumerate}
+Moreover, the hyperplanes $M_\mu$ are pairwise distinct as $\mu$ ranges over $\C\setminus\{0\}$.
+\end{theorem}
+
+Thus the conclusion of Theorem~5.1 fails for every $0<s<1$ on both algebras named in Remark~5.4, and it fails for $s=1$ on the remaining algebra $A_1^0$. The exception $A_1=\operatorname{Exp}(\C)$ is precisely the positive case of Theorem~5.3 in the source.
+
+\begin{proof}
+For $a>0$, define
+\[
+  \norm{f}_{a,s}:=\sup_{z\in\C}|f(z)|e^{-a|z|^s}.
+\]
+If this quantity is finite, Cauchy's estimate on the circle of radius $r>0$ gives, for $n\geq1$,
+\[
+  |f^{(n)}(0)|
+  \leq n!\,r^{-n}\max_{|z|=r}|f(z)|
+  \leq n!\norm{f}_{a,s}e^{ar^s}r^{-n}.
+\]
+The last factor is minimized when $asr^s=n$, hence
+\begin{equation}\label{eq:cauchy}
+  |f^{(n)}(0)|
+  \leq n!\norm{f}_{a,s}\left(\frac{eas}{n}\right)^{n/s}
+  \leq \norm{f}_{a,s}
+  \left[(eas)^{1/s}n^{1-1/s}\right]^n,
+\end{equation}
+where the second inequality uses $n!\leq n^n$. The $n=0$ term is bounded by $\norm{f}_{a,s}$.
+
+Suppose first that $0<s<1$. Set $\delta=1/s-1>0$. From \eqref{eq:cauchy},
+\[
+  |\mu|^n|f^{(n)}(0)|
+  \leq \norm{f}_{a,s}\left[C_{a,s,\mu}n^{-\delta}\right]^n,
+  \qquad C_{a,s,\mu}=|\mu|(eas)^{1/s}.
+\]
+The scalar series $\sum_{n\geq1}[C_{a,s,\mu}n^{-\delta}]^n$ converges. Therefore $\Lam_\mu$ is absolutely defined and bounded with respect to $\norm{\cdot}_{a,s}$ for every $a>0$.
+
+On $A_s^0$, any one of its defining seminorms now bounds $\Lam_\mu$, so the functional is continuous. The space $A_s$ is the locally convex inductive limit of the normed growth steps used in the source paper. The restriction of $\Lam_\mu$ to every step is continuous by the bound just proved; by the defining final topology of the inductive limit, $\Lam_\mu$ is continuous on $A_s$ as well.
+
+Now let $s=1$ and $E=A_1^0$. Given $\mu\ne0$, choose $a>0$ so small that $ea|\mu|<1$. Formula \eqref{eq:cauchy} becomes
+\[
+  |\mu|^n|f^{(n)}(0)|
+  \leq \norm{f}_{a,1}(ea|\mu|)^n.
+\]
+Since $\norm{\cdot}_{a,1}$ is one of the defining seminorms of $A_1^0$, the series for $\Lam_\mu$ converges absolutely and defines a continuous functional there.
+
+In all cases $\Lam_\mu(1)=1$, so $\Lam_\mu$ is nonzero. Direct differentiation of the defining integral gives
+\[
+  (\J f)^{(0)}(0)=0,
+  \qquad
+  (\J f)^{(n)}(0)=f^{(n-1)}(0)\quad(n\geq1).
+\]
+Absolute convergence therefore permits the index shift
+\[
+  \Lam_\mu(\J f)
+  =\sum_{n=1}^\infty\mu^n f^{(n-1)}(0)
+  =\mu\Lam_\mu(f).
+\]
+It follows that $M_\mu$ is a proper closed hyperplane and $\J(M_\mu)\subset M_\mu$.
+
+Finally,
+\[
+  \Lam_\mu(z-\mu)=\mu-\mu=0,
+\]
+while $(z-\mu)(0)=-\mu\ne0$. Every proper canonical subspace $A_K^E$, $K\geq1$, consists only of functions vanishing at zero. Thus $M_\mu$ is not of the form $A_K^E$. If $\nu\ne\mu$, then
+\[
+  \Lam_\nu(z-\mu)=\nu-\mu\ne0,
+\]
+so $z-\mu\in M_\mu\setminus M_\nu$ and the hyperplanes are pairwise distinct.
+\end{proof}
+
+\section{Verification and scope}
+
+The proof is analytic and uses no computational dependency. The companion verifier report redoes the optimization, the projective- and inductive-limit continuity arguments, the transpose eigenvalue identity, and the noncanonical-subspace test.
+
+The theorem gives a full negative answer to the highlighted family in Remark~5.4 and disproves the universal extension suggested there. It does not classify all invariant subspaces for these algebras, nor does it decide which more general weight exponents with $p'(r)\not\to\infty$ admit similar eigenfunctionals. It also does not contradict the source's Theorem~5.3 for $\operatorname{Exp}(\C)$, where $\Lam_\mu$ is not defined on all functions.
+
+\section{Novelty check}
+
+A bounded web/arXiv search on 9 August 2026 used the source title and identifier, the combinations ``integration operator invariant subspaces entire functions of order'', ``H\"ormander algebras $p(z)=|z|^s$'', ``infraexponential invariant subspaces'', and ``Borel transform integration operator invariant subspace''. The search returned the source paper and related Volterra/integration-operator papers, but no later arXiv paper explicitly resolving Remark~5.4 and no equivalent derivative-generating hyperplane construction. This supports, but cannot establish, novelty; confidence is moderate.
+
+\section{Human-review recommendation}
+
+The two points deserving focused review are: first, that continuity on each normed growth step gives continuity for the source's locally convex inductive-limit topology on $A_s$; second, that the source uses the unnormalized integral $\J f(z)=\int_0^z f$, which produces exactly the right shift in derivative coordinates. Subject to those checks, this should be accepted as a complete counterexample for every previously open power-weight case named in Remark~5.4.
+
+\begin{thebibliography}{9}
+\bibitem{BonetGalbis}
+J.~Bonet and A.~Galbis,
+\emph{Invariant subspaces of the integration operators on H\"ormander algebras and Korenblum type spaces},
+arXiv:2003.13573 (2020).
+\end{thebibliography}
+
+\end{document}

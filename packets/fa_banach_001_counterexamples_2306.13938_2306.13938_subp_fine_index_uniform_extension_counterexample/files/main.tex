@@ -1,0 +1,217 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=teal!70!black,citecolor=teal!70!black,urlcolor=teal!70!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Nrm}[1]{\left\lVert #1\right\rVert}
+
+\title{A Sub-$p$ Fine Index Forbids the Sharp Uniform\\
+Limiting Embedding}
+\author{Run \texttt{fa\_banach\_001}, \texttt{agent\_lane\_14}}
+\date{12 August 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status and source question}
+
+\textbf{Status:} candidate full negative answer to the sharp uniform
+extension, likely valid pending expert review.
+
+Kolyada~\cite{Kolyada} proves a sharp anisotropic Besov--Lorentz estimate when
+every fine index $\theta_j\ge p$.  The factors
+$(1-\beta_j)^{1/\theta_j}$ keep the constant bounded as the smoothness
+parameters tend to one.  Immediately after Theorem~1.2, equation~(1.4), on
+source PDF page~3, the paper says that the case $\theta_j<p$ for some $j$
+remains open.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The source also stresses that the same embedding \emph{without} these factors
+is already known for all $1\le\theta_j\le\infty$.  Thus the nontrivial open
+content is whether the sharp normalized estimate survives with a constant
+bounded in the limiting regime.  The answer is no, even if only one fine index
+is below $p$.
+
+\section*{Proof intuition}
+
+Let all smoothness indices equal $\rho$ and let $\rho\uparrow1$.  The normalized
+directional Besov seminorms of a fixed $W^{1,p}$ function remain bounded; this
+is the elementary upper half of the Bourgain--Brezis--Mironescu limit.  If one
+fine index is $s<p$ and the others equal $p$, however, the target harmonic
+fine index $\theta$ is strictly below $p$.  A uniform extension would therefore
+force $W^{1,p}$ into the too-small Lorentz space $L^{p^*,\theta}$.
+
+An explicit logarithmic radial singularity makes this obstruction quantitative.
+It has an $L^p$ gradient because its logarithmic exponent is above $1/p$, but
+its critical Lorentz norm diverges because the same exponent is below
+$1/\theta$.  Before the limit, the gap
+$1/q_\rho-1/p^*=(1-\rho)/n$ exponentially cuts off the logarithmic integral.
+Its exact Laplace asymptotic gives the blow-up rate of the best constant.
+
+\section*{Quantitative counterexample}
+
+For $0<\rho<1$ and $1\le r<\infty$, write
+\[
+ [f]_{j,\rho,r}
+ =\left(\int_0^\infty
+       \big[h^{-\rho}\omega_j(f;h)_p\big]^r\,\frac{dh}{h}
+  \right)^{1/r}.
+\]
+
+\begin{theorem}\label{thm:counterexample}
+Let $n\ge2$, $1<p<n$, and $1\le s<p$.  Put
+\[
+ \theta_1=s,\qquad \theta_2=\cdots=\theta_n=p,
+ \qquad
+ \frac1\theta=\frac1n\left(\frac1s+\frac{n-1}{p}\right),
+\]
+and $q_\rho=np/(n-\rho p)$.  Let $C_\rho$ be the least constant for
+which the proposed extension of source equation~(1.4), with
+$\beta_1=\cdots=\beta_n=\rho$, could hold:
+\begin{equation}\label{eq:proposed}
+ \Nrm{f}_{L^{q_\rho,\theta}}
+ \le C_\rho
+ \prod_{j=1}^n
+ \left[(1-\rho)^{1/\theta_j}[f]_{j,\rho,\theta_j}\right]^{1/n}.
+\end{equation}
+Set
+\[
+ \Gamma=\frac1\theta-\frac1p
+ =\frac1n\left(\frac1s-\frac1p\right)>0.
+\]
+For every $0<\varepsilon<\Gamma$ there are $c_\varepsilon>0$ and
+$\rho_\varepsilon<1$ such that
+\[
+ C_\rho\ge c_\varepsilon(1-\rho)^{-(\Gamma-\varepsilon)}
+ \qquad(\rho_\varepsilon<\rho<1).
+\]
+In particular, no constant bounded as $\rho\uparrow1$ can extend the source's
+sharp estimate when even one fine index is below $p$.
+\end{theorem}
+
+\begin{proof}
+Fix $0<\varepsilon<\Gamma$ and set $a=1/p+\varepsilon$, so
+$1/p<a<1/\theta$.  Let
+\[
+ \gamma=\frac{n-p}{p},\qquad L(r)=\log\frac er,
+\]
+and choose a radial cutoff $\eta\in C_c^\infty([0,\infty))$ which equals one
+for all sufficiently small $r$ and vanishes for $r\ge e^{-2}$.  Define, with
+an arbitrary value assigned at the origin,
+\begin{equation}\label{eq:witness}
+ f(x)=\eta(|x|)|x|^{-\gamma}L(|x|)^{-a}.
+\end{equation}
+
+Near the origin,
+\[
+ |f(x)|^p\asymp |x|^{-(n-p)}L(|x|)^{-ap},
+ \qquad
+ |\nabla f(x)|^p\asymp |x|^{-n}L(|x|)^{-ap}.
+\]
+The first function is locally integrable, and polar coordinates turn the
+gradient integral into
+\[
+ \int_0^{e^{-3}}\frac{dr}{rL(r)^{ap}}<\infty
+\]
+because $ap>1$.  Hence $f\in W^{1,p}(\R^n)$.
+
+For $0<h\le1$, the Sobolev translation inequality gives
+\[
+ \omega_j(f;h)_p\le h\Nrm{\partial_j f}_p,
+\]
+while for $h>1$ one has $\omega_j(f;h)_p\le2\Nrm f_p$.  Therefore, for
+every finite $r\ge1$,
+\begin{align}\label{eq:besovbound}
+ (1-\rho)[f]_{j,\rho,r}^{,r}
+ &\le (1-\rho)\Nrm{\partial_j f}_p^r
+       \int_0^1h^{r(1-\rho)}\,\frac{dh}{h}
+ \notag\\
+ &\quad +(1-\rho)(2\Nrm f_p)^r
+       \int_1^\infty h^{-r\rho}\,\frac{dh}{h}\\
+ &=\frac{\Nrm{\partial_j f}_p^r}{r}
+   +\frac{1-\rho}{r\rho}(2\Nrm f_p)^r.
+\end{align}
+Thus every factor on the right of \eqref{eq:proposed} stays bounded as
+$\rho\uparrow1$.
+
+It remains to estimate the left side.  Put $p^*=np/(n-p)$.  Since the
+singular part of $f$ is radial decreasing, there are $c,C,t_0>0$ such that
+\begin{equation}\label{eq:rearrangement}
+ f^*(t)\ge c\,t^{-1/p^*}\left(\log\frac Ct\right)^{-a}
+ \qquad(0<t<t_0).
+\end{equation}
+Moreover,
+\[
+ \frac1{q_\rho}-\frac1{p^*}=\frac{1-\rho}{n}.
+\]
+Using \eqref{eq:rearrangement} in the Lorentz norm and then setting
+$u=\log(C/t)$ gives
+\begin{align*}
+ \Nrm f_{L^{q_\rho,\theta}}^\theta
+ &\ge c\int_0^{t_0}
+ t^{\theta(1-\rho)/n}
+ \left(\log\frac Ct\right)^{-a\theta}\frac{dt}{t}\\
+ &=c'\int_{u_0}^{\infty}
+ e^{-\theta(1-\rho)u/n}u^{-a\theta}\,du.
+\end{align*}
+Because $a\theta<1$, the last integral is comparable, as $\rho\uparrow1$,
+to $(1-\rho)^{a\theta-1}$.  Consequently
+\[
+ \Nrm f_{L^{q_\rho,\theta}}
+ \ge c''(1-\rho)^{a-1/\theta}
+ =c''(1-\rho)^{-(\Gamma-\varepsilon)}.
+\]
+Combining this with the uniform bound \eqref{eq:besovbound} proves the stated
+lower bound for $C_\rho$.
+\end{proof}
+
+\begin{remark}[Concrete parameters]
+One may take $(n,p,s)=(3,2,1)$.  Then $\theta=3/2$, $p^*=6$, and
+$a=7/12$ works.  The witness is
+$|x|^{-1/2}[\log(e/|x|)]^{-7/12}$ near the origin, its gradient is square
+integrable, and the proposed constant grows at least like
+$(1-\rho)^{-1/12}$.
+\end{remark}
+
+\section*{Verification, scope, and novelty}
+
+The included script evaluates the incomplete-Gamma expression for the final
+Laplace integral in the concrete example; it is not part of the proof.  The
+argument only refutes uniform preservation of the sharp limiting factors.
+For a fixed $\rho<1$, those factors are positive constants, and the older
+unnormalized anisotropic embedding remains compatible with this result.
+
+Run indexes and bounded arXiv searches through 12 August 2026 used the exact
+title, arXiv id, author, quoted open phrase, and combinations of
+``$\theta_j<p$'', anisotropic Besov, Lorentz endpoint, and sharp limiting
+constant.  They found no later source recording this obstruction.  Novelty
+confidence is moderate and requires specialist citation review.
+
+\section*{Human-review recommendation}
+
+First confirm the intended uniformity from the paragraphs surrounding source
+equation~(1.4): without it, the question is already covered by the known
+no-factor embedding.  Then check \eqref{eq:besovbound} and
+\eqref{eq:rearrangement}.  These are the only substantive estimates; the
+remaining blow-up is the elementary Gamma-integral scaling.
+
+\begin{sloppypar}
+\raggedright
+\begin{thebibliography}{9}
+\bibitem{Kolyada}
+V.~I. Kolyada,
+\emph{Rearrangement estimates and limiting embeddings for anisotropic Besov
+spaces}, arXiv:2306.13938 (2023).
+\end{thebibliography}
+\end{sloppypar}
+
+\end{document}

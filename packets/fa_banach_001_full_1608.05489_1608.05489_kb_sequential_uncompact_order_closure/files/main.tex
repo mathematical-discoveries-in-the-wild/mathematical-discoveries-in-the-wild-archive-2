@@ -1,0 +1,204 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\un}{\mathrm{un}}
+\newcommand{\Kseq}{\mathcal K_{\mathrm{sun}}}
+
+\title{KB-Spaces Characterize Monotone Stability of\\
+Sequentially Un-Compact Operators from \texorpdfstring{$c_0$}{c0}}
+\author{Automated Math Discovery Run \texttt{fa\_banach\_001}}
+\date{August 9, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{
+\textbf{Status.} Candidate full solution, likely valid pending human review.
+The novelty search described below found no later explicit answer, but novelty
+confidence is moderate because the proof is short and non-arXiv literature was
+not exhaustively citation-indexed.}}
+\end{center}
+
+\section*{Source and open question}
+
+Kandi\'c, Marabeh, and Troitsky define a bounded operator into a Banach
+lattice to be \emph{sequentially un-compact} when the image of every bounded
+sequence has an un-convergent subsequence. In Proposition 9.6 of
+\cite{KMT}, they prove that the following property forces $X$ to be a
+KB-space:
+\[
+ \text{if }T_n\in L(c_0,X)\text{ are sequentially un-compact and }
+ T_n\uparrow T,\text{ then }T\text{ is sequentially un-compact}.
+\]
+Immediately afterward they ask whether the converse is true. The exact
+source location is page 30.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+Here $T_n\uparrow T$ is understood in the usual operator order: the sequence
+is increasing and has supremum $T$; in particular, $T-T_1$ is positive.
+A Banach lattice is a \emph{KB-space} when every increasing norm-bounded
+sequence in its positive cone converges in norm. A net $(x_\alpha)$
+un-converges to $x$ when
+\[
+ \norm{|x_\alpha-x|\wedge u}\longrightarrow0
+ \qquad (u\in X_+).
+\]
+
+\section*{Proof intuition}
+
+The monotone operator sequence itself barely needs to be analyzed. Its first
+term already has the required sequential compactness, while the positive gap
+$T-T_1$ has domain $c_0$. Positivity turns the vectors $Se_k$ into a positive
+series whose partial sums are uniformly bounded: they are the images of the
+unit vectors $e_1+\cdots+e_N$ of $c_0$. The KB property makes these partial
+sums converge in norm. Their tails then dominate the image of every unit-ball
+tail in $c_0$, uniformly, so $S$ is the operator-norm limit of its finite-rank
+coordinate truncations. Thus the whole positive gap is compact, and adding it
+to $T_1$ preserves sequential un-compactness.
+
+\section*{The positive-gap lemma}
+
+\begin{lemma}\label{lem:positive-c0}
+If $X$ is a KB-space, then every positive bounded operator
+$S:c_0\to X$ is compact.
+\end{lemma}
+
+\begin{proof}
+Let $(e_k)$ be the standard unit-vector basis of $c_0$, let $P_N$ be the
+projection onto the first $N$ coordinates, and put
+\[
+ x_k=Se_k\in X_+,
+ \qquad
+ s_N=\sum_{k=1}^N x_k=S(e_1+\cdots+e_N).
+\]
+The sequence $(s_N)$ is increasing and
+\[
+ \norm{s_N}\leq \norm{S}\norm{e_1+\cdots+e_N}_\infty=\norm{S}.
+\]
+Since $X$ is a KB-space, there is $s\in X_+$ such that
+$s_N\to s$ in norm. Moreover $s_N\leq s$ for every $N$: for fixed $N$,
+$s_m-s_N\in X_+$ when $m\geq N$, and the positive cone is norm closed.
+
+Fix $N$ and $a\in B_{c_0}$. For $m>N$, positivity of $S$ gives
+\begin{align*}
+ \bigl|S P_m(I-P_N)a\bigr|
+ &\leq S\bigl|P_m(I-P_N)a\bigr| \\
+ &\leq \sum_{k=N+1}^{m} x_k
+   =s_m-s_N
+ \leq s-s_N.
+\end{align*}
+As $m\to\infty$, $P_m(I-P_N)a\to(I-P_N)a$ in $c_0$. Continuity of $S$ and
+of the lattice modulus, together with norm closedness of $X_+$, therefore
+yields
+\[
+ \bigl|S(I-P_N)a\bigr|\leq s-s_N.
+\]
+Consequently,
+\[
+ \norm{S(I-P_N)}\leq \norm{s-s_N}\longrightarrow0.
+\]
+Each $SP_N$ has finite rank, so $S$ is compact.
+\end{proof}
+
+\section*{Full characterization}
+
+\begin{theorem}\label{thm:main}
+For a Banach lattice $X$, the following are equivalent.
+\begin{enumerate}
+\item $X$ is a KB-space.
+\item Whenever $(T_n)$ is a sequence of sequentially un-compact operators in
+  $L(c_0,X)$ and $T_n\uparrow T$, the operator $T$ is sequentially
+  un-compact.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+The implication (2)$\Rightarrow$(1) is Proposition 9.6 of \cite{KMT}.
+
+Suppose (1), and let sequentially un-compact operators $T_n:c_0\to X$
+satisfy $T_n\uparrow T$. Then
+\[
+ S:=T-T_1\geq0.
+\]
+Lemma~\ref{lem:positive-c0} shows that $S$ is compact. In particular, $S$ is
+sequentially un-compact, since every norm-convergent sequence is
+un-convergent.
+
+The sequentially un-compact operators form a linear subspace
+\cite[Proposition 9.2]{KMT}. For completeness, if $(z_j)$ is bounded, first
+pass to a subsequence along which $T_1z_j$ un-converges, and then to a further
+subsequence along which $Sz_j$ un-converges. Addition is continuous for
+un-convergence, so $(T_1+S)z_j=Tz_j$ un-converges along the final subsequence.
+Thus $T$ is sequentially un-compact, proving (2).
+\end{proof}
+
+\begin{remark}[A slightly stronger form]
+The proof does not use the intermediate operators $T_2,T_3,\ldots$.
+If $X$ is a KB-space, $R:c_0\to X$ is sequentially un-compact, and
+$T-R\geq0$, then $T$ is sequentially un-compact. Indeed, the positive gap is
+compact by Lemma~\ref{lem:positive-c0}.
+\end{remark}
+
+\section*{Verification notes}
+
+The main possible pitfall is to write the non-$c_0$ vector
+$(1,1,\ldots)$ and apply $S$ to it. The proof does not do this: $s$ is
+constructed as a norm limit in $X$, and the tail estimate is first proved for
+finite truncations. Sign-changing unit-ball vectors are covered by the
+positivity inequality $|Sz|\leq S|z|$. Passing to the limit uses only norm
+continuity and the closed positive cone. Finally, the order hypothesis is used
+only in the valid implication $T_1\leq T\Rightarrow T-T_1\geq0$; no norm
+convergence of $T_n$ is assumed.
+
+An independent line-by-line audit is included in \texttt{verification.md}.
+Its verdict is \emph{likely valid, candidate full solution pending human
+review}.
+
+\section*{Bounded novelty check and limitations}
+
+On August 9, 2026, the search covered the run's registry, solution, attempt,
+and proof-gap indexes; exact web searches for the source wording and close
+variants involving ``sequentially un-compact'', ``order closed'', $c_0$, and
+``KB-space''; and a local full-text scan of all 43 ingested arXiv source papers
+that cite the exact title of \cite{KMT}, through the 2026 corpus. No later
+paper stating or proving Theorem~\ref{thm:main} was found.
+
+The search did locate later resolutions of two \emph{different} questions.
+The paper arXiv:2304.04189 proves norm-closedness of un-compact operators,
+while arXiv:2404.15641 answers the band-lifting question. This helps
+separate those literature-closed targets from the converse addressed here.
+The present novelty assessment is nevertheless bounded, not definitive:
+non-arXiv literature was not exhaustively citation-indexed, and the positive
+$c_0$ lemma is elementary enough that it may exist elsewhere in a different
+form.
+
+\section*{Human-review recommendation}
+
+Review as a full solution. The decisive point is the uniform tail estimate in
+Lemma~\ref{lem:positive-c0}; once it is accepted, the missing implication is
+immediate. A reviewer should also check whether this elementary positive-
+operator observation has already been explicitly connected to Proposition
+9.6 in non-arXiv literature.
+
+\begin{thebibliography}{9}
+\bibitem{KMT}
+M. Kandi\'c, M. A. A. Marabeh, and V. G. Troitsky,
+\emph{Unbounded norm topology in Banach lattices},
+J. Math. Anal. Appl. \textbf{451} (2017), 259--279;
+arXiv:1608.05489; doi:10.1016/j.jmaa.2017.01.041.
+\end{thebibliography}
+
+\end{document}

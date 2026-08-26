@@ -1,0 +1,230 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\B}{\mathcal B}
+\newcommand{\U}{\mathcal U}
+
+\title{Contractive Direct Limits Preserve\\
+$L^p$-Operator Algebras}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 1}
+\date{August 9, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.9\textwidth}{\textbf{Status.}
+Candidate full solution, likely valid, pending expert review.  For every fixed
+$1\le p<\infty$, an arbitrary contractive direct limit of $L^p$-operator
+algebras is again an $L^p$-operator algebra.  No complete-contractivity or
+injectivity hypothesis on the connecting maps is required.}}
+\end{center}
+
+\section{Source question}
+
+Phillips~\cite{PhillipsSource} defines an $L^p$-operator algebra to be a Banach
+algebra isometrically isomorphic to a norm-closed subalgebra of
+$\B(L^p(X,\mu))$.  Proposition~6.1 of that paper constructs the direct limit
+$A=\varinjlim_i A_i$ of any directed system of Banach algebras and contractive
+homomorphisms.  If $\varphi_i:A_i\to A$ are the canonical maps, it proves
+\begin{equation}\label{eq:limitnorm}
+ \|\varphi_i(a)\|
+ =\lim_{j\ge i}\|\varphi_{j,i}(a)\|,
+ \qquad a\in A_i,
+\end{equation}
+and that $\bigcup_i\varphi_i(A_i)$ is dense in $A$.
+
+Immediately afterward, on PDF page 35, the paper asks whether $A$ is an
+$L^p$-operator algebra when every $A_i$ is one.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{The source question and its immediate context on page 35 of
+  Phillips~\cite{PhillipsSource}.}
+\end{figure}
+
+Throughout the result below, $1\le p<\infty$, the range of the source paper.
+
+\section{Proof intuition}
+
+Represent each stage $A_j$ isometrically on some $L^p$-space $E_j$.  A stage
+element $a\in A_i$ then has a coherent tail of represented images
+$\rho_j(\varphi_{j,i}(a))$ for $j\ge i$.  Choose an ultrafilter which regards
+every final segment as large and let this operator tail act on the Banach-space
+ultraproduct $(E_j)_\U$.
+
+There are two exact norm facts.  First, the norm of an operator induced by a
+bounded family is the ultralimit of the coordinate operator norms.  Second,
+the ordinary tail limit of those norms is precisely the direct-limit norm in
+\eqref{eq:limitnorm}.  Thus the tail construction is isometric.  It is also
+well defined when two stage elements become equal only asymptotically, since
+then the tail norm of their difference tends to zero.  The dense algebraic
+limit consequently embeds isometrically, and the embedding extends to its
+completion.  Finally, ultraproducts of $L^p$-spaces are $L^p$-spaces for finite
+$p$.
+
+\section{The theorem}
+
+We first record the elementary operator-ultraproduct norm identity used in the
+proof.
+
+\begin{lemma}\label{lem:operatornorm}
+Let $(E_j)_{j\in I}$ be nonzero Banach spaces, let $\U$ be an ultrafilter on $I$, and
+let $(T_j)_{j\in I}$ be a uniformly bounded family with
+$T_j\in\B(E_j)$.  The coordinatewise operator
+\[
+ T_\U:(E_j)_\U\longrightarrow(E_j)_\U,
+ \qquad [(x_j)]\longmapsto[(T_jx_j)],
+\]
+satisfies
+\[
+ \|T_\U\|=\lim_{j\to\U}\|T_j\|.
+\]
+\end{lemma}
+
+\begin{proof}
+The upper bound follows directly from the ultraproduct norm.  Fix
+$\varepsilon>0$.  For every $j$, choose $x_j\in E_j$ with $\|x_j\|=1$ and
+\[
+ \|T_jx_j\|\ge \|T_j\|-\varepsilon.
+\]
+Then $x=[(x_j)]$ has norm one and
+\[
+ \|T_\U x\|=\lim_{j\to\U}\|T_jx_j\|
+ \ge\lim_{j\to\U}\|T_j\|-\varepsilon.
+\]
+Letting $\varepsilon\downarrow0$ proves the reverse bound.
+\end{proof}
+
+\begin{theorem}\label{thm:main}
+Fix $1\le p<\infty$.  Let $I$ be a directed set and
+\[
+ \big((A_i)_{i\in I},(\varphi_{j,i})_{i\le j}\big)
+\]
+be a direct system of $L^p$-operator algebras whose connecting homomorphisms
+are contractive.  Then its direct limit in the category of Banach algebras and
+contractive homomorphisms is an $L^p$-operator algebra.
+\end{theorem}
+
+\begin{proof}
+For $i\in I$, put $I_i=\{j\in I:j\ge i\}$.  The family of final segments
+$(I_i)_{i\in I}$ has the finite-intersection property, so choose an ultrafilter
+$\U$ on $I$ which contains every $I_i$.
+
+For each $j\in I$, choose an isometric algebra homomorphism
+\[
+ \rho_j:A_j\longrightarrow\B(E_j),
+ \qquad E_j=L^p(X_j,\mu_j),
+\]
+with $E_j\ne\{0\}$.  (If necessary, take the $p$-direct sum of a given
+representation with the zero representation on $\mathbb C$.)
+Let $E=(E_j)_\U$.  The standard $L^p$ ultraproduct theorem says that $E$ is
+isometrically an $L^p$-space; see Heinrich~\cite{Heinrich}.
+
+For $i\in I$ and $a\in A_i$, define a uniformly bounded operator family by
+\[
+ T_j^{i,a}=
+ \begin{cases}
+  \rho_j(\varphi_{j,i}(a)),&j\ge i,\\
+  0,&j\not\ge i.
+ \end{cases}
+\]
+Contractivity gives $\sup_j\|T_j^{i,a}\|\le\|a\|$.  Let
+$T^{i,a}\in\B(E)$ be its induced ultraproduct operator.
+
+We use this to define an operator on the dense subalgebra
+\[
+ A_0=\bigcup_{i\in I}\varphi_i(A_i)\subset A
+\]
+by setting $\rho(\varphi_i(a))=T^{i,a}$.  We first check that this is well
+defined.  Suppose $\varphi_i(a)=\varphi_k(b)$ in $A$.  Choose
+$\ell\ge i,k$ and set
+\[
+ d=\varphi_{\ell,i}(a)-\varphi_{\ell,k}(b)\in A_\ell.
+\]
+By \eqref{eq:limitnorm},
+\[
+ \lim_{j\ge\ell}\|\varphi_{j,\ell}(d)\|
+ =\|\varphi_\ell(d)\|=0.
+\]
+On the final segment $I_\ell$, the difference between the two operator
+families is $\rho_j(\varphi_{j,\ell}(d))$.  Lemma~\ref{lem:operatornorm}
+therefore gives $T^{i,a}=T^{k,b}$.
+
+Linearity and multiplicativity are checked on a common final segment.  For
+example, if $\ell\ge i,k$, then for every $j\ge\ell$,
+\begin{align*}
+ T_j^{i,a}T_j^{k,b}
+ &=\rho_j\!\left(\varphi_{j,i}(a)\varphi_{j,k}(b)\right)\\
+ &=\rho_j\!\left(
+   \varphi_{j,\ell}\big(\varphi_{\ell,i}(a)
+                    \varphi_{\ell,k}(b)\big)\right),
+\end{align*}
+which is the tail family representing the product in $A_0$.
+
+Finally, Lemma~\ref{lem:operatornorm}, the isometry of each $\rho_j$, and
+\eqref{eq:limitnorm} give
+\begin{align*}
+ \|\rho(\varphi_i(a))\|
+ &=\lim_{j\to\U}\|T_j^{i,a}\|\\
+ &=\lim_{j\to\U}\|\varphi_{j,i}(a)\|\\
+ &=\lim_{j\ge i}\|\varphi_{j,i}(a)\|\\
+ &=\|\varphi_i(a)\|.
+\end{align*}
+Thus $\rho:A_0\to\B(E)$ is an isometric algebra homomorphism.  Since $A_0$
+is dense in $A$, it extends uniquely to an isometric homomorphism
+$A\to\B(E)$.  Its range is closed because $A$ is complete.  Since $E$ is an
+$L^p$-space, $A$ is an $L^p$-operator algebra.
+\end{proof}
+
+\section{Scope, prior art, and novelty check}
+
+Theorem~\ref{thm:main} answers the page-35 question throughout the finite-$p$
+range of the source paper.  It does not assume that the connecting maps are
+injective, isometric, nondegenerate, or completely contractive, and the index
+set need not be countable.  No claim is made for $p=\infty$.
+
+Phillips's 2014 GPOTS talk summary~\cite[Theorem~4.1]{PhillipsTalk} announces
+that a direct limit of $L^p$-operator algebras with \emph{completely
+contractive} maps is an $L^p$-operator algebra and mentions the same
+ultraproduct mechanism.  The source problem, however, assumes only ordinary
+contractivity.  The proof above uses neither matrix norms nor amplifications,
+and so removes that additional hypothesis.
+
+The local run indexes were searched for arXiv:1309.6406, the exact title,
+``direct limit,'' ``$L^p$-operator algebra,'' and ``ultraproduct.''  Bounded web
+searches on August 9, 2026 used the exact source sentence and combinations of
+the author, title, contractive/completely contractive maps, direct limits, and
+ultraproducts.  They found the source, the 2014 talk's completely-contractive
+special case, and later special direct-limit constructions, but no treatment
+of arbitrary contractive connecting homomorphisms.  Novelty confidence is
+therefore positive but conservative pending expert literature review.
+
+No computation is used.  The proof audit in \path{VERIFICATION.md} identifies
+the well-definedness and norm-preservation steps for focused human review.
+
+\begin{thebibliography}{9}
+\bibitem{PhillipsSource}
+N. C. Phillips,
+\emph{Crossed products of $L^p$ operator algebras and the K-theory of Cuntz
+algebras on $L^p$ spaces}, arXiv:1309.6406 (2013).
+
+\bibitem{Heinrich}
+S. Heinrich,
+\emph{Ultraproducts in Banach space theory}, J. Reine Angew. Math.
+\textbf{313} (1980), 72--104; doi:10.1515/crll.1980.313.72.
+
+\bibitem{PhillipsTalk}
+N. C. Phillips,
+\emph{Operator algebras on $L^p$ spaces which ``look like'' $C^*$-algebras},
+GPOTS talk summary (2014), Theorem 4.1.
+\end{thebibliography}
+
+\end{document}

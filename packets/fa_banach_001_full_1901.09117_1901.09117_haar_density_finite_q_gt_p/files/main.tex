@@ -1,0 +1,310 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{deepblue}{RGB}{25,67,112}
+\definecolor{softblue}{RGB}{236,244,251}
+\definecolor{softgreen}{RGB}{237,248,240}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Haar}{\mathcal H_d}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\1}{\mathbf 1}
+
+\title{\textbf{Haar-span density at the limiting Besov edge}\\
+\large A full answer to the finite-$q$ question in arXiv:1901.09117}
+\author{Solution packet for \emph{Basis properties of the Haar system in limiting Besov spaces}}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{deepblue}{softgreen}{\parbox{0.88\textwidth}{
+\textbf{Result.} If $d/(d+1)\le p<1$, then the algebraic span of the
+inhomogeneous Haar system is dense in $B^1_{p,q}(\R^d)$ if and only if
+\[
+                         p<q<\infty.
+\]
+Thus every finite case left open in the source has a positive answer.}}
+\end{center}
+
+\section{Source question and answer}
+
+Garrig\'os, Seeger and Ullrich prove that $\Span\Haar$ is not dense in
+$B^1_{p,q}(\R^d)$ when
+\[
+                 \frac d{d+1}\le p<1,\qquad 0<q\le p,
+\]
+and ask whether density also fails when $q>p$ \cite[\S8.1]{GSU}.  They also
+observe that density fails for $q=\infty$, since the ambient Besov space is
+nonseparable while the closure of a countable span is separable.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.94\textwidth]{figures/open_problem_crop.png}
+\caption{The exact open-problem statement on page 28 of the official
+arXiv:1901.09117v2 PDF.}
+\end{figure}
+
+The missing answer goes in the opposite direction from the expectation in
+the source.
+
+\begin{theorem}[Complete density classification]\label{thm:main}
+Let $d\in\mathbb N$ and $d/(d+1)\le p<1$.  Then
+\[
+ \overline{\Span\Haar}^{\,B^1_{p,q}(\R^d)}=B^1_{p,q}(\R^d)
+ \quad\Longleftrightarrow\quad p<q<\infty.
+\]
+More quantitatively, if $p<q<\infty$ and $f\in C_c^\infty(\R^d)$, there
+are finite Haar combinations $g_M$, indexed by powers of two $M$, such that
+\begin{equation}\label{eq:rate}
+ \|f-g_M\|_{B^1_{p,q}}
+ \le C_f\bigl(M^{1/q-1/p}+M^{-1}\bigr).
+\end{equation}
+\end{theorem}
+
+\section{Proof Intuition}
+
+A single dyadic conditional expectation $\E_Nf$ creates a jump defect of
+order one in the Besov norm near its natural scale $2^{-N}$.  Averaging many
+such expectations globally spreads this defect over scales, but only with
+cost $M^{1/q-1}$; that proves convergence only for $q>1$.
+
+The decisive extra freedom is to spread the defects in \emph{space as well
+as scale}.  Divide a cube into $M$ equal thin slabs and use a different
+dyadic resolution on each slab.  A defect occupying a fraction $1/M$ of
+space has $L^p$ cost $(1/M)^{1/p}$.  Put the $M$ slab defects at $M$
+different scales and take the $\ell^q$ scale norm: the total cost becomes
+\[
+       \bigl(M\,(M^{-1/p})^q\bigr)^{1/q}
+       =M^{1/q-1/p}.
+\]
+This tends to zero exactly for $q>p$.  The only apparent danger is the new
+jump along each slab boundary.  Choosing all dyadic resolutions sufficiently
+fine makes those boundary jumps of size $2^{-N_i}$; a geometric local-means
+estimate shows that their total contribution is $O(2^{-N_0})$.
+
+\section{Local-means estimate}
+
+We use the compactly supported local-means characterization fixed in the
+source \cite[(12)]{GSU}.  Thus $L_0u=\beta_0*u$ and, for $k\ge1$,
+$L_ku=\beta_k*u$, where $\beta_k(x)=2^{kd}\beta(2^kx)$, $\beta$ has as many
+vanishing moments as needed, and
+\begin{equation}\label{eq:localnorm}
+ \|u\|_{B^1_{p,q}}asymp
+ \left(\sum_{k=0}^\infty [2^k\|L_ku\|_p]^q\right)^{1/q}.
+\end{equation}
+For $N\ge0$, let $\E_N$ be conditional expectation on the dyadic cubes of
+side $2^{-N}$.
+
+For $0<p<1$, define the summable two-sided sequence
+\begin{equation}\label{eq:W}
+ W(m)=
+ \begin{cases}
+  2^{pm},&m\le0,\\
+  2^{-(1-p)m},&m>0.
+ \end{cases}
+ \qquad (m\in\mathbb Z).
+\end{equation}
+
+\begin{lemma}[A defect confined to one slab]\label{lem:slab}
+Fix a compact dyadic cube $K$ and $f\in C_c^\infty(K)$.  Let $\Omega\subset K$
+be an axis-parallel dyadic rectangle, write
+$\theta=|\Omega|$ and
+$S=1+\mathcal H^{d-1}(\partial\Omega)$, and suppose its boundary is aligned
+with the level-$N$ dyadic grid.  Then, uniformly in $k,N$ and $\Omega$,
+\begin{equation}\label{eq:slabestimate}
+ \left[2^k\left\|L_k\bigl(\1_\Omega(f-\E_Nf)\bigr)\right\|_p\right]^p
+ \le C_f\left\{
+       \theta W(k-N)+S,2^{-pN}2^{-(1-p)k}
+       \right\}.
+\end{equation}
+The constant may depend on $K,p,d$ and finitely many derivatives of $f$,
+but not on the thickness of $\Omega$.
+\end{lemma}
+
+\begin{proof}
+Set $\delta=2^{-N}$ and, for $k\ge1$, $t=2^{-k}$.  Since $f$ is globally
+Lipschitz after extension by zero,
+\begin{equation}\label{eq:amplitude}
+                    |f-\E_Nf|\le C_f\delta.
+\end{equation}
+The $ct$-neighborhood of an axis-parallel rectangle has volume at most
+$C(\theta+St)$.  If $t<\delta$, and $G_N$ denotes the union of the faces of
+all level-$N$ cubes, elementary counting of the grid faces gives
+\begin{equation}\label{eq:tubes}
+ |\Omega^{(ct)}\cap G_N^{(ct)}|
+ \le C\left(\theta\frac t\delta+St\right),
+ \qquad |(\partial\Omega)^{(ct)}|\le CSt.
+\end{equation}
+
+First suppose $k\le N$, so $t\ge\delta$ (with $t=1$ when $k=0$).
+The crude bound \eqref{eq:amplitude}, compact support of the kernels, and the
+first tubular-volume estimate imply
+\[
+ [t^{-1}\|L_k(\1_\Omega(f-\E_Nf))\|_p]^p
+ \le C_f\delta^pt^{-p}(\theta+St).
+\]
+This is
+\[
+ C_f\{\theta 2^{p(k-N)}+S2^{-pN}2^{-(1-p)k}\},
+\]
+which is \eqref{eq:slabestimate} for $k-N\le0$.  The same argument applies
+to the noncancellative low-frequency kernel $L_0$.
+
+Now suppose $k>N$, so $t<\delta$.  Away from the $ct$-neighborhoods of
+$G_N$ and $\partial\Omega$, the convolution kernel stays in one level-$N$
+cube and inside $\Omega$.  There $\E_Nf$ is constant, so cancellation gives
+\[
+ L_k\bigl(\1_\Omega(f-\E_Nf)\bigr)=L_kf.
+\]
+If the local-mean kernel has $L$ vanishing moments, Taylor's theorem gives
+$|L_kf|\le C_f t^L$.  On the two exceptional neighborhoods we use the
+crude bound $C_f\delta$.  Consequently, by \eqref{eq:tubes},
+\begin{align*}
+ &[t^{-1}\|L_k(\1_\Omega(f-\E_Nf))\|_p]^p\\
+ &\quad\le C_f\bigl[
+   \theta t^{(L-1)p}+S t^{(L-1)p+1}
+   +\theta\delta^{p-1}t^{1-p}+S\delta^pt^{1-p}
+ \bigr].
+\end{align*}
+Choose $L$ so large that $(L-1)p\ge1-p$.  Because $t\le\delta\le1$, the
+first two terms are absorbed by the third and fourth, respectively.  The
+remaining main term is
+\[
+ \theta\delta^{p-1}t^{1-p}
+ =\theta 2^{-(1-p)(k-N)},
+\]
+and the last term is the stated boundary remainder.  This proves the lemma.
+\end{proof}
+
+\section{Mixed-resolution approximation}
+
+\begin{proof}[Proof of Theorem \ref{thm:main}]
+The negative implications are already in the source: Corollary 8.4 gives
+non-density for $q\le p$, and nonseparability gives it for $q=\infty$.
+It remains to prove density when $p<q<\infty$.
+
+Fix $f\in C_c^\infty(\R^d)$ and choose a dyadic cube $K$ containing its
+support, with boundary on the unit grid.  Let $M=2^R$ and partition $K$ into
+$M$ half-open slabs $\Omega_1,\ldots,\Omega_M$ of equal width in the first
+coordinate.  Then
+\begin{equation}\label{eq:slabgeometry}
+ |\Omega_i|=|K|/M,\qquad
+ 1+\mathcal H^{d-1}(\partial\Omega_i)\le C_K
+\end{equation}
+uniformly in $i$ and $M$.
+
+Choose $N_0\ge R+C_K'$ so that all slab boundaries lie on the level-$N_0$
+grid, and set $N_i=N_0+i$.  Define
+\begin{equation}\label{eq:gM}
+                  g_M=\sum_{i=1}^M\1_{\Omega_i}\E_{N_i}f.
+\end{equation}
+Every summand is a compactly supported step function on level-$N_i$ dyadic
+cubes.  By the martingale-difference identity, it is a finite linear
+combination of inhomogeneous Haar functions; hence $g_M\in\Span\Haar$.
+Moreover,
+\[
+ f-g_M=\sum_{i=1}^M u_i,
+ \qquad u_i=\1_{\Omega_i}(f-\E_{N_i}f).
+\]
+
+Since $p<1$, pointwise $p$-subadditivity and Lemma \ref{lem:slab} give, with
+$A_k=[2^k\|L_k(f-g_M)\|_p]^p$,
+\begin{equation}\label{eq:Ak}
+ A_k\le C_f\left[
+   \sum_{i=1}^M\frac{|K|}{M}W(k-N_i)
+   +2^{-(1-p)k}\sum_{i=1}^M2^{-pN_i}
+ \right].
+\end{equation}
+Let $\nu$ be the sequence on $\mathbb Z$ having mass $|K|/M$ at each
+$N_i$ and zero elsewhere.  Put $r=q/p>1$.  Since $W\in\ell^1(\mathbb Z)$,
+discrete Young's inequality yields
+\begin{equation}\label{eq:young}
+ \|\nu*W\|_{\ell^r}
+ \le\|\nu\|_{\ell^r}\|W\|_{\ell^1}
+ \le C_{p,K}M^{1/r-1}.
+\end{equation}
+Also, the levels $N_i=N_0+i$ make the second sum in \eqref{eq:Ak} at most
+$C_p2^{-pN_0}$, and $\{2^{-(1-p)k}\}_{k\ge0}\in\ell^r$.
+Combining \eqref{eq:localnorm}--\eqref{eq:young},
+\begin{align*}
+ \|f-g_M\|_{B^1_{p,q}}
+ &\lesssim \|A\|_{\ell^r}^{1/p}\\
+ &\le C_f\left(M^{(1/r-1)/p}+2^{-N_0}\right)\\
+ &=C_f\left(M^{1/q-1/p}+2^{-N_0}\right).
+\end{align*}
+Taking $N_0=R+C_K'$ gives $2^{-N_0}\lesssim_K M^{-1}$ and proves
+\eqref{eq:rate}.  Since $q>p$, the first exponent is negative, so
+$g_M\to f$ in $B^1_{p,q}$.
+
+Finally, $C_c^\infty(\R^d)$ is dense in $B^1_{p,q}(\R^d)$ whenever
+$p,q<\infty$ (see, for example, \cite{Triebel}).  Approximating an arbitrary
+Besov element first by a smooth compactly supported function and then by
+$g_M$ proves the desired density.
+\end{proof}
+
+\section{Consequences, checks, and scope}
+
+The result completes the density phase diagram in this parameter range:
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Range of $q$ & Density of $\Span\Haar$ & Source of conclusion\\
+\midrule
+$0<q\le p$ & no & Corollary 8.4 of \cite{GSU}\\
+$p<q<\infty$ & yes & Theorem \ref{thm:main} above\\
+$q=\infty$ & no & nonseparability, noted in \cite{GSU}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+This is a statement about density only.  It does not contradict the source's
+proof that no strongly admissible enumeration of the Haar system is a
+Schauder basis at $s=1$: dense systems can still have divergent or unbounded
+ordered partial sums.
+
+The finite script \texttt{verify\_exponents.py} checks the discrete
+convolution and the rate $M^{1/q-1/p}$ for representative parameters on
+both sides of $q=1$.  The geometric proof of Lemma \ref{lem:slab}, rather
+than that computation, is the substantive verification.
+
+A bounded search of the run indexes and later arXiv records by exact title,
+exact question phrase, author names, and core Haar/Besov density terms found
+no later resolution.  The companion Triebel--Lizorkin paper
+\cite{GSUendpoint} does not transfer the desired conclusion through the
+standard fixed-smoothness embeddings.  The result is therefore presented as
+a candidate new full solution, subject to expert review.
+
+\begin{thebibliography}{9}
+
+\bibitem{GSU}
+G. Garrig\'os, A. Seeger and T. Ullrich,
+\emph{Basis properties of the Haar system in limiting Besov spaces},
+arXiv:1901.09117v2, 2019.
+
+\bibitem{GSUendpoint}
+G. Garrig\'os, A. Seeger and T. Ullrich,
+\emph{The Haar system in Triebel--Lizorkin spaces: endpoint results},
+arXiv:1907.03738, 2019.
+
+\bibitem{Triebel}
+H. Triebel,
+\emph{Theory of Function Spaces II}, Monographs in Mathematics 84,
+Birkh\"auser, Basel, 1992.
+
+\end{thebibliography}
+
+\end{document}

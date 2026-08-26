@@ -1,0 +1,247 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\cube}{\{-1,1\}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\R}{\mathbb R}
+
+\begin{document}
+
+\begin{center}
+{\Large\bf Exact homogeneous-level projection norms on Boolean cubes}\par
+\vspace{0.7em}
+Automated mathematical discovery run \texttt{fa\_banach\_001}\par
+\vspace{0.35em}
+13 August 2026
+\end{center}
+
+\medskip
+\noindent\fbox{\parbox{0.94\linewidth}{
+\textbf{Status.} Candidate full solution, likely valid, subject to human review.  The result
+answers the source's Section~4.3 question affirmatively and proves the stronger exact
+formula for every fixed degree and Fourier level.
+}}
+
+\section{Source question}
+
+The source is A. Defant, M. Masty\l o, and A. P\'erez, \emph{On the Fourier
+spectrum of functions on Boolean cubes}, arXiv:1706.03670~\cite{DMP}.  On
+source p.~24, Section~4.3 asks whether $1+\sqrt2$ is the best constant $C$
+such that
+\[
+  \norm{f_m}_\infty\le C^d\norm f_\infty
+\]
+for every real $f:\cube^n\to\R$ of Fourier degree at most $d$ and every
+$0\le m\le d$.
+
+\begin{center}
+\includegraphics[width=0.96\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+Write the Fourier--Walsh polynomial of $f$ as
+\[
+ F(x)=\sum_{S\subseteq[n]}\widehat f(S)x^S,
+ \qquad x^S=\prod_{j\in S}x_j,
+\]
+and let $F_m=f_m=\sum_{|S|=m}\widehat f(S)x^S$.  The polynomial $F$ is
+multi-affine, and therefore
+\begin{equation}\label{eq:normequality}
+ \norm F_{[-1,1]^n}=\norm f_{\cube^n}.
+\end{equation}
+
+For $0\le m\le d$, define the classical coefficient constant
+\begin{equation}\label{eq:markovdef}
+ M_{m,d}:=\sup\left\{|[t^m]p|:\deg p\le d,
+       \ \sup_{-1\le t\le1}|p(t)|\le1\right\}.
+\end{equation}
+Markov's sharp coefficient theorem says that $M_{m,d}$ is the absolute
+$t^m$ coefficient of $T_d$ when $m\equiv d\pmod2$, and of $T_{d-1}$
+otherwise~\cite[Eqns.~(12)--(13)]{DMP}; see also~\cite[Ch.~3]{BE}.
+
+\section{Proof intuition}
+
+The known upper bound reduces the multivariable question to one variable:
+on each radial line, $F(tx)$ is a degree-$d$ polynomial whose $t^m$
+coefficient is $F_m(x)$, so Markov's theorem gives the constant $M_{m,d}$.
+What was missing is sharpness inside the multi-affine class.
+
+To recover a one-variable Chebyshev extremizer without repeated variables,
+spread its single variable over more and more Boolean coordinates:
+\[
+ f_n(\varepsilon)=T_{d'}\!\left(\frac{\varepsilon_1+\cdots+\varepsilon_n}{n}\right).
+\]
+This remains bounded by one.  After reducing powers by $x_j^2=1$, the
+degree-$m$ part of the $m$th power of the average is asymptotically the
+ordinary squarefree term: collisions among indices have lower order in $n$.
+All higher Chebyshev powers contribute only collision terms and vanish in the
+limit.  The level-$m$ value therefore tends exactly to the extremal Chebyshev
+coefficient.
+
+\section{Exact result}
+
+For fixed $m,d$, put
+\[
+ \Lambda_{m,d}:=sup_{n\ge1}\ \sup_{\substack{0\ne f:\cube^n\to\R\\
+        \deg f\le d}}
+ \frac{\norm{f_m}_\infty}{\norm f_\infty}.
+\]
+
+\begin{theorem}\label{thm:exact}
+For every $d\ge1$ and $0\le m\le d$,
+\[
+ \boxed{\Lambda_{m,d}=M_{m,d}.}
+\]
+Consequently, the smallest $C$ for which
+$\norm{f_m}_\infty\le C^d\norm f_\infty$ holds uniformly in $n,d,m$ is
+\[
+ \boxed{C=1+\sqrt2.}
+\]
+\end{theorem}
+
+\begin{proof}
+We first prove the upper bound.  Let $F$ be the multi-affine polynomial of a
+function $f$ of degree at most $d$.  For $x\in[-1,1]^n$, set
+\[
+ p_x(t):=F(tx)=\sum_{r=0}^d t^rF_r(x).
+\]
+If $t\in[-1,1]$, then $tx\in[-1,1]^n$.  Hence
+$\norm{p_x}_{[-1,1]}\le\norm F_{[-1,1]^n}$, while the coefficient of $t^m$
+in $p_x$ is $F_m(x)$.  The definition~\eqref{eq:markovdef}, followed by
+\eqref{eq:normequality}, gives
+\[
+ |F_m(x)|\le M_{m,d}\norm F_{[-1,1]^n}
+              =M_{m,d}\norm f_{\cube^n}.
+\]
+Taking the supremum over $x$ proves $\Lambda_{m,d}\le M_{m,d}$.
+
+For the reverse inequality, choose
+\[
+ d'=\begin{cases}d,&m\equiv d\pmod2,\\d-1,&m\not\equiv d\pmod2,
+ \end{cases}
+ \qquad
+ T_{d'}(t)=\sum_{k=0}^{d'}a_kt^k.
+\]
+Then $|a_m|=M_{m,d}$.  For each $n$, define
+\begin{equation}\label{eq:fn}
+ f_n(\varepsilon)=T_{d'}\!\left(
+           \frac{\varepsilon_1+\cdots+\varepsilon_n}{n}\right),
+ \qquad \varepsilon\in\cube^n.
+\end{equation}
+The argument of $T_{d'}$ lies in $[-1,1]$, so $\norm{f_n}_\infty\le1$.
+Let $Q_n$ be the unique multi-affine polynomial agreeing with~\eqref{eq:fn}
+on $\cube^n$; equivalently, reduce every $x_j^r$ using $x_j^2=1$.
+Thus $Q_n$ is precisely the Fourier--Walsh polynomial of $f_n$ and has degree
+at most $d'$.
+
+For integers $k,m\ge0$, let $N_{n,k,m}$ be the number of ordered $k$-tuples
+$(i_1,\ldots,i_k)\in[n]^k$ for which exactly $m$ indices occur an odd number
+of times.  Expanding $(x_1+\cdots+x_n)^k$ and reducing modulo
+$x_j^2-1$ shows that
+\begin{equation}\label{eq:countidentity}
+ (Q_n)_m(\mathbf1)=\sum_{k=0}^{d'}a_kn^{-k}N_{n,k,m}.
+\end{equation}
+If $k<m$, then $N_{n,k,m}=0$.  If $k=m$, each of the $m$ occurring indices
+must occur once, and hence
+\begin{equation}\label{eq:maincount}
+ N_{n,m,m}=(n)_m=n(n-1)\cdots(n-m+1).
+\end{equation}
+Finally suppose $k>m$.  If such a tuple uses $r$ distinct indices, $m$ of
+them have odd positive multiplicity and the other $r-m$ have even
+multiplicity at least two.  Therefore
+\[
+ k\ge m+2(r-m),\qquad r\le\frac{k+m}{2}.
+\]
+For fixed $k,m$, choosing the distinct indices and their multiplicities gives
+the uniform estimate
+\begin{equation}\label{eq:errorcount}
+ N_{n,k,m}=O_{k,m}\!\left(n^{(k+m)/2}\right).
+\end{equation}
+Equations~\eqref{eq:countidentity}--\eqref{eq:errorcount} now imply
+\[
+ (Q_n)_m(\mathbf1)
+ =a_m\frac{(n)_m}{n^m}
+  +\sum_{k=m+1}^{d'}a_kO_{k,m}\!\left(n^{-(k-m)/2}\right)
+ \longrightarrow a_m.
+\]
+Since $\norm{f_n}_\infty\le1$,
+\[
+ \Lambda_{m,d}\ge\limsup_{n\to\infty}
+   \norm{(f_n)_m}_\infty
+ \ge\lim_{n\to\infty}|(Q_n)_m(\mathbf1)|
+ =|a_m|=M_{m,d}.
+\]
+This proves the exact identity.
+
+If ``degree $d$'' is read as \emph{exactly} $d$ rather than at most $d$,
+the only extra case to note is $d'=d-1$ (where necessarily $m<d$).  On $d$
+fresh Boolean coordinates $\eta$, replace $f_n$ by
+\[
+ f_n(\varepsilon)+\delta\eta_1\cdots\eta_d.
+\]
+Its degree is exactly $d$, its level-$m$ part is unchanged, and its norm is at
+most $1+\delta$.  Letting $\delta\downarrow0$ gives the same lower bound.
+
+It remains to identify the best common exponential base.  Put
+$A=1+\sqrt2$, so $A^{-1}=\sqrt2-1$.  The nonzero coefficients of $T_r$
+alternate in sign along their common parity.  Consequently all terms have
+the same phase at $i$, and the standard closed form for $T_r$ gives
+\begin{equation}\label{eq:Ti}
+ \sum_{j=0}^r|[t^j]T_r|
+ =|T_r(i)|
+ =\frac{A^r+(-1)^rA^{-r}}2.
+\end{equation}
+In particular every coefficient of $T_r$ is at most $A^r$.  The same bound
+for $T_d$ and $T_{d-1}$ gives $M_{m,d}\le A^d$, so $C=A$ works.
+Conversely,~\eqref{eq:Ti} and the fact that $T_r$ has at most $r+1$
+coefficients show that some coefficient has magnitude at least
+$(A^r-A^{-r})/(2(r+1))$.  Its $r$th root tends to $A$.  Thus no smaller
+uniform base can work.  This completes the proof.
+\end{proof}
+
+\section{Checks, scope, and novelty audit}
+
+The proof is exact and has no computational dependency.  As a sanity check,
+the symmetric Fourier formula was evaluated for $(d,m)=(6,2),(7,3),(10,6)$;
+the level values converge to the predicted Chebyshev coefficients
+$18,56,1120$.  The script in \texttt{code/check\_chebyshev\_limits.py}
+reproduces this check.
+
+The result answers only Section~4.3.  It does not resolve the distinct
+Aaronson--Ambainis conjecture or the source's question about subexponential
+Lorentz Bohnenblust--Hille constants.
+
+A bounded search on 13 August 2026 covered the arXiv identifier and title,
+the exact Section~4.3 wording, and combinations of ``homogeneous parts'',
+``Boolean cube'', ``Fourier level projection'', ``Markov coefficient'', and
+``Chebyshev''.  It found later general dimension-free bounded-projection work,
+including~\cite{BKSZ}, but no exact statement of
+$\Lambda_{m,d}=M_{m,d}$ and no explicit resolution of Section~4.3.
+Novelty confidence is therefore provisional.  Human review should focus on
+the Fourier/multilinearization identification and the count
+in~\eqref{eq:errorcount}.
+
+\begin{thebibliography}{9}
+\bibitem{DMP}
+A. Defant, M. Masty\l o, and A. P\'erez,
+\emph{On the Fourier spectrum of functions on Boolean cubes},
+Math. Ann. 374 (2019), 653--680; arXiv:1706.03670.
+
+\bibitem{BE}
+P. Borwein and T. Erd\'elyi,
+\emph{Polynomials and Polynomial Inequalities},
+Graduate Texts in Mathematics 161, Springer, 1995.
+
+\bibitem{BKSZ}
+L. Becker, O. Klein, J. Slote, A. Volberg, and H. Zhang,
+\emph{Dimension-free discretizations of the uniform norm by small product sets},
+Invent. Math. 239 (2025), 469--503; arXiv:2310.07926.
+\end{thebibliography}
+
+\end{document}

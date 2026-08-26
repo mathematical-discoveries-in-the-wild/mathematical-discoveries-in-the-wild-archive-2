@@ -1,0 +1,296 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.92in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newcommand{\R}{\mathbb R}
+\newcommand{\e}{\mathrm e}
+\DeclareMathOperator{\Log}{log}
+
+\title{The gamma-product limit for the classical\
+Bohnenblust--Hille estimates\\
+\large A full solution of the conjecture in arXiv:1205.4735}
+\author{Autonomous mathematical discovery run \texttt{fa\_banach\_001}\\
+\texttt{agent\_lane\_02} \; (GPT5.6)}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{black}{gray!8}{\parbox{0.92\linewidth}{
+\textbf{Status.} Candidate full solution, likely valid, pending human review.
+The exact corrected gamma product converges to the conjectured constant, with
+an explicit first-order logarithmic error.  The convergence premise left open
+in arXiv:1107.4814 is therefore also proved.}}
+\end{center}
+
+\section{Source conjecture and provenance}
+
+Mu\~noz-Fern\'andez, Pellegrino, and Seoane-Sep\'ulveda introduced explicit
+Bohnenblust--Hille upper estimates involving an even-indexed gamma product
+$r_n$, but left its convergence unproved \cite{MPS}.  Serrano-Rodr\'iguez
+subsequently corrected a finite-index imprecision and, on PDF page 5,
+conjectured that the corrected product satisfies \cite{SR}
+\[
+             \lim_{n\to\infty}r_n
+             =\frac{\e^{1-\gamma/2}}{\sqrt2},
+\]
+where $n$ tends to infinity through the even integers and $\gamma$ is the
+Euler--Mascheroni constant.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{The complete conjecture on source PDF page 5 of arXiv:1205.4735.}
+\end{figure}
+
+For even $n>14$, the corrected formula (equation (2.3) of the source) is
+\begin{equation}\label{eq:corrected}
+ r_n=\frac{
+ \pi^{(n^2-196)/(8n)}}{
+ 2^{(n^2-2n-192)/(4n)}
+ \left[\displaystyle\prod_{k=7}^{(n-2)/2}
+ \Gamma\!\left(\frac{6k+1}{4k+2}\right)^{2k+1}
+ \right]^{1/n}}.
+\end{equation}
+
+\section{Proof intuition}
+
+The apparently complicated product is a Ces\`aro average in disguise.  The
+gamma arguments obey
+\[
+       \frac{6k+1}{4k+2}=\frac32-\frac1{2k+1}.
+\]
+After inserting $\Gamma(3/2)=\sqrt\pi/2$, all terms of macroscopic size cancel
+exactly.  Each remaining summand is
+\[
+ (2k+1)\left[
+ \log\Gamma\!\left(\frac32-\frac1{2k+1}\right)
+ -\log\Gamma\!\left(\frac32\right)\right],
+\]
+which tends to $-\psi(3/2)$.  Its average therefore gives the limit, and the
+next Taylor term gives the sharper $-(\psi_1(3/2)/4)(\log n)/n$ correction.
+The 2012 correction deletes only six product factors and changes powers by
+$O(1/n)$ in the logarithm, so it cannot affect the limit or its logarithmic
+leading error.
+
+\section{Full theorem}
+
+Write $\psi=\Gamma'/\Gamma$ and $\psi_1=\psi'$.  Let $r_n$ be the corrected
+quantity in \eqref{eq:corrected}.
+
+\begin{theorem}\label{thm:main}
+As $n\to\infty$ through the even integers,
+\begin{equation}\label{eq:refined}
+ \log r_n
+ =1-\frac\gamma2-\frac12\log2
+  -\frac{\psi_1(3/2)}{4n}\log n+O\!\left(\frac1n\right).
+\end{equation}
+Consequently
+\[
+             \lim_{n\to\infty}r_n
+             =\frac{\e^{1-\gamma/2}}{\sqrt2}.
+\]
+The same asymptotic expansion holds for the original, uncorrected product in
+arXiv:1107.4814.
+\end{theorem}
+
+\begin{proof}
+It is convenient first to use the original product
+\begin{equation}\label{eq:old}
+ \widetilde r_n=
+ \frac{\pi^{(n^2-4)/(8n)}}{
+ 2^{(n-2)/4}
+ \left[\displaystyle\prod_{k=1}^{(n-2)/2}
+ \Gamma\!\left(\frac{6k+1}{4k+2}\right)^{2k+1}
+ \right]^{1/n}}.
+\end{equation}
+Put $m=(n-2)/2$ and
+\[
+ f(x)=\log\Gamma\!\left(\frac32-x\right),\qquad f_0=f(0).
+\]
+Since $\Gamma(3/2)=\sqrt\pi/2$ and
+\[
+ \sum_{k=1}^{m}(2k+1)=m(m+2)=\frac{n^2-4}{4},
+\]
+the powers of $\pi$ and the constant gamma contributions cancel exactly in
+the logarithm of \eqref{eq:old}.  What remains is the identity
+\begin{equation}\label{eq:cancel}
+ \log\widetilde r_n
+ =\frac{n-2}{2n}\log2
+  -\frac1n\sum_{k=1}^{m}(2k+1)
+  \left[f\!\left(\frac1{2k+1}\right)-f_0\right].
+\end{equation}
+
+Taylor's theorem at zero gives, uniformly as $t\to\infty$,
+\begin{equation}\label{eq:taylor}
+ t\,[f(1/t)-f_0]
+ =f'(0)+\frac{f''(0)}{2t}+O(t^{-2}).
+\end{equation}
+Here
+\[
+ f'(0)=-\psi(3/2),\qquad f''(0)=\psi_1(3/2).
+\]
+Moreover,
+\[
+ \sum_{k=1}^{m}\frac1{2k+1}=\frac12\log n+O(1),
+ \qquad
+ \sum_{k=1}^{m}\frac1{(2k+1)^2}=O(1).
+\]
+Substitution of \eqref{eq:taylor} in \eqref{eq:cancel}, using
+$m/n=1/2-1/n$, yields
+\begin{equation}\label{eq:old-expansion}
+ \log\widetilde r_n
+ =\frac12\log2+\frac12\psi(3/2)
+  -\frac{\psi_1(3/2)}{4n}\log n+O(n^{-1}).
+\end{equation}
+The classical identity
+\[
+          \psi(3/2)=2-\gamma-2\log2
+\]
+turns the constant in \eqref{eq:old-expansion} into
+$1-\gamma/2-(\log2)/2$.
+
+It remains to check the corrected formula rather than merely the original
+one.  Direct comparison of \eqref{eq:corrected} and \eqref{eq:old} gives the
+exact identity
+\begin{equation}\label{eq:finite-correction}
+ \log r_n-\log\widetilde r_n=\frac{\kappa}{n},
+\end{equation}
+where the constant independent of $n$ is
+\[
+ \kappa=48\log2-24\log\pi
+ +\sum_{k=1}^{6}(2k+1)
+ \log\Gamma\!\left(\frac32-\frac1{2k+1}\right).
+\]
+Indeed, the corrected powers differ by $-24/n$ for $\pi$ and $-48/n$
+in the denominator exponent of $2$, while its product omits precisely the
+indices $1,\ldots,6$.  Equation \eqref{eq:finite-correction} transfers
+\eqref{eq:old-expansion} unchanged at its displayed precision and proves the
+theorem.
+\end{proof}
+
+\section{Upgrade: the formerly conditional ratio limit}
+
+The source arXiv:1107.4814 also considered the real recursive estimates
+\begin{equation}\label{eq:recurrence}
+ C_2=\sqrt2,\quad C_3=2^{5/6},\qquad
+ C_n=\sqrt2\left(\frac{C_{n-2}}
+ {A_{(2n-4)/(n-1)}^2}\right)^{(n-2)/n}\quad(n>3),
+\end{equation}
+where $A_p$ is the sharp lower Khinchin constant.  The paper derived a
+one-step ratio limit conditional on convergence of its $r_n$.  The same local
+calculation proves a stronger unconditional asymptotic for the entire
+recursive sequence.
+
+\begin{corollary}\label{cor:recurrence}
+For the estimates in \eqref{eq:recurrence},
+\begin{equation}\label{eq:C-asymptotic}
+ \log C_n
+ =\frac n8\log2+1-\frac\gamma2-\frac14\log2
+  -\frac{\psi_1(3/2)}{4n}\log n+O\!\left(\frac1n\right).
+\end{equation}
+In particular,
+\[
+ \frac{C_n}{2^{n/8}}\longrightarrow
+ \frac{\e^{1-\gamma/2}}{2^{1/4}},
+ \qquad
+ \frac{C_n}{C_{n-1}}\longrightarrow2^{1/8}.
+\]
+These statements concern the explicit upper estimates $C_n$, not the unknown
+optimal Bohnenblust--Hille constants.
+\end{corollary}
+
+\begin{proof}
+Set $s_n=n\log C_n$.  Once
+$p_n=(2n-4)/(n-1)$ lies in Haagerup's gamma branch,
+\[
+ A_{p_n}=\sqrt2\left(
+ \frac{\Gamma(3/2-1/(n-1))}{\sqrt\pi}
+ \right)^{1/p_n}.
+\]
+All earlier indices contribute only a bounded parity-dependent constant to
+$s_n$.  Multiplying the logarithm of \eqref{eq:recurrence} by $n$ and using
+$f_0=\frac12\log\pi-\log2$ gives, for all sufficiently large $n$,
+\begin{equation}\label{eq:increment}
+ s_n-s_{n-2}
+ =\left(\frac n2+1\right)\log2
+ -(n-1)\left[f\!\left(\frac1{n-1}\right)-f_0\right].
+\end{equation}
+Sum \eqref{eq:increment} separately on the even and odd subsequences.  On
+either parity,
+\begin{align*}
+ \sum_{j\le n}\left(\frac j2+1\right)
+   &=\frac{n^2}{8}+\frac{3n}{4}+O(1),\\
+ \#\{j\le n\}&=\frac n2+O(1),\\
+ \sum_{j\le n}\frac1{j-1}&=\frac12\log n+O(1),
+\end{align*}
+where all sums are restricted to the relevant parity and may begin at any
+fixed sufficiently large index.  Applying \eqref{eq:taylor} in
+\eqref{eq:increment} therefore gives
+\[
+ s_n=\frac{n^2}{8}\log2
+ +n\left(\frac34\log2-\frac12f'(0)\right)
+ -\frac{f''(0)}4\log n+O(1).
+\]
+Divide by $n$, insert $f'(0)=-\psi(3/2)$ and
+$f''(0)=\psi_1(3/2)$, and use the displayed digamma identity.  This is
+\eqref{eq:C-asymptotic}.  Its error tends to zero, so subtracting the formulas
+for $n$ and $n-1$ proves the ratio limit.
+\end{proof}
+
+\section{Verification, scope, and novelty}
+
+The proof uses only exact algebra, Taylor's theorem for $\log\Gamma$ near
+$3/2$, the elementary harmonic-sum asymptotic, and the standard identities
+$\Gamma(3/2)=\sqrt\pi/2$ and
+$\psi(3/2)=2-\gamma-2\log2$.  The included verifier checks the finite-correction
+identity to high precision, the predicted first-order error, and the recursive
+corollary.  These computations are sanity checks, not proof steps.
+
+The result completely answers the explicit conjecture in arXiv:1205.4735 and
+removes the convergence hypothesis attached to the classical recursive
+estimates in arXiv:1107.4814.  It does \emph{not} determine the optimal
+Bohnenblust--Hille constants; later work already replaced these classical
+estimates by much slower-growing families.
+
+A bounded novelty audit on 11 August 2026 searched the run's four lightweight
+indexes; exact web phrases containing the conjectured constant and $r_n$;
+Crossref; OpenAlex's eight works then recorded as citing DOI
+\texttt{10.1016/j.laa.2012.11.028}; and locally available arXiv full text for
+the citing Bohnenblust--Hille corpus (including arXiv:1205.2385, 1207.0124,
+1302.3026, 1503.07306, 1506.00159, and 1604.06323).  No proof of the exact
+gamma-product conjecture was found.  ArXiv:1108.1550 computes the related
+single-factor Khinchin limit that explains the same constant, but does not
+state or prove convergence of this product.  Novelty is plausible, not
+certified.
+
+\paragraph{Human-review recommendation.}
+Check the exact cancellation in \eqref{eq:cancel}, the factor $1/4$ in the
+trigamma correction, and the finite correction \eqref{eq:finite-correction}.
+For the upgrade, independently check the increment identity
+\eqref{eq:increment}.  If these pass, classify the conjecture itself as fully
+solved and the recursive asymptotic as a valid strengthening.
+
+\begin{thebibliography}{9}
+\bibitem{MPS}
+G. A. Mu\~noz-Fern\'andez, D. Pellegrino, and J. B. Seoane-Sep\'ulveda,
+\emph{Estimates for the asymptotic behavior of the constants in the
+Bohnenblust--Hille inequality}, Linear Multilinear Algebra \textbf{60} (2012),
+573--582; arXiv:1107.4814, doi:10.1080/03081087.2011.613833.
+
+\bibitem{SR}
+D. M. Serrano-Rodr\'iguez,
+\emph{Improving the closed formula for subpolynomial constants in the
+multilinear Bohnenblust--Hille inequalities}, Linear Algebra Appl.
+\textbf{438} (2013), 3124--3138; arXiv:1205.4735,
+doi:10.1016/j.laa.2012.11.028.
+\end{thebibliography}
+
+\end{document}

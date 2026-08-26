@@ -1,0 +1,196 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\T}{(0,2\pi)}
+\newcommand{\R}{\mathbb R}
+\setlength{\emergencystretch}{2em}
+
+\title{No universal weighted Sobolev--SVD tail bound\\
+\large A smooth rank-two Fourier counterexample}
+\author{Autonomous mathematical discovery run \texttt{fa\_banach\_001}}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+Candidate full negative answer, likely valid pending expert review.
+
+\section{Source question}
+
+Ali and Nouy compare the ordinary $L^2$ singular value decomposition
+\[
+ u=\sum_{k\geq1}\sigma_k^{00}\psi_k\otimes\phi_k
+\]
+with the SVD obtained by viewing the same kernel as a Hilbert--Schmidt
+operator $L^2(\Omega_2)\to H^1(\Omega_1)$; its singular values are denoted
+$\sigma_k^{10}$.  Immediately after Proposition 2.1 of \cite{AN}, on PDF
+page 3, they ask whether one can bound
+\begin{equation}\label{eq:question}
+ \sum_{k>r}(\sigma_k^{00})^2\|\psi_k\|_{H^1(\Omega_1)}^2
+ \lesssim
+ \sum_{k>r}(\sigma_k^{10})^2\gamma(k)
+\end{equation}
+for some sequence $\gamma(k)$.
+
+\begin{center}
+\includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+We use the only nontrivial uniform interpretation: the finite-valued sequence
+$\gamma$ and the implicit constant are fixed independently of $u$.  If either
+may depend arbitrarily on $u$, the assertion carries no uniform content.
+
+\section{Proof intuition}
+
+Mix one very high Fourier mode with the constant mode by a $45$-degree
+rotation.  The resulting two functions remain orthogonal in $L^2$, so they
+can be prescribed as the unique left singular functions of an $L^2$-SVD.
+In $H^1$, however, almost all of their growing derivative energy points in
+the same direction.
+
+The strong-norm SVD detects that common direction and places the growing
+energy in its first singular value.  Its second singular value stays bounded.
+After truncating the first term, the source's weighted $L^2$ tail still
+contains half of the high-frequency derivative energy, while the proposed
+right side contains only the bounded second strong-norm singular value.  The
+failure already occurs at index two, so no growth of later weights can help.
+
+\section{Counterexample}
+
+Equip $H^1(\T)$ with
+\[
+ \langle f,g\rangle_{H^1}=\int_0^{2\pi}(fg+f'g')\,dx.
+\]
+Let
+\[
+ e_0(x)=(2\pi)^{-1/2},
+ \qquad e_N(x)=\pi^{-1/2}\cos(Nx),
+\]
+so that $e_0,e_N$ are $L^2$-orthonormal,
+$\|e_0'\|_2=0$, and $\|e_N'\|_2=N$.  Put
+\[
+ \psi_1^{(N)}=\frac{e_N+e_0}{\sqrt2},
+ \qquad
+ \psi_2^{(N)}=\frac{e_N-e_0}{\sqrt2}.
+\]
+Choose any smooth $L^2(\T)$-orthonormal functions $\phi_1,\phi_2$.
+
+\begin{theorem}\label{thm:main}
+There is no finite-valued sequence $\gamma:\mathbb N\to[0,\infty)$ and no
+constant $C<\infty$ for which \eqref{eq:question}, with $\lesssim$ replaced by
+$\leq C$, holds for every $u\in H^1(\T^2)$ whose $L^2$-SVD converges in
+$H^1(\T^2)$ and every $r\geq0$.  The failure already occurs for smooth
+rank-two functions and $r=1$.
+\end{theorem}
+
+\begin{proof}
+For $N\geq1$, define
+\begin{equation}\label{eq:uN}
+ u_N(x,y)=2\psi_1^{(N)}(x)\phi_1(y)
+          +\psi_2^{(N)}(x)\phi_2(y).
+\end{equation}
+This is smooth and has finite rank.  Since the two $\psi_j^{(N)}$ and the two
+$\phi_j$ are $L^2$-orthonormal and the coefficients $2>1$ are distinct,
+\eqref{eq:uN} is its unique $L^2$-SVD up to signs.  Hence
+\[
+ \sigma_1^{00}=2,\qquad \sigma_2^{00}=1,
+\]
+and, at $r=1$, the left side of \eqref{eq:question} is
+\begin{equation}\label{eq:left}
+ (\sigma_2^{00})^2\|\psi_2^{(N)}\|_{H^1}^2
+ =1+\frac{N^2}{2}.
+\end{equation}
+
+It remains to compute the $H^{(1,0)}$ singular values.  The $H^1$ Gram
+matrix of the two left $L^2$ singular functions is
+\begin{equation}\label{eq:gram}
+ G_N=
+ \begin{pmatrix}
+  1+N^2/2&N^2/2\\
+  N^2/2&1+N^2/2
+ \end{pmatrix}.
+\end{equation}
+Indeed, the $L^2$ contribution is the identity, while both derivatives equal
+$e_N'/\sqrt2$.
+
+As an operator $L^2(\T)\to H^1(\T)$, $u_N$ sends $\phi_1$ to
+$2\psi_1^{(N)}$, sends $\phi_2$ to $\psi_2^{(N)}$, and annihilates their
+orthogonal complement.  Therefore the two nonzero squared
+$H^{(1,0)}$ singular values are the eigenvalues
+$\lambda_+(N)\geq\lambda_-(N)>0$ of
+\begin{equation}\label{eq:AN}
+ A_N=\operatorname{diag}(2,1)G_N\operatorname{diag}(2,1)
+ =\begin{pmatrix}
+   4+2N^2&N^2\\
+   N^2&1+N^2/2
+  \end{pmatrix}.
+\end{equation}
+Now
+\[
+ \det A_N=4(1+N^2),
+ \qquad
+ \lambda_+(N)\geq (A_N)_{11}=4+2N^2.
+\]
+It follows that
+\begin{equation}\label{eq:small}
+ (\sigma_2^{10})^2=\lambda_-(N)
+ =\frac{\det A_N}{\lambda_+(N)}
+ \leq\frac{4(1+N^2)}{4+2N^2}<2.
+\end{equation}
+There are no further nonzero singular values.  Thus the right side of the
+purported bound at $r=1$ is at most
+\[
+ C\gamma(2)(\sigma_2^{10})^2<2C\gamma(2),
+\]
+which is independent of $N$.  This contradicts \eqref{eq:left} as
+$N\to\infty$.
+\end{proof}
+
+\begin{remark}[Symmetric companion]
+Interchanging $x$ and $y$ gives the same counterexample to the analogous
+bound involving the $H^{(0,1)}$ singular values $\sigma_k^{01}$ and the
+$H^1$ norms of the right $L^2$ singular functions.
+\end{remark}
+
+\section{Verification, limitations, and novelty}
+
+The accompanying script verifies the Gram matrix, determinant, trace, the
+uniform bound $\lambda_-<2$, and the diverging ratio for several exact values
+of $N$.  These checks are not part of the proof.
+
+The theorem settles the displayed question negatively under its natural
+uniform reading, even for smooth finite-rank functions on a fixed domain.  It
+does not exclude estimates when $\gamma$ or the comparison constant depends
+on the particular function, nor estimates under additional assumptions such
+as spectral localization or $H^1$-incoherence.  Those nonuniform or restricted
+versions are consistent with the source's caveat “without further
+assumptions.”
+
+A bounded novelty search on 17 August 2026 covered the four run indexes, the
+local source, the current arXiv and journal records, the exact displayed
+question, title/arXiv-id queries, and Sobolev--SVD weighted-tail variants.  No
+later answer or this rank-two Fourier family was found.  Novelty confidence is
+moderate pending specialist review.
+
+\paragraph{Human review recommendation.}
+Check the normalization of $e_N$, the Gram matrix \eqref{eq:gram}, the
+two-by-two strong-norm singular-value reduction, and the uniform
+interpretation of $\gamma$ and the implicit constant.
+
+\enlargethispage{2.5\baselineskip}
+\begin{thebibliography}{9}
+\small
+\raggedright
+\bibitem{AN}
+M. Ali and A. Nouy,
+\emph{Singular Value Decomposition in Sobolev Spaces: Part II},
+Z. Anal. Anwend. 40 (2021), 187--216; arXiv:1912.11293.
+\end{thebibliography}
+
+\end{document}

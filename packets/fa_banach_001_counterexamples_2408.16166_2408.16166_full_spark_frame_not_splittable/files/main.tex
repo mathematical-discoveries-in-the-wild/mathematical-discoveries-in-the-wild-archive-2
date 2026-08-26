@@ -1,0 +1,252 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,microtype,graphicx}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\conv}{\operatorname{conv}}
+\newcommand{\Span}{\operatorname{span}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.62em}
+
+\title{A Unit-Norm Full-Spark Frame That Is Not Splittable\\
+\large Counterexample to the full-spark splittability conjecture}
+\author{Run \texttt{fa\_banach\_001}, lane 18}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Candidate full counterexample, likely valid, for human review. The proof is
+exact and finite-dimensional; novelty remains subject to broader literature
+review.}}
+\end{center}
+
+\section{Source conjecture}
+
+For a finite frame $F=(f_1,\ldots,f_n)$ spanning $\R^d$, define
+\[
+ \|z\|_F=\min\{\|q\|_1:Fq=z\},
+ \qquad
+ \Sigma_{F,s}=\bigcup_{|S|\leq s}\Span\{f_j:j\in S\}.
+\]
+Choose a best $s$-term approximant
+\[
+ z_s\in\mathop{\rm argmin}_{v\in\Sigma_{F,s}}\|z-v\|_F.
+\]
+Chen, Kummerle, and Wang call $F$ \emph{$s$-splittable} with constant
+$\beta>0$ if, for every $x,y\in\R^d$,
+\begin{equation}\label{eq:split}
+ \|x+y\|_F\geq \|x_s\|_F-\|y_s\|_F
+ +\beta\bigl(\|y-y_s\|_F-\|x-x_s\|_F\bigr).
+\end{equation}
+Immediately after the definition they conjecture that every full-spark frame
+is splittable for a sufficiently small positive $\beta$ \cite{CKW}. The
+construction below disproves this already for $d=2$ and $s=1$.
+
+\begin{center}
+ \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+
+ \small Definition 3.6 and the full-spark splittability conjecture,
+ source PDF page 7.
+\end{center}
+
+\section{Idea of the proof}
+
+With three atoms in the plane, the atomic unit ball is a centrally symmetric
+hexagon, so both its norm and the distance to each atom line have exact
+piecewise-linear formulas. Every pair $(x,y)$ imposes a linear constraint
+$L\geq\beta D$ on the purported splitting constant. We choose rational unit
+atoms and two rational witness pairs: the first has $L,D<0$ and forces a
+strict lower bound on $\beta$, while the second has $L,D>0$ and forces a
+smaller upper bound. Strict distance comparisons and exposed facets make all
+four best one-term approximants unique.
+
+\section{Counterexample and exact atomic norm}
+
+Set
+\begin{equation}\label{eq:frame}
+ a=\left(-\frac7{25},-\frac{24}{25}\right),\qquad
+ b=(1,0),\qquad
+ c=\left(\frac{20}{29},-\frac{21}{29}\right),
+ \qquad F=(a,b,c).
+\end{equation}
+
+\begin{theorem}\label{thm:main}
+The frame in \eqref{eq:frame} is a unit-norm full-spark frame for $\R^2$, but
+it is not $1$-splittable for any positive constant $\beta$. In fact, no real
+$\beta$ satisfies \eqref{eq:split} for all $x,y$.
+\end{theorem}
+
+Each column has Euclidean norm one, and
+\[
+ \det(a,b)=\frac{24}{25},\qquad
+ \det(a,c)=\frac{627}{725},\qquad
+ \det(b,c)=-\frac{21}{29}.
+\]
+Thus every pair is linearly independent, so $F$ is full spark.
+
+Write $N(z)=\|z\|_F$. Its unit ball is the centrally symmetric hexagon
+$\conv\{\pm a,\pm b,\pm c\}$. The three pairs of opposite supporting lines
+give the exact formula
+\begin{equation}\label{eq:norm}
+ N(z_1,z_2)=\max\left\{
+ \left|z_1+\frac34z_2\right|,
+ \left|-\frac3{11}z_1+\frac{37}{33}z_2\right|,
+ \left|-z_1+\frac37z_2\right|
+ \right\}.
+\end{equation}
+Indeed, the first functional takes the values $-1,1,17/116$ on $a,b,c$;
+the second takes $-1,-3/11,-1$; and the third takes $-23/175,-1,-1$.
+Hence each has absolute value at most one on the six vertices and exposes the
+claimed facet. These are all three pairs of facets of the hexagon, proving
+\eqref{eq:norm}.
+
+\section{Best one-term approximation}
+
+For $v\in\{a,b,c\}$, let
+\[
+ d_v(z)=\min_{t\in\R}N(z-tv).
+\]
+
+\begin{lemma}\label{lem:distances}
+The distances to the three atom lines are
+\begin{align}
+ d_a(z)&=\frac{|24z_1-7z_2|}{24},\label{eq:da}\\
+ d_b(z)&=\frac{25|z_2|}{24},\label{eq:db}\\
+ d_c(z)&=\frac{25|21z_1+20z_2|}{627}.\label{eq:dc}
+\end{align}
+Whenever one of these values is strictly smaller than the other two, the best
+one-term approximant is unique.
+\end{lemma}
+
+\begin{proof}
+The annihilator $(24,-7)$ of $a$ has dual norm
+\[
+ \max\{|(24,-7)a|,|(24,-7)b|,|(24,-7)c|\}=24,
+\]
+with the maximum attained only at $\pm b$. The quotient norm modulo
+$\Span(a)$ is therefore \eqref{eq:da}. Equality can occur only when the
+residual is a multiple of $b$, which determines the minimizing point on
+$\Span(a)$ uniquely. Similarly, $(0,1)$ annihilates $b$, has dual norm
+$24/25$ attained only at $\pm a$, and gives \eqref{eq:db}. Finally,
+$(21,20)$ annihilates $c$, has dual norm $627/25$ attained only at $\pm a$,
+and gives \eqref{eq:dc}. Thus the minimizing point on each selected line is
+unique. Strict inequality between the three distances also makes the selected
+atom line unique.
+\end{proof}
+
+\section{Two incompatible constraints on the splitting constant}
+
+Take first
+\[
+ x=\left(-\frac45,\frac35\right),\qquad
+ y=\left(\frac7{15},-\frac8{15}\right).
+\]
+Lemma~\ref{lem:distances} gives
+\[
+ (d_a(x),d_b(x),d_c(x))
+ =\left(\frac{39}{40},\frac58,\frac{40}{209}\right),
+\]
+and
+\[
+ (d_a(y),d_b(y),d_c(y))
+ =\left(\frac{28}{45},\frac59,\frac{65}{1881}\right).
+\]
+Thus both best one-term approximants are unique and lie on $\Span(c)$. They
+and their residuals are
+\begin{align*}
+ x_1&=-\frac{1131}{1045}c
+ =\left(-\frac{156}{209},\frac{819}{1045}\right),
+ &x-x_1&=\frac{40}{209}a,\\
+ y_1&=\frac{6496}{9405}c
+ =\left(\frac{896}{1881},-\frac{1568}{3135}\right),
+ &y-y_1&=\frac{65}{1881}a.
+\end{align*}
+Formula \eqref{eq:norm} now yields
+\[
+ N(x_1)=\frac{1131}{1045},\quad
+ N(y_1)=\frac{6496}{9405},\quad
+ N(x+y)=N\left(-\frac13,\frac1{15}\right)=\frac{38}{105}.
+\]
+After moving the non-$\beta$ terms in \eqref{eq:split} to the left, this
+witness gives
+\begin{equation}\label{eq:lower}
+ \underbrace{N(x+y)-N(x_1)+N(y_1)}_{-391/13167}
+ \geq
+ \beta\underbrace{\bigl(N(y-y_1)-N(x-x_1)\bigr)}_{-295/1881}.
+\end{equation}
+Both quantities are negative, so \eqref{eq:lower} forces
+\begin{equation}\label{eq:lowerbound}
+ \beta\geq\frac{391}{2065}.
+\end{equation}
+
+\clearpage
+For the second witness, take
+\[
+ x'=b=(1,0),\qquad y'=\left(-\frac3{10},-\frac15\right).
+\]
+The best approximant to $x'$ is uniquely $x'_1=b$. For $y'$ the three
+distances are
+\[
+ (d_a(y'),d_b(y'),d_c(y'))
+ =\left(\frac{29}{120},\frac5{24},\frac{515}{1254}\right),
+\]
+so its unique best approximant lies on $\Span(b)$, with
+\[
+ y'_1=\left(-\frac{29}{120},0\right),\qquad
+ y'-y'_1=\frac5{24}a.
+\]
+Moreover
+\[
+ N(x'+y')=N\left(\frac7{10},-\frac15\right)=\frac{11}{14}.
+\]
+Consequently \eqref{eq:split} gives
+\begin{equation}\label{eq:upper}
+ \underbrace{\frac{11}{14}-1+\frac{29}{120}}_{23/840}
+ \geq \beta\underbrace{\frac5{24}}_{N(y'-y'_1)-N(x'-x'_1)},
+\end{equation}
+which forces
+\begin{equation}\label{eq:upperbound}
+ \beta\leq\frac{23}{175}.
+\end{equation}
+But
+\[
+ \frac{391}{2065}-\frac{23}{175}=\frac{598}{10325}>0.
+\]
+The necessary bounds \eqref{eq:lowerbound} and \eqref{eq:upperbound} are
+incompatible. This proves Theorem~\ref{thm:main}.
+
+\section{Verification, scope, and novelty status}
+
+All displayed values are rational. The accompanying standard-library script
+\texttt{verify\_exact.py} checks the minors, facet inequalities,
+distance comparisons, decompositions, norms, and final gap using exact
+rational arithmetic. It is an audit aid; the proof above is self-contained.
+
+The general definition can involve nonunique best sparse approximants
+\cite{Chen}. Every best approximant used here is unique, so the counterexample
+does not depend on how an $\mathop{\rm argmin}$ is selected. Unit-norm columns
+also show that the obstruction is not caused by rescaling a frame vector.
+
+A bounded search of the run indexes and exact web queries found the source
+conjecture and the earlier atomic-norm article, but no later proof or
+counterexample. Priority is not asserted. The result should receive expert
+proof review and a broader citation search before dissemination.
+
+\begin{thebibliography}{9}
+\bibitem{CKW}
+X.~Chen, C.~Kummerle, and R.~Wang,
+\emph{Sparse Recovery for Overcomplete Frames: Sensing Matrices and Recovery
+Guarantees}, arXiv:2408.16166 (2024).
+
+\bibitem{Chen}
+X.~Chen,
+\emph{A Unified Recovery of Structured Signals Using Atomic Norm},
+Information and Inference 13 (2024), iaad050; arXiv:2207.06484.
+\end{thebibliography}
+
+\end{document}

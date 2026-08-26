@@ -1,0 +1,226 @@
+\documentclass[10pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=0.84in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\R}{\mathbb R}
+\newcommand{\st}{\preceq_{\mathrm{st}}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.46em}
+
+\title{The cube maximizes the Brownian exit-time/eigenvalue\\
+functional over all rectangles}
+\author{Candidate solution of the rectangular subcase in arXiv:2003.06867}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\paragraph{Status.}
+Candidate full proof of the rectangular subcase of Conjecture~5.4;
+substantial partial result for the full convex-domain conjecture.  Likely
+valid, novelty uncertain; send to human review.
+
+\section{Source problem}
+
+Let $B$ be standard Brownian motion in $\R^d$, let $\tau_D$ be its first exit
+time from $D$, and let $\lambda_1(D)$ be the first Dirichlet eigenvalue of
+$-\Delta$.  For $a_k>0$, put
+\[
+ R_{\mathbf a}=\prod_{k=1}^d(-a_k,a_k),\qquad Q_d=(-1,1)^d.
+\]
+Remark~5.5 and equation~(5.22) of Bañuelos--Mariano--Wang ask whether, for
+all $p>0$,
+\begin{equation}\label{eq:source}
+ \lambda_1(R_{\mathbf a})^p\E_0[\tau_{R_{\mathbf a}}^p]
+ \le \lambda_1(Q_d)^p\E_0[\tau_{Q_d}^p].
+\end{equation}
+The source says this was not verified even for $d=2,p=1$.
+
+\begin{center}
+\includegraphics[width=0.88\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+Because the functional is invariant under common dilation, the unnormalized
+equality class must consist of all homothetic cubes.  Under the source's later
+normalization $a_1=1$, this reduces to $Q_d$.
+
+\section{Idea of the proof}
+
+The rectangle problem tensorizes.  If $T$ is the exit time from $(-1,1)$ and
+$S(t)=\Pp(T>t)$, then Brownian scaling and coordinate independence give
+\[
+ \Pp_0(\tau_{R_{\mathbf a}}>t)=\prod_{k=1}^d S(a_k^{-2}t).
+\]
+Thus the desired balancing inequality follows immediately if $\log S$ is
+concave.  The key observation is that $T$ is an infinite convolution of
+exponential laws: its Laplace transform is $\operatorname{sech}\sqrt{2s}$,
+and Euler's product for $\cosh$ factors this into exponential Laplace
+transforms.  Log-concavity survives convolution and weak limits, and the tail
+of a log-concave law is log-concave.  Jensen then gives not merely all moment
+inequalities but a scale-free stochastic domination.
+
+\section{The interval exit time is log-concave}
+
+\begin{lemma}\label{lem:logconcave}
+Let $T=\inf\{t>0:|B_t|\ge1\}$ for one-dimensional standard Brownian motion
+with $B_0=0$.  The law of $T$ is log-concave on $[0,\infty)$, and its survival
+function $S(t)=\Pp(T>t)$ is log-concave on $[0,\infty)$.
+\end{lemma}
+
+\begin{proof}
+For $s\ge0$, the function $u_s(x)=\E_x e^{-sT}$ solves
+\[
+ \tfrac12u_s''=su_s\quad(-1<x<1),\qquad u_s(-1)=u_s(1)=1.
+\]
+Consequently
+\[
+ \E_0e^{-sT}=u_s(0)=\frac1{\cosh\sqrt{2s}}.
+\]
+Euler's product
+\[
+ \cosh z=\prod_{n=0}^{\infty}
+ \left(1+\frac{4z^2}{(2n+1)^2\pi^2}\right)
+\]
+therefore gives
+\begin{equation}\label{eq:product}
+ \E_0e^{-sT}=\prod_{n=0}^{\infty}\frac{\lambda_n}{\lambda_n+s},
+ \qquad \lambda_n=\frac{(2n+1)^2\pi^2}{8}.
+\end{equation}
+Let $X_n$ be independent exponential variables of rates $\lambda_n$.  Since
+\[
+ \sum_{n\ge0}\E X_n=\frac8{\pi^2}
+ \sum_{n\ge0}\frac1{(2n+1)^2}=1,
+\]
+$\sum_nX_n$ is finite almost surely.  Equation~\eqref{eq:product} and
+uniqueness of Laplace transforms show
+\[
+ T\ \stackrel{d}=\ \sum_{n=0}^{\infty}X_n.
+\]
+Every exponential density is log-concave.  The Prékopa--Leindler theorem
+shows that convolution preserves log-concavity; log-concave probability
+measures are closed under weak convergence.  Hence the law $\mu$ of $T$ is
+log-concave.
+
+Finally, for $x,y\ge0$ and $0<\theta<1$, apply log-concavity of $\mu$ to the
+upper rays $A=(x,\infty)$ and $C=(y,\infty)$.  Since
+\[
+ \theta A+(1-\theta)C=(\theta x+(1-\theta)y,\infty),
+\]
+we obtain
+\[
+ S(\theta x+(1-\theta)y)
+ \ge S(x)^\theta S(y)^{1-\theta}.
+\]
+Thus $S$ is log-concave.
+\end{proof}
+
+\section{Stochastic domination and the rectangle theorem}
+
+\begin{theorem}\label{thm:main}
+For every $d\ge2$ and every axis-aligned rectangle $R_{\mathbf a}$,
+\begin{equation}\label{eq:stoch}
+ \lambda_1(R_{\mathbf a})\tau_{R_{\mathbf a}}
+ \ \st\
+ \lambda_1(Q_d)\tau_{Q_d}
+ \qquad\text{under }\Pp_0.
+\end{equation}
+Consequently, \eqref{eq:source} holds for every $p>0$.  Equality in any one
+of these moment inequalities holds if and only if
+$a_1=\cdots=a_d$, that is, $R_{\mathbf a}$ is a homothetic cube.
+\end{theorem}
+
+\begin{proof}
+Put $b_k=a_k^{-2}$ and $\bar b=d^{-1}\sum_kb_k$.  The coordinate exit times
+are independent and Brownian scaling gives
+\[
+ \Pp_0(\tau_{R_{\mathbf a}}>t)=\prod_{k=1}^dS(b_kt).
+\]
+By Lemma~\ref{lem:logconcave} and Jensen's inequality,
+\begin{equation}\label{eq:jensen}
+ \prod_{k=1}^dS(b_kt)
+ \le S(\bar bt)^d
+ =\Pp_0(\tau_{Q_d}>\bar bt).
+\end{equation}
+Thus $\tau_{R_{\mathbf a}}\st \bar b^{-1}\tau_{Q_d}$.  On the other hand,
+separation of variables gives
+\[
+ \lambda_1(R_{\mathbf a})=\frac{\pi^2}{4}\sum_{k=1}^db_k
+ =\frac{\pi^2d}{4}\bar b,
+ \qquad \lambda_1(Q_d)=\frac{\pi^2d}{4}.
+\]
+Multiplying the stochastic comparison by $\lambda_1(R_{\mathbf a})$ proves
+\eqref{eq:stoch}.  Applying the increasing function $x\mapsto x^p$ proves
+\eqref{eq:source} for every $p>0$.
+
+It remains to identify equality.  If the $b_k$ are all equal, every step is
+an equality.  Conversely, suppose $m=\min b_k<M=\max b_k$ and equality holds
+for one moment.  The tail-moment formula
+\[
+ \E X^p=p\int_0^{\infty}t^{p-1}\Pp(X>t)\,dt
+\]
+and continuity force equality in \eqref{eq:jensen} for all $t>0$.  Equality
+in Jensen for the concave function $\log S$ then makes $\log S$ affine on
+every interval $[mt,Mt]$.  These intervals give overlapping neighborhoods of
+every point of $(0,\infty)$, so $\log S$ would be globally affine.
+
+This is impossible.  Indeed $T\ge X_0+X_1$, whence
+\[
+ 1-S(t)=\Pp(T\le t)\le \Pp(X_0\le t,X_1\le t)=O(t^2),
+\]
+so $(\log S)'(0+)=0$, whereas $S(t)\to0$ as $t\to\infty$.  Therefore every
+moment inequality is strict unless all $b_k$, equivalently all $a_k$, are
+equal.
+\end{proof}
+
+\begin{corollary}
+Among rectangles with a fixed first Dirichlet eigenvalue, the balanced cube
+maximizes the centered exit time in the usual stochastic order.  Hence it
+maximizes $\E\Phi(\tau)$ for every increasing $\Phi$ for which the expectation
+exists, not only the positive moments.
+\end{corollary}
+
+\paragraph{Maximizing starting point.}
+For completeness, $x\mapsto\Pp_x(\tau_{(-a,a)}>t)$ is even and nonincreasing
+on $[0,a)$.  This follows, for example, by applying the parabolic maximum
+principle to the spatial derivative of the killed heat solution.  The
+rectangular survival probability is the product of the coordinate survival
+probabilities, so the origin maximizes it for every $t$, and hence maximizes
+every positive exit-time moment.  The theorem therefore proves the source
+functional with its supremum over starting points as well.
+
+\section{Scope, verification, and novelty}
+
+The proof settles the full rectangular clause of Remark~5.5 for all
+$d\ge2$ and all $p>0$, and strengthens it to stochastic domination.  It does
+not settle Conjecture~5.4 for arbitrary coordinate-symmetric convex domains.
+For such domains the independent-coordinate factorization is lost; moreover,
+domain inclusion or symmetrization moves $\lambda_1$ and the exit-time moment
+in opposite directions, so the rectangle argument does not formally extend.
+
+An adversarial audit checked the Brownian/eigenvalue normalization, scaling,
+tail-moment identity, equality class, and the $0<p<1$ range.  A bounded search
+through 11 August 2026 found the source and standard interval-exit formulas
+but no later proof of (5.22) or of the stochastic strengthening.  Priority is
+not asserted.  The accompanying numerical script checks constants and sample
+Jensen gaps but is not used in the proof.
+
+\paragraph{References.}
+R.~Bañuelos, P.~Mariano, and J.~Wang,
+\emph{Bounds for exit times of Brownian motion and the first Dirichlet
+eigenvalue for the Laplacian}, arXiv:2003.06867, especially Conjecture~5.4 and
+Remark~5.5.
+
+A.~Prékopa, \emph{Logarithmic concave measures with applications to
+stochastic programming}, Acta Sci. Math. (Szeged) 32 (1971), 301--316.
+
+\end{document}

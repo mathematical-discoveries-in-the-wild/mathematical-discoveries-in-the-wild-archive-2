@@ -1,0 +1,361 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\definecolor{accent}{HTML}{6A3F7C}
+\definecolor{soft}{HTML}{F6EFF9}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Ecal}{\mathcal E}
+\newcommand{\Ccal}{\mathcal C}
+\newcommand{\Herm}{\operatorname{Herm}}
+\newcommand{\conv}{\operatorname{conv}}
+\newcommand{\rank}{\operatorname{rank}}
+
+\title{The missing boundary in stabilization of Grothendieck $d$-norms}
+\author{Candidate correction to Conjecture 2.18 of arXiv:2003.07345}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{accent}{soft}{\parbox{0.91\linewidth}{
+\textbf{Result.}  The rank bound preceding Conjecture 2.18 is one unit too
+large.  The exact universal stabilization ranks for both symmetric
+Grothendieck norms are
+\[
+ \rho_{\R}(n)=\left\lfloor\frac{\sqrt{8n+1}-1}{2}\right\rfloor,
+ \qquad \rho_{\C}(n)=\lfloor\sqrt n\rfloor.
+\]
+Consequently, every real parameter in
+$d(d+1)/2\le n<(d+1)(d+2)/2$ and every complex parameter in
+$d^2\le n<(d+1)^2$ is already an ordinary semidefinite program, although
+the conjecture places it in its NP-hard range.  Block symmetrization gives
+the same unconditional polynomial-time overlap for the rectangular norm.
+Thus the conjectured frontier, under its natural uniform-parameter reading,
+cannot be correct unless $\mathrm P=\mathrm{NP}$.  The strict range below
+the corrected threshold remains open here.}}
+\end{center}
+
+\section{Source conjecture and the issue}
+
+Friedland and Lim introduce real and complex Grothendieck $d$-norms and prove
+a rank-stabilization result before asking whether the complementary parameter
+range is NP-hard \cite{FL}.  Their Conjecture 2.18, on page 15, asserts
+NP-hardness for
+\begin{align*}
+ &\|\cdot\|_{\gamma,d}^{\R},\ \|\cdot\|_{\Gamma,d}^{\R}
+       &&\text{when }d(d+1)/2\le n,\\
+ &\|\cdot\|_{\mathrm G,d}^{\R}
+       &&\text{when }d(d+1)/2\le m+n,\\
+ &\|\cdot\|_{\gamma,d}^{\C},\ \|\cdot\|_{\Gamma,d}^{\C}
+       &&\text{when }d^2\le n,\\
+ &\|\cdot\|_{\mathrm G,d}^{\C}
+       &&\text{when }d^2\le m+n.
+\end{align*}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/open_problem_crop.png}
+\caption{Proposition 2.17, Conjecture 2.18, and the stated polynomial-time
+range in the source paper, page 15.}
+\end{figure}
+
+The preceding Lemma 2.16 uses
+\[
+ \left\lfloor\frac{\sqrt{8n+1}-1}{2}\right\rfloor+1
+ \quad\text{and}\quad \lfloor\sqrt n\rfloor+1
+\]
+as upper bounds for extreme ranks.  The final $+1$ is unnecessary.  The
+proof below supplies the exact bounds and records the resulting correction
+to the complexity frontier.
+
+\section{Definitions}
+
+Let $\mathbb K$ be $\R$ or $\C$, and let $\Herm_r(\mathbb K)$ be the real
+vector space of real symmetric or complex Hermitian $r\times r$ matrices.
+For $n\ge1$ define the elliptope and subelliptope
+\[
+ \Ecal_n^{\mathbb K}=\{G\succeq0:g_{ii}=1\},\qquad
+ \Ccal_n^{\mathbb K}=\{G\succeq0:0\le g_{ii}\le1\}.
+\]
+The subscript $d$ denotes the subset of matrices of rank at most $d$.
+For $A=A^*$, the source definitions are equivalently
+\begin{align*}
+ \|A\|_{\gamma,d}^{\mathbb K}
+   &=\max_{G\in\Ecal_{n,d}^{\mathbb K}}|\operatorname{tr}(AG)|,\\
+ \|A\|_{\Gamma,d}^{\mathbb K}
+   &=\max_{G\in\Ccal_{n,d}^{\mathbb K}}|\operatorname{tr}(AG)|.
+\end{align*}
+Removing $d$ means that the rank constraint is absent.  For a rectangular
+$B\in\mathbb K^{m\times n}$ the source proves
+\begin{equation}\label{eq:block}
+ \|B\|_{\mathrm G,d}^{\mathbb K}
+ =\frac12\left\|\begin{bmatrix}0&B\\B^*&0\end{bmatrix}\right\|_{
+ \gamma,d}^{\mathbb K}
+ =\frac12\left\|\begin{bmatrix}0&B\\B^*&0\end{bmatrix}\right\|_{
+ \Gamma,d}^{\mathbb K}.
+\end{equation}
+
+\section{Proof intuition}
+
+Factor a rank-$r$ correlation matrix as a Gram matrix of spanning vectors
+$v_1,\ldots,v_n\in\mathbb K^r$.  A small Hermitian perturbation $H$ of the
+inner product preserves the diagonal precisely when
+$v_i^*Hv_i=0$ for every $i$.  An extreme point cannot admit a nonzero such
+perturbation, so the rank-one matrices $v_iv_i^*$ must span the whole space
+of symmetric or Hermitian matrices.  That space has real dimension
+$r(r+1)/2$ over $\R$ and $r^2$ over $\C$.  Hence an extreme rank $r$ obeys
+exactly the two displayed dimension inequalities.
+
+Conversely, elementary vector configurations with those cardinalities have
+rank-one projectors spanning the full matrix space, so the bounds are sharp.
+Linear optimization over a compact convex set only needs its extreme points;
+therefore every rank constraint at least as large as the maximum extreme rank
+is redundant.  This is the one-step correction missed by the source.
+
+\section{Exact symmetric stabilization}
+
+Set
+\[
+ \rho_{\R}(n)=\max\{r:r(r+1)/2\le n\},\qquad
+ \rho_{\C}(n)=\max\{r:r^2\le n\}.
+\]
+
+\begin{lemma}[Extreme-rank bound]
+Every extreme point of $\Ecal_n^{\mathbb K}$ or $\Ccal_n^{\mathbb K}$ has
+rank at most $\rho_{\mathbb K}(n)$.
+\end{lemma}
+
+\begin{proof}
+Let $G=VV^*$ have rank $r$, where the rows of $V$ are spanning vectors
+$v_1,\ldots,v_n\in\mathbb K^r$.  Suppose first that $G$ is extreme in
+$\Ecal_n^{\mathbb K}$.  If the real span of
+$v_1v_1^*,\ldots,v_nv_n^*$ is not all of $\Herm_r(\mathbb K)$, choose
+$0\ne H\in\Herm_r(\mathbb K)$ orthogonal to every $v_iv_i^*$ in the trace
+inner product.  For all sufficiently small $\varepsilon>0$,
+$I\pm\varepsilon H\succeq0$, and
+\[
+ G_{\pm}=V(I\pm\varepsilon H)V^*
+\]
+are distinct positive semidefinite matrices with unit diagonal whose average
+is $G$.  This contradicts extremality.  The projectors therefore span, so
+\[
+ \dim_{\R}\Herm_r(\R)=\frac{r(r+1)}2\le n,
+ \qquad
+ \dim_{\R}\Herm_r(\C)=r^2\le n.
+\]
+
+For $G$ extreme in $\Ccal_n^{\mathbb K}$, apply the same argument using only
+the active indices $i$ for which $g_{ii}=1$.  If their projectors do not span,
+the active diagonal entries stay fixed under the perturbation above, while
+all inactive inequalities remain strict for sufficiently small
+$\varepsilon$.  Again $G$ splits nontrivially.  There are at most $n$ active
+indices, which gives the same bounds.
+\end{proof}
+
+\begin{lemma}[Sharpness]
+For every $r$ satisfying $r(r+1)/2\le n$ in the real case, or $r^2\le n$ in
+the complex case, $\Ecal_n^{\mathbb K}$ has an extreme point of rank $r$.
+The same matrix is extreme in $\Ccal_n^{\mathbb K}$.
+\end{lemma}
+
+\begin{proof}
+Over $\R$, take the $r(r+1)/2$ unit vectors
+\[
+ e_i\quad(1\le i\le r),\qquad
+ \frac{e_i+e_j}{\sqrt2}\quad(1\le i<j\le r).
+\]
+Their rank-one projectors span every real symmetric matrix.  Over $\C$, add
+the vectors $(e_i+\mathrm i e_j)/\sqrt2$ for $i<j$; the resulting $r^2$
+projectors span $\Herm_r(\C)$ over $\R$.  If necessary, append copies of
+$e_1$ to obtain $n$ vectors.  To verify the converse perturbation criterion,
+suppose the Gram matrix $G$ is the midpoint of $G_+$ and $G_-$ in the
+elliptope.  Positivity implies $\ker G\subseteq\ker G_+\cap\ker G_-$, so
+$G_\pm=V(I\pm H)V^*$ for a Hermitian $H$.  Unit diagonals give
+$v_i^*Hv_i=0$ for every $i$, and projector spanning forces $H=0$.  Thus the
+Gram matrix is extreme and has rank $r$.
+
+If this matrix were a nontrivial convex combination of two subcorrelation
+matrices, every diagonal coordinate---an average of numbers at most one---
+could equal one only if both summands had unit diagonal.  Extremality in the
+elliptope then makes the decomposition trivial.  Thus it is also extreme in
+the subelliptope.
+\end{proof}
+
+\begin{theorem}[Exact universal threshold]
+For $\mathbb K\in\{\R,\C\}$ and $d,n\ge1$, the following are equivalent:
+\begin{enumerate}
+\item $d\ge\rho_{\mathbb K}(n)$;
+\item $\|A\|_{\gamma,d}^{\mathbb K}=\|A\|_{\gamma}^{\mathbb K}$ for every
+      $A\in\Herm_n(\mathbb K)$;
+\item $\|A\|_{\Gamma,d}^{\mathbb K}=\|A\|_{\Gamma}^{\mathbb K}$ for every
+      $A\in\Herm_n(\mathbb K)$.
+\end{enumerate}
+If $d<\rho_{\mathbb K}(n)$, there is an $A$ with a strict gap in (2), and
+there is (possibly another) $A$ with a strict gap in (3).
+\end{theorem}
+
+\begin{proof}
+The extreme-rank lemma and finite-dimensional Krein--Milman theorem imply
+\[
+ \Ecal_n^{\mathbb K}=\conv(\Ecal_{n,d}^{\mathbb K}),\qquad
+ \Ccal_n^{\mathbb K}=\conv(\Ccal_{n,d}^{\mathbb K})
+\]
+whenever $d\ge\rho_{\mathbb K}(n)$.  Maximizing either sign of a linear
+functional gives (2) and (3).
+
+Conversely, suppose $d<\rho_{\mathbb K}(n)$ and choose, by sharpness, an
+extreme correlation matrix $G$ of rank larger than $d$.  It is not in
+$\conv(\Ecal_{n,d}^{\mathbb K})$.  In fact it is not in
+$\conv(\Ecal_{n,d}^{\mathbb K}\cup-\Ecal_{n,d}^{\mathbb K})$: taking
+diagonals in such a representation would force every negatively signed term
+to have zero weight, after which extremality gives a contradiction.  Strict
+separation of compact convex sets therefore produces a Hermitian $A$ for
+which the full absolute support function is strictly larger than its
+rank-$d$ counterpart.  This is the required $\gamma$ gap.
+
+The same argument applies to $\Ccal_{n,d}^{\mathbb K}$.  Indeed, a convex
+combination of signed subcorrelation matrices can have every diagonal entry
+equal to one only when every used term is positively signed and itself has
+unit diagonal.  Hence $G$ is also outside the symmetrized rank-$d$
+subelliptope, and strict separation gives the $\Gamma$ gap.
+\end{proof}
+
+The extreme correlation rank characterization is classical
+\cite{GPW,LiTam}; the proof is included to make both the strict threshold and
+the subcorrelation extension self-contained.
+
+\section{Consequences for Conjecture 2.18}
+
+The theorem is equivalent to the following corrected stabilization conditions:
+\begin{align}
+ \|\cdot\|_{\gamma,d}^{\R}=\|\cdot\|_{\gamma}^{\R},\quad
+ \|\cdot\|_{\Gamma,d}^{\R}=\|\cdot\|_{\Gamma}^{\R}
+ &\quad\Longleftrightarrow\quad n<\frac{(d+1)(d+2)}2,\label{eq:realstab}\\
+ \|\cdot\|_{\gamma,d}^{\C}=\|\cdot\|_{\gamma}^{\C},\quad
+ \|\cdot\|_{\Gamma,d}^{\C}=\|\cdot\|_{\Gamma}^{\C}
+ &\quad\Longleftrightarrow\quad n<(d+1)^2.\label{eq:complexstab}
+\end{align}
+Here each equality means equality for every input matrix.  The unrestricted
+quantities are support functions of spectrahedra and can be computed to
+arbitrary precision in polynomial time by two semidefinite programs, one for
+each sign of the objective.
+
+For $B\in\mathbb K^{m\times n}$ let $N=m+n$.  Combining \eqref{eq:block} with the
+sufficient direction of the theorem gives
+\begin{equation}\label{eq:rectstab}
+ d\ge\rho_{\mathbb K}(N)
+ \quad\Longrightarrow\quad
+ \|B\|_{\mathrm G,d}^{\mathbb K}=\|B\|_{\mathrm G}^{\mathbb K}
+ \quad\text{for every }B.
+\end{equation}
+This block argument is sufficient for the correction; no claim of an exact
+rectangular threshold is made.
+
+\begin{corollary}[Polynomial-time overlap]
+All three real Grothendieck $d$-norms are semidefinite-programming quantities
+throughout the uniform parameter band
+\[
+ \frac{d(d+1)}2\le N<\frac{(d+1)(d+2)}2,
+\]
+where $N=n$ for the symmetric norms and $N=m+n$ for the rectangular norm.
+All three complex norms are likewise semidefinite-programming quantities
+throughout
+\[
+ d^2\le N<(d+1)^2.
+\]
+These are infinite families lying inside all four clauses of Conjecture 2.18.
+Thus, under the standard assumption $\mathrm P\ne\mathrm{NP}$ and the
+natural uniform reading in which $d$ may vary with the matrix dimension, the
+conjecture is false as stated.
+\end{corollary}
+
+For example, the symmetric norms already stabilize at $(d,n)=(2,3)$ over
+$\R$ and at $(d,n)=(2,4)$ over $\C$, exactly on the conjecture's claimed
+hard boundary.  The correction is larger than these equality cases: it fills
+the entire bands above.
+
+\section{Complexity and scope caveats}
+
+There are three necessary qualifications.
+\begin{enumerate}
+\item A problem in polynomial time can also be NP-hard if
+      $\mathrm P=\mathrm{NP}$.  The unconditional statement proved here is
+      SDP computability and the exact stabilization threshold; the word
+      ``counterexample'' uses the conventional $\mathrm P\ne\mathrm{NP}$
+      interpretation also implicit in contrasting easy and hard ranges.
+\item If ``for fixed $d$'' was intended, and only $n\to\infty$ supplies an
+      input family, the overlap contains only finitely many $n$ for that
+      particular $d$.  Then this is a precise correction of the printed
+      parameter frontier, not a refutation of possible fixed-$d$ hardness in
+      the remaining strict range.  The paper's own discussion allows $d$ to
+      scale with $n$, which is why the uniform reading is natural.
+\item The proof gives arbitrary-precision polynomial-time SDP computation,
+      matching the source paper's formulation.  It does not claim a rational
+      closed form or exact bit-model output for generally algebraic optima.
+\end{enumerate}
+
+The remaining possible hardness region is therefore
+\[
+ n\ge\frac{(d+1)(d+2)}2\quad(\R),\qquad
+ n\ge(d+1)^2\quad(\C)
+\]
+for the symmetric norms, with analogous corrected sufficient boundaries in
+$m+n$ for the rectangular norms.  No unconditional hardness result in that
+strict range is proved here.
+
+\section{Verification, novelty, and review recommendation}
+
+The proof was checked independently in four places: the perturbation preserves
+positive semidefiniteness and every active diagonal; the real dimensions are
+$r(r+1)/2$ and $r^2$; the explicit projector families span the required
+spaces; and diagonal coordinates exclude negative terms in the sharpness
+separation.  Substitution at triangular and square boundary values confirms
+the one-step difference from Proposition 2.17.
+
+A bounded novelty search covered the local run indexes, the exact paper title,
+``Conjecture 2.18'', ``Grothendieck $d$-norms NP-hard'', ``stabilization rank
+correlation matrices'', and later copies of the source paper.  It found the
+classical extreme-correlation rank results and work on extreme bipartite
+correlations \cite{GDL}, but no published erratum or explicit correction of
+this conjectured frontier.  Since the core rank theorem is classical and the
+correction is an arithmetic tightening of the source argument, novelty
+confidence is moderate, not high.
+
+Human review should focus first on the intended complexity quantifiers in
+Conjecture 2.18, then on the exact-threshold converse using symmetrized convex
+hulls.  The mathematical stabilization theorem itself is recommended as
+likely valid.
+
+\begin{thebibliography}{9}
+\bibitem{FL}
+S. Friedland and L.-H. Lim,
+\emph{Symmetric Grothendieck inequality}, arXiv:2003.07345 (2020),
+Conjecture 2.18.
+
+\bibitem{GPW}
+R. Grone, S. Pierce, and W. Watkins,
+\emph{Extremal correlation matrices}, Linear Algebra Appl. 134 (1990),
+63--70, doi:10.1016/0024-3795(90)90006-X.
+
+\bibitem{LiTam}
+C.-K. Li and B.-S. Tam,
+\emph{A note on extreme correlation matrices}, SIAM J. Matrix Anal. Appl.
+15 (1994), 903--908, doi:10.1137/S0895479892240683.
+
+\bibitem{GDL}
+S. Gribling, D. de Laat, and M. Laurent,
+\emph{Matrices with high completely positive semidefinite rank},
+Linear Algebra Appl. 513 (2017), 122--148; arXiv:1605.00988.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,246 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+\setlength{\emergencystretch}{2em}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\AR}{A^{\mathcal R}}
+
+\title{A counterexample to the unrestricted Sawyer-type conjecture}
+\author{Automated mathematical discovery run \texttt{fa\_banach\_001}}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{black}{gray!8}{\parbox{0.91\linewidth}{
+\textbf{Status.} Candidate counterexample, likely valid, subject to human review.
+The example disproves the version of Conjecture~5.11 allowing arbitrary
+$\varsigma>0$.  It does not address the alternative restriction
+$0<\varsigma\leq1$.
+}}
+\end{center}
+
+\section{Source question}
+
+The source is E. Roure-Perdices~\cite{Roure}.  The paper is titled
+\emph{Extrapolation via Sawyer-type inequalities}.  Its arXiv identifier is
+2404.09351v1, and the question is Conjecture~5.11 on pp.~31--32.  The complete source
+statement is reproduced below as two full-width crops because it crosses a
+page boundary.
+
+\begin{center}
+\includegraphics[width=\linewidth]{figures/open_problem_crop_page31.png}
+
+\smallskip
+\includegraphics[width=\linewidth]{figures/open_problem_crop_page32.png}
+\end{center}
+
+For clarity, write
+\[
+ \varrho=1+\varsigma(q-1).
+\]
+The unrestricted form asserts that if $u^\varsigma\in\AR_{\varrho}$ and
+$u^\varsigma v^\varrho\in\AR_r$ for some $r\geq1$, then
+\begin{equation}\label{eq:conjecture}
+ \left\|\frac{M\bigl(|f|^{q/\varrho}
+ u^{(1-\varsigma)/\varrho}\bigr)}{v}\right\|^
+ {\varrho}_{L^{\varrho,\infty}(u^\varsigma v^\varrho)}
+ \leq
+ \phi\!\left([u^\varsigma]_{\AR_{\varrho}},
+ [u^\varsigma v^\varrho]_{\AR_r}\right)
+ \|f\|_{L^{q,1}(u)}^q,
+\end{equation}
+with $\phi$ independent of $f$.
+
+We use the source normalization
+\[
+ \|g\|_{L^{p,1}(w)}=p\int_0^\infty
+ \lambda_g^w(t)^{1/p}\,dt,
+ \qquad
+ \|g\|_{L^{p,\infty}(w)}
+ =\sup_{t>0}t\lambda_g^w(t)^{1/p}.
+\]
+
+\section{Proof intuition}
+
+At the sharp endpoint, the power weight $|x|^{p-1}$ is in the restricted
+class $\AR_p$ even though it is not a classical $A_p$ weight.  This lets us
+make the maximal-function input exactly $x^{-1}\mathbf1_{[1,N]}$.  Its
+average on $[0,N]$ is $(\log N)/N$, and the endpoint weight gives
+$[0,N]$ mass of order $N^\varrho$; hence the weak target quasi-norm to the
+$\varrho$-th power grows like $(\log N)^\varrho$.  The source Lorentz norm
+of $x^{-1}\mathbf1_{[1,N]}$ grows only like $\log N$, so the right side of
+\eqref{eq:conjecture} grows like $(\log N)^q$.  The exponent gap is
+\(\varrho-q=(\varsigma-1)(q-1)\), which is positive precisely in the
+refuted range $\varsigma>1$.
+
+\section{The counterexample}
+
+We first verify the only endpoint-weight fact needed in the construction.
+
+\begin{lemma}\label{lem:endpoint}
+For every $p>1$, the weight $w_p(x)=|x|^{p-1}$ on $\R$ belongs to
+$\AR_p$.
+\end{lemma}
+
+\begin{proof}
+We use the equivalent defining condition from the source:
+\begin{equation}\label{eq:restricted-def}
+ \sup_I\sup_{E\subseteq I}
+ \frac{|E|}{|I|}\left(\frac{w_p(I)}{w_p(E)}\right)^{1/p}<\infty,
+\end{equation}
+where $I$ ranges over intervals and $E$ over measurable subsets of positive
+measure.
+
+Put $L=|I|$ and $m=|E|$.  Among all measurable subsets of $\R$ of measure
+$m$, the integral of the even increasing rearrangement $|x|^{p-1}$ is
+minimized by $[-m/2,m/2]$.  Therefore
+\begin{equation}\label{eq:global-lower}
+ w_p(E)\geq \frac{m^p}{p,2^{p-1}}.
+\end{equation}
+If $I$ meets the origin, then $|x|\leq L$ on $I$, so $w_p(I)\leq L^p$;
+\eqref{eq:global-lower} gives
+$w_p(E)/w_p(I)\geq (p2^{p-1})^{-1}(m/L)^p$.
+
+Suppose next that $I=(a,b)$ lies in $(0,\infty)$; the negative case is
+symmetric.  If $a<L$, then $b<2L$, whence
+$w_p(I)\leq2^{p-1}L^p$ and the preceding argument applies with another
+constant depending only on $p$.  If $a\geq L$, then $b\leq2a$ and
+\[
+ \frac{w_p(E)}{w_p(I)}
+ \geq \frac{a^{p-1}m}{b^{p-1}L}
+ \geq 2^{1-p}\frac mL
+ \geq 2^{1-p}\left(\frac mL\right)^p.
+\]
+Thus in every case $w_p(E)/w_p(I)\geq c_p(m/L)^p$, which is exactly the
+finiteness of \eqref{eq:restricted-def}.
+\end{proof}
+
+\begin{theorem}\label{thm:counterexample}
+For every $q>1$ and $\varsigma>1$, the estimate in the unrestricted
+$\varsigma>0$ form of Conjecture~5.11 is false.
+\end{theorem}
+
+\begin{proof}
+Fix $q>1$ and $\varsigma>1$, and set
+\[
+ \varrho=1+\varsigma(q-1)>q,
+ \qquad u(x)=|x|^{q-1},\qquad v(x)=1.
+\]
+Then
+\[
+ u^\varsigma(x)=|x|^{\varsigma(q-1)}=|x|^{\varrho-1}.
+\]
+Lemma~\ref{lem:endpoint}, with $p=\varrho$, shows that
+$u^\varsigma\in\AR_{\varrho}$.  Since $v=1$, the second hypothesis also
+holds by choosing $r=\varrho$.  Both characteristics appearing in $\phi$
+are fixed independently of the parameter below.
+
+For $N>2$, define
+\[
+ f_N(x)=x^{-1}\mathbf1_{[1,N]}(x).
+\]
+The input to the maximal operator simplifies exactly:
+\begin{align*}
+ |f_N(x)|^{q/\varrho}u(x)^{(1-\varsigma)/\varrho}
+ &=x^{[-q+(q-1)(1-\varsigma)]/\varrho}\mathbf1_{[1,N]}(x)\\
+ &=x^{-1}\mathbf1_{[1,N]}(x),
+\end{align*}
+because $-q+(q-1)(1-\varsigma)=-\varrho$.
+For every $x\in[0,N]$, the interval $[0,N]$ is admissible in the uncentered
+Hardy--Littlewood maximal operator, and hence
+\[
+ M(x^{-1}\mathbf1_{[1,N]})(x)\geq\frac{\log N}{N}.
+\]
+Taking a threshold half this value and using
+$u^\varsigma([0,N])=N^\varrho/\varrho$ yields
+\begin{equation}\label{eq:lhs}
+ \bigl\|M(x^{-1}\mathbf1_{[1,N]})\bigr\|^
+ {\varrho}_{L^{\varrho,\infty}(u^\varsigma)}
+ \geq \frac{(\log N)^\varrho}{2^\varrho\varrho}.
+\end{equation}
+
+It remains to bound the source norm.  With respect to $u(x)dx$, the
+distribution function of $f_N$ satisfies
+\[
+ \lambda_{f_N}^u(t)\leq
+ \begin{cases}
+ N^q/q,&0<t<N^{-1},\\
+ (qt^q)^{-1},&N^{-1}\leq t<1,\\
+ 0,&t\geq1.
+ \end{cases}
+\]
+Consequently
+\begin{equation}\label{eq:rhs}
+ \|f_N\|_{L^{q,1}(u)}
+ =q\int_0^\infty\lambda_{f_N}^u(t)^{1/q}\,dt
+ \leq q^{1-1/q}(1+\log N).
+\end{equation}
+If \eqref{eq:conjecture} held, then \eqref{eq:lhs} and
+\eqref{eq:rhs}, with the fixed weight characteristics absorbed into a
+constant, would imply
+\[
+ (\log N)^\varrho\leq C_{q,\varsigma}(1+\log N)^q
+ \qquad(N>2).
+\]
+This is impossible because
+$\varrho-q=(\varsigma-1)(q-1)>0$.
+\end{proof}
+
+\section{Scope, stress tests, and verification}
+
+The construction disproves exactly the unrestricted clause $\varsigma>0$.
+It does not disprove the parenthetical alternative $0<\varsigma\leq1$.
+Indeed the same calculation has target/source logarithmic exponent gap
+$(\varsigma-1)(q-1)$, so it is neutral at $\varsigma=1$ (the case the source
+already records as true) and points in the non-obstructive direction for
+$\varsigma<1$.
+
+Three variants were checked.  Adding logarithmic factors to the endpoint
+power weight changes both sides by the same slowly varying contribution and
+does not move the decisive gap.  Replacing $v=1$ by a power weight introduces
+extra compatibility constraints but does not extend this counterexample into
+$\varsigma\leq1$.  Finally, the second conjecture in Section~8.2 of the source
+has a different weighted-measure geometry and is not claimed to follow or
+fail from this example.
+
+The separate \texttt{verification.md} audits each exponent and the direct
+$\AR_p$ proof.  The script \texttt{code/check\_growth.py} prints finite-scale
+ratios for representative parameters; it is illustrative and is not used as
+proof.
+
+\section{Novelty audit and human-review recommendation}
+
+A bounded search on 13 August 2026 covered the exact paper title and arXiv id,
+``Conjecture 5.11'', ``Sawyer-type inequalities'', ``restricted weak type'',
+and the notation $A_p^{\mathcal R}$, including the authors' earlier
+Sawyer-type paper~\cite{PerezRoure}.  No later arXiv paper proving or refuting
+this exact conjecture, and no occurrence of this endpoint power-weight
+counterexample, was located.  The novelty claim is therefore provisional.
+
+Human review is recommended.  The two points deserving the closest check are
+Lemma~\ref{lem:endpoint} and the Lorentz normalization in
+\eqref{eq:rhs}.  Both are elementary and fully reproduced, so verification
+does not depend on an external classification theorem.
+
+\begin{thebibliography}{9}
+\bibitem{Roure}
+E. Roure-Perdices,
+\emph{Extrapolation via Sawyer-type inequalities},
+arXiv:2404.09351v1 (2024).
+
+\bibitem{PerezRoure}
+C. P\'erez and E. Roure-Perdices,
+\emph{Sawyer-type inequalities for Lorentz spaces},
+arXiv:2003.04167 (2020).
+\end{thebibliography}
+
+\end{document}

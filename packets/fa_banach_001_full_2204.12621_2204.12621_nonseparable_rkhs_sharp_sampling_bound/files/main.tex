@@ -1,0 +1,349 @@
+\documentclass[10pt]{article}
+\usepackage[margin=0.76in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\calF}{\mathcal F}
+\newcommand{\calH}{\mathcal H}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\Id}{\operatorname{Id}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\supp}{\operatorname{supp}}
+
+\begin{document}
+\begin{center}
+{\Large\bfseries Sharp sampling numbers for nonseparable\par
+reproducing-kernel Hilbert spaces\par}
+\medskip
+Automated Math Discovery Run \texttt{fa\_banach\_001}; Model: GPT5.6\par
+9 August 2026
+\end{center}
+
+\begin{center}
+\fbox{\begin{minipage}{0.92\textwidth}
+\textbf{Status: full proof candidate.}
+Remark~13 of Dolbeault--Krieg--Ullrich predicts that separability can be
+removed from their sharp $L_2$ sampling theorem by adding
+$\tr_0(K)/m$.  The theorem below proves exactly that prediction.  The
+proof is nonconstructive and the displayed universal constant is intentionally
+not optimized.
+\end{minipage}}
+\end{center}
+
+\section*{1. Source question and statement}
+Let $(D,\mathcal A,\mu)$ be a measure space and let $H=H(K)$ be a (not
+necessarily separable) RKHS of measurable complex-valued functions on $D$,
+with $K$ measurable on $(D\times D,\mathcal A\otimes\mathcal A)$.
+Assume
+\[
+  \tr(K):=\int_D K(x,x)\,d\mu(x)<\infty.
+\]
+Then the canonical map $T:H\to L_2(\mu)$ is Hilbert--Schmidt.  Write its
+positive singular values, with multiplicity, as
+$\sigma_0\geq\sigma_1\geq\cdots>0$, and put $\sigma_k=0$ after the end
+when the rank is finite.  For the unit ball $F=B_H$, use the source convention
+$d_k(F)=\sigma_k$ for its $L_2$ Kolmogorov widths.
+
+Let $H_0=\ker T$, let $K_0$ be its reproducing kernel, and set
+\[
+ \tau_0:=\tr_0(K):=\int_DK_0(x,x)\,d\mu(x)
+       =\tr(K)-\sum_{k\geq0}\sigma_k^2\geq0.                 \tag{1}
+\]
+The sampling number $g_n(F)$ is the least worst-case $L_2$ error of a
+linear algorithm using at most $n$ point values.
+
+\begin{theorem}[nonseparable sharp sampling bound]\label{thm:main}
+There is a universal integer $C$ such that, for every $n\geq1$,
+\[
+ g_{Cn}(B_H)^2
+ \leq \frac1n\left(\sum_{k\geq n}d_k(B_H)^2+\tr_0(K)\right).       \tag{2}
+\]
+One admissible value furnished by the proof is
+$C=56{,}116{,}800$.
+\end{theorem}
+
+For $\tau_0=0$, this is the source theorem (up to an inessential change of
+its universal constant).  Printed p.~7, Remark~13, of the source explicitly
+predicts (2): remove separability and put $\tr_0(K)/m$ inside the square root
+on the right-hand side \cite[p.~7, Remark~13]{DKU}.
+
+\section*{2. Idea of the proof}
+The compact spectral theorem splits
+\[
+ H=H_1\oplus H_0,
+ \qquad H_1=(\ker T)^\perp,
+\]
+where $H_1$ is separable and carries all nonzero singular directions, while
+every $h\in H_0$ is zero in $L_2$.  It is tempting simply to discard $H_0$,
+but that is wrong: a function which vanishes almost everywhere can still have
+nonzero values at the finitely many sampling nodes and can corrupt a least
+squares fit.
+
+We add the normalized diagonal $K_0(x,x)/\tau_0$ as a third component of the
+source's leverage-score density, alongside the leading and tail spectral
+components.  This keeps the separable feature-vector norm below $3m$ and
+ensures
+\[
+ \frac{K_0(x,x)}{\rho(x)}\leq3\tau_0.                         \tag{3}
+\]
+For independent nodes, the off-diagonal values $K_0(x_i,x_j)$ vanish almost
+surely.  Hence the entire weighted $H_0$ sampling Gram matrix is diagonal and
+has norm at most $3\tau_0$.  The source's Kadison--Singer step then reduces an
+arbitrarily large good random draw to $O(m)$ nodes, while its lower frame bound
+turns (3) into the desired $\tau_0/m$ error.  The spectral tail is handled
+exactly as in the source.
+
+\section*{3. A parameterized subsampling lemma}
+We use the equal-weight Kadison--Singer partition lemma employed in
+Section~4 of \cite{DKU}.  The following is the same argument with the norm
+budget changed from $2m$ to $3m$ and with a leading block of dimension
+$r\leq m$.
+
+\begin{lemma}\label{lem:sparse}
+Let $N>600m$, $1\leq r\leq m$, and
+$y_1,\ldots,y_N\in\C^r\oplus\ell_2$ satisfy $\|y_i\|_2^2\leq3m$ and
+\[
+ \left\|\frac1N\sum_{i=1}^N y_i y_i^*
+       -\begin{pmatrix}I_r&0\\0&\Lambda\end{pmatrix}\right\|
+ \leq\frac12,
+ \qquad \|\Lambda\|\leq1.                                  \tag{4}
+\]
+There is $J\subseteq\{1,\ldots,N\}$ with $|J|\leq64800m$ such that
+\[
+ \left(\sum_{i\in J}y_i y_i^*\right)_{<r}\geq75mI_r,
+ \qquad
+ \sum_{i\in J}y_i y_i^*\leq32400mI.                         \tag{5}
+\]
+\end{lemma}
+
+\begin{proof}
+Compress the lower coordinates to the span of the $N$ lower parts of the
+$y_i$.  This makes the problem finite-dimensional without changing the
+vectors or the leading block.  If
+$E=\diag(I_r,\Lambda)$, split the positive matrix $I-E$ into rank-one
+terms, repeat each term sufficiently many times, and scale the copies so that
+the artificial vectors have squared norm at most $\delta:=3m$.  They have
+zero leading coordinates.  As in \cite[Section~4]{DKU}, after adding them the
+total frame operator $M$ obeys
+\[
+ \frac N2I\leq M\leq\frac{3N}{2}I.
+\]
+
+The partition lemma used in the source says that if
+$\alpha I\leq M\leq\beta I$ and
+$\alpha>100\delta$, the vectors can be partitioned into blocks $J_s$ with
+\[
+ 25\delta I\leq\sum_{i\in J_s}y_i y_i^*
+ \leq3600\frac\beta\alpha\delta I.
+\]
+Here $\alpha=N/2$, $\beta=3N/2$, and $\delta=3m$, so every block lies
+between $75mI$ and $32400mI$.  If there are $t$ blocks, the lower bound
+$M\geq(N/2)I$ and the block upper bounds give
+$t\geq N/(64800m)$.  Some block therefore contains at most
+$N/t\leq64800m$ of the original vectors.  Retain those original vectors and
+delete its artificial vectors.  Deletion preserves the upper bound, and the
+leading lower bound is unchanged because all artificial vectors have zero
+leading coordinates.  Undoing the compression proves (5).
+\end{proof}
+
+\section*{4. Proof of Theorem~\ref{thm:main}}
+\begin{proof}
+If $T=0$, the zero algorithm has zero $L_2$ error, so assume $T\neq0$.
+Choose an orthonormal basis $(\phi_k)$ of $H_1$ consisting of right singular
+vectors and an orthonormal system $(b_k)$ in $L_2$ such that
+\[
+ \phi_k=\sigma_k b_k
+\]
+as functions.  This countable system gives the pointwise RKHS expansion of
+the separable space $H_1$.
+
+Fix a sampling budget parameter $m\geq1$ and put
+$r=\min\{m,\operatorname{rank}T\}$.  Define the active probability-density
+components
+\[
+ A(x)=\frac1r\sum_{k<r}|b_k(x)|^2,
+ \quad
+ B(x)=\frac1S\sum_{k\geq r}\sigma_k^2|b_k(x)|^2,
+ \quad
+ C_0(x)=\frac{K_0(x,x)}{\tau_0},                              \tag{6}
+\]
+where $S=\sum_{k\geq r}\sigma_k^2$, and omit $B$ if $S=0$ and $C_0$ if
+$\tau_0=0$.  If $q\leq3$ components remain, let $\rho$ be their average.
+Each active component integrates to one, so $d\nu=\rho\,d\mu$ is a
+probability measure.  In particular,
+$K_0(x,x)/\rho(x)\leq q\tau_0\leq3\tau_0$ whenever $\tau_0>0$.
+
+If $S>0$, put
+\[
+ \gamma^2=\max\left\{\sigma_r^2,\frac Sm\right\};             \tag{7}
+\]
+if $S=0$, put $\gamma=0$ and omit all tail coordinates.  For $S>0$ define
+the separable feature vector
+\[
+ y(x)=\rho(x)^{-1/2}
+ \left((b_k(x))_{k<r},\;(\gamma^{-1}\sigma_kb_k(x))_{k\geq r}\right).
+                                                                    \tag{8}
+\]
+Since $r\leq m$ and $S/\gamma^2\leq m$, (6) gives
+\[
+ \|y(x)\|_2^2
+ =\frac{rA(x)+(S/\gamma^2)B(x)}{\rho(x)}\leq qm\leq3m.       \tag{9}
+\]
+Orthogonality of the $b_k$ gives
+\[
+ \mathbb E_\nu[y(X)y(X)^*]
+ =\diag\left(I_r,(\sigma_k^2/\gamma^2)_{k\geq r}\right),     \tag{10}
+\]
+whose lower block has norm at most one.
+
+The random trace-class operator $y(X)y(X)^*$ has trace norm at most $3m$.
+The strong law in the separable trace class therefore yields an infinite iid
+sequence for which the empirical covariance converges in trace norm, hence
+in operator norm, to (10).  Also, for each fixed $z\in D$,
+$K_0(\cdot,z)\in H_0$ and is zero $\mu$-almost everywhere.  Since
+$\nu\ll\mu$, Tonelli's theorem gives
+\[
+ K_0(X_i,X_j)=0\quad(i\neq j)                                \tag{11}
+\]
+almost surely for an iid sequence.  Choose one realization satisfying (11)
+and then $N>600m$ large enough that (4) holds.  Lemma~\ref{lem:sparse}
+produces a subset $J$ of at most $64800m$ nodes satisfying (5).
+
+Let
+\[
+ G=\left(\frac{b_k(x_i)}{\sqrt{\rho(x_i)}}\right)_{i\in J,k<r},
+ \qquad
+ \Phi=\left(\frac{\sigma_kb_k(x_i)}{\sqrt{\rho(x_i)}}
+       \right)_{i\in J,k\geq r}.
+\]
+The two conclusions of (5) imply
+\[
+ G^*G\geq75mI_r,
+ \quad \|G^+\|^2\leq\frac1{75m},
+ \quad \|\Phi\|^2\leq32400m\gamma^2.                       \tag{12}
+\]
+Let $R_0:H_0\to\C^J$ be weighted evaluation, defined by
+\[
+ (R_0h)_i=\frac{h(x_i)}{\sqrt{\rho(x_i)}}.
+\]
+Its row Gram matrix has $(i,j)$ entry
+$K_0(x_i,x_j)/\sqrt{\rho(x_i)\rho(x_j)}$.  By (3) and (11), it is diagonal
+and
+\[
+ \|R_0\|^2\leq3\tau_0.                                      \tag{13}
+\]
+
+Use the weighted least-squares algorithm
+\[
+ \mathcal A f
+ =\sum_{k<r}\left(G^+
+   \left(\frac{f(x_i)}{\sqrt{\rho(x_i)}}\right)_{i\in J}
+   \right)_k b_k.                                             \tag{14}
+\]
+It is linear and exact on $\Span\{b_k:k<r\}$.  Decompose
+$f=P_rf+Q_rf+f_0$ according to the leading singular directions, the
+spectral tail, and $H_0$.  The residual sampling map on
+$H_{1,\geq r}\oplus H_0$ is the row operator $[\Phi\;R_0]$, so (12)--(13)
+give
+\[
+ \|[\Phi\;R_0]\|^2
+ =\|\Phi\Phi^*+R_0R_0^*\|
+ \leq32400m\gamma^2+3\tau_0.                                \tag{15}
+\]
+Pythagoras in $L_2$, exactness on the leading space, and
+$\|Q_rf\|_{L_2}\leq\sigma_r\|Q_rf\|_H$ now yield, for
+$\|f\|_H\leq1$,
+\begin{align*}
+ \|f-\mathcal Af\|_{L_2}^2
+ &\leq \gamma^2
+ +\frac{32400m\gamma^2+3\tau_0}{75m}\\
+ &=433\gamma^2+\frac{\tau_0}{25m}.                            \tag{16}
+\end{align*}
+The same computation covers finite rank when the tail is absent.
+
+Monotonicity of the singular values gives
+\[
+ \gamma^2\leq\frac2m
+     \sum_{k\geq\lceil m/2\rceil}\sigma_k^2.                 \tag{17}
+\]
+Consequently,
+\[
+ g_{64800m}(F)^2
+ \leq\frac{866}{m}\sum_{k\geq\lceil m/2\rceil}d_k(F)^2
+      +\frac{\tau_0}{25m}.                                   \tag{18}
+\]
+Apply (18) with $m=866n$.  Since the tail beginning at $433n$ is no
+larger than the tail beginning at $n$, and sampling numbers decrease with
+the number of nodes,
+\[
+ g_{(64800)(866)n}(F)^2
+ \leq\frac1n\sum_{k\geq n}d_k(F)^2+\frac{\tau_0}{n}.
+\]
+As $(64800)(866)=56{,}116{,}800$, this proves the theorem.
+\end{proof}
+
+\section*{5. Checks, dependence, and scope}
+\begin{itemize}[leftmargin=1.5em]
+\item \textbf{Null-space necessity.}  Although $H_0$ is invisible in $L_2$,
+its point values can perturb least squares.  Bound (13), not deletion of
+$H_0$, is what justifies the extension.
+\item \textbf{Degenerate cases.}  If $T=0$, the zero algorithm is exact in
+$L_2$.  If $T$ has finite positive rank, the same proof takes all positive
+singular directions once $m$ exceeds the rank; (13) still gives the
+$\tau_0/m$ term.  If $\tau_0=0$, the third density component and (13) vanish.
+\item \textbf{External dependency.}  The only deep imported step is the
+equal-weight partition lemma used by Dolbeault--Krieg--Ullrich, ultimately
+coming from the Marcus--Spielman--Srivastava solution of Kadison--Singer.
+The compact spectral decomposition and definition (1) are the framework of
+Moeller--Ullrich \cite[Section~7]{MU}.
+\item \textbf{Nonconstructive character.}  The trace-class strong law and
+the Kadison--Singer partition supply existence, not an efficient algorithm.
+The numerical constant is a bookkeeping constant, not a sharp claim.
+\item \textbf{Scope.}  This proves only the explicit nonseparable-RKHS
+extension in Remark~13.  It does not address the paper's broad statement that
+$L_p$ approximation for $p\neq2$ is widely open.
+\end{itemize}
+
+\section*{6. Provenance and literature search}
+Moeller--Ullrich already prove a nonseparable estimate with the same
+$\tr_0(K)$ obstruction, but their Theorem~1.2 retains logarithmic
+oversampling/tail loss \cite[Theorem~1.2 and Section~7]{MU}.  The present
+argument combines their null-kernel density and diagonal-Gram observation
+with the later sharp subsampling mechanism of \cite{DKU}; neither cited
+paper states (2).
+
+Exact-title, exact-symbol (\texttt{tr\_0(K)}), nonseparable-RKHS, and citing
+arXiv searches were run on 9 August 2026.  They found no later paper stating
+this theorem.  That is evidence against an obvious duplicate, not a certified
+priority or exhaustive-literature claim.
+
+\begin{thebibliography}{9}
+\bibitem{DKU}
+M. Dolbeault, D. Krieg, and M. Ullrich,
+\emph{A sharp upper bound for sampling numbers in $L_2$},
+Appl. Comput. Harmon. Anal. 63 (2023), 113--134;
+\href{https://arxiv.org/abs/2204.12621}{arXiv:2204.12621}.
+
+\bibitem{MU}
+M. Moeller and T. Ullrich,
+\emph{$L_2$-norm sampling discretization and recovery of functions from
+RKHS with finite trace},
+Sampl. Theory Signal Process. Data Anal. 19 (2021), Article 13;
+\href{https://arxiv.org/abs/2009.11940}{arXiv:2009.11940}.
+
+\bibitem{MSS}
+A. W. Marcus, D. A. Spielman, and N. Srivastava,
+\emph{Interlacing families II: mixed characteristic polynomials and the
+Kadison--Singer problem},
+Ann. of Math. 182 (2015), 327--350.
+\end{thebibliography}
+\end{document}

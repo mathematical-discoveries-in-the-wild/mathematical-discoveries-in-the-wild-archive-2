@@ -1,0 +1,200 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=27mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newcommand{\ellp}{\ell^p}
+\newcommand{\ellq}{\ell^q}
+\newcommand{\E}{\mathcal E}
+\newcommand{\D}{\mathcal D}
+
+\title{Recurrence does not control $\partial^2$ on $\ell^p$ when $p>2$}
+\author{Autonomous proof-discovery packet for arXiv:2605.21069}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.} Candidate full counterexample and sharpened positive replacement; likely valid, human review requested. Model: GPT5.6.
+
+\section{Source question}
+
+Bartmann and Keller study the boundary operator on weighted, possibly infinite simplicial complexes and characterize $\partial\partial=0$ on $\ell^2$ by recurrence of link graphs \cite{BK}. In the remark after their Theorem~4.1 (source PDF page~9), they prove the same implication on $\ell^p$ for $1\leq p\leq2$, observe that their argument fails for $p>2$, and ask for conditions governing the larger classes. The decisive excerpt is reproduced below.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The result below gives a negative answer to recurrence sufficiency for every $p>2$. It also identifies the direct potential-theoretic replacement suggested by H\"older duality.
+
+\section{Definitions and proof intuition}
+
+For a fixed simplex $\rho$, write $b_\rho$ for its weighted link graph. If $1<q<\infty$, call a connected component $X$ of this link \emph{$q$-parabolic} when there are $0\leq\varphi_n\leq1$ in $C_c(X)$ such that $\varphi_n\to1$ pointwise and
+\[
+  \E_{q,\rho}(\varphi_n)
+  :=\frac12\sum_{v,w\in X}b_\rho(v,w)
+       |\varphi_n(v)-\varphi_n(w)|^q\longrightarrow0.
+\]
+This is the standard null-sequence formulation of graph $q$-parabolicity; see \cite{AFS} for the general locally summable setting.
+
+\subsection*{Proof intuition}
+
+The source's recurrence proof tests the total boundary against cutoffs tending to one. For an $\ell^p$ cochain, H\"older's inequality pairs it with the $\ell^q$ norm of the cutoff gradient, where $q=p/(p-1)$. Thus the exact hypothesis is not small quadratic energy unless $p=2$, but small $q$-energy. When $p>2$, one has $q<2$, and recurrence need not imply $q$-parabolicity.
+
+The counterexample makes this mismatch visible as a conserved flux. Put conductance $n$ on the $n$th edge of a half-line and value $1/n$ on that edge. The weighted flux is identically one. Its divergence vanishes at every interior vertex but leaves one unit of charge at the endpoint. Quadratic resistance is $\sum 1/n=\infty$, so the link is recurrent; meanwhile the cochain's $\ell^p$ cost is $\sum n^{1-p}<\infty$ exactly when $p>2$.
+
+\section{The positive replacement}
+
+\begin{proposition}[Dual parabolicity suffices]\label{prop:positive}
+Let $1<p<\infty$ and $q=p/(p-1)$. Fix $\rho$ in a weighted simplicial complex in the sense of \cite{BK}. If every connected component of $b_\rho$ is $q$-parabolic, then
+\[
+  \partial\partial\omega(\rho)=0
+  \qquad
+  \bigl(\omega\in D(\partial\partial)\cap\ell^p(\Sigma,m)\bigr).
+\]
+\end{proposition}
+
+\begin{proof}
+Enumerate the components of $b_\rho$. By their $q$-parabolic null sequences and a diagonal choice, there are $0\leq\varphi_n\leq1$ in $C_c(\operatorname{lk}(\rho))$ such that $\varphi_n\to1$ pointwise and $\E_{q,\rho}(\varphi_n)\to0$. Indeed, on the first $n$ components choose cutoffs with total $q$-energy at most $1/n$, and take their sum; monotone componentwise null sequences give pointwise convergence.
+
+Use the localization maps $\pi_\rho,\pi^\rho$ of \cite{BK}. Since $\partial\omega\in D(\partial)$, the function $\pi_\rho\partial\omega$ is in $\ell^1(\operatorname{lk}(\rho),m_\rho)$. Dominated convergence and the finite-support Stokes identity therefore give
+\begin{align*}
+ m(\rho)\,|\partial\partial\omega(\rho)|
+ &=\lim_{n\to\infty}
+   \left|\sum_{\operatorname{lk}(\rho)}
+       m_\rho(\pi_\rho\partial\omega)\varphi_n\right|\\
+ &=\lim_{n\to\infty}
+   \left|\sum_{\Sigma}m\omega\,\delta\pi^\rho\varphi_n\right|\\
+ &\leq \|\omega\|_p
+       \lim_{n\to\infty}\|\delta\pi^\rho\varphi_n\|_q.
+\end{align*}
+For every simplex $vv'\rho$ containing two link vertices, the only two terms in the localized coboundary differ by orientation and give $\varphi_n(v)-\varphi_n(v')$. Hence, exactly
+\[
+ \|\delta\pi^\rho\varphi_n\|_q^q
+ =\frac12\sum_{v,v'}b_\rho(v,v')
+       |\varphi_n(v)-\varphi_n(v')|^q
+ =\E_{q,\rho}(\varphi_n)\longrightarrow0.
+\]
+The displayed boundary of boundary is therefore zero.
+\end{proof}
+
+\section{A recurrent counterexample for every \texorpdfstring{$p>2$}{p greater than 2}}
+
+\begin{theorem}\label{thm:counterexample}
+There is one weighted one-dimensional simplicial complex $(\Sigma,m)$ such that every link component is recurrent and, simultaneously for every $p>2$, there is a single cochain
+\[
+ \omega\in D(\partial\partial)\cap\ell^p(\Sigma,m)
+ \quad\text{with}\quad
+ \partial\partial\omega(\varnothing)=-1.
+\]
+Consequently, recurrence of the links does not imply the complex property on $\ell^p$ for any $p>2$.
+\end{theorem}
+
+\begin{proof}
+Let the vertices be $v_0,v_1,\ldots$ and let
+$e_n=\{v_{n-1},v_n\}$ for $n\geq1$. Take the augmented one-dimensional complex
+\[
+ \Sigma=\{\varnothing\}\cup\{v_n:n\geq0\}
+       \cup\{e_n:n\geq1\}
+\]
+with weights
+\[
+ m(\varnothing)=1,
+ \qquad m(v_n)=2^{-n-1},
+ \qquad m(e_n)=n.
+\]
+This is locally summable in the source's sense: $\sum_n m(v_n)=1$ at the empty simplex, and each vertex has only one or two edge cofaces of finite weight.
+
+Orient the augmented coboundary by
+\[
+ \theta(\varnothing,v_n)=1,
+ \qquad \theta(v_{n-1},e_n)=-1,
+ \qquad \theta(v_n,e_n)=1.
+\]
+Then $\delta^2=0$, since the two vertex contributions on each edge cancel. Define $\omega$ to vanish on the empty simplex and all vertices and set
+\[
+ \omega(e_n)=\frac1n\qquad(n\geq1).
+\]
+For every $p>2$,
+\[
+ \|\omega\|_p^p
+ =\sum_{n=1}^\infty m(e_n)|\omega(e_n)|^p
+ =\sum_{n=1}^\infty n^{1-p}<\infty.
+\]
+
+All sums defining $\partial\omega$ at vertices are finite. At the endpoint and the interior vertices, respectively,
+\[
+ \partial\omega(v_0)
+ =\frac{-m(e_1)\omega(e_1)}{m(v_0)}=-2,
+ \qquad
+ \partial\omega(v_n)
+ =\frac{m(e_n)\omega(e_n)-m(e_{n+1})\omega(e_{n+1})}{m(v_n)}=0
+ \quad(n\geq1).
+\]
+It vanishes on edges. Thus $\partial\omega\in D(\partial)$: the only nontrivial formal-domain sum is
+\[
+ \sum_{n\geq0}m(v_n)|\partial\omega(v_n)|=1.
+\]
+Therefore $\omega\in D(\partial\partial)$, and
+\[
+ \partial\partial\omega(\varnothing)
+ =\frac1{m(\varnothing)}
+   \sum_{n\geq0}m(v_n)\theta(\varnothing,v_n)
+          \partial\omega(v_n)=-1.
+\]
+
+It remains to check the link hypothesis. The link of $\varnothing$ is the half-line with conductance
+$b_\varnothing(v_{n-1},v_n)=m(e_n)=n$. Let $H_N=\sum_{j=1}^N1/j$ and define a finitely supported cutoff by
+\[
+ \eta_N(v_k)=
+ \begin{cases}
+  1-H_k/H_N,&0\leq k<N,\\
+  0,&k\geq N,
+ \end{cases}
+ \qquad H_0=0.
+\]
+Then $\eta_N\to1$ pointwise and
+\[
+ \E_{2,\varnothing}(\eta_N)
+ =\sum_{n=1}^N n\left(\frac1{nH_N}\right)^2
+ =\frac1{H_N}\longrightarrow0.
+\]
+Thus this link is $2$-parabolic, equivalently recurrent. Links of vertices have no link edges, so all their components are trivially recurrent; higher links are empty.
+
+For completeness, this example also pinpoints Proposition~\ref{prop:positive}. If $q=p/(p-1)<2$ and $\phi\in C_c$ satisfies $\phi(v_0)=1$, telescoping and weighted H\"older give
+\[
+ 1
+ \leq
+ \left(\sum_{n\geq1}n|\phi(v_{n-1})-\phi(v_n)|^q\right)^{1/q}
+ \left(\sum_{n\geq1}n^{-(p-1)}\right)^{1/p}.
+\]
+The $q$-energy of such cutoffs is bounded away from zero. Hence the recurrent half-line is $q$-hyperbolic for precisely the dual exponents relevant to every $p>2$.
+\end{proof}
+
+\section{Scope, novelty, and review recommendation}
+
+Theorem~\ref{thm:counterexample} answers the source's $p>2$ direction negatively if recurrence is retained as the proposed condition. Proposition~\ref{prop:positive} supplies a general sufficient condition but does not claim an unrestricted converse for arbitrary higher-dimensional links; extra faces can affect the global domain of a cochain built from a link flow. No $\ell^p$-Hodge decomposition or Riesz-transform equivalence is asserted.
+
+The bounded novelty check (through 11 August 2026) searched all four local run indexes, the exact arXiv id and title, and combinations of \emph{boundary of boundary}, \emph{complex property}, $\ell^p$, $p>2$, \emph{weighted half-line}, \emph{unit flux}, and $q$-parabolicity. It found the source and the graph-parabolicity background \cite{AFS}, but no paper stating this counterexample or applying dual parabolicity to the source question. Because arXiv:2605.21069 is very recent, novelty is provisional.
+
+Human review should focus on the iterated formal-domain check, the augmented orientation at $\varnothing$, the componentwise diagonal cutoff in Proposition~\ref{prop:positive}, and a refreshed literature search.
+
+\begin{thebibliography}{9}
+\bibitem{BK}
+P.~Bartmann and M.~Keller,
+\emph{The complex property of the boundary operator on simplicial complexes},
+arXiv:2605.21069v1, 2026.
+
+\bibitem{AFS}
+A.~Adriani, F.~Fischer, and A.~G.~Setti,
+\emph{Characterizations of $p$-Parabolicity on Graphs},
+arXiv:2507.13696v2, 2026.
+\end{thebibliography}
+
+\end{document}

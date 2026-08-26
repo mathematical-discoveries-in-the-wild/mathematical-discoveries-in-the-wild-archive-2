@@ -1,0 +1,235 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\BUC}{\operatorname{BUC}}
+\newcommand{\D}{\mathsf D}
+\newcommand{\E}{\mathbb E}
+\newcommand{\R}{\mathbb R}
+\newcommand{\cN}{\mathcal N}
+
+\title{The Ornstein--Uhlenbeck generator domain need not lie in the drift domain}
+\author{Candidate full answer to the domain question in arXiv:math/0509309}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\fbox{\parbox{0.94\linewidth}{\textbf{Status: candidate full
+counterexample, likely valid.}  There is an Ornstein--Uhlenbeck semigroup
+$P$ on a real Hilbert space for which
+\[
+       \D(L_{P^\circ})\not\subseteq \D(L_{R^\circ}).
+\]
+In fact, the witness is a bounded uniformly continuous function fixed by
+$P$, and therefore has $P^\circ$-generator zero, while its pointwise drift
+derivatives are unbounded.}}
+
+\section{\texorpdfstring{\hspace{0.35em}}{}The source question}
+
+Let $S$ be a $C_0$-semigroup on a real Banach space $E$, let $P$ be the
+associated Ornstein--Uhlenbeck semigroup, and let
+\[
+                    R(t)f(x)=f(S(t)x)
+\]
+be the drift semigroup.  Van Neerven and Priola prove that the maximal
+closed subspaces of $\BUC(E)$ on which $P$ and $R$ are strongly continuous
+coincide; they call this common space $\BUC^\circ(E)$.  They then ask whether
+the generators of the restricted $C_0$-semigroups always satisfy
+\[
+                  \D(L_{P^\circ})\subseteq\D(L_{R^\circ})
+\tag{Q}\label{eq:question}
+\]
+\cite[Section~2]{VP}.  We give a negative answer.
+
+\section{\texorpdfstring{\hspace{0.35em}}{}A finite-dimensional building block}
+
+Let $d\ge3$, $q>0$, and $\sigma^2=q/2$.  In
+$\R^d=\R\oplus\R^{d-1}$ consider the homogeneous cone
+\[
+       C_d=\{(z_1,z'):z_1\ge \lVert z'\rVert\}
+\]
+and define
+\begin{equation}\label{eq:F}
+ F_{d,q}(u)=\int_{\R^d}{\bf1}_{C_d}(u+y)\,
+                    d\cN(0,\sigma^2 I_d)(y).
+\end{equation}
+Thus $0\le F_{d,q}\le1$.  Gaussian convolution makes $F_{d,q}$
+smooth and bounded uniformly continuous.
+
+\begin{lemma}[Harmonic cone block]\label{lem:block}
+Consider the outward Ornstein--Uhlenbeck semigroup on $\R^d$ with
+$S(t)=e^tI_d$ and noise covariance $qI_d$.  Then
+\[
+                       P(t)F_{d,q}=F_{d,q}\qquad(t\ge0).
+\]
+Moreover, with $m_d=\E\lVert Z'\rVert$ for
+$Z'\sim\cN(0,I_{d-1})$, one has at $u_d=\sigma m_de_1$
+\begin{equation}\label{eq:lower}
+ u_d\cdot\nabla F_{d,q}(u_d)
+ \ge c_0\sqrt{d-2},
+ \qquad c_0=\frac34(2\pi)^{-1/2}e^{-2}.
+\end{equation}
+The constant is independent of $d$ and $q$.
+\end{lemma}
+
+\paragraph{Proof intuition.}
+The extra Gaussian in \eqref{eq:F} is chosen to be the covariance accumulated
+by running the outward OU flow backwards from infinity.  After an OU step,
+the step noise plus this extra Gaussian is simply an $e^t$-dilate of the
+original Gaussian; the cone indicator is unchanged by that dilation.  On a
+$d$-dimensional block, crossing the cone boundary occurs in a radial window
+of fixed Gaussian width at radius comparable to $\sqrt d$.  Multiplication
+by the radial drift therefore produces a derivative of order $\sqrt d$.
+
+\begin{proof}
+The OU noise at time $t$ has covariance
+\[
+       Q_t=\int_0^t e^{2s}qI_d\,ds
+           =\frac{e^{2t}-1}{2}qI_d.
+\]
+Let $Y_t\sim\cN(0,Q_t)$ and
+$Y\sim\cN(0,qI_d/2)$ be independent.  Their sum has the same law as
+$e^tY$.  Since ${\bf1}_{C_d}(e^tz)={\bf1}_{C_d}(z)$ for $t\in\R$,
+\[
+\begin{aligned}
+ P(t)F_{d,q}(u)
+ &=\E\,{\bf1}_{C_d}(e^tu+Y_t+Y)\\
+ &=\E\,{\bf1}_{C_d}(e^t(u+Y))
+  =F_{d,q}(u).
+\end{aligned}
+\]
+
+For the derivative estimate, write $Z=(Z_1,Z')\sim\cN(0,I_d)$,
+$T=\lVert Z'\rVert$, and let $\Phi,\phi$ be the standard normal
+distribution function and density.  Along the first coordinate axis,
+\[
+ F_{d,q}(re_1)
+ =\mathbb P\{r+\sigma Z_1\ge\sigma T\}
+ =\E\Phi(r/\sigma-T).
+\]
+Differentiation under the expectation gives
+\[
+ \frac d{dr}F_{d,q}(re_1)
+       =\sigma^{-1}\E\phi(r/\sigma-T).
+\]
+At $r=\sigma m_d$ it follows that
+\begin{equation}\label{eq:radial}
+ r\frac d{dr}F_{d,q}(re_1)
+       =m_d\E\phi(m_d-T).
+\end{equation}
+The Gaussian Poincar\'e inequality applied to the $1$-Lipschitz map
+$z'\mapsto\lVert z'\rVert$ gives
+$\operatorname{Var}(T)\le1$.  Hence
+\[
+ m_d^2=\E T^2-\operatorname{Var}(T)
+       \ge(d-1)-1=d-2.
+\]
+Chebyshev's inequality gives
+$\mathbb P(|T-m_d|\le2)\ge3/4$, and on this event
+$\phi(m_d-T)\ge\phi(2)$.  Substitution in \eqref{eq:radial} proves
+\eqref{eq:lower}.
+\end{proof}
+
+\section{The Hilbert-space counterexample}
+
+Let
+\[
+ E=\left(\bigoplus_{n\ge1}\R^{d_n}\right)_{\ell^2},
+ \qquad d_n=2^{4n},\qquad q_n=2^{-6n}.
+\]
+Let $A=I_E$, so $S(t)=e^tI_E$, and let the positive covariance operator
+$Q$ act as $q_nI_{d_n}$ on the $n$-th block.  It is trace class because
+\[
+                \operatorname{Tr}Q
+                =\sum_{n\ge1}d_nq_n
+                =\sum_{n\ge1}2^{-2n}<\infty.
+\]
+Taking $B=Q^{1/2}$ gives legitimate centred Gaussian Radon measures with
+covariance
+\[
+                  Q_t=\frac{e^{2t}-1}{2}Q
+\]
+for every $t\ge0$.
+
+Let $\pi_n:E\to\R^{d_n}$ be the coordinate projection, put
+$F_n=F_{d_n,q_n}$, and define
+\begin{equation}\label{eq:witness}
+                  f(x)=\sum_{n=1}^\infty 2^{-n}F_n(\pi_nx).
+\end{equation}
+The series converges uniformly because $0\le F_n\le1$.  Each summand is
+bounded uniformly continuous, so $f\in\BUC(E)$.
+
+\begin{theorem}\label{thm:counterexample}
+For the preceding Ornstein--Uhlenbeck and drift semigroups,
+\[
+       f\in\D(L_{P^\circ}),\quad L_{P^\circ}f=0,
+       \qquad\text{but}\qquad
+       f\notin\D(L_{R^\circ}).
+\]
+Consequently the inclusion \eqref{eq:question} fails in general.
+\end{theorem}
+
+\begin{proof}
+The $n$-th coordinate of the OU noise has exactly the finite-dimensional
+law used in Lemma~\ref{lem:block}.  Hence every summand in
+\eqref{eq:witness} is fixed by $P(t)$.  Uniform convergence and contractivity
+allow the sum to pass through $P(t)$, giving
+\[
+                         P(t)f=f\qquad(t\ge0).
+\]
+Thus $f$ lies in the strong-continuity space $\BUC^\circ(E)$ and in
+$\D(L_{P^\circ})$, with generator zero.
+
+Suppose, toward a contradiction, that $f\in\D(L_{R^\circ})$, and set
+$h=L_{R^\circ}f\in\BUC^\circ(E)$.  For a point $x$ supported only in the
+$n$-th block, say $\pi_nx=u$ and $\pi_kx=0$ for $k\ne n$, all summands but
+the $n$-th are constant along $t\mapsto e^tx$.  The pointwise generator
+limit therefore gives
+\[
+                         h(x)=2^{-n}u\cdot\nabla F_n(u).
+\]
+Choose $u=\sqrt{q_n/2}\,m_{d_n}e_1$.  Lemma~\ref{lem:block} yields
+\[
+ \lVert h\rVert_\infty
+ \ge 2^{-n}c_0\sqrt{d_n-2}
+ =2^{-n}c_0\sqrt{2^{4n}-2}\longrightarrow\infty.
+\]
+This contradicts the boundedness of $h$.  Therefore
+$f\notin\D(L_{R^\circ})$.
+\end{proof}
+
+\section{\texorpdfstring{\hspace{0.35em}}{}Audit, scope, and novelty}
+
+The construction uses a bounded generator $A=I$, a positive trace-class
+covariance, and genuine Gaussian Radon transition measures; no cylindrical
+or non-Radon noise is hidden in the example.  The witness is real-valued,
+bounded, and uniformly continuous.  Membership in the common space
+$\BUC^\circ(E)$ follows directly from $P(t)f=f$ and the source's proved
+equality of the $P$- and $R$-strong-continuity spaces.  Failure of the drift
+domain is stronger than failure of a formal differentiability condition:
+the pointwise drift derivatives forced by any generator limit are unbounded.
+
+The result answers only the word ``always'' in the source question.  It does
+not preclude the inclusion under finite-dimensional ellipticity, analyticity,
+or other regularity hypotheses.  Exact-phrase, title-citation, generator-domain,
+and later-survey searches through 11 August 2026 did not locate a published
+answer to this specific question.  The few later papers found citing the source
+use its norm-discontinuity or spectral results and do not state this
+counterexample.  Novelty confidence is moderate; independent expert review is
+requested.
+
+\begin{thebibliography}{9}
+\bibitem{VP}
+J.~M.~A.~M. van Neerven and E.~Priola,
+\emph{Norm discontinuity and spectral properties of Ornstein--Uhlenbeck
+semigroups}, Journal of Evolution Equations 5 (2005), 557--576;
+arXiv:math/0509309,
+\url{https://arxiv.org/abs/math/0509309}.
+\end{thebibliography}
+
+\end{document}

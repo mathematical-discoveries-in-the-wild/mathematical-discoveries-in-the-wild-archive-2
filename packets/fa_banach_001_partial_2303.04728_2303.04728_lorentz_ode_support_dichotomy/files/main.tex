@@ -1,0 +1,243 @@
+\documentclass[10pt]{article}
+\usepackage[a4paper,margin=0.75in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.45em}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\R}{\mathbb R}
+\title{The Lorentz limiting ODE has finite support\\
+exactly off the diagonal}
+\author{Candidate partial result for Conjecture 1 of arXiv:2303.04728}
+\date{12 August 2026}
+
+\begin{document}
+\maketitle
+
+\textbf{Status.} Candidate substantial partial result, likely valid; human
+review needed.  The support-radius clause of the conjecture is proved, but the
+empirical-measure convergence and existence/uniqueness of the critical
+shooting solution remain open.
+
+\section*{Source conjecture}
+
+Kabluchko, Prochno, and Sonnleitner formulate Conjecture 1 on source PDF
+page 7 \cite{KPS}:
+
+\begin{center}
+\includegraphics[width=0.98\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+For $1\le p\le q<\infty$, the conjectured positive-half distribution
+function $G$ solves
+\begin{equation}\label{eq:ode}
+ G''(x)=-G'(x)(1-G(x))^{p/q-1}x^{p-1},
+ \qquad 0<x<r_{p,q},
+\end{equation}
+with $G(0)=0$, $G(r_{p,q})=1$, and
+$G'(x)\to0$ as $x\uparrow r_{p,q}$.  The authors explicitly conjecture that
+$r_{p,q}=\infty$ if and only if $p=q$.
+
+\section*{Precise scope and proof intuition}
+
+Call $(G,r)$ an \emph{admissible boundary solution} if
+$r\in(0,\infty]$, $G$ is a classical solution of \eqref{eq:ode} on $(0,r)$,
+$G(0)=0$, $0<G(x)<1$, $G'(x)>0$ there, and
+\[
+ \lim_{x\uparrow r}G(x)=1,
+ \qquad \lim_{x\uparrow r}G'(x)=0.
+\]
+This is exactly the ODE-and-boundary portion of the conjectured critical
+solution.  Positivity of $G'$ also follows from a positive initial slope by
+the linear equation for $G'$ as long as $G<1$.
+
+The key idea is to set $u=1-G$ and $w=G'$.  After using the strictly
+decreasing quantity $u$ as the independent variable, the ODE becomes
+\[
+                     \frac{dw}{du}=x(u)^{p-1}u^{-\beta},
+                     \qquad \beta=1-\frac pq.
+\]
+The terminal condition $w=0$ makes this an exact integral formula.  If
+$\beta>0$ and the endpoint were infinite, future values of $x(u)$ would force
+$w$ to be so large that $u^\beta$ reaches zero in finite time.  The same
+formula at the true finite endpoint determines the exact power with which the
+density vanishes.
+
+\section*{Support dichotomy and edge law}
+
+\begin{theorem}\label{thm:main}
+Let $1\le p\le q<\infty$ and let $(G,r)$ be an admissible boundary solution
+of \eqref{eq:ode}.
+\begin{enumerate}
+\item If $p=q$, then $r=\infty$ and necessarily
+\begin{equation}\label{eq:diagonal}
+ G'(x)=a_p e^{-x^p/p},\qquad
+ a_p=\left(\int_0^\infty e^{-t^p/p}\,dt\right)^{-1}.
+\end{equation}
+\item If $p<q$, then $r<\infty$.  Put
+$\beta=1-p/q\in(0,1)$.  For every $0<x<r$,
+\begin{equation}\label{eq:bounds}
+ \frac{\beta}{p(1-\beta)}(r^p-x^p)
+ \le (1-G(x))^\beta
+ \le \frac{\beta r^{p-1}}{1-\beta}(r-x).
+\end{equation}
+Moreover, as $x\uparrow r$,
+\begin{align}
+ 1-G(x)
+ &\sim
+ \left(\frac{q-p}{p}r^{p-1}(r-x)\right)^{q/(q-p)},
+ \label{eq:edgeG}\\
+ G'(x)
+ &\sim \frac qp r^{p-1}
+ \left(\frac{q-p}{p}r^{p-1}(r-x)\right)^{p/(q-p)}.
+ \label{eq:edgeg}
+\end{align}
+Thus the conjectured density $G'(|x|)/2$ has the exact compact-support edge
+exponent $p/(q-p)$.
+\end{enumerate}
+In particular, every admissible boundary solution satisfies
+\[
+                         r=\infty\quad\Longleftrightarrow\quad p=q.
+\]
+\end{theorem}
+
+\begin{proof}
+Set
+\[
+ \beta=1-\frac pq,\qquad u=1-G,\qquad w=G'.
+\]
+Then $u>0$, $w>0$, $u'=-w$, and \eqref{eq:ode} is equivalent to
+\begin{equation}\label{eq:system}
+                         w'=-x^{p-1}u^{-\beta}w.
+\end{equation}
+
+Suppose first that $p=q$, so $\beta=0$.  Equation \eqref{eq:system}
+integrates to $w(x)=a e^{-x^p/p}$ for some $a>0$.  It is positive at every
+finite point, so the boundary condition $w(x)\to0$ cannot hold at a finite
+endpoint.  Hence $r=\infty$.  The condition $G(x)\to1$ then fixes $a=a_p$
+and proves \eqref{eq:diagonal}.
+
+Now assume $p<q$, so $0<\beta<1$.  Since $u'=-w<0$, $u$ has an inverse on
+its range; write $x(v)$ for the unique point at which $u=v$.  Dividing
+\eqref{eq:system} by $u'=-w$ gives
+\begin{equation}\label{eq:phase}
+                       \frac{dw}{du}=x(u)^{p-1}u^{-\beta}.
+\end{equation}
+
+We first rule out $r=\infty$.  If that were the endpoint, then $u\downarrow0$
+and $w\downarrow0$.  Integrating \eqref{eq:phase} from the terminal value
+$u=0$ to the current value $u=u(x)$ gives
+\begin{equation}\label{eq:identityinf}
+ w(x)=\int_0^{u(x)}x(v)^{p-1}v^{-\beta}\,dv.
+\end{equation}
+For $0<v<u(x)$, the value $v$ occurs later than $u(x)$, so $x(v)\ge x$.
+As $p\ge1$, \eqref{eq:identityinf} implies
+\begin{equation}\label{eq:lowerw}
+ w(x)\ge \frac{x^{p-1}}{1-\beta}u(x)^{1-\beta}.
+\end{equation}
+Consequently
+\[
+ \frac{d}{dx}u(x)^\beta
+ =-\beta u(x)^{\beta-1}w(x)
+ \le-\frac{\beta}{1-\beta}x^{p-1}.
+\]
+For a fixed $x_0>0$, integration to $X>x_0$ yields
+\[
+ u(X)^\beta
+ \le u(x_0)^\beta
+ -\frac{\beta}{p(1-\beta)}(X^p-x_0^p),
+\]
+whose right side is negative for large $X$.  This contradiction proves
+$r<\infty$.
+
+At the finite endpoint the same integration of \eqref{eq:phase} gives the
+exact identity
+\begin{equation}\label{eq:identity}
+ w(x)=\int_0^{u(x)}x(v)^{p-1}v^{-\beta}\,dv,
+ \qquad x<x(v)<r.
+\end{equation}
+Therefore
+\begin{equation}\label{eq:w-sandwich}
+ \frac{x^{p-1}}{1-\beta}u(x)^{1-\beta}
+ \le w(x)
+ \le\frac{r^{p-1}}{1-\beta}u(x)^{1-\beta}.
+\end{equation}
+Multiplying by $-\beta u^{\beta-1}$ reverses the order, and integrating from
+$x$ to $r$ gives exactly \eqref{eq:bounds}.
+
+Finally, $x(v)\to r$ as $v\downarrow0$.  Divide \eqref{eq:identity} by
+$u(x)^{1-\beta}$ and use the elementary weighted-average limit to obtain
+\begin{equation}\label{eq:wlimit}
+ \frac{w(x)}{u(x)^{1-\beta}}
+ \longrightarrow \frac{r^{p-1}}{1-\beta}.
+\end{equation}
+It follows that
+\[
+ \frac{d}{dx}u(x)^\beta
+ \longrightarrow-\frac{\beta r^{p-1}}{1-\beta}.
+\]
+Since $u(r)=0$, integration over the final interval gives
+\[
+ u(x)^\beta\sim
+ \frac{\beta r^{p-1}}{1-\beta}(r-x).
+\]
+Substituting $\beta=(q-p)/q$ proves \eqref{eq:edgeG}; combining it with
+\eqref{eq:wlimit} proves \eqref{eq:edgeg}.
+\end{proof}
+
+\begin{corollary}[exact recovery of the known $p=1$ case]
+If $p=1<q$, every admissible boundary solution has
+\[
+ r=\frac1{q-1},\qquad G'(0)=q,
+\]
+and
+\[
+ G'(x)=q\bigl(1-(q-1)x\bigr)^{1/(q-1)},
+ \qquad 0\le x\le\frac1{q-1}.
+\]
+\end{corollary}
+
+\begin{proof}
+For $p=1$, the factor $x(v)^{p-1}$ in \eqref{eq:identity} is identically
+one.  Hence $w=u^{1-\beta}/(1-\beta)=q u^{1/q}$ exactly, so
+$(u^\beta)'=-(q-1)$.  The conditions $u(0)=1$ and $u(r)=0$ give the stated
+formulas.  This agrees with Theorem B of \cite{KPS}.
+\end{proof}
+
+\section*{Verification, limitations, and novelty status}
+
+The diagonal formula recovers the usual normalized $p$-Gaussian, and the
+$p=1$ corollary recovers both the density and support proved independently in
+the source paper.  The two sides of \eqref{eq:bounds} have the same first-order
+endpoint constant, providing a separate check on \eqref{eq:edgeG}.
+
+The theorem starts from exactly the ODE boundary-solution hypothesis already
+stated in Conjecture 1.  It does
+\emph{not} prove that the uniform measures on the Lorentz balls converge, nor
+that the critical initial slope exists or is unique.  Focused shooting,
+entropy-variational, and Gibbs-conditioning upgrade attempts leave genuine
+compactness, regularity, exponential-tightness, and moving-constraint issues.
+
+Cheap run indexes and bounded exact-title, arXiv-id, quoted-conjecture,
+$r_{p,q}$, support-radius, and general-$p$ empirical-distribution searches
+through 12 August 2026 found the source and its published version but no later
+resolution of this clause.  Novelty confidence is moderate.
+
+\textbf{Human-review recommendation.}  Check first the orientation
+$x(v)\ge x$ in \eqref{eq:identityinf}, then the sign when integrating the
+differential inequality for $u^\beta$.  Those two elementary steps carry the
+support dichotomy; the edge law is a direct endpoint limit of the same exact
+identity.
+
+\begin{thebibliography}{9}
+\bibitem{KPS}
+Z. Kabluchko, J. Prochno, and M. Sonnleitner,
+\emph{A probabilistic approach to Lorentz balls},
+arXiv:2303.04728 (2023), Conjecture 1, p.~7.
+\end{thebibliography}
+
+\end{document}

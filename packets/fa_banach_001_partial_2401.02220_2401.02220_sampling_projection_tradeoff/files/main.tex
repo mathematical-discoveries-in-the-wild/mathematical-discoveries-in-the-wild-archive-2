@@ -1,0 +1,337 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\C}{\mathbb C}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\rank}{\operatorname{rank}}
+
+\title{The Near-Critical Sample Tradeoff for Uniform-Norm Projections\\
+\large Endpoint resolution and quantitative bounds for arXiv:2401.02220}
+\author{Automated Mathematics Run \texttt{fa\_banach\_001}, lane 0}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\linewidth}{\textbf{Status.}
+Candidate partial result, likely valid.  The case of one extra sample
+(equivalently $\alpha=0$) is completely resolved up to absolute constants.
+For $0<\alpha<1$ the packet gives new explicit brackets, but the full
+asymptotic tradeoff remains open.}}
+\end{center}
+
+\section{Source problem}
+
+Krieg, Pozharska, M.~Ullrich, and T.~Ullrich prove that every
+$n$-dimensional subspace of $B(D)$ admits a sampling projection using $2n$
+function values and having norm $O(\sqrt n)$ \cite{KPUU}.  At the other
+endpoint, $n$ samples require norm of order $n$ in the worst case.  They ask
+for the smallest universal norm when only $n+n^\alpha$ values are allowed,
+$0\leq\alpha<1$.  The exact source passage is reproduced below.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.96\linewidth]{figures/open_problem_crop.png}
+  \caption{The open problem on page 2 of arXiv:2401.02220v2.}
+\end{figure}
+
+To make ``smallest universal norm'' precise, let
+\[
+ \Pi(n,m)=\sup_{D,V}\ \inf_P \|P\|_{B(D)\to B(D)},
+\]
+where the supremum is over all sets $D$ and all complex $n$-dimensional
+subspaces $V\subset B(D)$, and the infimum is over sampling projections
+\[
+ Pf=\sum_{i=1}^r f(x_i)\varphi_i,
+ \qquad r\leq m,\quad x_i\in D,\quad \varphi_i\in V,
+\]
+onto $V$.  Repeated sample points may be merged, so they never improve the
+infimum.
+
+\section{Result}
+
+\begin{theorem}[Near-critical sampling bracket]\label{thm:main}
+For $n\geq2$ and $1\leq k\leq n$,
+\begin{equation}\label{eq:lower}
+ \Pi(n,n+k)\geq
+ \max\left\{\frac{n}{\sqrt{n+k}},
+              \left\lfloor\frac{n}{k+1}\right\rfloor\right\}.
+\end{equation}
+For every such $k$ one has $\Pi(n,n+k)\leq n+1$.  If $k\geq2$, then also
+\begin{align}
+ \Pi(n,n+k)
+ &\leq \sqrt{n+2}\,
+ \frac{\sqrt{n+k}+\sqrt{n+1}}
+      {\sqrt{n+k}-\sqrt{n+1}}                                      \label{eq:upper-exact}\\
+ &\leq \frac{4(n+k)\sqrt{n+2}}{k-1}.                               \label{eq:upper-simple}
+\end{align}
+Consequently the better of $n+1$ and \eqref{eq:upper-exact} may always be
+used.
+\end{theorem}
+
+\begin{corollary}[Power oversampling]\label{cor:alpha}
+Let $k_n=\lceil n^\alpha\rceil$.  For $\alpha=0$,
+\[
+ \Pi(n,n+1)=\Theta(n).
+\]
+Thus the first previously open point of the tradeoff curve is fully
+resolved.  For fixed $0<\alpha<1$,
+\begin{equation}\label{eq:power-bracket}
+ n^{\max\{1/2,,1-\alpha\}}
+ \ \lesssim\ \Pi(n,n+k_n)
+ \ \lesssim\
+ n^{\min\{1,,3/2-\alpha\}}.
+\end{equation}
+In particular, the upper bound becomes nontrivial already for
+$\alpha>1/2$.  The unweighted estimate stated in Remark 7 of the source
+paper becomes nontrivial only for $\alpha>2/3$.
+\end{corollary}
+
+\section{Proof intuition}
+
+The two lower bounds detect different obstructions.  Linear functions on
+the Euclidean sphere force every $m$-sample reconstruction of the identity
+to have norm at least $n/\sqrt m$; this follows just by taking a trace and
+then averaging over random phases.  To see the instability at the critical
+sample count, use the zero-sum hyperplane
+\[
+ H_q=\{z\in\C^{q+1}:z_0+\cdots+z_q=0\}.
+\]
+Sampling exactly $q$ of its $q+1$ coordinates forces the omitted coordinate
+to be minus the sum of the sampled values, and hence forces projection norm
+$q$.  Taking $k+1$ disjoint blocks guarantees that one block receives no
+extra sample, which gives the second term in \eqref{eq:lower}.
+
+The upper bound uses positivity in a different way.  Adjoin the constant
+function to $V$.  A Kiefer--Wolfowitz design gives a probability measure for
+which the uniform norm is bounded by $\sqrt{n+1}$ times the $L^2$ norm.
+Weighted BSS sparsification reduces this measure to $n+k$ atoms while
+losing a factor of order $n/k$ in the $L^2$ comparison.  The adjoined
+constant controls the total sparse weight.  Weighted least squares is then
+a sampling projection with the same order of norm.  This last constant-
+function device is essential: without it, the sparse weights need not have
+controlled total mass.
+
+\section{Lower bounds}
+
+\begin{lemma}[Euclidean trace obstruction]\label{lem:euclidean}
+For every $m\geq n$, $\Pi(n,m)\geq n/\sqrt m$.
+\end{lemma}
+
+\begin{proof}
+Let $D$ be the Euclidean unit sphere of $\C^n$, and identify $\C^n$ with the
+space $V$ of linear functions $f_z(x)=\langle z,x\rangle$ on $D$.  This is
+an isometry from $\ell_2^n$ into $B(D)$.
+
+Suppose a sampling projection uses distinct points $x_1,\dots,x_r$, where
+$r\leq m$.  Write its output functions as $f_{a_1},\dots,f_{a_r}$.  Since
+the operator is the identity on $V$,
+\begin{equation}\label{eq:identity-decomp}
+ z=\sum_{i=1}^r\langle z,x_i\rangle a_i
+ \qquad(z\in\C^n).
+\end{equation}
+Taking traces and then absolute values gives
+\[
+ n\leq\sum_{i=1}^r\|a_i\|_2
+ \leq\sqrt r\left(\sum_{i=1}^r\|a_i\|_2^2\right)^{1/2}.
+\]
+For independent uniform phases $\varepsilon_i$ on the unit circle,
+\[
+ \mathbb E\left\|\sum_i\varepsilon_i a_i\right\|_2^2
+ =\sum_i\|a_i\|_2^2.
+\]
+Because an arbitrary bounded function on $D$ may take the prescribed values
+$\varepsilon_i$ at the distinct sample points, the square root on the
+right is at most the projection norm.  Hence
+$n\leq\sqrt r\|P\|\leq\sqrt m\|P\|$.
+\end{proof}
+
+\begin{lemma}[Block-hyperplane obstruction]\label{lem:block}
+For $1\leq k\leq n$,
+\[
+ \Pi(n,n+k)\geq\left\lfloor\frac{n}{k+1}\right\rfloor.
+\]
+\end{lemma}
+
+\begin{proof}
+Put $b=k+1$ and $q=\lfloor n/b\rfloor$.  On a set of $q+1$ points let
+\[
+ H_q=\{z\in\C^{q+1}:\textstyle\sum_{i=0}^qz_i=0\},
+\]
+with its inherited uniform norm.  Form the $\ell_\infty$-direct sum of $b$
+disjoint copies of $H_q$ and add $n-bq$ one-dimensional coordinate blocks.
+The resulting function space $V\subset B(D)$ has dimension $n$.
+
+Any sampling projection onto $V$ must use at least $q$ distinct points in
+each $H_q$ block and at least one in each one-dimensional block: otherwise
+the restriction of the evaluation map to that summand is not injective.
+These compulsory samples account for $n$ points.  There are only $k=b-1$
+extra points, so at least one $H_q$ block is sampled at exactly $q$ of its
+$q+1$ coordinates.
+
+Restrict inputs to that block and take the corresponding output component.
+This gives a $q$-sample projection from $\ell_\infty^{q+1}$ onto $H_q$.
+The $q$ sampled-coordinate functionals restrict to an isomorphism on
+$H_q$, so its left inverse is unique: it copies the sampled values and puts
+minus their sum in the omitted coordinate.  Its norm is exactly $q$.
+Therefore the original projection also has norm at least $q$.
+\end{proof}
+
+Lemmas \ref{lem:euclidean} and \ref{lem:block} prove
+\eqref{eq:lower}.  Notice that the second construction is what survives
+one extra sample: a single zero-sum block becomes harmless after sampling
+all its coordinates, but $k+1$ blocks ensure that $k$ extra samples cannot
+repair all of them.
+
+\section{Upper bound}
+
+We use the following finite-frame sparsification consequence of
+Bartel--Sch\"afer--Ullrich \cite{BSU}.  It is their preconditioned complex
+BSS estimate, specialized to a finite-dimensional subspace.
+
+\begin{lemma}[Weighted near-minimal discretization]\label{lem:bss}
+Let $W$ be a $d$-dimensional subspace of $L^2(\rho)$, where $\rho$ is a
+finitely supported probability measure.  For every $c>1$ there are at most
+$\lceil cd\rceil$ atoms $x_j$ and weights $\lambda_j\geq0$ such that
+\begin{equation}\label{eq:bss}
+ \|w\|_{L^2(\rho)}^2
+ \leq\sum_j\lambda_j|w(x_j)|^2
+ \leq\gamma_c\|w\|_{L^2(\rho)}^2,
+ \qquad
+ \gamma_c=\left(\frac{\sqrt c+1}{\sqrt c-1}\right)^2.
+\end{equation}
+\end{lemma}
+
+\begin{proof}[Proof of the upper bounds in Theorem \ref{thm:main}]
+The $n+1$ bound is the sampling version of Auerbach's lemma recalled in
+Remark 4 of \cite{KPUU}; extra samples may simply be ignored.
+
+Assume $m=n+k\geq n+2$.  Set $W=\operatorname{span}(V\cup\{1\})$ and
+$d=\dim W\leq n+1$.  Proposition 8 of \cite{KPUU}, applied with its
+parameter $\varepsilon=1$, gives a finitely supported probability measure
+$\rho$ such that
+\begin{equation}\label{eq:design}
+ \|w\|_\infty\leq\sqrt{d+1}\,\|w\|_{L^2(\rho)}
+ \qquad(w\in W).
+\end{equation}
+Apply Lemma \ref{lem:bss} with $c=m/d>1$.  Let
+\(\|f\|_\nu^2=\sum_j\lambda_j|f(x_j)|^2\).
+Since $1\in W$, the upper half of \eqref{eq:bss} gives
+\begin{equation}\label{eq:mass}
+ \nu(D)=\sum_j\lambda_j=\|1\|_\nu^2\leq\gamma_c.
+\end{equation}
+
+Let $A_\nu f$ be the weighted least-squares minimizer over $V$.  The lower
+half of \eqref{eq:bss} makes this minimizer unique; it is linear, depends on
+at most $m$ values of $f$, and is the identity on $V$.  Thus it is a
+sampling projection.  Orthogonal projection in the $\nu$ inner product,
+\eqref{eq:design}, \eqref{eq:bss}, and \eqref{eq:mass} give
+\begin{align*}
+ \|A_\nu f\|_\infty
+ &\leq\sqrt{d+1}\|A_\nu f\|_{L^2(\rho)}
+ \leq\sqrt{d+1}\|A_\nu f\|_\nu\\
+ &\leq\sqrt{d+1}\|f\|_\nu
+ \leq\sqrt{(d+1)\gamma_c}\|f\|_\infty.
+\end{align*}
+Therefore
+\[
+ \|A_\nu\|
+ \leq\sqrt{d+1}\frac{\sqrt m+\sqrt d}{\sqrt m-\sqrt d}
+ \leq\sqrt{n+2}\frac{\sqrt m+\sqrt{n+1}}
+                         {\sqrt m-\sqrt{n+1}},
+\]
+which is \eqref{eq:upper-exact}.  Finally,
+\[
+ \frac{\sqrt m+\sqrt d}{\sqrt m-\sqrt d}
+ =\frac{(\sqrt m+\sqrt d)^2}{m-d}
+ \leq\frac{4m}{m-d}
+ \leq\frac{4(n+k)}{k-1},
+\]
+proving \eqref{eq:upper-simple}.
+\end{proof}
+
+Corollary \ref{cor:alpha} follows immediately by putting
+$k=\lceil n^\alpha\rceil$ in Theorem \ref{thm:main}.
+
+\section{Upgrade attempts, verification, and remaining gap}
+
+The proof was pushed beyond the first partial observation in four ways.
+First, the unweighted sparsification used in the source was replaced by the
+weighted preconditioned BSS estimate, and the constant function was adjoined
+to control total mass.  Second, two independent lower witnesses were made
+explicit rather than importing the paper's sharpness assertion.  Third,
+tensor products of zero-sum hyperplanes were tested as possible stronger
+obstructions.  Exact small linear programs give best norms $3,2$ for
+$H_2\otimes H_2$ with $4,5$ samples and $4,3,2$ for
+$H_2\otimes H_3$ with $6,7,8$ samples; the rapid improvement rules out the
+naive tensor route.  Fourth, an interpolation-plus-rank-one-correction
+decomposition was examined.  Although each correction can be chosen to
+annihilate $V$ and hence preserve the projection property, no selection
+principle controls the uniform operator norm of a partial correction sum;
+the necessary cancellations are global in the output rows.
+
+The script \texttt{code/verify\_finite\_witnesses.py} checks the unique
+$q$-sample projection onto $H_q$ for $1\leq q\leq12$, verifies its norm is
+$q$, and checks the block-count formulas and scalar bounds in the theorem.
+These computations are consistency checks and are not used in the proof.
+
+For $0<\alpha<1$, the exponent gap in \eqref{eq:power-bracket} remains.
+Closing it appears to require either a sampling projection construction that
+uses cancellations unavailable to positive weighted least squares, or a
+single family of subspaces whose instability persists quantitatively under
+many extra coordinates.  The block construction only charges one extra
+sample to repair one hard block, and weighted spectral sparsification
+intrinsically pays the $(c-1)^{-1}$ loss.
+
+\section{Novelty assessment}
+
+The exact title, arXiv identifier, open-problem phrase, ``$n+k$ sampling
+projection'', ``near-critical oversampling'', and related frame-
+sparsification terms were searched through 11 August 2026.  The October 2025
+version of the source still poses the problem.  A March 2026 survey by Dai,
+Kosov, and Temlyakov \cite{DKT} gives a weighted norming-set estimate of
+order $\sqrt n/(c-1)$ by adjoining the constant function, but does not state
+the sampling-projection tradeoff, the block lower bound, or the one-extra-
+sample resolution.  Thus the upper argument should be viewed as a short
+projection consequence of known ingredients, not as a wholly new
+sparsification theorem.  No source located in the bounded search contains
+the block-hyperplane lower bound or the conclusion
+$\Pi(n,n+1)=\Theta(n)$.  Novelty confidence for those additions is moderate,
+not definitive.
+
+\paragraph{Human-review recommendation.}
+Review as a likely-valid partial result with a fully resolved endpoint.  The
+highest-value checks are the uniqueness argument on an exactly sampled
+zero-sum block, the count forcing one such block, and the use of the constant
+function in \eqref{eq:mass}.  The packet makes no claim to resolve the
+interior range $0<\alpha<1$.
+
+\begin{thebibliography}{9}
+\bibitem{KPUU}
+D.~Krieg, K.~Pozharska, M.~Ullrich, and T.~Ullrich,
+\emph{Sampling projections in the uniform norm},
+J. Math. Anal. Appl. \textbf{553} (2026), Paper 129873;
+arXiv:2401.02220.
+
+\bibitem{BSU}
+F.~Bartel, M.~Sch\"afer, and T.~Ullrich,
+\emph{Constructive subsampling of finite frames with applications in
+optimal function recovery},
+Appl. Comput. Harmon. Anal. \textbf{65} (2023), 209--248;
+arXiv:2202.12625.
+
+\bibitem{DKT}
+F.~Dai, E.~Kosov, and V.~N.~Temlyakov,
+\emph{A survey of sampling discretization of integral and uniform norms},
+arXiv:2603.02459 (2026).
+\end{thebibliography}
+
+\end{document}

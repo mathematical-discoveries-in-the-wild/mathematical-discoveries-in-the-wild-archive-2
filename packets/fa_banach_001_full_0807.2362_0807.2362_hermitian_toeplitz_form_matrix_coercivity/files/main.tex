@@ -1,0 +1,390 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\definecolor{navy}{RGB}{24,55,92}
+\definecolor{darkgreen}{RGB}{22,100,72}
+\definecolor{softgray}{RGB}{245,247,250}
+\definecolor{softred}{RGB}{252,240,240}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\T}{\mathbb T}
+\newcommand{\N}{\mathbb N_0}
+\newcommand{\K}{\mathcal K}
+\newcommand{\B}{\mathcal B}
+\newcommand{\Real}{\operatorname{Re}}
+\newcommand{\essinf}{\operatorname*{ess\,inf}}
+
+\title{\textbf{Coercivity of Hermitian and Toeplitz Form Matrices}\\
+\large A full positive answer to the structured-matrix question in arXiv:0807.2362}
+\author{Automated Mathematics Run \texttt{fa\_banach\_001}\\
+Lane 11, model GPT5.6}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{darkgreen}{softgray}{\parbox{0.89\textwidth}{
+\textbf{Status: candidate full solution, likely valid.}
+For bounded Hermitian block forms, scalar Schur-complement arguments transfer
+verbatim after Riesz representation.  For bilateral and one-sided Toeplitz
+form matrices with absolutely summable operator coefficients, coercivity is
+equivalent to uniform positivity of the Hermitian part of the Fourier symbol;
+the theorem also gives the exact optimal coercivity constant.
+}}
+\end{center}
+
+\section{Source question}
+
+The source is Stefano Cardanobile, \emph{Diffusion systems and heat equations
+on networks} \cite{Cardanobile}, arXiv:0807.2362 (2008).  In the discussion of
+Section 1.3, printed page 49 (PDF page 60), it asks:
+
+\begin{quote}
+``An open question is whether it is possible to translate other arguments
+holding for scalar-valued matrices in the context of forms, e.g. symmetric
+matrices or Toeplitz matrices.''
+\end{quote}
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{The open question in the original source, printed page 49.  The
+  full readable page width is retained.}
+\end{figure}
+
+The wording is existential and deliberately broad.  The results below answer
+both named examples: an exact Schur criterion for Hermitian form matrices and
+an exact symbol criterion for a natural infinite-dimensional Toeplitz class.
+
+\section{Definitions and scope}
+
+All Hilbert spaces are complex and inner products are linear in the first
+variable.  A bounded sesquilinear form $a$ on a Hilbert space $V$ has a unique
+Riesz representative $A\in\B(V)$ such that
+\[
+  a(u,v)=\langle Au,v\rangle.
+\]
+Its optimal real lower bound is
+\[
+  c(a):=\inf_{u\ne0}\frac{\Real a(u,u)}{\|u\|^2}.
+\]
+Thus $a$ is coercive exactly when $c(a)>0$.  The form is Hermitian when
+$a(u,v)=\overline{a(v,u)}$, equivalently $A=A^*$.
+
+For the Toeplitz result, let $\K$ be an arbitrary complex Hilbert space and
+let $(B_k)_{k\in\mathbb Z}\subset\B(\K)$ satisfy
+\begin{equation}\label{eq:wiener}
+  \sum_{k\in\mathbb Z}\|B_k\|<\infty.
+\end{equation}
+This includes every finite-band operator-valued Toeplitz matrix.  For
+$J=\mathbb Z$ or $J=\N$, first define on finitely supported vectors
+$u,v\in\ell^2(J;\K)$
+\begin{equation}\label{eq:toeplitzform}
+  a_J(u,v):=\sum_{m,n\in J}
+  \langle B_{m-n}u_n,v_m\rangle,
+\end{equation}
+and then extend continuously.  Condition \eqref{eq:wiener} guarantees this
+extension.  Its norm-continuous symbol and Hermitian symbol are
+\begin{equation}\label{eq:symbols}
+  F(\theta):=\sum_{k\in\mathbb Z}B_ke^{ik\theta},\qquad
+  G(\theta):=\frac{F(\theta)+F(\theta)^*}{2}.
+\end{equation}
+
+\section{Proof intuition}
+
+For a Hermitian block form, Riesz representation changes the entries from
+scalar-valued sesquilinear maps into bounded operators.  Gaussian elimination
+then becomes a bounded triangular congruence.  The same multiplication that
+produces a scalar Schur complement produces an operator Schur complement, and
+bounded invertibility of the triangular factor makes strict positivity
+equivalent on both sides.
+
+For Toeplitz forms, the repeated diagonal structure is convolution.  Fourier
+series turn convolution into pointwise multiplication by $F(\theta)$, so the
+real quadratic form only sees $G(\theta)$.  Uniform positivity of $G$ is
+immediately sufficient.  The only delicate direction is necessity for the
+one-sided matrix: normalized geometric sequences in $\ell^2(\N;\K)$ have
+Fourier mass equal to a Poisson kernel.  Concentrating that mass at an
+arbitrary angle and in an arbitrary coefficient-space direction recovers
+every pointwise Rayleigh quotient of $G$.  No boundary loss occurs.
+
+\section{Symmetric matrices: the exact Schur criterion}
+
+\begin{theorem}[Hermitian two-block form criterion]\label{thm:schur}
+Let $V_1,V_2$ be Hilbert spaces and let a bounded Hermitian form on
+$V_1\oplus V_2$ have Riesz representative
+\[
+ A=\begin{pmatrix}P&B^*\\ B&Q\end{pmatrix},
+\]
+where $P=P^*$ on $V_1$, $Q=Q^*$ on $V_2$, and
+$B\in\B(V_1,V_2)$.  Suppose $P$ is coercive.  Define
+\[
+ S:=Q-BP^{-1}B^*.
+\]
+Then the full form is coercive if and only if $S$ is coercive.
+\end{theorem}
+
+\begin{proof}
+Since $P$ is coercive, $P^{-1}$ is bounded.  Direct block multiplication gives
+the exact factorization
+\begin{equation}\label{eq:ldl}
+ A=
+ \underbrace{\begin{pmatrix}I&0\\ BP^{-1}&I\end{pmatrix}}_{L}
+ \begin{pmatrix}P&0\\0&S\end{pmatrix}
+ \underbrace{\begin{pmatrix}I&P^{-1}B^*\\0&I\end{pmatrix}}_{L^*}.
+\end{equation}
+The triangular operator $L$ is boundedly invertible.  If
+$P\ge pI$ and $S\ge sI$ with $p,s>0$, then for every $z\in V_1\oplus V_2$,
+\[
+ \langle Az,z\rangle
+ \ge \min(p,s)\|L^*z\|^2
+ \ge \frac{\min(p,s)}{\|L^{-1}\|^2}\|z\|^2.
+\]
+Thus $A$ is coercive.
+
+Conversely, suppose $A\ge\gamma I$ with $\gamma>0$.  Restricting to
+$V_1\oplus\{0\}$ gives $P\ge\gamma I$.  For $y\in V_2$, insert
+$z=(-P^{-1}B^*y,y)$ in the quadratic form.  Formula \eqref{eq:ldl} yields
+\[
+ \langle Sy,y\rangle=\langle Az,z\rangle
+ \ge\gamma\bigl(\|P^{-1}B^*y\|^2+\|y\|^2\bigr)
+ \ge\gamma\|y\|^2.
+\]
+Hence $S$ is coercive.
+\end{proof}
+
+\begin{corollary}[Finite Hermitian block elimination]\label{cor:recursive}
+For a bounded Hermitian $n\times n$ form matrix on
+$V_1\oplus\cdots\oplus V_n$, recursively take the first diagonal pivot and
+replace the remaining block by its Schur complement.  The full form is
+coercive if and only if every pivot produced by this recursion is coercive.
+\end{corollary}
+
+\begin{proof}
+Apply Theorem \ref{thm:schur} to the splitting
+$V_1\oplus(V_2\oplus\cdots\oplus V_n)$ and iterate on the Schur complement.
+If the full form is coercive, each leading compression and each resulting
+Schur complement is coercive by the converse part of the theorem.  If every
+pivot is coercive, reverse the bounded triangular factorizations.
+\end{proof}
+
+This is precisely the operator/form version of Hermitian Gaussian elimination
+and the Schur-complement form of Sylvester's criterion.
+
+\section{Toeplitz matrices: exact symbol characterization}
+
+\begin{theorem}[Bilateral and one-sided Toeplitz coercivity]\label{thm:toeplitz}
+Assume \eqref{eq:wiener}, and let $a_J$ be defined by
+\eqref{eq:toeplitzform}, where $J=\mathbb Z$ or $J=\N$.  Put
+\[
+ g_*:=\min_{\theta\in[0,2\pi]}
+       \inf_{\|x\|_{\K}=1}\langle G(\theta)x,x\rangle.
+\]
+Then
+\begin{equation}\label{eq:optimal}
+ c(a_J)=g_*.
+\end{equation}
+In particular, the following are equivalent:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $a_J$ is coercive;
+\item there is $\gamma>0$ such that $G(\theta)\ge\gamma I_{\K}$ for every
+      $\theta\in[0,2\pi]$.
+\end{enumerate}
+The same optimal constant works for the bilateral and one-sided forms.
+\end{theorem}
+
+\begin{proof}
+Norm-uniform convergence in \eqref{eq:symbols} makes $F$ and $G$ continuous.
+The function
+\[
+ h(\theta):=\inf_{\|x\|=1}\langle G(\theta)x,x\rangle
+\]
+is continuous because
+$|h(\theta)-h(\varphi)|\le\|G(\theta)-G(\varphi)\|$; hence $g_*$ is a true
+minimum.
+
+First consider finitely supported $u,v$ and extend a one-sided vector by zero
+to $\mathbb Z$.  With
+\[
+ (\mathcal Fu)(\theta):=\sum_{n\in\mathbb Z}u_ne^{in\theta},
+\]
+orthogonality of exponentials and the convention $B_{m-n}$ give
+\begin{equation}\label{eq:fourieridentity}
+ a_J(u,v)=\frac1{2\pi}\int_0^{2\pi}
+ \langle F(\theta)(\mathcal Fu)(\theta),
+                (\mathcal Fv)(\theta)\rangle\,d\theta.
+\end{equation}
+The absolute coefficient sum and vector-valued Young inequality show that the
+convolution operator is bounded on $\ell^2(\mathbb Z;\K)$; the one-sided
+operator is a compression.  Thus \eqref{eq:fourieridentity} extends to every
+$u,v\in\ell^2(J;\K)$.
+
+Taking real parts and using Parseval,
+\begin{align*}
+ \Real a_J(u,u)
+ &=\frac1{2\pi}\int_0^{2\pi}
+   \langle G(\theta)(\mathcal Fu)(\theta),
+                  (\mathcal Fu)(\theta)\rangle\,d\theta\\
+ &\ge g_*\frac1{2\pi}\int_0^{2\pi}
+                  \|(\mathcal Fu)(\theta)\|^2\,d\theta
+ =g_*\|u\|^2.
+\end{align*}
+Therefore $c(a_J)\ge g_*$.
+
+For the reverse inequality fix $\theta_0\in[0,2\pi]$, a unit vector
+$x\in\K$, and $0<r<1$.  In either index set use the vector supported on
+$\N$ given by
+\[
+ u_n^{(r)}=\sqrt{1-r^2}\,r^n e^{-in\theta_0}x,
+ \qquad n\in\N.
+\]
+It has norm one, and
+\[
+ \|\mathcal Fu^{(r)}(\theta)\|^2
+ =\frac{1-r^2}{|1-re^{i(\theta-\theta_0)}|^2}
+ =:P_r(\theta-\theta_0),
+\]
+the Poisson kernel.  Formula \eqref{eq:fourieridentity} gives
+\[
+ \Real a_J(u^{(r)},u^{(r)})
+ =\frac1{2\pi}\int_0^{2\pi}P_r(\theta-\theta_0)
+       \langle G(\theta)x,x\rangle\,d\theta.
+\]
+The scalar function under the Poisson average is continuous, so the
+approximate-identity property yields, as $r\uparrow1$,
+\[
+ \Real a_J(u^{(r)},u^{(r)})
+ \longrightarrow\langle G(\theta_0)x,x\rangle.
+\]
+Consequently
+$c(a_J)\le\langle G(\theta_0)x,x\rangle$ for every $\theta_0$ and every unit
+$x$.  Taking the two infima gives $c(a_J)\le g_*$.  Combined with the first
+inequality this proves \eqref{eq:optimal} and both equivalences.
+\end{proof}
+
+\begin{remark}[Why the one-sided case is not weaker]
+For a compression, pointwise symbol positivity is automatically sufficient,
+but necessity can fail for arbitrary compression problems.  Here the Hardy
+geometric vectors concentrate at any chosen boundary point.  They recover
+every pointwise Rayleigh quotient and therefore prevent an artificial gain in
+the coercivity constant.
+\end{remark}
+
+\section{Incidental correction to the source}
+
+The open question is preceded by Proposition 17 in the source.  That
+proposition is not needed above and is false as written.
+
+\begin{proposition}\label{prop:counterexample}
+Condition (1.22) of source Proposition 17 is not necessary for coercivity,
+even when both component spaces are one-dimensional.
+\end{proposition}
+
+\begin{proof}
+Take $V_1=V_2=\mathbb C$,
+\[
+ a_{11}(z,w)=z\overline w,\qquad
+ a_{22}(z,w)=z\overline w,\qquad a_{12}=a_{21}=0.
+\]
+Both optimal diagonal coercivity constants are $\alpha_1=\alpha_2=1$.  The
+full form satisfies
+\[
+a((z_1,z_2),(z_1,z_2))=|z_1|^2+|z_2|^2,
+\]
+so its optimal coercivity constant is one.  If source condition (1.22) held
+for some $\alpha>0$, setting
+$z_1=1$ and $z_2=0$ would give
+\[
+ 0\ge\alpha(|z_1|^2+|z_2|^2)-2|z_1||z_2|=\alpha,
+\]
+a contradiction.
+\end{proof}
+
+The error is structural: independently rescaling the two coordinates changes
+the norm at which coercivity is tested.  Optimal lower bounds for the diagonal
+forms do not convert that family of rescalings into an equivalence.  A separate
+proof-gap packet records the exact source statement and counterexample.
+
+\section{Verification and computational checks}
+
+The proof was adversarially checked at the following points:
+\begin{enumerate}[leftmargin=*]
+\item Multiplying the three factors in \eqref{eq:ldl} recovers the block
+matrix with lower-right block $Q$.
+\item The Fourier convention in \eqref{eq:fourieridentity} selects
+$k+n=m$, hence exactly the coefficient $B_{m-n}$.
+\item The normalized geometric vector has norm one and squared Fourier norm
+$P_r$; it is valid in both index sets because it is supported in $\N$.
+\item Infinite-dimensional $\K$ causes no compactness issue: the infimum over
+unit vectors need not be attained, and the proof only takes an infimum.  The
+outer minimum exists by operator-norm continuity.
+\end{enumerate}
+
+The diagnostic script \texttt{code/check\_coercivity.py} checks 100 random
+finite Schur factorizations, a $2\times2$ matrix-valued banded Toeplitz symbol
+against a 384-block one-sided compression, and the source counterexample.  It
+reports
+\[
+ g_{\rm grid}=2.475765077,\qquad
+ \lambda_{\min}(T_{384}^{\rm herm})=2.475784964,
+\]
+consistent with finite compressions approaching the symbol edge from above.
+These computations are diagnostics only; no numerical statement is used in
+the proof.
+
+\section{Novelty search, limitations, and review status}
+
+A bounded check on 9 August 2026 searched the run indexes and arXiv-focused
+web results using the exact source wording and the phrases
+\emph{operator-valued Toeplitz coercivity symbol},
+\emph{Toeplitz sesquilinear forms coercive}, and
+\emph{block operator matrix Schur complement coercivity}.  No later paper
+explicitly claiming to resolve Cardanobile's question was found.  General
+Toeplitz positivity and Schur-complement theory are classical; see, for
+example, \cite{BottcherSilbermann}.  Accordingly, this packet claims a new
+self-contained identification and proof relative to the source question, not
+priority for the ingredients or a comprehensive literature novelty claim.
+
+The Toeplitz theorem assumes the natural Wiener condition
+\eqref{eq:wiener}.  It therefore covers every finite-band form matrix and a
+large norm-continuous class, but does not claim to classify arbitrary weakly
+specified Toeplitz arrays.  Since the source asks whether such translations
+are possible and names the two structures rather than demanding maximal
+generality, the packet classifies the result as a full positive answer.  A
+reviewer adopting the stronger historical interpretation may conservatively
+reclassify it as a substantial partial result.
+
+\medskip
+\noindent\textbf{Human-review recommendation.}
+Send to human review.  The main proof checks are the Toeplitz indexing, the
+Hardy/Poisson necessity argument, and the intended scope of the informal
+source question.  The mathematical theorem itself has no conditional
+dependency.
+
+\begin{thebibliography}{9}
+\bibitem{Cardanobile}
+S. Cardanobile,
+\emph{Diffusion systems and heat equations on networks},
+PhD thesis, arXiv:0807.2362, 2008.
+
+\bibitem{BottcherSilbermann}
+A. B\"ottcher and B. Silbermann,
+\emph{Analysis of Toeplitz Operators},
+2nd ed., Springer Monographs in Mathematics, Springer, 2006.
+\end{thebibliography}
+
+\end{document}

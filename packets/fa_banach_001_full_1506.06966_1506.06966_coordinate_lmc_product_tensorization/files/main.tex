@@ -1,0 +1,338 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Law}{\operatorname{Law}}
+\newcommand{\W}{W_2}
+
+\title{Product Tensorization Resolves the Dimension Conjecture\\
+for the Random-Coordinate Rademacher LMC Scheme}
+\author{Candidate solution packet for arXiv:1506.06966}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status: candidate full solution, likely
+valid, pending human review.} The theorem uses the strong-convexity sign that
+is required by the Gaussian example and by the proof of Proposition 12 in the
+source. The opposite sign printed in the proposition is a typographical
+error.}}
+\end{center}
+
+\begin{abstract}
+Bonis conjectured that a random-coordinate Langevin scheme with Rademacher
+increments reaches Wasserstein error $\epsilon$ in
+$O(\epsilon^{-2}d^2\log(d/\epsilon))$ scalar-coordinate operations under the
+hypotheses of Proposition 12 of \cite{Bonis}. We prove the intended conjecture.
+The key observation is that the all-pairs coordinate Lipschitz assumption in
+that proposition forces the potential to be a sum of one-dimensional
+potentials. The source's proved one-dimensional $O(\sqrt h)$ stationary-bias
+estimate therefore tensorizes to $O(\sqrt{dh})$. Combining this with the
+source's random-coordinate contraction and taking $h\asymp\epsilon^2/d$ gives
+the asserted complexity.
+\end{abstract}
+
+\section{Source problem and evidence}
+
+The source is Thomas Bonis, \emph{Rates in the Central Limit Theorem and
+diffusion approximation via Stein's Method}, arXiv:1506.06966v6
+\cite{Bonis}. The scheme, Proposition 12, and the conjecture appear on PDF
+pages 16--17. At every step a uniform coordinate $I_n\in\{1,\ldots,d\}$ and
+an independent Rademacher sign $B_n$ are sampled, and
+\begin{equation}\label{eq:chain}
+ M_{n+1}=M_n+
+ \left(-h\,\partial_{I_n}u(M_n)+\sqrt{2h}\,B_n\right)e_{I_n}.
+\end{equation}
+The source conjectures that $h\asymp\epsilon^2/d$ and
+$n=O(\epsilon^{-2}d^2\log(d/\epsilon))$ suffice.
+
+The complete source evidence spans two pages:
+
+\begin{center}
+\includegraphics[width=\textwidth,height=0.72\textheight,keepaspectratio]
+{figures/open_problem_crop_page16.png}
+\end{center}
+
+\begin{center}
+\includegraphics[width=\textwidth]
+{figures/open_problem_crop_page17.png}
+\end{center}
+
+\subsection*{Necessary sign correction}
+
+Write the target density as $f=Z^{-1}e^{-u}$. Equation (11) in Proposition 12
+prints
+\[
+ (\partial_i u(y)-\partial_i u(x))(y_i-x_i)
+ \leq-\rho(y_i-x_i)^2.
+\]
+This cannot hold for the Gaussian target, even though the same proposition
+explicitly treats the Gaussian as an example. Together with the other
+hypotheses it is also incompatible with integrability of $e^{-u}$. Most
+decisively, the proof of Proposition 12 repeatedly uses the reverse
+strong-convexity inequality
+\begin{equation}\label{eq:strong}
+ (\partial_i u(y)-\partial_i u(x))(y_i-x_i)
+ \geq\rho(y_i-x_i)^2.
+\end{equation}
+We therefore formulate and solve the intended, nonvacuous conjecture using
+\eqref{eq:strong}. This interpretation is a source correction, not an
+additional strengthening.
+
+\section{Definitions and source input}
+
+For probability measures with finite second moment on Euclidean space,
+\[
+ \W(\alpha,\beta)^2=
+ \inf_{(X,Y)}\E\|X-Y\|^2,
+\]
+where the infimum is over couplings with laws $\alpha$ and $\beta$.
+
+We use one estimate already proved in \cite{Bonis}. Let $v:\R\to\R$ satisfy
+$v(0)=0$ and, for common constants $\rho,L>0$,
+\begin{equation}\label{eq:1dconditions}
+ (v(s)-v(t))(s-t)\geq\rho(s-t)^2,
+ \qquad |v(s)-v(t)|\leq L|s-t|.
+\end{equation}
+Let $\mu_v$ have density proportional to
+$\exp(-\int_0^xv(r)\,dr)$, and let $\pi_{v,h}$ be the invariant law of
+\begin{equation}\label{eq:1dkernel}
+ X^+=X-hv(X)+\sqrt{2h}\,B,
+ \qquad \Pr(B=1)=\Pr(B=-1)=\tfrac12.
+\end{equation}
+The proof of Proposition 12 in \cite{Bonis} obtains
+$\W(\pi_h,\mu)\leq C d^{3/2}\sqrt h$ before its special Gaussian refinement.
+Specializing that proved estimate to $d=1$ gives constants $C_b,h_0>0$,
+depending only on $\rho,L$, such that
+\begin{equation}\label{eq:1dbias}
+ \W(\pi_{v,h},\mu_v)\leq C_b\sqrt h
+ \qquad(0<h\leq h_0).
+\end{equation}
+
+\section{Proof intuition}
+
+The source's coordinate regularity assumption is not merely a coordinatewise
+smoothness bound along coordinate lines. It is asserted for every pair
+$x,y\in\R^d$:
+\[
+ |\partial_i u(y)-\partial_i u(x)|\leq L|y_i-x_i|.
+\]
+When $x_i=y_i$, its right side vanishes. Thus $\partial_i u$ cannot depend on
+any coordinate other than $x_i$, and the target is a product measure. The
+source's one-dimensional bias estimate \eqref{eq:1dbias} can then be applied
+separately to every factor. Quadratic transport cost is additive on products,
+so the squared biases add and produce $C_b\sqrt{dh}$ rather than the source's
+general $Cd^{3/2}\sqrt h$ bound. The already available random-scan contraction
+then supplies the burn-in estimate.
+
+\section{The theorem}
+
+\begin{theorem}[Resolution of the intended conjecture]\label{thm:main}
+Let $d\geq1$, let $u\in C^\infty(\R^d)$ satisfy $\nabla u(0)=0$, and suppose
+$Z^{-1}e^{-u}$ is a probability density. Assume that there are
+$\rho,L>0$ such that, for every $i\in\{1,\ldots,d\}$ and every
+$x,y\in\R^d$,
+\begin{align}
+ (\partial_i u(y)-\partial_i u(x))(y_i-x_i)
+ &\geq\rho(y_i-x_i)^2,\label{eq:hyp1}\\
+ |\partial_i u(y)-\partial_i u(x)|
+ &\leq L|y_i-x_i|.\label{eq:hyp2}
+\end{align}
+Let $(M_n)$ be the chain \eqref{eq:chain} with $M_0=0$, and write
+$\nu_n=\Law(M_n)$ and $\mu(dx)=Z^{-1}e^{-u(x)}dx$.
+
+There are constants $a,A>0$, depending only on $\rho,L$, such that for every
+$0<\epsilon\leq1$, the choice
+\[
+ h=a\frac{\epsilon^2}{d},
+ \qquad
+ n\geq A\epsilon^{-2}d^2\log\!\left(\frac{2d}{\epsilon}\right)
+\]
+implies
+\[
+ \W(\nu_n,\mu)\leq\epsilon.
+\]
+Consequently the scalar-gradient arithmetic complexity is
+$O_{\rho,L}(\epsilon^{-2}d^2\log(d/\epsilon))$.
+\end{theorem}
+
+\begin{proof}
+\textbf{Step 1: the assumptions force a product potential.}
+Fix $i$. If $x_i=y_i$, then \eqref{eq:hyp2} gives
+$\partial_i u(x)=\partial_i u(y)$. Hence a one-dimensional function $v_i$
+exists such that
+\[
+ \partial_i u(x)=v_i(x_i)\qquad(x\in\R^d).
+\]
+Put $u_i(t)=\int_0^t v_i(s)\,ds$. The function
+$u(x)-\sum_i u_i(x_i)$ has zero gradient and is constant. Absorbing that
+constant into the normalizing factor,
+\begin{equation}\label{eq:producttarget}
+ \mu=\bigotimes_{i=1}^d\mu_i,
+ \qquad
+ \mu_i(dt)=Z_i^{-1}e^{-u_i(t)}dt.
+\end{equation}
+Conditions \eqref{eq:hyp1}--\eqref{eq:hyp2} become
+\begin{equation}\label{eq:vi}
+ (v_i(s)-v_i(t))(s-t)\geq\rho(s-t)^2,
+ \qquad |v_i(s)-v_i(t)|\leq L|s-t|.
+\end{equation}
+Also $v_i(0)=0$. Strong convexity ensures that every $Z_i$ is finite.
+
+\textbf{Step 2: coordinate invariant laws and their bias.}
+Let $K_{i,h}$ be the one-dimensional kernel
+\[
+ x\longmapsto x-hv_i(x)+\sqrt{2h}\,B.
+\]
+For a synchronous choice of $B$, \eqref{eq:vi} gives
+\begin{equation}\label{eq:coordinatecontraction}
+ |s-t-h(v_i(s)-v_i(t))|^2
+ \leq(1-2\rho h+L^2h^2)|s-t|^2.
+\end{equation}
+Thus, when $0<h<2\rho/L^2$, $K_{i,h}$ is a strict Wasserstein contraction
+and has a unique invariant law $\pi_{i,h}$. Applying the source estimate
+\eqref{eq:1dbias} to each $v_i$ yields, uniformly in $i$,
+\begin{equation}\label{eq:eachbias}
+ \W(\pi_{i,h},\mu_i)\leq C_b\sqrt h.
+\end{equation}
+
+Set $\Pi_h=\bigotimes_i\pi_{i,h}$. Updating coordinate $i$ preserves
+$\Pi_h$ because it replaces its $i$th marginal by the same invariant marginal
+and leaves the other marginals untouched. Hence $\Pi_h$ is invariant under
+the random-scan kernel of \eqref{eq:chain}.
+
+For product probability measures and squared Euclidean cost,
+\begin{equation}\label{eq:tensoridentity}
+ \W\!\left(\bigotimes_i\alpha_i,\bigotimes_i\beta_i\right)^2
+ =\sum_i\W(\alpha_i,\beta_i)^2.
+\end{equation}
+Indeed, every joint coupling induces a coordinate coupling and hence has cost
+at least the sum on the right; the product of coordinatewise optimal (or
+arbitrarily near-optimal) couplings gives the reverse inequality. Combining
+\eqref{eq:producttarget}, \eqref{eq:eachbias}, and
+\eqref{eq:tensoridentity},
+\begin{equation}\label{eq:productbias}
+ \W(\Pi_h,\mu)\leq C_b\sqrt{dh}.
+\end{equation}
+
+\textbf{Step 3: random-scan contraction and initial moment.}
+Couple two copies of one chain step using the same coordinate $I$ and sign
+$B$. Summing \eqref{eq:coordinatecontraction} over the uniformly selected
+coordinate gives
+\begin{equation}\label{eq:scancontract}
+ \E[\|X^+-Y^+\|^2\mid X=x,Y=y]
+ \leq\left(1-\frac{2\rho h-L^2h^2}{d}\right)\|x-y\|^2.
+\end{equation}
+In particular, the invariant law is unique and equals $\Pi_h$. If
+$h\leq\rho/L^2$, then $2\rho h-L^2h^2\geq\rho h$, and iteration gives
+\begin{equation}\label{eq:mix}
+ \W(\nu_n,\Pi_h)
+ \leq e^{-\rho hn/(2d)}\W(\delta_0,\Pi_h).
+\end{equation}
+
+It remains to bound the last factor. If $X_i\sim\pi_{i,h}$, stationarity of
+\eqref{eq:1dkernel}, independence and centering of $B$, and $v_i(0)=0$ give
+\begin{align*}
+ 0
+ &=\E[(X_i-hv_i(X_i)+\sqrt{2h}B)^2-X_i^2]\\
+ &=\E[-2hX_iv_i(X_i)+h^2v_i(X_i)^2+2h].
+\end{align*}
+Using \eqref{eq:vi},
+\[
+ (2\rho-L^2h)\E X_i^2\leq2.
+\]
+For $h\leq\rho/L^2$ this yields
+\begin{equation}\label{eq:initial}
+ \W(\delta_0,\Pi_h)^2
+ =\sum_i\E X_i^2\leq\frac{2d}{\rho}.
+\end{equation}
+
+\textbf{Step 4: choose the parameters.}
+Let
+\[
+ a\leq\min\left\{h_0,\frac{\rho}{L^2},
+                    \frac{1}{16C_b^2},1\right\}
+\]
+be a fixed positive constant and set $h=a\epsilon^2/d$. Then
+\eqref{eq:productbias} gives
+\[
+ \W(\Pi_h,\mu)\leq\epsilon/4.
+\]
+By \eqref{eq:mix}--\eqref{eq:initial}, it is enough to take
+\[
+ n\geq\frac{2d}{\rho h}
+ \log\!\left(\frac{2\sqrt{2d/\rho}}{\epsilon}\right)
+\]
+to obtain $\W(\nu_n,\Pi_h)\leq\epsilon/2$. The triangle inequality then
+gives $\W(\nu_n,\mu)\leq3\epsilon/4<\epsilon$. Since
+$h=a\epsilon^2/d$, the displayed lower bound for $n$ is
+$O_{\rho,L}(\epsilon^{-2}d^2\log(d/\epsilon))$.
+\end{proof}
+
+\section{Verification notes and limitations}
+
+The proof after \eqref{eq:1dbias} is elementary. The most important checks
+are the following.
+
+\begin{enumerate}
+\item The separation argument uses the fact that the source states its
+coordinate Lipschitz condition for all $x,y\in\R^d$, not merely for pairs
+that differ only in coordinate $i$.
+\item The constant in the source estimate \eqref{eq:1dbias} depends only on
+the common parameters $\rho,L$ when $d=1$, so it is uniform over $i$.
+\item The product $W_2$ identity \eqref{eq:tensoridentity} is exact because
+the squared Euclidean cost is the sum of coordinate costs.
+\item No independence of the coordinate update counts is assumed. Mixing is
+handled directly by the random-scan contraction \eqref{eq:scancontract}.
+\item The theorem answers the intended corrected-sign conjecture. With the
+negative sign literally printed in the source, the class is inconsistent
+with the Gaussian clause and the intended statement is vacuous.
+\end{enumerate}
+
+No computational experiment is used. The packet also contains an adversarial
+verifier report.
+
+\section{Bounded novelty check}
+
+On 9 August 2026, bounded searches used the exact source title and arXiv id,
+the quoted complexity, and combinations of ``random coordinate Langevin'',
+``Rademacher'', ``product'', and ``tensorization''. Later work of
+Ding--Li--Lu--Wright \cite{DingEtAl} studies a related random-coordinate LMC
+with Gaussian coordinate noise and more general potentials. The search did
+not locate an explicit resolution of this exact Rademacher-noise conjecture or
+the product implication of Bonis's all-pairs coordinate assumption. This is
+not proof of novelty; novelty confidence is moderate.
+
+\section{Human review recommendation}
+
+The packet should be reviewed by a probability or MCMC specialist. Priority
+checks are the source sign correction, uniformity of the dimension-one bias
+constant, and whether the same product observation occurs in later exact-scheme
+literature. Subject to those checks, the mathematical verdict is likely valid.
+
+\begin{thebibliography}{9}
+\bibitem{Bonis}
+T. Bonis,
+\emph{Rates in the Central Limit Theorem and diffusion approximation via
+Stein's Method}, arXiv:1506.06966v6, 2018.
+\url{https://arxiv.org/abs/1506.06966}
+
+\bibitem{DingEtAl}
+Z. Ding, Q. Li, J. Lu, and S. J. Wright,
+\emph{Random Coordinate Langevin Monte Carlo},
+Proceedings of Machine Learning Research 134 (COLT 2021), 1683--1710;
+arXiv:2010.01405.
+\url{https://arxiv.org/abs/2010.01405}
+\end{thebibliography}
+
+\end{document}

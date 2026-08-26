@@ -1,0 +1,180 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newcommand{\K}{\mathbb K}
+\newcommand{\N}{\mathbb N}
+\newcommand{\cC}{\mathfrak c}
+
+\title{A reflexive counterexample to the outside-$c_0$ spaceability question}
+\author{Solution packet for arXiv:2406.06859v2}
+\date{12 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+Candidate full counterexample, likely valid, awaiting human review.
+
+\section{Source question and its interpretation}
+
+For a sequence space $F\subseteq\K^{\N}$, Alves and Ribeiro write
+\cite{AlvesRibeiro}
+\[
+ Z(F)=\{x\in F:x\text{ has only finitely many zero coordinates}\}.
+\]
+They prove, under a hypothesis involving $c_0$, that
+$F\setminus Z(F)$ is $(\alpha,\cC)$-spaceable if and only if $\alpha$ is
+finite, and end with the following question on source PDF page 20.
+
+\begin{center}
+ \includegraphics[width=0.98\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+Literally, no vector subspace can be contained in $\ell_\infty\setminus c_0$,
+because every vector subspace contains $0\in c_0$.  The standard coherent
+reading is
+\begin{equation}\label{eq:outside}
+ F\cap c_0=\{0\},
+ \qquad\text{equivalently}\qquad
+ F\setminus\{0\}\subseteq\ell_\infty\setminus c_0.
+\end{equation}
+One might instead read the question as merely requiring $c_0\nsubseteq F$, or
+even as requiring that $F$ contain no subspace isomorphic to $c_0$.  The same
+counterexample satisfies all three interpretations.
+
+Recall that a set $A$ in a topological vector space is
+$(\alpha,\beta)$-spaceable if it is $\alpha$-lineable and every
+$\alpha$-dimensional subspace $E\subseteq A\cup\{0\}$ is contained in a
+closed $\beta$-dimensional subspace $G\subseteq A\cup\{0\}$.
+
+\section{Proof intuition}
+
+Embed $\ell_2$ isometrically into $\ell_\infty$ using a countable norming
+family of functionals.  Instead of recording each functional once, repeat its
+value on an infinite coordinate block, and reserve one further infinite block
+on which every image is zero.  A nonzero image cannot tend to zero because at
+least one nonzero functional value repeats infinitely often, so the range
+meets $c_0$ only at zero.  Yet the reserved block gives every image infinitely
+many zero coordinates.  Thus $Z(F)$ is empty and the exotic set
+$F\setminus Z(F)$ is simply the entire closed space $F$.
+
+\section{The counterexample}
+
+\begin{theorem}\label{thm:counterexample}
+Over $\K=\mathbb R$ or $\mathbb C$, there exists a closed subspace
+$F\subseteq\ell_\infty$ such that:
+\begin{enumerate}
+ \item $F$ is linearly isometric to $\ell_2$, hence is reflexive and contains
+       no subspace isomorphic to $c_0$;
+ \item $F\cap c_0=\{0\}$;
+ \item $Z(F)=\varnothing$.
+\end{enumerate}
+Consequently, for every cardinal $1\le\alpha\le\cC$, the set
+$F\setminus Z(F)$ is $(\alpha,\cC)$-spaceable.  In particular the
+finite-$\alpha$ characterization proposed in the source question does not
+extend to subspaces outside $c_0$.
+\end{theorem}
+
+\begin{proof}
+Let $H=\ell_2$ and choose a sequence $(\varphi_k)_{k\ge1}$ in the unit sphere
+of $H^*$ which is norming:
+\begin{equation}\label{eq:norming}
+ \sup_{k\ge1}|\varphi_k(x)|=\|x\|_2\qquad(x\in H).
+\end{equation}
+For example, identify $H^*$ with $H$ and take the functionals induced by a
+countable dense subset of the unit sphere.  Density and Cauchy--Schwarz give
+\eqref{eq:norming}.
+
+Partition $\N$ into pairwise disjoint infinite sets
+\[
+ \N=B\,\dot\cup\,A_1\,\dot\cup\,A_2\,\dot\cup\cdots.
+\]
+One explicit choice is
+\[
+ B=\{2m-1:m\ge1\},\qquad
+ A_k=\{2^k(2m-1):m\ge1\}\quad(k\ge1).
+\]
+Define $J:H\to\ell_\infty$ coordinatewise by
+\begin{equation}\label{eq:J}
+ (Jx)_n=
+ \begin{cases}
+  0,&n\in B,\\
+  \varphi_k(x),&n\in A_k.
+ \end{cases}
+\end{equation}
+This map is linear, and \eqref{eq:norming} gives
+\[
+ \|Jx\|_\infty=\sup_{k\ge1}|\varphi_k(x)|=\|x\|_2.
+\]
+Thus $J$ is an isometry.  Its range $F=J(H)$ is closed in $\ell_\infty$.
+
+Suppose $Jx\in c_0$.  For each fixed $k$, the coordinates of $Jx$ are equal
+to the constant $\varphi_k(x)$ along the infinite, hence unbounded, set
+$A_k$.  Convergence to zero forces $\varphi_k(x)=0$ for every $k$.
+Equation~\eqref{eq:norming} then gives $x=0$.  Therefore
+$F\cap c_0=\{0\}$.
+
+On the other hand, \eqref{eq:J} makes every $Jx$ vanish at every coordinate
+in the infinite set $B$.  No member of $F$ has only finitely many zero
+coordinates, so $Z(F)=\varnothing$.  Hence
+\begin{equation}\label{eq:whole}
+ F\setminus Z(F)=F.
+\end{equation}
+
+The Hamel dimension of $H$ is $\cC$.  For completeness, $|H|=\cC$ gives the
+upper bound, while the vectors
+\[
+ v_t=(t^n)_{n\ge1}\in\ell_2\qquad(0<t<1)
+\]
+form a linearly independent family of cardinality $\cC$: every finite
+subfamily is independent by the Vandermonde determinant.  Thus
+$\dim F=\cC$.
+
+Now fix $1\le\alpha\le\cC$ and any $\alpha$-dimensional subspace
+$E\subseteq(F\setminus Z(F))\cup\{0\}=F$.  By \eqref{eq:whole}, the space
+$F$ itself is a closed $\cC$-dimensional subspace satisfying
+\[
+ E\subseteq F\subseteq(F\setminus Z(F))\cup\{0\}.
+\]
+This is exactly $(\alpha,\cC)$-spaceability.
+
+Finally, $F$ is isometric to the Hilbert space $H$, so it is reflexive.
+Since $c_0$ is not reflexive and a Banach-space isomorphic embedding has
+closed range, $F$ contains no subspace isomorphic to $c_0$.  This also verifies
+the strongest interpretation discussed after \eqref{eq:outside}.
+\end{proof}
+
+\section{Scope, verification, and novelty}
+
+The theorem supplies a full counterexample rather than only exploiting the
+literal defect in the phrase ``subspace of $\ell_\infty\setminus c_0$.''  It
+satisfies the repaired condition \eqref{eq:outside}, the weaker condition
+$c_0\nsubseteq F$, and the stronger isomorphic-copy exclusion.
+
+A bounded literature check through 12 August 2026 searched the current arXiv
+record and v2 full text, the exact title and arXiv id, the exact open-question
+wording, citation-oriented results, and close searches involving
+$F\cap c_0$, infinitely many zero coordinates, and
+$(\alpha,\cC)$-spaceability.  No later answer was found.  This is a bounded
+web/arXiv novelty screen, not an exhaustive bibliographic guarantee.
+
+\medskip
+\noindent\textbf{Human-review recommendation.}
+High priority.  Check \eqref{eq:norming}, closedness of the isometric range,
+the two block arguments, and the final direct use of the definition of
+$(\alpha,\cC)$-spaceability.
+
+\begin{thebibliography}{1}
+\bibitem{AlvesRibeiro}
+D.~Alves and G.~Ribeiro,
+\emph{On Sequences with at Most a Finite Number of Zero Coordinates},
+arXiv:2406.06859v2 [math.FA], 14 June 2024.
+\end{thebibliography}
+
+\end{document}

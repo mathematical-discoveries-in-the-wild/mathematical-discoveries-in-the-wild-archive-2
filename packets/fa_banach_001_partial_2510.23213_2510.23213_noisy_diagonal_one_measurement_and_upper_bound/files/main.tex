@@ -1,0 +1,288 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\ellp}{\ell_p}
+\newcommand{\R}{\mathbb R}
+\newcommand{\elin}{e^{\mathrm{lin}}}
+\newcommand{\ds}{D_\sigma}
+\emergencystretch=1em
+\title{Exact One-Measurement Recovery and a Sharper General Upper Bound\\
+for Noisy Diagonal Linear Information}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 3}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Krieg, Novak, Plaskota, and Ullrich ask for the exact worst-case error of
+recovering a diagonal image of the unit ball of $\ell_p$ from norm-one linear
+measurements corrupted by coordinatewise adversarial noise.  For every
+$1\leq p<\infty$, we solve the one-measurement case exactly:
+\[
+ \elin_1(\ds,\delta)_p
+ =\bigl(\delta^p\sigma_1^p+(1-\delta^p)\sigma_2^p\bigr)^{1/p}.
+\]
+For arbitrary $n$, we also construct a nonlinear decoder that strictly
+improves the coordinate decoder displayed in the source.  It gives
+\[
+ \elin_n(\ds,\delta)_p^p\leq
+ \min_{0\leq k\leq n}\left\{
+ \sigma_{k+1}^p+\delta^p\sum_{i=1}^k
+ (\sigma_i^p-\sigma_{k+1}^p)\right\}.
+\]
+The matching lower bound for $n\geq2$ remains open.  Status: \emph{candidate
+partial result, likely valid, pending human review}.
+\end{abstract}
+
+\section{Source question}
+The source is D.~Krieg, E.~Novak, L.~Plaskota, and M.~Ullrich,
+\emph{Noisy nonlinear information and entropy numbers}, arXiv:2510.23213
+(2025), subsequently published in 2026 \cite{KNPU}.  Section~5.2 of the
+published version, and PDF page~12 of the arXiv version, state the question
+shown in Figure~\ref{fig:source}.
+
+\begin{figure}[ht]
+ \centering
+ \includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+ \caption{The source upper bound, lower bound, and open question, cropped
+ from arXiv PDF page~12.}
+ \label{fig:source}
+\end{figure}
+\clearpage
+
+Let $1\leq p<\infty$, let $B_p$ be the unit ball of $\ell_p$, and let
+$\sigma_1\geq\sigma_2\geq\cdots\geq0$.  The diagonal map is
+\[
+ \ds(x_1,x_2,\ldots)=(\sigma_1x_1,\sigma_2x_2,\ldots).
+\]
+An algorithm may choose $n$ linear functionals of dual norm at most one
+(adaptively after the first), observe numbers $y_i$ satisfying
+$|y_i-\lambda_i(x)|\leq\delta$, and apply an arbitrary reconstruction map.
+Its worst-case error is measured in $\ell_p$, and the infimum of that error is
+$\elin_n(\ds,\delta)_p$.  The source proves
+\begin{equation}\label{eq:source-bounds}
+ \max\{\delta\sigma_1,\sigma_{n+1}\}
+ \leq \elin_n(\ds,\delta)_p
+ \leq \left(\delta^p\sum_{i=1}^n\sigma_i^p+\sigma_{n+1}^p\right)^{1/p},
+\end{equation}
+and asks for the exact value when $p<\infty$.
+
+\section{Proof intuition}
+The source decoder returns the noisy coordinate $y_i$ itself.  This treats
+measurement error and the entire unobserved tail as though both could be
+maximal at once, ignoring the unit-ball constraint.  The improvement is to
+shrink each $y_i$ toward zero by an amount chosen from the whole feasible
+interval $[y_i-\delta,y_i+\delta]\cap[-1,1]$.  A one-dimensional interval
+intersection lemma chooses a center that exactly trades coordinate error
+against the remaining $\ell_p$ mass.
+
+For one measurement, this decoder attains the stated formula.  The reverse
+inequality needs no assumption about the chosen functional: in the first two
+coordinate directions, a connected cap of the $\ell_p$ unit sphere contains
+a point with $|x_1|\geq\delta$ whose measurement is compatible with the zero
+datum.  The two antipodal inputs $x$ and $-x$ are then indistinguishable.
+
+For several measurements, the scalar centers can be chosen independently.
+This yields the sharper upper bound, but the cap argument does not
+simultaneously control $n$ arbitrary slabs.  That missing noisy
+Gelfand-width lower bound is precisely why the original problem remains open
+for $n\geq2$.
+
+\section{The scalar-center lemma}
+\begin{lemma}\label{lem:center}
+Fix $1\leq p<\infty$, $0\leq c\leq1$, and $0<\delta<1$.  Define
+\[
+ h(u)=\bigl((1-c)\delta^p+c|u|^p\bigr)^{1/p},\qquad -1\leq u\leq1.
+\]
+For every nonempty interval
+$I=[-1,1]\cap[y-\delta,y+\delta]$, there is a real number $t=t(y)$ such
+that
+\begin{equation}\label{eq:center-ineq}
+ |u-t|^p\leq (1-c)\delta^p+c|u|^p
+ \qquad (u\in I).
+\end{equation}
+\end{lemma}
+\begin{proof}
+The function $h$ is even and convex: it is the $\ell_p^2$ norm of
+$(c^{1/p}u,(1-c)^{1/p}\delta)$.  Moreover, $u-h(u)$ and $u+h(u)$ are
+nondecreasing.  For $p>1$ this follows from
+\[
+ |h'(u)|=\frac{c|u|^{p-1}}{h(u)^{p-1}}\leq c^{1/p}\leq1,
+\]
+and for $p=1$ it is immediate from the two linear pieces.
+
+Write $I=[l,r]$ and $d=r-l\leq2\delta$.  Since $h$ is even and convex,
+the sum $h(s-d/2)+h(s+d/2)$ is an even convex function of $s$, and hence
+\[
+ h(l)+h(r)\geq2h(d/2)\geq d.
+\]
+Thus $r-h(r)\leq l+h(l)$.  Monotonicity shows
+\[
+ \max_{u\in I}(u-h(u))=r-h(r)
+ \leq l+h(l)=\min_{u\in I}(u+h(u)).
+\]
+Consequently the intervals $[u-h(u),u+h(u)]$, $u\in I$, have a common
+point.  Any such point is $t$ and gives \eqref{eq:center-ineq}.  For example,
+one may take the midpoint of $[r-h(r),l+h(l)]$.
+\end{proof}
+
+\section{A sharper upper bound for every number of measurements}
+\begin{theorem}\label{thm:upper}
+For $1\leq p<\infty$, $0<\delta<1$, and every integer $n\geq0$,
+\begin{equation}\label{eq:upper}
+ \elin_n(\ds,\delta)_p^p\leq
+ \min_{0\leq k\leq n} U_k,
+ \qquad
+ U_k:=\sigma_{k+1}^p+\delta^p\sum_{i=1}^k
+ (\sigma_i^p-\sigma_{k+1}^p).
+\end{equation}
+In particular, using $k=n$ improves the $p$th power of the source upper
+bound in \eqref{eq:source-bounds} by $n\delta^p\sigma_{n+1}^p$.
+\end{theorem}
+\begin{proof}
+Fix $k\leq n$ and measure $x_1,\ldots,x_k$; any remaining measurements
+are ignored.  Put $b=\sigma_{k+1}^p$.  Given a consistent noisy value $y_i$,
+apply Lemma~\ref{lem:center} to its feasible interval with
+$c_i=b/\sigma_i^p$ when $\sigma_i>0$, obtaining $t_i=t_i(y_i)$.  If
+$\sigma_i=0$, set $t_i=0$.  Reconstruct
+\[
+ A(y)=(\sigma_1t_1,\ldots,\sigma_kt_k,0,0,\ldots).
+\]
+For every consistent input $x\in B_p$, Lemma~\ref{lem:center} gives
+\[
+ \sigma_i^p|x_i-t_i|^p
+ \leq (\sigma_i^p-b)\delta^p+b|x_i|^p.
+\]
+Since $\sigma_j^p\leq b$ for $j>k$,
+\begin{align*}
+ \|\ds x-A(y)\|_p^p
+ &\leq \sum_{i=1}^k\bigl((\sigma_i^p-b)\delta^p+b|x_i|^p\bigr)
+       +b\sum_{j>k}|x_j|^p\\
+ &\leq b+\delta^p\sum_{i=1}^k(\sigma_i^p-b)=U_k.
+\end{align*}
+Taking the best $k$ proves \eqref{eq:upper}.  For $k=n$, expanding $U_n$
+gives
+$\delta^p\sum_{i=1}^n\sigma_i^p+(1-n\delta^p)\sigma_{n+1}^p$, which is
+the source expression minus $n\delta^p\sigma_{n+1}^p$.
+\end{proof}
+
+\begin{remark}
+The minimum over $k$ matters when $k\delta^p>1$.  Consecutive values satisfy
+\[
+ U_{k+1}-U_k=(1-k\delta^p)
+ (\sigma_{k+2}^p-\sigma_{k+1}^p),
+\]
+so the displayed family decreases until roughly $k=\delta^{-p}$ and can
+increase afterward.  Extra measurements can always be ignored.
+\end{remark}
+
+\section{Exact solution for one measurement}
+\begin{theorem}\label{thm:exact}
+For every $1\leq p<\infty$ and $0<\delta<1$,
+\begin{equation}\label{eq:exact}
+ \boxed{\quad
+ \elin_1(\ds,\delta)_p
+ =\bigl(\delta^p\sigma_1^p+(1-\delta^p)\sigma_2^p\bigr)^{1/p}.
+ \quad}
+\end{equation}
+The formula also extends to $\delta=0$.
+\end{theorem}
+\begin{proof}
+The upper bound is Theorem~\ref{thm:upper} with $k=1$.
+
+For the lower bound, let $\lambda$ be an arbitrary admissible first
+functional.  Restrict it to $E=\operatorname{span}\{e_1,e_2\}$ and write
+$\alpha=\lambda(e_1)$ and $\beta=\lambda(e_2)$.  We claim that there is an
+$x\in E$ with
+\begin{equation}\label{eq:cap}
+ \|x\|_p=1,\qquad |x_1|\geq\delta,\qquad |\lambda(x)|\leq\delta.
+\end{equation}
+If $|\alpha|\leq\delta$, take $x=e_1$.  Otherwise, changing signs if
+necessary, assume $\alpha>\delta$.  Let $s=1$ if $\beta\geq0$ and $s=-1$
+otherwise, and let
+\[
+ z=\delta e_1-s
+ (1-\delta^p)^{1/p}e_2.
+\]
+Then $\|z\|_p=1$ and
+$\lambda(z)=\alpha\delta-|\beta|(1-\delta^p)^{1/p}\leq\alpha\delta\leq\delta$,
+because $|\alpha|\leq\|\lambda\|\leq1$.  Along the connected unit-sphere
+arc from $e_1$ to $z$ on which the first coordinate decreases from $1$ to
+$\delta$, continuity gives a point with $\lambda(x)=\delta$.  This proves
+\eqref{eq:cap}.
+
+Both $x$ and $-x$ are compatible with the same datum $y=0$.  For any
+reconstruction $a$ at that datum, the triangle inequality gives
+\[
+ \max\{\|\ds x-a\|_p,\|-\ds x-a\|_p\}\geq\|\ds x\|_p.
+\]
+Since $x$ has only its first two coordinates nonzero,
+\begin{align*}
+ \|\ds x\|_p^p
+ &=\sigma_1^p|x_1|^p+\sigma_2^p(1-|x_1|^p)\\
+ &\geq \delta^p\sigma_1^p+(1-\delta^p)\sigma_2^p.
+\end{align*}
+This lower bound holds for every admissible $\lambda$ and every
+reconstruction, proving \eqref{eq:exact}.
+\end{proof}
+
+\begin{corollary}
+For rank-one $D_\sigma$ (that is, $\sigma_2=0$),
+$\elin_n(D_\sigma,\delta)_p=\delta\sigma_1$ for every $n\geq1$.  If
+$\sigma_1=\cdots=\sigma_{n+1}$, then
+$\elin_n(D_\sigma,\delta)_p=\sigma_1$.
+\end{corollary}
+\begin{proof}
+In the rank-one case Theorem~\ref{thm:exact} supplies an algorithm with one
+measurement and the source lower bound supplies the reverse inequality for
+every $n$.  In the flat-spectrum case the exact-information lower bound
+$\sigma_{n+1}$ matches the zero-output upper bound.
+\end{proof}
+
+\begingroup
+\small
+\section{Verification, scope, and novelty status}
+The script \texttt{code/verify\_scalar\_center.py} checks the endpoint
+intersection and decoder inequality on a deterministic grid and random
+instances.  It is a sanity check only; the proof is the analytic argument
+above.  A separate Euclidean random-frame probe in the run's attempt record
+found no smaller zero-data radius than coordinate information for $n=2$ in
+four tested three-dimensional spectra, but this is not used in any claim.
+
+The full exact-value problem remains open for $n\geq2$.  In particular, no
+matching lower bound for \eqref{eq:upper} is claimed.  Such a result would
+have to control the intersection of the $\ell_p$ ball with $n$ arbitrary
+adaptive zero-data slabs; the one-cap intermediate-value argument does not
+provide that simultaneous control.
+
+A bounded novelty search on 11 August 2026 used the exact title, arXiv id,
+the exact displayed notation, and the phrases ``noisy linear information''
+and ``diagonal operator''.  It checked the arXiv record and the revised
+Journal of Fourier Analysis and Applications article, published 16 March
+2026.  The revised article still states the question as open in Section~5.2,
+and no later paper settling this one-measurement formula or the sharper upper
+bound was found.  This is not an exhaustive literature review.
+
+Human review is recommended, focusing on the interval-intersection step in
+Lemma~\ref{lem:center}, the admissibility of the data-dependent scalar centers,
+and the cap-continuity lower bound in Theorem~\ref{thm:exact}.
+
+\begin{thebibliography}{9}
+\bibitem{KNPU}
+D.~Krieg, E.~Novak, L.~Plaskota, and M.~Ullrich,
+\emph{Noisy nonlinear information and entropy numbers},
+J. Fourier Anal. Appl. \textbf{32}, Article 36 (2026),
+\href{https://doi.org/10.1007/s00041-026-10249-z}{doi:10.1007/s00041-026-10249-z};
+arXiv:2510.23213.
+\end{thebibliography}
+\endgroup
+
+\end{document}

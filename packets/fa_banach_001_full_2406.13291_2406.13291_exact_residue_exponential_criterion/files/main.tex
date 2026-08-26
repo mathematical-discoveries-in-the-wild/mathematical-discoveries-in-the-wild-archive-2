@@ -1,0 +1,212 @@
+\documentclass[10pt]{article}
+\usepackage[a4paper,margin=0.72in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.45em}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{example}[theorem]{Example}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\title{An exact residue criterion for completely alternating\\
+rational sequences}
+\author{Candidate full solution to Question 1.2 of arXiv:2406.13291}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\textbf{Status.} Candidate full solution, likely valid.  The source's general
+partial-sum conditions are upgraded to a necessary-and-sufficient condition.
+
+\section*{Source question}
+
+Bhattacharjee and Nailwal \cite{BN} ask which sequences $\{r_k(n)\}_{n\geq0}$
+are completely alternating when
+\[
+ r_k(x)=\frac{p(x)}{\prod_{i=1}^k(x+b_i)},\qquad
+ 0<b_1<\cdots<b_k,\qquad \deg p\leq k+1.
+\]
+
+\begin{center}
+\includegraphics[width=0.97\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The screenshot is Question 1.2 on page 2 of the source PDF.  The source proves
+a sufficient condition in terms of partial sums of the residues, but not a
+general necessary-and-sufficient statement.
+
+\section*{Proof intuition}
+
+Take one forward difference.  Complete alternation of $r(n)$ is exactly
+complete monotonicity of $d_n=r(n+1)-r(n)$.  Partial fractions express $d_n$
+as the moments of one explicit finite signed measure on $[0,1]$.  The Hausdorff
+moment theorem says that $d$ is completely monotone precisely when it has a
+positive representing measure, and polynomial density makes that measure
+unique even among finite signed measures.  Positivity can therefore be read
+off directly: the linear term supplies a nonnegative atom at $1$, and the
+residue exponential polynomial must have the opposite sign on $(0,1)$.
+
+\section*{Exact classification}
+
+Let $p\in\R[x]$ and put $q(x)=\prod_{i=1}^k(x+b_i)$.  The partial-fraction
+decomposition has the unique form
+\begin{equation}\label{eq:pf}
+ \frac{p(x)}{q(x)}=\beta+\alpha x+\sum_{i=1}^k\frac{c_i}{x+b_i},
+ \qquad
+ c_i=\frac{p(-b_i)}{\prod_{j\ne i}(b_j-b_i)}.
+\end{equation}
+Here $\alpha=0$ if $\deg p\leq k$, while for $\deg p=k+1$ it is the leading
+coefficient of $p$.  Define
+\[
+                         w(t)=\sum_{i=1}^k c_i t^{b_i}\qquad(0<t<1).
+\]
+
+Use the source convention $\nabla=I-E$, where $(Ea)_n=a_{n+1}$.  Thus a
+sequence $a$ is completely alternating when $\nabla^m a_n\leq0$ for all
+$m\geq1,n\geq0$.
+
+\begin{theorem}[complete answer to Question 1.2]\label{thm:main}
+For $r=p/q$ as above, the sequence $\{r(n)\}_{n\geq0}$ is completely
+alternating if and only if
+\begin{equation}\label{eq:criterion}
+                    \alpha\geq0
+                    \quad\text{and}\quad
+                    w(t)\leq0\quad\text{for every }0<t<1.
+\end{equation}
+If ``completely alternating'' is additionally required to mean strictly
+positive, as in the source's working convention, one adds the single condition
+$r(0)>0$.  For nonnegativity, replace it by $r(0)\geq0$.
+\end{theorem}
+
+\begin{proof}
+Set $d_n=r(n+1)-r(n)=-\nabla r(n)$.  For every $m\geq0$,
+\[
+                         \nabla^m d_n=-\nabla^{m+1}r(n).
+\]
+Consequently $r(n)$ is completely alternating if and only if $d=(d_n)$ is
+completely monotone.
+
+For $b>0$,
+\[
+ \frac1{n+b}=\int_0^1t^{n+b-1}\,dt.
+\]
+Equation~\eqref{eq:pf} therefore gives
+\[
+ r(n)=\beta+\alpha n+\int_0^1 t^n\frac{w(t)}t\,dt.
+\]
+The integral is finite because every $b_i>0$.  Taking the forward difference,
+\begin{align*}
+ d_n
+ &=\alpha+\int_0^1t^n(t-1)\frac{w(t)}t\,dt\\
+ &=\int_{[0,1]}t^n\,d\sigma(t),
+\end{align*}
+where
+\begin{equation}\label{eq:sigma}
+               d\sigma=\alpha\,d\delta_1
+                    -\frac{(1-t)w(t)}t\,dt.
+\end{equation}
+This is a finite signed measure.
+
+If \eqref{eq:criterion} holds, \eqref{eq:sigma} is positive.  Its moments
+$d_n$ form a completely monotone sequence by the Hausdorff moment theorem, so
+$r(n)$ is completely alternating.
+
+Conversely, suppose $r(n)$ is completely alternating.  Then $d$ is completely
+monotone, so the Hausdorff theorem supplies a finite positive Borel measure
+$\mu$ on $[0,1]$ with $d_n=\int t^n\,d\mu(t)$ for every $n\geq0$.  The finite
+signed measures $\mu$ and $\sigma$ have identical moments.  Hence they agree
+on all polynomials, and by Weierstrass approximation they agree on every
+continuous function.  Thus $\mu=\sigma$.  Positivity of the atom at $1$ gives
+$\alpha\geq0$, and positivity of the absolutely continuous part gives
+$w(t)\leq0$ almost everywhere on $(0,1)$.  Since $w$ is continuous there, the
+inequality holds everywhere.
+
+Finally, the first-order condition makes $r(n)$ increasing.  Hence all terms
+are strictly positive (respectively nonnegative) exactly when the first one is.
+\end{proof}
+
+\section*{Relation to the source condition and an effective test}
+
+Let $C_\ell=\sum_{i=1}^\ell c_i$.  Abel summation gives
+\[
+ w(t)=\sum_{\ell=1}^{k-1}C_\ell
+       \bigl(t^{b_\ell}-t^{b_{\ell+1}}\bigr)+C_k t^{b_k}.
+\]
+Thus the source hypotheses $C_\ell\leq0$ imply $w(t)\leq0$, recovering its
+general sufficient theorem.  They are not necessary.
+
+\begin{example}[strict extension of the source test]\label{ex:strict}
+Take $b=(1,2,3)$ and $c=(-1,2,-1)$.  Then
+\[
+ w(t)=-t+2t^2-t^3=-t(1-t)^2\leq0,
+\]
+although $C_2=1>0$.  These residues arise from
+\[
+ r(x)=1-\frac{2}{(x+1)(x+2)(x+3)}.
+\]
+Since $r(0)=2/3>0$, Theorem~\ref{thm:main} gives a positive completely
+alternating sequence that is not detected by the source partial-sum criterion.
+Indeed,
+\[
+ r(n+1)-r(n)=\int_0^1t^n(1-t)^3\,dt.
+\]
+\end{example}
+
+\begin{corollary}[exact finite procedure for rational data]
+If $b_i\in\mathbb Q_{>0}$ and $p$ has rational coefficients, the criterion in
+Theorem~\ref{thm:main} is decidable by exact rational arithmetic and a Sturm
+sequence.
+\end{corollary}
+
+\begin{proof}
+Choose $L\in\N$ so that $m_i=Lb_i\in\N$.  Substituting $t=u^L$ gives
+\[
+                         w(t)=P(u):=\sum_i c_i u^{m_i}.
+\]
+All $c_i$ are rational.  Hence $w\leq0$ on $(0,1)$ exactly when the rational
+polynomial $P$ is nonpositive on $(0,1)$, which is decidable by isolating its
+real roots (or the roots of $P'$) with Sturm's theorem and checking the finitely
+many resulting intervals.
+\end{proof}
+
+\section*{Verification, scope, and novelty}
+
+The proof separately checks the atom at $1$, integrability at $0$, and the
+source's positivity convention.  Example~\ref{ex:strict} verifies that the
+criterion is a genuine strengthening rather than a restatement of the source
+partial-sum hypothesis.  No numerical computation is used.
+
+The answer is exact in terms of the residues and poles.  For arbitrary real
+exponents it leaves a sign test for a finite exponential polynomial; this is
+still a necessary-and-sufficient classification, and for rational data the
+corollary makes it a finite exact algorithm.
+
+A bounded novelty search on 11 August 2026 covered the run indexes and
+exact-phrase/residue-keyword web searches.  It found the source and published
+version, which state only sufficient general conditions, but no later exact
+answer.  Novelty confidence is moderate: the mechanism is a short direct
+completion of the source's signed-measure calculation and may be implicit
+folklore, but the theorem was not located or stated in the source.
+
+\textbf{Human-review recommendation.} Verify the signed Hausdorff-measure
+uniqueness step and confirm that Question 1.2 accepts an exact
+exponential-polynomial sign criterion rather than requiring a finite list of
+ordered zero/pole inequalities.
+
+\begin{thebibliography}{9}
+\bibitem{BN}
+M. Bhattacharjee and R. Nailwal,
+\emph{A characterization of completely alternating functions},
+J. Math. Anal. Appl. (2025); arXiv:2406.13291.
+
+\bibitem{BCR}
+C. Berg, J. P. R. Christensen, and P. Ressel,
+\emph{Harmonic Analysis on Semigroups: Theory of Positive Definite and Related
+Functions}, Graduate Texts in Mathematics 100, Springer, 1984.
+\end{thebibliography}
+
+\end{document}
+

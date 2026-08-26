@@ -1,0 +1,221 @@
+\documentclass[10pt]{article}
+\usepackage[margin=0.78in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\F}{\mathcal F}
+\newcommand{\W}{\mathcal W}
+\newcommand{\ellone}{\ell_1}
+
+\title{Rational Weak-Null Witnesses Generate Every\\
+Non-Almost-Schur Filter\\
+\large An explicit basis for the negation half of the problem in arXiv:0903.0659}
+\author{Automated proof attempt\\
+\texttt{agent\_lane\_03} \quad model: GPT5.6}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{orange!70!black}{orange!5}{\parbox{0.92\linewidth}{
+\textbf{Status: substantial partial result, likely valid, pending human
+verification.}  A canonical rational family is an explicit basis for all
+filters that are \emph{not} almost Schur, fully answering the second half of
+the source request.  The requested basis for the decreasing almost-Schur
+class itself remains open.}}
+\end{center}
+
+\section*{Source problem and definitions}
+
+All filters below are free filters on $\N$.  A filter $\mathcal G$
+\emph{dominates} $\F$ when $\mathcal G\supset\F$.  The source calls $\F$
+\emph{almost Schur} if every sequence $(x_n)\subset\ellone$ that converges
+weakly to zero along $\F$ has norms not separated from zero.  Thus $\F$ is
+not almost Schur exactly when some weakly $\F$-null sequence satisfies
+\(\inf_n\|x_n\|_1>0\).
+
+The non-almost-Schur property is increasing under domination.  A subclass is
+a \emph{basis} for an increasing class when its upward closure is the whole
+class.  Section 6 of the source asks for explicit bases for the decreasing
+almost-Schur class and, separately, its increasing negation class
+\cite{source}.  The appended page-15 crop gives the exact wording.
+
+\section*{Proof intuition}
+
+Failure of the almost-Schur property comes with a witness sequence.  The
+filter contains every index set on which finitely many weak tests of that
+sequence are small.  Those weak-neighborhood traces therefore generate a
+smaller canonical bad filter.
+
+There seems to be uncountable analytic data in the witness, but its vectors
+can be normalized and approximated term by term by finitely supported rational
+unit vectors.  The error tends to zero in norm, hence along every free filter.
+This turns every failure into a completely coded rational failure without
+changing any of its weak-neighborhood traces up to enlargement.  Taking all
+such rational trace filters gives exactly the requested upward basis.
+
+\section*{The canonical filters}
+
+Let
+\[
+ S_{\Q}=\{u\in c_{00}(\Q):\|u\|_1=1\}.
+\]
+Call a sequence $u=(u_n)_{n\in\N}\subset S_{\Q}$ \emph{admissible} if for
+every $k,N\in\N$, every $\phi_1,\dots,\phi_k\in\ell_\infty$, and every
+$\varepsilon>0$, the set
+\begin{equation}\label{eq:trace}
+ V(u;\phi_1,\dots,\phi_k,\varepsilon,N)
+ =\{n\ge N:\max_{1\le j\le k}|\phi_j(u_n)|<\varepsilon\}
+\end{equation}
+is nonempty.  Equivalently, zero belongs to the weak closure of every tail of
+$(u_n)$.
+
+For admissible $u$, finite intersections of sets in \eqref{eq:trace} contain
+another such set: take the union of the finite test families, the smaller
+tolerance, and the larger tail index.  Hence these sets generate a proper
+filter, denoted $\W_u$.  It is free because every generator lies beyond an
+arbitrary prescribed $N$.  By construction,
+\[
+ u_n\longrightarrow_{\W_u}0\quad\text{weakly},
+ \qquad \|u_n\|_1=1.
+\]
+Thus $\W_u$ is not almost Schur.
+
+Admissible sequences exist.  Indeed, enumerate the countable dense set
+$S_{\Q}$ so that every member occurs infinitely often.  Given finitely many
+functionals, their common kernel in $\ellone$ is nonzero; approximate a unit
+vector in that kernel by a member of $S_{\Q}$.  A sufficiently accurate
+approximation lies in the prescribed finite weak neighborhood and recurs in
+every tail.
+
+\section*{Exact basis theorem}
+
+\begin{theorem}[Rational witness basis]\label{thm:basis}
+The class
+\[
+ \mathfrak B_-:=\{\W_u:u\subset S_{\Q}\text{ is admissible}\}
+\]
+is a basis for the increasing class of all non-almost-Schur filters.
+Equivalently, for every free filter $\F$,
+\begin{equation}\label{eq:criterion}
+ \F\text{ is almost Schur}
+ \quad\Longleftrightarrow\quad
+ \W_u\not\subset\F\text{ for every admissible }u.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+We already observed that every $\W_u\in\mathfrak B_-$ is not almost Schur.
+Since that property is increasing, every filter dominating a member of
+$\mathfrak B_-$ is also not almost Schur.
+
+Conversely, suppose $\F$ is not almost Schur.  Choose a weakly
+$\F$-null sequence $(x_n)\subset\ellone$ and $\delta>0$ such that
+$\|x_n\|_1\ge\delta$ for every $n$.  Put
+\[
+ y_n=\frac{x_n}{\|x_n\|_1}.
+\]
+The scalar multipliers are bounded by $1/\delta$, so $(y_n)$ is still weakly
+$\F$-null and every $\|y_n\|_1=1$.
+
+The rational finite-support unit sphere is norm dense in the unit sphere of
+$\ellone$.  Choose $u_n\in S_{\Q}$ with
+\(\|u_n-y_n\|_1\le1/n\).  The error sequence is norm null in the ordinary
+sense and therefore norm null along the free filter $\F$.  It follows that
+$(u_n)$ is weakly $\F$-null.
+
+Every set in \eqref{eq:trace} therefore belongs to $\F$: finite weak
+convergence gives the same trace without the tail restriction, and freeness
+adds $\{n:n\ge N\}$.  In particular, the sequence $u$ is admissible and the
+filter generated by all its traces satisfies $\W_u\subset\F$.  Hence every
+non-almost-Schur filter dominates a member of $\mathfrak B_-$, proving both
+the basis assertion and \eqref{eq:criterion}.
+\end{proof}
+
+The construction is fully combinatorial if each $u_n$ is viewed as a finite
+rational signed measure on $\N$ and each $\phi\in\ell_\infty$ as a bounded
+scalar sequence.  No arbitrary vectors remain in the basis generators.
+
+\section*{Why the positive half does not follow by maximal extension}
+
+Criterion \eqref{eq:criterion} reduces the missing half to finding a useful
+explicit cofinal family of filters that simultaneously avoid every
+$\W_u$.  Individual blockers exist, but their complements need not retain the
+finite-intersection property.  The most obvious Zorn argument also fails
+because the almost-Schur class is not closed under unions of chains.
+
+\begin{proposition}[Chain obstruction under CH]\label{prop:chain}
+Assume the continuum hypothesis.  There is a strictly increasing chain
+$(\F_\alpha)_{\alpha<\omega_1}$ of countably based Schur filters whose union
+is not almost Schur.
+\end{proposition}
+
+\begin{proof}
+Fix an admissible $u$.  The trace filter $\W_u$ has a base of cardinality at
+most the continuum: the finite test lists range over $\ell_\infty$, and the
+other parameters may be restricted to rational tolerances and integer tails.
+It cannot have a countable base, because the source proves that every
+countably based filter is strongly diagonal and hence Schur, whereas $\W_u$
+is not even almost Schur \cite[Corollary 4.5 and Theorem 3.5]{source}.  Under
+CH its character is therefore exactly $\omega_1$.
+
+Enumerate a base as $(B_\xi)_{\xi<\omega_1}$.  Recursively let
+$\F_{\alpha+1}$ be generated by $\F_\alpha$, $B_\alpha$, and one further
+set $D_\alpha\in\W_u\setminus\F_\alpha$; at a countable limit take the union.
+Such a $D_\alpha$ always exists, since the filter generated before stage
+$\omega_1$ has a countable base and therefore cannot equal $\W_u$.  Every
+$\F_\alpha$ is a proper subfilter of $\W_u$, has a countable base, and hence
+is Schur by the cited source results.  The choices of $D_\alpha$ make the
+chain strict, while the enumeration of the $B_\xi$ gives
+\[
+ \bigcup_{\alpha<\omega_1}\F_\alpha=\W_u,
+\]
+which is not almost Schur, witnessed by $(u_n)$.
+\end{proof}
+
+The proposition does not show that no basis for almost-Schur filters exists;
+the source request permits many meanings of ``explicit.''  It shows sharply
+why maximal almost-Schur filters cannot simply be obtained by the standard
+chain-union form of Zorn's lemma.  Attempts through Schur dominators,
+block-respecting filters, diagonal filters, and simultaneous blockers all
+lead to the same unresolved extension issue.  Accordingly no answer to the
+positive half is claimed.
+
+\section*{Verification and literature boundary}
+
+The proof uses only normalization, norm-density of $S_{\Q}$, and the source's
+countable-base Schur theorem for the optional CH obstruction.  Each inclusion
+direction in Theorem \ref{thm:basis} was checked directly from the definition
+of filter convergence.  There is no computational dependency.
+
+The bounded novelty audit searched the run indexes, the exact problem phrase,
+the exact title and citations, and the phrases ``almost Schur filter'' and
+``basis of filters'' through 11 August 2026.  Later filter-convergence papers
+were found, but no answer to this basis request or this rational witness basis.
+This is a bounded audit, not an exhaustive priority claim.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+A. Avilés López, B. Cascales Salinas, V. Kadets, and A. Leonov,
+\emph{The Schur $\ell_1$ theorem for filters},
+Zh. Mat. Fiz. Anal. Geom. \textbf{3} (2007), 383--398;
+arXiv:0903.0659.  Included as \texttt{source\_paper.pdf}.
+\end{thebibliography}
+
+\clearpage
+\section*{Exact source excerpt: Definition 6.7 and the open problem (page 15)}
+\begin{center}
+\includegraphics[width=0.97\linewidth,keepaspectratio]{figures/open_problem_crop.png}
+\end{center}
+
+\end{document}

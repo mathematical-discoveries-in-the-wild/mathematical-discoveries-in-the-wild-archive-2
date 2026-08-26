@@ -1,0 +1,264 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\emergencystretch=3em
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\D}{\mathcal D}
+\newcommand{\rhoD}{\rho_{\mathcal D}}
+
+\title{Prescribed-Coefficient Greedy Convergence for\\
+Countable Orthogonal-Block Dictionaries}
+\author{A substantial partial answer to the question in arXiv:2209.03091}
+\date{August 11, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Oliaro--Tomatis--Valiullin--Valiullin ask for a characterization of the
+symmetric Hilbert-space dictionaries for which every exact greedy expansion
+converges for every positive coefficient sequence $c_n\to0$ with
+$\sum_n c_n=\infty$.  We prove convergence for a new countable orthogonal-block
+class.  Each block may be infinite-dimensional and carry an arbitrary
+symmetric dictionary, provided all block dictionaries have a common positive
+norming constant and attain their local maxima.  In particular, an
+orthonormal basis may be augmented by arbitrary closed sets of atoms in
+infinitely many pairwise disjoint finite coordinate blocks of uniformly
+bounded size.  The source allowed extra atoms only in one fixed finite block.
+\end{abstract}
+
+\noindent\textbf{Status.}
+\texttt{substantial partial result; likely valid}.  The full characterization
+remains open.
+
+\section{Source question and definitions}
+
+Let $H$ be a real Hilbert space.  A symmetric dictionary $\D$ is a symmetric
+set of unit vectors with dense linear span.  Put
+\[
+ \rhoD(x)=\sup_{g\in\D}\langle x,g\rangle
+          =\sup_{g\in\D}|\langle x,g\rangle|.
+\]
+For positive prescribed coefficients $(c_n)$, the exact greedy algorithm starts
+with $r_0=f$ and, while $r_{n-1}\ne0$, chooses $g_n\in\D$ satisfying
+\[
+ \langle r_{n-1},g_n\rangle=\rhoD(r_{n-1}),
+ \qquad r_n=r_{n-1}-c_ng_n.
+\]
+Convergence means $r_n\to0$ for every initial $f$ and every possible exact
+maximizer sequence.
+
+The source proves this when $\D$ is a symmetrized orthonormal basis, and when
+arbitrary additional atoms are supported on one fixed finite subset of that
+basis.  Its concluding question asks for a characterization of all dictionaries
+having convergence under
+\begin{equation}\label{eq:coefficients}
+ c_n>0,\qquad c_n\longrightarrow0,\qquad \sum_{n=1}^{\infty}c_n=\infty.
+\end{equation}
+
+\begin{center}
+\includegraphics[width=.94\linewidth]{figures/open_question_crop.png}
+\end{center}
+
+\section{Proof intuition}
+
+Write the Hilbert space as an orthogonal sum of blocks.  Greedy selection then
+compares one scalar quantity from each block: its local dictionary support.
+For the initial vector, order those local supports as
+$s_1\ge s_2\ge\cdots$.  Before the first time the global greedy support falls
+below $s_N$, no block after $N$ can have been touched.  At that stopping time,
+the uniform local norming condition bounds each of the first $N$ block norms
+by $s_N/\alpha$, while the remaining tail is still the initial tail.  Since
+$(s_j)\in\ell_2$ and is decreasing, $Ns_N^2\to0$, forcing a subsequence of
+remainders to tend to zero.
+
+To upgrade subsequential decay to full convergence, we use an exact-greedy
+Lyapunov quantity that seems particularly well suited to this question:
+\[
+ E_n=\|r_n\|^2-\rhoD(r_n)^2.
+\]
+Symmetry and exact maximization make $(E_n)$ nonincreasing.  Once
+$\liminf\|r_n\|=0$, this defect tends to zero, so any remainder bounded away
+from zero is almost parallel to a maximizing atom and its norm must decrease.
+
+\section{A general exact-greedy lemma}
+
+\begin{lemma}[Subsequential decay forces convergence]\label{lem:upgrade}
+Let $\D$ be a symmetric dictionary for which the exact maximum is attained at
+every remainder.  Suppose $c_n\to0$.  For any exact greedy trajectory,
+\[
+ \liminf_{n\to\infty}\|r_n\|=0
+ \quad\Longrightarrow\quad
+ \lim_{n\to\infty}\|r_n\|=0.
+\]
+\end{lemma}
+
+\begin{proof}
+Set $a_n=\rhoD(r_n)$ and $E_n=\|r_n\|^2-a_n^2\ge0$.  If $g_{n+1}$ is chosen
+at step $n+1$, then $\langle r_n,g_{n+1}\rangle=a_n$.  Symmetry gives
+\[
+ a_{n+1}\ge
+ |\langle r_n-c_{n+1}g_{n+1},g_{n+1}\rangle|
+ =|a_n-c_{n+1}|.
+\]
+Consequently,
+\begin{align*}
+ E_{n+1}
+ &\le \|r_n\|^2-2c_{n+1}a_n+c_{n+1}^2
+       -(a_n-c_{n+1})^2\\
+ &=E_n.
+\end{align*}
+Thus $E_n$ decreases.  The liminf hypothesis and $0\le E_n\le\|r_n\|^2$
+force $E_n\to0$.
+
+Fix $\varepsilon>0$.  On a sufficiently late tail,
+$E_n\le\varepsilon^2/16$ and $c_{n+1}\le\varepsilon/4$.  Whenever
+$\|r_n\|\ge\varepsilon$ on that tail,
+\[
+ a_n\ge\sqrt{\|r_n\|^2-E_n}\ge\frac{\sqrt{15}}4\varepsilon,
+\]
+and hence
+\[
+ \|r_{n+1}\|^2-\|r_n\|^2
+ =-2c_{n+1}a_n+c_{n+1}^2<0.
+\]
+Choose a still later index $k$ with $\|r_k\|<\varepsilon$.  If a subsequent
+remainder is below $\varepsilon$, the next has norm less than
+$\varepsilon+c_{n+1}\le5\varepsilon/4$; while its norm is at least
+$\varepsilon$, it decreases.  Therefore
+$\sup_{n\ge k}\|r_n\|\le5\varepsilon/4$.  Since $\varepsilon$ is arbitrary,
+$r_n\to0$.
+\end{proof}
+
+\section{Countable orthogonal-block theorem}
+
+\begin{theorem}\label{thm:block}
+Let
+\[
+ H=\bigoplus_{j=1}^{\infty}H_j
+\]
+be an orthogonal Hilbert sum.  For each $j$, let $\D_j$ be a symmetric unit
+dictionary in $H_j$ such that every local support maximum
+\[
+ \rho_j(x)=\max_{g\in\D_j}\langle x,g\rangle
+\]
+is attained.  Suppose there is one $\alpha>0$ such that
+\begin{equation}\label{eq:width}
+ \rho_j(x)\ge\alpha\|x\|\qquad(x\in H_j,\ j\ge1).
+\end{equation}
+Embed the $\D_j$ into $H$ and put $\D=\bigcup_j\D_j$.  Then for every
+coefficient sequence satisfying \eqref{eq:coefficients}, every exact greedy
+expansion with respect to $\D$ converges to its initial vector.
+\end{theorem}
+
+\begin{proof}
+For $x=(x_j)\in H$, the numbers $\rho_j(x_j)$ tend to zero, since they are at
+most $\|x_j\|$.  Thus the global supremum is a maximum whenever $x\ne0$, and
+$\D$ is an admissible symmetric dictionary.
+
+Let $(r_n)$ be a greedy trajectory and write $a_n=\rhoD(r_n)$.  The energy
+identity is
+\begin{equation}\label{eq:energy}
+ \|r_{n+1}\|^2
+ =\|r_n\|^2-2c_{n+1}a_n+c_{n+1}^2.
+\end{equation}
+We first have $\liminf_n a_n=0$.  Otherwise $a_n\ge\delta>0$ eventually; once
+$c_{n+1}\le\delta$, equation \eqref{eq:energy} gives
+$\|r_{n+1}\|^2\le\|r_n\|^2-\delta c_{n+1}$.  The divergent sum in
+\eqref{eq:coefficients} then forces a negative squared norm.
+
+Write the initial vector as $f=(f_j)$ and relabel the blocks so that
+\[
+ s_j:=\rho_j(f_j),\qquad s_1\ge s_2\ge\cdots\ge0.
+\]
+We have $\sum_j s_j^2\le\sum_j\|f_j\|^2<\infty$.  If only finitely many
+$s_j$ are nonzero, the trajectory lies in a finite orthogonal sum on which
+\[
+ \rhoD(x)=\max_j\rho_j(x_j)
+ \ge\frac{\alpha}{\sqrt N}\|x\|,
+\]
+and the same energy argument as above gives convergence.  We may therefore
+assume all $s_N>0$.
+
+For each $N$, let $m_N$ be the first index with $a_{m_N}\le s_N$; it exists
+because $\liminf a_n=0$.  Every block $j>N$ is untouched before this time.
+Indeed, while it is untouched its local support is $s_j\le s_N$, whereas at
+every earlier step the selected global support is strictly larger than $s_N$.
+At time $m_N$, condition \eqref{eq:width} therefore gives
+\[
+ \|(r_{m_N})_j\|\le\frac{s_N}{\alpha}\quad(j\le N),
+ \qquad (r_{m_N})_j=f_j\quad(j>N).
+\]
+Hence
+\begin{equation}\label{eq:stop}
+ \|r_{m_N}\|^2
+ \le \frac{N s_N^2}{\alpha^2}+\sum_{j>N}\|f_j\|^2.
+\end{equation}
+Since $(s_j)$ is decreasing and square summable,
+\[
+ \frac N2s_N^2\le
+ \sum_{j=\lceil N/2\rceil}^{N}s_j^2\longrightarrow0.
+\]
+The other term in \eqref{eq:stop} is the tail of the square-summable block
+norms.  Thus $\|r_{m_N}\|\to0$.  Lemma \ref{lem:upgrade} completes the proof.
+\end{proof}
+
+\section{Infinitely many finite perturbation blocks}
+
+\begin{corollary}\label{cor:coordinates}
+Let $(e_i)_{i\in I}$ be an orthonormal basis and partition $I$ into finite
+sets $I_j$ satisfying $|I_j|\le M<\infty$.  In each
+$H_j=\operatorname{span}\{e_i:i\in I_j\}$, let $Y_j$ be any closed symmetric
+set of unit vectors.  Then
+\[
+ \D=\{\pm e_i:i\in I\}\cup\bigcup_{j=1}^{\infty}Y_j
+\]
+has the convergence property of Theorem \ref{thm:block}.
+\end{corollary}
+
+\begin{proof}
+For the local dictionary consisting of the signed coordinate vectors and
+$Y_j$, compactness gives attainment, and
+\[
+ \rho_j(x)\ge\max_{i\in I_j}|\langle x,e_i\rangle|
+ \ge\frac1{\sqrt M}\|x\|.
+\]
+Apply Theorem \ref{thm:block} with $\alpha=M^{-1/2}$.
+\end{proof}
+
+When infinitely many $Y_j$ are nonempty, their union is not supported on one
+fixed finite subset of the basis.  Corollary \ref{cor:coordinates} is therefore
+a strict extension of the source's Corollary 4.3.
+
+\section{Scope, verification, and novelty status}
+
+The theorem is limited to exact greediness $t=1$, orthogonal component
+dictionaries, and a uniform positive local norming constant.  It does not
+characterize nonorthogonal dictionaries such as general Riesz bases, and it
+does not settle what happens when the best local constants tend to zero.
+Those two upgrade routes were examined; Gram-matrix interactions destroy the
+untouched-tail argument, while no rigorous counterexample was obtained in the
+nonuniform block case.
+
+The proof was audited through the two independent monotonic mechanisms
+$\liminf a_n=0$ from \eqref{eq:energy} and monotonicity of
+$\|r_n\|^2-a_n^2$ in Lemma \ref{lem:upgrade}.  A bounded search of the exact
+title, arXiv id, characterization wording, and citing literature found the
+2025 journal version of the source, which retains the open question, but no
+later solution or countable-block theorem.  Human mathematical and literature
+review is recommended.
+
+\begin{thebibliography}{9}
+\bibitem{OTVV}
+A. Oliaro, L. Tomatis, A. R. Valiullin, and A. R. Valiullin,
+\emph{Greedy expansions with prescribed coefficients in Hilbert spaces for
+special classes of dictionaries}, Constructive Approximation 62 (2025),
+243--259; arXiv:2209.03091.  See Corollary 4.3 and Section 5.
+\end{thebibliography}
+
+\end{document}

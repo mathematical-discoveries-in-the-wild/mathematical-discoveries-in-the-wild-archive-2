@@ -1,0 +1,316 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Q}{\mathcal Q}
+
+\emergencystretch=2em
+
+\begin{document}
+\pagestyle{plain}
+
+\begin{center}
+{\Large Full local stability of the Gaussian propeller}\\[0.35em]
+{\small Run \texttt{fa\_banach\_001}, arXiv:1112.2993, partial result}
+\end{center}
+
+\section*{Source problem}
+
+For a centered finite list $v_1,\ldots,v_k$ in a real Hilbert space, let
+$G$ be standard Gaussian on its span and set
+\[
+ \Q(v_1,\ldots,v_k)
+ =\frac{\bigl(\E\max_{1\le i\le k}\langle G,v_i\rangle\bigr)^2}
+ {\sum_{i=1}^k\|v_i\|^2}.
+\]
+The Gaussian formulation of the Propeller Conjecture asks whether
+\begin{equation}\label{eq:global}
+ \Q(v_1,\ldots,v_k)\le c_0,
+ \qquad c_0=\frac{9}{8\pi},
+\end{equation}
+for every $k$ and every ambient dimension; see Khot--Naor
+\cite{KN} and Heilman--Jagannath--Naor \cite{HJN}.  The latter paper proves
+the three-dimensional case. On page 7 it explicitly identifies a proof
+extending to all dimensions as the next natural step.
+
+\begin{center}
+\includegraphics[width=0.98\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+The global problem remains open. We prove that the conjectured optimizer is
+locally rigid under arbitrary higher-dimensional perturbations, substantially
+strengthening the previously isolated purely transverse case.
+
+\section*{Proof intuition}
+
+Choose the three vertices that are close to the propeller blades and translate
+the entire list by their mean. Translation does not change the expected
+Gaussian maximum. The translated list consists of a centered active triangle
+and a small arbitrary residual cloud. Re-centering the whole list gives an
+exact residual denominator cost of order $\eta^2$.
+
+The support function of a nondegenerate centered triangle dominates a fixed
+multiple of the planar radius. A residual vertex of total size $\eta$ can win
+only when the planar Gaussian component is unusually small compared with its
+orthogonal component. The small-ball probability of a two-dimensional
+Gaussian is quadratic, so the expected improvement is only $O(\eta^3)$.
+Thus the quadratic denominator cost beats the cubic numerator gain.
+
+The active triangle needs no external sharp inequality. Cauchy's planar
+perimeter formula expresses its expected Gaussian support in terms of its
+perimeter, and one application of Cauchy--Schwarz gives the sharp constant
+$9/(8\pi)$, with equality exactly for an equilateral triangle.
+
+\section*{Quantitative theorem}
+
+The following statement is useful beyond a neighborhood of the equilateral
+triangle. It gives an explicit certificate for adjoining an arbitrary small
+cloud to any nondegenerate centered triangle.
+
+\begin{theorem}[Arbitrary-cloud certificate]\label{thm:certificate}
+Let $u_1,u_2,u_3$ lie in a finite-dimensional real Hilbert space, satisfy
+$u_1+u_2+u_3=0$, and span a two-dimensional space $U$. Put
+\[
+ S=\sum_{i=1}^3\|u_i\|^2,
+ \quad
+ M=\max_{1\le i\le3}\langle X,u_i\rangle,
+ \quad
+ W=\E M,
+\]
+where $X$ is standard Gaussian on $U$, and define the inradius parameter
+\[
+ \alpha=\min_{x\in U,\ \|x\|=1}\max_{1\le i\le3}\langle x,u_i\rangle>0.
+\]
+Fix $m\ge1$, set $k=m+3$, and let $y_1,\ldots,y_m$ be arbitrary vectors in
+the ambient Hilbert space. Write
+\[
+ \eta^2=\sum_{j=1}^m\|y_j\|^2,
+ \qquad
+ A=\eta^2-\frac1k\left\|\sum_{j=1}^m y_j\right\|^2,
+ \qquad
+ \bar y=\frac1k\sum_{j=1}^m y_j.
+\]
+Form the centered list
+\[
+ v_i=u_i-\bar y\quad(1\le i\le3),
+ \qquad
+ v_{3+j}=y_j-\bar y\quad(1\le j\le m).
+\]
+If $0<\eta<\alpha$, define
+\[
+ b=\frac{\sqrt{2/\pi}}{2(\alpha-\eta)^2}.
+\]
+Whenever
+\begin{equation}\label{eq:certificate}
+ 2Wb\eta^3+b^2\eta^6<c_0A,
+\end{equation}
+one has
+\[
+ \Q(v_1,\ldots,v_k)<c_0.
+\]
+Moreover $A\ge(3/k)\eta^2$, so \eqref{eq:certificate} holds for all
+sufficiently small nonzero $\eta$, uniformly over the directions and number
+of dimensions used by the residual cloud.
+\end{theorem}
+
+\begin{corollary}[Full local stability]\label{cor:local}
+Fix $k\ge4$ and an equilateral centered triple
+$u_1^0,u_2^0,u_3^0$. In the space of centered $k$-tuples there is a
+neighborhood of
+\[
+ (u_1^0,u_2^0,u_3^0,0,\ldots,0)
+\]
+such that every tuple in this neighborhood satisfies \eqref{eq:global}.
+Equality holds precisely when, after the same labeling, the first three
+vectors form an equilateral centered triple and every remaining vector is
+zero. Thus, modulo rotations, scaling, and relabeling, the propeller is a
+strict local maximizer against all perturbations in arbitrary ambient
+dimension.
+\end{corollary}
+
+\section*{Proof}
+
+We first record the sharp estimate for the active triangle.
+
+\begin{lemma}[Centered-triangle inequality]\label{lem:triangle}
+With the notation of Theorem~\ref{thm:certificate},
+\[
+ W^2\le c_0S,
+\]
+with equality if and only if the triangle with vertices $u_1,u_2,u_3$ is
+equilateral.
+\end{lemma}
+
+\begin{proof}
+Let $P$ be the perimeter of $K=\operatorname{conv}\{u_1,u_2,u_3\}$.
+Write $X=R\Theta$, where $\Theta$ is uniform on the unit circle in $U$ and
+$R$ is independent of $\Theta$. The planar Cauchy perimeter formula says
+that the angular average of the support function $h_K$ is $P/(2\pi)$.
+Since $\E R=\sqrt{\pi/2}$,
+\[
+ W=\E h_K(X)=\frac{P}{2\sqrt{2\pi}}.
+\]
+If $a,b,c$ are the three side lengths, the centroid identity gives
+\[
+ a^2+b^2+c^2=3S.
+\]
+Consequently
+\[
+ P^2=(a+b+c)^2\le3(a^2+b^2+c^2)=9S,
+\]
+and therefore $W^2\le9S/(8\pi)=c_0S$. Equality in Cauchy--Schwarz occurs
+exactly when $a=b=c$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:certificate}]
+The list $v_1,\ldots,v_k$ is centered. Adding the common centered Gaussian
+$-\langle G,\bar y\rangle$ does not change the expectation of the maximum,
+so
+\begin{equation}\label{eq:numeratorexact}
+ \E\max_{1\le i\le k}\langle G,v_i\rangle
+ =\E\max\left\{M,\max_{1\le j\le m}\langle G,y_j\rangle\right\}.
+\end{equation}
+The denominator has the exact identity
+\begin{equation}\label{eq:denomexact}
+ \sum_{i=1}^k\|v_i\|^2=S+A.
+\end{equation}
+Indeed, this is the standard variance identity after subtracting the mean
+$\bar y$. Since $\|\sum_jy_j\|^2\le m\eta^2$ and $k=m+3$,
+\begin{equation}\label{eq:Alower}
+ A\ge\left(1-\frac{m}{k}\right)\eta^2=\frac3k\eta^2.
+\end{equation}
+
+Decompose $G=X+Z$ according to $U\oplus U^\perp$, and write
+$y_j=p_j+q_j$ in the same decomposition. Set
+\[
+ Q(Z)=\max_{1\le j\le m}\langle Z,q_j\rangle.
+\]
+Because $\|p_j\|\le\eta$ and $M\ge\alpha\|X\|$, the improvement over the
+active triangle is bounded by
+\begin{align}
+ \delta
+ &:=\E\left(\max\left\{M,\max_j\langle G,y_j\rangle\right\}-M\right)
+ \notag\\
+ &\le\E\bigl(Q(Z)-(\alpha-\eta)\|X\|\bigr)_+.
+ \label{eq:gainreduce}
+\end{align}
+For $q>0$ and $a=\alpha-\eta>0$, the radius of a standard
+two-dimensional Gaussian satisfies
+\[
+ \Pr\{\|X\|\le t\}=1-e^{-t^2/2}\le\frac{t^2}{2}.
+\]
+Conditioning on $Z$ therefore gives
+\[
+ \E_X(q-a\|X\|)_+
+ \le q\Pr\{\|X\|\le q/a\}
+ \le\frac{q^3}{2a^2}.
+\]
+Also
+\[
+ \E Q(Z)_+^3
+ \le\sum_{j=1}^m\E\langle Z,q_j\rangle_+^3
+ =\sqrt{\frac2\pi}\sum_{j=1}^m\|q_j\|^3
+ \le\sqrt{\frac2\pi}\,\eta^3.
+\]
+Combining this with \eqref{eq:gainreduce} proves the uniform cubic bound
+\begin{equation}\label{eq:cubic}
+ \delta\le b\eta^3.
+\end{equation}
+
+By Lemma~\ref{lem:triangle}, \eqref{eq:numeratorexact},
+\eqref{eq:denomexact}, and \eqref{eq:cubic},
+\[
+ \Q(v_1,\ldots,v_k)
+ \le\frac{(W+b\eta^3)^2}{S+A}.
+\]
+The numerator on the right is
+$W^2+2Wb\eta^3+b^2\eta^6$.  Lemma~\ref{lem:triangle} bounds the first
+term by $c_0S$, while \eqref{eq:certificate} bounds the last two strictly
+by $c_0A$. This proves the claim. The final assertion follows from
+\eqref{eq:Alower}, since the left side of \eqref{eq:certificate} is
+$O(\eta^3)$ and its right side is bounded below by a positive multiple of
+$\eta^2$.
+\end{proof}
+
+\begin{proof}[Proof of Corollary~\ref{cor:local}]
+For a centered $k$-tuple $(z_1,\ldots,z_k)$ near the displayed propeller,
+let $a=(z_1+z_2+z_3)/3$, put $u_i=z_i-a$ for $i\le3$, and put
+$y_j=z_{3+j}-a$. Subtracting $a$ from the entire list does not change the
+expected maximum. The centered version of the resulting list is exactly the
+original tuple, so Theorem~\ref{thm:certificate} applies.
+
+In a sufficiently small neighborhood of the fixed equilateral triple, the
+parameters $\alpha$ are bounded below by some $\alpha_*>0$ and the values
+$W$ are bounded above by some $W_*<\infty$. If $\eta\le\alpha_*/2$, then
+\[
+ b\le B_*:=\frac{2\sqrt{2/\pi}}{\alpha_*^2}.
+\]
+Hence \eqref{eq:certificate} follows uniformly once
+\[
+ 2W_*B_*\eta+B_*^2\eta^4<\frac{3c_0}{k},
+\]
+which holds for all sufficiently small positive $\eta$. If $\eta>0$, the
+conclusion is strict. If $\eta=0$, all residual vectors vanish after the
+translation, and centeredness forces $a=0$; Lemma~\ref{lem:triangle} gives
+equality exactly for an equilateral active triple. This proves the stated
+local rigidity and equality characterization.
+\end{proof}
+
+\section*{Verification notes}
+
+The proof is analytic and has no computational dependency. The two points
+most worth checking are the exact centered-denominator identity
+\eqref{eq:denomexact} and the passage from \eqref{eq:gainreduce} to the
+cubic estimate \eqref{eq:cubic}. Both constants are deliberately kept
+explicit. The argument is dimension-free after the planar small-ball step:
+the estimate
+$\sum_j\|q_j\|^3\le(\sum_j\|q_j\|^2)^{3/2}$ removes any dependence on the
+number of transverse directions.
+
+As a sanity check, for an equilateral triangle of circumradius $r$ one has
+$\alpha=r/2$, $S=3r^2$, and
+$W=3\sqrt3\,r/(2\sqrt{2\pi})$, which gives $W^2/S=9/(8\pi)$.
+
+\section*{Scope and novelty check}
+
+This is a partial result, not a proof of the global higher-dimensional
+conjecture. It controls every sufficiently small perturbation of the
+three-blade optimizer for each fixed $k$, but it does not control
+configurations far from that optimizer.
+
+A bounded primary-source search on 2026-08-09 used the exact phrases
+``Propeller Conjecture'', ``higher dimensions'', ``Gaussian moments'', and
+``local stability'', together with arXiv:0807.4626 and arXiv:1112.2993.
+It also inspected the primary arXiv records 1901.03934 and 2209.11216. The
+search found the known three-dimensional theorem and later conditional work,
+but no unconditional all-dimensional solution and no theorem matching the
+arbitrary-perturbation local statement above. Novelty confidence is moderate.
+
+The earlier run packet
+\texttt{0807.4626\_propeller\_transverse\_local\_stability} proves only the
+special case where a fixed residual cloud is scaled in a space orthogonal to
+an undeformed equilateral triangle. The present theorem removes both
+restrictions and supplies a quantitative certificate. Human review is
+recommended, with priority on \eqref{eq:denomexact} and
+\eqref{eq:cubic}.
+
+\begin{thebibliography}{9}
+\bibitem{KN}
+S. Khot and A. Naor,
+\emph{Approximate kernel clustering},
+arXiv:0807.4626, 2008.
+
+\bibitem{HJN}
+S. Heilman, A. Jagannath, and A. Naor,
+\emph{Solution of the propeller conjecture in $\R^3$},
+arXiv:1112.2993, 2011.
+\end{thebibliography}
+
+\end{document}

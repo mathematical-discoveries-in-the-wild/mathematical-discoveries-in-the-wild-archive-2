@@ -1,0 +1,281 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{xcolor}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\N}{\mathbb N}
+
+\title{Finite Paths Give a Counterexample to the\\
+Componentwise Cardinality Criterion}
+\author{Automatic mathematics run \texttt{fa\_banach\_001}}
+\date{9 August 2026}
+
+\begin{document}
+\setlength{\emergencystretch}{3em}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{
+\textbf{Status.} Candidate counterexample, likely valid, for human review.
+It gives a full negative answer to the finite-connected-component question
+immediately after Theorem 1.2 of Baudier--Braga--Farah--Vignati--Willett.
+}}
+\end{center}
+
+\section{Source question}
+
+The source is F. P. Baudier, B. M. Braga, I. Farah, A. Vignati, and
+R. Willett, \emph{Coarse equivalence versus bijective coarse equivalence of
+expander graphs}, arXiv:2307.11529, published in \emph{Mathematische
+Zeitschrift} 307 (2024), Paper 44 \cite{source}.
+
+Their Theorem 1.2 concerns coarse disjoint unions
+$X=\bigsqcup_n X_n$ and $Y=\bigsqcup_n Y_n$ of expander graphs and a coarse
+equivalence $f:X\to Y$.  It says that the following are equivalent:
+\begin{enumerate}
+\item $f$ is close to a bijective coarse equivalence;
+\item after discarding finitely many components, $f$ matches components of
+equal cardinality, with the total cardinalities of the discarded parts also
+equal.
+\end{enumerate}
+Immediately afterward the authors write:
+\begin{quote}
+``We do not know whether the conclusion of Theorem 1.2 can fail if $X$ and
+$Y$ are coarse disjoint unions of finite connected graphs (that are not
+necessarily expanders).''
+\end{quote}
+This occurs across printed pages 3--4.  The complete source evidence follows.
+
+\clearpage
+\begin{center}
+\textit{Printed page 3 (end):}\par\smallskip
+\includegraphics[width=0.98\textwidth]{figures/open_problem_crop_page3.png}
+
+\medskip
+\textit{Printed page 4 (beginning):}\par\smallskip
+\includegraphics[width=0.98\textwidth]{figures/open_problem_crop_page4.png}
+\end{center}
+
+\section{Definitions}
+
+Two maps $u,v:S\to T$ into a metric space are \emph{close} if
+$\sup_{x\in S}d(u(x),v(x))<\infty$.  A map $u:S\to T$ is \emph{coarse} if
+for every $r>0$ there is $s>0$ such that
+\[
+ d_S(x,x')<r \quad\Longrightarrow\quad d_T(u(x),u(x'))<s.
+\]
+It is a \emph{coarse equivalence} if it has a coarse inverse up to closeness.
+A \emph{bijective coarse equivalence} is a coarse equivalence that is also a
+bijection.
+
+A coarse disjoint union of finite metric spaces $(P_n)$ is their disjoint
+union with a metric restricting to the given metric on each component and
+satisfying $d(P_n,P_m)\to\infty$ as $(n,m)\to\infty$ with $n\ne m$.
+
+\section{Idea of the proof}
+
+Equal component cardinalities control only total mass; expansion is what lets
+the source theorem redistribute that mass by a uniformly bounded matching.
+Paths have large pieces with tiny boundary, so one can create a persistent
+local mass deficit while compensating elsewhere in the same component.
+
+On a path of $4n$ vertices, compress the first half by a factor of two.  Map
+the second half with slope $3/2$, so that the total image remains uniformly
+dense.  The resulting maps and explicit inverse sections are uniformly
+Lipschitz and inverse to within one, hence define a coarse self-equivalence of
+the disjoint union.  Component sizes match exactly.  But any map within a
+fixed distance $C$ must send the first $2n$ vertices into only
+$n+O(C)$ possible targets.  No injection, and therefore no bijection, can do
+this for arbitrarily large $n$.
+
+\section{Construction}
+
+For $n\geq1$, let
+\[
+ P_n=\{0,1,\ldots,4n-1\}
+\]
+with the path metric.  Put $X=\bigsqcup_{n\geq1}P_n$ and define
+\[
+ d((n,k),(m,j))=
+ \begin{cases}
+ |k-j|,&n=m,\\
+ 4n+4m,&n\ne m.
+ \end{cases}                                                   \tag{1}
+\]
+
+For $k\in P_n$, define
+\[
+ f_n(k)=
+ \begin{cases}
+ \lfloor k/2\rfloor,&0\leq k<2n,\\
+ n+\lfloor3(k-2n)/2\rfloor,&2n\leq k<4n,
+ \end{cases}                                                   \tag{2}
+\]
+and, for $j\in P_n$, define
+\[
+ g_n(j)=
+ \begin{cases}
+ 2j,&0\leq j<n,\\
+ 2n+\lfloor2(j-n)/3\rfloor,&n\leq j<4n.
+ \end{cases}                                                   \tag{3}
+\]
+Let $f,g:X\to X$ act by $f_n,g_n$ on $P_n$.
+
+\begin{lemma}\label{lem:space}
+Equation \emph{(1)} defines a uniformly locally finite metric, and $X$ is a
+coarse disjoint union of the finite connected graphs $P_n$.
+\end{lemma}
+
+\begin{proof}
+The only nontrivial triangle check is when two vertices lie in one component
+and the third lies in another.  Since $\operatorname{diam}(P_n)=4n-1$ while
+the two cross-component legs have sum at least $8n+8$, the triangle
+inequality holds.  The restriction to $P_n$ is its path metric, and
+$d(P_n,P_m)=4n+4m\to\infty$ off the diagonal, so this is a coarse disjoint
+union.
+
+Fix $R>0$.  A ball of radius $R$ meets at most $2\lfloor R\rfloor+1$
+vertices in its own path.  If it meets another $P_m$, then
+$4n+4m\leq R$, hence $m\leq R/4$.  Thus its cardinality is bounded by
+\[
+ 2\lfloor R\rfloor+1+\sum_{m\leq R/4}4m,
+\]
+independently of its center.  Hence $X$ is uniformly locally finite.
+\end{proof}
+
+\begin{proposition}\label{prop:coarse}
+The maps $f$ and $g$ are $2$-Lipschitz and
+\[
+ d(g(f(x)),x)\leq1,
+ \qquad
+ d(f(g(x)),x)\leq1
+ \quad (x\in X).
+\]
+Consequently $f$ is a coarse equivalence with coarse inverse $g$.
+\end{proposition}
+
+\begin{proof}
+Along a component, consecutive values of $f_n$ differ by at most $2$:
+the first part of (2) has increments $0$ or $1$, the transition has increment
+$1$, and the second part has increments $1$ or $2$.  Consecutive values of
+$g_n$ differ by at most $2$ as well.  Between distinct components, both maps
+preserve the component indices, so they preserve the distance $4n+4m$
+exactly.  Thus both maps are globally $2$-Lipschitz.
+
+For $k<2n$,
+\[
+ g_n(f_n(k))=2\lfloor k/2\rfloor,
+\]
+which differs from $k$ by at most $1$.  If $k=2n+r$, then
+\[
+ g_n(f_n(k))
+ =2n+\left\lfloor\frac{2\lfloor3r/2\rfloor}{3}\right\rfloor,
+\]
+whose final term equals $r$ for even $r$ and $r-1$ for odd $r$.
+
+Similarly, $f_n(g_n(j))=j$ for $j<n$.  If $j=n+s$, then
+\[
+ f_n(g_n(j))
+ =n+\left\lfloor\frac{3\lfloor2s/3\rfloor}{2}\right\rfloor.
+\]
+Writing $s$ modulo $3$ shows that the final term is $s$ when
+$s\equiv0\pmod3$ and $s-1$ otherwise.  Both composition errors are therefore
+at most $1$.
+\end{proof}
+
+\section{The bounded-displacement obstruction}
+
+\begin{theorem}\label{thm:counterexample}
+The coarse equivalence $f:X\to X$ satisfies condition \emph{(2)} of the
+source Theorem 1.2 with all components retained and the identity matching of
+components.  Nevertheless, $f$ is not close to any bijection $X\to X$.
+In particular, it is not close to any bijective coarse equivalence.
+\end{theorem}
+
+\begin{proof}
+The component condition is immediate: $f(P_n)\subseteq P_n$ and
+$|P_n|=|P_n|$ for every $n$.  In the notation of the source theorem, take
+$N=M=\N$ and $i(n)=n$; both discarded sums are zero.
+
+Suppose, toward a contradiction, that a bijection $h:X\to X$ and a constant
+$C<\infty$ satisfy
+\[
+ d(h(x),f(x))\leq C\qquad(x\in X).                         \tag{4}
+\]
+Choose an integer $n>\max\{C,1\}$.  Since $f(P_n)\subseteq P_n$ and every
+point outside $P_n$ is at distance at least $4n+4>C$ from $P_n$, (4) implies
+$h(P_n)\subseteq P_n$.
+
+Let
+\[
+ A_n=\{0,\ldots,2n-1\}\subseteq P_n,
+ \qquad B_n=\{0,\ldots,n-1\}\subseteq P_n.
+\]
+By (2), $f(A_n)=B_n$.  Equation (4) therefore forces
+\[
+ h(A_n)\subseteq N_C(B_n)\cap P_n
+ \subseteq\{0,\ldots,n-1+\lfloor C\rfloor\}.
+\]
+The set on the right has at most $n+\lfloor C\rfloor<2n=|A_n|$ elements.
+This contradicts injectivity of $h$.
+\end{proof}
+
+\begin{corollary}[Negative answer to the source question]
+The conclusion of the source Theorem 1.2 fails for coarse disjoint unions of
+finite connected graphs.  It already fails when every component is a path and
+$X=Y$.
+\end{corollary}
+
+\section{Verification notes}
+
+The proof uses only the displayed formulas.  The accompanying script
+\path{code/check_finite_path_counterexample.py} checks every component
+$1\leq n\leq2000$.  It verifies that both adjacent-step bounds equal $2$,
+both composition errors are at most $1$, and every component image is
+$1$-dense.  It also checks the final cardinality deficit for integer closeness
+bounds $0\leq C\leq500$.  These computations are sanity checks, not part of
+the proof.
+
+\section{Limitations and bounded novelty audit}
+
+This packet answers only the combinatorial/geometric question after Theorem
+1.2.  It does not claim that the counterexample is induced by an isomorphism
+of uniform Roe algebras.  The latter rigidity conjecture, stated separately
+as Conjecture 1.3 in the source, has independent later resolutions and is not
+the target here.
+
+On 9 August 2026, the four run indexes were searched for arXiv:2307.11529,
+the exact question phrase, and the core terms ``coarse disjoint union'',
+``finite connected graphs'', and ``bijective coarse equivalence''.  Exact and
+keyword web/arXiv searches were also run.  The latest source page still
+contains the question.  Finally, the OpenAlex record, updated 23 July 2026,
+listed two citing works; inspection of their titles, abstracts, and searchable
+text found only operator-algebraic applications to expanders, not the present
+finite-path construction or an answer to this question.  No prior answer was
+found within these bounds.  This supports plausible novelty but is not a
+certification.
+
+\section{Human-review recommendation}
+
+\textbf{Recommendation: promote after expert confirmation.}  The main review
+points are: (i) that the source's phrase ``the conclusion of Theorem 1.2 can
+fail'' is correctly read as asking whether the stated equivalence can fail;
+(ii) the global metric in (1) meets the source definition of coarse disjoint
+union; and (iii) the counting argument excludes every bounded-distance
+bijection, not merely componentwise permutations.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+F. P. Baudier, B. M. Braga, I. Farah, A. Vignati, and R. Willett,
+\emph{Coarse equivalence versus bijective coarse equivalence of expander
+graphs}, Mathematische Zeitschrift 307 (2024), Paper 44;
+arXiv:2307.11529.
+\end{thebibliography}
+
+\end{document}

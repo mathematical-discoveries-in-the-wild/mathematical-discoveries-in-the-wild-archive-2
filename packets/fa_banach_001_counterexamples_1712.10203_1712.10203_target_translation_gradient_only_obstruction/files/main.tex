@@ -1,0 +1,209 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\emergencystretch=3em
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Sop}{\mathbf S}
+\newcommand{\pointchain}[1]{[\![#1]\!]}
+
+\title{Target Translations Obstruct Gradient-Only Control\\
+of the Topological Singular-Set Operator}
+\author{Run \texttt{fa\_banach\_001}}
+\date{2026-08-17}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+Candidate full counterexample, likely valid, to the question following
+Theorem~3.1 in the source paper.
+
+\section{Source question}
+Canevari and Orlandi construct
+\[
+ \Sop:(L^\infty\cap W^{1,k-1})(\Omega,\R^m)
+ \longrightarrow
+ L^1\!\left(\R^m;\mathbb F_{d-k}
+ (\Omega;\pi_{k-1}(\mathcal N))\right)=:Y.
+\]
+After proving a continuity estimate involving $\|u_1-u_0\|_{L^k}$,
+they ask whether $\|\Sop(u_1)-\Sop(u_0)\|_Y$ can instead be bounded in
+terms of Sobolev norms of $\nabla u_1-\nabla u_0$~\cite{CO}.
+
+\begin{center}
+\includegraphics[width=0.98\linewidth]{figures/open_question_crop.png}
+\end{center}
+
+As is standard for a continuity estimate, ``controlled by the gradient
+difference'' means that the proposed right-hand side vanishes when all
+those norms vanish.  The example below rules out every such estimate,
+including ones whose coefficient also depends on fixed $L^\infty$ bounds
+or on individual derivative norms.
+
+\section{Proof intuition}
+The derivative forgets additive constants in the target, but $\Sop$ does
+not.  In the sphere case, $\Sop_y(u)$ records the signed preimages of the
+point $y$.  Replacing $u$ by $u+c$ therefore translates the whole family in
+the parameter $y$, although it leaves the derivative unchanged.  Choosing
+$c$ large enough makes the two ranges disjoint.  A positive-volume family
+of unit point chains remains in their difference, so its $Y$-norm cannot
+vanish.
+
+\section{Counterexample theorem}
+\begin{theorem}
+For every integer $k\ge2$, let
+\[
+ d=m=k,\qquad \Omega=B_1(0)\subset\R^k,
+ \qquad \mathcal N=S^{k-1}\subset\R^k.
+\]
+Put $c=3e_1$ and define smooth maps
+\[
+ u_0(x)=x,\qquad u_1(x)=x+c.
+\]
+Then
+\[
+ \nabla u_1-\nabla u_0=0
+\]
+pointwise, but
+\[
+ \|\Sop(u_1)-\Sop(u_0)\|_Y
+ \ge \frac14\,|B_{1/2}(0)|>0.
+\]
+Consequently the source question has a negative answer in general: no
+estimate controlled only by Sobolev norms of
+$\nabla u_1-\nabla u_0$, and vanishing when that difference is zero, can
+hold for $\Sop$.
+\end{theorem}
+
+\begin{proof}
+Both maps belong to $L^\infty\cap W^{1,k-1}$ (indeed, they are affine), and
+their derivatives are both the identity matrix.
+
+For $\mathcal N=S^{k-1}\subset\R^k$, the source chooses the exceptional
+complex $\mathcal X=\{0\}$ and the radial retraction
+$z\mapsto z/|z|$.  Its smooth-map construction says that
+$\Sop_y(u)$ is the signed zero-dimensional preimage chain of $y$: each
+regular preimage carries its local degree in
+$\pi_{k-1}(S^{k-1})\simeq\Z$~\cite[Sections 1.2 and 3.2]{CO}.  Since the
+two affine derivatives preserve orientation, there is one fixed
+$\varepsilon\in\{1,-1\}$, depending only on the source's generator
+convention, such that for almost every $y$
+\[
+ \Sop_y(u_0)=
+ \begin{cases}
+  \varepsilon\pointchain{y},&y\in B_1(0),\\
+  0,&y\notin B_1(0),
+ \end{cases}
+ \qquad
+ \Sop_y(u_1)=
+ \begin{cases}
+  \varepsilon\pointchain{y-c},&y\in c+B_1(0),\\
+  0,&y\notin c+B_1(0).
+ \end{cases}
+\]
+The possible sign will play no role.
+
+Because $|c|=3>2$, the two range balls are disjoint.  In particular, for
+almost every $y\in B_{1/2}(0)$,
+\[
+ \Sop_y(u_1)-\Sop_y(u_0)
+ =-\varepsilon\pointchain{y}
+ \quad\text{in }\mathbb F_0(\Omega;\Z).
+\]
+It remains only to keep the relative flat norm from losing this point
+through the boundary of $\Omega$.
+
+Define the compactly supported Lipschitz function
+\[
+ \varphi(x)=\min\!\left\{\frac14,
+                  \left(\frac34-|x|\right)_+\right\}.
+\]
+Then $0\le\varphi\le1$, $\operatorname{Lip}(\varphi)\le1$,
+$\operatorname{spt}\varphi\Subset B_1$, and
+$\varphi=1/4$ on $B_{1/2}$.  By the source's characterization of the
+relative flat norm, any admissible decomposition of
+$\pointchain{y}$ has the form
+\[
+   \pointchain{y}=\partial P+Q
+ \quad\text{modulo a chain supported in }\R^k\setminus\Omega,
+\]
+and is charged by
+$\mathbf M(P\mathbin{\llcorner}\Omega)
+ +\mathbf M(Q\mathbin{\llcorner}\Omega)$.
+Testing against $\varphi$ (or smooth compactly supported approximations)
+gives, for $y\in B_{1/2}$,
+\begin{align*}
+ \frac14
+ &=\pointchain{y}(\varphi)
+   =P(d\varphi)+Q(\varphi)\\
+ &\le
+ \mathbf M(P\mathbin{\llcorner}\Omega)
+ +\mathbf M(Q\mathbin{\llcorner}\Omega).
+\end{align*}
+Taking the infimum yields
+$\mathbb F_\Omega(\pointchain{y})\ge1/4$.  Therefore
+\[
+ \|\Sop(u_1)-\Sop(u_0)\|_Y
+ =\int_{\R^k}\mathbb F_\Omega
+   (\Sop_y(u_1)-\Sop_y(u_0))\,dy
+ \ge\int_{B_{1/2}}\frac14\,dy
+ =\frac14|B_{1/2}|>0.
+\]
+This contradicts every proposed gradient-difference estimate whose
+right-hand side vanishes at zero.
+\end{proof}
+
+\section{Scope, repair, and verification}
+The counterexample addresses the literal unrestricted question.  It does
+not conflict with the source's proved estimate, whose right-hand side
+contains $\|u_1-u_0\|_{L^k}$.  Nor does it rule out a gradient-based estimate
+after fixing target-translation freedom, for example by prescribing a
+common mean, a common trace, or one point value.  Another natural repair is
+to compare the $y$-families only after compensating for the target
+translation.
+
+The signed-preimage calculation is direct from the source's smooth
+construction.  The relative-norm argument uses exactly its quotient-norm
+characterization.  The accompanying verification script checks the affine
+and disjoint-range identities in several dimensions; the proof above is
+valid for every $k\ge2$.  A separate audit is recorded in
+\texttt{VERIFICATION.md}.
+
+\section{Bounded novelty search}
+A search on 2026-08-17 used the exact question sentence, the paper title and
+authors, ``topological singular set gradient difference'', and the
+companion-paper and survey literature.  It found the source, Part~II
+\cite{CO2}, the authors' 2021 survey~\cite{survey}, and later applications of
+the same singular-chain operator, but no work explicitly answering this
+question or recording the target-translation obstruction.  This is a
+bounded search, not a priority claim.  Novelty confidence is moderate;
+mathematical-validity confidence is high.
+
+\begin{thebibliography}{9}
+\bibitem{CO}
+G. Canevari and G. Orlandi,
+\emph{Topological singular set of vector-valued maps, I: Applications to
+manifold-constrained Sobolev and BV spaces}, arXiv:1712.10203v2 (2018),
+especially Theorem~3.1 and Sections~1.2, 2.1, 3.2.
+
+\bibitem{CO2}
+G. Canevari and G. Orlandi,
+\emph{Topological singular set of vector-valued maps, II:
+$\Gamma$-convergence for Ginzburg--Landau type functionals},
+Arch. Ration. Mech. Anal. 241 (2021), 117--193; arXiv:2003.01354.
+
+\bibitem{survey}
+G. Canevari and G. Orlandi,
+\emph{Topological singularities for vector-valued Sobolev maps and
+applications}, Ann. Fac. Sci. Toulouse Math. 30 (2021), 327--351.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,447 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\Dist}{\mathsf D}
+\newcommand{\Prob}{\mathbb P}
+
+\title{A Sharp Upper Bound for Random Euclidean Sections of
+$\ell_p^n$ in the Logarithmic Regime}
+\author{Candidate full resolution for arXiv:1510.07284\\
+Run \texttt{fa\_banach\_001}, lane 0}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\fbox{\parbox{0.94\textwidth}{
+\textbf{Status.} Candidate full solution, likely valid, pending specialist
+human review.  For every $p\ge C_0\log n$, the sharp randomized-cube upper
+bound
+\[
+ k\le C\frac{\eps\log n}{\log(1/\eps)}
+\]
+holds for $(1+\eps)$-spherical Haar-random sections of $\ell_p^n$.
+This closes the logarithmic-$p$, small-distortion wedge left open in
+Section 6, item 5 of the source paper.}}
+
+\section{Source question}
+
+Paouris, Valettas and Zinn study the largest dimension of a Haar-random
+subspace of $\ell_p^n$ on which the norm is $(1+\eps)$-spherical
+\cite{PVZ17}.  In Section 6, item 5, they ask whether the factor
+$\log(1/\eps)$ in the denominator of
+\[
+   k\lesssim \frac{\eps\log n}{\log(1/\eps)}
+\]
+is necessary throughout the range $p\gtrsim\log n$.  Their Proposition 6.2
+proves the upper bound for $p>(\log n)^2$.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{The open question and Proposition 6.2 in arXiv:1510.07284,
+PDF page 39.}
+\end{figure}
+
+The theorem below gives the requested upper bound for all
+$p\ge C_0\log n$, with absolute constants.
+
+\section{Definitions}
+
+For a subspace $E\subset\R^n$ define the spherical distortion
+\[
+ \Dist_p(E):=
+ \frac{\displaystyle\sup_{x\in E\cap S^{n-1}}\|x\|_p}
+      {\displaystyle\inf_{x\in E\cap S^{n-1}}\|x\|_p}.
+\]
+Thus $E$ is $(1+\eps)$-spherical in $\ell_p^n$ if and only if
+$\Dist_p(E)\le1+\eps$.  All logarithms are natural.
+
+\section{Proof intuition}
+
+The deterministic comparison $\|x\|_p\le n^{1/p}\|x\|_\infty$ loses a
+constant when $p\asymp\log n$, so it cannot resolve very small distortions.
+The proof replaces this worst-case comparison by a probabilistic soft-maximum
+comparison at the sharp Gaussian extreme-value level.
+
+Write a Haar-random subspace as the image of an $n\times d$ Gaussian matrix
+$A$, whose rows are $G_1,\ldots,G_n\in\R^d$.  Let $u$ point in the direction
+of the longest row.  Then $\|Au\|_p$ is at least
+$\max_i\|G_i\|_2$, the maximum of $n$ independent $\chi_d$ variables.
+Choose $v\perp u$.  After conditioning on the longest row, the remaining
+projections $|\langle G_j,v\rangle|$ are stochastically dominated by
+independent $|N(0,1)|$ variables.  When $p\ge C_0\log n$, their $\ell_p$ norm
+lies, with fixed positive probability, below the same threshold $b_n$ for
+which $n\Prob\{|N(0,1)|>b_n\}=1/2$.
+
+The $\chi_d$ extreme exceeds $b_n$ by the relative amount
+\[
+ c\,\frac{d\log(e\log n/d)}{\log n}.
+\]
+Gaussian singular-value control shows that passing from coefficient-space
+directions to the Euclidean sphere of $A\R^d$ costs much less than this gap.
+Inverting the gap gives exactly
+$d\lesssim\eps\log n/\log(1/\eps)$.  This is the same $\chi$-amplification
+behind the sharp cube obstruction, but the conditional orthogonal direction
+makes it work for the finite-$p$ soft maximum without an $n^{1/p}$ loss.
+
+\section{Three probabilistic lemmas}
+
+Let $Z$ be standard Gaussian and, for $n\ge2$, let $b_n>0$ be defined by
+\begin{equation}\label{eq:bn}
+       \Prob\{|Z|>b_n\}=\frac1{2n}.
+\end{equation}
+If $L=\log n$, then
+\begin{equation}\label{eq:b-asymp}
+       b_n^2=2L-\log L+O(1).
+\end{equation}
+
+\begin{lemma}[A Gaussian soft maximum]\label{lem:softmax}
+There are absolute constants $C_0,n_0$ such that, whenever
+$n\ge n_0$ and $p\ge C_0\log n$, independent standard Gaussians
+$Z_1,\ldots,Z_m$, with $m\le n$, satisfy
+\[
+ \Prob\left\{\left(\sum_{j=1}^m|Z_j|^p\right)^{1/p}\le b_n\right\}
+ \ge \frac12.
+\]
+\end{lemma}
+
+\begin{proof}
+Put $b=b_n$ and
+\[
+ S=\sum_{j=1}^m |Z_j|^p\mathbf 1_{\{|Z_j|\le b\}}.
+\]
+For $p>b^2$, the inequalities $\log s\le -(1-s)$ and
+$(1-s^2)/2\le1-s$, $0<s<1$, give
+\begin{align*}
+ \frac{\mathbb ES}{b^p}
+ &\le 2nb\int_0^1 s^p\frac{e^{-b^2s^2/2}}{\sqrt{2\pi}}\,ds\\
+ &\le 2nb\frac{e^{-b^2/2}}{\sqrt{2\pi}}
+       \int_0^1e^{-(p-b^2)(1-s)}\,ds\\
+ &\le \frac{2nb\varphi(b)}{p-b^2},
+\end{align*}
+where $\varphi$ is the standard Gaussian density.  The lower Mills bound
+$\Prob\{|Z|>b\}\ge 2\varphi(b)b/(b^2+1)$ and \eqref{eq:bn} imply
+\begin{equation}\label{eq:truncated}
+       \frac{\mathbb ES}{b^p}
+       \le \frac{b^2+1}{2(p-b^2)}.
+\end{equation}
+Also
+\[
+ \Prob\left\{\max_{j\le m}|Z_j|\le b\right\}
+ \ge\left(1-\frac1{2n}\right)^n.
+\]
+By \eqref{eq:b-asymp}, choosing $C_0$ sufficiently large makes the
+right-hand side of \eqref{eq:truncated} smaller than $1/32$.  Markov's
+inequality and
+$(1-1/(2n))^n>17/32$ for $n\ge n_0$ now yield the claim.
+\end{proof}
+
+\begin{lemma}[$\chi$-amplification]\label{lem:chi}
+There are absolute constants $c_0,c_1>0$ and $n_0$ such that the following
+holds.  Let $L=\log n$, $n\ge n_0$, and
+$2\le d\le c_0L$.  If $R_1,\ldots,R_n$ are independent $\chi_d$ variables
+and
+\[
+       a_d:=\frac{d\log(eL/d)}{L},
+\]
+then
+\[
+ \Prob\left\{\max_{i\le n}R_i>b_n(1+c_1a_d)\right\}>\frac9{10}.
+\]
+\end{lemma}
+
+\begin{proof}
+We include the tail calculation because its $d$-dependence is the source of
+the logarithm in the theorem.  Put $b=b_n$ and
+$r=b(1+c_1a_d)$.  Choose $c_0,c_1$ small enough that
+$r^2\ge2d$ and $c_1a_d\le1/4$.  The $\chi_d$ density is
+\[
+ f_d(t)=\frac{2^{1-d/2}}{\Gamma(d/2)}t^{d-1}e^{-t^2/2}.
+\]
+Integrating on $[r,r+1/r]$ gives
+\begin{equation}\label{eq:chi-local}
+ \Prob\{R_1>r\}\ge
+ c\,\frac{2^{1-d/2}}{\Gamma(d/2)}r^{d-2}e^{-r^2/2}.
+\end{equation}
+Indeed, on that interval the Gaussian factor changes by only an absolute
+factor, while the power $t^{d-1}$ is nondecreasing.
+
+The upper Mills bound and \eqref{eq:bn} give
+$e^{-b^2/2}\ge c b/n$.  Combining this with \eqref{eq:chi-local} and the
+upper Stirling bound for $\Gamma(d/2)$ yields
+\begin{equation}\label{eq:chi-ratio}
+ n\Prob\{R_1>r\}
+ \ge c\,\frac{b\sqrt d}{r^2}
+       \left(\frac{er^2}{d}\right)^{d/2}
+       \exp\left(-\frac{r^2-b^2}{2}\right).
+\end{equation}
+Since $b^2\asymp L$, $r\asymp b$, and
+$r^2-b^2\le Cc_1d\log(eL/d)$, taking $c_1$ sufficiently small in
+\eqref{eq:chi-ratio} gives
+\[
+ \log\bigl(n\Prob\{R_1>r\}\bigr)
+ \ge c'(d-1)\log(eL/d)-C'.
+\]
+The right-hand side tends to infinity uniformly for
+$2\le d\le c_0L$; its smallest growth occurs at $d=2$ and is a positive
+multiple of $\log L$.  Enlarging $n_0$ therefore makes
+$n\Prob\{R_1>r\}>\log 10$, and independence completes the proof.
+\end{proof}
+
+\begin{lemma}[Conditioning below the longest row]\label{lem:conditioning}
+Let $G_1,\ldots,G_n$ be independent standard Gaussian vectors in $\R^d$,
+$d\ge2$, and let $i_*$ be the almost surely unique index maximizing
+$\|G_i\|_2$.  Put $u=G_{i_*}/\|G_{i_*}\|_2$ and choose a measurable
+$v\in S^{d-1}\cap u^\perp$.  Conditional on
+$(i_*,\|G_{i_*}\|_2,u)$, the random variables
+$|\langle G_j,v\rangle|$, $j\ne i_*$, are independent and each is
+stochastically dominated by $|Z|$.
+\end{lemma}
+
+\begin{proof}
+Conditional on the longest radius $R=\|G_{i_*}\|_2$, its index and its
+direction, the remaining rows are independent standard Gaussian vectors
+conditioned to lie in $RB_2^d$.  Rotational invariance lets us fix the
+direction $v$.  Write a standard Gaussian vector as $(X,Y)$ along
+$\R v\oplus v^\perp$.  Given $|X|=t$, the probability of the conditioning
+event is
+\[
+ w(t)=\Prob\{\|Y\|_2\le\sqrt{R^2-t^2}\},
+\]
+with $w(t)=0$ for $t>R$.  The function $w$ is nonincreasing.  Weighting the
+law of $|X|$ by a nonincreasing function gives a stochastically smaller
+law: for every increasing indicator $\mathbf1_{\{t>s\}}$, the elementary
+opposite-monotonicity covariance inequality gives
+\[
+ \frac{\mathbb E[\mathbf1_{\{|X|>s\}}w(|X|)]}{\mathbb Ew(|X|)}
+ \le \Prob\{|X|>s\}.
+\]
+This proves the one-dimensional domination.  Conditional independence of
+the remaining rows proves the joint assertion.
+\end{proof}
+
+\section{A direct obstruction in a fixed dimension}
+
+\begin{proposition}\label{prop:direct}
+There are absolute constants $C_0,c_0,\gamma>0$ and $n_0$ such that, for
+$n\ge n_0$, $p\ge C_0\log n$, and $2\le d\le c_0\log n$, a Haar-random
+$d$-dimensional subspace $E$ of $\R^n$ satisfies
+\[
+ \Prob\left\{\Dist_p(E)>1+\gamma
+       \frac{d\log(e\log n/d)}{\log n}\right\}>\frac14.
+\]
+\end{proposition}
+
+\begin{proof}
+Let $A$ be an $n\times d$ matrix with independent standard Gaussian entries
+and rows $G_1,\ldots,G_n$.  Its image is Haar distributed on the
+Grassmannian.  Let $u,v$ be the two orthogonal directions from
+Lemma \ref{lem:conditioning}.  On the event in Lemma \ref{lem:chi},
+\begin{equation}\label{eq:u-lower}
+       \|Au\|_p\ge\|G_{i_*}\|_2>b_n(1+c_1a_d).
+\end{equation}
+The $i_*$ coordinate of $Av$ is zero.  Lemmas \ref{lem:conditioning} and
+\ref{lem:softmax} therefore imply, conditionally on the longest row,
+\begin{equation}\label{eq:v-upper}
+       \Prob\{\|Av\|_p\le b_n\}\ge\frac12.
+\end{equation}
+Consequently \eqref{eq:u-lower} and \eqref{eq:v-upper} hold simultaneously
+with probability greater than $9/20$.
+
+We also use the standard Gaussian singular-value estimate
+\cite[Theorem 4.6.1]{Vershynin18}.  Uniformly for the present range of $d$,
+with probability tending to one,
+\begin{equation}\label{eq:gram}
+ (1-\tau)\sqrt n\,\|x\|_2\le\|Ax\|_2
+ \le(1+\tau)\sqrt n\,\|x\|_2
+ \quad(x\in\R^d),
+ \qquad \tau:=\frac{c_1a_d}{10}.
+\end{equation}
+For completeness, the exceptional probability is at most
+$2\exp(-c\tau^2n)$ once $\sqrt{d/n}\le\tau/2$; here
+$a_d\ge c\log\log n/\log n$ and $d\le c_0\log n$, so it is smaller than
+$1/100$ for $n\ge n_0$.
+
+On the intersection of these events,
+\begin{align*}
+ \frac{\|Au\|_p/\|Au\|_2}{\|Av\|_p/\|Av\|_2}
+ &\ge (1+c_1a_d)\frac{1-\tau}{1+\tau}
+ >1+\frac{c_1}{2}a_d.
+\end{align*}
+The left-hand side is bounded above by $\Dist_p(A\R^d)$.  The intersection
+has probability greater than $9/20-1/100>1/4$, proving the proposition with
+$\gamma=c_1/2$.
+\end{proof}
+
+\section{Full resolution}
+
+\begin{theorem}\label{thm:main}
+There are absolute constants $C_0,C,n_0$ such that the following holds.
+Let $n\ge n_0$, $p\ge C_0\log n$, $0<\eps<1/3$, and $k>1$.  If a
+Haar-random $k$-dimensional subspace $E$ of $\R^n$ satisfies
+\[
+       \Prob\{\Dist_p(E)\le1+\eps\}>\frac34,
+\]
+then
+\begin{equation}\label{eq:main-bound}
+       k\le C\frac{\eps\log n}{\log(1/\eps)}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+First note a monotonicity fact.  If $E$ is $(1+\eps)$-spherical, every
+subspace of $E$ is $(1+\eps)$-spherical.  If one first chooses a Haar-random
+$k$-subspace and then a Haar-random $d$-subspace inside it, the marginal law
+of the latter is Haar on the $d$-dimensional Grassmannian.  Hence the
+probability hypothesis in dimension $k$ implies the same hypothesis in
+every dimension $2\le d\le k$.
+
+Put $L=\log n$ and
+\[
+       s=\frac{\eps L}{\log(1/\eps)}.
+\]
+ We first treat $0<\eps\le\eps_0$, where $\eps_0$ is a sufficiently small
+ absolute constant.  Set
+ \[
+        d=\max\{2,\lceil As\rceil\},
+ \]
+ with $A$ an absolute constant to be fixed.  If $As\ge1$, then
+ $d\le2As$ and, after taking $\eps_0$ small enough,
+ \[
+ d\le c_0L,
+ \qquad
+ \log(eL/d)
+ \ge \log\left(\frac{e\log(1/\eps)}{2A\eps}\right)
+ \ge\frac12\log(1/\eps).
+ \]
+ Consequently
+ \begin{equation}\label{eq:invert-large}
+       a_d=\frac{d\log(eL/d)}{L}\ge\frac A2\eps.
+ \end{equation}
+
+ If $As<1$, then $d=2$.  The inequality
+ $\eps L/\log(1/\eps)<1/A$ implies, for large $L$,
+ \begin{equation}\label{eq:tiny-eps}
+       \eps\le \frac{C\log L}{AL}.
+ \end{equation}
+ To see this, put $t=\log(1/\eps)$.  If $t\le2\log L$, the assertion follows
+ directly from $\eps L<t/A$; if $t>2\log L$, then
+ $\eps<L^{-2}$, which is even smaller.  Since
+ $a_2=2\log(eL/2)/L$, choosing $A$ sufficiently large gives
+ \begin{equation}\label{eq:invert-small}
+       \gamma a_2>\eps.
+ \end{equation}
+
+ Choose $A$ large enough for both \eqref{eq:invert-large} and
+ \eqref{eq:invert-small} to imply $\gamma a_d>\eps$.  If $d\le k$,
+ Proposition \ref{prop:direct} says that more than one quarter of the
+ $d$-subspaces have distortion greater than $1+\eps$, contradicting the
+ inherited probability hypothesis.  Hence $k<d$.  The case $As<1$ is then
+ impossible because $k\ge2=d$.  In the remaining case,
+ $k<d\le2As$, which is \eqref{eq:main-bound}.
+
+It remains to treat $\eps_0<\eps<1/3$.  Here the elementary comparison
+\[
+       \Dist_\infty(E)\le n^{1/p}\Dist_p(E)
+\]
+has only a small absolute loss.  Increase $C_0$ so that
+$e^{1/C_0}-1\ll\eps_0$, and put
+$1+\delta=(1+\eps)n^{1/p}$.  Then $\delta<1/2$ and
+$\delta\le C\eps$.  Tikhomirov's sharp randomized cube theorem
+\cite{Tik14} gives
+\[
+ k\le C_T\frac{\delta L}{\log(1/\delta)}
+ \le C\frac{\eps L}{\log(1/\eps)}.
+\]
+This proves the theorem.
+\end{proof}
+
+\begin{remark}[Asymptotic formulation]
+The source question is asymptotic in $n$, so Theorem \ref{thm:main} is stated
+for $n\ge n_0$.  No parameter-dependent threshold is hidden: $C_0,C,n_0$
+are absolute.
+\end{remark}
+
+\section{Verification notes and reviewer focus}
+
+The proof is analytic and has no computational dependency.  Its only
+external inputs are the standard Gaussian singular-value estimate and, for
+the fixed-distortion terminal case, Tikhomirov's sharp cube theorem.  The new
+small-distortion argument is contained in Lemmas \ref{lem:softmax}--
+\ref{lem:conditioning} and Proposition \ref{prop:direct}.
+
+The highest-priority human checks are:
+\begin{enumerate}[leftmargin=2em]
+\item verify the regular-conditional-law statement in
+Lemma \ref{lem:conditioning} and the stochastic domination after choosing
+$v\perp u$;
+\item check the uniformity in $2\le d\le c_0\log n$ of the Stirling
+calculation in \eqref{eq:chi-ratio};
+\item check the inversion from $a_d$ to
+$\eps\log n/\log(1/\eps)$, particularly the $As<1$ cutoff;
+\item confirm the $>3/4$ versus $>1/4$ probability complement and the
+Grassmannian dimension-monotonicity step.
+\end{enumerate}
+
+An independent line-by-line audit is recorded in
+\texttt{verification\_report.md}.  The current verdict is
+\textbf{likely valid, candidate full resolution}, not human verified.
+
+\section{Novelty check and limitations}
+
+A bounded search on 9 August 2026 covered the run's lightweight indexes, the
+local arXiv source corpus, exact title/keyword searches for randomized
+Dvoretzky in logarithmic $p$, the source DOI's OpenAlex citation graph
+(24 citing records), and targeted arXiv/web searches combining
+``$\ell_p$'', ``$\log(1/\eps)$'', ``logarithmic $p$'', ``$\chi$-distribution'',
+and the source title.  Lytova and Tikhomirov still described the logarithmic
+randomized-Dvoretzky estimates as non-sharp in 2017 \cite{LT18}.  No later
+paper claiming this resolution, nor this conditional-longest-row soft-max
+argument, was found.  This bounded search does not prove novelty.
+
+The theorem resolves the source question in its asymptotic
+$p\gtrsim\log n$ meaning, with unspecified absolute constants.  It does not
+optimize $C_0$, $C$, the majority threshold, or the finite-$n$ cutoff.
+
+\begin{thebibliography}{9}
+
+\bibitem{PVZ17}
+G. Paouris, P. Valettas and J. Zinn,
+\emph{Random version of Dvoretzky's theorem in $\ell_p^n$},
+Stochastic Process. Appl. \textbf{127} (2017), 3187--3227;
+arXiv:1510.07284.
+
+\bibitem{Tik14}
+K. E. Tikhomirov,
+\emph{The randomized Dvoretzky's theorem in $\ell_\infty^n$ and the
+$\chi$-distribution},
+Geometric Aspects of Functional Analysis, Lecture Notes in Math. 2116,
+Springer (2014), 455--463.
+
+\bibitem{LT18}
+A. Lytova and K. Tikhomirov,
+\emph{The variance of the $\ell_p^n$-norm of the Gaussian vector, and
+Dvoretzky's theorem},
+Algebra i Analiz \textbf{30} (2018), no. 4, 107--139;
+arXiv:1705.05052.
+
+\bibitem{Vershynin18}
+R. Vershynin,
+\emph{High-Dimensional Probability: An Introduction with Applications in
+Data Science}, Cambridge University Press, 2018.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,204 @@
+\documentclass[10pt]{article}
+\usepackage[margin=0.78in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+\usepackage{xcolor}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\A}{\mathcal A}
+\newcommand{\G}{\mathscr G}
+\newcommand{\V}{V_{\sigma,p}}
+\newcommand{\norm}[1]{\lVert #1\rVert}
+
+\title{A logarithmic-loss substitute for greedy attainment\\
+in abstract ring-variation spaces}
+\author{Autonomous proof attempt for arXiv:2310.17309\\
+\texttt{agent\_lane\_03} (GPT5.6)}
+\date{12 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.} Candidate partial result, likely valid; the source's
+uniform-equivalence question remains open.  All implicit constants below are
+independent of the function and of the greedy rank.
+
+\section*{Source question and setup}
+
+Gulgowski, Kamont, and Passenbrunner~\cite{GKP} study a $p$-normalized local
+orthonormal system $\Phi=(\phi_j)$ associated with a $\nu$-ary filtration.
+For $1<p<\infty$, it is a greedy (hence unconditional) basis of
+$X=L^p(S)$ and has the $p$-Temlyakov property.  Given $0<\sigma<p$, put
+\[
+ \alpha=\frac1\sigma-\frac1p,
+ \qquad q=\min(\sigma,2).
+\]
+Their ring-variation space is equipped with
+\[
+ |f|_{\V}=\sup_{\Pi}
+ \left(\sum_{R\in\Pi}E_p(f,R)^\sigma\right)^{1/\sigma},
+ \qquad \norm f_{\V}=\norm f_p+|f|_{\V},
+\]
+where $\Pi$ ranges over finite disjoint families of atoms or rings and
+$E_p(f,R)$ is the local best approximation error by $S$.
+
+The open question is whether, under the paper's Bernstein/geometric
+hypothesis, one has uniformly in $f$ and $n$
+\begin{equation}\label{eq:source-question}
+ K(f,2^{-n\alpha};X,\V)
+ \asymp \norm{f-\G_{2^n}f}_p
+       +2^{-n\alpha}\norm{\G_{2^n}f}_{\V}.
+\end{equation}
+(The source reverses the subscripts once on the left of its display (4.3);
+$V_{\sigma,p}$ is plainly intended.)  Here
+$K(f,t;X,\V)=\inf_{g\in\V}(\norm{f-g}_p+t\norm g_{\V})$.
+
+\begin{center}
+ \includegraphics[width=0.97\textwidth]{figures/open_problem_crop.png}
+
+ \small Exact source passage: arXiv:2310.17309v2, PDF page 19, display (4.3).
+\end{center}
+
+\section*{Proof Intuition}
+
+Fix the set of the $2^n$ largest coefficients of $f$ and decompose
+$f=g+(f-g)$ for an arbitrary competitor in the $K$-functional.  The error
+part is harmless: unconditionality controls its coordinate projection in
+$L^p$, and the variation Bernstein inequality pays exactly $2^{n\alpha}$,
+which is cancelled by the outside factor $2^{-n\alpha}$.  The structured
+part $g$ lies at the weak endpoint $\A_\infty^\alpha$.  Truncating any
+$\A_\infty^\alpha$ coefficient sequence to $2^n$ entries puts it in the
+strong endpoint $\A_q^\alpha$, at the cost of only $(n+1)^{1/q}$.  The
+embedding $\A_q^\alpha\hookrightarrow V_{\sigma,p}$ then completes the
+estimate.  Thus the missing endpoint boundedness is localized to a
+logarithmic-in-cardinality loss.
+
+\section*{Partial theorem}
+
+Assume $0<\tau<p$, set $\beta=1/\tau-1/p$, and suppose the source's
+condition $\operatorname{BI}(\mathscr A,S,p,\tau)$ holds.  Choose
+$0<\alpha<\beta$ and define $\sigma$ by
+$\alpha=1/\sigma-1/p$; put $q=\min(\sigma,2)$.
+
+\begin{theorem}[Pointwise near-attainment]\label{thm:main}
+There is $C\ge1$ such that for every $f\in L^p(S)$ and every integer
+$n\ge0$, if
+\[
+ A_n(f):=\norm{f-\G_{2^n}f}_p
+  +2^{-n\alpha}\norm{\G_{2^n}f}_{\V},
+ \qquad
+ K_n(f):=K(f,2^{-n\alpha};L^p(S),\V),
+\]
+then
+\begin{equation}\label{eq:main}
+ K_n(f)\le A_n(f)\le C(n+1)^{1/q}K_n(f).
+\end{equation}
+Equivalently, the loss is
+$O((1+\log N)^{1/q})$ for an $N$-term greedy approximant.
+\end{theorem}
+
+\begin{proof}
+Fix $n$, write $N=2^n$, $t=N^{-\alpha}$, and let
+$P_\Lambda f=\G_Nf$, where $\Lambda$ is the greedy index set selected from
+$f$.  We use four results established in the source:
+\begin{align}
+ \norm{u-\G_Nu}_p&\lesssim N^{-\alpha}\norm u_{\V}
+       &&(u\in\V),                                      \label{eq:jackson}\tag{J}\\
+ \norm v_{\V}&\lesssim N^\alpha\norm v_p
+       &&(v\in\Sigma_N^\Phi),                           \label{eq:bernstein}\tag{B}\\
+ \A_q^\alpha&\hookrightarrow\V,
+       &\V&\hookrightarrow\A_\infty^\alpha.            \label{eq:embeddings}\tag{E}
+\end{align}
+For \eqref{eq:bernstein}, the source states the estimate first for its local
+dictionary $\mathscr C$; since every element of $\Phi$ is a sum of at most
+$\nu$ elements of $\mathscr C$, the displayed form follows after changing
+the constant.  Estimate \eqref{eq:jackson} is (4.9), and
+\eqref{eq:embeddings} comprises Theorems 4.4 and 4.5(B) of~\cite{GKP}.
+
+We also need the following direct consequence of the coefficient
+characterization of approximation spaces (Fact 2.2 there).  For every finite
+$\Lambda$ with $|\Lambda|\le2^n$,
+\begin{equation}\label{eq:truncation}
+ \norm{P_\Lambda u}_{\A_q^\alpha}
+ \lesssim (n+1)^{1/q}\norm u_{\A_\infty^\alpha}.
+\end{equation}
+Indeed, let $(a_m)$ and $(b_m)$ be the decreasing rearrangements of the
+$\Phi$-coefficients of $u$ and $P_\Lambda u$.  Then $b_m\le a_m$ and
+$b_m=0$ for $m>2^n$.  The weak endpoint gives
+$2^{j(\alpha+1/p)}a_{2^j}\lesssim\norm u_{\A_\infty^\alpha}$.
+The $\ell^q$ coefficient formula, summed only over $0\le j\le n$, proves
+\eqref{eq:truncation}.
+
+Take arbitrary $g\in\V$ and set $h=f-g$.  Since $\Phi$ is greedy,
+best-approximation subadditivity and \eqref{eq:jackson} give
+\begin{equation}\label{eq:error}
+ \norm{f-P_\Lambda f}_p
+ \lesssim \sigma_N(f;\Phi)
+ \le \norm h_p+\sigma_N(g;\Phi)
+ \lesssim \norm h_p+t\norm g_{\V}.
+\end{equation}
+Coordinate projections are uniformly bounded on $L^p(S)$ because $\Phi$ is
+unconditional.  Hence \eqref{eq:bernstein} yields
+\begin{equation}\label{eq:hpart}
+ t\norm{P_\Lambda h}_{\V}
+ \lesssim tN^\alpha\norm{P_\Lambda h}_p
+ \lesssim \norm h_p.
+\end{equation}
+For the structured part, \eqref{eq:embeddings} and
+\eqref{eq:truncation} yield
+\begin{equation}\label{eq:gpart}
+ t\norm{P_\Lambda g}_{\V}
+ \lesssim t\norm{P_\Lambda g}_{\A_q^\alpha}
+ \lesssim t(n+1)^{1/q}\norm g_{\A_\infty^\alpha}
+ \lesssim t(n+1)^{1/q}\norm g_{\V}.
+\end{equation}
+The (quasi-)triangle inequality in $\V$, followed by
+\eqref{eq:error}--\eqref{eq:gpart}, gives
+\[
+ A_n(f)\lesssim(n+1)^{1/q}
+    \bigl(\norm{f-g}_p+t\norm g_{\V}\bigr).
+\]
+Taking the infimum over $g\in\V$ proves the upper estimate in
+\eqref{eq:main}.  Conversely, $P_\Lambda f$ is a finite linear combination
+of local basis elements and therefore belongs to $\V$; using it as a
+$K$-functional competitor proves $K_n(f)\le A_n(f)$.
+\end{proof}
+
+\section*{Verification, scope, and novelty status}
+
+The exponent check is exact: $tN^\alpha=1$, while the coefficient block
+$0\le j\le n$ has $n+1$ entries and hence costs $(n+1)^{1/q}$.  No
+linearity of the greedy map is used: $P_\Lambda$ is fixed only after the
+greedy set of $f$ is chosen, and the same linear coordinate projection is
+then applied to $g$ and $h$.  The proof works for quasi-Banach
+$V_{\sigma,p}$ because only a two-term quasi-triangle inequality is needed.
+
+The theorem does \emph{not} prove the uniform upper estimate in
+\eqref{eq:source-question}; removing the scale factor is exactly the endpoint
+cancellation problem.  Eight upgrade attempts were made.  In particular, an
+exact finite-tree mixed-integer search found no growing instability on
+balanced dyadic trees of depths four and five; this computation is exploratory
+and is not used in the proof.  Searches through the run indexes and bounded
+web searches by exact arXiv id/title and the phrases ``greedy approximation'',
+``ring variation'', and ``K-functional'' found no later explicit resolution as
+of 12 August 2026.  This is a bounded audit, not a priority claim.
+
+\noindent\textbf{Human-review recommendation.} Check chiefly the endpoint
+coefficient estimate \eqref{eq:truncation} with the source's normalization,
+and the passage from the $\mathscr C$-Bernstein estimate to an $N$-term
+$\Phi$ projection.  These are the only nonliteral combinations of source
+results.
+
+\begin{thebibliography}{9}
+\bibitem{GKP}
+J. Gulgowski, A. Kamont, and M. Passenbrunner,
+\emph{Properties of local orthonormal systems, Part III: Variation spaces},
+arXiv:2310.17309v2 (2024).  In particular Definition 3.1,
+Proposition 3.3, Fact 2.2, and Theorems 4.4--4.6.
+\end{thebibliography}
+
+\end{document}

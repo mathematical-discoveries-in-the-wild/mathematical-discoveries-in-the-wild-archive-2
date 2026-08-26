@@ -1,0 +1,289 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.88in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,graphicx,microtype,xcolor}
+\usepackage[hidelinks]{hyperref}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.52em}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\F}{\mathbb F}
+\newcommand{\wt}{\operatorname{wt}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\status}{\textcolor{blue!60!black}{\textbf{candidate full result---likely valid}}}
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries An infinite-coordinate MacWilliams theorem and general
+convolutional-code isometries}\par
+\vspace{0.35em}
+{\large Full-result packet for the open problem in arXiv:1502.02635}\par
+\vspace{0.45em}
+\status
+\end{center}
+
+\section*{1. Source problem}
+
+Ferrer, Gary, and Hern\'andez ask for a representation of general
+$\F$-isometries between convolutional codes in the introduction of
+\cite{FGH}; the statement occurs on page~2 of arXiv:1502.02635v1:
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+In exact terms, the target sentence is:
+\begin{quote}
+``It remains open the representation of general $\F$-isometries defined
+between convolutional codes.''
+\end{quote}
+Here ``general'' contrasts with the $\F[z]$-module isometries treated in
+\cite{GL}: the map is only required to be $\F$-linear and to preserve the
+coefficientwise Hamming weight.  If
+$v(z)=\sum_{t\geq0}v^{(t)}z^t\in\F[z]^n$, that weight is
+\[
+  \wt(v)=\sum_{t\geq0}\wt_{\F^n}(v^{(t)}).
+\]
+
+We prove a more general extension theorem for arbitrary subspaces of an
+algebraic direct sum.  Applied to $\F[z]^n$, it gives the requested complete
+representation: a general isometry is precisely a restriction of a weighted
+permutation of the active time--coordinate pairs.  No controllability,
+$\F[z]$-linearity, degree preservation, or finite-dimensionality is assumed.
+
+\section*{2. Definitions and proof intuition}
+
+For a set $I$, write
+\[
+ \F^{(I)}=\{x:I\to\F: \supp(x)\text{ is finite}\},
+ \qquad \wt(x)=|\supp(x)|.
+\]
+If $V\leq\F^{(I)}$, its \emph{active coordinates} are
+\[
+ I_V=\{i\in I:\text{some }x\in V\text{ has }x(i)\ne0\}.
+\]
+Two nonzero linear functionals are \emph{projectively equivalent} if one is a
+nonzero scalar multiple of the other.
+
+\textbf{Proof intuition.}
+Every coordinate of a code restricts to a linear functional on the abstract
+code space.  Weight is exactly the number of these functionals that do not
+vanish at a given vector.  On a finite-dimensional subspace, only finitely
+many coordinate functionals remain nonzero, and a finite incidence-matrix
+argument says that the weight function determines their projective
+multiplicities.  The apparent infinite-dimensional gluing problem disappears
+because the coordinate families are pointwise finite: one vector sees only
+finitely many functionals.  A finite-dimensional subspace can therefore
+isolate any chosen global projective class.  The source and target coordinate
+families must match class by class, which is exactly a weighted coordinate
+permutation.
+
+\section*{3. A finite uniqueness lemma}
+
+\begin{lemma}[projective functional multiplicities]\label{lem:finite}
+Let $E$ be a finite-dimensional vector space over $\F_q$.  Let
+$\mathcal L$ and $\mathcal M$ be finite multisets of nonzero members of $E^*$.
+If
+\[
+ \#\{\ell\in\mathcal L:\ell(x)\ne0\}
+ =\#\{m\in\mathcal M:m(x)\ne0\}
+ \qquad(x\in E),
+\]
+then $\mathcal L$ and $\mathcal M$ have the same multiplicity in every
+projective class of $E^*$.
+\end{lemma}
+
+\begin{proof}
+The assertion is immediate when $\dim E\leq1$, so suppose $d=\dim E\geq2$.
+Index the rows of a matrix $A$ by the projective points $P=[x]$ of $E$ and the
+columns by the projective nonzero functionals $H=[\ell]$ in $E^*$, and put
+\[
+ A_{P,H}=\mathbf 1_{\{\ell(x)\ne0\}}.
+\]
+There are $(q^d-1)/(q-1)$ rows and the same number of columns.  If $P=Q$,
+there are $q^{d-1}$ projective functionals nonzero on $P$.  If $P\ne Q$,
+inclusion--exclusion among the hyperplanes through $P$ and $Q$ gives
+\[
+ (AA^{\mathsf T})_{P,Q}=q^{d-2}(q-1).
+\]
+Thus, with $J$ the all-ones matrix,
+\[
+ AA^{\mathsf T}
+ =q^{d-2}I+q^{d-2}(q-1)J.
+\]
+This is positive definite over $\mathbb R$, so $A$ is invertible.  If $c_H$
+is the difference between the two multiplicities in class $H$, the assumed
+weight equality says $Ac=0$.  Hence $c=0$.
+\end{proof}
+
+This is the finite MacWilliams uniqueness mechanism in the exact form needed
+below; its proof has been included so that the infinite-dimensional theorem
+does not depend on an extension theorem with an implicit finite-length
+hypothesis.
+
+\section*{4. Infinite-coordinate extension theorem}
+
+\begin{theorem}[finitary MacWilliams extension]\label{thm:main}
+Let $I,J$ be arbitrary sets, let $V\leq\F_q^{(I)}$ and
+$W\leq\F_q^{(J)}$, and let $T:V\to W$ be an $\F_q$-linear bijection.  Then
+the following are equivalent.
+\begin{enumerate}
+\item $\wt(Tx)=\wt(x)$ for every $x\in V$.
+\item There are a bijection $\sigma:J_W\to I_V$ and scalars
+      $a_j\in\F_q^*$ such that
+      \begin{equation}\label{eq:monomial}
+        (Tx)(j)=a_jx(\sigma(j))
+        \qquad(x\in V,\ j\in J_W).
+      \end{equation}
+      On $J\setminus J_W$, every member of $W$ is zero by definition.
+\end{enumerate}
+In particular, after puncturing inactive coordinates, every linear Hamming
+isometry between possibly infinite-dimensional finitary codes is the
+restriction of a monomial coordinate transformation.
+\end{theorem}
+
+\begin{proof}
+For $i\in I_V$, let $\alpha_i\in V^*$ be evaluation at $i$.  For
+$j\in J_W$, pull target evaluation back to $V$:
+\[
+ \beta_j(x)=(Tx)(j).
+\]
+Both families are \emph{pointwise finite}: for fixed $x\in V$, only finitely
+many $\alpha_i(x)$ are nonzero, and only finitely many $\beta_j(x)$ are
+nonzero because $Tx\in\F_q^{(J)}$.  Weight preservation is precisely
+\begin{equation}\label{eq:weights}
+ \#\{i:\alpha_i(x)\ne0\}=\#\{j:\beta_j(x)\ne0\}
+ \qquad(x\in V).
+\end{equation}
+
+First restrict to a finite-dimensional subspace $E\leq V$.  Choose a finite
+basis of $E$.  Pointwise finiteness shows that only finitely many
+$\alpha_i|_E$ are nonzero: their indices lie in the union of the finitely many
+supports of the basis vectors.  The same holds for the $\beta_j|_E$.
+Equation~\eqref{eq:weights} and Lemma~\ref{lem:finite} show that the two
+restricted families have equal projective multiplicities.
+
+We now recover the global classes from these local statements.  Fix a
+nonzero functional $\alpha$ occurring in the first family and choose
+$x_0\in V$ with $\alpha(x_0)\ne0$.  Only finitely many members $\varphi$ of
+the union of the two families satisfy $\varphi(x_0)\ne0$.  For every such
+$\varphi$ not globally proportional to $\alpha$, choose $y_\varphi\in V$
+for which
+\[
+ \alpha(x_0)\varphi(y_\varphi)
+ \ne \varphi(x_0)\alpha(y_\varphi).
+\]
+Let $E$ be the span of $x_0$ and these finitely many $y_\varphi$.  A family
+member whose restriction to $E$ is projectively equivalent to $\alpha|_E$
+must be nonzero at $x_0$, and the chosen separator then shows that it is
+globally proportional to $\alpha$.  Conversely every global multiple plainly
+has that restricted class.  The local multiplicity equality on $E$ therefore
+says that the global multiplicity of $[\alpha]$ is the same in the two
+families.
+
+This treats every class occurring among the $\alpha_i$.  Repeating the same
+argument with the two families interchanged rules out a class occurring only
+among the $\beta_j$.  Hence the multisets
+\[
+ \{[\alpha_i]:i\in I_V\}
+ \quad\text{and}\quad
+ \{[\beta_j]:j\in J_W\}
+\]
+are equal, with multiplicity.  Match equal classes to obtain a bijection
+$\sigma:J_W\to I_V$ and choose $a_j\ne0$ with
+$\beta_j=a_j\alpha_{\sigma(j)}$.  This is exactly
+\eqref{eq:monomial}.  The converse follows immediately by counting nonzero
+coordinates.
+\end{proof}
+
+\section*{5. Full classification for polynomial convolutional codes}
+
+\begin{corollary}[general $\F$-isometries of convolutional codes]
+\label{cor:conv}
+Let $\mathcal C\leq\F_q[z]^n$ and
+$\mathcal D\leq\F_q[z]^m$ be polynomial convolutional codes, and let
+$\Phi:\mathcal C\to\mathcal D$ be an arbitrary $\F_q$-linear bijection.
+For a code $\mathcal C$, define its active time--coordinate support by
+\[
+ S_{\mathcal C}=\{(t,r)\in\mathbb N_0\times\{1,\dots,n\}:
+ [z^t]c_r\ne0\text{ for some }c\in\mathcal C\}.
+\]
+Then $\Phi$ preserves Hamming weight if and only if there are a bijection
+$\tau:S_{\mathcal D}\to S_{\mathcal C}$ and nonzero scalars
+$u_{t,r}\in\F_q^*$ such that, writing $\tau(t,r)=(s,k)$,
+\begin{equation}\label{eq:conv}
+ [z^t](\Phi c)_r=u_{t,r}[z^s]c_k
+ \qquad(c\in\mathcal C,\ (t,r)\in S_{\mathcal D}).
+\end{equation}
+All coefficients outside $S_{\mathcal D}$ vanish.
+\end{corollary}
+
+\begin{proof}
+Identify $\F_q[z]^n$ with
+$\F_q^{(\mathbb N_0\times\{1,\dots,n\})}$ by taking coefficients.  The
+convolutional weight is exactly the resulting finitary Hamming weight, so
+Theorem~\ref{thm:main} applies and gives~\eqref{eq:conv}.  The converse is
+again immediate.
+\end{proof}
+
+Corollary~\ref{cor:conv} is a representation theorem for the general
+$\F$-isometries left open in \cite{FGH,GL}.  It also explains why a general
+map need not resemble an $\F[z]$-module map: the bijection $\tau$ may depend
+arbitrarily on time and may mix time and component coordinates.  Module
+linearity is the additional condition that this coordinate rule intertwines
+multiplication by $z$.
+
+\section*{6. Verification, scope, and novelty boundary}
+
+The incidence counts in Lemma~\ref{lem:finite} were independently enumerated
+for prime fields $q\in\{2,3,5\}$ and dimensions $1\leq d\leq4$ by
+\texttt{code/verify\_incidence.py}.  The script checks all projective point
+pairs, the stated diagonal and off-diagonal Gram entries, and the resulting
+positive eigenvalues.  This is a sanity check, not a substitute for the
+symbolic proof.
+
+The two proof-sensitive points for human review are: (i) pointwise finiteness
+really does imply finiteness after restriction to a finite-dimensional
+subspace, by taking the union of the supports of a basis; and (ii) the finite
+separator space isolates a \emph{global} projective class simultaneously in
+both families.  Both steps are explicit in the proof.
+
+The result fully answers the quoted polynomial convolutional-code
+representation problem.  It does \emph{not} answer Question~1.4 of \cite{FGH}
+for arbitrary nondiscrete measured locally compact spaces, and it does not
+classify isometries of Laurent-series codes whose words may have infinite
+support or infinite weight.
+
+A bounded novelty search on 11 August 2026 covered the run's local indexes,
+the exact source title and quoted open sentence, ``general $\F$-isometries of
+convolutional codes'', ``infinite-length MacWilliams extension'', ``finitely
+supported Hamming isometry'', and nearby variants.  It also checked
+arXiv:0902.2235 (module isometries), arXiv:1507.05212 (finite-length geometric
+extension results), and arXiv:1709.06070 (infinite alphabet rings rather than
+infinite coordinate length).  No exact infinite-coordinate theorem or later
+answer to the quoted problem was found.  Novelty confidence is therefore
+moderate, not definitive: the short argument could exist as folklore or under
+different terminology.  Expert literature review is recommended before a
+publication-level novelty claim.
+
+\small
+\begin{thebibliography}{9}
+\bibitem{FGH}
+M. Ferrer, M. Gary, and S. Hern\'andez,
+\emph{Weight-preserving isomorphisms between spaces of continuous functions:
+the scalar case}, arXiv:1502.02635v1 (2015); J. Math. Anal. Appl. 433 (2016),
+223--235.
+
+\bibitem{GL}
+H. Gluesing-Luerssen,
+\emph{On isometries for convolutional codes}, Adv. Math. Commun. 3 (2009),
+179--203; arXiv:0902.2235.
+
+\bibitem{MacWilliams}
+F. J. MacWilliams,
+\emph{A theorem on the distribution of weights in a systematic code},
+Bell System Tech. J. 42 (1963), 79--94.
+\end{thebibliography}
+
+\end{document}

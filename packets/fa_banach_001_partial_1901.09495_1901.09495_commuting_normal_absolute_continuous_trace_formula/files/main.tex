@@ -1,0 +1,277 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=27mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Sone}{\boldsymbol S_1}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\diver}{\operatorname{div}}
+
+\title{An absolutely continuous trace formula for\\strongly commuting normal operators}
+\author{Run \texttt{fa\_banach\_001}, lane 9\\\texttt{agent\_lane\_09}}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Candidate partial result, likely valid.  It answers both the measure-existence
+and absolute-continuity parts of the source problem under the additional
+hypothesis that the two normal operators commute with one another.}}
+\end{center}
+
+\section{Source question}
+
+Aleksandrov, Peller, and Potapov~\cite{APP} ask the following in Open
+Problem~2 on page~6.  If normal operators \(N_1,N_2\) have trace-class
+difference, do finite Borel measures \(\nu_1,\nu_2\) on \(\R^2\) exist such
+that
+\begin{equation}\label{eq:source}
+ \Tr\bigl(f(N_2)-f(N_1)\bigr)
+ =\int_{\R^2}f_x\,d\nu_1+\int_{\R^2}f_y\,d\nu_2
+\end{equation}
+for sufficiently smooth \(f\)?  If so, may the measures be chosen absolutely
+continuous with respect to planar Lebesgue measure?
+
+\clearpage
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=0.98\textwidth,height=0.78\textheight,keepaspectratio]{figures/open_problem_crop.png}
+\caption{Open Problem 2 in arXiv:1901.09495, page 6.}
+\label{fig:question}
+\end{figure}
+\clearpage
+
+The theorem below gives an affirmative answer to both questions when
+\(N_1N_2=N_2N_1\).  This is stronger than merely asking that the real and
+imaginary parts of each individual \(N_j\) commute; that latter condition is
+automatic from normality and is part of the unrestricted problem.
+
+\section{Proof intuition}
+
+Cross-commutation makes the trace-class perturbation
+\(K=N_2-N_1\) a compact normal operator commuting with \(N_1\).  Every
+nonzero eigenspace of \(K\) is finite-dimensional and reduces \(N_1\).  On the
+\(\kappa\)-eigenspace, diagonalising \(N_1\) turns \(N_2\) into the same
+diagonal matrix shifted by \(\kappa\).  The entire trace is therefore a
+summable collection of scalar endpoint differences
+\(f(b)-f(a)\), whose total travel length is exactly \(\|K\|_{\Sone}\).
+
+The obvious representation integrates \(\nabla f\) along the segment from
+\(a\) to \(b\), but its measure is singular.  To get absolute continuity,
+replace the segment by a compactly supported planar flow.  First spread each
+endpoint to a smooth blob at scale \(|b-a|\), using a radial field with one
+point source.  Then transport one blob to the other along the segment.  The
+resulting \(L^1\) vector field \(V_{a,b}\) has
+\(\diver V_{a,b}=\delta_a-\delta_b\) and
+\(\|V_{a,b}\|_1\leq3|b-a|\).  Summability in trace norm now permits all these
+absolutely continuous flows to be added.
+
+\section{A planar endpoint field}
+
+We identify \(\C\) with \(\R^2\), write \(m_2\) for planar Lebesgue measure,
+and use the Euclidean norm for vector fields.
+
+\begin{lemma}\label{lem:field}
+For every \(a,b\in\R^2\), there is a compactly supported real vector field
+\(V_{a,b}\in L^1(\R^2;\R^2)\) such that
+\[
+ \diver V_{a,b}=\delta_a-\delta_b
+ \quad\text{in distributions},
+ \qquad
+ \|V_{a,b}\|_{L^1}\leq3|b-a|.
+\]
+Consequently, for every \(f\in C^1(\R^2)\),
+\begin{equation}\label{eq:endpoint}
+ f(b)-f(a)=\int_{\R^2}\nabla f(x)\mathbin{\cdot}V_{a,b}(x)\,dm_2(x).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The case \(a=b\) is immediate.  Fix a nonnegative radial
+\(\eta\in C_c^\infty(B(0,1))\) with \(\int\eta\,dm_2=1\), and set
+\[
+ M(r)=\int_{|x|\leq r}\eta(x)\,dm_2(x),
+ \qquad
+ G(x)=\frac{1-M(|x|)}{2\pi}\frac{x}{|x|^2}\quad(x\ne0).
+\]
+Since \(M(r)=1\) for \(r\geq1\), the field \(G\) is compactly supported.
+Radial integration gives
+\[
+ \|G\|_1=\int_0^1(1-M(r))\,dr\leq1.
+\]
+The flux of \(G\) through a small circle about zero tends to one, while away
+from zero the radial divergence formula gives \(\diver G=-\eta\).  Hence
+\begin{equation}\label{eq:Gdiv}
+ \diver G=\delta_0-\eta
+\end{equation}
+distributionally.
+
+Put \(h=b-a\), \(r=|h|\),
+\(\eta_r(x)=r^{-2}\eta(x/r)\), and \(G_r(x)=r^{-1}G(x/r)\).  Define
+\begin{align*}
+ D(x)&=G_r(x-a)-G_r(x-b),\\
+ H(x)&=h\int_0^1\eta_r(x-a-th)\,dt,\\
+ V_{a,b}(x)&=D(x)+H(x).
+\end{align*}
+Scaling \eqref{eq:Gdiv} yields
+\[
+ \diver D=\delta_a-\eta_r(\,\cdot-a)-\delta_b+\eta_r(\,\cdot-b).
+\]
+Moreover,
+\[
+ \diver H
+ =\int_0^1 h\mathbin{\cdot}\nabla\eta_r(x-a-th)\,dt
+ =\eta_r(x-a)-\eta_r(x-b).
+\]
+Thus \(\diver V_{a,b}=\delta_a-\delta_b\).  Both fields are compactly
+supported, and
+\[
+ \|D\|_1\leq2r\|G\|_1\leq2r,
+ \qquad
+ \|H\|_1\leq |h|\int_0^1\|\eta_r\|_1\,dt=r.
+\]
+This proves the norm estimate.  Finally, distributional integration by parts
+gives
+\(-\int V_{a,b}\cdot\nabla f=f(a)-f(b)\), which is
+\eqref{eq:endpoint}.  A cutoff equal to one on the compact support of the
+field justifies the same identity when \(f\) is not compactly supported.
+\end{proof}
+
+\section{The partial trace formula}
+
+\begin{theorem}\label{thm:main}
+Let \(N_1,N_2\) be bounded normal operators on a complex Hilbert space.
+Assume
+\[
+ N_1N_2=N_2N_1,
+ \qquad K:=N_2-N_1\in\Sone.
+\]
+Then there is a real vector field \(v=(v_1,v_2)\in
+L^1(\R^2;\R^2)\) such that
+\begin{equation}\label{eq:main}
+ \Tr\bigl(f(N_2)-f(N_1)\bigr)
+ =\int_{\R^2}\bigl(f_xv_1+f_yv_2\bigr)\,dm_2
+\end{equation}
+for every complex-valued \(f\in C^1(\R^2)\).  The operator difference in
+\eqref{eq:main} is trace class, and the densities satisfy
+\begin{equation}\label{eq:norms}
+ \int_{\R^2}|v|\,dm_2\leq3\|K\|_{\Sone},
+ \qquad
+ \|v_1\|_1+\|v_2\|_1
+ \leq3\sqrt2\,\|K\|_{\Sone}.
+\end{equation}
+In particular, \(\nu_j=v_jm_2\) are finite real signed Borel measures,
+absolutely continuous with respect to \(m_2\), and they solve the source trace
+formula in this subcase.
+\end{theorem}
+
+\begin{proof}
+Because commuting bounded normal operators doubly commute by Fuglede's
+theorem~\cite{Fuglede}, \(K\) is normal and commutes with both \(N_1\) and
+\(N_1^*\).  Let \(\{\kappa\}\) be the nonzero eigenvalues of the compact
+normal operator \(K\), and let \(E_\kappa=\ker(K-\kappa I)\).  These spaces
+are finite-dimensional, mutually orthogonal, and reduce \(N_1\).  Their
+orthogonal complement is \(\ker K\), where \(N_2=N_1\).
+
+On each \(E_\kappa\), choose an orthonormal basis diagonalising the normal
+restriction of \(N_1\); write its eigenvalues as
+\(\lambda_{\kappa,1},\ldots,\lambda_{\kappa,m_\kappa}\).  In the same basis,
+the eigenvalues of \(N_2\) are
+\(\lambda_{\kappa,j}+\kappa\).  Trace-class summability says
+\begin{equation}\label{eq:sumk}
+ \sum_{\kappa\ne0}m_\kappa|\kappa|=\|K\|_{\Sone}.
+\end{equation}
+
+For every pair
+\(a=\lambda_{\kappa,j}\), \(b=\lambda_{\kappa,j}+\kappa\), take the field
+from Lemma~\ref{lem:field}, and set
+\[
+ v=\sum_{\kappa\ne0}\sum_{j=1}^{m_\kappa}
+ V_{\lambda_{\kappa,j},\lambda_{\kappa,j}+\kappa}.
+\]
+By the lemma and \eqref{eq:sumk}, this series converges absolutely in
+\(L^1(\R^2;\R^2)\), and its norm is at most \(3\|K\|_{\Sone}\).  The second
+bound in \eqref{eq:norms} follows from
+\(|v_1|+|v_2|\leq\sqrt2|v|\).
+
+All endpoints and field supports lie in a fixed compact set depending only on
+\(\|N_1\|\) and \(\|K\|\).  Hence \(\nabla f\) is bounded there.  The scalar
+mean-value estimate and \eqref{eq:sumk} show that the block diagonal operator
+\(f(N_2)-f(N_1)\) is trace class.  Absolute convergence, followed by
+Lemma~\ref{lem:field}, now gives
+\begin{align*}
+ \Tr\bigl(f(N_2)-f(N_1)\bigr)
+ &=\sum_{\kappa\ne0}\sum_{j=1}^{m_\kappa}
+ \bigl[f(\lambda_{\kappa,j}+\kappa)-f(\lambda_{\kappa,j})\bigr]\\
+ &=\int_{\R^2}\nabla f\mathbin{\cdot}v\,dm_2,
+\end{align*}
+which is \eqref{eq:main}.
+\end{proof}
+
+\section{Verification, limitations, and novelty status}
+
+The proof is deterministic and has no computational dependency.  The two
+points most worth checking are the sign and scaling in
+\(\diver V_{a,b}=\delta_a-\delta_b\), and the use of Fuglede's theorem to make
+each nonzero eigenspace of \(K\) reducing for \(N_1\).  The construction also
+works on nonseparable Hilbert spaces: the trace-class range is separable and
+the complement lies in \(\ker K\).
+
+The cross-commutation hypothesis is a serious limitation.  For arbitrary
+normal matrices \(A,B\), the best possible trace bound over real
+one-Lipschitz \(f\) is the unnormalised planar \(W_1\) matching cost between
+their eigenvalue multisets.  Thus a dimension-free estimate of that cost by
+\(\|A-B\|_{\Sone}\) would provide the missing finite-dimensional input; an
+unbounded sequence of ratios could instead feed a direct-sum counterexample.
+Hoffman--Wielandt controls \(W_2\) by the Hilbert--Schmidt norm, but its
+conversion to \(W_1\) loses a factor \(\sqrt n\).  The present proof does not
+resolve this hinge.
+
+A bounded literature search through 11 August 2026 covered the exact problem
+wording, normal-operator trace formulas, commuting self-adjoint tuples,
+spectral-shift measures in two variables, and normal-matrix matching in
+Schatten norms.  Chattopadhyay--Sinha~\cite{CS} prove a two-variable
+Stokes-like formula for a second-order expression under Hilbert--Schmidt
+perturbations; it is not the first-order formula \eqref{eq:source}.
+Aleksandrov--Peller--Potapov--Sukochev~\cite{APPS} prove Besov/Schatten
+estimates for normal perturbations, but not the requested Lipschitz trace
+estimate.  No exact statement of Theorem~\ref{thm:main} was found.  Novelty
+confidence is moderate rather than high because the argument becomes
+elementary after imposing cross-commutation.
+
+\paragraph{Human-review recommendation.}
+Retain this as a substantial partial theorem if the explicit \(L^1\) endpoint
+field and the block trace argument verify.  Do not treat it as resolving the
+arbitrary-normal question.  The most valuable next step is the
+\(\Sone\)-to-\(W_1\) spectral matching hinge identified above.
+
+\begin{thebibliography}{9}
+\bibitem{APP}
+A. B. Aleksandrov, V. V. Peller, and D. S. Potapov,
+\emph{On a trace formula for functions of noncommuting operators},
+arXiv:1901.09495 (2019).
+
+\bibitem{APPS}
+A. B. Aleksandrov, V. V. Peller, D. Potapov, and F. Sukochev,
+\emph{Functions of normal operators under perturbations},
+Adv. Math. 226 (2011), 5216--5251; arXiv:1008.1638.
+
+\bibitem{CS}
+A. Chattopadhyay and K. B. Sinha,
+\emph{Trace formula for two variables}, arXiv:1402.0792 (2014).
+
+\bibitem{Fuglede}
+B. Fuglede,
+\emph{A commutativity theorem for normal operators},
+Proc. Natl. Acad. Sci. USA 36 (1950), 35--40.
+\end{thebibliography}
+
+\end{document}

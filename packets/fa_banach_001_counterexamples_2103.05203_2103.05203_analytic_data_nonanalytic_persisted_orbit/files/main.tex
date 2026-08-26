@@ -1,0 +1,292 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.82in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage[colorlinks=true,urlcolor=blue!55!black,citecolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\T}{\mathbb T}
+\newcommand{\e}{\varepsilon}
+\newcommand{\norm}[1]{\lVert#1\rVert}
+
+\title{Analytic state-dependent-delay data can produce a\\
+smooth nonanalytic persisted periodic orbit}
+\author{Candidate full counterexample to Remark 6.5 of arXiv:2103.05203}
+\date{12 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.93\textwidth}{\textbf{Status: candidate full negative answer, with exact-rational certificate.}
+We give an analytic three-dimensional state-dependent-delay equation, arbitrarily
+close to an analytic ODE with a nondegenerate limit cycle, whose unique nearby
+periodic orbit is $C^\infty$ but not real analytic.  The only computer-assisted
+step is finite exact rational arithmetic; all infinite tails have symbolic
+majorants recorded below and checked by the included script.}}
+\end{center}
+
+\section*{Source question}
+
+Yang, Gimeno, and de la Llave prove persistence and smooth parameter dependence
+of periodic orbits for functional differential equations close to an ODE.
+After observing that analytic state-dependent-delay data bootstrap the orbit to
+$C^\infty$, Remark~6.5 asks whether the parameterization $K$ must be analytic
+and conjectures that it may fail to be so \cite{source}.  The remark is reproduced
+from PDF page 18.
+
+\begin{center}
+\includegraphics[width=0.92\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{The counterexample}
+
+For $X=(u,v,z)\in\R^3$, take
+\begin{align}
+ \dot u&=-v+(1-u^2-v^2)u,\label{eq:clock1}\\
+ \dot v&= u+(1-u^2-v^2)v,\label{eq:clock2}\\
+ \dot z&=-z+v+\e\,z\bigl(t-r(X(t))\bigr),
+ &r(u,v,z)&=2\pi-\arctan v.\label{eq:z}
+\end{align}
+This has precisely the source's form
+\[
+ \dot X(t)=f(X(t))+\e P\bigl(X(t),X(t-r(X(t)))\bigr),
+ \qquad P(X,Y)=(0,0,Y_3).
+\]
+The maps $f,P,r$ are real analytic, and the delay is globally bounded and
+strictly positive:
+\(
+3\pi/2<r<5\pi/2.
+\)
+
+At $\e=0$ there is the analytic $2\pi$-periodic orbit
+\begin{equation}\label{eq:K0}
+ K_0(t)=\left(\cos t,\sin t,\frac{\sin t-\cos t}{2}\right).
+\end{equation}
+Its Floquet multipliers are
+\[
+ 1,\qquad e^{-4\pi},\qquad e^{-2\pi}.
+\]
+Indeed, the first two equations have radial equation
+$\dot\rho=\rho(1-\rho^2)$ and angular equation $\dot t=1$; the $z$-variation
+is triangular with diagonal exponent $-1$.  Thus the unit multiplier is
+simple and the orbit is nondegenerate in the source's sense.
+
+The clock equations are unaffected by the perturbation.  A nearby orbit with
+the phase fixed by $(u,v)=(\cos t,\sin t)$ therefore has third component
+$y=y_\e$ satisfying
+\begin{equation}\label{eq:scalar}
+ y'(t)+y(t)=\sin t+\e y(\eta(t)),
+ \qquad \eta(t)=t+\arctan(\sin t),
+\end{equation}
+where periodicity was used to replace
+$t-2\pi+\arctan(\sin t)$ by $\eta(t)$.
+
+\begin{lemma}[Existence, uniqueness, and smoothness]\label{lem:fixed}
+For every $|\e|<1$, equation \eqref{eq:scalar} has a unique continuous
+$2\pi$-periodic solution.  It is $C^\infty$ and
+\begin{equation}\label{eq:sup}
+ \norm{y_\e}_\infty\le \frac1{1-|\e|}.
+\end{equation}
+Moreover $y_\e\to y_0=(\sin t-\cos t)/2$ as $\e\to0$.
+\end{lemma}
+
+\begin{proof}
+Let $A=D+1$ on periodic functions and let $C y=y\circ\eta$.  The unique
+periodic solution of $Ay=g$ is
+\[
+ (A^{-1}g)(t)=\frac1{1-e^{-2\pi}}
+ \int_{t-2\pi}^{t}e^{-(t-s)}g(s)\,ds,
+\]
+so $\norm{A^{-1}g}_\infty\le\norm{g}_\infty$ (also for complex-valued
+functions), while $\norm C=1$.  Hence
+\[
+ y=A^{-1}\sin+\e A^{-1}Cy
+\]
+is a contraction for $|\e|<1$, and \eqref{eq:sup} follows.  The differential
+equation then bootstraps a continuous solution successively to every finite
+differentiability order.  The fixed-point equation also gives convergence to
+$A^{-1}\sin=y_0$ as $\e\to0$.
+\end{proof}
+
+It remains to prove that suitable arbitrarily small $\e>0$ give a nonanalytic
+solution.  The expansive fixed point $\eta(0)=0$, $\eta'(0)=2$ supplies the
+obstruction.
+
+\section*{A certified Taylor obstruction}
+
+Write the formal Taylor series at zero as
+\[
+ y(t)=\sum_{n\ge0}y_nt^n,
+ \qquad e_{k,n}=[t^n]\eta(t)^k,
+\]
+and, for $\e\ne0$, normalize
+\begin{equation}\label{eq:wdef}
+ w_n=\frac{n!\,y_n}{\e^n2^{n(n-1)/2}}.
+\end{equation}
+Since $\eta(t)=2t+O(t^3)$, coefficient comparison in
+\eqref{eq:scalar} gives
+\begin{align}
+ w_{n+1}-w_n
+ &=-\frac{w_n}{\e2^n}
+   +\sum_{k=0}^{n-1}A_{n,k}w_k+G_n,\label{eq:wrec}\\
+ A_{n,k}
+ &=e_{k,n}\frac{n!}{k!}\e^{k-n}
+   2^{k(k-1)/2-n(n+1)/2},\label{eq:Ank}\\
+ G_n&=\frac{n![t^n]\sin t}{\e^{n+1}2^{n(n+1)/2}}.\label{eq:Gn}
+\end{align}
+Only even differences $d=n-k\ge2$ occur in the sum because $\eta$ is odd.
+
+We record a fully explicit convergence estimate specialized to
+$\e=1/10$.  Put $\eta(t)=2t(1+u(t))$.  On $|t|=1/2$,
+\begin{equation}\label{eq:ubound}
+ |u(t)|\le
+ \frac{\operatorname{arctanh}(\sinh(1/2))-1/2}{2(1/2)}<\frac1{10}.
+\end{equation}
+The first inequality follows by majorizing separately the power series of
+$\arctan z-z$ and $\sin t-t$; the second follows, for example, from
+$\sinh(1/2)<8/15$ and
+$\operatorname{arctanh}(8/15)=\tfrac12\log(23/7)<3/5$.
+Thus Cauchy's estimate and $n!/k!\le n^{n-k}$ give
+\begin{equation}\label{eq:Tnd}
+ |A_{n,n-d}|\le T_{n,d}:=\left(\frac{11}{10}\right)^{n-d}
+ (20n)^d2^{-d(2n-d+1)/2}.
+\end{equation}
+As a function of even $d$, $\log T_{n,d}$ is convex.  For $n\ge30$ its
+maximum is therefore at $d=2$ or at the last admissible endpoint.  Exact
+comparison at $n=30,31$, followed by
+\[
+ \frac{(T_{n+2,d_{\max}}/T_{n+2,2})}
+ {(T_{n,d_{\max}}/T_{n,2})}
+ <\frac{6400n^2\,8}{2^{2n+3}}<1,
+\]
+shows that the first endpoint always dominates.  Moreover
+\begin{equation}\label{eq:georatio}
+ \frac{\lfloor(n+1)/2\rfloor T_{n+1,2}}
+ {\lfloor n/2\rfloor T_{n,2}}
+ \le \frac{31}{29}\frac{11}{10}
+       \left(\frac{31}{30}\right)^2\frac14<\frac13.
+\end{equation}
+Consequently the sum of all row perturbations after row 30 satisfies
+\begin{equation}\label{eq:Rtail}
+ S:=\sum_{n\ge30}\left(\frac{10}{2^n}+
+       \sum_{k<n}|A_{n,k}|\right)
+ <1.883\times10^{-8}.
+\end{equation}
+The forcing occurs only for odd $n$, and its two-step ratio is
+$100\,2^{-(2n+3)}$; hence
+\begin{equation}\label{eq:Ftail}
+ H:=\sum_{n\ge30}|G_n|<9.78\times10^{-118}.
+\end{equation}
+
+All coefficients through order 30 are rational: the Taylor coefficients of
+$\sin$, $\arctan$, and \eqref{eq:scalar} are rational when $\e=1/10$.
+The included exact-arithmetic certificate computes
+\begin{equation}\label{eq:finitecert}
+ w_{30}=a_{30}y(0)+b_{30},\qquad
+ a_{30}\doteq109.81990128428,\quad
+ b_{30}\doteq349.05750538187.
+\end{equation}
+By Lemma~\ref{lem:fixed}, $|y(0)|\le10/9$.  Exact rational comparisons in
+the script prove
+\begin{equation}\label{eq:separation}
+ |w_{30}|>227,\qquad
+ \max_{k\le30}|w_k|<735.
+\end{equation}
+If $W_N=\max_{k\le N}|w_k|$, equations
+\eqref{eq:wrec}--\eqref{eq:Ftail} imply that all later terms are bounded by
+$(W_{30}+H)/(1-S)$ and
+\begin{equation}\label{eq:displacement}
+ |w_\infty-w_{30}|\le
+ \frac{S(W_{30}+H)}{1-S}+H<10^{-3}.
+\end{equation}
+Thus $w_n$ converges and $|w_\infty|>226.999$ for the unique periodic
+solution at $\e=1/10$.
+
+If this solution were analytic at zero, its Taylor coefficients would have
+bounded $n$-th roots.  Instead, \eqref{eq:wdef} and
+$w_n\to w_\infty\ne0$ give
+\[
+ |y_n|^{1/n}
+ =|\e|\frac{2^{(n-1)/2}}{(n!)^{1/n}}|w_n|^{1/n}\longrightarrow\infty,
+\]
+a contradiction.  Hence $y_{1/10}$ is $C^\infty$ but nonanalytic.
+
+\section*{Why the parameter can be arbitrarily small}
+
+The source's persistence radius need not contain $1/10$, so one final point
+is essential.  On the complex Banach space of continuous periodic functions,
+\[
+ y_\e=(I-\e A^{-1}C)^{-1}A^{-1}\sin
+\]
+is holomorphic for $|\e|<1$.  On every compact subset of the punctured unit
+disc, the estimates above (with $|\e|$ bounded away from zero) make the
+sequence $w_n(\e)$ locally uniformly convergent.  Therefore
+\(
+ W(\e):=\lim_n w_n(\e)
+\)
+is holomorphic on $0<|\e|<1$.  Since the exact certificate proves
+$W(1/10)\ne0$, the identity theorem says that $W$ cannot vanish on any
+interval $(0,\delta)$.  There are consequently positive parameters
+$\e\to0$ for which $W(\e)\ne0$ and $y_\e$ is nonanalytic.
+
+Choose such an $\e$ below the source theorem's persistence threshold.
+The clock subsystem has only the unit-circle periodic orbit nearby, up to
+phase, and Lemma~\ref{lem:fixed} makes its $z$ component unique.  Hence
+$K_\e=(\cos t,\sin t,y_\e(t))$ is exactly the locally persisted branch (after
+the source's phase normalization).  It is $C^\infty$, by the bootstrap, but
+not analytic.  We have proved the following.
+
+\begin{theorem}\label{thm:answer}
+There are real-analytic $f,P,r$ satisfying the state-dependent-delay setup
+of arXiv:2103.05203 and arbitrarily small positive perturbation parameters
+$\e$ for which the periodic orbit persisted from a nondegenerate analytic
+ODE orbit is $C^\infty$ but not real analytic.  Thus the natural question in
+Remark~6.5 has a negative answer, and the authors' conjectured failure of
+analyticity occurs already in dimension three with one bounded positive
+delay.
+\end{theorem}
+
+\section*{Verification and literature boundary}
+
+Run the exact certificate from this directory with
+\begin{verbatim}
+conda run --no-capture-output -n sandbox python code/rigorous_certificate.py
+\end{verbatim}
+It uses \texttt{fractions.Fraction}; floating-point numbers are used only for
+display after every decisive inequality has been checked exactly.
+
+Mallet-Paret and Nussbaum established analogous expansive-fixed-point
+obstructions for analytic equations with prescribed time-dependent delays
+\cite{MPN}, and their paper explicitly separates the state-dependent case.
+Hu proves analyticity for a special state-dependent system under a monotone
+time-map hypothesis \cite{Hu}; that hypothesis excludes the expanding fixed
+point used here.  Searches through 12 August 2026 found no paper resolving
+Remark~6.5 itself.  This is a bounded novelty check, not a claim of exhaustive
+bibliographic priority.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+J. Yang, J. Gimeno, and R. de la Llave,
+\emph{Persistence and smooth dependence on parameters of periodic orbits in
+functional differential equations close to an ODE or an evolutionary PDE},
+arXiv:2103.05203 (2021), Remark 6.5.
+
+\bibitem{MPN}
+J. Mallet-Paret and R. D. Nussbaum,
+\emph{Analyticity and nonanalyticity of solutions of delay-differential
+equations}, SIAM J. Math. Anal. 46 (2014), arXiv:1305.0579.
+
+\bibitem{Hu}
+Z. Hu,
+\emph{Analyticity of bounded solutions of analytic state-dependent delay
+differential equations}, arXiv:1708.08024 (2017).
+\end{thebibliography}
+
+\end{document}

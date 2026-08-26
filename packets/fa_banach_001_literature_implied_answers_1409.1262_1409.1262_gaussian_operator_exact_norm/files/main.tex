@@ -1,0 +1,203 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.62em}
+\definecolor{statusblue}{RGB}{24,73,120}
+\newcommand{\C}{\mathbb C}
+\newcommand{\F}{\mathcal F}
+\newcommand{\Spec}{\operatorname{Spec}}
+\newcommand{\diag}{\operatorname{diag}}
+
+\title{Exact norms for the general quadratic Fock evolution operator\\
+\large A literature-implied answer to Remark 4.6 of arXiv:1409.1262}
+\author{Run \texttt{fa\_banach\_001} --- lane 10}
+\date{12 August 2026}
+
+\begin{document}
+\maketitle
+
+\textbf{Status.} \textcolor{statusblue}{\texttt{literature\_implied\_answer
+(full exact characterization).}}
+The open exact-norm question in Aleman--Viola is answered by conjugating the
+operator to the standard Fock space and applying Neretin's 2011 norm theorem
+for Gaussian integral operators.  The finite-dimensional identification
+below does not appear in either source; the norm theorem itself predates the
+question, so this is not claimed as a new theorem.
+
+\section*{The source question}
+
+Let
+\[
+ H_\Phi=\operatorname{Hol}(\C^n)\cap
+ L^2(\C^n,e^{-2\Phi}\,dL),\qquad
+ P=(Mz)\mathbin\cdot\partial_z,
+\]
+where \(\Phi\) is a strictly convex real quadratic form.  The evolution is
+\[
+  e^{-tP}u(z)=u(e^{-tM}z).
+\]
+Remark 4.6 of \cite{AV} says that the exact norm is known when the
+pluriharmonic part of \(\Phi\) vanishes, while ``the question remains open in
+the general case.''
+
+Use the source paper's decomposition
+\[
+ \Phi(z)=\frac12|Gz|^2-\Re h(z),\qquad
+ h(z)=\frac12z^T H z,
+\]
+where \(G\) is positive definite and \(H=H^T\).  Put
+\[
+ K=G^{-T}HG^{-1}.
+\]
+Strict convexity is equivalent to \(\|K\|<1\) (for example by Takagi
+diagonalization).
+
+\section*{Exact finite-dimensional answer}
+
+Fix a time \(t\) for which \(e^{-tP}\) is bounded, and define
+\[
+ A_t=e^{-tM},\qquad B_t=GA_tG^{-1},\qquad
+ C_t=K-B_t^T K B_t,
+\]
+\[
+ S_t=\begin{pmatrix}C_t&B_t^T\\ B_t&0\end{pmatrix},
+ \qquad J=\begin{pmatrix}-I_n&0\\0&I_n\end{pmatrix}.
+\]
+The matrix \(S_t\) is complex symmetric.  Let
+\(s_1(t),\ldots,s_n(t)\in[0,1]\) be its Gaussian canonical invariants in
+the sense of Neretin \cite[Chapter 6, Theorem 1.3]{Neretin}.  They are
+finite-dimensional data: Neretin's Theorem 1.4 says that the roots of
+\[
+ \det\!\left((I_{2n}-S_t^*S_t)
+ -\lambda(J-S_t^*JS_t)\right)=0                         \tag{1}
+\]
+come in pairs
+\[
+ \lambda=\pm\frac{1-s_j(t)^2}{1+s_j(t)^2},
+ \qquad j=1,\ldots,n.                                  \tag{2}
+\]
+Thus the \(s_j(t)\) can be recovered from a generalized eigenvalue problem
+of size \(2n\).
+
+Neretin's exact norm formula gives
+\[
+ \boxed{
+ \|e^{-tP}\|
+ =\det(I_{2n}-S_t^*J S_tJ)^{-1/4}
+   \prod_{j=1}^n(1+s_j(t)^2)^{1/2}.}                   \tag{3}
+\]
+The positive value of the fourth root is understood.  Formula (3) applies to
+\emph{every bounded time}, including boundary/noncompact cases
+\cite[Chapter 6, Theorem 2.2(b)]{Neretin}.  Whenever \(\|S_t\|<1\), the
+equivalent formula
+\[
+ \boxed{
+ \|e^{-tP}\|
+ =\det(I_{2n}-S_t^*S_t)^{-1/4}
+   \prod_{j=1}^n(1-s_j(t)^2)^{1/2}}                    \tag{4}
+\]
+is also available.  Equations (1)--(4) are an exact, computable
+characterization involving only the matrices \(G,H,M,t\).
+
+\section*{Why the Gaussian theorem applies}
+
+The unitary map used in \cite[Lemma 2.3]{AV} is
+\[
+ Uf(z)=|\det G|f(Gz)e^{-h(z)}:H_{|z|^2/2}\longrightarrow H_\Phi.
+\]
+A direct substitution, with \(w=Gz\), gives
+\begin{align*}
+ U^*e^{-tP}Uf(w)
+ &=e^{h(G^{-1}w)-h(A_tG^{-1}w)}f(GA_tG^{-1}w)\\
+ &=\exp\!\left(\frac12w^TC_tw\right)f(B_tw).           \tag{5}
+\end{align*}
+After the harmless scalar normalization of the standard Fock measure, its
+reproducing formula is
+\[
+ f(\zeta)=\int_{\C^n}e^{\zeta^T\bar u}f(u)e^{-|u|^2}\,d\mu(u).
+\]
+Consequently the operator in (5) has kernel
+\[
+ \exp\!\left\{\frac12w^TC_tw+w^TB_t^T\bar u\right\}
+ =\exp\!\left\{\frac12
+ \begin{pmatrix}w^T&\bar u^T\end{pmatrix}
+ S_t\begin{pmatrix}w\\\bar u\end{pmatrix}\right\}. \tag{6}
+\]
+This is exactly Neretin's Gaussian operator \(\mathcal B[S_t]\), as defined
+in \cite[Chapter 5, equation (1.4)]{Neretin}.  Because \(U\) is unitary,
+\(\|e^{-tP}\|=\|\mathcal B[S_t]\|\), and (3)--(4) follow from
+\cite[Chapter 6, Theorems 1.4 and 2.2]{Neretin}.
+
+The two extremal checks are immediate.  If \(h=0\), then \(C_t=0\) and the
+formula reduces to norm one whenever the pure composition operator is
+bounded, agreeing with the source's orthogonal case.  If \(B_t=0\), (5) is
+rank one and (4) reduces to
+\(\det(I-C_t^*C_t)^{-1/4}\), the direct Gaussian-vector norm.
+
+\section*{Stable large-time sharpening}
+
+Assume now that \(\Spec M\subset\{\Re\lambda>0\}\).  Then \(B_t\to0\),
+\(C_t\to K\), and (5) converges to the rank-one operator
+\[
+ T_\infty f(w)=f(0)\exp\!\left(\frac12w^TKw\right).
+\]
+The vacuum evaluation \(f\mapsto f(0)\) has norm one in the normalized Fock
+space, while Neretin's Gaussian-vector identity gives
+\[
+ \left\|\exp\!\left(\frac12w^TKw\right)\right\|
+ =\det(I-K^*K)^{-1/4}.
+\]
+The operator-norm return estimate in \cite[Proposition 4.4 and Remark 4.6]{AV}
+therefore yields the sharper asymptotic
+\[
+ \boxed{
+ \|e^{-tP}\|=\det(I-K^*K)^{-1/4}
+ +O\!\left(t^{R(M)-1}e^{-t\rho(M)}\right).}             \tag{7}
+\]
+In particular,
+\[
+ \lim_{t\to\infty}\|e^{-tP}\|=\det(I-K^*K)^{-1/4}.
+\]
+Since \(\|K\|<1\), this limit equals one exactly when \(K=0\), equivalently
+when \(h=0\).  Thus (7) supplies the missing value behind the source's
+``if and only if'' statement.
+
+\section*{Scope and search record}
+
+This answers the exact operator-norm question for every bounded time and for
+every strictly convex quadratic Fock weight in the source setup.  It does not
+claim a simpler radical expression for the roots of the \(2n\)-dimensional
+pencil (1), nor a new closed formula for deciding the source paper's already
+characterized set of bounded times.
+
+All four cheap run indexes were searched; no prior packet was found.  Queries
+included 1409.1262, the paper title, exact norms, and Gaussian operators.  A
+current web search on 12 August 2026
+found later work on boundedness, compactness, essential norms, and special
+weighted composition operators, but no paper explicitly connecting this
+remark to Neretin's theorem.  The source bibliography contains no Neretin,
+Olshanski, Howe, or Gaussian-operator reference.
+
+\begin{thebibliography}{9}
+\bibitem{AV}
+A. Aleman and J. Viola,
+\emph{On weak and strong solution operators for evolution equations coming
+from quadratic operators},
+J. Spectr. Theory 8 (2018), 33--121;
+\href{https://arxiv.org/abs/1409.1262}{arXiv:1409.1262}.
+
+\bibitem{Neretin}
+Y. A. Neretin,
+\emph{Lectures on Gaussian Integral Operators and Classical Groups},
+EMS Series of Lectures in Mathematics, European Mathematical Society, 2011;
+especially Chapters 5--6.
+\end{thebibliography}
+
+\end{document}

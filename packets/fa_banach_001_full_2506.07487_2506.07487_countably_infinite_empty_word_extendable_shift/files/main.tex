@@ -1,0 +1,290 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue]{hyperref}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.65em}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\EA}{E_A}
+\newcommand{\XA}{X_A}
+\newcommand{\SA}{\Sigma_A}
+
+\title{An extendable generalized Markov shift\\
+with countably infinitely many empty words}
+\author{Run \texttt{fa\_banach\_001} --- \texttt{agent\_lane\_11}}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\textbf{Status.} Candidate full solution; likely valid, subject to human
+review.  The construction answers one explicit direction in the concluding
+remarks of Bissacot--Diaz-Granados--Raszeja \cite{source}.
+
+\section{Source question}
+
+The source paper studies the generalized countable Markov shift $\XA$, the
+Gelfand spectrum of the diagonal algebra associated with an irreducible
+zero-one transition matrix $A$.  Its shift is initially defined only on the
+open set of non-empty configurations.  Section 6, page 35, asks for more
+general classes on which it extends continuously and observes that all examples
+constructed there have finitely many empty-stem configurations.  It leaves open
+the construction of examples with infinite $\EA$.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+We give such an example with $\EA$ countably infinite.  In fact, every empty
+configuration will be a fixed point of the extended shift.
+
+\section{Definitions used from the source}
+
+Write $C_x=\{y:A(y,x)=1\}$ for the support of the column indexed by $x$.
+We use the following facts recalled in \cite{source} from \cite{befr}.
+
+\begin{enumerate}[label=(\roman*)]
+\item If $A$ is irreducible, the generalized shift $\XA$ is realized as a
+closed subspace of the configuration cube $\{0,1\}^{\mathbb F}$ and is
+metrizable for a countable alphabet.
+\item The nonzero accumulation points of the columns $(C_x)$ in
+$\{0,1\}^{\mathcal A}$ are in bijection with the empty-stem configurations
+$(e,R)\in\EA$; the support $R$ is called the root.
+\item If non-empty configurations $\xi_n$ converge to $(e,R)$, then their
+first stem symbols $x_n$ escape every finite subset of the alphabet and
+$C_{x_n}\to R$ coordinatewise.  Conversely, these conditions identify all
+limit points as $(e,R)$.
+\item The shift is a local homeomorphism on the open set of non-empty
+configurations.  For a stem of length at least two it deletes the first symbol;
+for a finite stem of length one it leaves the associated root as an empty
+configuration.
+\end{enumerate}
+
+These statements can also be read directly from the four configuration rules:
+if the first stem symbol is $x$, then the value at the inverse coordinate
+$y^{-1}$ is $A(y,x)$, which is precisely the $y$-coordinate of $C_x$.
+
+\section{The construction}
+
+Let the countable alphabet be
+\[
+ \mathcal A=\{o\}\sqcup\{b_j:j\geq1\}
+ \sqcup\{v_{j,k}:j,k\geq1\}.
+\]
+Think of $o$ as a hub, the $b_j$ as the vertices of a rooted binary tree,
+and $(v_{j,k})_{k\geq1}$ as an infinite ray attached to $b_j$.
+Define a parent map on $\mathcal A\setminus\{o\}$ by
+\[
+\begin{alignedat}{2}
+ p(b_1)&=o, &\qquad p(b_j)&=b_{\lfloor j/2\rfloor}\quad(j\geq2),\\
+ p(v_{j,1})&=b_j, & p(v_{j,k+1})&=v_{j,k}\quad(j,k\geq1).
+ \end{alignedat}
+\]
+
+Declare the arrows of the Markov graph to be
+\[
+ o\longrightarrow x\quad(x\in\mathcal A),\qquad
+ x\longrightarrow p(x)\quad(x\ne o),\qquad
+ b_j\longrightarrow v_{j,k}\quad(j,k\geq1),
+\]
+and no others.  After choosing any bijection $\mathcal A\simeq\mathbb N$,
+this is a countable zero-one transition matrix $A$.
+
+The picture below shows the two mechanisms.  Arrows toward the hub provide
+irreducibility; each marker also emits along its own ray.
+
+\begin{center}
+\begin{tikzpicture}[>=Stealth,node distance=8mm and 13mm,
+ every node/.style={circle,draw,minimum size=6.5mm,inner sep=1pt},
+ every path/.style={->,semithick}]
+\node (o) {$o$};
+\node[below left=of o] (b1) {$b_1$};
+\node[below left=of b1] (b2) {$b_2$};
+\node[below right=of b1] (b3) {$b_3$};
+\node[right=20mm of b2] (v21) {$v_{2,1}$};
+\node[right=of v21] (v22) {$v_{2,2}$};
+\node[right=of v22,draw=none] (dots) {$\cdots$};
+\draw (b1)--(o);
+\draw (b2)--(b1);
+\draw (b3)--(b1);
+\draw (v21)--(b2);
+\draw (v22)--(v21);
+\draw (dots)--(v22);
+\draw[bend left=18] (b2) to (v21);
+\draw[bend left=23] (b2) to (v22);
+\draw[dashed,bend left=28] (o) to (b3);
+\node[draw=none,rectangle,align=left,below=15mm of v21] {
+solid arrows: parent/ray arrows shown locally;\\
+dashed arrow: the hub emits to every symbol.};
+\end{tikzpicture}
+\end{center}
+
+\section{Proof intuition}
+
+The hub row is present in every column, so the generalized shift is compact
+and the zero vector can never be a column limit.  Far out on the ray attached
+to $b_j$, a column consists of the fixed pair $\{o,b_j\}$ plus one moving
+coordinate.  It therefore converges to $\{o,b_j\}$.  If the ray/marker index
+$j$ itself escapes, even the marker coordinate disappears, leaving $\{o\}$.
+These are all possible column limits, so they give countably many empty words.
+
+The parent map was chosen so that deleting the first symbol preserves exactly
+the same limiting root.  Along a fixed ray, shifting moves one step toward its
+marker and preserves $\{o,b_j\}$.  Across rays with $j\to\infty$, every possible
+successor still has class index tending to infinity and hence root $\{o\}$.
+This is the continuity mechanism.
+
+\section{The theorem}
+
+\begin{theorem}\label{thm:main}
+For the matrix $A$ above:
+\begin{enumerate}[label=(\alph*)]
+\item $A$ is irreducible and column-finite;
+\item $\XA$ is compact;
+\item
+\[
+ \EA=\{(e,R_\infty)\}\cup\{(e,R_j):j\geq1\},
+ \qquad R_\infty=\{o\},\quad R_j=\{o,b_j\};
+\]
+in particular, $\EA$ is countably infinite;
+\item the shift extends continuously to all of $\XA$ by
+$\sigma(e,R)=(e,R)$ for every $R\in\EA$.
+\end{enumerate}
+Consequently the source question about extendable examples with infinite
+$\EA$ has an affirmative answer.
+\end{theorem}
+
+\begin{proof}
+For a symbol $x$, let $p^{-1}(x)$ denote its children under the parent map.
+The column supports are
+\begin{align}
+ C_o&=\{o,b_1\},\label{eq:columns-o}\\
+ C_{b_j}&=\{o,b_{2j},b_{2j+1},v_{j,1}\},\label{eq:columns-b}\\
+ C_{v_{j,k}}&=\{o,b_j,v_{j,k+1}\}.\label{eq:columns-v}
+\end{align}
+Thus every column has at most four entries, proving column-finiteness.
+From each $x\ne o$, repeated parent arrows reach $o$: this is clear along a
+ray and then follows from repeated integer halving in the marker tree.  From
+$o$ there is an arrow to every symbol.  Hence every symbol reaches every other
+symbol, so $A$ is irreducible.
+
+The row indexed by $o$ is identically one.  Accordingly, the Exel--Laca
+projection $Q_o$ acts as the identity on $\ell^2(\SA)$ and belongs to the
+diagonal algebra $\mathcal D_A$.  Therefore $\mathcal D_A$ is unital and its
+Gelfand spectrum $\XA$ is compact.
+
+We next classify the column accumulation points.  From
+\eqref{eq:columns-v}, for each fixed $j$,
+\[
+ C_{v_{j,k}}\longrightarrow R_j=\{o,b_j\}
+ \qquad(k\to\infty),
+\]
+because the coordinate $v_{j,k+1}$ escapes every finite subset of
+$\mathcal A$.  From \eqref{eq:columns-b} and \eqref{eq:columns-v}, whenever
+$j_n\to\infty$ we have
+\[
+ C_{b_{j_n}}\longrightarrow R_\infty=\{o\},\qquad
+ C_{v_{j_n,k_n}}\longrightarrow R_\infty
+\]
+for arbitrary $k_n$.
+
+There are no other accumulation points.  Indeed, take any sequence of
+distinct column indices.  If it contains infinitely many ray indices from one
+fixed class $j$, pass to that subsequence; its depth tends to infinity and its
+columns tend to $R_j$.  Otherwise, after passing to a subsequence, the marker
+or ray class indices tend to infinity, and the columns tend to $R_\infty$.
+The single column $C_o$ causes no accumulation.  All the displayed limits are
+nonzero and distinct.  The column-limit/root correspondence now gives exactly
+the set $\EA$ stated in (c).  Notice also that $R_j\to R_\infty$ in the product
+topology.
+
+It remains to prove continuity after defining every member of $\EA$ to be a
+fixed point.  Since $\XA$ is metrizable, sequential continuity suffices, and
+the original shift is already continuous on the open set of non-empty
+configurations.  Let non-empty configurations $\xi_n\to(e,R)$ and write
+$x_n$ for their first stem symbols.  Then $x_n$ escapes every finite set and
+$C_{x_n}\to R$.
+
+First suppose $R=R_j$.  The coordinate $b_j$ is eventually present in
+$C_{x_n}$.  Inspection of \eqref{eq:columns-o}--\eqref{eq:columns-v} shows
+that, apart from the one fixed exceptional marker column whose child list
+contains $b_j$, the indices must be
+\[
+ x_n=v_{j,k_n},\qquad k_n\to\infty.
+\]
+Discarding finitely many terms removes the exception.  A ray symbol is a
+finite emitter with unique successor $p(v_{j,k_n})$; consequently the stem
+cannot terminate there.  For large $n$, this successor is
+$v_{j,k_n-1}$, whose column again tends to $R_j$.  Therefore every limit point
+of $\sigma(\xi_n)$ is $(e,R_j)$, and compactness implies
+$\sigma(\xi_n)\to(e,R_j)=\sigma(e,R_j)$.
+
+Now suppose $R=R_\infty$.  The column classification implies that the
+marker/ray class indices $j_n$ of $x_n$ tend to infinity.  If
+$x_n=v_{j_n,k_n}$, its unique successor is its parent; whether that parent is
+$b_{j_n}$ or another ray vertex, its column tends to $R_\infty$.  If
+$x_n=b_{j_n}$ and the stem has length at least two, the next symbol is either
+$p(b_{j_n})=b_{\lfloor j_n/2\rfloor}$ or some $v_{j_n,k}$.  Since
+$j_n\to\infty$, the columns of all these possibilities tend to $R_\infty$,
+uniformly in $k$ on every fixed finite coordinate set.
+
+There is one final finite-stem case.  If the stem is the single marker
+$b_{j_n}$, its root must be $R_{j_n}$: among the successors of $b_{j_n}$,
+the isolated parent column cannot create a limit, while the columns along its
+ray have the unique accumulation point $R_{j_n}$.  Deleting the one-letter
+stem therefore gives
+\[
+ \sigma(\xi_n)=(e,R_{j_n})\longrightarrow(e,R_\infty).
+\]
+Thus $\sigma(\xi_n)\to(e,R_\infty)=\sigma(e,R_\infty)$ in every case.
+The extension is continuous at all empty configurations and hence on all of
+$\XA$.
+\end{proof}
+
+\section{Verification and limitations}
+
+A reusable finite-window script accompanies this packet.  It checks the three
+column formulas, maximum column size four, sampled parent paths to the hub,
+and stabilization to $R_j$ and $R_\infty$ on finite coordinate windows.  It
+passes, but these computations are only sanity checks; the infinite
+classification and continuity are proved above.
+
+The result addresses the source's existence question for infinite $\EA$.
+It does not provide an explicit closed formula for the spectral radius
+$r(a\alpha)$ for every irreducible matrix, nor does it characterize all
+extendable matrices.
+
+\section{Novelty search and review recommendation}
+
+A bounded current web/arXiv search on 13 August 2026 used the exact source
+title and the phrases ``infinite $E_A$,'' ``empty-word configurations,''
+``generalized Markov shift,'' and ``continuous extension.''  It found no
+later paper giving an infinite-$\EA$ example.  A
+November 2025 author presentation still displayed the finite periodic-renewal
+family.  The novelty verdict is therefore \emph{apparently new within the
+bounded search}, not an exhaustive bibliographic guarantee.
+
+Human review should focus on the standard column-limit/empty-root
+correspondence and on the one-letter marker-stem case in the last paragraph of
+the proof.  Subject to those checks, the packet should be accepted as a full
+affirmative construction.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+R. Bissacot, I. Diaz-Granados, and T. Raszeja,
+\emph{Extendable Shift Maps and Weighted Endomorphisms on Generalized
+Countable Markov Shifts}, arXiv:2506.07487 (2025).
+
+\bibitem{befr}
+R. Bissacot, R. Exel, R. Frausino, and T. Raszeja,
+\emph{Thermodynamic formalism for generalized Markov shifts on infinitely
+many states}, arXiv:1808.00765 (version cited by \cite{source}).
+\end{thebibliography}
+
+\end{document}

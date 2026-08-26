@@ -1,0 +1,219 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\N}{\mathbb N}
+\newcommand{\F}{\mathbb F}
+\newcommand{\cB}{\mathcal B}
+\newcommand{\cG}{\mathcal G}
+
+\title{A Finite-Dimensional Obstruction Program\\
+for Schauder Reorderings of Quasi-Greedy Markushevich Bases}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 11}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.} Candidate partial result,
+likely valid, subject to human review.  This packet proves a finite-dimensional
+reduction; it does not solve the open Banach-space problem.}}
+\end{center}
+
+\section{Source question}
+
+Miguel Berasategui asks in the introduction of
+\cite{Berasategui2025} (arXiv:2510.06398v1, PDF page 2):
+\begin{quote}
+``It is an open problem whether every quasi-greedy Markushevich basis has a
+Schauder reordering.''
+\end{quote}
+The paper works throughout with Banach spaces.  The following image is a crop
+rendered from the original arXiv PDF.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The more recent quasi-Banach counterexample of
+Albiac--Ansorena--Berasategui \cite{AAB2025} explicitly says that this question
+remains open under the Banach-space restriction.
+
+\section{Definitions}
+
+Let $E$ be a $d$-dimensional Banach space with a normalized basis
+$\cB=(e_i)_{i=1}^d$ and biorthogonal functionals $(e_i^*)_{i=1}^d$.
+For $A\subset\{1,\dots,d\}$ write
+\[
+  P_Ax=\sum_{i\in A}e_i^*(x)e_i.
+\]
+A finite set $A$ is \emph{greedy for $x$} if
+\[
+  |e_i^*(x)|\ge |e_k^*(x)|
+  \qquad(i\in A,\ k\notin A).
+\]
+The basis is $K$-quasi-greedy if $\|P_Ax\|\le K\|x\|$ for every
+$x\in E$ and every greedy set $A$.
+
+Define the \emph{best ordering constant}
+\[
+  \beta(\cB)
+  :=\min_{\sigma\in S_d}\ \max_{1\le m\le d}
+       \left\|P_{\{\sigma(1),\ldots,\sigma(m)\}}\right\|.
+\]
+Thus $\beta(\cB)$ measures the smallest basis constant obtainable by
+reordering the finite basis.
+
+\section{Proof intuition}
+
+Greedy selection is local with respect to an $\ell_2$-sum: a global greedy
+set meets every finite block in a greedy set.  Consequently uniform
+quasi-greediness of the blocks passes to their union without any loss in the
+constant.  Reordering behaves in the opposite direction.  Every ordering of
+the union induces an ordering on each block, and a global prefix realizes
+each induced block prefix after restriction to that block.  Therefore a block
+whose best ordering constant is large forces a large global partial-sum
+projection in every ordering.  A sequence of such blocks gives the desired
+infinite obstruction.
+
+\section{Finite-dimensional block reduction}
+
+\begin{theorem}[Block obstruction]
+Fix $K,M\ge1$.  For each $j\in\N$, let $E_j$ be a finite-dimensional
+Banach space with a normalized basis
+$\cB_j=(e_{j,r})_{r=1}^{d_j}$ and biorthogonal functionals
+$(e_{j,r}^*)_{r=1}^{d_j}$.  Assume
+\begin{enumerate}
+\item $\sup_{j,r}\|e_{j,r}^*\|\le M$;
+\item every $\cB_j$ is $K$-quasi-greedy; and
+\item $\beta(\cB_j)\to\infty$.
+\end{enumerate}
+Then, in the Banach space
+\[
+  X=\left(\bigoplus_{j=1}^{\infty}E_j\right)_{\ell_2},
+\]
+the union $\cB=\bigcup_j\cB_j$, in any enumeration, is a normalized,
+$M$-bounded, $K$-quasi-greedy Markushevich basis.  No permutation of $\cB$
+is a Schauder basis of $X$.
+\end{theorem}
+
+\begin{proof}
+Embed each $e_{j,r}$ in the $j$th coordinate of $X$, and similarly embed
+$e_{j,r}^*$ in $X^*=(\bigoplus_jE_j^*)_{\ell_2}$.  The resulting systems are
+biorthogonal.  Finite block-supported vectors are dense in $X$, and if all
+embedded coordinate functionals vanish at $x=(x_j)_j$, then every $x_j=0$.
+Thus the union is a Markushevich basis.  It is normalized and $M$-bounded by
+hypothesis.
+
+Let $x=(x_j)_j\in X$, and let $A$ be a finite greedy set for $x$ relative to
+the union.  Put $A_j=A\cap\{(j,r):1\le r\le d_j\}$.  If $A_j$ is nonempty,
+then for every selected $r$ and every unselected $s$ in the same block, the
+global greedy inequality gives
+\[
+  |e_{j,r}^*(x_j)|\ge |e_{j,s}^*(x_j)|.
+\]
+Hence $A_j$ is a greedy set for $x_j$ in $\cB_j$; the empty case contributes
+zero.  Therefore
+\[
+ \|P_Ax\|_X^2
+   =\sum_j\|P_{A_j}x_j\|_{E_j}^2
+   \le K^2\sum_j\|x_j\|_{E_j}^2
+   =K^2\|x\|_X^2.
+\]
+This proves that the union is $K$-quasi-greedy.
+
+Now fix an arbitrary permutation $\pi$ of the union.  Its restriction to the
+$j$th block induces a permutation $\sigma_j\in S_{d_j}$.  By the definition
+of $\beta(\cB_j)$, there exists $m_j\in\{1,\ldots,d_j\}$ such that
+\[
+ \left\|P_{\{\sigma_j(1),\ldots,\sigma_j(m_j)\}}\right\|
+ \ge \beta(\cB_j).
+\]
+Let $N_j$ be the position in the global order $\pi$ of the coordinate
+$e_{j,\sigma_j(m_j)}$.  At time $N_j$, precisely the first $m_j$ coordinates
+of the induced order $\sigma_j$ have appeared from block $j$.  Consequently,
+the global initial projection $S_{N_j}^{\pi}$, restricted to the isometric
+copy of $E_j$, is exactly the displayed block projection.  Hence
+\[
+  \|S_{N_j}^{\pi}\|\ge\beta(\cB_j).
+\]
+Because $\beta(\cB_j)\to\infty$, the initial projections associated with
+$\pi$ are not uniformly bounded.  Thus the union is not a Schauder basis in
+the order $\pi$.  Since $\pi$ was arbitrary, no Schauder reordering exists.
+\end{proof}
+
+\begin{corollary}[Necessary finite-dimensional consequence of a positive answer]
+If every quasi-greedy Markushevich basis in a Banach space admits a Schauder
+reordering, then for every $K,M\ge1$ there is $C(K,M)<\infty$ such that
+\[
+  \beta(\cB)\le C(K,M)
+\]
+for every normalized finite-dimensional $K$-quasi-greedy basis whose
+coordinate functionals have norm at most $M$.
+\end{corollary}
+
+\begin{proof}
+If no such $C(K,M)$ existed, choose one finite basis for each integer $j$
+with $\beta(\cB_j)\ge j$.  The theorem would then give a quasi-greedy
+Markushevich basis in a Banach space with no Schauder reordering.
+\end{proof}
+
+\section{Verification notes}
+
+The proof has two load-bearing points.  First, a global greedy set really does
+intersect each block in a block-greedy set; no comparison with coefficients in
+other blocks is needed after this observation.  Second, at the global time
+when the $m_j$th coordinate of a block appears, restriction of the global
+prefix projection to $E_j$ is exactly the first-$m_j$ projection in the
+induced block order.  Both are exact identities, not asymptotic estimates.
+
+The uniform bound on the coordinate functionals prevents coefficient pathologies
+across the direct sum and places the resulting system in the usual
+semi-normalized, $M$-bounded framework.  No computational verification is
+needed.  The separate file \texttt{verification.md} records an adversarial
+check of the argument.
+
+\section{Limitations and novelty status}
+
+This is a reduction, not a construction of the finite-dimensional blocks.
+The existence of a family satisfying the three hypotheses is open here.  No
+converse is claimed: a dimension-free best-ordering bound for all finite
+bases does not immediately produce a coherent order of an arbitrary infinite
+basis.
+
+For the bounded novelty check on 9 August 2026, the run registry and arXiv
+were searched using combinations of the phrases \emph{finite-dimensional
+quasi-greedy basis}, \emph{permutation}, \emph{best ordering constant},
+\emph{Schauder reordering}, and \emph{direct sum}, together with arXiv ids
+2510.06398 and 2510.13693.  No exact occurrence of the theorem above was
+found.  The later paper \cite{AAB2025} proves a quasi-Banach counterexample
+but explicitly states that the Banach restriction remains open.  Novelty of
+this elementary reduction is plausible, not certified; it may be folklore.
+
+\section{Human-review recommendation}
+
+Review as a likely valid partial result.  The mathematical proof is short;
+specialist effort is best spent on (i) checking whether the reduction is
+already standard, and (ii) testing known finite-dimensional conditional
+quasi-greedy constructions for divergence of $\beta$ under uniform $K$ and
+$M$.
+
+\begin{thebibliography}{9}
+\bibitem{Berasategui2025}
+M.~Berasategui,
+\emph{Quasi-greedy Markushevich bases, duality and norming subspaces},
+arXiv:2510.06398v1 (2025).
+
+\bibitem{AAB2025}
+F.~Albiac, J.~L.~Ansorena, and M.~Berasategui,
+\emph{When Greedy Approximation Breaks: Counterexamples in Quasi-Banach
+Spaces}, arXiv:2510.13693 (2025).
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,246 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\wstar}{\mathrm{w}^*}
+\newcommand{\weakstar}{\mathop{\longrightarrow}\limits^{\wstar}}
+
+\title{Countable Mixed Dual Sums Satisfy the\\
+Sobolev Weak* Differentiability Conclusion}
+\author{Candidate strong partial result --- \texttt{fa\_banach\_001}, lane 3}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\fbox{\parbox{0.94\textwidth}{\textbf{Status.}
+Strong partial result, likely valid.  The general source question remains open.
+Human review is recommended.}}
+
+\section{Source question}
+
+Creutz and Evseev study Sobolev maps into a dual Banach space
+$V^*$ \cite{CE}.  They define the \emph{weak* Lebesgue density property}
+and prove that it is equivalent to almost-everywhere weak* differentiability
+of every absolutely continuous curve into $V^*$.  At the end of page 12 they
+ask whether this one-dimensional property implies that every
+$f\in W^{1,p}(\Omega;V^*)$ has a representative which is weak* differentiable
+almost everywhere in the coordinate directions.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+  \caption{The open question in arXiv:2303.17303v1, page 12.}
+\end{figure}
+
+Their two known positive cases are: the predual $V$ is separable, or the dual
+$V^*$ has the Radon--Nikod\'ym property (RNP).  The theorem below closes the
+question for every countable direct sum made by mixing these two kinds of
+summands.
+
+\section{Statement and proof intuition}
+
+Let $(V_k)_{k\in\N}$ be Banach spaces and put $X_k=V_k^*$.  For
+$1\le s\le\infty$ set
+\[
+ X_s=\Bigl(\bigoplus_{k\in\N}X_k\Bigr)_{\ell^s}.
+\]
+We always use the canonical predual
+\[
+ E_s=
+ \begin{cases}
+ (\bigoplus_k V_k)_{c_0},&s=1,\\
+ (\bigoplus_k V_k)_{\ell^{s'}},&1<s\le\infty,
+ \end{cases}
+ \qquad X_s=E_s^*,
+\]
+where $s'$ is conjugate to $s$ and $s'=1$ when $s=\infty$.
+
+\paragraph{Proof intuition.}
+The source obstruction is measurability: weak* differentiability tests all
+elements of a potentially nonseparable predual, so linewise full-measure sets
+need not combine into a measurable full-measure subset of $\Omega$.  A
+countable mixed sum has an extra coordinate structure.  In a
+separable-predual coordinate, countably many scalar tests suffice.  In an RNP
+coordinate, norm differentiability is itself a measurable property.  There
+are only countably many coordinates, so their good sets have a measurable
+full-measure intersection.  At such a point, the coordinate derivatives are
+assembled by finite-coordinate weak* lower semicontinuity.  Approximation by
+finite-support predual vectors then gives weak* convergence in the whole sum.
+This proves a substantial new class but does not resolve the arbitrary-space
+measurability obstruction.
+
+\begin{theorem}[countable mixed-sum theorem]\label{thm:main}
+Assume that for every $k\in\N$ at least one of the following holds:
+\begin{enumerate}
+ \item $V_k$ is separable;
+ \item $X_k=V_k^*$ has the Radon--Nikod\'ym property.
+\end{enumerate}
+Then, for every $1\le s\le\infty$, the canonical dual $X_s=E_s^*$ has the
+weak* Lebesgue density property.  Moreover, if $\Omega\subset\R^n$ is a
+bounded domain, $1\le p<\infty$, and
+$f\in W^{1,p}(\Omega;X_s)$, then $f$ has a representative which is weak*
+differentiable almost everywhere in each coordinate direction.
+\end{theorem}
+
+We separate the assembly argument used twice in the proof.
+
+\begin{lemma}[coordinate assembly]\label{lem:assembly}
+Let $q_h\in X_s$ for $0<|h|<h_0$, assume
+$\sup_{0<|h|<h_0}\|q_h\|\le M$, and suppose that for every $k$ there is
+$d_k\in X_k$ such that $\pi_kq_h\weakstar d_k$ as $h\to0$.  Then
+$d=(d_k)_k\in X_s$, $\|d\|\le M$, and $q_h\weakstar d$ in the duality
+$X_s=E_s^*$.
+\end{lemma}
+
+\begin{proof}
+For a finite set $F\subset\N$, coordinatewise convergence is weak* convergence
+in the finite dual sum.  Weak* lower semicontinuity of its norm gives
+\[
+ \|(d_k)_{k\in F}\|_{\ell^s}
+ \le \liminf_{h\to0}\|(\pi_kq_h)_{k\in F}\|_{\ell^s}\le M.
+\]
+Taking the supremum over finite $F$ shows $d\in X_s$ and $\|d\|\le M$;
+this includes $s=\infty$.
+
+Let $v\in E_s$ and let $v^F$ be its truncation to a finite initial coordinate
+set $F$.  Finite-coordinate convergence gives
+$\langle v^F,q_h-d\rangle\to0$, while
+\[
+ |\langle v-v^F,q_h-d\rangle|
+ \le \|v-v^F\|_{E_s}(\|q_h\|+\|d\|).
+\]
+Finite sequences are dense in $E_s$: this is the usual fact for
+$\ell^{s'}$ when $1<s\le\infty$, and for the $c_0$-sum when $s=1$.
+Letting $F\uparrow\N$ proves the full weak* convergence.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+We first prove the weak* Lebesgue density property.  By the source theorem
+\cite[final theorem of Section 3.5]{CE}, it suffices to show that every
+absolutely continuous curve $\gamma:(a,b)\to X_s$ is weak* differentiable
+almost everywhere.  Each coordinate curve $\gamma_k=\pi_k\gamma$ is
+absolutely continuous.  If $V_k$ is separable, it is weak* differentiable
+almost everywhere by a countable dense family of tests in $V_k$.  If $X_k$
+has the RNP, it is norm differentiable almost everywhere.  Intersect these
+full-measure sets over the countably many $k$, and also intersect with the set
+where the metric derivative of $\gamma$ exists.  At a resulting point $t$ the
+difference quotients
+\[
+ q_h=\frac{\gamma(t+h)-\gamma(t)}{h}
+\]
+are bounded and converge weak* in every coordinate.  Lemma~\ref{lem:assembly}
+gives a weak* derivative in $X_s$.  The cited equivalence now yields the weak*
+Lebesgue density property.
+
+We turn to Sobolev maps.  Choose the standard measurable ACL representative
+$\widetilde f$ supplied by the metric-valued Sobolev ACL theorem used in
+\cite[Proposition 2.4]{CE}.  Fix a coordinate direction $e_j$.  The metric
+partial derivative
+\[
+ \operatorname{m}\partial_j\widetilde f(x)
+ =\lim_{h\to0}\frac{\|\widetilde f(x+he_j)-\widetilde f(x)\|}{|h|}
+\]
+exists at almost every $x$ and is measurable.
+
+We construct a measurable full-measure set for each target coordinate $k$.
+If $V_k$ is separable, choose a countable dense rational linear subspace
+$D_k\subset V_k$.  For
+every $v\in D_k$, the scalar ACL function
+$x\mapsto\langle v,\pi_k\widetilde f(x)\rangle$ has its $j$-th partial
+derivative almost everywhere.  Intersecting these good sets over $D_k$ and
+with the metric-partial-derivative set gives a measurable full-measure set.
+At one of its points the $X_k$-valued difference quotients are bounded, and
+their scalar limits on $D_k$ define a bounded functional on $D_k$ which
+extends uniquely to $V_k$.  Density then gives weak* convergence in $X_k$.
+
+If $X_k$ has the RNP, the coordinate map $\pi_k\widetilde f$ is absolutely
+continuous on almost every $e_j$-parallel line and is norm differentiable
+almost everywhere on each such line.  The corresponding set in $\Omega$ is
+measurable: on an ACL line, existence of the norm derivative is the norm-Cauchy
+condition for difference quotients with rational increments, a countable
+measurable condition.  Fubini therefore produces a measurable full-measure
+set on which the $k$-th coordinate difference quotient converges in norm.
+
+Intersect these measurable sets over all $k$ and with the metric-partial-
+derivative set.  This is still a measurable full-measure subset of $\Omega$.
+At any point $x$ in it, put
+\[
+ q_h(x)=\frac{\widetilde f(x+he_j)-\widetilde f(x)}{h}.
+\]
+The quotients are bounded for small $h$ and converge weak* in every target
+coordinate.  Lemma~\ref{lem:assembly} gives a weak* $j$-th partial derivative
+of $\widetilde f$ at $x$.  Finally intersect over the finitely many domain
+directions $j=1,\dots,n$.
+\end{proof}
+
+\section{A space beyond both source hypotheses}
+
+\begin{corollary}\label{cor:example}
+Let $\Gamma$ have cardinality strictly larger than the continuum and set
+\[
+ X=\ell^\infty(\N)\oplus_2\ell^1(\Gamma)
+   =\bigl(\ell^1(\N)\oplus_2c_0(\Gamma)\bigr)^*.
+\]
+Then $X$ has the weak* Lebesgue density property and satisfies the Sobolev
+weak* differentiability conclusion of Theorem~\ref{thm:main}, but $X$ has no
+RNP and is not a dual of any separable Banach space.
+\end{corollary}
+
+\begin{proof}
+The first summand is the dual of the separable space $\ell^1(\N)$, while the
+second has the RNP.  Theorem~\ref{thm:main} applies.  The complemented
+subspace $\ell^\infty(\N)$ prevents $X$ from having the RNP.  Finally, a dual
+of a separable Banach space has cardinality at most the continuum, whereas
+$X$ contains the family $(e_\gamma)_{\gamma\in\Gamma}$.  Hence $X$ admits no
+separable predual.
+\end{proof}
+
+\section{Scope, verification, and novelty}
+
+The theorem does not prove that an arbitrary weak* Lebesgue-density dual has
+the desired Sobolev differentiability property.  It also does not treat
+uncountable direct sums.  Its contribution is a countable stability mechanism
+which yields explicit spaces outside both sufficient classes listed in the
+source.
+
+The proof is exact and uses no numerical computation.  The endpoint preduals
+$c_0$ and $\ell^1$ are handled explicitly in Lemma~\ref{lem:assembly}.  The
+source question and the later related preprint \cite{Evseev} were searched by
+title, arXiv id, exact question phrase, and combinations of ``weak* Lebesgue
+density'', ``direct sum'', and ``Sobolev weak* differentiability''.  The local
+run indexes were searched by the same terms.  No later resolution or prior
+statement of this mixed-sum theorem was found.  This is a bounded novelty
+check, not exhaustive bibliographic certification.
+
+\paragraph{Human-review recommendation.}
+Verify especially the measurability of the RNP-coordinate norm-differentiability
+set for the common ACL representative, and the finite-support tail argument at
+$s=1$ and $s=\infty$.  These are isolated in the proof so that they can be
+audited without reconstructing the discovery process.
+
+\begin{thebibliography}{9}
+\bibitem{CE}
+P. Creutz and N. Evseev,
+\emph{Weak differentiability of metric space valued Sobolev maps},
+arXiv:2303.17303v1, 2023.
+
+\bibitem{Evseev}
+N. Evseev,
+\emph{Weak derivatives and metric differentiability almost everywhere},
+arXiv:2511.02520v1, 2025.
+\end{thebibliography}
+
+\end{document}

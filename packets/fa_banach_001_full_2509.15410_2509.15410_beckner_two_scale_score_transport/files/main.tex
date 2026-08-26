@@ -1,0 +1,518 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\E}{\mathbb E}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Ent}{\operatorname{Ent}}
+\newcommand{\KL}{\operatorname{KL}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\norm}[1]{\lVert#1\rVert}
+\newcommand{\ip}[2]{\langle#1,#2\rangle}
+\newcommand{\phip}{\Phi_p}
+\newcommand{\ST}{\mathsf{ST}_p}
+
+\title{Two-scale Beckner inequalities via power-divergence score transport}
+\author{Candidate solution packet for arXiv:2509.15410}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\linewidth}{
+\textbf{Status: candidate full solution, likely valid, awaiting human review.}
+For every $1<p\leq2$, the packet proves joint and mixture Beckner
+inequalities under a natural score-transport condition.  Pointwise bounded
+scores give exactly the constants anticipated in the source; the source MGF
+condition gives the same formulas after replacing $\bar L^2$ by
+$p\bar L^2$.}}
+\end{center}
+
+\section{Source question}
+
+The source is Vishwak Srinivasan, \emph{Understanding two-scale criteria for
+Poincar\'e and log-Sobolev inequalities in the Euclidean case through
+$\Phi$-entropies}, arXiv:2509.15410 \cite{srinivasan}.  In the Discussion and
+Section 6.1 (source PDF pages 21--22), the author asks whether the two-scale
+analysis extends to
+\[
+  \phip(t)=\frac{t^p-1}{p-1},\qquad 1<p\leq2,
+\]
+whose $\Phi$-Sobolev inequality is the Beckner inequality.  The source
+surmises that the joint law $\nu$ and mixture $\mu$ should inherit Beckner
+inequalities, but explains that its Legendre-duality proof leaves two nonzero
+terms and that $\phip$ is not Legendre at zero.
+
+Figures~\ref{fig:question1} and \ref{fig:question2} reproduce the complete
+two-page passage.
+
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=0.98\linewidth]{figures/open_problem_crop_1.png}
+  \caption{Source page 21: the general question and the Beckner specialization.}
+  \label{fig:question1}
+\end{figure}
+
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=0.98\linewidth]{figures/open_problem_crop_2.png}
+  \caption{Source page 22: the continuation and the obstruction to the
+  source proof route.}
+  \label{fig:question2}
+\end{figure}
+
+\paragraph{Transcription of the mathematical question.}
+Suppose the mixing law $\rho$ satisfies $\Phi_p\mathsf{SI}(\alpha)$ and every
+conditional law $P_y$ satisfies $\Phi_p\mathsf{SI}(\beta)$.  Under an
+appropriate two-scale score criterion, do the joint law
+$\nu(\dd x,\dd y)=P_y(\dd x)\rho(\dd y)$ and the mixture
+$\mu(\dd x)=\int P_y(\dd x)\rho(\dd y)$ satisfy Beckner inequalities with
+constants analogous to the Poincar\'e and log-Sobolev constants in the source?
+
+\section{Setup and exact score criterion}
+
+We use the smooth Euclidean setup of the source.  Thus $\rho$ is a probability
+measure on $\R^{d_y}$ and $P_y$ has a positive density $p_y$ on
+$\R^{d_x}$.  Differentiation under the integral is assumed whenever it is
+used, as in the source.  Define the conditional score
+\[
+  s_y(x)=\nabla_y\log p_y(x),
+  \qquad \E_{P_y}s_y=0.
+\]
+For a positive function $f$, write
+\[
+ \Ent_{\phip,P}(f)
+ =\E_P\phip(f)-\phip(\E_Pf)
+ =\frac{\E_Pf^p-(\E_Pf)^p}{p-1}.
+\]
+We say that $P$ satisfies $\Phi_p\mathsf{SI}(\gamma)$ when
+\begin{equation}
+ \Ent_{\phip,P}(f)
+ \leq \frac{\gamma}{2}\E_P\!\left[
+   \phip''(f)\norm{\nabla f}^2\right],
+ \qquad \phip''(t)=p t^{p-2}.
+ \label{eq:phisi}
+\end{equation}
+
+If $h\geq0$ and $\E_Ph=1$, put
+\[
+ D_p(h\Vert P)=\frac{\E_Ph^p-1}{p-1}.
+\]
+The notation records the reference measure; $D_p$ is the power divergence of
+the probability law $hP$ from $P$.
+
+\begin{definition}[power-divergence score transport]
+For $L\geq0$, the family $(P_y)$ satisfies $\ST(L)$ if, for $\rho$-almost
+every $y$, every probability density $h$ relative to $P_y$, and every
+$u\in\R^{d_y}$,
+\begin{equation}
+ \left|\E_{P_y}\!\left[h\,\ip{u}{s_y}\right]\right|^2
+ \leq \frac{2L^2}{p}\norm{u}^2D_p(h\Vert P_y).
+ \label{eq:st}
+\end{equation}
+\end{definition}
+
+This condition is tailored to the homogeneity of $\phip$, not assumed as a
+black-box miracle: Corollaries~\ref{cor:bounded} and \ref{cor:mgf} below prove
+it from two concrete score assumptions used in the source.
+
+\section{Proof intuition}
+
+The source decomposes the joint $\Phi$-entropy into a conditional entropy and
+the $\Phi$-entropy of the conditional mean.  The only difficult derivative is
+the score contribution in
+\[
+ \nabla_y\E_{P_y}\psi
+ =\E_{P_y}\nabla_y\psi+\E_{P_y}(\psi s_y).
+\]
+Instead of dualizing this covariance, normalize $\psi$ by its conditional
+mean $M=\E_{P_y}\psi$.  Then $h=\psi/M$ is a probability density and the
+power homogeneity gives the exact identity
+\[
+ \Ent_{\phip,P_y}(\psi)=M^pD_p(h\Vert P_y).
+\]
+Multiplication by $\phip''(M)=pM^{p-2}$ makes the $M$ powers in the squared
+score covariance match perfectly.  Condition \eqref{eq:st} therefore bounds
+the score contribution directly by the conditional Beckner entropy, which
+the assumed conditional inequality controls by the $x$-gradient energy.
+The other derivative term is handled by weighted Cauchy--Schwarz and the
+concavity of $1/\phip''$.  These are precisely the two ingredients needed to
+reuse the source's two-scale bookkeeping without any Legendre transform.
+
+\section{Full two-scale theorem}
+
+For $L\geq0$ define
+\begin{align}
+ \zeta(L)
+ &=\inf_{C>0}\max\bigl\{
+  \beta+\alpha(1+C^{-1})\beta L^2,\ \alpha(1+C)\bigr\}
+ \label{eq:zeta-inf}\\
+ &=\frac12\left(\alpha+\beta+\alpha\beta L^2
+ +\sqrt{4\alpha^2\beta L^2+
+ (\beta-\alpha+\alpha\beta L^2)^2}\right),
+ \label{eq:zeta-closed}\\
+ \xi(L)&=\beta+\alpha\beta L^2.
+ \label{eq:xi}
+\end{align}
+
+\begin{theorem}[joint and mixture Beckner inheritance]
+\label{thm:main}
+Fix $1<p\leq2$.  Suppose that $\rho$ satisfies
+$\Phi_p\mathsf{SI}(\alpha)$, every $P_y$ satisfies
+$\Phi_p\mathsf{SI}(\beta)$ with the same $\beta$, and $(P_y)$ satisfies
+$\ST(L)$.  Then:
+\begin{enumerate}[label=(\roman*)]
+ \item the joint law $\nu=P_y\rho$ satisfies
+ $\Phi_p\mathsf{SI}(\zeta(L))$;
+ \item the mixture $\mu=\int P_y\rho(\dd y)$ satisfies
+ $\Phi_p\mathsf{SI}(\xi(L))$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+We first take a smooth strictly positive admissible function
+$\psi=\psi(x,y)$ and set
+\[
+ M(y)=\E_{P_y}\psi(\,cdot\,,y).
+\]
+The exact entropy decomposition is
+\begin{equation}
+ \Ent_{\phip,\nu}(\psi)
+ =\E_\rho\Ent_{\phip,P_y}(\psi)
+  +\Ent_{\phip,\rho}(M).
+ \label{eq:decomp}
+\end{equation}
+The first term satisfies
+\begin{equation}
+ \E_\rho\Ent_{\phip,P_y}(\psi)
+ \leq\frac{\beta}{2}\E_\nu\!\left[
+  \phip''(\psi)\norm{\nabla_x\psi}^2\right].
+ \label{eq:first}
+\end{equation}
+
+Differentiation under the integral gives
+\begin{equation}
+ \nabla M=\E_{P_y}\nabla_y\psi+\E_{P_y}(\psi s_y).
+ \label{eq:gradM}
+\end{equation}
+Because
+\[
+ \frac1{\phip''(t)}=\frac1p t^{2-p}
+\]
+is concave on $(0,\infty)$, weighted Cauchy--Schwarz and Jensen give
+\begin{align}
+ \phip''(M)\norm{\E_{P_y}\nabla_y\psi}^2
+ &\leq \phip''(M)
+ \E_{P_y}\!\left[\phip''(\psi)\norm{\nabla_y\psi}^2\right]
+ \E_{P_y}\!\left[\frac1{\phip''(\psi)}\right] \notag\\
+ &\leq \E_{P_y}\!\left[
+ \phip''(\psi)\norm{\nabla_y\psi}^2\right].
+ \label{eq:direct-y}
+\end{align}
+
+For the score term, put $h=\psi/M$.  Then $\E_{P_y}h=1$ and, exactly,
+\begin{equation}
+ \Ent_{\phip,P_y}(\psi)=M^pD_p(h\Vert P_y).
+ \label{eq:homogeneity}
+\end{equation}
+Taking the supremum over unit $u$ in \eqref{eq:st}, we obtain
+\begin{align}
+ \phip''(M)\norm{\E_{P_y}(\psi s_y)}^2
+ &=pM^p\norm{\E_{P_y}(h s_y)}^2 \notag\\
+ &\leq 2L^2M^pD_p(h\Vert P_y)\notag\\
+ &=2L^2\Ent_{\phip,P_y}(\psi)\notag\\
+ &\leq \beta L^2\E_{P_y}\!\left[
+ \phip''(\psi)\norm{\nabla_x\psi}^2\right].
+ \label{eq:score}
+\end{align}
+
+For every $C>0$, the squared triangle inequality with Young's parameter
+and \eqref{eq:direct-y}--\eqref{eq:score} imply
+\begin{align}
+ \phip''(M)\norm{\nabla M}^2
+ &\leq (1+C)\E_{P_y}\!\left[
+ \phip''(\psi)\norm{\nabla_y\psi}^2\right]\notag\\
+ &\quad +(1+C^{-1})\beta L^2\E_{P_y}\!\left[
+ \phip''(\psi)\norm{\nabla_x\psi}^2\right].
+ \label{eq:macro}
+\end{align}
+Apply $\Phi_p\mathsf{SI}(\alpha)$ for $\rho$ to $M$, integrate
+\eqref{eq:macro}, and combine with \eqref{eq:first}.  This yields
+\begin{align*}
+ \Ent_{\phip,\nu}(\psi)
+ &\leq\frac12\bigl[\beta+\alpha(1+C^{-1})\beta L^2\bigr]
+ \E_\nu\!\left[\phip''(\psi)\norm{\nabla_x\psi}^2\right]\\
+ &\quad+\frac{\alpha(1+C)}2
+ \E_\nu\!\left[\phip''(\psi)\norm{\nabla_y\psi}^2\right].
+\end{align*}
+Taking the larger coefficient and then the infimum over $C$ proves the joint
+claim.  Equating the two coefficients gives the elementary closed form
+\eqref{eq:zeta-closed}.
+
+For the mixture claim, take $\psi=\psi(x)$ in the entropy decomposition.
+Now the direct $y$-derivative term in \eqref{eq:gradM} is zero, so no Young
+splitting is needed.  Equations \eqref{eq:first} and \eqref{eq:score} give
+\[
+ \Ent_{\phip,\mu}(\psi)
+ \leq \frac{\beta+\alpha\beta L^2}{2}
+ \E_\mu\!\left[\phip''(\psi)\norm{\nabla\psi}^2\right],
+\]
+which is \eqref{eq:xi}.
+
+The calculation proves the statement for strictly positive test functions.
+For nonnegative admissible functions, apply it to $\psi+\varepsilon$ and let
+$\varepsilon\downarrow0$; the entropy converges and the weighted energy
+converges by monotone convergence because $p-2\leq0$.  Standard truncation
+and smoothing give the usual finite-energy closure.
+\end{proof}
+
+\section{Concrete score regimes}
+
+The following sharp scalar inequality supplies the exact bounded-score
+constant.
+
+\begin{lemma}[sharp power Pinsker]
+\label{lem:pinsker}
+For every probability density $h$ relative to $P$ and every $1<p\leq2$,
+\begin{equation}
+ D_p(h\Vert P)\geq \frac p2\bigl(\E_P|h-1|\bigr)^2.
+ \label{eq:pinsker}
+\end{equation}
+The constant $p/2$ is sharp.
+\end{lemma}
+
+\begin{proof}
+Since $\E_Ph=1$, write
+\[
+ D_p(h\Vert P)=\E_P f_p(h),\qquad
+ f_p(t)=\frac{t^p-pt+p-1}{p-1}.
+\]
+Let $A=\{h\geq1\}$, $\theta=P(A)$, and
+\[
+ \delta=\E_P(h-1)_+=\E_P(1-h)_+=\frac12\E_P|h-1|.
+\]
+The cases $\theta\in\{0,1\}$ are trivial.  Conditional Jensen gives
+\[
+ D_p(h\Vert P)\geq F_\theta(\delta),
+\]
+where
+\[
+ F_\theta(t)=\theta f_p\!\left(1+\frac t\theta\right)
+ +(1-\theta)f_p\!\left(1-\frac t{1-\theta}\right).
+\]
+We have $F_\theta(0)=F_\theta'(0)=0$.  Put
+$a=1+t/\theta$, $b=1-t/(1-\theta)$, and $r=2-p\in[0,1]$.  On the allowed
+range of $t$,
+\begin{align*}
+ F_\theta''(t)
+ &=p\left(\frac{a^{p-2}}\theta
+ +\frac{b^{p-2}}{1-\theta}\right)\\
+ &=p\left(\frac1{\theta a^r}
+ +\frac1{(1-\theta)b^r}\right)\\
+ &\geq \frac{4p}{\theta a^r+(1-\theta)b^r}
+ \geq4p.
+\end{align*}
+The first inequality is the harmonic--arithmetic mean inequality.  The
+second uses concavity of $x^r$ and
+$\theta a+(1-\theta)b=1$.  (For $p=2$, the same conclusion follows directly.)
+Twice integrating gives
+$F_\theta(\delta)\geq2p\delta^2$, which is \eqref{eq:pinsker}.
+
+For sharpness, on a two-point space with equal masses take
+$h=1+\varepsilon$ and $1-\varepsilon$.  As $\varepsilon\to0$,
+$D_p(h)=\frac p2\varepsilon^2+o(\varepsilon^2)$ while
+$\E|h-1|=\varepsilon$.
+\end{proof}
+
+\begin{corollary}[pointwise bounded scores: exact source constants]
+\label{cor:bounded}
+If $\norm{s_y(x)}\leq B$ for $P_y$-almost every $x$ and $\rho$-almost every
+$y$, then $\ST(B)$ holds.  Consequently, the joint and mixture satisfy
+$\Phi_p\mathsf{SI}(\zeta(B))$ and
+$\Phi_p\mathsf{SI}(\xi(B))$, respectively, for every $1<p\leq2$.
+\end{corollary}
+
+\begin{proof}
+For $\norm u\leq1$, centering of the score and Lemma~\ref{lem:pinsker} give
+\begin{align*}
+ \left|\E_{P_y}h\ip{u}{s_y}\right|
+ &=\left|\E_{P_y}(h-1)\ip{u}{s_y}\right|\\
+ &\leq B\E_{P_y}|h-1|
+ \leq B\sqrt{\frac2pD_p(h\Vert P_y)}.
+\end{align*}
+Squaring is exactly \eqref{eq:st} with $L=B$.
+\end{proof}
+
+The next result uses precisely the MGF criterion displayed in the source.
+
+\begin{corollary}[source MGF criterion]
+\label{cor:mgf}
+Assume that, for every $y$ and $u$,
+\begin{equation}
+ \log\E_{P_y}\exp\bigl(\ip{u}{s_y}\bigr)
+ \leq\frac{\bar L^2\norm u^2}{2}.
+ \label{eq:mgf}
+\end{equation}
+Then $\ST(\sqrt p\,\bar L)$ holds.  Hence the joint and mixture satisfy
+$\Phi_p\mathsf{SI}(\zeta(\sqrt p\,\bar L))$ and
+$\Phi_p\mathsf{SI}(\xi(\sqrt p\,\bar L))$, respectively.
+Equivalently, replace $\bar L^2$ by $p\bar L^2$ in the source constant
+formulas.
+\end{corollary}
+
+\begin{proof}
+Fix a unit $u$, write $Z=\ip{u}{s_y}$, and let $Q=hP_y$.  For every
+$\lambda>0$, the elementary entropy variational inequality gives
+\[
+ \lambda\E_QZ
+ \leq \KL(Q\Vert P_y)+\log\E_{P_y}e^{\lambda Z}
+ \leq \KL(Q\Vert P_y)+\frac{\lambda^2\bar L^2}{2}.
+\]
+Apply the same bound to $-Z$ and optimize in $\lambda$ to obtain
+\begin{equation}
+ |\E_QZ|^2\leq2\bar L^2\KL(Q\Vert P_y).
+ \label{eq:subg-kl}
+\end{equation}
+For completeness, Jensen under $Q$ and $\log z\leq z-1$ give
+\begin{align*}
+ (p-1)\KL(Q\Vert P_y)
+ &=\E_Q\log h^{p-1}
+ \leq\log\E_Qh^{p-1}\\
+ &=\log\E_{P_y}h^p
+ \leq\E_{P_y}h^p-1
+ =(p-1)D_p(h\Vert P_y).
+\end{align*}
+Thus \eqref{eq:subg-kl} is at most $2\bar L^2D_p$, which is
+\eqref{eq:st} with $L^2=p\bar L^2$.
+\end{proof}
+
+\begin{remark}[endpoint behavior]
+As $p\downarrow1$, the MGF corollary tends to the source log-Sobolev
+constant.  At $p=2$ it is conservative by a factor two on the score proxy;
+the source variance argument gives the sharper Poincar\'e endpoint.  Under
+pointwise bounded scores, Corollary~\ref{cor:bounded} has the exact source
+constant for every $p$, including both endpoints.
+\end{remark}
+
+\section{Why variance alone does not close the intermediate case}
+
+The source variance criterion is perfectly adapted to $p=2$.  For $p<2$ it
+does not, by itself, imply the score-transport estimate used above.
+
+\begin{proposition}[variance-only obstruction]
+\label{prop:variance}
+Fix $1<p<2$.  There is a centered scalar random variable $S$ with finite
+variance such that
+\[
+ \sup_{h\geq0,\ \E h=1}
+ \frac{|\E(hS)|^2}{D_p(h\Vert P)}=\infty.
+\]
+Consequently, no bound on $\Var(S)$ alone can imply \eqref{eq:st} with a
+universal finite constant.
+\end{proposition}
+
+\begin{proof}
+Choose disjoint events $A_n$ of probabilities $\varepsilon_n>0$, with
+$\sum_n\varepsilon_n<1$, decreasing so fast that
+$\sum_n n\varepsilon_n^{2-p}<\infty$.  Define
+\[
+ a_n=\sqrt n\,\varepsilon_n^{-(p-1)/2},\qquad
+ S_0=\sum_{n\geq1}a_n\mathbf1_{A_n},\qquad
+ S=S_0-\E S_0.
+\]
+Then
+\[
+ \E S_0^2=\sum_{n\geq1}n\varepsilon_n^{2-p}<\infty,
+\]
+so $S$ is centered with finite variance.  Let
+$h_n=\mathbf1_{A_n}/\varepsilon_n$.  Its power divergence is
+\[
+ D_p(h_n\Vert P)
+ =\frac{\varepsilon_n^{1-p}-1}{p-1},
+\]
+whereas $\E(h_nS)=a_n-\E S_0$.  Since $a_n\to\infty$,
+\[
+ \frac{|\E(h_nS)|^2}{D_p(h_n\Vert P)}
+ \sim (p-1)n\longrightarrow\infty.
+\]
+Rescaling $S$ fixes its variance at any prescribed positive value without
+changing the divergence of the ratios.
+\end{proof}
+
+Proposition~\ref{prop:variance} is an obstruction to deriving the theorem
+from the source's variance criterion alone.  It is \emph{not} asserted to be
+a counterexample to Beckner inheritance by some different method.
+
+\section{Verification, novelty, and limitations}
+
+\paragraph{Symbolic checks.}
+The proof was independently re-derived from the entropy decomposition.  The
+identity \eqref{eq:homogeneity}, the factor $pM^{p-2}$ in \eqref{eq:score},
+the two energy coefficients in \eqref{eq:zeta-inf}, and the closed form
+\eqref{eq:zeta-closed} were checked separately.  The argument specializes
+correctly at $p=2$, and the $p\downarrow1$ scaling agrees with the entropy
+endpoint.
+
+\paragraph{Finite checks.}
+The accompanying script tests the sharp power-Pinsker inequality on 441,007
+binary instances, the bounded-score estimate on 25,000 random
+finite laws, and the closed joint constant on 5,000 random parameter triples.
+It also displays the divergent ratios from Proposition~\ref{prop:variance}.
+These computations are sanity checks, not proof.
+
+\paragraph{Novelty check.}
+Bounded searches on 11 August 2026 used the exact title, arXiv id, author,
+Section 6.1 wording, and combinations of ``two-scale'', ``Beckner'',
+``mixture'', ``conditional score'', and ``score transport''.  No later paper
+explicitly answering the question was found.  Agrawal--Horel
+\cite{agrawal-horel} provides relevant general $f$-divergence/IPM duality but
+does not state this two-scale theorem.  This is evidence of plausible novelty,
+not a comprehensive priority certification.
+
+\paragraph{Limitations.}
+The factor $p$ in the MGF score proxy is not claimed optimal.  The abstract
+condition \eqref{eq:st} is sufficient, not claimed necessary for inheritance.
+Proposition~\ref{prop:variance} only rules out a variance-to-score-transport
+implication.  The separate broad question in the source about regularity of
+Hamiltonian flows is untouched.  Finally, the theorem uses the same
+differentiation and approximation regularity as the source's Euclidean
+density setup.
+
+\paragraph{Human-review recommendation.}
+Send to a specialist in functional inequalities.  The highest-value checks
+are (i) every factor of $p$ in \eqref{eq:homogeneity}--\eqref{eq:score},
+(ii) the lower bound on $F_\theta''$ in Lemma~\ref{lem:pinsker}, and
+(iii) whether the source's intended test-function class requires any
+additional routine approximation statement.
+
+\begin{thebibliography}{9}
+\bibitem{srinivasan}
+V. Srinivasan,
+\emph{Understanding two-scale criteria for Poincar\'e and log-Sobolev
+inequalities in the Euclidean case through $\Phi$-entropies},
+arXiv:2509.15410, 2025.
+
+\bibitem{agrawal-horel}
+R. Agrawal and T. Horel,
+\emph{Optimal bounds between $f$-divergences and integral probability
+metrics},
+Journal of Machine Learning Research 22 (2021), no. 128, 1--59;
+arXiv:2006.05973.
+\end{thebibliography}
+
+\end{document}

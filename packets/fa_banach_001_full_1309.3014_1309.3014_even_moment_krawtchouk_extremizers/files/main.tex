@@ -1,0 +1,266 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+\setlength{\emergencystretch}{2em}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\F}{\mathbb F}
+\newcommand{\E}{\mathbb E}
+\newcommand{\cH}{\mathcal H}
+\newcommand{\supp}{\operatorname{supp}}
+
+\title{Krawtchouk functions maximize every even moment on a Boolean Fourier level}
+\author{Automated mathematical discovery run \texttt{fa\_banach\_001}}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{black}{gray!8}{\parbox{0.91\linewidth}{
+\textbf{Status.} Candidate full solution, likely valid, subject to human
+review.  For every even exponent $p=2m$, the two maxima in the source's
+appendix Question B.2(6) are attained by a permutation-invariant
+Krawtchouk function.  The $p=4$ case was proved by Aaronson in 2018; the
+argument below extends the compression principle to all even moments.
+}}
+\end{center}
+
+\section{Source question and provenance}
+
+The source is Y.~Polyanskiy, \emph{Hypercontractivity of spherical averages
+in Hamming space}, arXiv:1309.3014 \cite{Source}.  Write
+$G=\F_2^n$, equip it with uniform probability measure, and let
+$\Pi_a$ denote orthogonal projection onto the Fourier level
+
+\[
+ \cH_a=\operatorname{span}\{\chi_A:A\subseteq[n],\ |A|=a\},
+ \qquad \chi_A(x)=(-1)^{\sum_{i\in A}x_i}.
+\]
+
+The source asks whether, for $p=2m$, the maxima of
+
+\[
+ \frac{\|f_a\|_p}{\|f_a\|_2}
+ \quad\text{and}\quad
+ \frac{\|f_a\|_p}{\|f\|_2},\qquad f_a=\Pi_a f,
+\]
+
+are achieved by permutation-invariant functions.  The exact passage is
+reproduced below.
+
+\begin{center}
+\includegraphics[width=0.96\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\noindent\textbf{Provenance note.}
+This question occurs in the arXiv source tree inside an appendix guarded by
+the source's \texttt{ifmapx} switch; it is not printed in the
+official 24-page arXiv PDF.  The crop is from page 27 of a DVI/PDF build of
+the original source with its documented appendix job name
+\texttt{hc\_hamming\_apx}.  The official PDF is retained as
+\texttt{source\_paper.pdf}.
+
+\section{Result and proof intuition}
+
+Define the degree-$a$ Krawtchouk function
+\[
+ K_a(x)=\sum_{|A|=a}\chi_A(x),
+ \qquad \|K_a\|_2=\binom na^{1/2}.
+\]
+
+\begin{theorem}[Exact even-moment level norm]\label{thm:main}
+For all $n\geq1$, $0\leq a\leq n$, and integers $m\geq1$,
+\begin{equation}\label{eq:level}
+ \sup_{0\ne g\in\cH_a}\frac{\|g\|_{2m}}{\|g\|_2}
+ =\frac{\|K_a\|_{2m}}{\|K_a\|_2}.
+\end{equation}
+The supremum may be taken over real- or complex-valued functions.  Moreover,
+\begin{equation}\label{eq:projection}
+ \|\Pi_a\|_{L_2(G)\to L_{2m}(G)}
+ =\frac{\|K_a\|_{2m}}{\|K_a\|_2}.
+\end{equation}
+Thus both maxima in the source question are attained by the
+permutation-invariant function $K_a$.
+\end{theorem}
+
+The proof works on the Fourier-coefficient sphere
+$S(n,a)=\{A\subseteq[n]:|A|=a\}$.  First discard coefficient phases: the
+even-moment expansion can only increase when every coefficient is replaced
+by its modulus.  Next choose two coordinates $i,j$.  Whenever two
+coefficients sit at the endpoints of a Johnson-graph edge
+$A\leftrightarrow A\mathbin\triangle\{i,j\}$, replace both by their
+root-mean-square.  This preserves the coefficient $\ell_2$ norm.
+
+For the fourth moment, monotonicity of this compression is Aaronson's key
+observation \cite{Aaronson}.  At a general $2m$-th moment, fix all
+coordinates outside $i,j$ in the $2m$-tuple expansion.  The remaining
+sum is an even- or odd-parity tensor.  Its elementary sharp product bound
+shows that the same root-mean-square compression is monotone for every
+even moment.  Repeating the compressions averages the squared coefficients
+over the connected Johnson graph, leaving the constant vector and hence
+$K_a$.
+
+\section{The parity-tensor inequality}
+
+\begin{lemma}[Parity block bound]\label{lem:parity}
+Let $r\geq2$, let $u_\ell,v_\ell\geq0$, and let
+$\epsilon\in\{0,1\}$.  Then
+\begin{equation}\label{eq:parity}
+ \sum_{\substack{\sigma\in\{0,1\}^r\\
+                  \sum_\ell\sigma_\ell\equiv\epsilon\ (2)}}
+ \prod_{\ell=1}^r
+ \bigl(u_\ell\mathbf1_{\{\sigma_\ell=0\}}
+      +v_\ell\mathbf1_{\{\sigma_\ell=1\}}\bigr)
+ \leq
+ 2^{r/2-1}\prod_{\ell=1}^r(u_\ell^2+v_\ell^2)^{1/2}.
+\end{equation}
+The right side is exactly the left side after every pair
+$(u_\ell,v_\ell)$ is replaced by
+$(\rho_\ell,\rho_\ell)$, where
+$\rho_\ell=((u_\ell^2+v_\ell^2)/2)^{1/2}$.
+\end{lemma}
+
+\begin{proof}
+The parity filter writes the left side as
+\[
+ \frac12\left\{\prod_\ell(u_\ell+v_\ell)
+ +(-1)^\epsilon\prod_\ell(u_\ell-v_\ell)\right\}.
+\]
+Zero pairs may be removed, so normalize
+$t_\ell=(u_\ell^2+v_\ell^2)^{1/2}>0$, and set
+\[
+ x_\ell=\frac{u_\ell+v_\ell}{\sqrt2,t_\ell},\qquad
+ y_\ell=\frac{u_\ell-v_\ell}{\sqrt2,t_\ell}.
+\]
+Then $x_\ell^2+y_\ell^2=1$.  Since $r\geq2$,
+\[
+ \prod_\ell|x_\ell|+\prod_\ell|y_\ell|
+ \leq |x_1x_2|+|y_1y_2|
+ \leq\sqrt{(x_1^2+y_1^2)(x_2^2+y_2^2)}=1.
+\]
+Substitution proves \eqref{eq:parity}.  After replacement there are
+$2^{r-1}$ admissible parity strings, each contributing
+$2^{-r/2}\prod t_\ell$, proving the final assertion.
+\end{proof}
+
+\section{Proof of the theorem}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Write $g=\sum_{|A|=a}c_A\chi_A$.  Expanding against the orthonormal
+characters gives
+\begin{equation}\label{eq:moment}
+ \|g\|_{2m}^{2m}
+ =\sum_{\substack{A_1,\ldots,A_m,B_1,\ldots,B_m\in S(n,a)\\
+ A_1\triangle\cdots\triangle A_m
+ =B_1\triangle\cdots\triangle B_m}}
+ c_{A_1}\cdots c_{A_m}
+ \overline{c_{B_1}\cdots c_{B_m}}.
+\end{equation}
+Taking absolute values term by term shows that this is at most the same
+moment with $c_A$ replaced by $|c_A|$, while Parseval leaves
+$\|g\|_2^2=\sum_A|c_A|^2$ unchanged.  It therefore suffices to assume
+all coefficients are nonnegative.
+
+Fix $i<j$.  If $A$ contains exactly one of $i,j$, put
+$A'=A\triangle\{i,j\}$ and replace both $c_A,c_{A'}$ by
+\[
+ \rho_A=\left(\frac{c_A^2+c_{A'}^2}{2}\right)^{1/2}.
+\]
+Leave the other coefficients fixed.  This compression preserves
+$\sum_Ac_A^2$.
+
+To compare moments, use the equivalent $2m$-tuple form of
+\eqref{eq:moment}, whose constraint is
+$A_1\triangle\cdots\triangle A_{2m}=\varnothing$.  Group terms after
+deleting coordinates $i,j$ from every $A_\ell$.  If $r$ of the
+resulting bases have size $a-1$, their lifts have coordinate patterns
+$10$ or $01$.  The other lifts, of sizes $a$ and $a-2$, are fixed
+as $00$ and $11$.  A block contributes only when $r$ is even.  For
+$r=0$ it is unchanged.  For even $r\geq2$, the two coordinate parity
+conditions reduce to one prescribed parity of the $r$ binary choices.
+After removing the common product of fixed coefficients, the block is the
+left side of \eqref{eq:parity}.  Lemma~\ref{lem:parity} says precisely that
+the compression cannot decrease it.  Hence every coordinate-pair
+compression preserves $\|g\|_2$ and increases $\|g\|_{2m}$.
+
+On squared coefficients $w_A=c_A^2$, this operation is ordinary averaging
+across every Johnson-graph edge carrying the label $i,j$.  Cycle through
+all coordinate pairs and repeat.  These doubly stochastic averaging maps
+have a positive diagonal, and the union of their edges is the connected
+Johnson graph $J(n,a)$.  The standard finite consensus argument therefore
+gives
+\[
+ w_A\longrightarrow \binom na^{-1}\sum_{|B|=a}w_B
+ \qquad\text{for every }A\in S(n,a).
+\]
+Continuity of the finite moment polynomial shows that the original ratio is
+at most the ratio for constant nonnegative coefficients.  Their Fourier
+extension is a scalar multiple of $K_a$, proving \eqref{eq:level}.
+
+Finally, for arbitrary $f$, orthogonality gives
+\[
+ \|\Pi_af\|_{2m}
+ \leq \frac{\|K_a\|_{2m}}{\|K_a\|_2}\|\Pi_af\|_2
+ \leq \frac{\|K_a\|_{2m}}{\|K_a\|_2}\|f\|_2.
+\]
+Equality is attained at $f=K_a$, which proves \eqref{eq:projection} and
+the second assertion in the source question.
+\end{proof}
+
+\section{Verification, literature boundary, and limitations}
+
+The proof was checked in three independent ways.  First, direct numerical
+optimization over every tested level through $n=7$, for moments
+$p=4,6,8$, returned the constant-magnitude coefficient orbit.  Second,
+20,000 random pair-compression tests in each of nine configurations through
+$p=10$ found no decrease.  Third, the block formula was checked directly
+against enumeration of parity strings.  These computations are sanity
+checks only; the proof is the exact parity-tensor argument above.
+
+The case $p=4$ is not new: Aaronson proved exact constant-coefficient
+extremality for additive energy \cite{Aaronson}, answering a formulation of
+Kirshner--Samorodnitsky \cite{KS18}.  Kirshner--Samorodnitsky later obtained
+general-$p$ moment bounds that are asymptotically tight up to lower-order
+factors \cite{KS19}; that work does not state the exact all-even-moment
+identity above.  Bounded searches through 13 August 2026 used the exact
+source wording, ``Krawtchouk extremizer'', ``even moments'', higher additive
+energy, and the citation neighborhood of arXiv:1805.05295.  No exact
+all-even-$p$ theorem was found.  Novelty confidence is therefore moderate,
+not definitive.
+
+The theorem addresses only the even exponents explicitly proposed in the
+source.  It makes no claim for non-even $p>2$, where the polynomial
+expansion and parity compression are unavailable; the source already notes
+failure of the analogous symmetry assertion at degree one for
+$2<p<3$.  It also does not classify all equality cases.
+
+\begin{thebibliography}{9}
+\bibitem{Source}
+Y.~Polyanskiy,
+\emph{Hypercontractivity of spherical averages in Hamming space},
+arXiv:1309.3014.
+
+\bibitem{Aaronson}
+J.~Aaronson,
+\emph{Functions with large additive energy supported on a Hamming sphere},
+arXiv:1805.05295, 2018.
+
+\bibitem{KS18}
+N.~Kirshner and A.~Samorodnitsky,
+\emph{On the $\ell_4:\ell_2$ ratio of functions with restricted Fourier
+support}, arXiv:1801.08507.
+
+\bibitem{KS19}
+N.~Kirshner and A.~Samorodnitsky,
+\emph{A moment ratio bound for polynomials and some extremal properties of
+Krawtchouk polynomials and Hamming spheres}, arXiv:1909.11929.
+\end{thebibliography}
+
+\end{document}

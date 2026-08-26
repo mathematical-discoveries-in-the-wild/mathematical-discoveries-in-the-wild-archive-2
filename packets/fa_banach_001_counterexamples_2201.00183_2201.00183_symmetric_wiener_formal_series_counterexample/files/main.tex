@@ -1,0 +1,165 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.92in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{remark}{Remark}
+\newcommand{\D}{\mathbb D}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+
+\title{A Counterexample to Formal Elementary-Symmetric Convergence\\
+in the Analytic Wiener Algebra}
+\author{Run fa\_banach\_001, agent\_lane\_16}
+\date{2026-08-12}
+
+\begin{document}
+\maketitle
+
+\section*{Source question and answer}
+
+For the elementary symmetrization map
+\[
+ \pi:\D^d\longrightarrow\C^d,
+ \qquad \pi(z)=(s_1(z),\ldots,s_d(z)),
+\]
+Section 7.1 of Sasane, arXiv:2201.00183, asks the following.  Given
+$f\in W^+_{\rm sym}(\D^d)$, decompose $f=\sum_{k\ge0}p_k$ into
+homogeneous symmetric polynomials and write each $p_k$ as a polynomial
+in $s_1,\ldots,s_d$.  Does the resulting formal series
+$g\in\C[[s_1,\ldots,s_d]]$ converge on a domain
+containing $\pi(\D^d)$, so that $f=g\circ\pi$?
+
+Under the standard meaning of convergence of a multivariable power series,
+the answer is \emph{no}.  In fact, the illustrative function printed
+immediately after the question is already a counterexample.  There is still
+a corrected positive result: retaining the transformed polynomials as
+weighted-homogeneous blocks always gives a locally uniformly convergent
+holomorphic factor on $\pi(\D^d)$.
+
+\section*{Proof Intuition}
+
+The original Wiener norm sees the coefficient mass of a symmetric polynomial
+\emph{before} changing coordinates.  Rewriting in $s_1,s_2$ can create large
+coefficients which cancel inside each polynomial block.  Along the diagonal
+$z=w=r$, the block values remain small, but taking absolute values of their
+individual monomials replaces cancellation by a binomial sum.  That sum has
+exponential base $3r^2$, which exceeds one well inside the bidisc.  A power
+series cannot converge on an open set through such a point.
+
+\begin{theorem}[full negative answer in dimension two]\label{thm:counter}
+Let
+\begin{equation}\label{eq:f}
+ f(z,w)=\sum_{n=1}^{\infty}\frac{(z^2+w^2)^n}{n^2 2^n}.
+\end{equation}
+Then $f\in W^+_{\rm sym}(\D^2)$.  Under $s_1=z+w$, $s_2=zw$, the
+formal series prescribed by the source is
+\begin{equation}\label{eq:g}
+ g(s_1,s_2)=\sum_{n=1}^{\infty}\sum_{k=0}^n
+ \frac{1}{n^2 2^n}\binom nk(-2)^k
+ s_1^{,2n-2k}s_2^k.
+\end{equation}
+This series fails to converge absolutely at points of the symmetrized
+bidisc $G_2:=\pi(\D^2)$.  Consequently it has no power-series convergence
+domain containing $G_2$.
+\end{theorem}
+
+\begin{proof}
+The monomials belonging to different $n$ in \eqref{eq:f} have different
+total degrees.  Hence there is no cross-block coefficient cancellation and
+\[
+ \|f\|_1=\sum_{n=1}^{\infty}
+ \frac{\|(z^2+w^2)^n\|_1}{n^2 2^n}
+ =\sum_{n=1}^{\infty}\frac{2^n}{n^2 2^n}
+ =\sum_{n=1}^{\infty}\frac1{n^2}<\infty.
+\]
+The function is symmetric.  The identity
+$z^2+w^2=s_1^2-2s_2$ and the binomial theorem give \eqref{eq:g}.
+
+Fix $r\in(1/\sqrt3,1)$ and take $(z,w)=(r,r)$.  Its image
+$(s_1,s_2)=(2r,r^2)$ lies in $G_2$.  The sum of the absolute values of
+all monomials in the $n$th block of \eqref{eq:g}, evaluated there, is
+\begin{align*}
+ &\frac1{n^2 2^n}\sum_{k=0}^n\binom nk
+ 2^k(2r)^{2n-2k}(r^2)^k\\
+ &\hspace{3cm}=\frac{(4r^2+2r^2)^n}{n^2 2^n}
+ =\frac{(3r^2)^n}{n^2}.
+\end{align*}
+These quantities do not even tend to zero because $3r^2>1$.
+Also, a monomial with exponents $(2n-2k,k)$ has weighted degree
+$(2n-2k)+2k=2n$, so distinct pairs $(n,k)$ give distinct monomials;
+the calculation does not overcount coefficients which later combine.
+
+A multivariable power series is absolutely and locally uniformly convergent
+throughout the interior of its convergence set.  Thus \eqref{eq:g} cannot
+converge on any domain containing the open set $G_2$.
+\end{proof}
+
+For the concrete choice $r=3/4$, the absolute $n$th block is
+$(27/16)^n/n^2$.
+
+\section*{What remains true: block factorization}
+
+The negative answer concerns the formal \emph{monomial} series, not the
+existence of a holomorphic factor.
+
+\begin{proposition}[corrected positive statement]\label{prop:block}
+For every $d<\infty$ and every
+\[
+ f(z)=\sum_{\alpha\in\N_0^d}c_\alpha z^\alpha
+ \in W^+_{\rm sym}(\D^d),
+\]
+let $p_k=\sum_{|\alpha|=k}c_\alpha z^\alpha$ and let $Q_k$ be the
+unique polynomial satisfying $p_k=Q_k\circ\pi$.  Then
+\[
+ F(s):=\sum_{k=0}^{\infty}Q_k(s)
+\]
+converges locally uniformly on $G_d:=\pi(\D^d)$, defines a holomorphic
+function there, and satisfies $f=F\circ\pi$.
+\end{proposition}
+
+\begin{proof}
+The finite symmetrization map $\pi:\D^d\to G_d$ is proper.  Given a compact
+$K\subset G_d$, its preimage is compact in $\D^d$, so there is $\rho<1$
+such that $|z_j|\le\rho$ for every $z\in\pi^{-1}(K)$ and every $j$.
+For $s=\pi(z)\in K$,
+\[
+ |Q_k(s)|=|p_k(z)|
+ \le\rho^k\sum_{|\alpha|=k}|c_\alpha|.
+\]
+The Weierstrass test proves uniform convergence on $K$.  Every partial sum
+is a polynomial in $s$, so the limit is holomorphic.  Substitution gives
+$F(\pi(z))=\sum_kp_k(z)=f(z)$.
+\end{proof}
+
+For Theorem \ref{thm:counter}, the block factor is
+\[
+ F(s_1,s_2)=\sum_{n=1}^{\infty}
+ \frac{(s_1^2-2s_2)^n}{n^2 2^n}
+ =\operatorname{Li}_2\!\left(\frac{s_1^2-2s_2}{2}\right).
+\]
+It is holomorphic on $G_2$ because
+$(s_1^2-2s_2)/2=(z^2+w^2)/2$ has modulus less than one there.  At the
+diagonal points used above, the polynomial blocks converge by cancellation,
+while their monomial absolute values diverge.  This precisely separates
+Proposition \ref{prop:block} from the source's formal-series hope.
+
+\section*{Novelty and verification}
+
+Exact-id, title, formal-series, elementary-symmetric-variable, and
+symmetrized-polydisc searches were run in the local FA/Banach indexes and
+primary arXiv sources through 2026-08-12.  No later answer or duplicate
+packet was found.  The coefficient calculation was independently checked
+with exact rational arithmetic; the source question and its example occur
+on PDF pages 17--18.
+
+\section*{References}
+
+\begin{itemize}
+\item A. Sasane, \emph{Banach algebras of symmetric functions on the
+polydisc}, arXiv:2201.00183.
+\end{itemize}
+
+\end{document}

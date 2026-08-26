@@ -1,0 +1,197 @@
+\documentclass[11pt]{amsart}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\cn}{\operatorname{cn}}
+\newcommand{\cvd}{\operatorname{cvd}}
+\newcommand{\jp}{\operatorname{jp}}
+
+\title[Bounds for the graph completion number]{Chordal-deletion and joined-obstruction bounds for the completion number of a graph}
+\author{fa\_banach\_001, agent\_lane\_01}
+\date{2026-08-11}
+
+\begin{document}
+\maketitle
+
+\section*{Status and source problem}
+
+Bakonyi--Constantinescu \cite{BC} define the \emph{completion number}
+$\cn(G)$ as the least integer $k$ such that every partial positive Hermitian
+matrix with graph $G$ has a Hermitian completion with at most $k$ negative
+eigenvalues.  They ask for a graph-theoretic way to determine $\cn(G)$ and,
+more specifically, for characterizations of the graphs with prescribed
+completion number.
+
+This packet gives graph-theoretic lower and upper bounds that coincide on a
+large exact class.  It is a partial answer, not a full classification.
+
+\begin{center}
+\includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Definitions}
+
+A partial Hermitian matrix with graph $G$ has every diagonal entry specified
+and has the off-diagonal entry $a_{uv}$ specified exactly when $uv\in E(G)$.
+It is \emph{partial positive} if its principal matrix on every clique of $G$
+is positive semidefinite.
+
+Let $\cvd(G)$ be the \emph{chordal vertex-deletion number}:
+\[
+ \cvd(G)=\min\{|S|:S\subseteq V(G),\ G-S\text{ is chordal}\}.
+\]
+Define the \emph{joined-obstruction packing number} $\jp(G)$ to be the largest
+integer $r$ for which there are pairwise disjoint vertex sets
+$V_1,\ldots,V_r$ such that
+\begin{enumerate}
+\item every induced graph $G[V_i]$ is nonchordal; and
+\item for $i\ne j$, every vertex of $V_i$ is adjacent to every vertex of
+      $V_j$.
+\end{enumerate}
+Thus the induced graph on $V_1\cup\cdots\cup V_r$ is the complete join of
+the nonchordal induced graphs $G[V_i]$.
+
+\section*{Idea of the proof}
+
+For the upper bound, delete a smallest set $S$ making the graph chordal and
+positively complete the principal block outside $S$.  Restoring one deleted
+row and column can increase the negative index by at most one, by Cauchy
+interlacing.
+
+For the lower bound, place on each nonchordal joined block a partial positive
+matrix having no positive semidefinite completion.  Specify all cross-block
+entries to be zero.  Those entries exist because the blocks are completely
+joined.  Hence every completion contains a block-diagonal principal matrix
+with at least one negative eigenvalue in each diagonal block.
+
+\section*{The graph-theoretic sandwich}
+
+\begin{theorem}\label{thm:sandwich}
+For every finite undirected graph $G$,
+\[
+ \boxed{\qquad \jp(G)\leq \cn(G)\leq \cvd(G).\qquad}
+\]
+Consequently, if $\jp(G)=\cvd(G)$, then this common graph-theoretic value is
+the completion number of $G$.
+\end{theorem}
+
+\begin{proof}
+Set $k=\cvd(G)$ and choose $S\subseteq V(G)$ with $|S|=k$ such that
+$H=G-S$ is chordal.  Let $A$ be any partial positive matrix with graph $G$.
+Its restriction $A[H]$ is partial positive.  By the positive semidefinite
+completion theorem for chordal graphs \cite{GJSW}, it has a positive
+semidefinite completion $B$.
+
+Use $B$ for the principal block indexed by $V(G)\setminus S$, retain every
+specified entry of $A$ involving a vertex of $S$, and assign arbitrary values
+(say zero) to all remaining unspecified entries.  This gives a Hermitian
+completion $M$ of $A$ containing the positive semidefinite matrix $B$ as a
+principal submatrix of codimension $k$.  Repeated Cauchy interlacing yields
+\[
+ i_-(M)\leq i_-(B)+k=k.
+\]
+Since $A$ was arbitrary, $\cn(G)\leq\cvd(G)$.
+
+For the other inequality, let $V_1,\ldots,V_r$ witness $r=\jp(G)$ and write
+$H_i=G[V_i]$.  Because $H_i$ is nonchordal, the converse part of the chordal
+completion theorem gives a partial positive matrix $A_i$ with graph $H_i$
+that has no positive semidefinite completion \cite{GJSW,BC}.
+
+Construct a partial matrix $A$ with graph $G$ as follows.  Its restriction to
+$V_i$ is $A_i$.  Put $1$ on the diagonal at every vertex outside the union of
+the $V_i$, and put $0$ in every other specified off-diagonal position.  This
+includes every position joining $V_i$ to $V_j$, because the two blocks are
+completely adjacent.
+
+The matrix $A$ is partial positive.  Indeed, on a clique $K$ its specified
+principal matrix is the direct sum of the positive semidefinite clique
+restrictions $A_i[K\cap V_i]$ and scalar $1$ blocks for the remaining
+vertices.
+
+Let $M$ be any Hermitian completion of $A$.  Its principal submatrix on
+$V_1\cup\cdots\cup V_r$ is
+\[
+ M[V_1\cup\cdots\cup V_r]
+   =M_1\oplus\cdots\oplus M_r,
+\]
+because all cross-block entries were specified as zero.  Here each $M_i$ is a
+completion of $A_i$, so $i_-(M_i)\geq1$.  Therefore
+\[
+ i_-(M)\geq i_-(M[V_1\cup\cdots\cup V_r])
+ =\sum_{i=1}^r i_-(M_i)\geq r.
+\]
+Thus $\cn(G)\geq\jp(G)$.
+\end{proof}
+
+\section*{Exact classes}
+
+\begin{corollary}\label{cor:one}
+If $G$ is nonchordal and $G-v$ is chordal for some vertex $v$, then
+$\cn(G)=1$.
+\end{corollary}
+
+\begin{proof}
+Nonchordality gives $\jp(G)\geq1$, while the hypothesis gives
+$\cvd(G)\leq1$. Apply Theorem~\ref{thm:sandwich}.
+\end{proof}
+
+Every chordless cycle is covered by Corollary~\ref{cor:one}.  The source's
+graph on $4r$ vertices whose complement is a matching of size $2r$ is the
+join of $r$ chordless four-cycles.  Those factors witness $\jp(G)\geq r$, so
+Theorem~\ref{thm:sandwich} recovers the sharp lower bound in the source's
+exact calculation $\cn(G)=r$.
+
+\section*{Limitations and upgrade barrier}
+
+The bounds need not be equal.  A tempting strengthening would claim that a
+join of chordal graphs is chordal, but this is false: the join of two
+independent two-vertex graphs is $K_{2,2}$.  The checker caught the analogous
+failure for joins of cycles before promotion.
+
+For example, if $m,n\geq2$, then
+$K_{m,n}$ is nonchordal and
+\[
+ 1\leq\cn(K_{m,n})\leq\min(m-1,n-1).
+\]
+The upper value is its chordal vertex-deletion number, while the joined-
+obstruction construction gives only one block.  Ordinary vertex-disjoint
+induced cycles do not repair the lower bound: entries between such cycles may
+be unspecified, allowing a completion to couple their negative directions.
+This coupling phenomenon is the remaining obstruction to a full graph-
+theoretic characterization.
+
+\section*{Verification and novelty notes}
+
+The proof was audited separately at the three sensitive steps: extension of a
+partial positive matrix after completing the chordal block, preservation of
+partial positivity in the joined-obstruction construction, and additivity of
+negative inertia on the fully specified zero cross blocks.  A small brute-
+force graph checker verifies chordal-deletion number one for cycles and
+confirms that the join of two four-cycles has deletion number three, thereby
+falsifying the discarded join shortcut.  The proof does not depend on it.
+
+The local run indexes and arXiv source corpus had no duplicate.  On
+2026-08-11 an exact OpenAlex record lookup reported no citations to the source,
+and bounded exact-phrase searches found no later solution; searches were noisy
+because unrelated graph invariants share the phrase ``completion number.''
+Novelty confidence is moderate.
+
+\begin{thebibliography}{2}
+
+\bibitem{BC}
+M. Bakonyi and T. Constantinescu,
+\emph{Research problem: The completion number of a graph},
+arXiv:math/0312390 (2003).
+
+\bibitem{GJSW}
+R. Grone, C. R. Johnson, E. M. S\'{a}, and H. Wolkowicz,
+\emph{Positive definite completions of partial Hermitian matrices},
+Linear Algebra Appl. 58 (1984), 109--124.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,192 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newcommand{\R}{\mathbb R}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\spn}{\operatorname{sp}}
+
+\title{Exact optimal sparsity of real simplex tight frames via Haar matrices}
+\author{Run \texttt{fa\_banach\_001} --- lane 12}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+\emph{Literature-implied answer (complete real simplex tight-frame
+subfamily).}  The exact formula below is an agent-identified translation of
+Cheon--Shader's extremal theorem for sparse orthogonal matrices.  It is not a
+claim of a new theorem.  The translation settles the global optimal-sparsity
+problem for every real unit-norm tight frame of $n+1$ vectors in $\R^n$.
+
+\section{Source problem and later algorithmic status}
+
+Casazza et al., \emph{Optimally Sparse Frames}
+(arXiv:1009.3663), Section 5, printed pages 10--11 (PDF pages 10--11), asks
+whether and how Spectral Tetris extends when some eigenvalues are below $2$.
+It notes that larger DFT blocks do not always give globally optimally sparse
+frames, even for tight frames, and asks for an extension appropriate ``in the
+sense of optimal sparsity.''  The two source pages are reproduced below.
+
+\begin{center}
+\includegraphics[width=.95\textwidth]{figures/open_problem_page_10_crop.png}
+
+\medskip
+\includegraphics[width=.95\textwidth]{figures/open_problem_page_11_crop.png}
+\end{center}
+
+Casazza--Fickus--Heinecke--Wang--Zhou (arXiv:1108.4061) subsequently removed
+the spectral restriction.  Their Theorem 3.12 constructs a unit-norm frame
+with any positive prescribed spectrum satisfying the trace condition.  Their
+Section 3.2 explicitly warns, however, that the general construction does not
+in general produce the sparsest possible frame.  Thus the construction part
+of the source question was answered, while global optimal sparsity remained a
+separate issue.
+
+\section{Exact simplex result}
+
+For a synthesis matrix $F$, write $\spn(F)$ for its number of nonzero
+entries.  Changing the ambient orthonormal basis left-multiplies $F$ by an
+orthogonal matrix, so minimizing over all frames in the standard basis is
+equivalent to minimizing the source's basis-relative sparsity.
+
+\begin{theorem}[Exact simplex sparsity]
+Let $n\geq 1$, let $m=n+1$, and put
+\[
+ r=\lceil\log_2m\rceil.
+\]
+Among all real unit-norm tight frames of $m$ vectors in $\R^n$, the minimum
+number of nonzero synthesis-matrix entries is
+\begin{equation}\label{eq:simplex}
+ \sigma(m)=m(r+1)-2^r.
+\end{equation}
+A balanced (generally non-dyadic) Haar basis of the zero-sum hyperplane
+$\mathbf 1^\perp\subset\R^m$ attains the minimum.
+\end{theorem}
+
+\begin{proof}
+Let $F\in\R^{(m-1)\times m}$ be a unit-norm tight-frame synthesis matrix and
+set
+\[
+ U=\sqrt{\frac{m-1}{m}}F.
+\]
+Then $UU^{\mathsf T}=I_{m-1}$.  The matrix $P=U^{\mathsf T}U$ is a rank
+$m-1$ orthogonal projection whose diagonal entries are all $(m-1)/m$.
+Consequently $I-P=vv^{\mathsf T}$ for a unit vector $v$ with
+$|v_j|=m^{-1/2}$ for every $j$.  Choose a diagonal sign matrix $D$ such that
+$D\mathbf 1/\sqrt m=v$.  The matrix
+\[
+ Q=\begin{bmatrix}UD\\ m^{-1/2}\mathbf 1^{\mathsf T}\end{bmatrix}
+\]
+is orthogonal, has a full constant last row, and satisfies
+$\spn(Q)=\spn(F)+m$.
+
+Conversely, if an orthogonal $m\times m$ matrix has last row
+$m^{-1/2}\mathbf 1^{\mathsf T}$ and first $m-1$ rows $U$, then
+$F=\sqrt{m/(m-1)}U$ is a unit-norm tight-frame synthesis matrix: its rows are
+orthogonal with the required common square norm, and every column has norm
+one.  Therefore the frame problem is exactly the orthogonal-matrix problem,
+with the $m$ entries of the constant row removed.
+
+Cheon--Shader's main extremal theorem for orthogonal matrices with a full row
+(equivalently, after transposition, a full column) states that the minimum
+number of nonzero entries is
+\begin{equation}\label{eq:cheon}
+ f(m)=(\lfloor\log_2m\rfloor+3)m
+       -2^{\lfloor\log_2m\rfloor+1}
+     =m(r+2)-2^r.
+\end{equation}
+Their extremizers are Haar-type matrices, and the bound is attained with the
+full row constant.  Subtracting that row gives
+$\sigma(m)=f(m)-m$, which is \eqref{eq:simplex}.
+
+For completeness, the matching construction can be described directly.
+Take a full binary tree with $m$ leaves whose leaf depths differ by at most
+one.  For every internal node with leaf set $S=A\mathbin{\dot\cup}B$, use the
+unit vector supported on $S$ which is constant on $A$, constant with opposite
+sign on $B$, and has mean zero.  These $m-1$ vectors form an orthonormal basis
+of $\mathbf 1^\perp$.  If $r=\lceil\log_2m\rceil$, the tree has
+$2^r-m$ leaves at depth $r-1$ and $2m-2^r$ leaves at depth $r$.  The total
+support of its internal-node vectors equals the sum of the leaf depths,
+\[
+ (2^r-m)(r-1)+(2m-2^r)r=m(r+1)-2^r.
+\]
+Thus the construction realizes the lower bound with a constant full row.
+\end{proof}
+
+\section{Consequences for the low-redundancy question}
+
+The tight-frame eigenvalue is $m/(m-1)<2$ whenever $m\geq3$, precisely the
+regime excluded by the source paper's optimality theorem.
+
+If one formally extrapolates the source's high-redundancy tight-frame formula
+$N+2(n-\gcd(N,n))$ to $N=m$, $n=m-1$, it becomes $3m-4$.  The exact simplex
+formula agrees with it for $m=2,3,4$ and is strictly larger for every
+$m\geq5$.  Indeed,
+\[
+ \sigma(m)-(3m-4)=m(r-2)-2^r+4>0\qquad(m\geq5).
+\]
+Hence the high-redundancy formula cannot extend verbatim below redundancy
+$2$, even in the most rigid real tight-frame family.
+
+For the first new case, $m=5$ and $n=4$, the exact optimum is $12$, whereas
+the formal extrapolation is $11$.  An optimal orthonormal basis of
+$\mathbf 1^\perp\subset\R^5$ consists of the four vectors supported,
+respectively, on
+\[
+ \{1,2,3,4,5\},\quad \{1,2\},\quad \{3,4,5\},\quad \{4,5\},
+\]
+with the balanced Haar coefficients.  Scaling these rows by $\sqrt{5/4}$
+gives the desired five-vector unit-norm tight frame in $\R^4$ with
+$5+2+3+2=12$ nonzero entries.
+
+\section{Provenance, limitations, and review focus}
+
+The source paper does not cite Cheon--Shader, and Cheon--Shader predates the
+frame question.  The relation is the projection-completion identification in
+the proof above.  The supporting authors did not know they were answering the
+source problem.
+
+The exact result is limited to real simplex frames ($N=n+1$).  It does not
+settle optimal sparsity for arbitrary spectra below $2$, for general
+low-redundancy tight frames, for complex frames, or for the source's other
+questions about equiangularity and compressibility.  A bounded search covered
+the four run indexes, exact-title and formula searches, arXiv:1108.4061, and
+the later frame survey literature.  No frame-theory source explicitly making
+this simplex/Haar identification was found, but the decisive extremal theorem
+has been known since 2000.  The packet is therefore classified by literature
+provenance, not as a new partial solution.
+
+Human review should check the equivalence between simplex frames and
+orthogonal completions with a constant row, and the use of the exact
+Cheon--Shader extremal formula.  The latter is independently restated on page
+213 of Cheon--Hwang--Rim--Shader--Song (2003), which attributes it to the 2000
+Haar paper.
+
+\section*{References}
+
+\begin{enumerate}
+\item P. G. Casazza, A. Heinecke, F. Krahmer, and G. Kutyniok,
+\emph{Optimally Sparse Frames}, IEEE Trans. Inform. Theory 57 (2011),
+7279--7287; arXiv:1009.3663.  See Section 5, printed pages 10--11.
+
+\item G.-S. Cheon and B. L. Shader, \emph{Sparse orthogonal matrices and the
+Haar wavelet}, Discrete Applied Mathematics 101 (2000), 63--76,
+\href{https://doi.org/10.1016/S0166-218X(99)00182-1}{doi:10.1016/S0166-218X(99)00182-1}.
+
+\item G.-S. Cheon, S.-G. Hwang, S.-H. Rim, B. L. Shader, and S.-Z. Song,
+\emph{Sparse orthogonal matrices}, Linear Algebra Appl. 373 (2003),
+211--222.  See page 213 for the restatement of $f(m)$ and its attribution to
+the Haar paper.
+
+\item P. G. Casazza, M. Fickus, A. Heinecke, Y. Wang, and Z. Zhou,
+\emph{Spectral Tetris Fusion Frame Constructions}, J. Fourier Anal. Appl. 18
+(2012), 828--851; arXiv:1108.4061.  See Theorems 3.9 and 3.12 and Section 3.2.
+\end{enumerate}
+
+\end{document}

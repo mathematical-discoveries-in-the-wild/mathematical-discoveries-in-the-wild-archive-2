@@ -1,0 +1,337 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Rbar}{\overline{\mathbb R}}
+\newcommand{\BR}{\mathcal B_R}
+\newcommand{\AR}{\mathcal A_R}
+\newcommand{\diam}{\operatorname{diam}}
+\newcommand{\osc}{\operatorname{osc}}
+
+\title{\textbf{An exact finite-partition criterion for pointwise convergence into
+the regulated primitive space}}
+\author{Candidate full solution packet for arXiv:0911.2931}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{black}{gray!8}{\parbox{0.91\linewidth}{
+\textbf{Status.} Full solution to the literal pointwise-convergence question,
+likely valid.  The result is an intrinsic necessary-and-sufficient
+characterization; bounded literature searches found no later exact answer,
+but priority is not claimed.
+}}
+\end{center}
+
+\section{Source question}
+
+Erik Talvila's \emph{The regulated primitive integral}
+\cite{Talvila}, arXiv:0911.2931, defines
+\[
+ \BR=\left\{F:\R\to\R:
+ \begin{array}{l}
+ F\text{ is regulated and left continuous},\\
+ F(-\infty)=0,\quad F(\infty)\in\R
+ \end{array}\right\}.
+\]
+Members are regarded as real-valued functions on
+\(\Rbar=[-\infty,\infty]\), with the endpoint values equal to the respective
+limits.  In the convergence section, after giving several sufficient
+conditions, the paper states on PDF page~36:
+
+\begin{center}
+\includegraphics[width=0.96\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\noindent
+The central sentence asks for necessary and sufficient conditions for a
+sequence in \(\BR\) to converge to a function in \(\BR\).  The surrounding
+section makes clear that the convergence at issue is pointwise on
+\(\Rbar\).  The theorem below gives a condition involving only the sequence,
+not an already known candidate limit.
+
+\section{Asymptotic mixed diameter}
+
+Let \(\mathbf F=(F_n)_{n\geq1}\subset\BR\).  For a nonempty
+\(E\subset\Rbar\), define its \emph{asymptotic mixed diameter}
+\begin{equation}\label{eq:Delta}
+ \Delta_{\mathbf F}(E)
+ :=
+ \sup_{x,y\in E}
+ \lim_{N\to\infty}\ \sup_{n,m\geq N}
+       |F_n(x)-F_m(y)|.
+\end{equation}
+The inner limit exists in \([0,\infty]\), since the tail suprema decrease
+with \(N\).  The term mixed records that the two indices are independent.
+Most importantly, the index-tail limit is taken at fixed \(x,y\)
+\emph{before} the supremum over the spatial set.
+
+An \emph{admissible partition} is a finite chain
+\[
+ -\infty=a_0<a_1<\cdots<a_q=\infty,
+\]
+whose intermediate points are real.  Its cells are
+\begin{equation}\label{eq:cells}
+ I_1=[-\infty,a_1],
+ \qquad
+ I_j=(a_{j-1},a_j]\quad(2\leq j\leq q).
+\end{equation}
+The right-closed convention is the one naturally adapted to left
+continuity.
+
+\section{Proof intuition}
+
+At a fixed pair \(x,y\), pointwise convergence \(F_n\to F\) turns the
+two-index tail in \eqref{eq:Delta} into \(|F(x)-F(y)|\).  Hence
+\(\Delta_{\mathbf F}(E)\) becomes exactly \(\diam F(E)\).
+A left-continuous regulated function is precisely a uniform limit of finite
+step functions that are constant on cells of the form \eqref{eq:cells}.
+This makes small mixed diameter on a finite half-open partition necessary.
+
+For the reverse implication, a cell containing \(x\) bounds the tail
+diameter of the singleton \(\{x\}\), so the condition forces
+\((F_n(x))\) to be Cauchy at every point.  After taking the pointwise limit,
+the same cells have small ordinary diameter.  Choosing value \(0\) on the
+first cell and the limit's value at each later right endpoint builds
+left-continuous regulated step functions converging uniformly to the limit.
+This simultaneously enforces the two endpoint limits, all right limits, and
+left continuity.
+
+\section{The exact criterion}
+
+We first isolate the standard half-open step characterization.
+
+\begin{lemma}[Half-open step criterion]\label{lem:step}
+Let \(F:\Rbar\to\R\) be real-valued and suppose \(F(-\infty)=0\).
+Then \(F\in\BR\) if and only if, for every \(\varepsilon>0\), there is an
+admissible partition whose cells satisfy
+\[
+ \osc(F;I_j):=\sup_{x,y\in I_j}|F(x)-F(y)|<\varepsilon
+ \qquad(1\leq j\leq q).
+\]
+\end{lemma}
+
+\begin{proof}
+Suppose first that \(F\in\BR\).  A regulated function on the compactified
+line is a uniform limit of finite step functions
+\cite[\S7.13]{McLeod}; this is also the step-approximation fact used in
+\cite{Talvila}.  Because \(F\) is left continuous, the values of a step
+approximant at its finitely many breakpoints may be replaced by the constants
+on their left.  At the first cell one uses \(0=F(-\infty)\).  Letting points
+approach a breakpoint from the left shows that this modification does not
+increase the limiting approximation error.  After refining at all
+breakpoints, we obtain a left-continuous step function \(S\in\BR\), constant
+on cells of the form \eqref{eq:cells}, with
+\(\lVert F-S\rVert_\infty<\varepsilon/3\).  Thus
+\[
+ \osc(F;I_j)\leq 2\lVert F-S\rVert_\infty<\varepsilon.
+\]
+
+Conversely, choose such a partition with cell oscillations below
+\(\varepsilon\).  Define a step function by
+\[
+ S_\varepsilon(x)=
+ \begin{cases}
+  0,&x\in I_1,\\
+  F(a_j),&x\in I_j,\quad 2\leq j\leq q.
+ \end{cases}
+\]
+Since \(-\infty\in I_1\) and \(a_j\in I_j\), the oscillation bounds give
+\(\lVert F-S_\varepsilon\rVert_\infty<\varepsilon\).
+The half-open convention makes \(S_\varepsilon\) left continuous; it is
+regulated, equals \(0\) at the left endpoint, and is constant on a terminal
+neighborhood of \(+\infty\).  Thus \(S_\varepsilon\in\BR\).
+Taking \(\varepsilon\downarrow0\), uniform convergence preserves left
+continuity and transfers the Cauchy criteria for right limits and endpoint
+limits from \(S_\varepsilon\) to \(F\).  Therefore \(F\in\BR\).
+\end{proof}
+
+\begin{theorem}[Necessary and sufficient sequence criterion]\label{thm:main}
+For a sequence \(\mathbf F=(F_n)\subset\BR\), the following are equivalent.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item \(F_n\) converges pointwise on \(\Rbar\) to a function \(F\in\BR\).
+\item For every \(\varepsilon>0\), there is an admissible partition
+      \((a_0,\dots,a_q)\) such that
+      \[
+       \Delta_{\mathbf F}(I_j)<\varepsilon
+       \qquad(1\leq j\leq q).
+      \]
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\emph{(i) implies (ii).}
+Fix \(x,y\in\Rbar\).  Independent tail convergence at these two points gives
+\begin{equation}\label{eq:pointpair}
+ \lim_{N\to\infty}\sup_{n,m\geq N}|F_n(x)-F_m(y)|
+ =|F(x)-F(y)|.
+\end{equation}
+Indeed, the upper bound follows from
+\[
+ |F_n(x)-F_m(y)|
+ \leq |F_n(x)-F(x)|+|F(x)-F(y)|+|F(y)-F_m(y)|,
+\]
+and the reverse bound follows by applying the same inequality with the
+roles of the limit and the approximants reversed.
+Consequently,
+\begin{equation}\label{eq:diamidentity}
+ \Delta_{\mathbf F}(E)=\diam F(E)
+ \quad\text{for every nonempty }E\subset\Rbar.
+\end{equation}
+Lemma~\ref{lem:step}, applied with the prescribed \(\varepsilon\), now gives
+the required partition.
+
+\smallskip
+\noindent
+\emph{(ii) implies (i).}
+Fix \(x\in\Rbar\).  For every \(\varepsilon>0\), choose the partition in
+(ii) and let \(I_j\) be its cell containing \(x\).  Then
+\[
+ \lim_{N\to\infty}\sup_{n,m\geq N}|F_n(x)-F_m(x)|
+ =\Delta_{\mathbf F}(\{x\})
+ \leq\Delta_{\mathbf F}(I_j)<\varepsilon.
+\]
+Thus \((F_n(x))_n\) is Cauchy, and the completeness of \(\R\) defines a
+pointwise limit
+\[
+ F(x):=\lim_{n\to\infty}F_n(x)
+ \qquad(x\in\Rbar).
+\]
+In particular \(F(-\infty)=0\), because every \(F_n(-\infty)=0\).
+Identity \eqref{eq:pointpair}, and hence
+\eqref{eq:diamidentity}, now holds for this \(F\).
+Condition (ii) therefore gives, for every \(\varepsilon>0\), an admissible
+partition on whose cells \(\osc(F;I_j)<\varepsilon\).
+Lemma~\ref{lem:step} yields \(F\in\BR\), completing the proof.
+\end{proof}
+
+\begin{remark}[Metric-valued strengthening]
+Nothing in the proof uses linearity of the range.  With absolute value
+replaced by a metric, the theorem remains true for functions taking values
+in any complete metric space, with \(F(-\infty)\) fixed at a chosen
+basepoint.  In particular it holds for Banach-space-valued regulated
+primitives.
+\end{remark}
+
+\section{Why the order of operations is sharp}
+
+Define
+\[
+ F_n(x)=\mathbf 1_{(0,1/n]}(x),\qquad x\in\R,
+ \qquad F_n(\pm\infty)=0.
+\]
+Each \(F_n\) is regulated and left continuous, hence belongs to \(\BR\), and
+\(F_n(x)\to0\) at every \(x\in\Rbar\).  Therefore
+\(\Delta_{\mathbf F}(E)=0\) for every nonempty \(E\), so
+Theorem~\ref{thm:main}(ii) holds even with one cell.
+
+This example rules out several tempting stronger replacements:
+\begin{itemize}
+\item \(F_n(0+)=1\) for every \(n\), so convergence of right traces is not
+      necessary.
+\item No tail of the sequence is equiregulated at \(0\).
+\item If the spatial supremum is moved \emph{inside} the index tail,
+      \[
+       \widehat\Delta_{\mathbf F}(E)
+       :=\lim_{N\to\infty}
+       \sup_{\substack{n,m\geq N\\x,y\in E}}
+          |F_n(x)-F_m(y)|,
+      \]
+      then every finite admissible partition has a cell containing a
+      positive right-neighborhood of \(0\), and
+      \(\widehat\Delta_{\mathbf F}\) equals \(1\) on that cell.  Indeed, for
+      large \(n\), take \(x=1/(2n)\), \(y=2/n\), and \(m=n\).
+\end{itemize}
+Thus the index-limit-first ordering in \eqref{eq:Delta} is not cosmetic; it
+is what admits moving or shrinking boundary layers while still detecting
+the regularity of the pointwise limit.
+
+The source paper's escaping-mass example is also detected exactly.  If
+\(F_n(x)=H_1(x-n)\), then the pointwise values are \(0\) at every finite
+\(x\) but \(F_n(\infty)=1\).  On the terminal cell
+\((a_{q-1},\infty]\), equation \eqref{eq:Delta} compares a finite point with
+\(\infty\) and gives mixed diameter at least \(1\); condition (ii) fails.
+
+\section{Integral formulation}
+
+\begin{corollary}\label{cor:integral}
+Let \(f_n\in\AR\) have primitives \(F_n\in\BR\).  There is an
+\(f=F'\in\AR\) such that
+\[
+ \int_{(-\infty,x)}f_n\longrightarrow
+ \int_{(-\infty,x)}f
+ \qquad\text{for every }x\in(-\infty,\infty]
+\]
+if and only if the primitive sequence satisfies
+Theorem~\ref{thm:main}(ii).
+\end{corollary}
+
+\begin{proof}
+Under the conventions of \cite{Talvila},
+\(\int_{(-\infty,x)}f_n=F_n(x)\).  The claim is therefore exactly
+Theorem~\ref{thm:main}, followed by \(f=F'\).
+\end{proof}
+
+\section{Verification, scope, and novelty}
+
+\paragraph{Proof audit.}
+The proof has only three structural inputs: completeness of the scalar
+range, the fixed-pair identity \eqref{eq:pointpair}, and the elementary
+half-open step characterization in Lemma~\ref{lem:step}.  The first and last
+cells include the endpoint values, so the criterion enforces the endpoint
+limits rather than merely local regulation.  The right endpoint of each
+finite cell belongs to the cell on its left, which enforces left continuity
+while allowing an arbitrary right jump.
+
+\paragraph{Scope.}
+This is a full answer to the literal question of when a sequence in
+\(\BR\) converges pointwise on \(\Rbar\) to a member of \(\BR\).  It is an
+intrinsic characterization rather than a conveniently checkable domination,
+variation, or compactness hypothesis.  Stronger sufficient conditions in
+the source remain useful precisely because they may be easier to verify.
+
+\paragraph{Bounded novelty search.}
+On 17 August 2026, the run registry, solution/attempt/proof-gap indexes, and
+the local arXiv corpus were searched by arXiv id and by combinations of
+the phrases pointwise convergence, regulated functions, equiregulated,
+quasi-uniform, bounded epsilon-variation, and necessary and sufficient.
+Web searches used the exact source title and the same close phrases.  They
+found the source question, equiregulated sufficient criteria, and
+approximate-variation pointwise selection results, but no later paper
+stating an exact answer to this question.  Because the result is elementary
+and intrinsic, an equivalent standard formulation may exist outside the
+search bounds; novelty and priority are therefore not asserted.
+
+\paragraph{Human-review recommendation.}
+Verify first the quantifier/order choice in \eqref{eq:Delta}, then the
+half-open endpoint conventions in Lemma~\ref{lem:step}.  The shrinking-pulse
+example should be used as the quickest test that no hidden equiregulation or
+trace-convergence assumption has entered.
+
+\begin{thebibliography}{9}
+\bibitem{Talvila}
+E.~Talvila,
+\emph{The regulated primitive integral},
+Illinois J. Math. \textbf{53} (2009), no.~4, 1187--1219;
+\href{https://arxiv.org/abs/0911.2931}{arXiv:0911.2931}.
+
+\bibitem{McLeod}
+R.~M. McLeod,
+\emph{The Generalized Riemann Integral},
+Carus Mathematical Monographs 20,
+Mathematical Association of America, 1980.
+\end{thebibliography}
+
+\end{document}

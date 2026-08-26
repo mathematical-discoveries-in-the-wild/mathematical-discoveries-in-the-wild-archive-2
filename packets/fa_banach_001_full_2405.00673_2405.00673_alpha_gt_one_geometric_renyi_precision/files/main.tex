@@ -1,0 +1,256 @@
+\documentclass[10pt]{article}
+\usepackage[margin=0.76in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\Fh}{\widehat F}
+\newcommand{\Dh}{\widehat D}
+\newcommand{\eps}{\varepsilon}
+
+\title{Optimal precision dependence for geometric Rényi quasi-entropy\\
+in the previously open range $1<\alpha\leq2$}
+\author{Candidate full solution for \texttt{fa\_banach\_001}}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\paragraph{Status.}
+Candidate full solution, likely valid; human review recommended.  For every
+fixed $\alpha\in(1,2]$, the source algorithm's
+$\widetilde O_\alpha(1/\eps)$ precision dependence is optimal, even on
+commuting full-rank qubit states with constant condition bounds.  The same
+example also gives matching precision lower bounds for the logarithmic
+geometric Rényi entropy and a quadratic copy lower bound.
+
+\section{Source problem}
+
+Liu, Wang, Wilde, and Zhang define the geometric Rényi relative quasi-entropy
+of positive definite density matrices by
+\begin{equation}\label{eq:def}
+ \Fh_\alpha(\rho,\sigma)
+ =\Tr(\sigma\#_\alpha\rho)
+ =\Tr\!\left[\sigma
+   (\sigma^{-1/2}\rho\sigma^{-1/2})^\alpha\right],
+ \qquad \alpha\in(0,1)\cup(1,2].
+\end{equation}
+They construct an additive-$\eps$ estimator using
+$\widetilde O_\alpha(1/\eps)$ purification-oracle queries when the lower
+spectral bounds are fixed.  Their Lemma~20 proves a matching
+$\Omega_\alpha(1/\eps)$ lower bound for $0<\alpha<1$.  Immediately afterward
+they ask whether optimality still holds for $1<\alpha\leq2$
+\cite[PDF p.~24, after Lemma~20]{source}.
+
+\begin{figure}[ht]
+ \centering
+ \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+ \caption{The source's lower bound for $0<\alpha<1$ and the explicit open
+ problem for $1<\alpha\leq2$ (arXiv:2405.00673, PDF p.~24).}
+\end{figure}
+
+\paragraph{Transcription.}
+``It remains an open problem [whether] optimality still holds if
+$\alpha\in(1,2]$.''  The source notes that $\Fh_\alpha\geq1$ in this range
+and anticipates that different techniques may be required.
+
+\section{Idea of the proof}
+
+No new noncommutative construction is needed.  Use the source's own commuting
+Bernoulli hard pair and inspect the scalar target as the Bernoulli bias varies.
+The first derivative is nonzero on both sides of $\alpha=1$.  It changes sign
+when one keeps the source's ordering of the two hard instances, but query
+discrimination only uses the absolute output gap.  Reversing the decision
+threshold preserves a linear gap while the purification oracles remain only
+$O(t)$ apart in Hellinger distance.  Belovs' oracle-discrimination theorem then
+forces $\Omega(1/t)$ queries.  Taking $t\asymp_\alpha\eps$ proves the result.
+
+\section{Query lower bound}
+
+For $t\in[0,1/4]$, put
+\begin{equation}\label{eq:states}
+ \rho_t=\begin{pmatrix}(1+t)/2&0\\0&(1-t)/2\end{pmatrix},
+ \qquad
+ \eta=\begin{pmatrix}1/4&0\\0&3/4\end{pmatrix}.
+\end{equation}
+Both $\rho_t$ and $\eta$ dominate $I/4$.  Since they commute,
+\begin{align}
+ g_\alpha(t)
+ &:=\Fh_\alpha(\rho_t,\eta) \label{eq:g}\\
+ &=\left(\frac14\right)^{1-\alpha}
+       \left(\frac{1+t}{2}\right)^\alpha
+   +\left(\frac34\right)^{1-\alpha}
+       \left(\frac{1-t}{2}\right)^\alpha .\notag
+\end{align}
+
+\begin{lemma}[Linear separation]\label{lem:gap}
+For every fixed $\alpha>1$, there are constants $c_\alpha,t_\alpha>0$
+such that
+\[
+ g_\alpha(2t)-g_\alpha(t)\geq c_\alpha t
+ \qquad(0<t\leq t_\alpha).
+\]
+The same assertion holds with $g_\alpha$ replaced by
+$r_\alpha=(\alpha-1)^{-1}\log g_\alpha$.
+\end{lemma}
+
+\begin{proof}
+Differentiation at zero gives
+\begin{equation}\label{eq:derivative}
+ g_\alpha'(0)
+ =\alpha2^{-\alpha}\left[
+       \left(\frac14\right)^{1-\alpha}
+      -\left(\frac34\right)^{1-\alpha}\right]>0,
+\end{equation}
+because $1-\alpha<0$.  By continuity, $g_\alpha'(u)$ is bounded below by
+$g_\alpha'(0)/2$ on a sufficiently short interval $[0,2t_\alpha]$.
+Integrating over $[t,2t]$ proves the first assertion.  Moreover,
+\[
+ r_\alpha'(0)=\frac{g_\alpha'(0)}
+ { (\alpha-1)g_\alpha(0)}>0,
+\]
+so the identical continuity argument proves the second.
+\end{proof}
+
+We use the following query lower bound in precisely the oracle model used by
+the source.  If $p,q$ are classical distributions and unitary oracles prepare
+purifications with amplitudes $\sqrt{p_j}$ and $\sqrt{q_j}$, respectively,
+then distinguishing the two oracles with constant success probability takes
+$\Omega(1/H(p,q))$ queries, where
+\[
+ H(p,q)^2=\frac12\sum_j(\sqrt{p_j}-\sqrt{q_j})^2.
+\]
+This is Belovs' distribution-discrimination theorem
+\cite[Theorem~4]{belovs}, also quoted as the lower-bound input in the source.
+
+\begin{theorem}[Resolution of the open problem]\label{thm:main}
+Fix $\alpha\in(1,2]$.  Any quantum algorithm which, given purification
+oracles for $\rho$ and $\sigma$ satisfying $\rho,\sigma\geq I/4$, estimates
+$\Fh_\alpha(\rho,\sigma)$ to additive error $\eps$ with success probability
+at least $2/3$ requires
+\[
+ \Omega_\alpha(1/\eps)
+\]
+queries as $\eps\downarrow0$.
+\end{theorem}
+
+\begin{proof}
+Let $p_t=((1+t)/2,(1-t)/2)$, the eigenvalue distribution of $\rho_t$.
+For $0<t\leq1/4$, every coordinate of both $p_t$ and $p_{2t}$ is at least
+$1/4$.  Hence
+\begin{align*}
+ H(p_t,p_{2t})^2
+ &=\frac12\sum_{j=0}^1
+   \frac{(p_t(j)-p_{2t}(j))^2}
+        {(\sqrt{p_t(j)}+\sqrt{p_{2t}(j)})^2}
+ \leq \frac{t^2}{4},
+\end{align*}
+and in particular $H(p_t,p_{2t})\leq t$.
+
+Let an estimator as in the theorem have additive error $\eps$.  By
+Lemma~\ref{lem:gap}, for all sufficiently small $\eps$ we may choose
+$t=C_\alpha\eps$ so that $t\leq\min(t_\alpha,1/4)$ and
+\[
+ g_\alpha(2t)-g_\alpha(t)\geq4\eps.
+\]
+Give the estimator either a purification oracle for $\rho_t$ or one for
+$\rho_{2t}$ as its first input, and give it the fixed purification oracle for
+$\eta$ as its second input.  Comparing the output with the midpoint of
+$g_\alpha(t)$ and $g_\alpha(2t)$ distinguishes the two cases whenever the
+estimation succeeds.  Belovs' theorem therefore forces
+\[
+ \Omega(1/H(p_t,p_{2t}))=\Omega(1/t)=\Omega_\alpha(1/\eps)
+\]
+queries to the variable oracle, and hence at least that many total queries.
+All input states dominate $I/4$, as required.
+\end{proof}
+
+Combining Theorem~\ref{thm:main} with the source upper bound proves that, for
+every fixed $\alpha\in(1,2]$, the precision dependence is
+$\widetilde\Theta_\alpha(1/\eps)$.  The endpoint $\alpha=2$ is included.
+At the excluded point $\alpha=1$, $\Fh_1(\rho,\sigma)=\Tr\rho=1$, so the
+change at $\alpha=1$ is genuine rather than a defect of the construction.
+
+\section{Two strengthenings}
+
+The geometric Rényi entropy is
+\[
+ \Dh_\alpha(\rho\Vert\sigma)
+   =\frac{1}{\alpha-1}\log\Fh_\alpha(\rho,\sigma).
+\]
+The second part of Lemma~\ref{lem:gap}, followed verbatim by the proof of
+Theorem~\ref{thm:main}, gives the following.
+
+\begin{corollary}[Entropy precision]
+For each fixed $\alpha\in(1,2]$, additive-$\eps$ estimation of
+$\Dh_\alpha(\rho\Vert\sigma)$ from purification oracles requires
+$\Omega_\alpha(1/\eps)$ queries even for commuting qubit states dominating
+$I/4$.  Thus the source's $\widetilde O_\alpha(1/\eps)$ entropy algorithm also
+has optimal precision dependence.
+\end{corollary}
+
+\begin{corollary}[Copy lower bounds]
+For either $\Fh_\alpha$ or $\Dh_\alpha$, estimation to additive error $\eps$
+from copies of the input states requires $\Omega_\alpha(1/\eps^2)$ copies,
+under the same fixed-$\alpha$ and constant-conditioning assumptions.
+\end{corollary}
+
+\begin{proof}
+For product distributions,
+\[
+ H(p_t^{\otimes m},p_{2t}^{\otimes m})^2
+ =1-(1-H(p_t,p_{2t})^2)^m
+ \leq mH(p_t,p_{2t})^2\leq mt^2/4.
+\]
+Total variation is at most $\sqrt2$ times Hellinger distance.  Therefore a
+constant-bias distinction requires $m=\Omega(1/t^2)$.  The density matrices
+commute, so even an arbitrary joint quantum measurement on their tensor
+powers has exactly the corresponding classical trace-distance limitation.
+Taking $t\asymp_\alpha\eps$ as above proves the claim; copies of the fixed
+state $\eta$ convey no information about the case.
+\end{proof}
+
+\section{Verification, novelty, and limitations}
+
+The derivative, sign, entropy derivative, finite gaps, and Hellinger estimate
+were checked numerically for $\alpha=1.01,1.1,1.25,1.5,1.75,2$ and four scales
+$10^{-2}$ through $10^{-5}$ by \texttt{code/check\_hard\_instance.py}; all
+checks passed.  This finite computation is only a sanity check, not part of
+the proof.
+
+The novelty search covered the run registry and all cheap solution/attempt
+indexes; exact searches for the source's open sentence; searches combining
+``geometric Rényi relative quasi-entropy'', $\alpha>1$, quantum query
+complexity, and precision lower bounds; the current arXiv record; and the 2025
+npj Quantum Information publication.  Both current source versions still
+state the problem as open, and no later answer was found through 17 August
+2026.  The result is elementary and very close to the source proof, so expert
+review should focus on the purification-oracle convention and on confirming
+that the sign reversal was not handled under different notation elsewhere.
+
+The theorem concerns precision dependence for fixed $\alpha$ and constant
+spectral lower bounds.  It does not optimize dependence on $\alpha$, dimension,
+rank, or condition numbers, and it does not close the gap between the
+$\Omega(1/\eps^2)$ copy lower bound and the source's
+$\widetilde O(1/\eps^3)$ copy upper bound.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+N.~Liu, Q.~Wang, M.~M.~Wilde, and Z.~Zhang,
+\emph{Quantum algorithms for matrix geometric means}, arXiv:2405.00673;
+npj Quantum Information \textbf{11} (2025), Article 101.
+
+\bibitem{belovs}
+A.~Belovs,
+\emph{Quantum algorithms for classical probability distributions},
+Proceedings of the 27th Annual European Symposium on Algorithms (ESA 2019),
+LIPIcs 144, Article 16, 2019.
+\end{thebibliography}
+
+\end{document}
+

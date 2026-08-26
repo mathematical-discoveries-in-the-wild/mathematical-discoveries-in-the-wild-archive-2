@@ -1,0 +1,260 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\C}{\mathbb C}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\cH}{\mathcal H}
+
+\title{A blockwise Perron reduction for the massless XXZ quantum transfer matrix}
+\author{Candidate partial result for arXiv:2305.06679}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\linewidth}{\textbf{Status.} Candidate partial result,
+likely valid.  The global dominant-eigenvalue conjecture is \emph{not}
+claimed.  The result proves strict Perron dominance inside every conserved
+charge sector and reduces the conjecture to one cross-sector inequality.}}
+\end{center}
+
+\section{Source question}
+
+Faulmann, G\"ohmann, and Kozlowski study the quantum transfer matrix (QTM) of
+the massless antiferromagnetic XXZ chain \cite{FGK}.  Their Conjecture~1.2,
+on page 11 of the source PDF, asks whether for sufficiently large Trotter
+number $N$ and $T\geq a_N$ with $a_N\to0$, the QTM has one simple eigenvalue
+whose modulus is strictly larger than every other eigenvalue.  The same page
+also states their separate Conjecture~1.3 on interchange of the thermodynamic
+and Trotter limits.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\linewidth]{figures/open_problem_crop.png}
+\caption{The source conjectures on page 11 of arXiv:2305.06679.}
+\end{figure}
+
+The source proves maximality only inside the class of Bethe eigenvalues it
+constructs at low temperature.  The two global conjectures were previously
+proved at sufficiently high temperature \cite{GGKS}.
+
+\section{Setup}
+
+For real $p,q$ write
+\[
+ R(p,q)=
+ \begin{pmatrix}
+ p&0&0&0\\
+ 0&q&1&0\\
+ 0&1&q&0\\
+ 0&0&0&p
+ \end{pmatrix}.
+\]
+The source uses anisotropy $\eta=-i\zeta$, with $0<\zeta<\pi$, and
+\[
+ \aleph=-\frac{iJ\sin\zeta}{T}.
+\]
+At $\xi=0$ the R-matrix argument is $-\aleph/N=iu$, where
+\[
+ u=\frac{J\sin\zeta}{NT}.
+\]
+Consequently, direct substitution into the source normalization gives
+\[
+ R(iu)=R(a,-d),\qquad
+ a=\frac{\sin(\zeta-u)}{\sin\zeta},\qquad
+ d=\frac{\sin u}{\sin\zeta}.
+ \tag{2.1}
+\]
+When $0<u<\zeta$, both $a$ and $d$ are strictly positive.
+
+Let $X=\bigl(\begin{smallmatrix}0&1\\1&0\end{smallmatrix}\bigr)$ and
+$Z=\operatorname{diag}(1,-1)$.  The QTM acts on
+$\cH_q=(\C^2)^{\otimes 2N}$.  Denote by
+\[
+ S=\prod_{k=1}^N X_{2k},\qquad P=\prod_{j=1}^{2N}Z_j
+\]
+the even-site spin flip and total parity, respectively.  Let $\cH_m$ be the
+span of binary words with exactly $m$ ones.  Thus $P$ is the scalar $(-1)^m$
+on $\cH_m$.
+
+Define $V$ by the same auxiliary trace as the conjugated QTM, but replace the
+odd local tensor by $R(a,d)$ and the even local tensor by $R(d,a)$, retaining
+the positive auxiliary field factor
+$D_0=\exp\{h\sigma_0^z/(2T)\}$.  Explicitly, with the same ordering convention
+as the source,
+\[
+ V=\tr_0\!\left[
+ \prod_{k=N}^{1}R_{0,2k}(d,a)R_{0,2k-1}(a,d)\,D_0
+ \right].
+ \tag{2.2}
+\]
+This is a staggered six-vertex transfer matrix with strictly positive local
+Boltzmann weights.
+
+\section{Proof intuition}
+
+The negative local weight does not cause arbitrary cancellation.  After
+flipping the even Trotter spins, two elementary Pauli-$Z$ identities move all
+signs through the auxiliary product.  They telescope, leaving only total
+quantum parity.  Hence each conserved sector is a scalar sign times a
+nonnegative six-vertex block.
+
+That block is not entrywise positive, because the ice rule preserves particle
+number, but it is primitive.  A single transfer row can implement an adjacent
+swap $10\leftrightarrow01$ with two positive $c$-vertices; adjacent swaps
+connect all words with a fixed number of ones.  A no-swap row is a positive
+self-loop.  Perron--Frobenius therefore settles every fixed sector completely.
+What remains is not a sign or within-sector degeneracy problem: it is the
+strict comparison of the $2N+1$ sector Perron roots.
+
+\section{Blockwise Perron theorem}
+
+\begin{theorem}[signed primitive-sector reduction]\label{thm:main}
+Assume $J,T>0$, $0<\zeta<\pi$, and $0<u<\zeta$.  For the finite-Trotter QTM
+$t_q(0)$ of \cite{FGK}, the following hold.
+\begin{enumerate}
+\item There is the exact identity
+\[
+ S t_q(0)S=(-1)^N P V.
+ \tag{4.1}
+\]
+In particular, $V$ preserves every $\cH_m$, and the restriction of the QTM
+to the corresponding transformed sector is $(-1)^{N+m}V_m$, where
+$V_m=V|_{\cH_m}$.
+\item Every $V_m$ is primitive.  If $\rho_m>0$ is its Perron root, then
+$(-1)^{N+m}\rho_m$ is a simple QTM eigenvalue in that sector and every other
+eigenvalue $\lambda$ in the sector satisfies $|\lambda|<\rho_m$.
+\item The sector roots obey $\rho_m=\rho_{2N-m}$.  Therefore the QTM has a
+unique globally dominant eigenvalue if and only if
+\[
+ \rho_N>\rho_m\qquad(0\leq m\leq2N,\ m\neq N).
+ \tag{4.2}
+\]
+\end{enumerate}
+The hypothesis holds throughout the explicit conjectural threshold regime
+\[
+ T\geq a_N:=\frac{2J\sin\zeta}{N\zeta},
+ \tag{4.3}
+\]
+and $a_N\to0$.
+\end{theorem}
+
+\begin{proof}
+The source monodromy alternates $R_{0,2k-1}(iu)$ with the partial transpose
+$R_{2k,0}^{t_{2k}}(iu)$.  Direct multiplication gives
+\[
+ (X\otimes I)R(a,-d)^{t_1}(X\otimes I)=R(-d,a).
+ \tag{4.4}
+\]
+Thus conjugation by $S$ turns the odd/even local tensors into $R(a,-d)$ and
+$R(-d,a)$.
+
+In auxiliary--quantum tensor order, the two elementary sign identities are
+\begin{align}
+ R(a,-d)&=(I\otimes Z)R(a,d)(Z\otimes I),\tag{4.5}\\
+ R(-d,a)&=-(Z\otimes Z)R(d,a).\tag{4.6}
+\end{align}
+Insert these identities into each neighboring even--odd pair in the ordered
+monodromy.  The auxiliary $Z_0$ factors cancel between consecutive pairs.
+Quantum $Z_j$ factors on distinct sites commute past the other local pairs,
+leaving $(-1)^N P$ outside the auxiliary trace.  The two surviving endpoint
+$Z_0$ factors cancel by cyclicity of the trace and because $Z_0$ commutes with
+$D_0$.  This proves (4.1).  Ice-rule conservation gives the decomposition
+$V=\bigoplus_mV_m$, and $P|_{\cH_m}=(-1)^m I$.
+
+All six allowed local weights of $V$ are positive.  Fix $m$.  First,
+$(V_m)_{x,x}>0$ for every binary word $x$ with $m$ ones: keep the auxiliary
+arrow constant around the row and choose straight vertices.  Second, whenever
+$y$ is obtained from $x$ by an adjacent swap $10\mapsto01$, choose the
+auxiliary arrow so that it exchanges with the quantum arrow at the two
+adjacent sites and is constant elsewhere.  This produces two $c$-vertices
+and positive straight vertices, hence $(V_m)_{y,x}>0$.  The reverse swap is
+obtained in the same way.  Adjacent swaps on the cyclic word connect all
+$m$-particle configurations.  Therefore $V_m$ is irreducible; its positive
+diagonal makes it aperiodic, hence primitive.  The sectorwise spectral claims
+now follow from the Perron--Frobenius theorem \cite[Chapter~8]{HJ}.
+
+For completeness, define the permutation
+\[
+ U|x_1x_2\cdots x_{2N}\rangle
+   =|\overline{x}_{2N}\overline{x}_{2N-1}\cdots\overline{x}_1\rangle.
+\]
+A direct matrix-element substitution in (2.2) reverses the auxiliary loop,
+exchanges the odd and even weights, and complements the quantum arrows; each
+of the six local weights and the auxiliary twist is unchanged.  Hence
+$UVU=V$.  Since $U\cH_m=\cH_{2N-m}$, the blocks $V_m$ and $V_{2N-m}$ are
+permutation-similar and have equal Perron roots.
+
+If the global maximum occurred away from $m=N$, this symmetry would give it
+in two different sectors.  Consequently global simplicity and strict modulus
+dominance are equivalent to (4.2).  Finally, (4.3) implies $u\leq\zeta/2$,
+so $a,d>0$, and clearly $a_N\to0$.
+\end{proof}
+
+\section{Verification and failed upgrade}
+
+The included script constructs the QTM directly from the displayed monodromy,
+including tensor embeddings and the partial transpose.  At
+$(\zeta,T,h,J)=(1.1,1,0.7,1)$, the maximum entrywise residual in (4.1) is
+$0$, $2.23\cdot10^{-16}$, $4.45\cdot10^{-16}$, and
+$5.56\cdot10^{-16}$ for $N=1,2,3,4$, respectively.  A wider grid with
+$N\leq3$ confirms the predicted block signs and sectorwise gaps.  These
+finite computations check the implementation; they are not the proof.
+
+One plausible completion was a positive sector-raising map $U_m$ satisfying
+$V_{m+1}U_m\geq U_mV_m$ entrywise.  Such an inequality would imply
+$\rho_{m+1}\geq\rho_m$ by the Collatz--Wielandt principle.  A linear-program
+search over all positive inclusion-supported maps is infeasible already for
+$N=3$, $m=2\to3$.  Thus the simplest local raising argument does not prove
+(4.2).
+
+\section{Limitations and novelty check}
+
+The theorem does not prove (4.2), Conjecture~1.3, or the paper's separate
+Bethe-root classification conjecture.  It should therefore be reviewed only
+as a partial reduction.  The strongest remaining route appears to require a
+strict finite-size comparison of Perron roots for an alternating
+inhomogeneous six-vertex transfer matrix, or an equivalent surface-tension
+inequality.
+
+The bounded search included the source paper, the rigorous high-temperature
+paper \cite{GGKS}, exact-title and exact-conjecture searches, and searches for
+QTM positivity, Perron--Frobenius blocks, staggered signs, and inhomogeneous
+six-vertex dominant sectors.  It found homogeneous six-vertex sectorwise
+Perron results but no source stating (4.1)--(4.2) for this QTM.  Novelty
+confidence is moderate: the crossing/sign calculation may be familiar to
+specialists even though no matching rigorous statement was located.
+
+\paragraph{Human-review focus.}
+Check the tensor-leg order in (4.4), the telescoping in (4.5)--(4.6), and the
+positive realization of adjacent swaps, including the periodic boundary.
+Most importantly, do not read the packet as proving the unproved
+cross-sector inequality (4.2).
+
+\begin{thebibliography}{9}
+\bibitem{FGK}
+S.~Faulmann, F.~G\"ohmann, and K.~K.~Kozlowski,
+\emph{Low-temperature spectrum of the quantum transfer matrix of the XXZ
+chain in the massless regime}, arXiv:2305.06679.
+
+\bibitem{GGKS}
+F.~G\"ohmann, S.~Goomanee, K.~K.~Kozlowski, and J.~Suzuki,
+\emph{Thermodynamics of the spin-$1/2$ Heisenberg--Ising chain at high
+temperatures: a rigorous approach}, Comm. Math. Phys. \textbf{377} (2020),
+623--673; arXiv:1811.12020.
+
+\bibitem{HJ}
+R.~A.~Horn and C.~R.~Johnson, \emph{Matrix Analysis}, 2nd ed., Cambridge
+University Press, 2012.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,397 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{microtype}
+\usepackage{tikz}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\newcommand{\Om}{\Omega}
+\newcommand{\R}{\mathbb R}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\Tr}{\operatorname{Tr}}
+
+\title{A Rooms-and-Passages Domain with Discrete Steklov Spectrum\\but No Weyl Law}
+\author{Run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_08}}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{
+\textbf{Status.} Candidate counterexample, likely valid, pending expert
+review.  The proof is complete and has no numerical or unproved dependency.
+}}
+\end{center}
+
+\section{Source question}
+
+Karpukhin, Lagac\'e, and Polterovich ask in Remark 4.3 of
+\emph{Weyl's law for the Steklov problem on surfaces with rough boundary}
+\cite{KLP} whether there exist domains for which the Steklov spectrum is
+discrete but Weyl's law does not hold.  The remark appears on page 13 of the
+arXiv PDF.  In exact transcription, the question is:
+
+\begin{quote}
+``It would be interesting to understand if there exist domains for which the
+Steklov spectrum is discrete but the Weyl's law (1.2) does not hold.''
+\end{quote}
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+For a planar domain with finite boundary length, the asserted Weyl law is
+\begin{equation}\label{eq:weyl}
+ N_{\Om}(\sigma)=\frac{|\partial\Om|}{\pi}\sigma+o(\sigma),
+ \qquad \sigma\to\infty,
+\end{equation}
+where $N_{\Om}(\sigma)=\#\{k:\sigma_k(\Om)<\sigma\}$.
+
+We use the natural variational setup of the source paper.  The boundary
+Sobolev space $H^1_{\partial}(\Om)$ is the completion of the finite-norm
+piecewise-smooth functions under
+\begin{equation}\label{eq:bdy-norm}
+ \|u\|_{H^1_{\partial}(\Om)}^2
+ =\int_{\Om}|\nabla u|^2\dd x+\int_{\partial\Om}|u|^2\dd s.
+\end{equation}
+Its boundary map into $L^2(\partial\Om)$ is denoted by $\Tr$.  When this map
+is compact, the associated Steklov form has compact resolvent, and its
+eigenvalues have the min--max characterization
+\begin{equation}\label{eq:minmax}
+ \sigma_k(\Om)=\inf_{\dim E=k+1}\ \sup_{0\ne u\in E}
+ \frac{\int_{\Om}|\nabla u|^2\dd x}
+ {\int_{\partial\Om}|\Tr u|^2\dd s}.
+\end{equation}
+
+\section{Proof intuition}
+
+Attach infinitely many tiny rooms to a square through much thinner passages.
+A function supported in one room pays only the passage conductance
+$w_j/r_j$ in Dirichlet energy, while it receives boundary mass of order
+$r_j$ from the room walls.  Thus its Steklov quotient is roughly
+$w_j/r_j^2$.  We choose this to be merely $\log j$, producing far too many
+low Steklov eigenvalues for a linear counting law.
+
+The passages cannot be made arbitrarily thin without losing compactness of
+the trace.  Two effects govern the exact threshold.  A neck of width $w_j$
+leading to a room of size $r_j$ amplifies inlet boundary mass by $r_j/w_j$
+and energy by $r_j^2/w_j$.  Meanwhile an interval of length $w_j$ on the
+square carries at most $Cw_j\log(e/w_j)$ of the $L^2$ mass of a bounded
+$H^{1/2}$ trace.  With
+\[
+ r_j=e^{-j^2},\qquad w_j=r_j^2\log(j+1),
+\]
+the inlet tail is summable and the energy amplification tends to zero.  This
+is exactly enough for compactness, while the room test functions retain their
+logarithmic quotients.
+
+\section{The counterexample}
+
+Let $Q=(0,1)^2$.  For $j\ge3$, set
+\begin{equation}\label{eq:parameters}
+ x_j=2^{-j},\qquad r_j=e^{-j^2},\qquad
+ w_j=r_j^2\log(j+1).
+\end{equation}
+Above the interval
+\[
+ B_j=(x_j-w_j/2,x_j+w_j/2)\times\{1\}
+\]
+attach the passage and room
+\begin{align*}
+ P_j&=(x_j-w_j/2,x_j+w_j/2)\times(1,1+r_j),\\
+ R_j&=(x_j-r_j/2,x_j+r_j/2)\times(1+r_j,1+2r_j).
+\end{align*}
+Precisely, define
+\begin{equation}\label{eq:domain}
+ \Om=\operatorname{int}\!\left(
+ \overline Q\cup\bigcup_{j\ge3}(\overline P_j\cup\overline R_j)
+ \right).
+\end{equation}
+The pieces are mutually disjoint away from their intended seams: indeed
+$r_j=o(2^{-j})$.  They accumulate only at $(0,1)$, and their heights tend to
+zero.  Following the top boundary of $Q$ and detouring around each rectangular
+attachment therefore gives a simple closed curve.  Moreover,
+\[
+ |\partial\Om|\le 4+C\sum_{j\ge3}r_j<\infty.
+\]
+Thus $\Om$ is a bounded simply connected planar domain with rectifiable
+Jordan boundary.
+
+\begin{center}
+\begin{tikzpicture}[scale=1.05]
+  \draw[thick] (0,0) rectangle (8,1.5);
+  \draw[thick,fill=blue!8] (5.87,1.5) rectangle (5.93,2.45);
+  \draw[thick,fill=blue!8] (5.45,2.45) rectangle (6.35,3.35);
+  \draw[thick,fill=blue!8] (4.37,1.5) rectangle (4.41,2.15);
+  \draw[thick,fill=blue!8] (4.08,2.15) rectangle (4.70,2.77);
+  \draw[thick,fill=blue!8] (3.28,1.5) rectangle (3.31,1.96);
+  \draw[thick,fill=blue!8] (3.08,1.96) rectangle (3.51,2.39);
+  \node at (7.35,.75) {$Q$};
+  \node[align=center] at (6.95,2.88) {room\\$R_j$};
+  \draw[->] (6.55,2.82) -- (6.25,2.82);
+  \node[align=center] at (6.95,1.95) {passage\\$P_j$};
+  \draw[->] (6.5,1.94) -- (5.94,1.94);
+  \node[align=center] at (2.05,3.1) {attachments shrink and\\accumulate at $(0,1)$};
+  \draw[->] (1.45,2.78) -- (.35,1.57);
+\end{tikzpicture}
+\end{center}
+
+We next prove compactness of the trace.  Write $A_j=P_j\cup R_j$ and let
+$\Gamma_j=\partial\Om\cap\partial A_j$ be the external boundary of the
+$j$th attachment.
+
+\begin{lemma}[Critical interval estimate]\label{lem:critical}
+There is a constant $C$ such that, for every interval $I$ in one edge of
+$\partial Q$ with length $0<\delta\le1/2$ and every
+$v\in H^{1/2}(\partial Q)$,
+\begin{equation}\label{eq:critical}
+ \int_I|v|^2\dd s\le C\delta\log(e/\delta)
+ \|v\|_{H^{1/2}(\partial Q)}^2.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The one-dimensional critical Sobolev estimate gives, for every $p\ge2$,
+\begin{equation}\label{eq:lp}
+ \|v\|_{L^p(\partial Q)}\le C\sqrt p\,
+ \|v\|_{H^{1/2}(\partial Q)}.
+\end{equation}
+For completeness, parameterize the whole polygonal curve $\partial Q$ by
+arclength as a circle.  Hausdorff--Young and Cauchy--Schwarz then give
+\eqref{eq:lp}: the relevant weight
+sum is
+$\sum_n(1+|n|)^{-p/(p-2)}=O(p)$, and its resulting exponent is at most
+$1/2$.  H\"older's inequality now yields
+\[
+ \int_I|v|^2\dd s
+ \le \delta^{1-2/p}\|v\|_{L^p}^2
+ \le Cp\delta^{1-2/p}\|v\|_{H^{1/2}}^2.
+\]
+Take $p=2\log(e/\delta)$; then $\delta^{-2/p}$ is bounded by an absolute
+constant.  This proves \eqref{eq:critical}.
+\end{proof}
+
+\begin{lemma}[Uniform neck trace estimate]\label{lem:neck}
+Let a square room of side $r$ be joined to an inlet interval $B$ by a
+rectangular passage of length $r$ and width $w$, where $0<w\le r/2$.
+If $A$ is the room-passage union and $\Gamma$ is its external boundary, then
+every $u\in H^1(A)$ satisfies
+\begin{equation}\label{eq:neck}
+ \int_\Gamma|u|^2\dd s
+ \le C\left(
+ \frac rw\int_B|u|^2\dd s+
+ \frac{r^2}{w}\int_A|\nabla u|^2\dd x
+ \right),
+\end{equation}
+with an absolute constant $C$.
+\end{lemma}
+
+\begin{proof}
+Scale by $r$ and put $\eta=w/r$.  The passage becomes
+$C_\eta=(0,\eta)\times(0,1)$, with bottom inlet $B$ and top opening $T$.
+The one-dimensional fundamental theorem of calculus on each vertical line
+gives
+\begin{equation}\label{eq:corridor-volume}
+ \int_{C_\eta}|u|^2
+ \le 2\int_B|u|^2+2\int_{C_\eta}|\partial_yu|^2.
+\end{equation}
+The one-dimensional trace inequality on each horizontal cross-section,
+integrated in $y$, bounds the two vertical sides by
+\[
+ \frac C\eta\int_{C_\eta}|u|^2+C\eta
+ \int_{C_\eta}|\partial_xu|^2.
+\]
+The same vertical fundamental-theorem estimate bounds $\int_T|u|^2$ by
+$2\int_B|u|^2+2\int_{C_\eta}|\partial_yu|^2$.  Consequently the passage
+boundary and its top opening are bounded by
+\begin{equation}\label{eq:corridor}
+ \frac C\eta\left(\int_B|u|^2+
+ \int_{C_\eta}|\nabla u|^2\right).
+\end{equation}
+
+For the unit square room $S$, let $m$ be the mean of $u$ on $S$.  Standard
+Poincar\'e and trace inequalities give
+\[
+ \|u-m\|_{L^2(\partial S)}^2\le C\int_S|\nabla u|^2.
+\]
+Comparing $m$ with the mean of $u$ on the opening $T$, whose length is
+$\eta$, gives
+\[
+ |m|^2\le \frac C\eta\int_T|u|^2+
+ \frac C\eta\int_S|\nabla u|^2.
+\]
+It follows that the room boundary is bounded by the right side of
+\eqref{eq:corridor}, with the room energy added.  Hence, at unit scale,
+\[
+ \int_\Gamma|u|^2\le \frac C\eta
+ \left(\int_B|u|^2+\int_A|\nabla u|^2\right).
+\]
+Boundary measure scales by $r$, whereas two-dimensional Dirichlet energy is
+scale invariant.  Multiplying the last inequality by $r$ and using
+$\eta=w/r$ gives \eqref{eq:neck}.
+\end{proof}
+
+\begin{lemma}[Compact trace]\label{lem:compact}
+The boundary embedding
+\[
+ \Tr:H^1_{\partial}(\Om)\longrightarrow L^2(\partial\Om)
+\]
+is compact.  In particular, the natural Steklov spectrum of $\Om$ is
+discrete.
+\end{lemma}
+
+\begin{proof}
+We first work on the dense piecewise-smooth core.  The bottom edge of $Q$ is
+part of $\partial\Om$.  Poincar\'e's inequality anchored on that edge and the
+ordinary trace theorem on $Q$ imply
+\begin{equation}\label{eq:base-control}
+ \|u|_Q\|_{H^1(Q)}^2+
+ \|u|_{\partial Q}\|_{H^{1/2}(\partial Q)}^2
+ \le C\|u\|_{H^1_{\partial}(\Om)}^2.
+\end{equation}
+Apply Lemmas \ref{lem:critical} and \ref{lem:neck} to every attachment with
+$j\ge J$.  Since the $B_j$ are disjoint,
+\begin{align}
+ \sum_{j\ge J}\int_{\Gamma_j}|u|^2\dd s
+ &\le C\sum_{j\ge J}\frac{r_j}{w_j}
+       \int_{B_j}|u|^2\dd s
+   +C\sum_{j\ge J}\frac{r_j^2}{w_j}
+       \int_{A_j}|\nabla u|^2\dd x \notag\\
+ &\le C\left(\sum_{j\ge J}r_j\log(e/w_j)
+       +\sup_{j\ge J}\frac{r_j^2}{w_j}\right)
+       \|u\|_{H^1_{\partial}(\Om)}^2.\label{eq:tail}
+\end{align}
+For the parameters \eqref{eq:parameters},
+\[
+ \sum_{j\ge J}r_j\log(e/w_j)\longrightarrow0,
+ \qquad
+ \sup_{j\ge J}\frac{r_j^2}{w_j}
+ =\frac1{\log(J+1)}\longrightarrow0.
+\]
+Thus the $L^2$ trace outside any finite collection of attachments has
+uniformly vanishing operator norm.
+
+It remains to combine this with local compactness.  A sequence bounded in
+$H^1_{\partial}(\Om)$ is bounded in $H^1(Q)$ by
+\eqref{eq:base-control}.  It is also bounded in $H^1(A_j)$ for each fixed
+$j$, by the same Poincar\'e argument anchored on any fixed external side of
+$A_j$ (whose $L^2$ trace is part of \eqref{eq:bdy-norm}).
+The ordinary compact trace theorem on these finitely many polygonal pieces
+therefore gives a subsequence whose traces converge on the base boundary and
+on $\Gamma_3,\ldots,\Gamma_{J-1}$.  Estimate \eqref{eq:tail} makes the
+remaining trace uniformly small.  Hence this subsequence is Cauchy in
+$L^2(\partial\Om)$.
+
+All estimates are stable under the norm \eqref{eq:bdy-norm}, so they extend
+from the dense core to $H^1_{\partial}(\Om)$.  This proves compactness.  The
+standard closed-form construction, equivalently the variational setup
+\eqref{eq:minmax} used in \cite{KLP}, then gives compact resolvent and a
+discrete Steklov spectrum.
+\end{proof}
+
+\begin{theorem}\label{thm:main}
+The domain $\Om$ in \eqref{eq:domain} has discrete Steklov spectrum, but its
+counting function satisfies
+\begin{equation}\label{eq:limsup}
+ \limsup_{\sigma\to\infty}\frac{N_{\Om}(\sigma)}{\sigma}=\infty.
+\end{equation}
+In particular, the Weyl law \eqref{eq:weyl} fails.  This answers Remark 4.3
+of \cite{KLP} affirmatively.
+\end{theorem}
+
+\begin{proof}
+Discreteness follows from Lemma \ref{lem:compact}.  For $j\ge3$, define
+$u_j$ to be zero on $Q$ and on every other attachment, to increase linearly
+from $0$ to $1$ along the vertical coordinate of $P_j$, and to equal $1$ on
+$R_j$.  These continuous piecewise-affine functions belong to the natural
+boundary Sobolev space (or may be approximated there by smooth functions).
+Their Dirichlet energies are
+\begin{equation}\label{eq:energy}
+ \int_\Om|\nabla u_j|^2\dd x
+ =w_jr_j\frac1{r_j^2}
+ =\frac{w_j}{r_j}=r_j\log(j+1).
+\end{equation}
+The external boundary of the room has length $4r_j-w_j$ and carries value
+$1$.  The two passage sides contribute an additional
+$2\int_0^{r_j}(t/r_j)^2\dd t=2r_j/3$.  In particular,
+\begin{equation}\label{eq:mass}
+ \int_{\partial\Om}|u_j|^2\dd s\ge 3r_j,
+ \qquad
+ \frac{\int_\Om|\nabla u_j|^2}
+ {\int_{\partial\Om}|u_j|^2}\le\log(j+1).
+\end{equation}
+
+The functions have disjoint supports, so both the energy and boundary
+quadratic forms are diagonal on their span.  The $N$-dimensional space
+$E_N=\operatorname{span}\{u_3,\ldots,u_{N+2}\}$ therefore satisfies
+\[
+ \sup_{0\ne u\in E_N}
+ \frac{\int_\Om|\nabla u|^2}
+ {\int_{\partial\Om}|u|^2}
+ \le\log(N+3).
+\]
+The min--max formula \eqref{eq:minmax} gives
+\begin{equation}\label{eq:eigenbound}
+ \sigma_{N-1}(\Om)\le\log(N+3).
+\end{equation}
+Consequently, for $\tau_N=2\log(N+3)$ and all sufficiently large $N$,
+\[
+ N_{\Om}(\tau_N)\ge N,
+ \qquad
+ \frac{N_{\Om}(\tau_N)}{\tau_N}
+ \ge\frac{N}{2\log(N+3)}\longrightarrow\infty.
+\]
+This proves \eqref{eq:limsup}.  Since $0<|\partial\Om|<\infty$, it contradicts
+the finite limit $|\partial\Om|/\pi$ required by \eqref{eq:weyl}.
+\end{proof}
+
+\section{Verification notes and limitations}
+
+The construction satisfies every hypothesis in the source question:
+$\Om$ is a genuine bounded planar domain, its boundary is a finite-length
+Jordan curve, and its natural Steklov resolvent is compact by
+Lemma \ref{lem:compact}.  The exact Weyl conclusion fails by the quantitative
+lower bound \eqref{eq:limsup}; the failure is stronger than a wrong leading
+constant.
+
+No computational assertion or unproved lemma enters the proof.  The two
+review-sensitive points are the uniform scaling in Lemma \ref{lem:neck} and
+the extension of the tail estimate to the completed boundary Sobolev space.
+Both are written out explicitly.  The packet does not claim Weyl failure for
+ordinary $H^1(\Om)$ under an alternative trace convention; it uses precisely
+the natural rough-domain variational space selected in the source paper.
+
+\section{Novelty check}
+
+The run's registry, solution, attempt, and proof-gap indexes were searched for
+the arXiv id, source title, Steklov discreteness without Weyl asymptotics, and
+rooms-and-passages terminology.  No duplicate was found.  Bounded web searches
+on 9 August 2026 used the exact sentence from Remark 4.3 and variants of
+\texttt{Steklov spectrum discrete Weyl law counterexample} and
+\texttt{rooms and passages Steklov}.  They found the source paper and classical
+rooms-and-passages examples for other operators, but no later resolution of
+Remark 4.3 or matching Steklov example.  This establishes only bounded-search
+novelty, not an exhaustive literature guarantee.
+
+\section{Human-review recommendation}
+
+Review Lemmas \ref{lem:neck} and \ref{lem:compact} first.  If their trace-space
+implementation is accepted, the disjoint test functions and min--max
+contradiction are elementary, and the packet should be accepted as a full
+affirmative construction answering Remark 4.3.
+
+\begin{thebibliography}{9}
+
+\bibitem{KLP}
+M. Karpukhin, J. Lagac\'e, and I. Polterovich,
+\emph{Weyl's law for the Steklov problem on surfaces with rough boundary},
+arXiv:2204.05294 (2022), Remark 4.3.
+
+\end{thebibliography}
+
+\end{document}

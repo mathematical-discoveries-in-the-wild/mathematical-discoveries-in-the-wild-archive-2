@@ -1,0 +1,218 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Kinf}{\mathcal K_\infty}
+\newcommand{\id}{\mathrm{id}}
+
+\title{Monotone bounded invertibility is strictly weaker\\than the monotone limit property}
+\author{Autonomous mathematical discovery packet\\
+Run \texttt{fa\_banach\_001}, lane 0, \texttt{agent\_lane\_00}}
+\date{12 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Candidate full counterexample, likely valid, pending human review.  The proof
+is exact and has no computational dependency.}}
+\end{center}
+
+\section{Source question}
+
+Mironchenko, Kawan, and Gl\"uck~\cite{MKG} study, on an ordered Banach space
+$(X,X^+)$, the discrete-time inequality
+\begin{equation}\label{eq:system}
+ x(k+1)\leq A(x(k))+u(k).
+\end{equation}
+They say that \eqref{eq:system} has the \emph{monotone limit property (MLIM)}
+if some $\xi\in\Kinf$ has the following property: for every $\varepsilon>0$,
+every constant input $u(k)\equiv w\in X^+$, and every decreasing solution,
+there is an $N$ such that
+\[
+ \|x(N)\|\leq \varepsilon+\xi(\|w\|).
+\]
+They say that $\id-A$ has the \emph{monotone bounded invertibility (MBI)}
+property if some $\xi\in\Kinf$ satisfies
+\begin{equation}\label{eq:mbi}
+ (\id-A)(v)\leq w\quad\Longrightarrow\quad
+ \|v\|\leq\xi(\|w\|) \qquad(v,w\in X^+).
+\end{equation}
+After proving MLIM $\Rightarrow$ MBI, they ask whether MBI is strictly weaker
+than MLIM or whether the two properties are equivalent.  Figure~\ref{fig:source}
+records the exact passage.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.88\textwidth]{figures/open_problem_crop.png}
+\caption{The open question in arXiv:2007.05705, page 12.}
+\label{fig:source}
+\end{figure}
+
+\section{Proof intuition}
+
+The missing phenomenon is escape without norm convergence.  In
+$\ell_\infty^+$, successive tail indicators form a decreasing norm-one
+sequence.  A linear shift propagates these tails, but fails MBI because shallow
+ramps are approximate fixed points.  We replace its scalar edge map by a
+bistable nonlinear gain: values near zero contract quadratically, the value one
+propagates exactly, and large values contract affinely.  Small forcing is then
+trapped near zero, which gives MBI, while an unforced tail of ones still travels
+to infinity and violates MLIM.
+
+\section{Counterexample}
+
+Let $X=\ell_\infty(\N)$ with its usual norm and positive cone.  Define
+\begin{equation}\label{eq:g}
+ g(t):=
+ \begin{cases}
+ t^2,&0\leq t\leq1,\\
+ (t+1)/2,&t\geq1,
+ \end{cases}
+\qquad
+ (Ax)_1:=0,\quad (Ax)_{n+1}:=g(x_n).
+\end{equation}
+
+\begin{theorem}\label{thm:main}
+The map $g$ belongs to $\Kinf$, and
+$A:\ell_\infty^+\to\ell_\infty^+$ is a globally $2$-Lipschitz monotone
+operator.  Moreover:
+\begin{enumerate}[label=(\roman*)]
+\item $\id-A$ has the MBI property;
+\item the system \eqref{eq:system} does not have the MLIM property.
+\end{enumerate}
+Consequently, MBI is strictly weaker than MLIM, even for globally Lipschitz
+monotone max-type gain operators on $\ell_\infty^+$ whose nonzero edge gains
+belong to $\Kinf$.
+\end{theorem}
+
+\begin{proof}
+The two formulas in \eqref{eq:g} agree at one.  Each is strictly increasing,
+and their union is strictly increasing; also $g(0)=0$ and $g(t)\to\infty$.
+Thus $g\in\Kinf$.  Since the slopes are bounded in absolute value by two,
+$g$ is $2$-Lipschitz.  It follows coordinatewise that $A$ is well-defined,
+monotone, and $2$-Lipschitz on $\ell_\infty^+$.
+
+We prove MBI directly.  Suppose $v,w\in\ell_\infty^+$ and
+$(\id-A)(v)\leq w$, and put $\delta=\|w\|_\infty$.  Coordinatewise,
+\begin{equation}\label{eq:recurrence}
+ v_1\leq\delta,\qquad v_{n+1}\leq g(v_n)+\delta\quad(n\geq1).
+\end{equation}
+First assume $0\leq\delta\leq1/4$ and set
+\[
+ \alpha_\delta:=\frac{1-\sqrt{1-4\delta}}2
+ =\frac{2\delta}{1+\sqrt{1-4\delta}}.
+\]
+Then $\delta\leq\alpha_\delta\leq1/2$,
+$\alpha_\delta^2+\delta=\alpha_\delta$, and
+$\alpha_\delta\leq2\delta$.  Induction in \eqref{eq:recurrence} gives
+$v_n\leq\alpha_\delta$ for every $n$: the base case follows from
+$v_1\leq\delta$, and if $v_n\leq\alpha_\delta\leq1$, then
+\[
+ v_{n+1}\leq v_n^2+\delta
+ \leq\alpha_\delta^2+\delta=\alpha_\delta.
+\]
+Hence $\|v\|_\infty\leq2\delta$.
+
+Now assume $\delta\geq1/4$ and put $B_\delta=1+2\delta$.  Since
+$B_\delta\geq1$,
+\[
+ g(B_\delta)+\delta
+ =\frac{B_\delta+1}{2}+\delta=B_\delta.
+\]
+As $v_1\leq\delta\leq B_\delta$, monotonicity of $g$ and induction in
+\eqref{eq:recurrence} yield $v_n\leq B_\delta$ for all $n$.  Therefore
+$\|v\|_\infty\leq1+2\delta$.
+
+Define
+\begin{equation}\label{eq:xi}
+ \xi(r):=
+ \begin{cases}
+ 6r,&0\leq r\leq1/4,\\
+ 1+2r,&r\geq1/4.
+ \end{cases}
+\end{equation}
+The formulas agree at $r=1/4$, where both equal $3/2$.  Thus $\xi$ is
+continuous, strictly increasing, unbounded, and $\xi(0)=0$, so
+$\xi\in\Kinf$.  The preceding two bounds imply
+$\|v\|_\infty\leq\xi(\delta)$, proving \eqref{eq:mbi}.
+
+It remains to disprove MLIM.  For $k\geq0$, let
+\[
+ x(k)=(\underbrace{0,\ldots,0}_{k\text{ entries}},1,1,1,\ldots).
+\]
+Since $g(0)=0$ and $g(1)=1$, we have $x(k+1)=A(x(k))$.  Hence $x$ is a
+zero-input solution of \eqref{eq:system}.  It is decreasing in the cone order,
+but $\|x(k)\|_\infty=1$ for every $k$.  If MLIM held with any
+$\widetilde\xi\in\Kinf$, then applying it with $w=0$ and
+$\varepsilon=1/2$ would give some $N$ with
+\[
+ 1=\|x(N)\|_\infty\leq\frac12+\widetilde\xi(0)=\frac12,
+\]
+a contradiction.
+
+Finally, $A$ has the max-type gain-operator form: the only nonzero scalar gain
+entering coordinate $n+1$ is $\gamma_{n+1,n}=g$.  This proves the strengthened
+scope assertion.\qedhere
+\end{proof}
+
+\section{Why the positive results in the source do not apply}
+
+The standard positive cone of $\ell_\infty$ is normal and generating, but it
+does not have the Levi property: the decreasing sequence $x(k)$ above is not
+norm convergent.  The operator $A$ is not compact, because the sequence
+$A(x(k))=x(k+1)$ has no norm-convergent subsequence.  Thus the example lies
+exactly beyond the two additional hypotheses in Proposition 5.4 of~\cite{MKG}.
+It is nonlinear, so it also does not conflict with the source's equivalence
+theorem for positive linear operators.
+
+\section{Verification and novelty status}
+
+The companion script checks the scalar fixed-point identities, both invariant
+intervals, and long finite prefixes of the tail trajectory.  The proof itself
+is exact and does not depend on those computations.
+
+A bounded search through 12 August 2026 covered the exact arXiv id and title;
+the phrases ``MBI property'', ``MLIM property'', ``monotone bounded
+invertibility'', and ``monotone limit property''; and related later
+small-gain papers.  The current source of Kawan's arXiv:2503.03925v6~\cite{Kaw}
+was inspected because it studies closely related infinite-network MBI
+conditions.  No source located states this counterexample or resolves the
+exact additive MBI--MLIM question.  Novelty confidence is moderate pending
+expert review.
+
+\section{Human-review recommendation}
+
+High priority.  Verify the scalar invariant-interval argument, continuity of
+the piecewise function \eqref{eq:xi}, and the exact quantifiers in Definitions
+5.1--5.2 of~\cite{MKG}.  If confirmed, the example gives a full and unusually
+simple negative answer while showing that the Levi/compactness mechanism in
+Proposition 5.4 is essential.
+
+\begin{thebibliography}{9}
+\bibitem{MKG}
+A.~Mironchenko, C.~Kawan, and J.~Gl\"uck,
+\emph{Nonlinear small-gain theorems for input-to-state stability of infinite
+interconnections}, Mathematics of Control, Signals, and Systems 33 (2021),
+573--615; arXiv:2007.05705.
+
+\bibitem{Kaw}
+C.~Kawan,
+\emph{The Small-Gain Condition for Infinite Networks Modeled on
+$\ell^\infty$-Spaces}, arXiv:2503.03925v6 (2026).
+\end{thebibliography}
+
+\end{document}

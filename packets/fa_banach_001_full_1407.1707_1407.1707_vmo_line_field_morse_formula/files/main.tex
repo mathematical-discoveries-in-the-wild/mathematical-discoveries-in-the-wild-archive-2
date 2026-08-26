@@ -1,0 +1,495 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\E}{\mathcal E}
+\newcommand{\Q}{\mathcal Q}
+\newcommand{\VMO}{\mathrm{VMO}}
+\newcommand{\ind}{\operatorname{ind}}
+\newcommand{\Ind}{\operatorname{Ind}}
+\newcommand{\wind}{\operatorname{wind}}
+\newcommand{\Sym}{\operatorname{Sym}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\bd}{\partial}
+
+\title{A VMO Morse Formula and a Complete Boundary-Extension\\
+Criterion for Unoriented Line Fields on Surfaces}
+\author{Candidate solution packet for arXiv:1407.1707}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Candidate full solution, likely valid, awaiting expert review.  The theorem
+settles the proposed extension in the compact oriented surface/Q-tensor
+setting in which the source raises it.}}
+\end{center}
+
+\begin{abstract}
+Canevari, Segatti, and Veneroni prove a Morse index formula for VMO vector
+fields on manifolds with boundary and propose extending it to VMO line fields.
+For a compact oriented surface $N$, the Q-tensors representing unoriented
+lines form the oriented plane bundle
+$\E=\Sym^2_0(TN)$.  Its transition functions have twice the angle of those of
+$TN$, so $e(\E)=2e(TN)$.  We use this observation to define an intrinsic
+half-integer line index and a boundary winding index for VMO data.  We prove
+the exact formula
+\[
+  \ind_{\rm line}(Q,N)+\ind^{\rm line}_{\bd}(g)=\chi(N),
+\]
+and show that a bounded, uniformly positive VMO boundary line field $g$ has a
+bounded, uniformly positive VMO extension if and only if
+$\ind^{\rm line}_{\bd}(g)=\chi(N)$.  Thus the same invariant gives both the
+Morse formula and a complete prescribed-boundary characterization.
+\end{abstract}
+
+\section{Source question and precise scope}
+
+The source is G.~Canevari, A.~Segatti, and M.~Veneroni,
+\emph{Morse's index formula in VMO for compact manifolds with boundary},
+arXiv:1407.1707 \cite{CSV}.  At the start of its Q-tensor application in
+Section~4 (source PDF page~17), after saying that it restricts to surfaces without boundary, it
+states:
+\begin{quote}
+``Clearly, it would be interesting to extend Theorem [the VMO Morse theorem]
+to VMO line fields.''
+\end{quote}
+The complete source passage is reproduced in Figure~\ref{fig:source}.
+
+\begin{figure}[ht]
+  \centering
+  \IfFileExists{figures/open_problem_crop.png}{%
+    \includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}%
+  }{\fbox{\parbox{0.9\textwidth}{Source crop inserted after rendering the
+  official arXiv source.}}}
+  \caption{The proposal in Section~4 of arXiv:1407.1707.}
+  \label{fig:source}
+\end{figure}
+
+The surrounding section works with a compact connected oriented surface
+$N\subset\mathbb R^3$ and identifies a line field with a uniformly nonzero
+section of its Q-tensor bundle.  We solve exactly the corresponding problem
+when $N$ has boundary.  We also include the closed-surface specialization.
+For higher-dimensional manifolds, a line field is a section of
+$\mathbb P(TN)$ with fibre $\mathbb{RP}^{n-1}$; several obstruction groups can
+occur, so no all-dimensional one-integer classification is claimed here.
+
+The two explicit ``Question'' environments earlier in the source are not open
+targets: Propositions in the same paper answer them.  The present packet
+addresses only the separate line-field proposal quoted above.
+
+\section{Definitions and the boundary invariant}
+
+Let $N$ be a compact connected smooth oriented Riemannian surface.  Write
+$P_x$ for the orthogonal projection onto $T_xN$.  Intrinsically, set
+\[
+  \E:=\Sym^2_0(TN),
+\]
+the bundle of trace-free symmetric endomorphisms of $TN$.  If
+$N\subset\mathbb R^3$ is oriented with unit normal $\gamma$, this is precisely
+the source's bundle
+\[
+ \Q_x=\{Q\in\Sym_0(3):Q\gamma(x)=0\}.
+\]
+For a unit tangent vector $n$, define
+\begin{equation}\label{eq:qline}
+ q(n):=\sqrt2\left(n\otimes n-\frac12P\right).
+\end{equation}
+Then $|q(n)|=1$ and $q(n)=q(-n)$.  Conversely, a unit element of $\E_x$
+has a unique positive eigenspace, so the unit-circle bundle $S(\E)$ is
+canonically the bundle of unoriented tangent lines.
+
+Assume for now that $\bd N\ne\varnothing$.  Let $\nu$ be the outward unit
+normal to $\bd N$ inside $TN$, and orient each boundary component by the unit
+tangent $\tau$ for which $(\nu,\tau)$ is a positive frame of $TN$.  The
+canonical boundary line section is
+\begin{equation}\label{eq:qtau}
+ q_\tau:=q(\tau)\in S(\E|_{\bd N}).
+\end{equation}
+
+If $g$ is a continuous nonzero section of $\E|_{\bd N}$, normalize it to
+$\widehat g=g/|g|$.  The orientation and metric of $\E$ give a fibrewise
+quarter-turn $J_\E$.  There is a unique map $r_g:\bd N\to S^1$ such that
+\begin{equation}\label{eq:relativephase}
+ \widehat g=(\Re r_g)q_\tau+(\Im r_g)J_\E q_\tau.
+\end{equation}
+Define the total relative winding, with the induced orientations on all
+boundary components, by
+\begin{equation}\label{eq:wcontinuous}
+ w(g):=\sum_{C\subset\bd N}\deg(r_g|_C)\in\mathbb Z.
+\end{equation}
+
+For VMO data, we use the same averaging-and-fibre-projection convention as
+the source.  Namely, embed $\E$ smoothly in a trivial Euclidean bundle, take
+local averages of $g$ at scale $\varepsilon$, and project the result
+orthogonally to $\E_x$.  Denote the resulting continuous section by
+$g_\varepsilon$.  If
+\begin{equation}\label{eq:bounds-g}
+ g\in\VMO(\bd N,\E),\qquad 0<c\le |g|\le C<\infty\quad\text{a.e.},
+\end{equation}
+then $g_\varepsilon$ is nonzero for all sufficiently small $\varepsilon$, and
+$w(g_\varepsilon)$ is independent of that small scale.  We therefore set
+\begin{equation}\label{eq:wVMO}
+ w(g):=w(g_\varepsilon).
+\end{equation}
+The bundle-VMO lemma below proves that this is well-defined.  We likewise
+write $e(\E,g)$ for the stable relative Euler class
+$e(\E,g_\varepsilon)$ when $g$ is VMO.
+
+\begin{definition}[Line and boundary indices]\label{def:indices}
+Let $Q\in\VMO(N,\E)$ have VMO trace $g$ satisfying
+\eqref{eq:bounds-g}.  Let $Q_\varepsilon$ be a source-type continuous
+regularization, nonzero on $\bd N$.  Its ordinary plane-bundle index is the
+sum of the integer local degrees of a transverse perturbation, and is denoted
+$\Ind_\E(Q,N)$.  Define
+\begin{equation}\label{eq:lineindices}
+ \ind_{\rm line}(Q,N):=\frac12\Ind_\E(Q,N),
+ \qquad
+ \ind^{\rm line}_{\bd}(g):=-\frac12w(g).
+\end{equation}
+Both may be half-integers.  This is the standard normalization in which a
+half-strength nematic defect has line index $1/2$.
+\end{definition}
+
+\section{Idea of the proof}
+
+The sign ambiguity that blocks a literal ``points inward'' definition is
+removed by representing an unoriented line as the Q-tensor $q(n)$.  In an
+oriented tangent frame, rotating $n$ by $\theta$ rotates $q(n)$ by
+$2\theta$.  Thus the Q-bundle has twice the Euler class of $TN$.
+
+Along the boundary, the tangent line gives a canonical reference section
+$q_\tau$.  Relative to it, the boundary datum has an integer winding $w(g)$.
+The relative Euler number of the Q-bundle is exactly
+\[
+  2\chi(N)+w(g).
+\]
+It is also the total ordinary index of any Q-section with boundary value $g$.
+Dividing by two and moving the winding term to the left gives the desired
+Morse formula.
+
+The analytic VMO step introduces no new topological obstruction.  The
+source's local-average projection works for any smooth Euclidean subbundle,
+not only $TN$, so it applies to $\E$.  Uniform positivity prevents the
+regularized Q-fields from acquiring zeros.  Conversely, if the relative Euler
+number vanishes, average the VMO datum into a collar and use the vanishing
+Euler obstruction to extend the resulting continuous nonzero section over the
+two-dimensional core.  The glued field is VMO, has the prescribed trace, and
+can be radially clamped to uniform positive upper and lower bounds.
+
+\section{Topological calculation}
+
+\begin{lemma}[The doubled Euler bundle]\label{lem:double}
+The bundle $\E=\Sym^2_0(TN)$ is an oriented metric plane bundle.  With the
+orientations above,
+\begin{equation}\label{eq:relativeeulerqtau}
+ \left\langle e(\E,q_\tau),[N,\bd N]\right\rangle=2\chi(N).
+\end{equation}
+For any continuous nonzero boundary section $g$,
+\begin{equation}\label{eq:relativeeuler}
+ \left\langle e(\E,g),[N,\bd N]\right\rangle
+   =2\chi(N)+w(g).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+In a positively oriented orthonormal tangent frame $(e_1,e_2)$, use the
+orthonormal frame
+\begin{equation}\label{eq:Eframe}
+ A_1=\frac{e_1\otimes e_1-e_2\otimes e_2}{\sqrt2},
+ \qquad
+ A_2=\frac{e_1\otimes e_2+e_2\otimes e_1}{\sqrt2}
+\end{equation}
+of $\E$.  If $(e_1,e_2)$ is rotated through $\theta$, direct expansion shows
+that $(A_1,A_2)$ is rotated through $2\theta$.  Thus the oriented frame
+transition maps of $\E$ are the squares of those of $TN$.
+
+The relative Euler number of $(TN,\tau)$ is $\chi(N)$.  One way to see the
+sign is to apply the continuous Morse formula from \cite{CSV} to a tangent
+vector field whose boundary value is $\tau$: its inward boundary set is
+empty, so its total zero index is $\chi(N)$.  Squaring every transition map
+and the boundary clutching map doubles the obstruction cocycle.  Since
+$q(\tau)$ is precisely the squared boundary section, this proves
+\eqref{eq:relativeeulerqtau}.
+
+Changing a nonzero boundary section from $q_\tau$ to $g$ changes the relative
+Euler obstruction by the total degree of the transition map $r_g$ in
+\eqref{eq:relativephase}.  With the induced boundary orientation, the sign is
+positive.  For example, on the positively oriented disk $q_\tau$ has degree
+$2$ in a constant trivialization, while a constant section has relative
+winding $-2$ and relative Euler number $0$.  Hence
+\[
+ \langle e(\E,g),[N,\bd N]\rangle
+ =\langle e(\E,q_\tau),[N,\bd N]\rangle+\deg(r_g),
+\]
+which is \eqref{eq:relativeeuler}.
+\end{proof}
+
+\begin{lemma}[Relative index and extension]\label{lem:obstruction}
+Let $E\to M$ be an oriented metric plane bundle over a compact connected
+oriented surface with boundary, and let $h$ be a nonzero continuous section
+of $E|_{\bd M}$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item The total local index of any continuous extension, after a transverse
+perturbation fixed near the boundary, is
+$\langle e(E,h),[M,\bd M]\rangle$.
+\item The section $h$ extends to a continuous nowhere-zero section on $M$ if
+and only if this integer is zero.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Triangulate the pair $(M,\bd M)$ and normalize sections to the circle bundle
+$S(E)$.  Since $S^1$ is path connected, $h$ extends over the relative
+one-skeleton.  The winding around each oriented two-cell is the obstruction
+to extending over that cell.  These windings form a relative $2$-cocycle with
+values in $\pi_1(S^1)=\mathbb Z$; its class is the relative Euler class.
+For a transverse section, the same cell degrees are the signed local zero
+indices, proving (i).
+
+There are no higher cells and no higher obstructions.  Thus a nonzero
+extension exists exactly when the relative obstruction class vanishes.  By
+Poincare--Lefschetz duality,
+$H^2(M,\bd M;\mathbb Z)\cong\mathbb Z$ for connected oriented $M$, and its
+evaluation on $[M,\bd M]$ detects the class.  This proves (ii).
+\end{proof}
+
+\section{The VMO passage}
+
+We isolate the precise analytic input.  It is the source's construction with
+the tangent bundle replaced by a smooth Euclidean subbundle.
+
+\begin{lemma}[VMO bundle regularization and collar]\label{lem:vmo}
+Let $E\to M$ be a smooth metric vector bundle embedded as a smooth subbundle
+of $M\times\mathbb R^m$.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item A VMO section with VMO trace admits continuous local-average
+regularizations obtained by orthogonal projection to $E_x$.  If the trace is
+bounded away from zero, the regularizations are uniformly nonzero on the
+boundary for small scales; their relative indices and boundary windings are
+then independent of the scale.
+\item If $s\in\VMO(M,E)$ satisfies $c\le |s|\le C$ almost everywhere, its
+regularizations satisfy $c/2\le |s_\varepsilon|\le 2C$ everywhere for all
+sufficiently small $\varepsilon$.
+\item If $h\in\VMO(\bd M,E|_{\bd M})$ satisfies
+$c\le |h|\le C$, then on a sufficiently thin collar
+$\Phi:\bd M\times[0,r]\to M$ there is a VMO section $H$, continuous away
+from $\bd M$, with trace $h$, with $H|_{\Phi(\bd M\times\{r\})}$ continuous,
+and with $c/3\le |H|\le3C$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+We indicate why the proofs in Sections~3--4 of \cite{CSV} apply without a
+hidden tangent-vector assumption.  In local coordinates, average the ambient
+$\mathbb R^m$-valued representative and apply the orthogonal projection
+$P_{E_x}$.  The map $x\mapsto P_{E_x}$ is smooth.  The error made by replacing
+$P_{E_y}$ by $P_{E_x}$ on a ball of radius $\varepsilon$ is therefore
+$o(1)$ uniformly; the remaining error is exactly the VMO mean oscillation.
+The trace construction on the double gives uniform compatibility between the
+interior and boundary regularizations.  Homotopy invariance then makes the
+indices constant for small scale.  These are precisely the ingredients used
+for the tangent bundle in the source.
+
+For (b), on every sufficiently small ball $B$,
+\[
+ |s_B|\ge \frac1{|B|}\int_B|s|-\frac1{|B|}\int_B|s-s_B|
+ \ge c-o(1),
+\]
+uniformly in the centre, and smooth fibre projection changes this by another
+$o(1)$.  The upper bound is analogous.
+
+For (c), put $x=\Phi(y,t)$ and take
+\[
+ H(x)=P_{E_x}\left(\frac1{|B_t^{\bd M}(y)|}
+                 \int_{B_t^{\bd M}(y)}h(z)\dd z\right),\qquad t>0.
+\]
+The VMO oscillation estimate gives the stated bounds and continuity for
+$t>0$.  The standard VMO collar lemma proved in \cite{CSV} says that this
+averaging extension has trace $h$ and is VMO across $t=0$; composition with
+the smooth family $P_{E_x}$ preserves those properties.  This proves (c).
+\end{proof}
+
+\section{Morse formula and full characterization}
+
+\begin{theorem}[VMO Morse formula for line fields]\label{thm:morse}
+Let $N$ be a compact connected oriented smooth surface with nonempty boundary,
+and put $\E=\Sym^2_0(TN)$.  Let $Q\in\VMO(N,\E)$ have VMO trace
+$g\in\VMO(\bd N,\E)$ satisfying $0<c\le |g|\le C$.  Then the indices in
+Definition~\ref{def:indices} are well-defined and satisfy
+\begin{equation}\label{eq:morse}
+ \boxed{\quad
+ \ind_{\rm line}(Q,N)+\ind^{\rm line}_{\bd}(g)=\chi(N).
+ \quad}
+\end{equation}
+Equivalently,
+\begin{equation}\label{eq:integerformula}
+ \Ind_\E(Q,N)=2\chi(N)+w(g).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Lemma~\ref{lem:vmo}(a) gives a continuous regularization $Q_\varepsilon$ that
+is nonzero on the boundary and has boundary value homotopic through nonzero
+sections to $g_\varepsilon$.  By Lemma~\ref{lem:obstruction}(i), its total
+integer index is
+\[
+ \Ind_\E(Q,N)=\langle e(\E,g_\varepsilon),[N,\bd N]\rangle.
+\]
+Lemma~\ref{lem:double} and the definition of the stable VMO winding give
+\[
+ \Ind_\E(Q,N)=2\chi(N)+w(g).
+\]
+Dividing by two and using \eqref{eq:lineindices} proves \eqref{eq:morse}.
+\end{proof}
+
+\begin{theorem}[Prescribed-boundary characterization]\label{thm:extension}
+Under the hypotheses of Theorem~\ref{thm:morse}, assume only that the boundary
+datum $g$ is given.  The following are equivalent:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item There exists $Q\in\VMO(N,\E)$ with trace $g$ and constants
+$0<c'\le C'<\infty$ such that
+\[
+ c'\le |Q(x)|\le C'\quad\text{for almost every }x\in N.
+\]
+Thus $Q$ is a bounded, uniformly positive VMO line field.
+\item The boundary line index satisfies
+\begin{equation}\label{eq:criterion-index}
+ \ind^{\rm line}_{\bd}(g)=\chi(N).
+\end{equation}
+\item The explicit winding condition
+\begin{equation}\label{eq:criterion-winding}
+ 2\chi(N)+w(g)=0
+\end{equation}
+holds.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+The equivalence of (ii) and (iii) is the definition of the boundary index.
+If (i) holds, Lemma~\ref{lem:vmo}(b) makes all sufficiently small
+regularizations nonzero on the whole of $N$.  Hence
+$\Ind_\E(Q,N)=0$, and Theorem~\ref{thm:morse} gives (ii).
+
+Assume (iii).  Apply Lemma~\ref{lem:vmo}(c) to extend $g$ as a uniformly
+nonzero VMO section $H$ over a collar $U_r$.  On the inner collar boundary
+$C_r$, the section $h=H|_{C_r}$ is continuous and nonzero.  Let
+$N_r=N\setminus U_r$.  Additivity of the relative Euler obstruction under
+gluing and the absence of zeros in the collar give
+\[
+ \langle e(\E|_{N_r},h),[N_r,C_r]\rangle
+ =\langle e(\E,g),[N,\bd N]\rangle
+ =2\chi(N)+w(g)=0.
+\]
+By Lemma~\ref{lem:obstruction}(ii), $h$ extends over $N_r$ to a continuous
+nowhere-zero section $K$.  Glue $K$ to $H$.  The result is VMO, has trace
+$g$, and is uniformly positive and bounded because $N_r$ is compact and both
+pieces are nonzero.
+
+If desired, compose fibrewise with a Lipschitz radial clamping map that is the
+identity on the essential range of $g$.  This preserves VMO and the trace and
+gives any convenient finite positive bounds.  Thus (i) holds.
+\end{proof}
+
+\begin{corollary}[Closed surfaces]\label{cor:closed}
+If $N$ is compact, connected, oriented, and has no boundary, every VMO
+Q-field for which the line index is defined satisfies
+\[
+ \ind_{\rm line}(Q,N)=\chi(N).
+\]
+In particular, a bounded uniformly positive VMO line field exists if and only
+if $\chi(N)=0$.
+\end{corollary}
+
+\begin{proof}
+The ordinary total index of a section of $\E$ is
+$\langle e(\E),[N]\rangle=2\chi(N)$ by the double-angle calculation in
+Lemma~\ref{lem:double}.  Divide by two.  Necessity for a nonzero VMO line
+field follows from Lemma~\ref{lem:vmo}(b), and sufficiency when $\chi(N)=0$
+is the closed-surface rank-two obstruction statement (or the source's
+continuous Poincare--Kneiser theorem, whose continuous section is VMO).
+\end{proof}
+
+\section{Checks, examples, and limitations}
+
+\paragraph{Disk sign check.}
+Trivialize $TN$ on the unit disk by the Cartesian frame.  Along the positively
+oriented circle, $\tau(\theta)=(-\sin\theta,\cos\theta)$, so $q_\tau$ has
+phase $2\theta+\pi$ and degree $2$.  A constant boundary Q-field has relative
+winding $-2$ and extends constantly.  Formula \eqref{eq:relativeeuler} gives
+$2\chi(D^2)-2=0$, as required.
+
+\paragraph{Annulus check.}
+The induced orientations on the two boundary circles are opposite, and
+$\chi=0$.  The contributions of $q_\tau$ cancel.  A constant Q-field has
+$w=0$ and extends, again agreeing with the criterion.
+
+\paragraph{Gauge invariance.}
+Changing an auxiliary tangent frame by angle $\alpha$ changes Q-coordinates
+by $2\alpha$ for both $g$ and $q_\tau$.  Their relative phase, hence $w(g)$,
+is unchanged.
+
+\paragraph{Scope.}
+The result is complete for the compact oriented surface/Q-tensor problem
+posed by the surrounding source section.  It does not classify line fields on
+nonorientable surfaces or arbitrary higher-dimensional manifolds.  The latter
+is generally an obstruction-theory problem for $\mathbb P(TN)$ rather than a
+single Euler-number formula.
+
+\paragraph{Novelty check.}
+Exact-phrase and close-variant web/arXiv searches, the run indexes, and the
+complete OpenAlex citing-work list for the published source were checked on
+11 August 2026.  No later explicit solution of this VMO boundary problem was
+found.  The continuous relative-Euler ingredients are classical; the novelty
+claim concerns their exact line-field normalization and the VMO
+trace/extension theorem.  See \texttt{novelty\_search.md} for the search
+bounds.
+
+\paragraph{Computational sanity check.}
+The included script \texttt{code/verify\_transition\_and\_winding.py} verifies
+the double-angle matrix identity and the disk/annulus winding signs on a dense
+mesh.  These computations are checks, not part of the proof.
+
+\section{Human-review recommendation}
+
+This packet should receive expert review as a full candidate.  The most useful
+checks are:
+\begin{enumerate}
+\item verify the sign in
+$\langle e(\E,g),[N,\bd N]\rangle=2\chi(N)+w(g)$ under the stated boundary
+orientation;
+\item confirm that the source's double/trace and collar arguments depend only
+on a smooth Euclidean subbundle and therefore apply to $\E$;
+\item verify the gluing identification of the relative Euler class on the
+collar core;
+\item compare the term ``extend Theorem to VMO line fields'' with the source
+authors' intended defect-index normalization.
+\end{enumerate}
+
+\begin{thebibliography}{9}
+\bibitem{CSV}
+G.~Canevari, A.~Segatti, and M.~Veneroni,
+\emph{Morse's index formula in VMO for compact manifolds with boundary},
+Journal of Functional Analysis 269 (2015), 3043--3082;
+arXiv:1407.1707.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,222 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\SO}{\operatorname{SO}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\rank}{\operatorname{rank}}
+
+\title{A counterexample to the simultaneous-rotation orbit lemma\\
+in arXiv:1307.3206}
+\author{Candidate full counterexample packet}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\textbf{Status: candidate counterexample, likely valid pending expert review.}
+\end{center}
+
+\begin{abstract}
+Dann and Zymonopoulou assert that the orbit of every vector in
+$\R^{\kappa n}$ under simultaneous block rotation by $\SO(\kappa)$ is a
+$(\kappa-1)$-sphere whose linear span has dimension $\kappa$.  We give a
+minimal counterexample: for $\kappa=3$, $n=2$, the orbit of $(e_1,e_2)$
+spans all of $\R^3\oplus\R^3$.  More generally, if the $n$ blocks form a
+$\kappa\times n$ matrix $X$ of rank $r$, then for every $\kappa\geq3$ the
+orbit span has dimension $\kappa r$.  Consequently the paper's subspace
+$H_x^\perp$ has variable dimension and the ensuing fixed-codimension
+``hyperplane'' and intersection-body construction does not work as stated.
+The separately formulated $L_{-p}$ embedding question remains open; we do
+not claim a resolution of it.
+\end{abstract}
+
+\section{Source assertion}
+
+The source is S.~Dann and M.~Zymonopoulou, \emph{Intersection Bodies with
+Certain Symmetries}, arXiv:1307.3206v2, published under the title
+\emph{Sections of Convex Bodies with Symmetries} \cite{DannZym}.  Write a
+vector $x\in\R^{\kappa n}$ as $n$ consecutive blocks
+$v_1,\ldots,v_n\in\R^\kappa$.  The paper defines
+\[
+ R_\sigma(x)=(\sigma v_1,\ldots,\sigma v_n),
+ \qquad \sigma\in\SO(\kappa).
+\]
+Lemma~1 on PDF page~4 asserts that
+$\{R_\sigma(x):\sigma\in\SO(\kappa)\}$ is always a
+$(\kappa-1)$-sphere, that its span $H_x^\perp$ always has dimension
+$\kappa$, and that $H_x=(H_x^\perp)^\perp$ always has dimension
+$\kappa n-\kappa$.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.96\textwidth]{figures/lemma1_crop.png}
+  \caption{Lemma 1 and its proof in arXiv:1307.3206v2, PDF page 4.}
+\end{figure}
+
+The proof checks only the special rank-one vector $(0,\ldots,0,1)$.
+Simultaneous left rotation is not transitive on the unit sphere of
+$\R^{\kappa n}$: it preserves the Gram matrix of the blocks, and in
+particular their linear rank.
+
+\section{Idea of the counterexample}
+
+Regard $x$ as the matrix $X=[v_1\ \cdots\ v_n]\in M_{\kappa,n}(\R)$.
+Then $R_\sigma(x)$ is simply $\sigma X$.  When $X$ has two independent
+columns, its orbit retains their mutual inner products and is an orbit of
+orthonormal frames, not a sphere.  For $X=[e_1\ e_2]\in M_{3,2}(\R)$,
+six rotations give orbit points whose sums and differences are the six
+coordinate vectors of $\R^3\oplus\R^3$.
+
+The general calculation is equally short.  For $\kappa\geq3$, the linear
+span of the group $\SO(\kappa)$ is the full matrix algebra
+$M_\kappa(\R)$.  Hence the orbit span is $\{AX:A\in M_\kappa(\R)\}$.
+Each of its $\kappa$ rows can be chosen independently in the row space of
+$X$, giving dimension $\kappa\rank X$.
+
+\section{The concrete counterexample}
+
+\begin{proposition}\label{prop:counterexample}
+Let $\kappa=3$, $n=2$, and $X=[e_1\ e_2]$.  Then
+\[
+ \Span\{\sigma X:\sigma\in\SO(3)\}=M_{3,2}(\R)\cong\R^6.
+\]
+In particular the orbit is not a $2$-sphere spanning a $3$-plane.
+\end{proposition}
+
+\begin{proof}
+For every ordered orthonormal pair $(u,v)$ in $\R^3$, the matrix with
+columns $u,v,u\times v$ belongs to $\SO(3)$.  Thus the following six pairs
+are orbit points:
+\[
+ (e_1,e_2),\ (e_1,-e_2),\quad
+ (e_2,e_3),\ (e_2,-e_3),\quad
+ (e_3,e_1),\ (e_3,-e_1).
+\]
+Taking half-sums and half-differences of the two points in each pair gives
+\[
+ (e_1,0),(0,e_2),\quad
+ (e_2,0),(0,e_3),\quad
+ (e_3,0),(0,e_1).
+\]
+These are the six coordinate vectors of $\R^3\oplus\R^3$, so the orbit
+span is all of $\R^6$.  A $2$-sphere in a linear $3$-plane cannot have a
+six-dimensional span.
+\end{proof}
+
+Indeed, the orbit is the Stiefel manifold of ordered orthonormal $2$-frames
+in $\R^3$, which is diffeomorphic to $\SO(3)$ and has dimension $3$, rather
+than a $2$-sphere.
+
+\section{General corrected orbit-span formula}
+
+\begin{theorem}\label{thm:general}
+Let $\kappa\geq3$, let $X\in M_{\kappa,n}(\R)$ have rank $r$, and let
+$W\subseteq\R^n$ be its row space.  Then
+\[
+ \Span\{\sigma X:\sigma\in\SO(\kappa)\}
+ =\{Y\in M_{\kappa,n}(\R):\text{every row of $Y$ belongs to $W$}\}.
+\]
+Consequently
+\[
+ \dim\Span\{\sigma X:\sigma\in\SO(\kappa)\}=\kappa r,
+\]
+and the orthogonal complement has dimension $\kappa(n-r)$.
+\end{theorem}
+
+\begin{proof}
+First we show that $\Span\SO(\kappa)=M_\kappa(\R)$.  Let
+\[
+ \mathcal D=\{\operatorname{diag}(\varepsilon_1,\ldots,\varepsilon_\kappa):
+ \varepsilon_j\in\{-1,1\},\ \prod_j\varepsilon_j=1\}\subset\SO(\kappa).
+\]
+For $\kappa\geq3$, character cancellation in this finite sign group gives
+\[
+ E_{jj}=\frac1{|\mathcal D|}
+ \sum_{D_\varepsilon\in\mathcal D}\varepsilon_jD_\varepsilon.
+\]
+For each $i,j$, choose $Q_{ij}\in\SO(\kappa)$ with
+$Q_{ij}e_j=e_i$.  Since left multiplication by $Q_{ij}$ preserves the
+linear span of the group,
+\[
+ E_{ij}=Q_{ij}E_{jj}\in\Span\SO(\kappa).
+\]
+All matrix units therefore belong to this span.
+
+It follows that
+\[
+ \Span\{\sigma X:\sigma\in\SO(\kappa)\}
+ =\{AX:A\in M_\kappa(\R)\}.
+\]
+Every row of $AX$ is a linear combination of the rows of $X$, hence belongs
+to $W$.  Conversely, if every row of $Y$ belongs to $W$, choose the
+coefficients expressing each row of $Y$ in terms of the rows of $X$ and
+assemble them as the rows of a matrix $A$; then $Y=AX$.  The displayed
+space consists of $\kappa$ independently chosen rows in the $r$-dimensional
+space $W$, so its dimension is $\kappa r$.  Its orthogonal complement has
+dimension $\kappa n-\kappa r=\kappa(n-r)$.
+\end{proof}
+
+\begin{corollary}
+For $\kappa\geq3$, the dimension asserted in source Lemma~1 holds only when
+$X$ has rank one (apart from the zero vector).  For the rank-two matrix in
+Proposition~\ref{prop:counterexample}, the source's notation gives
+$H_x^\perp=\R^6$ and $H_x=\{0\}$, not two complementary $3$-planes.
+\end{corollary}
+
+\section{Consequences and scope}
+
+Immediately after Lemma~1, the paper calls $H_\xi$ a hyperplane in
+$\mathbb K^n$ for every unit vector $\xi$ and defines intersection bodies
+using the volumes of $D\cap H_\xi^\perp$ and $L\cap H_\xi$.  The next
+paragraph requires $D\cap H_\xi^\perp$ to be a $\kappa$-dimensional ball.
+Theorem~\ref{thm:general} shows instead that the two dimensions are
+$\kappa r$ and $\kappa(n-r)$, where $r$ is the rank of the block matrix of
+$\xi$.  They vary with $\xi$, and for $r>1$ the first section need not be a
+$\kappa$-ball.  Thus the defect is structural, not merely a faulty
+parametrization of a correct sphere.
+
+Later parallel-section arguments that take $H=H_\xi$ with fixed codimension
+$\kappa$, or identify the orbit with the unit sphere of $H_\xi^\perp$, need
+a new definition or an additional rank-one restriction.  In particular,
+the printed proof of the universal embedding range for $\kappa\geq3$ cannot
+be accepted from this route without repair.
+
+The source also asks whether every origin-symmetric $\kappa$-balanced convex
+body embeds in $L_{-p}$ for
+$p\in(\kappa n-\kappa,\kappa n-3)$ when $\kappa\geq4$.  That statement is
+well-defined independently of the subspaces $H_\xi$.  This packet neither
+proves nor disproves it; the full result here is the counterexample to the
+foundational orbit lemma and the exact replacement for its span formula.
+
+\section{Novelty check}
+
+The run's cheap indexes contained no packet for arXiv:1307.3206 or this orbit
+calculation.  Bounded searches on 9 August 2026 used the exact lemma, source
+title and identifier, and combinations with ``correction'', ``erratum'',
+``simultaneous rotation'', and ``$\kappa$-balanced''.  They found the source
+and its published record but no correction.  This supports possible novelty
+but is not exhaustive bibliographic certification.
+
+\begin{thebibliography}{9}
+
+\bibitem{DannZym}
+S.~Dann and M.~Zymonopoulou,
+\emph{Sections of Convex Bodies with Symmetries},
+Adv. Math. 271 (2015), 112--152; arXiv:1307.3206v2.
+
+\end{thebibliography}
+
+\end{document}

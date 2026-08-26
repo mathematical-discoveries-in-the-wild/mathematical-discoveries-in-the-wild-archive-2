@@ -1,0 +1,276 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,graphicx,hyperref,microtype}
+\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\G}{\mathcal G}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\per}{\operatorname{per}}
+
+\title{The first Hermite Gabor frame at rectangular density $4/7$\\
+\large A computer-assisted substantial partial result for arXiv:2403.10503}
+\author{Autonomous mathematical discovery run \texttt{fa\_banach\_001}, lane 8}
+\date{12 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+Candidate substantial partial result, likely valid.  The proof is exact apart
+from a finite outward-rounded interval computation supplied in
+\texttt{code/verify\_certificate.py}.  It proves one new rational hyperbola of
+the still-open $h_1$ frame-set conjecture; it does not settle the full
+conjecture.
+
+\section{Source question and scope}
+Faulhuber, Shafkulovska, and Zlotnikov ask whether, for an odd Hermite
+function $h_n$, the Gabor system is always a frame when the lattice covolume
+is less than one and differs from $N/(N+1)$ \cite[Introduction, p.~2]{FSZ}.
+They later state explicitly that $h_1$ is the only Hermite case for which the
+frame-set conjecture remains open \cite[p.~19]{FSZ}.  The two source excerpts
+are reproduced below.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/frame_set_conjecture_crop.png}
+  \caption{The frame-set questions in the source paper, PDF page 2.}
+\end{figure}
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{The source paper's explicit open-status statement for $h_1$, PDF
+  page 19.}
+\end{figure}
+
+For rectangular lattices $a\Z\times b\Z$, the conjecture specializes to
+\[
+  \G(h_1,a\Z\times b\Z)\text{ is a frame whenever }
+  ab<1,\qquad ab\ne\frac{N}{N+1}.
+\]
+The classical safety region is $ab<1/2$.  Lyubarskii and Nes proved the
+positive hyperbola $ab=3/5$ and the negative hyperbolas
+$ab=N/(N+1)$ \cite{LN}.  The theorem below adds the entire positive
+hyperbola $ab=4/7$.
+
+\section{Proof intuition}
+At rational density $p/q$, the frame question is equivalent to full row rank
+of a finite Zak-transform matrix.  For $p/q=4/7$, two carefully chosen
+$4\times4$ minors cover the two halves of the fundamental $x$-interval.
+After centering every Zak series at its nearest Gaussian term, each minor has
+one determinant monomial whose Gaussian exponent is uniformly smaller than
+that of every competitor.  A rigorous interval calculation at the square
+lattice shows that the total absolute mass of \emph{all} monomials is less
+than $1.078$ times the dominant one.  Consequently the remainder has size
+less than $0.078$ times the dominant monomial, so cancellation cannot make the
+minor vanish.  Exact exponent gaps show that this ratio only decreases as the
+time spacing increases; Fourier symmetry supplies the complementary aspect
+ratios.
+
+\section{The result}
+We use the harmless normalization
+\[
+ h_1(t)=t e^{-\pi t^2};
+\]
+multiplying the window by a nonzero constant does not affect the frame
+property.
+
+\begin{theorem}\label{thm:main}
+For every $a,b>0$ with $ab=4/7$, the rectangular Gabor system
+\[
+ \G(h_1,a\Z\times b\Z)
+ =\{e^{2\pi i b n(\cdot)}h_1(\cdot-am):m,n\in\Z\}
+\]
+is a frame for $L^2(\R)$.
+\end{theorem}
+
+\subsection{The rational rank criterion}
+For $L>0$, write
+\[
+ Z_Lg(u,\omega)=\sum_{k\in\Z}g(u-Lk)e^{2\pi i kL\omega}.
+\]
+Lyubarskii and Nes prove that if $ab=p/q$ in lowest terms, then
+$\G(g,a\Z\times b\Z)$ is a frame if and only if the $p\times q$ matrix
+\begin{equation}\label{eq:P}
+ P_{s,t}(x,\omega)
+ =Z_{aq}g\!\left(x+at+\frac{aq}{p}s,\omega\right),
+ \quad 0\le s<p,\quad0\le t<q,
+\end{equation}
+has rank $p$ throughout a fundamental rectangle
+\cite[Theorem 2]{LN}.  It is enough below to treat $0\le x<a/p$ and all
+$\omega$, because the matrix is quasiperiodic.
+
+\subsection{Two minors and their dominant terms}
+Set $p=4$, $q=7$, $y=x/a$, and first assume
+\begin{equation}\label{eq:a-large}
+ a\ge a_0:=\sqrt{4/7}.
+\end{equation}
+Thus $0\le y\le1/4$.  On $0\le y\le1/8$, select columns
+$(1,4,5,6)$ of \eqref{eq:P}; on $1/8\le y\le1/4$, select columns
+$(0,1,4,6)$.  After shifting the arguments by integer multiples of
+$7a$, the centered dimensionless arguments $a(y+B_{sj})$ are given by
+\begin{equation}\label{eq:Bminus}
+B_-=
+\begin{pmatrix}
+1&-3&-2&-1\\
+11/4&-5/4&-1/4&3/4\\
+-5/2&1/2&3/2&5/2\\
+-3/4&9/4&13/4&-11/4
+\end{pmatrix}
+\end{equation}
+on the first half, and
+\begin{equation}\label{eq:Bplus}
+B_+=
+\begin{pmatrix}
+0&1&-3&-1\\
+7/4&11/4&-5/4&3/4\\
+-7/2&-5/2&1/2&5/2\\
+-7/4&-3/4&9/4&-11/4
+\end{pmatrix}
+\end{equation}
+on the second.  The determinant permutation is written as a tuple whose
+$s$th entry is the chosen column index in these displayed matrices.  Choose
+\[
+ \sigma_-=(3,2,1,0),\qquad \sigma_+=(0,3,2,1).
+\]
+The monomial obtained from these permutations and the centered term of each
+Zak series will be called the dominant monomial.  Its magnitude is
+\begin{equation}\label{eq:D}
+ D_\pm(a,y)=a^4
+ \prod_{s=0}^3|y+(B_\pm)_{s,\sigma_\pm(s)}|
+ \exp\!\left(-\pi a^2
+ \sum_{s=0}^3(y+(B_\pm)_{s,\sigma_\pm(s)})^2\right).
+\end{equation}
+Every factor in \eqref{eq:D} has absolute value at least $1/8$ on its
+assigned half interval, so $D_\pm(a,y)>0$.
+
+For a selected entry with centered coefficient $c=y+B_{sj}$, put
+\[
+ A_{sj}(a,y)=a\sum_{k\in\Z}|c-7k|e^{-\pi a^2(c-7k)^2},
+ \qquad T_\pm(a,y)=\per(A(a,y)).
+\]
+Expanding both the determinant and every Zak series shows that
+$T_\pm$ is the sum of the absolute values of all determinant monomials,
+including the chosen monomial $D_\pm$.  Hence, for every $\omega$,
+\begin{equation}\label{eq:reverse-triangle}
+ |\det P_\pm(x,\omega)|
+ \ge D_\pm(a,y)-\bigl(T_\pm(a,y)-D_\pm(a,y)\bigr)
+ =2D_\pm(a,y)-T_\pm(a,y).
+\end{equation}
+
+\begin{lemma}[Certified dominance]\label{lem:certificate}
+On the respective half intervals,
+\[
+ \frac{T_\pm(a_0,y)}{D_\pm(a_0,y)}<1.077024<2.
+\]
+Moreover, $T_\pm(a,y)/D_\pm(a,y)$ is nonincreasing for $a\ge a_0$.
+\end{lemma}
+
+\begin{proof}
+The first assertion is a finite, outward-rounded interval certificate.  Each
+half interval is divided into 512 equal rational boxes.  On each box the
+script evaluates all $24$ permanent terms using 50-decimal interval
+arithmetic.  Five translates, $-2\le k\le2$, are evaluated directly.  Since
+$|c|\le27/8<7/2$, the omitted two-sided tail is bounded by
+\begin{equation}\label{eq:tail}
+ 2\left(Ae^{-\kappa A^2}
+ +\frac{e^{-\kappa A^2}}{14\kappa}\right),\qquad
+ \kappa=\frac{4\pi}{7},\quad A=\frac{35}{2},
+\end{equation}
+which is less than $6.015\cdot10^{-238}$ per entry.  The largest
+interval upper endpoint for $T/D$ is
+\[
+ 1.077023594634533
+\]
+(rounded upward), occurring in the box adjacent to $y=1/8$ on either side.
+
+For the monotonicity assertion, remove the common $a^4$ from every ratio.
+Exact rational arithmetic verifies that, among centered terms, every
+non-dominant permutation has sum-of-squares exponent at least $7/2$ above
+the dominant permutation.  Also, replacing any centered coefficient by a
+different $7$-translate increases its square by at least
+\[
+ 49-14\max|c|=49-14\cdot\frac{27}{8}=\frac74.
+\]
+Thus every non-dominant monomial divided by the dominant monomial has the
+form $C e^{-\pi a^2\Delta}$ with $C\ge0$ independent of $a$ and
+$\Delta\ge7/4$.  Their sum $(T-D)/D$ is therefore nonincreasing in $a$.
+All rational gap checks, tail bounds, and interval evaluations are performed
+and asserted by the supplied verifier.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Under \eqref{eq:a-large}, Lemma~\ref{lem:certificate} and
+\eqref{eq:reverse-triangle} show that the selected minor is nonzero on each
+half of $0\le y\le1/4$, uniformly in $\omega$.  Therefore the matrix
+\eqref{eq:P} has rank four everywhere, and the Lyubarskii--Nes criterion
+proves the frame property.
+
+If instead $a<a_0$, then $b=(4/7)/a>a_0$.  The Fourier transform interchanges
+the time and frequency lattice parameters, and $\widehat h_1=-ih_1$ (up to
+the chosen normalization).  Hence the system with parameters $(a,b)$ is
+unitarily equivalent to the already treated system with parameters $(b,a)$.
+This proves the theorem for every aspect ratio.
+\end{proof}
+
+\section{Verification and novelty bounds}
+Run from the repository root:
+\begin{verbatim}
+conda run --no-capture-output -n sandbox python \
+  runs/fa_banach_001/solutions/partial/\
+  2403.10503_h1_density_four_sevenths_frame/code/verify_certificate.py
+\end{verbatim}
+With Python 3.11.14 and \texttt{mpmath} 1.3.0, the script prints the exact
+gaps $7/2$ and $7/4$, interval upper bounds
+$1.0770235946345321$ on both halves, and \texttt{PASS}.  The discrepancy
+between that printed float and the rounded display in the proof is in the
+safe direction.  See \texttt{verification.md} for the full recorded output
+and review checklist.
+
+The bounded novelty check searched the run registry and attempt indexes, the
+source paper's citations, arXiv, and general web search using arXiv ids
+\texttt{2403.10503}, \texttt{1108.2684}, and \texttt{2605.26709}, together
+with ``first Hermite Gabor frame'', ``rational density'', ``4/7'', and close
+variants.  No theorem for $ab=4/7$ was found.  The May 2026 paper
+\cite{F26} explicitly says the region $1/2<ab<1$ for $h_1$ is still open and
+proves only that the Wirtinger criterion cannot enter it.  This is a bounded
+search, not a guarantee of novelty.
+
+\section{Limitations and human-review recommendation}
+The full frame-set conjecture remains open.  The present dominant-monomial
+method certifies $4/7$ and appears numerically effective at several other
+rational densities, but its absolute-value estimate fails at some high
+densities (already $13/15$), where phase cancellation among multiple leading
+monomials must be controlled instead.
+
+A reviewer should check (i) the transcription of the rational rank criterion,
+(ii) the two centered matrices and selected permutations, (iii) that the
+reverse-triangle estimate counts every determinant/Zak monomial once, and
+(iv) the interval script's outward rounding and tail formula.  These are the
+only substantive dependencies.
+
+\begin{thebibliography}{9}
+\bibitem{FSZ}
+M. Faulhuber, I. Shafkulovska, and I. Zlotnikov,
+\emph{On the frame property of Hermite functions and exploration of their
+frame sets}, J. Fourier Anal. Appl. 31 (2025), article 21;
+\href{https://arxiv.org/abs/2403.10503}{arXiv:2403.10503}.
+
+\bibitem{LN}
+Y. Lyubarskii and P. G. Nes,
+\emph{Gabor frames with rational density},
+Appl. Comput. Harmon. Anal. 34 (2013), 488--494;
+\href{https://arxiv.org/abs/1108.2684}{arXiv:1108.2684}.
+
+\bibitem{F26}
+M. Faulhuber,
+\emph{On a fundamental barrier of the Wirtinger criterion for Gabor systems
+with odd functions}, 2026;
+\href{https://arxiv.org/abs/2605.26709}{arXiv:2605.26709}.
+\end{thebibliography}
+
+\end{document}

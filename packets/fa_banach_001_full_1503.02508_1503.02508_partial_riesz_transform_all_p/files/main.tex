@@ -1,0 +1,167 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\R}{\mathbb R}
+
+\title{The coordinate Riesz transform for a separated Schr\"odinger operator}
+\author{A full answer to a concrete unknown case in arXiv:1503.02508}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+Candidate full solution, likely valid, pending human review.  The concrete
+partial Riesz transform singled out as unknown in the source is bounded on
+$L^p(\R^2)$ for every $1<p<\infty$.  This answers that example, not the
+source's general Question~A.
+
+\section{Source question}
+
+Bernicot and Frey consider a nonnegative potential $V$ on $\R$ and
+\[
+ L=-\Delta+V(x_2)
+   =\bigl(-\partial_{x_1}^2\bigr)\otimes I
+     +I\otimes\bigl(-\partial_{x_2}^2+V(x_2)\bigr)
+\]
+on $L^2(\R^2)$.  On source PDF page~8 they state that, for
+$\Gamma=\partial_{x_1}$, boundedness of
+$\Gamma L^{-1/2}$ is unknown, even though the semigroup gradient estimate
+$(G_p)$ holds for all $p$~\cite{BernicotFrey}.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The same paper recalls that its Gaussian/off-diagonal framework already gives
+boundedness of the Riesz transform on $L^q$ for every $1<q<2$.  In this
+example the heat kernel has Gaussian bounds, so the lower endpoint is one.
+
+\section{Proof intuition}
+
+The extra structure of this example makes the lower-$p$ theorem self-dual.
+The derivative $\partial_{x_1}$ is skew-adjoint and commutes with $L$, because
+the potential is independent of $x_1$.  Hence
+\[
+ T=\partial_{x_1}L^{-1/2}
+ \qquad\text{satisfies}\qquad T^*=-T
+\]
+on $L^2$.  If $p>2$, its conjugate exponent $p'$ lies below two, where the
+source's general theory already bounds $T$.  The skew-adjoint identity then
+transfers that estimate to $L^p$ by ordinary duality.
+
+\section{A duality lemma}
+
+\begin{lemma}\label{lem:duality}
+Let $T$ be bounded on $L^2(X)$ and suppose a dense common core satisfies
+\[
+ \langle Tf,g\rangle=-\langle f,Tg\rangle.
+\]
+If $T$ extends boundedly to $L^q(X)$ for some $1<q<2$, then it extends
+boundedly to $L^{q'}(X)$ and
+\[
+ \|T\|_{L^{q'}\to L^{q'}}\leq \|T\|_{L^q\to L^q}.
+\]
+\end{lemma}
+
+\begin{proof}
+For core functions $f$ and $g$,
+\[
+ |\langle Tf,g\rangle|
+   =|\langle f,Tg\rangle|
+   \leq \|f\|_{q'}\,\|Tg\|_q
+   \leq \|T\|_{q\to q}\,\|f\|_{q'}\,\|g\|_q.
+\]
+Taking the supremum over $g$ of $L^q$ norm one gives the claimed bound on
+the core; density gives the extension.
+\end{proof}
+
+\section{Resolution of the source example}
+
+\begin{theorem}\label{thm:main}
+Let $V\geq0$ be as in the source example, so that
+$L=-\Delta+V(x_2)$ is the nonnegative self-adjoint Schr\"odinger operator on
+$L^2(\R^2)$ and its heat semigroup has the stated Gaussian bounds.  Then
+\[
+ \partial_{x_1}L^{-1/2}:L^p(\R^2)\longrightarrow L^p(\R^2)
+\]
+is bounded for every $1<p<\infty$.
+\end{theorem}
+
+\begin{proof}
+First, the quadratic-form inequality
+\[
+ \|\partial_{x_1}u\|_2^2
+ \leq \|\nabla u\|_2^2+\int_{\R^2}V(x_2)|u(x)|^2\,dx
+ =\|L^{1/2}u\|_2^2
+\]
+shows that $T=\partial_{x_1}L^{-1/2}$ is bounded on $L^2$.
+
+Translations in the first coordinate commute with $L$: both
+$-\partial_{x_1}^2$ and $-\partial_{x_2}^2+V(x_2)$ do.  Their infinitesimal
+generator $\partial_{x_1}$ therefore strongly commutes with the spectral
+calculus of $L$.  On $C_c^\infty(\R^2)$, and hence as an $L^2$ operator,
+\[
+ T^*=(\partial_{x_1}L^{-1/2})^*
+   =-L^{-1/2}\partial_{x_1}
+   =-\partial_{x_1}L^{-1/2}=-T.
+\]
+
+The source's recalled low-exponent Riesz-transform theorem, applied to its
+Gaussian heat kernel, gives boundedness of $T$ on $L^q$ for every
+$1<q<2$.  Lemma~\ref{lem:duality} gives boundedness on $L^{q'}$ for every
+$2<q'<\infty$.  Together with the $L^2$ estimate, this covers all
+$1<p<\infty$.
+\end{proof}
+
+\begin{corollary}[Separated-coordinate extension]
+Let $x=(x_j,x')\in\R\times\R^{n-1}$ and
+$L=-\Delta+V(x')$ with $V\geq0$.  Whenever the standard low-exponent
+Riesz-transform estimate holds for this Schr\"odinger operator, the partial
+transform $\partial_{x_j}L^{-1/2}$ is bounded on every $L^p$,
+$1<p<\infty$.
+\end{corollary}
+
+\begin{proof}
+The derivative in the absent coordinate is skew-adjoint and commutes with
+$L$.  Apply the same $L^2$ form estimate and Lemma~\ref{lem:duality}.
+\end{proof}
+
+\section{Upgrade attempts, novelty, and scope}
+
+A first route treats the transform as an operator-valued Fourier multiplier
+in $x_1$; this requires uniform functional-calculus estimates for
+$-\partial_{x_2}^2+V$ and obscures the simple mechanism.  The decisive
+upgrade is to combine the already-known $p<2$ estimate with commutation and
+skew-adjointness.  The same argument yields the separated-coordinate
+corollary above.
+
+A bounded primary-source search covered the exact operator and potential,
+``partial Riesz transform'', ``Schr\"odinger'', the source title and authors,
+and later arXiv references.  It found the source and work on different
+localized or degenerate partial transforms, but no primary paper stating this
+answer for the displayed separated model.  Novelty confidence is moderate
+because the duality argument is elementary; correctness confidence is high.
+
+The proof is special to a linear skew-adjoint component $\Gamma$ commuting
+with $L$.  It does not answer whether $(G_p)$ implies $(R_p)$ for a general
+gradient operator, nor does it settle the source's second example with
+variable complex coefficients.  Human review should verify the identification
+of the source's $p<2$ theorem with the scalar partial transform and the strong
+commutation step on the chosen operator domains.
+
+\begin{thebibliography}{1}
+\bibitem{BernicotFrey}
+F.~Bernicot and D.~Frey,
+\emph{Riesz transforms through reverse H\"older and Poincar\'e inequalities},
+arXiv:1503.02508.
+\end{thebibliography}
+
+\end{document}

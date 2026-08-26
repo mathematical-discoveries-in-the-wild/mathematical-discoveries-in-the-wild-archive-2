@@ -1,0 +1,298 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+\setlength{\emergencystretch}{2em}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\Om}{\Omega}
+\newcommand{\T}{\mathbb T}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\dd}{\,\mathrm d}
+
+\title{Boundary slope is irrelevant for the channel Poincar\'e constant}
+\author{Automated mathematical discovery run \texttt{fa\_banach\_001}}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{black}{gray!8}{\parbox{0.91\linewidth}{
+\textbf{Status.} Candidate full solution to source Remark~B.2, likely
+valid, subject to human review.  The mean-zero Poincar\'e constant of the
+periodic channel has an explicit bound independent of the boundary slope.
+An additional oscillatory example proves square-root lower growth in the
+geometry parameter for the distinct Stokes inf--sup problem.
+}}
+\end{center}
+
+\section{Source question}
+
+The source is J.~Wilkening, \emph{Inf-sup estimates for the Stokes problem
+in a periodic channel}, arXiv:0706.4082 \cite{Source}.  Let
+\(\T_L=\R/(L\Z)\) and
+\[
+ \Om_h=\{(x,y):x\in\T_L,\ 0<y<h(x)\},
+ \qquad 0<h_0\le h(x)\le h_1.
+\]
+The source proves, for mean-zero \(p\in H^1(\Om_h)\),
+\(L^{-1}\|p\|_2\le C\|\nabla p\|_2\) with a constant containing the
+factor \(1+M\), where \(M=\|h'\|_\infty\).  Remark~B.2 on source
+p.~18 asks whether this linear dependence on \(M\) is optimal.  The exact
+passage is reproduced below.
+
+\begin{center}
+\includegraphics[width=\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+The answer is no: no dependence on \(M\) is needed.  The packet also treats
+the separate Remark~4.3, which asks whether quadratic dependence on a
+\(C^{1,1}\) geometry parameter is optimal for the Stokes inf--sup inverse.
+
+\section{Proof intuition}
+
+Every channel in the class contains the same flat base rectangle
+\(R_0=\T_L\times(0,h_0)\).  Anchor \(p\) to its average on \(R_0\),
+where the exact rectangular Poincar\'e estimate is available.  An averaged
+one-dimensional identity controls the trace at height \(h_0\).  Values above
+that height are then reached by integrating only in the vertical direction.
+None of these operations differentiates \(h\), so the boundary slope never
+appears.
+
+The Stokes inf--sup constant behaves differently.  A rapidly oscillating
+upper boundary creates many upper teeth.  Put alternating signs on those
+teeth.  The divergence pairing collapses to an alternating trace functional
+on the common interface \(y=h_0\); its \(H^{-1/2}\) norm is of order
+\(N^{-1/2}\).  This forces the inf--sup inverse to grow like \(\sqrt N\),
+and hence like the square root of the source's geometry parameter.
+
+\section{A slope-free Poincar\'e theorem}
+
+Set
+\[
+ D=h_1-h_0,\qquad
+ \lambda_0=\max\left\{\frac{L}{2\pi},\frac{h_0}{\pi}\right\},
+\]
+and define
+\[
+ K_0^2=\max\left\{
+ \left(1+\frac{4D}{h_0}\right)\lambda_0^2+\frac{4Dh_0}{3},
+ D^2\right\}.
+\]
+
+\begin{theorem}[Slope-free mean-zero estimate]\label{thm:poincare}
+Let \(h\in C^{0,1}(\T_L)\) satisfy \(h_0\le h\le h_1\).  If
+\(p\in H^1(\Om_h)\) and \(\int_{\Om_h}p=0\), then
+\[
+ \|p\|_{L^2(\Om_h)}\le K_0\|\nabla p\|_{L^2(\Om_h)}.
+\]
+In particular, \(K_0\) depends only on \(L,h_0,h_1\), not on
+\(\|h'\|_\infty\).
+\end{theorem}
+
+\begin{proof}
+Let \(R_0=\T_L\times(0,h_0)\), let \(c\) be the average of \(p\)
+on \(R_0\), and put \(g=p-c\).  Fourier expansion on the periodic
+rectangle, with Neumann conditions implicit in the variational inequality,
+gives
+\begin{equation}\label{eq:rect}
+ \|g\|_{L^2(R_0)}\le\lambda_0\|\nabla p\|_{L^2(R_0)}.
+\end{equation}
+For almost every \(x\), one-dimensional absolute continuity and averaging in
+the lower fiber give the exact identity
+\[
+ g(x,h_0)=\frac1{h_0}\int_0^{h_0}g(x,s)\dd s
+ +\frac1{h_0}\int_0^{h_0}t\,p_y(x,t)\dd t.
+\]
+Consequently,
+\begin{equation}\label{eq:trace}
+ \int_{\T_L}|g(x,h_0)|^2\dd x
+ \le \frac2{h_0}\|g\|_{L^2(R_0)}^2
+ +\frac{2h_0}{3}\|p_y\|_{L^2(R_0)}^2.
+\end{equation}
+
+Let \(U=\Om_h\setminus R_0\).  For \(h_0<y<h(x)\),
+\(g(x,y)=g(x,h_0)+\int_{h_0}^y p_y(x,t)\dd t\).  Integrating in
+\(y\), interchanging the order in the second term, and using
+\(0\le h(x)-h_0\le D\), we obtain
+\begin{equation}\label{eq:upper}
+ \|g\|_{L^2(U)}^2
+ \le 2D\int_{\T_L}|g(x,h_0)|^2\dd x
+ +D^2\|p_y\|_{L^2(U)}^2.
+\end{equation}
+Equations \eqref{eq:rect}--\eqref{eq:upper} yield
+\[
+ \|p-c\|_{L^2(\Om_h)}^2
+ \le K_0^2\|\nabla p\|_{L^2(\Om_h)}^2.
+\]
+Finally, the whole-channel mean of \(p\) is zero, so
+\[
+ \|p-c\|_{L^2(\Om_h)}^2
+ =\|p\|_{L^2(\Om_h)}^2+|\Om_h|c^2
+ \ge \|p\|_{L^2(\Om_h)}^2.
+\]
+This proves the theorem.  The fiber calculation for general \(H^1\)
+functions follows by the standard density and slicing properties on a
+Lipschitz subgraph.
+\end{proof}
+
+\begin{corollary}[Answer to Remark B.2]
+In the normalization of source Theorem~B.1 one may take
+\[
+ C=K_0/L,
+\]
+which is independent of \(M=\|h'\|_\infty\).  Hence the linear
+\(M\)-dependence in the source estimate is entirely an artifact of its
+boundary-flattening proof.
+\end{corollary}
+
+\section{Oscillatory lower bound for the Stokes inf--sup inverse}
+
+For a periodic channel \(\Om\), write
+\[
+ \beta(\Om)=\inf_{\substack{q\in L^2(\Om),\ \int q=0\\q\ne0}}
+ \ \sup_{\substack{\mathbf u\in H^1_0(\Om)^2\\\mathbf u\ne0}}
+ \frac{\left|\int_\Om q\,\operatorname{div}\mathbf u\right|}
+ {\|q\|_2\|\nabla\mathbf u\|_2}.
+\]
+Here the zero trace is imposed on the top and bottom walls, with periodicity
+in \(x\), as in the source.
+
+\begin{theorem}[Alternating-tooth obstruction]\label{thm:infsup}
+Fix \(h_0,D>0\).  For every positive even integer \(N\), let
+\[
+ h_N(x)=h_0+D(1-\cos Nx),\qquad x\in\T_{2\pi},
+\]
+and let \(\Om_N=\Om_{h_N}\).  Then
+\[
+ \beta(\Om_N)\le
+ \left(\frac{14\zeta(3)}{\pi^2DN}\right)^{1/2},
+ \qquad
+ \beta(\Om_N)^{-1}\ge
+ \pi\left(\frac{DN}{14\zeta(3)}\right)^{1/2}.
+\]
+If \(M_N\) is the geometry parameter of source Theorem~4.1, then
+\(M_N=\kappa N\) for a fixed \(\kappa=\kappa(h_0,D)>0\).  Thus
+\(\beta(\Om_N)^{-1}\ge c(h_0,D)\sqrt{M_N}\).
+\end{theorem}
+
+\begin{proof}
+The region above \(y=h_0\) has \(N\) teeth
+\[
+ A_j=\left\{\frac{2\pi j}{N}<x<\frac{2\pi(j+1)}N,
+ \ h_0<y<h_N(x)\right\},\qquad 0\le j<N.
+\]
+Let \(q_N=(-1)^j\) on \(A_j\) and \(q_N=0\) on the base rectangle.
+All teeth have the same area and \(N\) is even, hence \(\int q_N=0\),
+while
+\begin{equation}\label{eq:qnorm}
+ \|q_N\|_2^2=\sum_j|A_j|=2\pi D.
+\end{equation}
+
+For \(\mathbf u\in H^1_0(\Om_N)^2\), integration on each tooth uses
+the zero trace on the curved top.  The horizontal flux integrates to zero at
+the endpoints, where the tooth height vanishes, and therefore
+\begin{equation}\label{eq:pair}
+ -\int_{\Om_N}q_N\operatorname{div}\mathbf u
+ =\int_0^{2\pi}w_N(x)u_2(x,h_0)\dd x,
+\end{equation}
+where \(w_N\) alternates between \(+1\) and \(-1\) on consecutive
+cells.  Equivalently, \(w_N(x)=\operatorname{sgn}(\sin(Nx/2))\).
+
+With the Fourier convention
+\(\widehat w(k)=(2\pi)^{-1}\int_0^{2\pi}w(x)e^{-ikx}\dd x\), the
+square-wave expansion gives nonzero modes only at
+\(k=(2m+1)N/2\), and
+\begin{equation}\label{eq:fourierw}
+ \sum_{k\ne0}\frac{|\widehat w_N(k)|^2}{|k|}
+ =\frac{16}{\pi^2N}\sum_{m=0}^\infty\frac1{(2m+1)^3}
+ =\frac{14\zeta(3)}{\pi^2N}.
+\end{equation}
+Put \(v(x)=u_2(x,h_0)\).  For every nonzero horizontal mode,
+\[
+ \int_0^{h_0}\big(|f'|^2+k^2|f|^2\big)\dd y
+ \ge |k|\,|f(h_0)|^2\qquad(f(0)=0),
+\]
+as follows by expanding \(\int_0^{h_0}|f'-|k|f|^2\).  Parseval
+therefore gives
+\begin{equation}\label{eq:tracefourier}
+ 2\pi\sum_{k\ne0}|k||\widehat v(k)|^2
+ \le\|\nabla u_2\|_{L^2(\T_{2\pi}\times(0,h_0))}^2
+ \le\|\nabla\mathbf u\|_{L^2(\Om_N)}^2.
+\end{equation}
+Cauchy--Schwarz in \eqref{eq:pair}, followed by
+\eqref{eq:fourierw}--\eqref{eq:tracefourier}, yields
+\[
+ \left|\int_{\Om_N}q_N\operatorname{div}\mathbf u\right|
+ \le\left(\frac{28\zeta(3)}{\pi N}\right)^{1/2}
+ \|\nabla\mathbf u\|_2.
+\]
+Divide by \eqref{eq:qnorm} and use \(q_N\) as a competitor in the
+definition of \(\beta\).
+
+Finally, \(\|h_N'\|_\infty=DN\), and
+\(\frac12\|h_Nh_N''\|_\infty\) is a fixed positive multiple of
+\(N^2\).  Hence the source parameter
+\[
+ M_N^2=\max\left\{\|h_N'\|_\infty^2,
+ \frac12\|h_Nh_N''\|_\infty\right\}
+\]
+equals \(\kappa^2N^2\) for fixed \(\kappa>0\).
+\end{proof}
+
+\section{Verification, limitations, and novelty}
+
+Theorem~\ref{thm:poincare} fully answers the extracted Remark~B.2.  It
+does not claim the displayed constant is sharp in \(L,h_0,h_1\).  Theorem
+\ref{thm:infsup} is a substantial partial result for the distinct Remark~4.3:
+the source supplies an \(O(M^2)\) upper bound, while the new family forces
+\(\Omega(\sqrt M)\) growth.  The exponent between \(1/2\) and \(2\)
+remains open.
+
+Eight focused checks and upgrade attempts covered the trace coefficient, the
+two different means, Sobolev slicing, exact square-wave normalization,
+zero-mode removal, tooth flux identity, a direct vertical divergence
+construction, Piola flattening, and quantitative Bogovski\u\i{}/John-domain
+estimates.  The latter routes reintroduced uncontrolled horizontal
+derivatives or curvature and did not justify a universal subquadratic upper
+bound.
+
+A bounded novelty search used the exact title, arXiv id, author, both quoted
+optimality phrases, and combinations of ``periodic channel'', ``Poincar\'e
+constant'', ``LBB constant'', ``slope'', and ``oscillating boundary''.  It
+also checked general uniform-Poincar\'e work \cite{Ruiz} and quantitative
+Bogovski\u\i{} estimates \cite{Duran,GuzmanSalgado}.  No explicit answer to
+Remark~B.2, no base-rectangle proof, and no alternating-tooth lower bound for
+Remark~4.3 were found.  Novelty confidence is provisional pending expert
+review.
+
+\begin{thebibliography}{9}
+\bibitem{Source}
+J.~Wilkening,
+\emph{Inf-sup estimates for the Stokes problem in a periodic channel},
+arXiv:0706.4082 (2007), especially Remarks~4.3 and B.2.
+
+\bibitem{Duran}
+R.~G.~Dur\'an,
+\emph{An elementary proof of the continuity from $L^2_0(\Omega)$ to
+$H^1_0(\Omega)^n$ of Bogovski\u\i{}'s right inverse of the divergence},
+arXiv:1103.3718 (2011).
+
+\bibitem{Ruiz}
+D.~Ruiz,
+\emph{A note on the uniformity of the constant in the Poincar\'e
+inequality}, arXiv:1208.6045 (2012).
+
+\bibitem{GuzmanSalgado}
+J.~Guzm\'an and A.~J.~Salgado,
+\emph{Estimation of the continuity constants for Bogovski\u\i{} and
+regularized Poincar\'e integral operators}, arXiv:2010.04105 (2020).
+\end{thebibliography}
+
+\end{document}

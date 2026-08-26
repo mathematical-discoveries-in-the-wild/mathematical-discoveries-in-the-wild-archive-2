@@ -1,0 +1,234 @@
+\documentclass[10pt]{article}
+\usepackage[margin=0.84in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,allcolors=blue!55!black]{hyperref}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\newtheorem{theorem}{Theorem}
+\newcommand{\M}{M_2(\mathbb C)}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\cL}{\mathcal L}
+\newcommand{\W}{\mathcal W}
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries SRD detailed balance does not imply GNS detailed balance}\par
+\medskip
+{\large A primitive qubit Lindblad counterexample}\par
+\medskip
+{\small Source target: arXiv:1810.00906, Remark IV.5(2)}
+\end{center}
+
+\textbf{Status: candidate full counterexample; likely valid pending human review.}
+
+\section*{Source question}
+
+Yu Cao, Jianfeng Lu, and Yulong Lu, \emph{Gradient flow structure and
+exponential decay of the sandwiched R\'enyi divergence for primitive Lindblad
+equations with GNS-detailed balance}, arXiv:1810.00906; J. Math. Phys.
+\textbf{60} (2019), 052202, prove
+\[
+ \text{GNS detailed balance}\Longrightarrow
+ \text{SRD detailed balance}\Longrightarrow
+ \text{KMS detailed balance}.
+\]
+Remark IV.5(2), on PDF page 23, asks whether the first implication reverses:
+\begin{quote}
+It is still unknown whether the SRD detailed balance condition is equivalent
+to the GNS detailed balance condition or not.
+\end{quote}
+
+\begin{center}
+\includegraphics[width=0.91\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+For a faithful invariant state $\sigma$, the source defines SRD detailed
+balance by requiring the Heisenberg generator $\cL$ to be self-adjoint for
+every inner product
+\[
+ \langle A,B\rangle_{\W_{\sigma,\alpha}}
+   =\Tr\!\left(A^*\W_{\sigma,\alpha}(B)\right),
+ \qquad \alpha>0.
+\]
+Equivalently,
+$\W_{\sigma,\alpha}\cL\W_{\sigma,\alpha}^{-1}=\cL^\dagger$.
+
+\section*{Proof intuition}
+
+In a basis diagonalizing a qubit state, every SRD weight gives the \emph{same}
+weight to the two oppositely oriented coherences $E_{01}$ and $E_{10}$.  GNS
+does not: it weights them by the two different eigenvalues of the invariant
+state.  We therefore add a Pauli-$X$ noise term that mixes $E_{01}$ and
+$E_{10}$.  This mixing is symmetric for every SRD geometry, but it is not GNS
+symmetric when the stationary state is nontracial.  Asymmetric up/down jumps
+make that stationary state nontracial while preserving a primitive GKSL
+generator.
+
+\section*{Counterexample theorem}
+
+Let $E_{ij}=|i\rangle\langle j|$ in the standard basis of $\mathbb C^2$ and
+$X=E_{01}+E_{10}$.  For $a,b,c>0$, define
+\[
+ V_+=\sqrt a\,E_{10},\qquad
+ V_-=\sqrt b\,E_{01},\qquad
+ V_x=\sqrt c\,X
+\]
+and the Heisenberg generator
+\begin{equation}\label{eq:gksl}
+ \cL(A)=\sum_{V\in\{V_+,V_-,V_x\}}
+ \left(V^*AV-\frac12\{V^*V,A\}\right).
+\end{equation}
+
+\begin{theorem}
+If $a,b,c>0$ and $a\ne b$, then \eqref{eq:gksl} generates a primitive
+quantum Markov semigroup which satisfies SRD detailed balance for every
+$\alpha>0$ but does not satisfy GNS detailed balance.  In particular, SRD
+detailed balance is not equivalent to GNS detailed balance, already on a
+qubit.
+\end{theorem}
+
+\begin{proof}
+Put
+\[
+ A_0=a+c,\qquad B_0=b+c,\qquad
+ p_0=\frac{B_0}{A_0+B_0},\qquad
+ p_1=\frac{A_0}{A_0+B_0},\qquad
+ \sigma=p_0E_{00}+p_1E_{11}.
+\]
+The expression \eqref{eq:gksl} is in GKSL form and each summand annihilates
+the identity, so it generates a completely positive unital semigroup.  Direct
+multiplication gives
+\begin{align}
+ \cL(E_{00})&=-A_0E_{00}+B_0E_{11},
+ &\cL(E_{11})&=A_0E_{00}-B_0E_{11},\label{eq:diag}\\
+ \cL(E_{01})&=-\gamma E_{01}+cE_{10},
+ &\cL(E_{10})&=cE_{01}-\gamma E_{10}.\label{eq:coh}
+\end{align}
+where $\gamma=(a+b)/2+c$.  Thus, in the ordered Hilbert--Schmidt orthonormal
+basis $(E_{00},E_{11},E_{01},E_{10})$,
+\begin{equation}\label{eq:matrix}
+ [\cL]=
+ \begin{pmatrix}
+ -A_0&A_0&0&0\\
+ B_0&-B_0&0&0\\
+ 0&0&-\gamma&c\\
+ 0&0&c&-\gamma
+ \end{pmatrix}.
+\end{equation}
+Since $p_0A_0=p_1B_0$, equation \eqref{eq:matrix} shows that
+$\cL^\dagger(\sigma)=0$.
+
+We now verify SRD symmetry.  The source paper diagonalizes its weight operator
+in the matrix-unit basis.  For every $\alpha>0$ there is a positive number
+$q_\alpha$ such that
+\begin{equation}\label{eq:srdweight}
+ [\W_{\sigma,\alpha}]
+   =\operatorname{diag}(p_0,p_1,q_\alpha,q_\alpha).
+\end{equation}
+Indeed, for $\alpha\ne1$ its two off-diagonal coefficients are both
+\[
+ q_\alpha=(\alpha-1)
+ \frac{p_0^{1/\alpha}-p_1^{1/\alpha}}
+ {p_1^{(1-\alpha)/\alpha}-p_0^{(1-\alpha)/\alpha}},
+\]
+which is symmetric under $p_0\leftrightarrow p_1$; at $\alpha=1$ their common
+value is the logarithmic mean $(p_0-p_1)/(\log p_0-\log p_1)$.
+
+Multiplying \eqref{eq:matrix} by \eqref{eq:srdweight}, one obtains
+\[
+ \W_{\sigma,\alpha}\cL=\cL^\dagger\W_{\sigma,\alpha}.
+\]
+On the diagonal block this is exactly the identity $p_0A_0=p_1B_0$;
+on the coherence block it follows because the block in \eqref{eq:coh} is real
+symmetric and both coordinates have weight $q_\alpha$.  Since
+$\W_{\sigma,\alpha}$ is invertible, the defining SRD identity holds for every
+$\alpha>0$.
+
+For GNS detailed balance, the source uses
+$\langle A,B\rangle_1=\Tr(\sigma A^*B)$.  Relative to our ordered basis its
+weight operator is right multiplication by $\sigma$, hence
+\[
+ [R_\sigma]=\operatorname{diag}(p_0,p_1,p_1,p_0).
+\]
+The coherence-flip entries in \eqref{eq:matrix} would be GNS symmetric only if
+$cp_1=cp_0$.  More explicitly,
+\[
+ \langle\cL(E_{01}),E_{10}\rangle_1=cp_0,
+ \qquad
+ \langle E_{01},\cL(E_{10})\rangle_1=cp_1.
+\]
+Because $c>0$ and $a\ne b$ imply $p_0\ne p_1$, these quantities differ.
+Thus GNS detailed balance fails.
+
+Finally, the four eigenvalues of \eqref{eq:matrix} are
+\[
+ 0,\quad -(A_0+B_0),\quad -\frac{a+b}{2},\quad
+ -\frac{a+b}{2}-2c.
+\]
+The zero eigenspace is precisely $\mathbb C I$, all other eigenvalues are
+strictly negative, and $\sigma$ is faithful.  Hence the predual semigroup
+converges to $\sigma\Tr(\,cdot\,)$ and is primitive.
+\end{proof}
+
+\section*{Smallest explicit instance}
+
+Take $(a,b,c)=(1,3,1)$.  Then
+\[
+ \sigma=\begin{pmatrix}2/3&0\\0&1/3\end{pmatrix},\qquad
+ [\cL]=
+ \begin{pmatrix}
+ -2&2&0&0\\4&-4&0&0\\0&0&-3&1\\0&0&1&-3
+ \end{pmatrix},
+\]
+with spectrum $\{0,-2,-4,-6\}$.  This single concrete generator already
+answers the source question negatively; the three-parameter family shows that
+the failure is robust rather than isolated.
+
+\section*{Verification}
+
+The accompanying script constructs the three Lindblad operators, derives the
+superoperator from \eqref{eq:gksl}, checks the invariant state and unitality,
+tests the SRD intertwining identity at seven R\'enyi orders, confirms a nonzero
+GNS residual, and checks the exact predicted spectrum.  For the explicit
+instance it reports maximum sampled SRD residual
+$3.14\times10^{-16}$ and GNS residual $0.4714045$ in Frobenius norm.  These
+computations are supplementary; the proof above is exact.
+
+\section*{Novelty check, limitations, and review request}
+
+A bounded search on 17 August 2026 used the exact arXiv id, title, DOI, authors,
+the exact phrase ``SRD detailed balance'', ``sandwiched R\'enyi detailed
+balance'', and combinations with GNS/KMS/equivalence/Lindblad.  Local run
+indexes and web/arXiv-oriented searches found the source paper, the first
+author's thesis restating the same open remark, and papers citing the gradient
+flow result, but no later answer and no occurrence of this qubit family.  The
+novelty assessment is therefore positive but bounded, not exhaustive.
+
+This packet disproves only the proposed equivalence.  It does not characterize
+all SRD-detailed-balanced generators and does not close the broader gap between
+necessary and sufficient conditions for arbitrary R\'enyi gradient-flow
+structures.  Human review should focus on the convention relating weighted
+self-adjointness to $\W\cL=\cL^\dagger\W$, the orientation of the two GNS
+weights, and the standard equivalence between the displayed spectral
+calculation and primitivity.
+
+\section*{References}
+
+\begin{enumerate}
+\item Y. Cao, J. Lu, and Y. Lu, \emph{Gradient flow structure and exponential
+decay of the sandwiched R\'enyi divergence for primitive Lindblad equations
+with GNS-detailed balance}, J. Math. Phys. \textbf{60} (2019), 052202;
+arXiv:1810.00906.
+\item V. Gorini, A. Kossakowski, and E. C. G. Sudarshan,
+\emph{Completely positive dynamical semigroups of $N$-level systems},
+J. Math. Phys. \textbf{17} (1976), 821--825.
+\item G. Lindblad, \emph{On the generators of quantum dynamical semigroups},
+Commun. Math. Phys. \textbf{48} (1976), 119--130.
+\end{enumerate}
+
+\end{document}

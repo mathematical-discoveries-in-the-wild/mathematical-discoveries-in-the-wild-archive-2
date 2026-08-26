@@ -1,0 +1,229 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=27mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newcommand{\Sph}{\mathbb S^{d-1}}
+\newcommand{\Pmeas}{\mathbb P}
+\newcommand{\R}{\mathbb R}
+
+\title{A strictly positive averaged potential need not force global minimization\\
+\large A counterexample to the spherical conjecture in arXiv:2104.03410}
+\author{Candidate solution packet}
+\date{August 11, 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+Candidate full counterexample, likely valid pending expert review.
+
+\section{Source conjecture}
+
+For a continuous three-input kernel $K:(\Sph)^3\to\R$ and a probability
+measure $\mu$, write
+\[
+ I_K(\mu)=\iiint K(x,y,z)\,d\mu(x)d\mu(y)d\mu(z),
+ \qquad
+ U_K^\sigma(x,y)=\int K(x,y,z)\,d\sigma(z),
+\]
+where $\sigma$ is normalized surface measure.  Bilyk--Ferizovi\'c--Glazyrin--
+Matzke--Park--Vlasiuk conjecture, more generally for $n$ inputs, that $\sigma$
+globally minimizes $I_K$ if and only if the averaged two-input kernel
+$U_K^{\sigma^{n-2}}$ is conditionally positive definite
+\cite{BilykEtAl}.  Their Theorem~5.3 proves the necessary direction and proves
+only local minimality in the converse direction when the lower energy has
+$\sigma$ as its unique minimizer.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{The conjecture, Theorem 5.3, and the repeated converse question on
+  source PDF page 15.}
+\end{figure}
+
+The construction below disproves the global converse while satisfying the
+stronger uniqueness hypothesis in Theorem~5.3(ii).
+
+\section{Proof intuition}
+
+The averaged kernel $U_K^\sigma$ records the quadratic variation of the
+three-input energy at $\sigma$.  It cannot see a symmetric cubic interaction
+whose integral in one variable vanishes.  Such an interaction can be locally
+flat at $\sigma$ yet have a negative value at a concentrated measure.
+
+We first build an explicit rotationally invariant cubic $H_d$ with
+$U_{H_d}^\sigma=0$ and negative Dirac energy.  To rule out degeneracy as the
+explanation, we add a small symmetric lift of a centered exponential
+dot-product kernel.  Its averaged kernel is strictly conditionally positive
+definite and uniquely minimized by $\sigma$.  Taking the coefficient small
+preserves the negative Dirac gap.  The result is a strict directional local
+minimum at $\sigma$ which is not a global minimum.
+
+\section{Counterexample}
+
+Fix $d\ge3$.  For $x,y,z\in\Sph$, set
+\[
+ u=\langle x,y\rangle,\qquad
+ v=\langle y,z\rangle,\qquad
+ t=\langle z,x\rangle.
+\]
+Let
+\begin{equation}\label{eq:H}
+ H_d(x,y,z)=-uvt+\frac1d(u^2+v^2+t^2)-\frac{2}{d^2}.
+\end{equation}
+Define the dimension-dependent constant
+\[
+ c_d=\int_{\Sph}e^{\langle p,z\rangle}\,d\sigma(z),
+\]
+which is independent of $p\in\Sph$, and the centered pair kernel
+\begin{equation}\label{eq:G}
+ G_d(x,y)=e^{\langle x,y\rangle}-c_d.
+\end{equation}
+Since $\langle p,z\rangle<1$ for $\sigma$-almost every $z$, one has $c_d<e$.
+Put
+\[
+ L_d(x,y,z)=G_d(x,y)+G_d(y,z)+G_d(z,x),
+\]
+and choose
+\begin{equation}\label{eq:eta}
+ \eta_d=\frac{(d-1)(d-2)}{6d^2(e-c_d)}>0,
+ \qquad K_d=H_d+\eta_dL_d.
+\end{equation}
+
+\begin{theorem}\label{thm:main}
+The kernel $K_d:(\Sph)^3\to\R$ is continuous, symmetric, and rotationally
+invariant.  Its averaged pair kernel is
+\[
+ U_{K_d}^\sigma=\eta_dG_d,
+\]
+which is strictly conditionally positive definite; in particular, $\sigma$
+is the unique minimizer of its pair energy.  The measure $\sigma$ is a strict
+local minimizer of $I_{K_d}$ in every direction, but it is not a global
+minimizer.  More precisely, for every $p\in\Sph$,
+\[
+ I_{K_d}(\sigma)=0,
+ \qquad
+ I_{K_d}(\delta_p)=-\frac{(d-1)(d-2)}{2d^2}<0.
+\]
+Consequently, the source conjecture and the converse question following
+Theorem~5.3 have negative answers.
+\end{theorem}
+
+\begin{proof}
+Symmetry, continuity, and rotational invariance are immediate because a
+permutation of $x,y,z$ merely permutes $u,v,t$, while simultaneous rotations
+preserve them.
+
+Normalized surface measure satisfies
+\[
+ \int_{\Sph}zz^{\mathsf T}\,d\sigma(z)=\frac1dI_d.
+\]
+For fixed $x,y$, this gives
+\[
+ \int vt\,d\sigma(z)=\frac ud,
+ \qquad
+ \int v^2\,d\sigma(z)=\int t^2\,d\sigma(z)=\frac1d.
+\]
+Substitution in \eqref{eq:H} yields
+\begin{equation}\label{eq:Hzero}
+ U_{H_d}^\sigma(x,y)
+ =-\frac{u^2}{d}+\frac1d\left(u^2+\frac2d\right)
+  -\frac2{d^2}=0.
+\end{equation}
+By the definition of $c_d$, the $\sigma$-potential of $G_d$ is zero.  Hence
+\[
+ U_{L_d}^\sigma(x,y)=G_d(x,y),
+ \qquad U_{K_d}^\sigma=\eta_dG_d.
+\]
+
+We next prove strict conditional positive definiteness.  If $\nu$ is a finite
+signed measure on $\Sph$ with $\nu(\Sph)=0$, uniform convergence of the
+exponential series gives
+\begin{align}\label{eq:tensors}
+ \iint G_d(x,y)\,d\nu(x)d\nu(y)
+ &=\sum_{k=1}^{\infty}\frac1{k!}
+   \left\|\int_{\Sph}x^{\otimes k}\,d\nu(x)\right\|^2\ge0.
+\end{align}
+If equality holds, every tensor moment of $\nu$ vanishes.  Thus $\nu$
+annihilates every polynomial restricted to $\Sph$.  Those polynomials are
+dense in $C(\Sph)$, so $\nu=0$.  This proves strictness.
+
+For any $\mu\in\Pmeas(\Sph)$, put $\nu=\mu-\sigma$.  Since the
+$\sigma$-potential and $\sigma$-energy of $G_d$ vanish,
+\[
+ I_{G_d}(\mu)=I_{G_d}(\nu)\ge0,
+\]
+with equality only for $\mu=\sigma$.  Therefore $\sigma$ is the unique
+minimizer of the pair energy of $U_{K_d}^\sigma=\eta_dG_d$.
+
+Equations \eqref{eq:Hzero} and the zero potential of $G_d$ imply
+$I_{K_d}(\sigma)=0$.  At a Dirac mass all three inner products are one, so
+\begin{align*}
+ I_{H_d}(\delta_p)
+ &=-1+\frac3d-\frac2{d^2}
+   =-\frac{(d-1)(d-2)}{d^2},\\
+ I_{L_d}(\delta_p)&=3(e-c_d).
+\end{align*}
+The choice \eqref{eq:eta} consequently gives
+\[
+ I_{K_d}(\delta_p)
+ =-\frac{(d-1)(d-2)}{d^2}
+   +\frac{(d-1)(d-2)}{2d^2}
+ =-\frac{(d-1)(d-2)}{2d^2}<0.
+\]
+Thus $\sigma$ is not a global minimizer.
+
+For completeness, fix $\mu\ne\sigma$ and
+$\mu_s=(1-s)\sigma+s\mu$.  Trilinearity, the vanishing one-point variation
+at $\sigma$, and $U_{K_d}^\sigma=\eta_dG_d$ give
+\begin{equation}\label{eq:local}
+ I_{K_d}(\mu_s)
+ =3\eta_d s^2(1-s)I_{G_d}(\mu)+s^3 I_{K_d}(\mu).
+\end{equation}
+The quadratic coefficient is strictly positive, so the right side is positive
+for all sufficiently small $s>0$.  Hence $\sigma$ is a strict local minimizer
+in every direction, exactly in the source's sense.
+\end{proof}
+
+\section{Consequences and limitations}
+
+The example isolates the missing implication: even a strictly positive second
+variation at $\sigma$ cannot control the cubic energy globally.  It also shows
+that the word ``unique'' in Theorem~5.3(ii) is not enough to upgrade that
+theorem's local conclusion to a global one.
+
+The source's necessary direction remains untouched: if $\sigma$ globally
+minimizes the full energy, its averaged pair kernel is conditionally positive
+definite.  Likewise, this example does not contradict the source's sufficient
+results assuming conditional three-positive-definiteness of the full kernel.
+
+\section{Verification and novelty status}
+
+The construction was independently checked through the spherical covariance
+identity, the tensor-series certificate \eqref{eq:tensors}, the exact Dirac
+energy, and the directional expansion \eqref{eq:local}.  No numerical or
+external theorem is needed beyond density of polynomial restrictions on the
+sphere.
+
+On August 11, 2026, the local run indexes were searched by arXiv id, exact
+title, the averaged-potential conjecture, and its local/global terminology.
+Exact-phrase and citation-oriented web searches found the source, its 2022
+journal version, and related talks, but no later answer or matching
+counterexample.  The search was bounded, so novelty confidence is moderate
+pending a specialist citation review.
+
+\begin{thebibliography}{9}
+
+\bibitem{BilykEtAl}
+D. Bilyk, D. Ferizovi\'c, A. Glazyrin, R. W. Matzke, J. Park, and O. Vlasiuk,
+\emph{Potential theory with multivariate kernels},
+Math. Z. \textbf{301} (2022), no.~3, 2907--2935;
+arXiv:2104.03410; DOI: 10.1007/s00209-022-03000-z.
+
+\end{thebibliography}
+
+\end{document}

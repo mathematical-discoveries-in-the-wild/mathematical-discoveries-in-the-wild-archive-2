@@ -1,0 +1,278 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,esint}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newcommand{\E}{\mathbb E}
+\newcommand{\BMO}{\mathrm{BMO}}
+\newcommand{\cO}{\mathcal O}
+
+\title{A binomial sharpening of the cube--BMO\\rearrangement bound}
+\author{Autonomous proof packet for arXiv:2011.09111}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.} Partial result, likely valid.  The best constants
+and the dimension-free question remain open.
+
+\section{Source question}
+
+Burchard, Dafni, and Gibara prove that every rearrangeable
+$f\in\BMO(\mathbb R^n)$ satisfies
+\begin{equation}\label{eq:source}
+ \|f^*\|_{\BMO(\mathbb R_+)}
+ \le 2\bigl(1+2\sqrt{n-1}\bigr)\|f\|_{\BMO(\mathbb R^n)}.
+\end{equation}
+On page 3 they ask for the best constants $C_n$ and whether the constants can
+be dimension-free for $n>1$ \cite{BDG}.
+
+\begin{center}
+\includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+For a finite-measure set $S$, write
+\[
+ f_S=\frac1{|S|}\int_S f,
+ \qquad
+ \cO(f,S)=\frac1{|S|}\int_S|f-f_S|.
+\]
+The usual BMO seminorm is the supremum of this quantity over axis-parallel
+cubes.
+
+\section{Idea of the proof}
+
+The $\sqrt n$ term in \eqref{eq:source} enters at one precise point.  A false
+cube with $m$ long directions is tiled by $2^m$ ordinary cubes.  Their means
+form a function $g$ on the Bernoulli cube $\{0,1\}^m$, and neighboring values
+of $g$ differ by at most $4\|f\|_{\BMO}$.  The source applies a variance bound
+and Cauchy--Schwarz to obtain
+$\E|g-\E g|\le 2\sqrt m\|f\|_{\BMO}$.
+
+The key observation is that the Doob differences of $g$ are symmetric
+two-point variables with predictable amplitudes.  For an even convex loss,
+backward conditioning can only increase its expectation when every amplitude
+is replaced by its maximum.  Thus the exact comparison variable is a
+Rademacher sum, not a Gaussian second-moment upper bound.  Its $L^1$ norm is
+the mean absolute deviation of a symmetric binomial variable and is smaller
+by the asymptotic factor $\sqrt{2/\pi}$.
+
+A separate geometric lemma says that the oscillation on a subset occupying
+fraction $\alpha$ of a set is at most $\alpha^{-1}$ times the oscillation on
+the containing set.  Circumscribing a false cube supplies a second bound;
+taking the better bound for each number of long directions gives the stated
+hybrid constant.
+
+\section{Sharp Bernoulli concentration}
+
+\begin{lemma}[convex domination]\label{lem:convex}
+Let $X_1,\dots,X_m$ be independent unbiased Bernoulli variables, and let
+$g=g(X_1,\dots,X_m)$.  Suppose changing coordinate $i$ while holding all
+others fixed changes $g$ by at most $a_i$.  If $\varepsilon_1,\dots,
+\varepsilon_m$ are independent uniform signs, then for every even convex
+$\Phi:\mathbb R\to\mathbb R$ for which the expectations exist,
+\[
+ \E\Phi(g-\E g)
+ \le
+ \E\Phi\!\left(\frac12\sum_{i=1}^m a_i\varepsilon_i\right).
+\]
+In particular,
+\begin{equation}\label{eq:l1dom}
+ \E|g-\E g|
+ \le \E\left|\frac12\sum_{i=1}^m a_i\varepsilon_i\right|.
+\end{equation}
+The bound is sharp when $g=\sum_i a_iX_i$.
+\end{lemma}
+
+\begin{proof}
+Let $M_i=\E[g\mid X_1,\dots,X_i]$ be the Doob martingale.  Conditional on
+$X_1,\dots,X_{i-1}$, the two possible values of $M_i$ have difference
+$c_i=c_i(X_1,\dots,X_{i-1})$ with $|c_i|\le a_i$: averaging over the future
+coordinates preserves the bounded-difference hypothesis.  Hence, after
+identifying $2X_i-1$ with $\varepsilon_i$,
+\[
+ g-\E g=\frac12\sum_{i=1}^m
+ c_i(\varepsilon_1,\dots,\varepsilon_{i-1})\varepsilon_i.
+\]
+
+For fixed $s$, convexity implies that
+\[
+ t\longmapsto \frac{\Phi(s+t)+\Phi(s-t)}2
+\]
+is nondecreasing for $t\ge0$.  Condition first on
+$\varepsilon_1,\dots,\varepsilon_{m-1}$ and replace $|c_m|$ by $a_m$.
+After averaging in $\varepsilon_m$, the resulting function of the partial
+sum is again even and convex.  Repeat backward for $m-1,m-2,\dots,1$.
+This gives the claimed domination.  Taking $\Phi(t)=|t|$ proves
+\eqref{eq:l1dom}; constant amplitudes give equality.
+\end{proof}
+
+Let $B_m\sim\operatorname{Bin}(m,\tfrac12)$ and put
+\begin{equation}\label{eq:beta}
+ \beta_m:=\E|B_m-m/2|
+ =\frac{m}{2^m}\binom{m-1}{\lfloor(m-1)/2\rfloor}.
+\end{equation}
+The identity follows by splitting the binomial sum at its mean and using
+$k\binom mk=m\binom{m-1}{k-1}$.  It also shows
+$\beta_{2r-1}=\beta_{2r}$ and that $(\beta_m)$ is nondecreasing.  Stirling's
+formula gives
+\begin{equation}\label{eq:betaasymp}
+ \beta_m=\sqrt{\frac{m}{2\pi}}+O(m^{-1/2}).
+\end{equation}
+
+\section{Application to false cubes}
+
+A false cube in $\mathbb R^n$ has side lengths $2s$ in $m$ coordinate
+directions and $s$ in the other $n-m$ directions.  Denote the family of all
+false cubes by $\mathcal W$.
+
+\begin{theorem}[binomial false-cube comparison]\label{thm:false}
+If $R$ is a false cube with $m<n$ long directions, then
+\begin{equation}\label{eq:false}
+ \cO(f,R)\le (1+4\beta_m)\|f\|_{\BMO(\mathbb R^n)}.
+\end{equation}
+Consequently,
+\begin{equation}\label{eq:W}
+ \|f\|_{\BMO_{\mathcal W}}
+ \le (1+4\beta_{n-1})\|f\|_{\BMO}.
+\end{equation}
+The term $4\beta_m$ in \eqref{eq:false} is optimal as a consequence of only
+the individual neighboring-cube bounds employed below.
+\end{theorem}
+
+\begin{proof}
+Tile $R$ by its $2^m$ congruent cubes $Q(\nu)$, indexed by
+$\nu\in\{0,1\}^m$, and set $g(\nu)=f_{Q(\nu)}$.  The partition estimate in
+\cite[Lemma 3.6]{BDG} gives
+\[
+ \cO(f,R)\le \|f\|_{\BMO}+\E|g-\E g|.
+\]
+Means on adjacent equal cubes differ by at most $4\|f\|_{\BMO}$
+\cite[Lemma 3.7]{BDG}.  Lemma~\ref{lem:convex}, with every
+$a_i=4\|f\|_{\BMO}$, yields
+\[
+ \E|g-\E g|
+ \le 2\|f\|_{\BMO}\E\left|\sum_{i=1}^m\varepsilon_i\right|
+ =4\beta_m\|f\|_{\BMO}.
+\]
+This proves \eqref{eq:false}; monotonicity of $\beta_m$ gives \eqref{eq:W}.
+The additive Hamming-weight function attains Lemma~\ref{lem:convex}, proving
+the final assertion about this information set.
+\end{proof}
+
+Combining Theorem~\ref{thm:false} with the dimension-free factor 2 for the
+decreasing rearrangement on the bisection basis $\mathcal W$
+\cite[Lemma 3.5]{BDG} immediately gives
+\begin{corollary}\label{cor:simple}
+For $n\ge2$ and every rearrangeable $f\in\BMO(\mathbb R^n)$,
+\begin{equation}\label{eq:simple}
+ \|f^*\|_{\BMO(\mathbb R_+)}
+ \le 2(1+4\beta_{n-1})\|f\|_{\BMO(\mathbb R^n)}.
+\end{equation}
+In particular the leading coefficient in the source bound is improved by
+$\sqrt{2/\pi}$:
+\[
+ C_n\le \sqrt{\frac{32(n-1)}\pi}+2+O(n^{-1/2}).
+\]
+\end{corollary}
+
+\section{A geometric hybrid refinement}
+
+\begin{lemma}[subset-to-container oscillation]\label{lem:subset}
+Let $E\subset Q$ have $0<|E|<|Q|$, and put $\alpha=|E|/|Q|$.  Then
+\[
+ \cO(f,E)\le \alpha^{-1}\cO(f,Q).
+\]
+\end{lemma}
+
+\begin{proof}
+Write $u=f_E$, $v=f_{Q\setminus E}$, and
+$w=f_Q=\alpha u+(1-\alpha)v$.  Jensen's inequality on $Q\setminus E$ gives
+\begin{align*}
+ \cO(f,Q)
+ &\ge \alpha\fint_E|f-w|+(1-\alpha)|v-w|\\
+ &=\alpha\left(\fint_E|f-w|+|u-w|\right)\\
+ &\ge\alpha\fint_E|f-u|.
+\end{align*}
+The last step is the triangle inequality.
+\end{proof}
+
+A false cube with $m$ long directions lies in a cube of side $2s$ and
+occupies the fraction $2^{m-n}$ of that cube.  Lemma~\ref{lem:subset}
+therefore supplies the second estimate
+\begin{equation}\label{eq:container}
+ \cO(f,R)\le 2^{n-m}\|f\|_{\BMO}.
+\end{equation}
+
+\begin{theorem}[hybrid rearrangement bound]\label{thm:hybrid}
+For $n\ge2$, define
+\[
+ K_n=\max_{1\le m\le n-1}
+ \min\{1+4\beta_m,\,2^{n-m}\}.
+\]
+Then every rearrangeable $f\in\BMO(\mathbb R^n)$ satisfies
+\begin{equation}\label{eq:hybrid}
+ \boxed{\ \|f^*\|_{\BMO(\mathbb R_+)}
+ \le 2K_n\|f\|_{\BMO(\mathbb R^n)}.\ }
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For each false cube choose the better of \eqref{eq:false} and
+\eqref{eq:container}, then maximize over its number $m$ of long directions.
+Ordinary cubes (the case $m=n$) cost only 1 and do not enlarge $K_n$.
+Apply the factor-2 bisection-basis rearrangement theorem from \cite{BDG}.
+\end{proof}
+
+For illustration, $2K_n$ for dimensions $2$ through $12$ is
+\[
+4,\ 6,\ 6,\ 8,\ 8,\ 8,\ 9.5,\ 9.5,\ 10.75,\ 10.75,\ 11.84375.
+\]
+The clean bound \eqref{eq:simple} already improves the asymptotic leading
+constant.  The hybrid estimate is never larger, is often strictly smaller,
+and also uses only elementary geometry.
+
+\section{Verification and limitations}
+
+The accompanying script verifies formula \eqref{eq:beta}, monotonicity through
+$m=200$, the displayed $K_n$ values, and the comparison with the source
+constant.  It also solves the finite linear programs defining the maximum
+mean absolute deviation of a 1-Lipschitz function on $\{0,1\}^m$ for
+$m\le3$; the optima equal $\beta_m$.  These computations are checks only;
+the proof above is analytic.
+
+The result does not decide whether $(C_n)$ is dimension-free and does not
+determine any sharp $C_n$ for $n>1$.  Moreover, sharpness of the discrete
+lemma shows that a dimension-free upgrade cannot use only separate bounds on
+the edges of the cube of subcube means.  It would need additional geometric
+compatibility among those means or a different decomposition.
+
+A bounded novelty search on 11 August 2026 covered the run indexes, exact
+title and inequality queries, author/citation searches, and combinations of
+``false cube'', ``binomial'', ``mean absolute deviation'', and
+``dimension-free''.  The later VMO work by the same authors and related
+semigroup-BMO results do not sharpen this cube-BMO constant.  No occurrence of
+the present application was found.  Novelty confidence is moderate because
+Lemma~\ref{lem:convex} is elementary and may be known in martingale language.
+
+\paragraph{Human-review recommendation.}
+Check the backward induction in Lemma~\ref{lem:convex}, the factor
+$4\beta_m$ in Theorem~\ref{thm:false}, and the normalization in
+Lemma~\ref{lem:subset}.  Subject to those checks, classify this as a
+substantial partial improvement, not a full resolution.
+
+\begin{thebibliography}{9}
+\bibitem{BDG}
+A. Burchard, G. Dafni, and R. Gibara,
+\emph{Mean oscillation bounds on rearrangements},
+Trans. Amer. Math. Soc. 375 (2022), 4429--4444;
+arXiv:2011.09111.
+\end{thebibliography}
+
+\end{document}

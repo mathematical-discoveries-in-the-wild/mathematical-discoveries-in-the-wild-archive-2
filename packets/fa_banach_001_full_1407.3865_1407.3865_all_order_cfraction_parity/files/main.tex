@@ -1,0 +1,255 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=0.82in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\Q}{\mathbb{Q}}
+
+\title{All-order parity of the Euler-correction\\regular C-fraction}
+\author{Automated mathematics run \texttt{fa\_banach\_001}\\Lane 3 --- candidate for human review}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+Candidate full solution, likely valid.  The result gives an affirmative answer
+to the open problem after Theorem~1 of Hongmin Xu and Xu You,
+\emph{Inequalities for Euler--Mascheroni constant}, arXiv:1407.3865
+\cite{XuYou}.
+
+\section{Source problem}
+
+For coefficients \(a_j\), the source uses
+\[
+ R_k(n)=\cfrac{a_1}{
+ n+\cfrac{a_2n}{
+ n+\cfrac{a_3n}{
+ n+\ddots+\cfrac{a_{k-1}n}{n+a_k}}}},                   \tag{1}
+\]
+and \(r_k(n)=H_n-\log n-R_k(n)\),
+choosing the coefficients successively to make \(r_k(n)-\gamma\) converge as
+fast as possible.  Its computations through \(a_{13}\) suggest the following
+statement, printed on source-PDF page 3.
+
+\begin{center}
+ \includegraphics[width=0.96\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\noindent\textbf{Open problem (transcribed).}
+For every \(k\geq1\), is \(a_{2k+1}=-a_{2k}\)?
+
+\section{Proof intuition}
+
+After putting \(x=1/n\), (1) becomes an ordinary regular C-fraction.
+The Euler correction has an asymptotic series consisting of \(x/2\) plus
+\emph{only even powers}.  The nonlinear C-fraction tail algorithm converts
+this parity into pairs: extracting one coefficient from a tail of the form
+\(\alpha x+E(x^2)\) leaves a new tail whose next linear coefficient is the
+negative of the one just extracted.
+
+Parity alone would not rule out the algorithm terminating.  The even
+coefficients are absolute Bernoulli numbers, however, and form a strict
+Stieltjes moment sequence with an explicit positive density.  Consequently
+all relevant Hankel determinants are positive and the Stieltjes fraction,
+hence the paired C-fraction, continues nondegenerately to every order.
+
+\section{Formal C-fraction preliminaries}
+
+For a formal series \(A(x)=O(x)\), define its regular C-fraction tails by
+\[
+ T_1=A,
+ \qquad a_j=[x]T_j,
+ \qquad T_{j+1}=\frac{a_jx}{T_j}-1.                       \tag{2}
+\]
+Whenever \(a_j\neq0\), this is equivalent to
+\[
+ T_j=\frac{a_jx}{1+T_{j+1}}.
+\]
+Iteration gives
+\[
+ A(x)=\cfrac{a_1x}{1+\cfrac{a_2x}{1+\cfrac{a_3x}{1+\ddots}}}.          \tag{3}
+\]
+Truncating after \(a_k\) changes the series first at order \(x^{k+1}\).
+Thus (2) uniquely produces the coefficient at each stage that gives the
+fastest \(k\)-level approximation, provided the next linear coefficient is
+nonzero.
+
+\begin{lemma}[parity mechanism]\label{lem:parity}
+Suppose an odd-indexed tail has the form
+\[
+ T(x)=\alpha x+x^2C(x^2),\qquad \alpha C(0)\neq0.
+\]
+The next two coefficients extracted by (2) are opposites.  The tail after
+those two extractions again has the form linear term plus an even series.
+\end{lemma}
+
+\begin{proof}
+The first new tail is
+\[
+ U(x)=\frac{\alpha x}{T(x)}-1
+     =-\frac{xC(x^2)}{\alpha+xC(x^2)}.
+\]
+Hence its linear coefficient is \(b=-C(0)/\alpha\).  Extracting it gives
+\[
+ V(x)=\frac{bx}{U(x)}-1
+     =-bx+\left(\frac{C(0)}{C(x^2)}-1\right).              \tag{4}
+\]
+The second coefficient is therefore \(-b\), and the parenthesized term is an
+even series with zero constant term.
+\end{proof}
+
+\section{The all-order result}
+
+Let \(B_j\) denote the Bernoulli numbers in the convention \(B_2=1/6\).
+Euler--Maclaurin gives the formal asymptotic expansion
+\[
+ H_n-\log n-\gamma
+ \sim \frac{1}{2n}-\sum_{m\geq1}\frac{B_{2m}}{2m\,n^{2m}}.
+\]
+With \(x=1/n\), write this as
+\[
+ F(x)=\frac{x}{2}-x^2S(x^2),
+ \qquad
+ S(z)=\sum_{m\geq0}(-1)^m\mu_m z^m,
+ \qquad
+ \mu_m=\frac{|B_{2m+2}|}{2m+2}.                           \tag{5}
+\]
+
+\begin{theorem}\label{thm:main}
+The fastest-approximation coefficients in (1) exist uniquely to every order.
+They satisfy
+\[
+ a_{2k}>0,
+ \qquad
+ \boxed{a_{2k+1}=-a_{2k}}
+ \qquad(k\geq1).
+\]
+In particular, the source open problem has an affirmative answer.
+\end{theorem}
+
+\begin{proof}
+The classical formula for even Bernoulli numbers gives
+\begin{align*}
+ \mu_m
+ &=\frac{2(2m+1)!\,\zeta(2m+2)}{(2\pi)^{2m+2}}\\
+ &=\int_0^\infty
+    \frac{t^m}{e^{2\pi\sqrt t}-1}\,dt.                    \tag{6}
+\end{align*}
+For the second equality, substitute \(t=u^2\) and use the standard Gamma--zeta
+integral.  The density in (6) is strictly positive on \((0,\infty)\).
+Consequently, for every nonzero polynomial \(P\),
+\[
+ \int_0^\infty |P(t)|^2\frac{dt}{e^{2\pi\sqrt t}-1}>0,
+ \qquad
+ \int_0^\infty t|P(t)|^2\frac{dt}{e^{2\pi\sqrt t}-1}>0.  \tag{7}
+\]
+Thus every ordinary and shifted Hankel moment matrix of \((\mu_m)\) is
+positive definite.
+
+The formal Stieltjes continued-fraction theorem now applies: strict positivity
+in (7) yields
+\[
+ S_0(z):=S(z)=\frac{c_0}{1+zS_1(z)},
+ \qquad
+ S_j(z)=\frac{c_j}{1+zS_{j+1}(z)}\quad(j\geq1),            \tag{8}
+\]
+with every \(c_j=S_j(0)>0\)~\cite[Ch.~3]{Wall}.  One may also see (8)
+directly from Gram--Schmidt: the denominators are the orthogonal polynomials
+of the positive measure in (6), and their squared norms and recurrence
+coefficients cannot vanish.
+
+We now run (2) on \(F\).  Put \(\alpha=1/2\) and
+\(b_1=c_0/\alpha=1/6\).  Directly from (5) and (8),
+\begin{align*}
+ T_2&=\frac{xS_0(x^2)}{\alpha-xS_0(x^2)},\\
+ T_3&=-b_1x+x^2S_1(x^2).
+\end{align*}
+Thus \(a_2=b_1\) and \(a_3=-b_1\).  Inductively, if
+\[
+ T_{2j+1}=-b_jx+x^2S_j(x^2),
+\]
+define \(b_{j+1}=c_j/b_j>0\).  Using (8) in the same two algebraic
+extractions as in Lemma~\ref{lem:parity} gives
+\[
+ a_{2j+2}=b_{j+1},
+ \qquad a_{2j+3}=-b_{j+1},
+ \qquad
+ T_{2j+3}=-b_{j+1}x+x^2S_{j+1}(x^2).                      \tag{9}
+\]
+All extractions are nondegenerate because \(b_j,c_j>0\).  Hence (9) holds for
+all \(j\), proving both existence and the asserted signs.
+
+Finally, normalizing (1) by \(x=1/n\) turns its \(k\)-level fraction exactly
+into the \(k\)-th convergent of (3).  The nonzero next coefficient makes its
+error have exact order \(x^{k+1}\); any different choice at the first differing
+stage loses that order.  Therefore these are precisely the source's uniquely
+fastest coefficients.
+\end{proof}
+
+\section{Constructive recurrence and exact verification}
+
+Equations (8)--(9) give a constructive description.  If \(c_j\) are the
+positive Stieltjes-fraction constants of the moment sequence (6), then
+\[
+ b_1=\frac16,
+ \qquad b_{j+1}=\frac{c_j}{b_j},
+ \qquad a_{2j}=b_j,
+ \qquad a_{2j+1}=-b_j.                                    \tag{10}
+\]
+Because all moments are rational, every \(a_j\) is rational.  For example,
+continuing beyond the source computation gives
+\[
+ a_{14}=\frac{3754087889491759}{2440840521848406},
+ \qquad a_{15}=-a_{14}.
+\]
+
+The exact SymPy script \texttt{code/check\_cfraction\_parity.py} implements
+(2) on (5).  It reproduces every coefficient printed by the source through
+\(a_{13}\), verifies the twelve complete pairs available through \(a_{25}\)
+while computing through \(a_{26}\), and confirms the displayed new values.
+This finite calculation is QA only; Theorem~\ref{thm:main} is the all-order
+proof.
+
+\section{Novelty check, limitations, and review focus}
+
+A bounded search on 17 August 2026 checked the run indexes; exact web and
+arXiv queries for the displayed coefficient relation and the source title;
+the source's indexed citing-work list; and later continued-fraction papers by
+the same circle of authors.  In particular, Cao's later paper cites the source
+and develops a different multiple-correction fraction, but still reports only
+the coefficients through \(a_{13}\) from (1)~\cite{Cao}.  No paper proving the
+all-order opposite-pair law was found.  This supports, but does not establish,
+novelty; the search was not an exhaustive MathSciNet or zbMATH review.
+
+The theorem settles the source's coefficient conjecture and proves the
+coefficients exist at every formal asymptotic order.  It does not assert
+convergence of the resulting infinite C-fraction for fixed \(n\), which the
+source question does not require.  Human review should focus on the standard
+Stieltjes-fraction implication in (8) and on the equivalence between the
+source's ``fastest'' recursion and regular C-fraction coefficient matching.
+
+\begin{thebibliography}{9}
+\bibitem{XuYou}
+Hongmin Xu and Xu You,
+\emph{Inequalities for Euler--Mascheroni constant},
+arXiv:1407.3865 (2014); published as
+\emph{Continued fraction inequalities for Euler--Mascheroni constant},
+J. Inequal. Appl. 2014:343.
+
+\bibitem{Wall}
+H.~S. Wall,
+\emph{Analytic Theory of Continued Fractions},
+D. Van Nostrand, 1948, Chapter 3.
+
+\bibitem{Cao}
+Xiaodong Cao,
+\emph{Multiple-Correction and Continued Fraction Approximation},
+arXiv:1410.2953; J. Math. Anal. Appl. 424 (2015), 1425--1446.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,278 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.92in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx,microtype,xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+\emergencystretch=1em
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\C}{\mathbb C}
+\newcommand{\specop}{\operatorname{spec}}
+\newcommand{\tr}{\operatorname{Tr}}
+
+\title{The Spectral-Radius Criterion for All Quadratic Holomorphic Polynomials in Two Free Circular Variables}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 7}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{\textbf{Status.} Complete solution of the
+finite-dimensional question in Remark~1.5 / Remark~4.7 of Miyagawa, likely
+valid and pending human review.  The result removes every coefficient
+restriction from the source's spectral-radius criterion.  It is a substantial
+partial result relative to the broader question asking whether spectrum always
+equals Brown-measure support.}}
+\end{center}
+
+\section{Source question and setup}
+
+Let $c_1,c_2$ be freely independent circular operators and
+\[
+ P(c_1,c_2)=\sum_{i,j=1}^2 a_{ij}c_ic_j+\sum_{i=1}^2 b_i c_i,
+ \qquad A=(a_{ij})\in M_2(\C),\quad b=(b_1,b_2)^t\in\C^2.
+\]
+For $\lambda\ne0$, set $A_\lambda=\lambda^{-1}A$ and
+$b_\lambda=\lambda^{-1}b$.  Miyagawa's quadratic-spectrum theorem
+\cite[Theorem~1.4 and Theorem~4.6]{Miyagawa} defines
+\begin{equation}\label{eq:Q}
+ Q_\lambda=
+ \begin{pmatrix}
+ b_\lambda^*b_\lambda&\tr(A_\lambda^*A_\lambda)&
+ b_\lambda^*A_\lambda&b_\lambda^t\overline{A_\lambda}\\
+ 1&0&0&0\\
+ \overline{b_\lambda}&0&0&\overline{A_\lambda}\\
+ b_\lambda&0&A_\lambda&0
+ \end{pmatrix},
+ \qquad e_1=(1,0,0,0,0,0)^t,
+\end{equation}
+where the block sizes are $1,1,2,2$, and proves
+\begin{equation}\label{eq:source-spectrum}
+ \lambda\in\specop(P(c_1,c_2))
+ \quad\Longleftrightarrow\quad
+ \lambda=0\ \text{or}\ Q_\lambda^n e_1\not\longrightarrow0.
+\end{equation}
+
+The source observes that the right side of \eqref{eq:source-spectrum} implies
+$r(Q_\lambda)\ge1$, but leaves open whether the converse always holds.  It
+proves the converse under any of the extra assumptions $b=0$,
+$\overline A A$ has no distinct real eigenvalues, or $A$ is symmetric
+\cite[Remark~1.5 and Remark~4.7]{Miyagawa}.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{The question and the three known coefficient restrictions in
+Remark~1.5 of the source, PDF page 3.}
+\end{figure}
+
+\section{Proof intuition}
+
+Suppose a dominant eigenvalue of $Q_\lambda$ were invisible from the orbit of
+$e_1$.  A left eigenvector calculation forces it into the lower $4\times4$
+block
+\[
+ B=\begin{pmatrix}0&\overline{A_\lambda}\\A_\lambda&0\end{pmatrix}.
+\]
+The determinant of $Q_\lambda$ is so large relative to a hypothetical complex
+or smaller-modulus eigenvalue of $\overline{A_\lambda}A_\lambda$ that only one
+case survives: the square of the hidden eigenvalue is the larger of two
+distinct nonnegative eigenvalues.
+
+In that case a unit eigenvector $x$ is automatically a con-eigenvector:
+$A_\lambda x=\overline\alpha\,\overline x$, with
+$|\alpha|=r(Q_\lambda)$.  A root of the scalar equation
+\[
+ \overline\alpha t^2+(b_\lambda^t x)t=1
+\]
+has modulus at most $|\alpha|^{-1/2}\le1$.  Thus $z=tx$ is in the closed unit
+ball and $P(z)=\lambda$.  Scalar values of a free polynomial on that ball lie
+in the spectrum of its left-creation realization by the free Szeg\H{o} kernel.
+The source proves that this spectrum equals that of $P(c_1,c_2)$, contradicting
+the assumed invisibility through \eqref{eq:source-spectrum}.
+
+\section{Two lemmas}
+
+Write $L_1,L_2$ for the left creation operators on the full Fock space over
+$\C^2$.  For a scalar pair $z=(z_1,z_2)$, $P(z)$ means the ordinary scalar
+evaluation of the same noncommutative polynomial.
+
+\begin{lemma}[scalar evaluations are spectral]\label{lem:scalar}
+If $\|z\|_2\le1$, then $P(z)\in\specop(P(L_1,L_2))$.
+\end{lemma}
+
+\begin{proof}
+First suppose $\|z\|_2<1$.  For a word $w=w_1\cdots w_n$, put
+$z_w=z_{w_1}\cdots z_{w_n}$ and define the free Szeg\H{o} vector
+\[
+ k_z=\sum_w\overline{z_w}\,e_w.
+\]
+It is nonzero and belongs to Fock space because
+$\|k_z\|^2=\sum_{n\ge0}\|z\|_2^{2n}<\infty$.  Moreover
+$L_i^*k_z=\overline{z_i}k_z$, and hence
+\[
+ P(L_1,L_2)^*k_z=\overline{P(z)}k_z.
+\]
+Thus $P(z)$ is in the spectrum.  If $\|z\|_2=1$, apply the strict-ball result
+to $rz$ for $0<r<1$ and let $r\uparrow1$.  Since spectra are closed and
+$P(rz)\to P(z)$, the boundary case follows.
+\end{proof}
+
+\begin{lemma}[form of an invisible dominant eigenvalue]\label{lem:hidden}
+Let $C\in M_2(\C)$ and $d\in\C^2$, and let $Q$ be the matrix in
+\eqref{eq:Q} with $(A_\lambda,b_\lambda)$ replaced by $(C,d)$.  Suppose
+$Q^ne_1\to0$ and $r(Q)\ge1$.  Then there are a unit vector $x\in\C^2$ and
+$\alpha\in\C$ such that
+\begin{equation}\label{eq:con}
+ \overline C\,\overline x=\alpha x,
+ \qquad Cx=\overline\alpha\,\overline x,
+ \qquad |\alpha|=r(Q).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Choose an eigenvalue $\rho$ of $Q$ with $|\rho|=r(Q)$ and a nonzero left
+eigenvector $v=(v_1,\ldots,v_6)$.  Since
+\[
+ vQ^ne_1=\rho^n v_1\longrightarrow0
+\]
+and $|\rho|\ge1$, one has $v_1=0$.  The second coordinate of $vQ=\rho v$
+then gives $v_2=0$.  Consequently $(v_3,\ldots,v_6)$ is a nonzero left
+eigenvector, with eigenvalue $\rho$, of
+\[
+ B=\begin{pmatrix}0&\overline C\\C&0\end{pmatrix}.
+\]
+Thus $\rho^2$ is an eigenvalue of $M=\overline C C$.
+
+Let $\theta_1,\theta_2$ be the eigenvalues of $M$, ordered so that
+$|\theta_1|\ge|\theta_2|$.  Their sum is real and their product is
+$|\det C|^2\ge0$, so they are either a nonreal conjugate pair or real numbers
+of the same sign.  Expanding $\det Q$ first along its second row and then along
+the remaining scalar column gives
+\begin{equation}\label{eq:det}
+ |\det Q|=T|\det C|^2,
+ \qquad T=\tr(C^*C).
+\end{equation}
+As $|\rho|$ is the largest eigenvalue modulus of the $6\times6$ matrix $Q$,
+\begin{equation}\label{eq:det-upper}
+                     |\det Q|\le|\rho|^6.
+\end{equation}
+
+If $\theta_1,\theta_2$ are a nonreal conjugate pair, or if they are equal and
+nonzero, then $|\rho|^2=|\det C|$.  The singular-value inequality
+$T\ge2|\det C|$ makes \eqref{eq:det} at least
+$2|\det C|^3$, contradicting \eqref{eq:det-upper}.  The zero repeated-root
+case would give $\rho=0$.  Hence the roots are distinct and real.
+
+If $\rho^2=\theta_2$, then $\theta_2\ne0$ and
+$T\ge r(M)=|\theta_1|$.  Equations \eqref{eq:det}--\eqref{eq:det-upper} give
+\[
+ |\theta_1|^2|\theta_2|
+ \le T|\theta_1\theta_2|
+ =|\det Q|
+ \le|\theta_2|^3,
+\]
+which is impossible because $|\theta_1|>|\theta_2|$.  Therefore
+$\rho^2=\theta_1$.
+
+Let $x$ be a unit eigenvector of $M$ for the simple real eigenvalue
+$\theta_1$.  Conjugating $Mx=\theta_1x$ shows that
+$\overline C\,\overline x$ is another eigenvector for $\theta_1$; it is
+nonzero because $\theta_1=\rho^2\ne0$.  Simplicity gives
+$\overline C\,\overline x=\alpha x$ for some $\alpha\ne0$.  Conjugation gives
+$Cx=\overline\alpha\,\overline x$, and substitution into $Mx=\theta_1x$
+gives $\theta_1=|\alpha|^2>0$.  Finally
+$|\alpha|=|\rho|=r(Q)$, proving \eqref{eq:con}.
+\end{proof}
+
+\section{The all-coefficient criterion}
+
+\begin{theorem}\label{thm:main}
+For every $A\in M_2(\C)$, $b\in\C^2$, and $\lambda\ne0$,
+\[
+ Q_\lambda^ne_1\not\longrightarrow0
+ \quad\Longleftrightarrow\quad
+ r(Q_\lambda)\ge1.
+\]
+Consequently,
+\[
+ \specop(P(c_1,c_2))
+ =\{0\}\cup\{\lambda\in\C\setminus\{0\}:r(Q_\lambda)\ge1\}.
+\]
+No symmetry, eigenvalue, or vanishing-linear-term hypothesis is required.
+\end{theorem}
+
+\begin{proof}
+If $Q_\lambda^ne_1$ does not tend to zero, the Jordan normal form immediately
+gives $r(Q_\lambda)\ge1$.
+
+Conversely, suppose $r(Q_\lambda)\ge1$ but
+$Q_\lambda^ne_1\to0$.  Apply Lemma~\ref{lem:hidden} with
+$C=A_\lambda$ and $d=b_\lambda$, obtaining $x$ and $\alpha$.  Since $x$ is
+unit,
+\begin{equation}\label{eq:bilinear}
+                   x^tCx=\overline\alpha.
+\end{equation}
+Put $\beta=d^t x$.  The two roots of
+\begin{equation}\label{eq:root}
+             \overline\alpha t^2+\beta t-1=0
+\end{equation}
+have product $-1/\overline\alpha$.  Hence at least one root satisfies
+\[
+ |t|\le|\alpha|^{-1/2}=r(Q_\lambda)^{-1/2}\le1.
+\]
+For $z=tx$, equations \eqref{eq:bilinear} and \eqref{eq:root} yield
+\[
+ z^tA_\lambda z+b_\lambda^tz=1,
+ \qquad\text{equivalently}\qquad P(z)=\lambda.
+\]
+Lemma~\ref{lem:scalar} therefore places $\lambda$ in
+$\specop(P(L_1,L_2))$.  Miyagawa proves
+$\specop(P(L_1,L_2))=\specop(P(c_1,c_2))$
+\cite[Corollary after Lemma~4.1]{Miyagawa}.  Now
+\eqref{eq:source-spectrum} implies
+$Q_\lambda^ne_1\not\to0$, a contradiction.  This proves the equivalence, and
+the displayed spectral formula follows from \eqref{eq:source-spectrum}.
+\end{proof}
+
+\section{Verification, scope, and novelty audit}
+
+The proof is exact and has no computational dependency.  The determinant
+identity \eqref{eq:det} can be checked directly by the two indicated Laplace
+expansions; the remaining determinant estimates use only
+$r(\overline C C)\le\|C\|^2\le\tr(C^*C)$ and
+$\tr(C^*C)\ge2|\det C|$.  The scalar-evaluation lemma includes the boundary
+of the ball by radial approximation, so no nonnormal approximate-eigenvector
+claim is being assumed.
+
+The theorem fully answers the sharper question in Remarks~1.5 and 4.7 and
+removes all three restrictions listed there.  It does not settle the broader
+question in the introduction asking whether the spectrum of every rational or
+polynomial function in free semicircular operators equals the support of its
+Brown measure.  In particular, weak convergence of quadratic Ginibre
+eigenvalue measures identifies the limiting Brown measure but does not by
+itself exclude spectral regions carrying zero Brown mass; proving support
+equality would require additional lower-density or Brown-potential control.
+
+A bounded novelty audit searched the run's result, attempt, and proof-gap
+indexes, arXiv:2603.19528, the exact title and spectral-radius phrasing, and the
+source's cited quadratic-Ginibre reference.  No later theorem resolving the
+all-coefficient criterion was located.  Because the source is very recent and
+the final external-source refresh was unavailable, novelty is plausible but
+remains pending specialist review.
+
+Recommended human-review focus is: (1) the block-order and transpose
+conventions in Lemma~\ref{lem:hidden}; (2) the determinant comparison excluding
+all cases except the positive simple eigenvalue; and (3) the use of the source's
+spectrum equality and recursion theorem in the last contradiction.
+
+\begin{thebibliography}{9}
+\bibitem{Miyagawa}
+A.~Miyagawa,
+\emph{The spectra of polynomials in free (semi)circular operators},
+arXiv:2603.19528v2 (2026).
+\end{thebibliography}
+
+\end{document}

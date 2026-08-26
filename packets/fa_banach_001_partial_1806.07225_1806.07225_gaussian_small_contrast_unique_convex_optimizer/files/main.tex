@@ -1,0 +1,211 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\1}{\mathbf 1}
+\newcommand{\symdiff}{\mathbin{\triangle}}
+
+\title{Gaussian small-contrast uniqueness and convexity\\
+for the maximal-energy density problem}
+\author{Candidate partial-result packet for arXiv:1806.07225}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\fbox{\parbox{0.94\textwidth}{\textbf{Status.}
+Candidate substantial partial result, likely valid, awaiting specialist
+review.  Both conclusions of Conjecture 3.8 hold for the Gaussian kernel on a
+bounded convex body at every fixed high-density volume fraction when the
+density contrast is sufficiently small.}}
+
+\section{Source conjecture}
+
+Osting and Simanek consider
+\[
+ E[\rho]=\frac12\int_{\Omega\times\Omega}k(x,y)\rho(x)\rho(y)\,dx\,dy
+\]
+over densities of mass one satisfying
+$\rho_-\leq\rho\leq\rho_+$.  Their Conjecture 3.8 asks whether convexity of
+$\Omega$ and positivity of $\rho_-$ force uniqueness of the maximizer and
+convexity of its high-density region $B_+$ \cite{OS}.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{Conjecture 3.8 on PDF page 10 of the source paper.}
+\end{figure}
+
+\section{Proof intuition}
+
+At small contrast the energy is led by a linear ``bathtub'' problem.  Its
+potential is the convolution of the convex body's indicator with a Gaussian,
+whose level sets have strictly positive curvature.  The nonlinear correction
+does not merely give convergence to this reference set: the KKT condition
+defines a threshold map on fixed-volume sets, and that map is a contraction.
+The unique fixed point is therefore the unique maximizer.  Its threshold
+surface is a small $C^2$ perturbation of a strictly convex surface, hence stays
+convex.  The argument does not control arbitrary contrast.
+
+\section{The partial theorem}
+
+Let $\Omega\subset\R^d$ be a bounded convex body, let $M=|\Omega|$ and
+$c=M^{-1}$, and fix $\tau>0$ and $\theta\in(0,1)$.  Put
+\[
+ G_\tau(z)=(4\pi\tau)^{-d/2}e^{-|z|^2/(4\tau)},\qquad
+ k_\tau(x,y)=G_\tau(x-y).
+\]
+For $\varepsilon>0$ define
+\[
+ \rho_-^{\varepsilon}=c-\theta\varepsilon,
+ \qquad
+ \rho_+^{\varepsilon}=c+(1-\theta)\varepsilon.
+\]
+
+\begin{theorem}\label{thm:main}
+For every bounded convex body $\Omega$, $\tau>0$, and
+$\theta\in(0,1)$, there is $\varepsilon_0>0$ such that, whenever
+$0<\varepsilon<\varepsilon_0$, the Gaussian energy problem with bounds
+$\rho_-^{\varepsilon},\rho_+^{\varepsilon}$ has a unique maximizer modulo
+null sets.  It has the form
+\[
+ \rho_\varepsilon=c+\varepsilon(\1_{B_\varepsilon}-\theta),
+ \qquad |B_\varepsilon|=\theta M,
+\]
+and $B_\varepsilon$ is convex modulo null sets.
+\end{theorem}
+
+The Gaussian is explicitly listed among the source's model kernels.  There is
+a wording caveat: $e^{-r^2/(4\tau)}$ is completely monotone in $r^2$, not in
+$r$.  Thus Theorem~\ref{thm:main} addresses the source's explicitly intended
+Gaussian subclass even if its preceding condition is read literally.
+
+\section{Proof}
+
+Define the container potential
+\[
+ V(x)=(G_\tau*\1_\Omega)(x)=\int_\Omega G_\tau(x-y)\,dy.
+\]
+
+\subsection*{Step 1: strict curvature of Gaussian-potential levels}
+
+Let $\mu_x$ be the probability measure on $\Omega$ with density
+$G_\tau(x-y)/V(x)$.  Differentiation under the integral gives
+\begin{equation}\label{eq:hess}
+ \nabla^2\log V(x)
+ =-\frac1{2\tau}I+\frac1{4\tau^2}\operatorname{Cov}_{\mu_x}(Y).
+\end{equation}
+The Brascamp--Lieb covariance inequality gives
+$\operatorname{Cov}_{\mu_x}(Y)\preceq2\tau I$ \cite{BL}.  Equality in a
+nonzero direction would require an untruncated Gaussian direction; this is
+impossible because $\Omega$ is bounded.  Hence the inequality in
+\eqref{eq:hess} is negative definite.  On every compact level surface of
+$V$, compactness gives a uniform negative bound.
+
+In particular, $V$ has a unique maximum, every other level is noncritical,
+and every positive superlevel of $V$ has strictly convex smooth boundary.
+For the unique number $t_\theta$ satisfying
+\[
+ |\Omega\cap\{V>t_\theta\}|=\theta M,
+\]
+the reference bathtub set
+$B_0=\Omega\cap\{V>t_\theta\}$ is convex.
+
+\subsection*{Step 2: the threshold map}
+
+Let $\mathcal B_\theta$ be the measurable subsets of $\Omega$ of measure
+$\theta M$, modulo null sets, with metric
+$d(B,C)=|B\symdiff C|$.  This metric space is complete.  For
+$B\in\mathcal B_\theta$ set
+\[
+ \rho_B=c+\varepsilon(\1_B-\theta),\qquad
+ P_B=G_\tau*\rho_B=cV+\varepsilon G_\tau*(\1_B-\theta\1_\Omega).
+\]
+Let $\lambda_B$ be the fixed-volume quantile of $P_B$ and define
+\[
+ T(B)=\Omega\cap\{P_B>\lambda_B\},\qquad |T(B)|=\theta M.
+\]
+Gaussian convolution is analytic and nonconstant, so its level sets have zero
+Lebesgue measure and the definition is unambiguous.
+
+For $B,C\in\mathcal B_\theta$,
+\begin{equation}\label{eq:sup}
+ \|P_B-P_C\|_\infty
+ \leq \varepsilon\|G_\tau\|_\infty |B\symdiff C|.
+\end{equation}
+Fixed-volume quantiles are $1$-Lipschitz under uniform perturbations, so
+$|\lambda_B-\lambda_C|$ is bounded by the right side of
+\eqref{eq:sup}.  Uniformly in $B$, $P_B$ is $C^2$-close to $cV$ as
+$\varepsilon\downarrow0$.  The selected levels therefore stay in a compact
+noncritical band around $ct_\theta$.  The coarea formula supplies constants
+$A,s_0>0$, independent of $B$, such that
+\begin{equation}\label{eq:band}
+ \big|\{x\in\Omega:|P_B(x)-\lambda_B|\leq s\}\big|\leq As
+ \quad(0<s<s_0).
+\end{equation}
+If $x\in T(B)\symdiff T(C)$, the two threshold inequalities and
+\eqref{eq:sup} place $x$ in one of the bands in \eqref{eq:band} with width at
+most twice the right side of \eqref{eq:sup}.  Consequently
+\[
+ |T(B)\symdiff T(C)|
+ \leq 2A\varepsilon\|G_\tau\|_\infty |B\symdiff C|.
+\]
+For sufficiently small $\varepsilon$, $T$ is a strict contraction and has a
+unique fixed point $B_\varepsilon$.
+
+\subsection*{Step 3: the fixed point is the unique maximizer}
+
+The Gaussian kernel is strictly positive definite, so the quadratic energy is
+strictly convex as a functional of $\rho$.  A maximizer over the bounded mass
+class is therefore bang--bang, hence is $\rho_B$ for some
+$B\in\mathcal B_\theta$.  The usual mass-transfer first variation says that
+high density can occur only on the top fixed-measure values of $P_B$;
+otherwise moving equal mass from a lower-potential high-density piece to a
+higher-potential low-density piece raises the energy.  Thus every maximizer
+satisfies $B=T(B)$ modulo null sets.  The contraction has only one fixed
+point, proving uniqueness.
+
+Finally, $P_B$ is uniformly $C^2$-close to $cV$.  The full selected
+superlevel surface $\{P_B=\lambda_B\}$ is a small normal perturbation of the
+strictly convex surface $\{V=t_\theta\}$.  Its principal curvatures remain
+positive.  Hence $\{P_B>\lambda_B\}$ is convex, and so is its intersection
+with the convex body $\Omega$.  Applying this to the fixed point proves that
+$B_\varepsilon$ is convex and completes the proof. \qed
+
+\section{Scope, checks, and novelty}
+
+The theorem proves both conclusions of Conjecture 3.8 for every fixed volume
+fraction in a sufficiently small Gaussian density-contrast regime.  It does
+not settle arbitrary contrast or the source's entire kernel class.  The same
+contraction proof applies to any smooth kernel for which the selected
+container-potential level has uniform positive curvature and convolution
+gives a uniform $C^2$ perturbation bound.
+
+A bounded search through 13 August 2026 used the exact title and conjecture,
+together with combinations of \emph{Gaussian kernel}, \emph{bang--bang
+density}, \emph{small contrast}, \emph{unique optimizer}, \emph{convex
+superlevel}, and \emph{threshold map}.  It found the standard log-concavity
+and nonlocal-perimeter literature but no exact result for this problem.
+Novelty confidence is moderate because the ingredients are classical.  The
+main reviewer targets are the uniform coarea estimate at a nonsmooth container
+boundary and strictness in the truncated-Gaussian covariance inequality.
+
+\begin{thebibliography}{9}
+\bibitem{OS}
+B. Osting and B. Simanek,
+\emph{A maximal energy pointset configuration problem},
+arXiv:1806.07225 (2018); J. Math. Anal. Appl. 485 (2020), 123830.
+
+\bibitem{BL}
+H. J. Brascamp and E. H. Lieb,
+\emph{On extensions of the Brunn--Minkowski and Pr\'ekopa--Leindler theorems,
+including inequalities for log concave functions, and with an application to
+the diffusion equation}, J. Funct. Anal. 22 (1976), 366--389.
+\end{thebibliography}
+
+\end{document}

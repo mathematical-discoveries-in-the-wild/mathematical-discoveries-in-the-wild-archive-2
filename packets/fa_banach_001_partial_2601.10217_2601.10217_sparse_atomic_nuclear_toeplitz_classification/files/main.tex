@@ -1,0 +1,245 @@
+\documentclass[10pt]{article}
+\usepackage[a4paper,margin=0.72in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.42em}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\F}{F}
+\newcommand{\Nuc}{\mathcal N}
+\newcommand{\C}{\mathbb C}
+\title{Nuclear Toeplitz operators between Fock spaces:\\
+an exact sparse-atomic classification}
+\author{Candidate substantial partial result for arXiv:2601.10217, Question 3.8}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\textbf{Status.} Candidate substantial partial result, likely valid.  The
+arbitrary-measure problem remains open, but the theorem below gives a complete
+criterion on an explicit infinite family of positive measures and produces
+nuclear examples of infinite total mass.
+
+\section*{Source question}
+
+Ma, Lu, and Zu ask for a necessary and sufficient condition for a positive
+measure $\mu$ to induce a nuclear map
+$T_\mu:F_\alpha^p\to F_\alpha^q$ when $1\le p<q\le\infty$
+\cite{MaLuZu}.
+
+\begin{center}
+\includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The screenshot is Question 3.8 on page 15 of the source PDF.
+
+\section*{Proof intuition}
+
+Widely separated normalized Fock kernels behave like the unit-vector basis of
+$\ell^t$, simultaneously for all $1\le t\le\infty$.  For points $z_j=jR$, the
+analysis--synthesis Gram matrix has entries
+$e^{-\alpha R^2(i-j)^2/2}$.  If $R$ is large, its off-diagonal part has norm
+less than one on every $\ell^t$, so the Fock analysis and synthesis maps have
+bounded one-sided inverses.
+
+An atomic Toeplitz operator on these points is therefore, up to these bounded
+maps, exactly the diagonal operator $D_c:\ell^p\to\ell^q$.  Tong's classical
+diagonal theorem identifies nuclearity of $D_c$ with an $\ell^s$ condition,
+where $1/s=1-1/p+1/q$.  The inverse factorization makes this condition
+necessary as well as sufficient.  Since $s>1$ away from the extreme endpoint,
+the criterion allows non-summable weights and hence measures of infinite mass.
+
+\section*{Statement}
+
+Fix $\alpha>0$ and $1\le p<q\le\infty$, and define
+\begin{equation}\label{eq:s}
+             \frac1s=1-\frac1p+\frac1q.
+\end{equation}
+Thus $1<s<\infty$ unless $(p,q)=(1,\infty)$, when $s=\infty$.
+Choose
+\begin{equation}\label{eq:R}
+                 R>\sqrt{\frac{2\log 3}{\alpha}},
+        \qquad z_j=jR\quad(j\ge1),
+\end{equation}
+and let $c_j\ge0$.  Set $\mu=\sum_{j\ge1}c_j\delta_{z_j}$.
+
+\begin{theorem}[exact sparse-atomic criterion]\label{thm:main}
+The measure $\mu$ satisfies the defining kernel-integrability condition of
+\cite{MaLuZu} whenever $c$ belongs to the space below, and
+\[
+ T_\mu\in\Nuc(F_\alpha^p,F_\alpha^q)
+ \quad\Longleftrightarrow\quad
+ \begin{cases}
+ c\in\ell^s,&(p,q)\ne(1,\infty),\\
+ c\in c_0,&(p,q)=(1,\infty).
+ \end{cases}
+\]
+Moreover, with constants depending only on $p,q,\alpha,R$,
+\[
+ \nu(T_\mu)\asymp
+ \begin{cases}
+ \|c\|_{\ell^s},&(p,q)\ne(1,\infty),\\
+ \|c\|_{\ell^\infty},&(p,q)=(1,\infty),\ c\in c_0,
+ \end{cases}
+\]
+where $\nu$ denotes the nuclear norm.
+\end{theorem}
+
+\section*{Analysis, synthesis, and the Gram inverse}
+
+The normalized kernel is
+\[
+ k_w(z)=e^{\alpha\bar w z-\alpha|w|^2/2}.
+\]
+For $1\le t\le\infty$, define
+\[
+ A_t f=\bigl(f(z_j)e^{-\alpha|z_j|^2/2}\bigr)_{j\ge1},
+ \qquad
+ S_t a=\sum_{j\ge1}a_jk_{z_j}.
+\]
+
+\begin{lemma}\label{lem:maps}
+$A_t:F_\alpha^t\to\ell^t$ and $S_t:\ell^t\to F_\alpha^t$ are bounded.  Their
+composition $G_t=A_tS_t$ is invertible on $\ell^t$.  Consequently
+\[
+       R_t:=S_tG_t^{-1}\quad\hbox{satisfies}\quad A_tR_t=I_{\ell^t},
+\]
+and
+\[
+       L_t:=G_t^{-1}A_t\quad\hbox{satisfies}\quad L_tS_t=I_{\ell^t}.
+\]
+\end{lemma}
+
+\begin{proof}
+Choose $0<\rho<R/2$.  The standard submean estimate, applied after a Fock
+translation, gives for $t<\infty$
+\[
+ |f(z_j)|^t e^{-t\alpha|z_j|^2/2}
+ \le C_{t,\alpha,\rho}
+ \int_{D(z_j,\rho)}|f(z)|^t e^{-t\alpha|z|^2/2}\,dA(z).
+\]
+The disks are disjoint, so summation proves boundedness of $A_t$.  For
+$t=\infty$ it follows directly from the Fock norm.
+
+For synthesis, pointwise
+\[
+ |S_ta(z)|e^{-\alpha|z|^2/2}
+ \le\sum_j|a_j|e^{-\alpha|z-z_j|^2/2}.
+\]
+Integration gives the $\ell^1\to F_\alpha^1$ bound, while the uniformly bounded
+Gaussian sum gives the $\ell^\infty\to F_\alpha^\infty$ bound.  Interpolation
+(or the same discrete convolution estimate) gives all intermediate $t$.
+
+Because all $z_j$ are real,
+\[
+ (G_ta)_i=\sum_{j\ge1}e^{-\alpha R^2(i-j)^2/2}a_j.
+\]
+Put $u=\alpha R^2/2>\log3$.  The off-diagonal row and column sums are at most
+\[
+ 2\sum_{n\ge1}e^{-un^2}
+ \le \frac{2e^{-u}}{1-e^{-u}}<1.
+\]
+Young's inequality (including its endpoint forms) therefore gives
+$\|G_t-I\|_{\ell^t\to\ell^t}<1$ for every $t$.  The Neumann series supplies
+$G_t^{-1}$, and the one-sided inverse identities follow.
+\end{proof}
+
+\section*{Proof of the classification}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+First, the relevant coefficient spaces are contained in $\ell^\infty$.  For
+each fixed $z\in\C$, completing the square shows
+\[
+ \sum_j c_j|K_\alpha(z,z_j)|e^{-\alpha|z_j|^2}
+ \le \|c\|_\infty e^{\alpha(\operatorname{Re}z)^2/4}
+       \sum_j e^{-\alpha(z_j-\operatorname{Re}z/2)^2}<\infty.
+\]
+Thus $T_\mu$ is defined on the kernel span.
+
+Let $D_c:\ell^p\to\ell^q$ be the diagonal map
+$D_c(a_j)=(c_ja_j)$.  Direct substitution into the definition of $T_\mu$
+gives the exact factorization
+\begin{equation}\label{eq:factor}
+                 T_\mu=\frac{\alpha}{\pi}S_qD_cA_p.
+\end{equation}
+Tong's diagonal nuclearity theorem \cite{Tong,HLS} says
+\[
+ D_c\in\Nuc(\ell^p,\ell^q)
+ \quad\Longleftrightarrow\quad
+ \begin{cases}
+ c\in\ell^s,&(p,q)\ne(1,\infty),\\
+ c\in c_0,&(p,q)=(1,\infty),
+ \end{cases}
+\]
+and its nuclear norm is the displayed sequence norm.  Hence the stated
+condition implies nuclearity of $T_\mu$ by \eqref{eq:factor} and the operator
+ideal property.
+
+Conversely, Lemma~\ref{lem:maps} and \eqref{eq:factor} give
+\[
+                 D_c=\frac{\pi}{\alpha}L_qT_\mu R_p.
+\]
+If $T_\mu$ is nuclear, so is $D_c$, and Tong's theorem gives the necessary
+sequence condition.  Applying the nuclear ideal norm inequality to both
+factorizations yields the two-sided norm estimate.
+\end{proof}
+
+\begin{corollary}[positive infinite-mass nuclear symbols]\label{cor:mass}
+For every $1\le p<q\le\infty$, there is a positive measure $\mu$ with
+$\mu(\C)=\infty$ such that
+$T_\mu\in\Nuc(F_\alpha^p,F_\alpha^q)$.
+\end{corollary}
+
+\begin{proof}
+If $s<\infty$, choose $a$ with $1/s<a\le1$ and set $c_j=j^{-a}$; then
+$c\in\ell^s\setminus\ell^1$.  At $(p,q)=(1,\infty)$ take $c_j=1/j$, which
+belongs to $c_0\setminus\ell^1$.  Apply Theorem~\ref{thm:main}.
+\end{proof}
+
+\section*{Scope, verification, and novelty}
+
+The source proves that finite total mass is sufficient for all $p,q$ and is
+necessary when $q\le p$.  Corollary~\ref{cor:mass} proves that this criterion
+cannot extend to $p<q$.  The exponent in \eqref{eq:s} also matches the source's
+necessary $L^s$ Berezin-transform condition.  The proof extends to any
+normalized-kernel sequence for which the corresponding analysis and synthesis
+maps are complemented; arbitrary non-atomic and densely atomic measures remain
+open because their local cell operators need not reduce to scalar diagonal
+blocks.
+
+All normalization constants and inverse identities were checked directly; no
+computation is used.  A bounded search on 11 August 2026 covered the run indexes,
+the exact wording of Question 3.8, the July 2026 accepted manuscript, and
+keyword searches for nuclear positive-measure Fock Toeplitz maps in the $p<q$
+range.  No later answer was found.  Tong's theorem is classical prior
+background; novelty confidence for the Fock reduction and infinite-mass
+consequence is moderate-high.
+
+\textbf{Human-review recommendation.} Check the endpoint statement of Tong's
+theorem and the factor $\alpha/\pi$ in \eqref{eq:factor}.  The Gram estimate is
+uniform in $t$ and includes both endpoints.
+
+\begin{thebibliography}{9}
+\bibitem{MaLuZu}
+T. Ma, Y. Lu, and C. Zu,
+\emph{Nuclear Toeplitz Operators between Fock Spaces},
+arXiv:2601.10217; accepted manuscript, Canadian Math. Bull. (2026),
+doi:10.4153/S0008439526102227.
+
+\bibitem{Tong}
+A. Tong,
+\emph{Diagonal nuclear operators on $\ell_p$ spaces},
+Trans. Amer. Math. Soc. 143 (1969), 235--247.
+
+\bibitem{HLS}
+D. D. Haroske, H.-G. Leopold, and L. Skrzypczak,
+\emph{Nuclear embeddings in general vector-valued sequence spaces with an
+application to Sobolev embeddings of function spaces on quasi-bounded domains},
+arXiv:2009.00474, Proposition 2.2.
+\end{thebibliography}
+
+\end{document}

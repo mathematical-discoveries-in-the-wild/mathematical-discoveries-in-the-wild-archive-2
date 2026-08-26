@@ -1,0 +1,316 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\T}{\mathbb T}
+\newcommand{\N}{\mathbb N}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+
+\title{A Near-Logarithmic Quantitative Ornstein Lower Bound}
+\author{Automated Math Discovery Run \texttt{fa\_banach\_001}, lane 4}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let $K_N$ be the least constant for which every trigonometric polynomial of
+coordinate degree at most $N$ on $\T^2$ satisfies
+\[
+ \norm{\partial_x\partial_y f}_{1}
+ \le K_N\bigl(\norm{\partial_x^2 f}_{1}
+                  +\norm{\partial_y^2 f}_{1}\bigr).
+\]
+Kazaniecki and Wojciechowski proved $K_N\gtrsim\sqrt{\log N}$, recalled the
+upper bound $K_N\lesssim\log N$, and conjectured sharp logarithmic growth.  We
+prove the near-sharp improvement
+\[
+                 K_N\gtrsim \frac{\log N}{\log\log N}.
+\]
+The gain comes from estimating the rational Fourier multipliers blockwise on a
+geometrically lacunary Riesz product rather than summing the errors of its
+individual Fourier coefficients.
+\end{abstract}
+
+\section{Source question and result}
+
+The source's simplest quantitative Ornstein problem concerns the mixed second
+derivative versus the two pure second derivatives.  It proves the lower
+exponent $1/2$, gives a weak-type argument for the logarithmic upper bound, and
+asks whether the latter is sharp; see Figure~\ref{fig:source}.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.94\textwidth]{figures/source_question_crop.png}
+\caption{The sharpness question in the source paper, arXiv:2206.13666.}
+\label{fig:source}
+\end{figure}
+
+For definiteness, the degree of a trigonometric polynomial on $\T^2$ is the
+maximum absolute value of either coordinate in its Fourier support.  Define
+\[
+ K_N=\sup_{\substack{f\ne0\\ \deg f\le N}}
+ \frac{\norm{\partial_x\partial_yf}_{L^1(\T^2)}}
+ {\norm{\partial_x^2f}_{L^1(\T^2)}+
+  \norm{\partial_y^2f}_{L^1(\T^2)}}.
+\]
+
+\begin{theorem}\label{thm:main}
+There are universal constants $c>0$ and $N_0$ such that, for $N\ge N_0$,
+\[
+                     K_N\ge c\frac{\log N}{\log\log N}.
+\]
+\end{theorem}
+
+This does not prove the conjectured $K_N\asymp\log N$, but it leaves only one
+iterated logarithm between the new lower bound and the known upper bound.
+
+\section{Idea of the proof}
+
+Take lacunary frequencies
+\[
+        a_k=(M^k,(-1)^kM^k),\qquad 1\le k\le n,
+\]
+and the Riesz product $P_n=\prod_{k=1}^n(1+\cos\langle a_k,z\rangle)$.
+Write $R_n=P_n-1$ as the sum of its martingale-difference blocks $B_k$.
+We construct $W_n$ by inverting $\partial_x^2$ on the Fourier support of
+$R_n$.  On the $k$th block, the multipliers of the other two derivatives are
+\[
+ \frac{q_y}{q_x}\approx(-1)^k,
+ \qquad
+ \left(\frac{q_y}{q_x}\right)^2\approx1.
+\]
+Thus $\partial_y^2W_n$ is close to $R_n$, whose $L^1$ norm is at most two,
+whereas $\partial_x\partial_yW_n$ is close to an alternating transform of the
+Riesz blocks, whose $L^1$ norm is comparable to $n$.
+
+The point is the error estimate.  Earlier frequencies contribute a relative
+amount $O(1/M)$ to a block frequency.  Expanding the rational multipliers as
+power series and using the $L^1$ Bernstein inequality bounds a whole block's
+error by $O(1/M)$, without paying for its exponentially many Fourier
+coefficients.  Taking $M=n$ makes the total error $O(1)$.  The degree is then
+at most $2n^n$, so $n$ is of order $\log N/\log\log N$.
+
+\section{The block multiplier estimate}
+
+Put $\epsilon_k=(-1)^k$, $a_k=(M^k,\epsilon_kM^k)$, and
+\[
+ P_0=1,\qquad P_k=\prod_{j=1}^k(1+\cos\langle a_j,z\rangle),
+ \qquad B_k=P_k-P_{k-1}.
+\]
+Then
+\[
+ B_k=\cos\langle a_k,z\rangle P_{k-1},
+ \qquad R_n=P_n-1=\sum_{k=1}^nB_k.
+\]
+Since $M\ge3$, the first coordinate of every nonzero frequency in these
+blocks is nonzero.  On their union define Fourier multipliers
+\[
+ \widehat{T_1h}(q)=\frac{q_y}{q_x}\widehat h(q),
+ \qquad
+ \widehat{T_2h}(q)=\left(\frac{q_y}{q_x}\right)^2\widehat h(q).
+\]
+
+\begin{lemma}[Blockwise error]\label{lem:block}
+There is a universal $C$ such that, whenever $M\ge4$,
+\[
+ \norm{T_1R_n-\sum_{k=1}^n\epsilon_kB_k}_1
+ \le C\frac{n}{M-1},
+ \qquad
+ \norm{T_2R_n-R_n}_1
+ \le C\frac{n}{M-1}.
+\]
+\end{lemma}
+
+\begin{proof}
+Fix $k$ and one of the two signed halves of $B_k$.  Its frequencies have the
+form
+\[
+ q=\sigma a_k+s,\qquad \sigma\in\{-1,1\},
+ \qquad s\in\operatorname{supp}\widehat P_{k-1}.
+\]
+Set
+\[
+ u=\frac{s_x}{\sigma M^k},\qquad
+ v=\frac{s_y}{\sigma M^k},\qquad
+ \delta_k=\frac{\sum_{j<k}M^j}{M^k}<\frac1{M-1}.
+\]
+On this half-block,
+\[
+                 \frac{q_y}{q_x}=\frac{\epsilon_k+v}{1+u}.
+\]
+
+We interpret a monomial $u^rv^s$ as a normalized differential multiplier on
+$P_{k-1}$.  The one-variable Bernstein inequality in $L^1$, applied
+successively in $x$ and $y$, gives
+\[
+ \norm{u^rv^sP_{k-1}}_1
+ \le \delta_k^{r+s}\norm{P_{k-1}}_1
+ =\delta_k^{r+s}.
+\]
+Here $P_{k-1}\ge0$ and its integral is one; lacunarity ensures that its
+constant Fourier coefficient is one.
+
+Now expand
+\[
+ \frac{\epsilon_k+v}{1+u}-\epsilon_k
+   =\frac{v-\epsilon_ku}{1+u}
+   =\sum_{r\ge0}(-u)^r(v-\epsilon_ku).
+\]
+The preceding Bernstein estimate and absolute summation show that the
+$T_1$ error on the entire $k$th block is at most
+\[
+                   \frac{2\delta_k}{1-\delta_k}.
+\]
+For the square multiplier, use
+\[
+ \left(\frac{\epsilon_k+v}{1+u}\right)^2-1
+ =\frac{2\epsilon_kv+v^2-2u-u^2}{(1+u)^2},
+ \qquad
+ (1+u)^{-2}=\sum_{r\ge0}(-1)^r(r+1)u^r.
+\]
+Its block error is at most
+\[
+                  \frac{4\delta_k+2\delta_k^2}{(1-\delta_k)^2}.
+\]
+The factors $1/2$ from the two signed halves add to one.  Summing these
+uniform $O((M-1)^{-1})$ bounds over $k$ proves both assertions.
+\end{proof}
+
+\section{The alternating Riesz transform}
+
+We use the same two standard ingredients invoked in the source paper.  To make
+the transference precise, write a polynomial on the Riesz spectrum as
+\[
+ F(x,y)=\sum_{\xi\in\{-1,0,1\}^n}c_\xi
+ \exp\!\left(i\sum_{k=1}^n\xi_k(M^kx+\epsilon_kM^ky)\right).
+\]
+For each fixed $y$, Meyer's lacunary transference theorem applied to the
+$x$-frequencies $M^k$ compares $\|F(\cdot,y)\|_{L^1_x}$ with
+\[
+ \left\|\sum_\xi c_\xi
+ \exp\!\left(i\sum_{k=1}^n\xi_k(t_k+\epsilon_kM^ky)\right)
+ \right\|_{L^1(\mathbb T^n_t)}.
+\]
+The latter is independent of $y$, by the Haar translations
+$t_k\mapsto t_k-\epsilon_kM^ky$.  Integrating in $y$ therefore compares the
+$L^1(\mathbb T^2)$ norm with the fully independent model.  The comparison
+constant depends only on the sum of consecutive frequency ratios, and here
+\[
+ \sum_{k<n}\frac{M^k}{M^{k+1}}=\frac{n-1}{M}.
+\]
+Hence the comparison constant is universal when $M\ge n$.
+
+In the independent model, the blocks are
+\[
+ \widetilde B_k=\widetilde P_k-\widetilde P_{k-1},
+ \qquad
+ \widetilde P_k=\prod_{j=1}^k(1+\cos t_j).
+\]
+Summation by parts gives
+\[
+ \sum_{k=1}^n\epsilon_k\widetilde B_k
+ =\epsilon_n\widetilde P_n-\epsilon_1\widetilde P_0
+  +\sum_{k=1}^{n-1}(\epsilon_k-\epsilon_{k+1})\widetilde P_k.
+\]
+The lower inequality for linear combinations of finite Riesz products due to
+Latała (in the form used by Kazaniecki--Wojciechowski) controls the $L^1$ norm
+from below by a universal constant times the total variation of these
+coefficients.  Since $|\epsilon_k-\epsilon_{k+1}|=2$, transference yields:
+
+\begin{lemma}[Alternating main term]\label{lem:mainterm}
+There is a universal $c_0>0$ such that, for $M\ge n\ge2$,
+\[
+                       \norm{\sum_{k=1}^n\epsilon_kB_k}_1\ge c_0n.
+\]
+\end{lemma}
+
+\section{Proof of Theorem~\ref{thm:main}}
+
+Fix $n\ge4$ and set $M=n$.  Define a real trigonometric polynomial $W_n$ by
+\[
+ \widehat W_n(q)=-\frac{\widehat R_n(q)}{q_x^2}
+ \quad(q\in\operatorname{supp}\widehat R_n),
+ \qquad \widehat W_n(q)=0\quad\text{otherwise}.
+\]
+The domination of the last lacunary digit gives
+$|q_x|\ge M^k-\sum_{j<k}M^j>0$ on the $k$th block, so this is well defined.
+Fourier differentiation gives the exact identities
+\[
+ \partial_x^2W_n=R_n,
+ \qquad \partial_x\partial_yW_n=T_1R_n,
+ \qquad \partial_y^2W_n=T_2R_n.
+\]
+Because $P_n\ge0$ and $\int P_n=1$,
+\[
+                         \norm{R_n}_1=\norm{P_n-1}_1\le2.
+\]
+Lemmas~\ref{lem:block} and~\ref{lem:mainterm}, with $M=n$, now imply
+\[
+ \norm{\partial_y^2W_n}_1\le C_1,
+ \qquad
+ \norm{\partial_x\partial_yW_n}_1\ge c_0n-C_2.
+\]
+After increasing the lower threshold for $n$,
+\[
+ \frac{\norm{\partial_x\partial_yW_n}_1}
+ {\norm{\partial_x^2W_n}_1+\norm{\partial_y^2W_n}_1}
+ \ge c_1n.
+\]
+
+Every Fourier coordinate of $R_n$, and hence of $W_n$, has magnitude at most
+\[
+                 \sum_{k=1}^nM^k\le2M^n=2n^n.
+\]
+Thus $K_{2n^n}\ge c_1n$.  Finally, for sufficiently large $N$, take
+\[
+                  n=\left\lfloor\frac{\log N}{2\log\log N}\right\rfloor.
+\]
+Then $2n^n\le N$.  Since $K_N$ is nondecreasing,
+\[
+ K_N\ge c_1n\ge c\frac{\log N}{\log\log N},
+\]
+which proves the theorem. \qed
+
+\section{Scope and remaining gap}
+
+The proof is specific to the basic isotropic pair
+$(\partial_x^2,\partial_y^2)$ and target $\partial_x\partial_y$.  The same
+blockwise principle may improve other configurations in the source paper, but
+no such generalization is claimed here.  Achieving the conjectured full
+$\log N$ lower bound would require uniformly controlling the pure-derivative
+error at fixed geometric lacunarity; the present absolute block summation
+costs $n/M$ and forces $M\asymp n$, exactly producing the $\log\log N$ loss.
+
+\begin{thebibliography}{9}
+\bibitem{KW2024}
+K. Kazaniecki and M. Wojciechowski,
+\emph{On Bernstein type quantitative estimates for Ornstein
+non-inequalities}, Rev. Mat. Iberoam. 40 (2024), 901--912;
+arXiv:2206.13666.
+
+\bibitem{Latala2014}
+R. Latała,
+\emph{$L_1$-norm of combinations of products of independent random
+variables}, Israel J. Math. 203 (2014), 295--308.
+
+\bibitem{Meyer1968}
+Y. Meyer,
+\emph{Endomorphismes des idéaux fermés de $L^1(G)$, classes de Hardy et
+séries de Fourier lacunaires}, Ann. Sci. École Norm. Sup. (4) 1 (1968),
+499--580.
+
+\bibitem{Bonami2020}
+A. Bonami, R. Latała, P. Nayar, and T. Tkocz,
+\emph{Bounds on moments of weighted sums of finite Riesz products},
+J. Fourier Anal. Appl. 26 (2020), article 17.
+\end{thebibliography}
+
+\end{document}

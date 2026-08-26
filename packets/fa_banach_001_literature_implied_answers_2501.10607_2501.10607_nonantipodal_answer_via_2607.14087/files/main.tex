@@ -1,0 +1,288 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{xcolor}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  urlcolor=blue,
+  citecolor=blue
+}
+\emergencystretch=2em
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\Sph}{\mathbb S}
+\newcommand{\R}{\mathbb R}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\EE}{\mathbb E}
+\newcommand{\gauss}{\gamma_d}
+\newcommand{\phibar}{\overline\Phi}
+
+\title{Removing Antipodality from Asymptotically Optimal\\
+Partial Sphere Coverings}
+\author{Literature-implied solution packet}
+\date{August 13, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{
+\textbf{Status.} This is a full answer to one open direction in
+Hoehner--Kur, arXiv:2501.10607, but it is classified as
+\emph{literature-implied}, not as a wholly original proof.  The decisive
+Gaussian comparison is Theorem~2.1 of Mulgund, arXiv:2607.14087.  The
+identification of that theorem with the source paper's cone--halfspace
+reduction appears to be new; no explicit public linkage was found.
+}}
+\end{center}
+
+\section{Source question and exact scope}
+
+Let $C_d(x)$ be the geodesic cap in $\Sph^{d-1}$ centered at
+$x\in\Sph^{d-1}$ and having normalized surface measure $1/N$.  Define the
+unrestricted optimum
+\[
+ U_N(d):=\sup_{x_1,\ldots,x_N\in\Sph^{d-1}}
+ \sigma_{d-1}\!\left(\bigcup_{i=1}^N C_d(x_i)\right).
+\]
+Hoehner--Kur prove the limit $1-e^{-1}$ when the centers occur in antipodal
+pairs.  On page~2 they explicitly write that they ``do not know how to remove
+the antipodality assumption.''  The surrounding paragraph is reproduced
+below for location verification.
+
+\begin{center}
+\includegraphics[width=0.97\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The present packet settles precisely that first direction in the same regime.
+It does not settle the paper's exponential-regime, monotonicity, or
+Laguerre--Dirichlet--Voronoi questions.
+
+\section{Result}
+
+\begin{theorem}[Full non-antipodal extension]\label{thm:main}
+Let $N=N(d)$ be any integer sequence such that $N(d)\to\infty$ and
+$\log N(d)=o(\sqrt d)$.  Then
+\[
+ \lim_{d\to\infty}U_N(d)=1-e^{-1}.
+\]
+Thus arbitrary arrangements of $N$ equal caps are asymptotically no better
+than random arrangements; no antipodal hypothesis is needed.
+\end{theorem}
+
+The proof imports one later theorem and otherwise uses estimates already
+proved by the source paper.  We state the imported result in exactly the form
+needed here.
+
+\begin{theorem}[Mulgund, Theorem 2.1]\label{thm:mulgund}
+Let $R$ be an $m\times m$ correlation matrix and let $J=\mathbf1\mathbf1^T$.
+If $R-J/m\succeq0$ and $X\sim N(0,R)$, then for every $c\in\R$,
+\[
+ \PP\{X_i\le c\text{ for all }i\}\ge \Phi(c)^m.
+\]
+Singular correlation matrices are allowed.
+\end{theorem}
+
+\section{Proof intuition}
+
+The source paper replaces each spherical cap by its Gaussian cone and then
+shows that, at a slightly trimmed level $u$, each cone differs from the
+one-sided Gaussian halfspace with the same axis by only $o(1/N)$ in measure.
+This estimate is rotationally uniform and does not use antipodality.
+Consequently, the unrestricted problem becomes a statement about the maximum
+of an arbitrary centered Gaussian vector with unit coordinate variances.
+
+Mulgund's theorem does not apply directly to its covariance $G$.  The useful
+normalization is
+\[
+ R=\frac{N-1}{N}G+\frac1N J.
+\]
+It is always admissible because $R-J/N=((N-1)/N)G\succeq0$.  Probabilistically,
+this merely rescales the original Gaussian vector and adds the same small
+independent normal variable to every coordinate.  At an extreme-value level
+$u\sim\sqrt{2\log N}$, that common perturbation is negligible.  Mulgund's
+independent lower-orthant bound therefore yields a universal no-hit
+probability of at least $e^{-1}-o(1)$.
+
+\section{Proof}
+
+Write $\phibar(t)=1-\Phi(t)$.  We use the following consequence of
+Theorem~\ref{thm:mulgund}.
+
+\begin{lemma}[Universal rare-exceedance bound]\label{lem:gaussian}
+For each $N$, let $G_N$ be an arbitrary $N\times N$ correlation matrix and
+let $\xi^{(N)}\sim N(0,G_N)$.  If $u_N\to\infty$ and
+$N\phibar(u_N)\to1$, then, uniformly over $G_N$,
+\[
+ \PP\!\left\{\max_{1\le i\le N}\xi_i^{(N)}\le u_N\right\}
+ \ge e^{-1}-o(1).
+\]
+\end{lemma}
+
+\begin{proof}
+Set $a_N=(N-1)/N$ and
+\[
+ R_N=a_NG_N+\frac1N J.
+\]
+This is a correlation matrix and $R_N-J/N=a_NG_N\succeq0$.  If $W$ is an
+independent standard normal random variable, then
+\[
+ X_i:=\sqrt{a_N}\,\xi_i^{(N)}+\frac{W}{\sqrt N}
+\]
+has covariance $R_N$.  Let $L_N=N^{1/4}$ and
+\[
+ c_N:=\sqrt{a_N}\,u_N-\frac{L_N}{\sqrt N}
+      =\sqrt{a_N}\,u_N-N^{-1/4}.
+\]
+Because the same $W$ is added to all coordinates,
+\[
+ \max_iX_i=\sqrt{a_N}\max_i\xi_i^{(N)}+\frac{W}{\sqrt N}.
+\]
+Hence the event $\{\max_iX_i\le c_N\}\cap\{W\ge-L_N\}$ is contained in
+$\{\max_i\xi_i^{(N)}\le u_N\}$.  Theorem~\ref{thm:mulgund} gives
+\begin{align*}
+ \PP\{\max_i\xi_i^{(N)}\le u_N\}
+ &\ge \PP\{\max_iX_i\le c_N\}-\PP\{W<-L_N\}\\
+ &\ge \Phi(c_N)^N-o(1).
+\end{align*}
+
+It remains to identify the limit.  From $N\phibar(u_N)\to1$ and Mills'
+ratio, $u_N\sim\sqrt{2\log N}$.  Moreover,
+\[
+ 0\le u_N-c_N=(1-\sqrt{a_N})u_N+N^{-1/4},
+ \qquad
+ u_N(u_N-c_N)=o(1).
+\]
+The standard Mills-ratio comparison therefore gives
+$\phibar(c_N)/\phibar(u_N)\to1$.  Thus
+$N\phibar(c_N)\to1$, and
+$\Phi(c_N)^N\to e^{-1}$.  This proves the lemma.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Fix arbitrary centers $x_1,\ldots,x_N\in\Sph^{d-1}$ and let $A_i$ be the
+positive cone over $C_d(x_i)$.  For $Y\sim N(0,I_d)$, radial invariance gives
+\[
+ \sigma_{d-1}\!\left(\bigcup_iC_d(x_i)\right)
+ =\gauss\!\left(\bigcup_iA_i\right),
+ \qquad \gauss(A_i)=\frac1N.
+\]
+
+Let $t=t_{d,N}$ satisfy $\phibar(t)=1/N$.  In the proof of its Theorem~1,
+the source paper constructs a positive trim $s_d$ and $u=t+s_d$ satisfying
+\[
+ \sqrt{\log N}\,s_d\to0,
+ \qquad
+ \phibar(u)=\frac{1+o(1)}N,
+\]
+and proves, uniformly in the cap axis $x$, that for
+$H(x)=\{y:\langle y,x\rangle\ge u\}$,
+\[
+ \gauss\bigl(A(x)\cap H(x)\bigr)=\frac{1+o(1)}N.
+\]
+Since $\gauss(A(x))=1/N$ and
+$\gauss(H(x))=\phibar(u)=(1+o(1))/N$, inclusion--exclusion yields the
+stronger reformulation
+\[
+ \gauss\bigl(A(x)\mathbin\triangle H(x)\bigr)=o(1/N),
+\]
+again uniformly in $x$.  Consequently,
+\begin{equation}\label{eq:unionapprox}
+ \left|\gauss\!\left(\bigcup_iA_i\right)
+ -\gauss\!\left(\bigcup_iH(x_i)\right)\right|
+ \le\sum_{i=1}^N\gauss(A_i\mathbin\triangle H(x_i))=o(1).
+\end{equation}
+
+Now put $G=(\langle x_i,x_j\rangle)_{i,j}$ and
+$\xi_i=\langle Y,x_i\rangle$.  Then $G$ is a possibly singular correlation
+matrix and
+\[
+ \gauss\!\left(\bigcup_iH(x_i)\right)
+ =\PP\{\max_i\xi_i\ge u\}.
+\]
+Because $N\phibar(u)\to1$, Lemma~\ref{lem:gaussian} implies
+\[
+ \PP\{\max_i\xi_i<u\}\ge e^{-1}-o(1).
+\]
+(The strict and non-strict inequalities have the same probability because
+each Gaussian coordinate has a continuous marginal.)
+Together with \eqref{eq:unionapprox}, this proves, uniformly over all centers,
+\[
+ U_N(d)\le1-e^{-1}+o(1).
+\]
+
+For the reverse inequality, choose $x_1,\ldots,x_N$ independently and
+uniformly on the sphere.  For every fixed point $z\in\Sph^{d-1}$, the events
+$z\in C_d(x_i)$ are independent and each has probability $1/N$.  Fubini's
+theorem gives
+\[
+ \EE\,\sigma_{d-1}\!\left(\bigcup_iC_d(x_i)\right)
+ =1-\left(1-\frac1N\right)^N.
+\]
+Some deterministic configuration attains at least this expectation, so
+$U_N(d)\ge1-(1-1/N)^N\to1-e^{-1}$.  The two bounds prove the theorem.
+\end{proof}
+
+\section{Verification and dependency audit}
+
+\begin{enumerate}[leftmargin=*]
+\item \textbf{Imported theorem.} Theorem~2.1 of arXiv:2607.14087 states the
+lower-orthant inequality for every correlation matrix $R$ with
+$R-J/m\succeq0$, including singular matrices.
+\item \textbf{Normalization.} $R_N=((N-1)/N)G_N+J/N$ has diagonal one and
+$R_N-J/N=((N-1)/N)G_N\succeq0$.
+\item \textbf{Event inclusion.} The common shift is exact, so no independence
+between the two events is used; only
+$\PP(A\cap B)\ge\PP(A)-\PP(B^c)$ is invoked.
+\item \textbf{Tail stability.} The perturbation obeys
+$u_N(u_N-c_N)=O(u_N^2/N+u_NN^{-1/4})=o(1)$, precisely the scale needed for
+the normal-tail ratio to tend to one.
+\item \textbf{Geometric uniformity.} The source paper proves its cone estimate
+for one axis and invokes rotational invariance.  All caps have the same area,
+so the $o(1/N)$ error is uniform and survives summation over $N$ caps.
+\item \textbf{No rank assumption.} The Gram matrix may have rank smaller than
+$N$; both the Gaussian construction and Mulgund's theorem permit this.
+\end{enumerate}
+
+\section{Literature search, novelty, and limitations}
+
+Targeted searches for the two arXiv identifiers together, for the source
+paper's antipodality phrase together with Mulgund's title, and for partial
+sphere coverings together with stochastic domination of Gaussian maxima did
+not reveal an explicit statement of Theorem~\ref{thm:main}.  The result should
+therefore be read as an agent-identified corollary of a later primary theorem,
+not as a claim that the Gaussian comparison itself is new.
+
+The proof does \emph{not} extend the dimensional regime.  Its spherical
+input is the source estimate $\log N=o(\sqrt d)$.  It also gives no monotonicity
+of the antipodal quantity $V_N(d)$ and no value of the
+Laguerre--Dirichlet--Voronoi tiling constant.  Those questions remain open on
+the evidence reviewed here.
+
+\section{Human-review checklist}
+
+Before external use, a reviewer should check: (i) Theorem~2.1 in the attached
+supporting paper against the imported statement; (ii) the three source-paper
+estimates used to derive the symmetric-difference bound; (iii) the direction
+of the common-noise event inclusion; and (iv) the Mills-ratio perturbation.
+The proof is short enough that these four checks cover every non-elementary
+dependency.
+
+\section{References}
+
+\begin{itemize}[leftmargin=*]
+\item S. Hoehner and G. Kur, \emph{On the Optimality of Random Partial Sphere
+Coverings in High Dimensions}, arXiv:2501.10607, latest version consulted
+August 10, 2026.
+\item A. Mulgund, \emph{Stochastic Domination of Gaussian Maxima: A Resolution
+of the Weak Simplex Conjecture}, arXiv:2607.14087v2, July 20, 2026.
+\end{itemize}
+
+\end{document}

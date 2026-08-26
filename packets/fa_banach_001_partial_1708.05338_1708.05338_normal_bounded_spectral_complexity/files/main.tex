@@ -1,0 +1,206 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[margin=19mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{navy}{RGB}{21,55,94}
+\definecolor{softblue}{RGB}{238,245,252}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Mat}{\operatorname{Mat}}
+\newcommand{\rk}{\operatorname{rank}}
+\newcommand{\spec}{\operatorname{spec}}
+
+\title{\vspace{-1.4em}\textbf{Rank stability for normal matrices of\\bounded spectral complexity}}
+\author{Candidate partial-result packet for arXiv:1708.05338}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+\vspace{-1.4em}
+
+\begin{center}
+\fcolorbox{navy}{softblue}{\begin{minipage}{0.91\linewidth}
+\textbf{Outcome.} Fix the tuple length $n$ and a spectral-complexity bound
+$M$.  Pairwise almost commuting normal matrices, each having at most $M$
+distinct eigenvalues, are uniformly close in normalized rank to an exactly
+commuting tuple.  Invertibility is unnecessary.  The conclusion persists if
+all but a sufficiently small rank fraction of each spectrum is supported on
+at most $M$ values.
+\end{minipage}}
+\end{center}
+
+\section*{1. The source question and the partial answer}
+
+For $X,Y\in\Mat_d(\C)$ write
+\[
+ d_{\rm rk}(X,Y)=\frac{\rk(X-Y)}d,
+ \qquad \|[X,Y]\|_{\rm rk}=\frac{\rk(XY-YX)}d.
+\]
+Elek--Grabowski prove stability when every matrix is self-adjoint or unitary,
+and ask for arbitrary normal invertible matrices.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.96\linewidth]{figures/open_problem_crop.png}
+\caption{The exact questions in Remark 2, source PDF page 3.}
+\end{figure}
+
+\begin{theorem}[Bounded spectral complexity]\label{thm:main}
+For every $n,M\ge1$ and $\varepsilon>0$ there is $\delta>0$, independent of
+$d$, with the following property.  If $A_1,\ldots,A_n\in\Mat_d(\C)$ are
+normal, $|\spec(A_i)|\le M$, and
+\[
+ \|[A_i,A_j]\|_{\rm rk}\le\delta \qquad(1\le i,j\le n),
+\]
+then there are pairwise commuting $B_1,\ldots,B_n\in\Mat_d(\C)$ such that
+$d_{\rm rk}(A_i,B_i)\le\varepsilon$ for every $i$.
+\end{theorem}
+
+\paragraph{Proof intuition.}
+On a finite spectrum, complex conjugation is exactly a polynomial: if $A$ is
+normal with at most $M$ spectral values, then $A^*=p(A)$ for some
+$\deg p<M$.  A telescoping identity bounds the rank cost of passing from $A$
+to $p(A)$ solely in terms of $M$.  Thus adjoining all adjoints produces the
+star-closed almost commuting tuple required by the source's general theorem.
+
+\section*{2. Polynomial commutators}
+
+\begin{lemma}\label{lem:poly}
+Let $p\in\C[z]$ have degree at most $m$.  For square matrices $X,Y$,
+\[
+ \rk[p(X),Y]\le \frac{m(m+1)}2\,\rk[X,Y].
+\]
+\end{lemma}
+
+\begin{proof}
+For $\ell\ge1$,
+\[
+ [X^\ell,Y]=\sum_{q=0}^{\ell-1}X^q[X,Y]X^{\ell-1-q},
+\]
+so its rank is at most $\ell\rk[X,Y]$.  Expand $p$ and use subadditivity of
+rank.  Scalar coefficients do not affect the estimate.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Put $K=\max\{1,M(M-1)/2\}$.  Apply Theorem 6 of Elek--Grabowski to tuples
+of length $2n$ and tolerance $\varepsilon$, and call its commutator tolerance
+$\eta$; choose $\delta=\eta/K^2$.
+
+By the spectral theorem, for each $i$ there is a polynomial $p_i$ of degree
+at most $M-1$ such that
+\[
+ p_i(\lambda)=\overline\lambda\quad(\lambda\in\spec(A_i)),
+ \qquad\text{hence}\qquad A_i^*=p_i(A_i).
+\]
+Lemma~\ref{lem:poly} gives
+\begin{align*}
+ \rk[A_i^*,A_j]&\le K\rk[A_i,A_j],\\
+ \rk[A_i^*,A_j^*]&\le K^2\rk[A_i,A_j].
+\end{align*}
+The second inequality is obtained by applying the lemma once to each
+polynomial.  Thus
+$(A_1,\ldots,A_n,A_1^*,\ldots,A_n^*)$ is a star-closed
+$\eta$-commuting tuple in normalized rank.  The source's Theorem 6 supplies
+a commuting $2n$-tuple within $\varepsilon$; its first $n$ entries are the
+required $B_i$.  No step uses invertibility.
+\end{proof}
+
+\section*{3. A robust spectral-concentration upgrade}
+
+\begin{corollary}\label{cor:concentration}
+For every $n,M\ge1$ and $\varepsilon>0$ there exist $\delta,\kappa>0$,
+independent of $d$, such that the following holds.  Suppose the normal
+matrices $A_1,\ldots,A_n\in\Mat_d(\C)$ satisfy
+$\|[A_i,A_j]\|_{\rm rk}\le\delta$, and for each $i$ some set
+$S_i\subset\spec(A_i)$ of at most $M$ values has total eigenspace dimension
+at least $(1-\kappa)d$.  Then the conclusion of Theorem~\ref{thm:main} holds.
+\end{corollary}
+
+\begin{proof}
+Use Theorem~\ref{thm:main} with tolerance $\varepsilon/2$, and denote its
+input tolerance by $\eta$.  Choose
+\[
+ \delta\le\eta/2,
+ \qquad
+ \kappa\le\min\{1/2,\varepsilon/2,\eta/8\}.
+\]
+In an orthonormal eigenbasis for $A_i$, replace every eigenvalue outside
+$S_i$ by one fixed member of $S_i$; call the resulting normal matrix $C_i$.
+Then $|\spec(C_i)|\le M$ and
+$d_{\rm rk}(A_i,C_i)\le\kappa$.  If $D_i=C_i-A_i$, then
+\[
+ [C_i,C_j]-[A_i,A_j]=[D_i,C_j]+[A_i,D_j],
+\]
+and consequently
+\[
+ \|[C_i,C_j]\|_{\rm rk}
+ \le\delta+2d_{\rm rk}(A_i,C_i)+2d_{\rm rk}(A_j,C_j)
+ \le\eta.
+\]
+Apply Theorem~\ref{thm:main} to the $C_i$ and use the rank triangle
+inequality.
+\end{proof}
+
+\section*{4. Why this does not yet prove the full conjecture}
+
+The dependence on $M$ is genuine in this argument: interpolating the adjoint
+on an unrestricted finite spectrum can require degree $d-1$, destroying the
+dimension-free commutator modulus.  Nor can the source's one-line
+unitary/self-adjoint reduction simply be copied.  Indeed, let
+\[
+ v=(1,2,3,4)^T,\quad U=I-\frac{2vv^*}{v^*v},
+\]
+\[
+ A=\operatorname{diag}(0,1,-5i,2+i),\qquad
+ B=U\operatorname{diag}(0,1+i,2-i,3+2i)U^*.
+\]
+Both $A$ and $B$ are normal, but exact row reduction gives
+\[
+ \rk[A,B]=2,\qquad \rk[A^*,B]=4.
+\]
+Thus even equality of the two commutator ranks fails for normal pairs.  This
+example obstructs the simplest rank-Fuglede shortcut; it is not a
+counterexample to stability.
+
+The theorem also does not answer the separate same-type question: Theorem 6
+produces arbitrary commuting approximants, with no guarantee that they remain
+normal or invertible.
+
+\paragraph{Upgrade audit.}
+Eight focused stages were completed: direct star-closure; later-literature
+audit; exact rank-Fuglede stress test; spectral interpolation; quantitative
+Horner control; star-closed completion; spectral-concentration upgrade; and
+unrestricted/same-type obstruction analysis.  The successful route closes
+every uniformly bounded spectral-complexity class.  The remaining barrier is
+dimension-free control of adjoints for spectra whose cardinality grows with
+$d$.
+
+\paragraph{Novelty boundary.}
+A 2024 primary source still records the unrestricted spectral-restriction-free
+problem as open.  Bounded searches through 17 August 2026 found no paper
+stating this partial theorem.  Expert review and a broader priority search are
+required before dissemination.
+
+\begin{thebibliography}{9}\small
+\bibitem{EG}
+G.~Elek and L.~Grabowski,
+\emph{Almost commuting matrices with respect to the rank metric},
+arXiv:1708.05338 (2017; v3, 2021).
+
+\bibitem{BBG}
+T.~Bauer, G.~Blachar, and B.~Greenfeld,
+\emph{Rank-stability of polynomial equations},
+arXiv:2401.04676 (2024).
+\end{thebibliography}
+
+\end{document}

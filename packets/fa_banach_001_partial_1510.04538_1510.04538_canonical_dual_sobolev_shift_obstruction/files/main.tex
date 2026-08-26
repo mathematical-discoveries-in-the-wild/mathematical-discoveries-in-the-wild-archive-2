@@ -1,0 +1,271 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=25mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage{enumitem}
+
+\definecolor{accent}{RGB}{36,80,112}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+
+\title{Canonical-Dual Sobolev Regularity:\\
+\large A sharp shift obstruction and a positive low-regularity theorem}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 8}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{accent}{accent!6}{\parbox{0.91\textwidth}{
+\textbf{Status.} Candidate substantial partial result, likely valid, pending
+human review. The concrete boundary-shearlet estimate at the intended
+integer Sobolev regularities remains open.}}
+\end{center}
+
+\section{Source problem}
+
+Grohs, Kutyniok, Ma, Petersen, and Raslan construct boundary shearlet frames
+$\Phi=(\varphi_n)$ for $L^2(\Omega)$. Writing $j_n$ for the scale, $C$ and
+$D$ for primal analysis and synthesis, and $S=DC$ for the $L^2$ frame
+operator, their desired Gelfand-frame estimates at regularity $s>0$ are
+\begin{align*}
+ \left\|D c\right\|_{H^s(\Omega)}
+   &\lesssim \left\|(2^{j_ns}c_n)_n\right\|_2, \tag{GFA1}\\
+ \left\|(2^{j_ns}\langle f,S^{-1}\varphi_n\rangle)_n\right\|_2
+   &\lesssim \|f\|_{H^s(\Omega)}. \tag{GFA2}
+\end{align*}
+They prove a weighted primal-analysis characterization of $H^s(\Omega)$ and
+derive (GFA1) under localization assumptions. They explicitly leave (GFA2)
+without an analytic proof and provide numerical evidence instead
+\cite[pp.~5, 18, and \S6.3]{GKMPMR}.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.97\textwidth]{figures/open_problem_crop.png}
+  \caption{The source explains that (GFA2) is inaccessible because it concerns
+  canonical-dual coefficients, and records only a numerical analysis
+  \cite[p.~18]{GKMPMR}.}
+\end{figure}
+
+The first theorem below proves that the two available mapping properties do
+not imply (GFA2), even under very strong qualitative localization. The second
+theorem gives a positive analytic interval around $s=0$.
+
+\section{Proof intuition}
+
+The obstruction is directional. A unilateral shift to a higher scale costs
+a factor $2^s$ in the weighted norm, while the backward shift gains the same
+factor. Choose a Riesz-basis synthesis operator $D=I-aR$. Its adjoint
+$D^*=I-aR^*$ controls the primal coefficients extremely well because it moves
+toward lower scales. Canonical-dual analysis, however, is $D^{-1}$ and sums
+an infinite forward-shift tail. That tail belongs to the weighted space
+exactly below the threshold $a2^s=1$.
+
+For a general frame the frame operator $S$ is nevertheless self-adjoint and
+invertible on the central $L^2$ space. Endpoint analysis and synthesis make
+$S$ bounded at positive regularity, and self-adjointness supplies the negative
+endpoint by duality. Sneiberg's interpolation theorem then preserves
+invertibility on some open interval around zero. This proves (GFA2) there,
+although it gives no reason for invertibility to persist all the way to a
+prescribed integer exponent.
+
+\section{An exact phase transition}
+
+Let $\mathcal H_0=\ell^2(\mathbb N_0)$ with standard basis $(e_n)$, let
+$R e_n=e_{n+1}$, and for $r\geq0$ put
+\[
+ \mathcal H_r=\left\{x:\|x\|_r^2=
+ \sum_{n\geq0}2^{2rn}|x_n|^2<\infty\right\}.
+\]
+Use the same weighted space for coefficients and denote it by $\ell^2_r$.
+
+\begin{theorem}[Bidiagonal Riesz-basis classification]\label{thm:shift}
+Fix $0<a<1$, set $D=I-aR$, and define $\varphi_n=De_n$. Then
+$(\varphi_n)$ is a Riesz basis of $\mathcal H_0$. For every $r\geq0$:
+\begin{enumerate}[label=\textup{(\roman*)},leftmargin=2.1em]
+\item $D:\ell^2_r\to\mathcal H_r$ is bounded, so \emph{(GFA1)} holds;
+\item its primal coefficients give an exact scale characterization,
+\[
+ \|(\langle f,\varphi_n\rangle)_n\|_{\ell^2_r}
+ =\|D^*f\|_r\asymp\|f\|_r;
+\]
+\item canonical-dual analysis is bounded $\mathcal H_r\to\ell^2_r$ if and
+only if
+\[
+ a2^r<1.
+\]
+In particular, (GFA1) and the primal coefficient characterization do not imply
+(GFA2), even for a Riesz basis with tridiagonal Gramian and frame operator.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Because $\|aR\|_{\mathcal H_0}=a<1$, the Neumann series makes $D$ invertible
+on $\mathcal H_0$. Thus $(De_n)$ is a Riesz basis, with ordinary frame bounds
+between $(1-a)^2$ and $(1+a)^2$.
+
+Put $q=2^r$. Directly from the weighted norm,
+\[
+ \|R\|_{\mathcal H_r}=q,
+ \qquad \|R^*\|_{\mathcal H_r}=q^{-1}.
+\]
+Consequently $\|Dc\|_r\leq(1+aq)\|c\|_r$, proving (i). Primal
+analysis is $D^*=I-aR^*$, and
+\[
+ (D^*)^{-1}=\sum_{k\geq0}a^k(R^*)^k
+\]
+converges in $\mathcal B(\mathcal H_r)$ because $a/q<1$. Equivalently,
+\[
+ (1-a/q)\|f\|_r\leq\|D^*f\|_r
+ \leq(1+a/q)\|f\|_r,
+\]
+which proves (ii).
+
+The canonical dual basis is $((D^{-1})^*e_n)_n$, so its analysis map is
+$D^{-1}$. If $aq<1$, the Neumann series
+$D^{-1}=\sum_{k\geq0}a^kR^k$ converges on $\mathcal H_r$. Conversely,
+\[
+ D^{-1}e_0=\sum_{k\geq0}a^k e_k,
+ \qquad
+ \|D^{-1}e_0\|_r^2=\sum_{k\geq0}(aq)^{2k},
+\]
+which diverges when $aq\geq1$. This proves (iii). Since $D$ is bidiagonal,
+$D^*D$ and $DD^*$ are tridiagonal.
+\end{proof}
+
+\begin{corollary}[Near-Parseval failure at fixed smoothness]
+Fix $r>0$ and $\eta>0$. There is a scale-labelled Riesz basis with ordinary
+$L^2$ frame bounds in $[(1-\eta)^2,(1+\eta)^2]$ for which (GFA1) and the
+primal characterization hold at $r$, but (GFA2) fails.
+\end{corollary}
+
+\begin{proof}
+Label $e_n$ by scale $j_n=Ln$. The weight ratio is then $q=2^{Lr}$.
+Choose $L$ so large that $a=2^{-Lr}<\min\{\eta,1\}$. Theorem~\ref{thm:shift}
+applies with $aq=1$.
+\end{proof}
+
+\section{A positive interval for every endpoint-stable frame}
+
+Let $(\mathcal H_t)_{-\sigma\leq t\leq\sigma}$ and
+$(\ell^2_t)_{-\sigma\leq t\leq\sigma}$ be exact complex interpolation
+Hilbert scales, with $\mathcal H_{-t}=\mathcal H_t'$ under the central
+$\mathcal H_0$ pairing. Standard Sobolev spaces and dyadically weighted
+$\ell^2$ spaces have these properties.
+
+\begin{theorem}[Low-regularity Gelfand interval]\label{thm:interval}
+Let $\Phi$ be a frame for $\mathcal H_0$, with analysis $C$, synthesis $D$,
+and frame operator $S=DC$. Suppose for some $\sigma>0$ that
+\[
+ C:\mathcal H_\sigma\to\ell^2_\sigma,
+ \qquad D:\ell^2_\sigma\to\mathcal H_\sigma
+\]
+are bounded. Then there exists $\varepsilon\in(0,\sigma]$ such that, for
+every $0\leq r<\varepsilon$, both (GFA1) and (GFA2) hold at exponent $r$.
+Equivalently, $\Phi$ is a Gelfand frame throughout a nonzero interval of
+regularities adjacent to $L^2$.
+\end{theorem}
+
+\begin{proof}
+The hypotheses imply that $S=DC$ is bounded on $\mathcal H_\sigma$. Since
+$S$ is self-adjoint for the $\mathcal H_0$ pairing, duality extends it
+boundedly to $\mathcal H_{-\sigma}$. It is boundedly invertible on
+$\mathcal H_0$ because $\Phi$ is an $\mathcal H_0$ frame.
+
+Sneiberg's stability theorem for operators on complex interpolation scales
+now gives $\varepsilon>0$ such that
+$S:\mathcal H_r\to\mathcal H_r$ is boundedly invertible whenever
+$|r|<\varepsilon$ \cite{Sneiberg}. Interpolation between the central and
+positive endpoints gives bounded maps
+$C:\mathcal H_r\to\ell^2_r$ and
+$D:\ell^2_r\to\mathcal H_r$ for $0\leq r\leq\sigma$. Hence GFA1 holds,
+and canonical-dual analysis satisfies
+\[
+ C_{\Phi^d}f=C S^{-1}f,
+ \qquad
+ \|C_{\Phi^d}f\|_{\ell^2_r}
+ \leq \|C\|\,\|S^{-1}\|\,\|f\|_{\mathcal H_r}
+\]
+for $0\leq r<\varepsilon$. This is GFA2.
+\end{proof}
+
+\begin{remark}
+Theorem~\ref{thm:interval} applies to a boundary-shearlet system whenever the
+source's endpoint coefficient characterization and localized synthesis bound
+are available at some $\sigma>0$. It does not quantify $\varepsilon$ from
+the published estimates and therefore need not reach $r=1$.
+\end{remark}
+
+\section{Consequences, limitation, and verification}
+
+Theorem~\ref{thm:shift} identifies the exact logical gap in the source's
+program. Boundedness of the Gramian on the weighted space, finite-band
+localization, and even near-tight $L^2$ frame bounds do not ensure that the
+canonical inverse respects the weight. A full boundary-shearlet proof needs
+a quantitative inverse-closed localization algebra whose decay dominates
+$2^{sj}$; this is stronger than the componentwise weighted boundedness and
+the particular cross-decay estimate proved in the source. General
+inverse-closed localization results explain the appropriate route
+\cite{GK09,FSS19}, but verifying their hypotheses for the full hybrid index
+geometry was not achieved here.
+
+All computations in Theorem~\ref{thm:shift} are exact geometric-series and
+operator-norm identities. The low-regularity theorem uses only frame
+operator self-adjointness, Hilbert-scale duality, interpolation of $C,D$, and
+Sneiberg stability. Eight focused routes were audited: the exact shift
+classification, near-Parseval strengthening, and low-regularity theorem
+succeeded; tight-frame reduction, direct implication, offset-Neumann,
+inverse-closed hybrid localization, and later-literature closure did not
+settle the intended integer-regularity problem.
+
+The run's four lightweight indexes were searched by arXiv id, title,
+'GFA2', 'boundary shearlet', 'canonical dual', and 'Gelfand frame'.
+A bounded arXiv/web search through 17 August 2026 found the source, its 2017
+follow-up \cite{PR17}, and general localized-frame literature, but no analytic
+resolution for the concrete boundary-shearlet system or exact match for the
+shift phase transition. This is bounded evidence, not a priority claim.
+
+\paragraph{Human-review recommendation.}
+Promote for expert review as a substantial partial result. Check the shift
+orientation and canonical-dual identity in Theorem~\ref{thm:shift}, and check
+the interpolation-couple hypotheses and use of Sneiberg's theorem in
+Theorem~\ref{thm:interval}. Do not promote this packet as a full answer to
+the boundary-shearlet question without the missing inverse-closed localization
+estimate.
+
+\begin{thebibliography}{9}
+\small
+\bibitem{GKMPMR}
+P. Grohs, G. Kutyniok, J. Ma, P. Petersen, and M. Raslan,
+\emph{Anisotropic Multiscale Systems on Bounded Domains},
+arXiv:1510.04538 (2015; revised 2017), Adv. Comput. Math. 46 (2020), Art.~39.
+
+\bibitem{PR17}
+P. Petersen and M. Raslan,
+\emph{Approximation properties of hybrid shearlet--wavelet frames for Sobolev
+spaces}, arXiv:1712.01047 (2017).
+
+\bibitem{Sneiberg}
+I. Ya. Sneiberg,
+\emph{Spectral properties of linear operators in interpolation families of
+Banach spaces}, Mat. Issled. 9 (1974), no.~2, 214--229.
+
+\bibitem{GK09}
+K. Gr\"ochenig and A. Klotz,
+\emph{Noncommutative approximation: inverse-closed subalgebras and
+off-diagonal decay of matrices}, Constr. Approx. 32 (2010), 429--466;
+arXiv:0904.0386.
+
+\bibitem{FSS19}
+Q. Fang, C. E. Shin, and Q. Sun,
+\emph{Polynomial control on weighted stability bounds and inversion norms of
+localized matrices on simple graphs}, arXiv:1909.08409 (2019).
+\end{thebibliography}
+
+\end{document}
+

@@ -1,0 +1,255 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,graphicx,microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\E}{\mathbb E}
+\newcommand{\N}{\mathbb N}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+
+\title{Endpoint square functions of general Ritt operators on $L^1$ need not be weak type $(1,1)$}
+\author{Candidate full counterexample to Open Question 1 of arXiv:2507.07256}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Candidate full counterexample, likely valid.  One fixed Ritt operator on a
+probability-space $L^1$ makes the endpoint generalized square function fail
+weak type $(1,1)$ for every $1\leq s<2$ with $r=1$ and $\alpha=s-1$.
+Thus the universal endpoint question has a negative answer.}}
+\end{center}
+
+\section{The source question}
+
+For a Ritt operator $T$ on a Banach function space, Hults and
+Reinhold-Larsson define
+\[
+ \mathbf Q^T_{\alpha,s,r}f
+ =\left(\sum_{n=1}^{\infty}n^\alpha
+       |T^n(I-T)^rf|^s\right)^{1/s}.
+\]
+Their Theorem 1.7 proves strong boundedness when $sr>\alpha+1$.  Open
+Question 1 asks whether $\mathbf Q^T_{\alpha,s,r}$ is of weak type $(1,1)$
+on the endpoint $sr=\alpha+1$ \cite[p.~3]{HultsReinhold}.  The exact question
+and its context are reproduced in Figure~\ref{fig:question}.
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth]{figures/open_question_crop.png}
+\caption{Full-width rendering of PDF page 3 of arXiv:2507.07256v2.  Open
+Question 1 appears below Theorem 1.7 and its following remark.}
+\label{fig:question}
+\end{figure}
+
+\section{Proof intuition}
+
+A Ritt estimate controls each time increment in operator norm, but it does not
+force weak-$(1,1)$ control after absolute values are accumulated over many
+widely separated time scales.  We assign the $m$th dyadic martingale
+difference the eigenvalue $1-10^{-6m}$.  Its contribution to the square
+function is concentrated near time $10^{6m}$, so disjoint time blocks recover
+one uniformly positive contribution from each martingale level.  The extreme
+lacunarity makes all other levels negligible in that block.
+
+For the Rademacher polynomial $f_N=r_1+\cdots+r_N$, this produces a pointwise
+lower bound of order $N^{1/s}$.  Yet $\norm{f_N}_1\leq\sqrt N$.  The two rates
+contradict weak type $(1,1)$ whenever $s<2$.  The same lacunarity also makes
+the operator easy to audit: bounded-variation formulas for martingale
+multipliers prove both power boundedness and the Ritt difference estimate.
+
+\section{Construction and operator estimates}
+
+Let
+\[
+ \Omega=\{-1,1\}^{\N}
+\]
+with product probability measure.  Write $r_m(\omega)=\omega_m$, let
+$\mathcal F_m=\sigma(r_1,\ldots,r_m)$, and denote conditional expectation by
+$E_m=\E(\,\cdot\mid\mathcal F_m)$, with $E_0=\E$.  Put
+$D_m=E_m-E_{m-1}$.
+
+We first record the elementary multiplier estimate used throughout.
+
+\begin{lemma}[bounded-variation martingale multipliers]\label{lem:bv}
+If $a_m\to0$ and $\sum_m|a_m-a_{m+1}|<\infty$, then
+\[
+ M_a=\sum_{m=1}^{\infty}a_mD_m
+\]
+converges in operator norm on $L^1(\Omega)$ and
+\begin{equation}\label{eq:bv}
+ \norm{M_a}_{1\to1}
+ \leq |a_1|+\sum_{m=1}^{\infty}|a_m-a_{m+1}|.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+For a finite truncation, summation by parts gives
+\[
+ \sum_{m=1}^Ma_mD_m
+ =a_ME_M+\sum_{m=1}^{M-1}(a_m-a_{m+1})E_m-a_1E_0.
+\]
+Every $E_m$ is a contraction on $L^1$.  The displayed formula is Cauchy in
+operator norm and yields \eqref{eq:bv}.
+\end{proof}
+
+Fix
+\[
+ q=10^{-6},\qquad \delta_m=q^m,\qquad \lambda_m=1-\delta_m,
+\]
+and define
+\begin{equation}\label{eq:T}
+ T=I-\sum_{m=1}^{\infty}\delta_mD_m
+   =E_0+\sum_{m=1}^{\infty}\lambda_mD_m.
+\end{equation}
+The first series is norm convergent by Lemma~\ref{lem:bv}.  The martingale
+decomposition shows that $T^n$ has eigenvalue $1$ on constants and
+$\lambda_m^n$ on $D_mL^1$.
+
+\begin{lemma}\label{lem:ritt}
+The operator $T$ is Ritt on $L^1(\Omega)$; more precisely,
+\[
+ \sup_{n\geq1}\norm{T^n}_{1\to1}\leq3,
+ \qquad
+ \sup_{n\geq1}n\norm{T^n-T^{n+1}}_{1\to1}<\frac2e.
+\]
+\end{lemma}
+
+\begin{proof}
+The coefficients $c_m=1-\lambda_m^n$ decrease to zero.  Lemma~\ref{lem:bv}
+therefore gives $\norm{I-T^n}\leq2c_1\leq2$, proving the first estimate.
+
+The multiplier coefficients of $nT^n(I-T)$ are
+\[
+ b_m=n\delta_m(1-\delta_m)^n.
+\]
+The scalar function $x\mapsto nx(1-x)^n$ has a unique maximum at
+$x=1/(n+1)$.  Since $(\delta_m)$ decreases, $(b_m)_m$ is unimodal and tends
+to zero.  Lemma~\ref{lem:bv} and total variation give
+\[
+ n\norm{T^n(I-T)}
+ \leq2\max_m b_m
+ \leq2\max_{0\leq x\leq1}nx(1-x)^n
+ =2\left(\frac n{n+1}\right)^{n+1}<\frac2e.
+\]
+\end{proof}
+
+\section{Endpoint failure}
+
+\begin{theorem}\label{thm:main}
+For the single Ritt operator $T$ in \eqref{eq:T} and every $1\leq s<2$,
+the endpoint square function
+\[
+ \mathbf Q^T_{s-1,s,1}f
+ =\left(\sum_{n=1}^{\infty}n^{s-1}|T^n(I-T)f|^s\right)^{1/s}
+\]
+is not of weak type $(1,1)$.  In particular, Open Question 1 has a negative
+answer for general Ritt operators on $L^1$.
+\end{theorem}
+
+\begin{proof}
+Let $L_m=\delta_m^{-1}=10^{6m}$ and introduce the disjoint integer blocks
+\[
+ B_m=\{L_m,L_m+1,\ldots,2L_m-1\}.
+\]
+For $N\geq1$, put $f_N=\sum_{j=1}^Nr_j$.  Since $D_jf_N=r_j$,
+\begin{equation}\label{eq:blockexpansion}
+ T^n(I-T)f_N=\sum_{j=1}^N\delta_j\lambda_j^n r_j.
+\end{equation}
+
+Fix $m\leq N$.  The weighted $\ell^s(B_m)$ norm of the $m$th summand is at
+least $1/16$.  Indeed, $n\geq L_m$, and
+\[
+ \lambda_m^{L_m}=(1-L_m^{-1})^{L_m}>\frac14
+\]
+because $L_m\geq2$.  Hence $\lambda_m^n\geq\lambda_m^{2L_m}\geq1/16$ on
+$B_m$, and
+\begin{equation}\label{eq:target}
+ \left(\sum_{n\in B_m}n^{s-1}
+       |\delta_m\lambda_m^n|^s\right)^{1/s}\geq\frac1{16}.
+\end{equation}
+
+We bound interference in the same norm.  If $j>m$, then $\lambda_j^n\leq1$
+and
+\begin{equation}\label{eq:future}
+ \left(\sum_{n\in B_m}n^{s-1}
+       |\delta_j\lambda_j^n|^s\right)^{1/s}
+ \leq2L_m\delta_j=2q^{j-m}.
+\end{equation}
+If $j<m$, set $R=\delta_j/\delta_m=q^{-(m-j)}$.  Since
+$\lambda_j^n\leq e^{-n\delta_j}\leq e^{-R}$ on $B_m$, the same calculation
+gives
+\begin{equation}\label{eq:past}
+ \left(\sum_{n\in B_m}n^{s-1}
+       |\delta_j\lambda_j^n|^s\right)^{1/s}
+ \leq2Re^{-R}.
+\end{equation}
+The bounds are uniform for $1\leq s<2$.  Moreover,
+\[
+ 2\sum_{k\geq1}q^k+2\sum_{k\geq1}q^{-k}e^{-q^{-k}}<10^{-5}<\frac1{32}.
+\]
+For the second sum one may use $q^{-k}\geq k/q$ and monotonicity of
+$xe^{-x}$ for $x\geq1$.
+
+The reverse triangle inequality in weighted $\ell^s(B_m)$, applied to
+\eqref{eq:blockexpansion}--\eqref{eq:past}, now gives a lower bound $1/32$
+for every block and every $\omega\in\Omega$.  Since the blocks are disjoint,
+\begin{equation}\label{eq:pointwise}
+ \mathbf Q^T_{s-1,s,1}f_N(\omega)\geq\frac{N^{1/s}}{32}
+ \qquad(\omega\in\Omega).
+\end{equation}
+
+On the other hand, Rademacher orthogonality and Cauchy--Schwarz give
+\begin{equation}\label{eq:l1}
+ \norm{f_N}_1\leq\norm{f_N}_2=\sqrt N.
+\end{equation}
+If the square function were weak type $(1,1)$ with constant $C$, applying the
+distributional estimate at $t=N^{1/s}/64$ would yield
+\[
+ 1\leq \frac{C\norm{f_N}_1}{t}
+ \leq64C N^{1/2-1/s}.
+\]
+This is impossible as $N\to\infty$ because $s<2$.
+\end{proof}
+
+\section{Scope, verification, and novelty}
+
+The same fixed operator settles an interval of endpoint parameters, not only
+one triple: $r=1$, $1\leq s<2$, and $\alpha=s-1$ always satisfy
+$sr=\alpha+1$.  Thus it refutes the universal question as written.  The
+argument becomes scale-balanced at $s=2$, and $T$ is not asserted to be a
+positive contraction or a convolution operator.  Accordingly, this packet
+does not settle $s=2$ or the structured subclasses for which the source gives
+positive results.
+
+Eight focused audits separately checked norm convergence of \eqref{eq:T},
+power boundedness, the Ritt estimate, target-block mass, past and future
+interference, the Rademacher weak-type contradiction, parameter scope, and
+novelty.  The included checker validates the scalar constants and sampled
+multiplier variations.  It is a sanity check, not part of the proof.
+
+Novelty is provisional.  Searches through 13 August 2026 covered the exact
+question, title, DOI and arXiv id; Ritt/$L^1$/endpoint/weak-type/counterexample
+phrases; the local run corpus; the published ETDS version; and nearby Ritt
+square-function papers.  The accepted February 2026 revision still asks the
+question, and no later answer or matching martingale construction was found.
+Priority is not claimed.  Human review should first check
+Lemma~\ref{lem:bv} and the interference bounds
+\eqref{eq:future}--\eqref{eq:past}.
+
+\begin{thebibliography}{9}
+\bibitem{HultsReinhold}
+J.~Hults and K.~Reinhold-Larsson,
+\emph{Square functions and variational estimates for Ritt operators on
+$L^1$}, Ergodic Theory Dynam. Systems (2026),
+doi:10.1017/etds.2026.10293; arXiv:2507.07256v2.
+\end{thebibliography}
+
+\end{document}
+

@@ -1,0 +1,270 @@
+\documentclass[10pt]{article}
+\usepackage[margin=0.78in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,microtype}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\R}{\mathbb R}
+\newcommand{\cF}{\mathcal F}
+\newcommand{\diag}{\operatorname{diag}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{3.5pt}
+\title{A family of counterexamples and an exact\\
+signless-Laplacian resolvent formula}
+\author{Automated mathematical discovery run \texttt{fa\_banach\_001}, lane 11}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\textbf{Status.} Likely valid counterexample to Conjecture 8.1 as printed,
+and likely valid full answer to Problem 8.2 of Hillar--Lin--Wibisono
+\cite{HLW}.  The stronger motivating version of the conjecture is not
+settled.
+
+\section*{Source and exact questions}
+
+C. Hillar, S. Lin, and A. Wibisono, ``Inverses of symmetric, diagonally
+dominant positive matrices and applications,'' arXiv:1203.6812, Section 8
+\cite{HLW}.  The paper defines $A\ge B$ to mean that $A-B$ is entrywise
+nonnegative, reserving $A\succeq B$ for Loewner order.  With
+$S(\alpha,m)=\alpha I+m\one\one^{\mathsf T}$, Conjecture 8.1 says that every
+symmetric diagonally dominant $0<J\le S(\alpha,m)$ obeys
+\[
+ \|J^{-1}\|_\infty\ge \|S(\alpha,m)^{-1}\|_\infty
+ =\frac{\alpha+2m(n-1)}{\alpha(\alpha+mn)},                 \tag{1}
+\]
+with equality only for $J=S$.  Problem 8.2 asks for exact combinatorial
+formulas for all coefficients of the rational functions
+$(S+tP)^{-1}_{ij}$ when $P$ is a graph signless Laplacian.
+
+\begin{center}
+\includegraphics[width=.96\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\clearpage
+\section*{Proof intuition}
+
+The printed conjecture has forgotten information present in its motivating
+paragraph.  Entrywise domination allows one to keep every diagonal equal to
+the diagonal of $S$ while making all off-diagonal entries tiny.  The resulting
+matrix is nearly scalar, so its inverse norm is much smaller than that of
+$S$.  This produces counterexamples for every parameter choice.
+
+For the graph problem, factor
+\[
+ \alpha I+\ell\one\one^{\mathsf T}+tBB^{\mathsf T}=XX^{\mathsf T}
+\]
+using weighted coordinate, all-ones, and unsigned-incidence columns.
+Cauchy--Binet expands the determinant.  Applying the same identity to the
+complementary minors in the cofactor formula expands every inverse-entry
+numerator.  Counting chosen edge columns reads off every power of $t$.
+
+\section*{A universal counterexample family}
+
+\begin{theorem}\label{thm:counterexample}
+For every $n\ge3$ and every $\alpha,m>0$, Conjecture 8.1 as printed is false.
+More precisely, for all sufficiently small $\varepsilon>0$,
+\[
+ J_\varepsilon=(\alpha+m-\varepsilon)I
+                  +\varepsilon\one\one^{\mathsf T}        \tag{2}
+\]
+is positive entrywise, symmetric, diagonally dominant, and entrywise at most
+$S(\alpha,m)$, but
+$\|J_\varepsilon^{-1}\|_\infty<\|S(\alpha,m)^{-1}\|_\infty$.
+\end{theorem}
+
+\begin{proof}
+The diagonal of $J_\varepsilon$ is $\alpha+m$, equal to that of $S$, and
+its off-diagonal entries are $\varepsilon\le m$.  It is diagonally dominant
+provided
+\[
+                  \alpha+m\ge(n-1)\varepsilon.             \tag{3}
+\]
+Thus every sufficiently small positive $\varepsilon$ satisfies all printed
+hypotheses.  The inverse of $aI+b\one\one^{\mathsf T}$ is
+\[
+ \frac1aI-\frac{b}{a(a+nb)}\one\one^{\mathsf T}.
+\]
+Its diagonal inverse entries are positive and its off-diagonal entries are
+negative.  Taking $a=\alpha+m-\varepsilon$ and $b=\varepsilon$ therefore
+gives
+\[
+ \|J_\varepsilon^{-1}\|_\infty
+ =\frac{\alpha+m+(2n-3)\varepsilon}
+ {(\alpha+m-\varepsilon)(\alpha+m+(n-1)\varepsilon)}.      \tag{4}
+\]
+The right side tends to $1/(\alpha+m)$ as $\varepsilon\downarrow0$.  On the
+other hand, the proposed lower-bound value in (1) satisfies
+\[
+ \|S^{-1}\|_\infty-\frac1{\alpha+m}
+ =\frac{m(n-1)(\alpha+2m)}
+ {\alpha(\alpha+mn)(\alpha+m)}>0.                          \tag{5}
+\]
+Continuity of (4), together with (3), completes the proof.
+\end{proof}
+
+For the smallest displayed instance, take $n=3$ and $\alpha=m=1$:
+\[
+ S=I+\one\one^{\mathsf T},\qquad
+ J=\tfrac32I+\tfrac12\one\one^{\mathsf T}.
+\]
+Then $J\le S$ entrywise and is diagonally dominant, while
+\[
+ S^{-1}=I-\tfrac14\one\one^{\mathsf T},\quad
+ J^{-1}=\tfrac23I-\tfrac19\one\one^{\mathsf T},\quad
+ \|S^{-1}\|_\infty=\tfrac54>\tfrac79=\|J^{-1}\|_\infty.
+\]
+
+\section*{Why this does not settle the natural repair}
+
+Immediately before Conjecture 8.1, the source assumes separate upper bounds
+$J_{ij}\le m$ and $\Delta_i(J)\le\delta$ and observes that they imply
+$J\le S(\alpha,m)$ for $\alpha=m(n-2)+\delta$.  The converse is false.  For
+(2),
+\[
+ \Delta_i(J_\varepsilon)-\delta=(n-1)(m-\varepsilon)>0
+ \qquad(0<\varepsilon<m).                                 \tag{6}
+\]
+The example therefore exploits precisely the missing dominance cap.  The
+version retaining both motivating bounds remains open.
+
+\section*{An exact answer to the graph resolvent problem}
+
+Let $G=(V,E)$ be a loopless graph on $V=\{1,\ldots,n\}$, let $B$ be its
+unsigned incidence matrix, and let $P=BB^{\mathsf T}$.  We write
+\[
+                   M(t)=\alpha I+\ell\one\one^{\mathsf T}+tP,
+                   \qquad \alpha,\ell,t>0.                 \tag{7}
+\]
+Form the ground set $\Omega=V\sqcup\{\star\}\sqcup E$.  Associate columns
+and weights
+\[
+\begin{array}{c|c|c}
+q& a_q&w_q\\ \hline
+v\in V&e_v&\alpha\\
+\star&\one&\ell\\
+e=\{u,v\}\in E&e_u+e_v&t.
+\end{array}                                                \tag{8}
+\]
+Fix an order on $\Omega$.  For $F\subseteq\Omega$, let $A_F$ contain its
+columns in that order and let $w(F)=\prod_{q\in F}w_q$.  For $|F|=n-1$ set
+\[
+                  \Delta_i(F)=\det[\,e_i\; A_F\,],         \tag{9}
+\]
+where $e_i$ is the first column.
+
+\begin{theorem}\label{thm:resolvent}
+Every entry of the resolvent (7) has the exact combinatorial expression
+\[
+ (M(t)^{-1})_{ij}=\frac{N_{ij}(t)}{D(t)},                  \tag{10}
+\]
+where
+\begin{align}
+ D(t)&=\sum_{\substack{F\subseteq\Omega\\|F|=n}}
+              w(F)\det(A_F)^2,                            \tag{11}\\
+ N_{ij}(t)&=\sum_{\substack{F\subseteq\Omega\\|F|=n-1}}
+              w(F)\Delta_i(F)\Delta_j(F).                 \tag{12}
+\end{align}
+In particular, the coefficient of $t^k$ in either polynomial is obtained by
+restricting its sum to subsets containing exactly $k$ members of $E$.
+\end{theorem}
+
+\begin{proof}
+Let $X$ have the columns $\sqrt{w_q}a_q$ for $q\in\Omega$.  Equations (7)
+and (8) give $M(t)=XX^{\mathsf T}$.  Cauchy--Binet applied to this product is
+exactly (11).
+
+For the numerator, the cofactor formula and Cauchy--Binet on the
+$(n-1)\times(n-1)$ complementary minors give
+\[
+ \det M(t)\,(M(t)^{-1})_{ij}
+ =(-1)^{i+j}\!\sum_{|F|=n-1}w(F)
+   \det(A_F^{\widehat j})\det(A_F^{\widehat i}),           \tag{13}
+\]
+where a hat means that row is deleted.  Expansion of (9) along its first
+column yields
+$\Delta_i(F)=(-1)^{i+1}\det(A_F^{\widehat i})$.
+Substitution in (13) proves (12).  Finally, only graph-edge weights contain
+$t$, so grouping terms by $|F\cap E|$ gives the coefficient assertion.
+\end{proof}
+
+\section*{Rooted-forest interpretation}
+
+The determinants in (11)--(12) are already finite combinatorial incidence
+minors.  They also have a standard graph description.  If $\star\notin F$,
+put $R=F\cap V$ and $H=(V,F\cap E)$.  Then $\det(A_F)\ne0$ exactly when
+every component is one of:
+\begin{itemize}
+\item a tree containing exactly one root from $R$, contributing magnitude
+      $1$; or
+\item an odd-unicyclic component containing no root, contributing magnitude
+      $2$.
+\end{itemize}
+Consequently $\det(A_F)^2=4^u$, where $u$ is the number of odd-unicyclic
+components.  For a nonzero term with $\star\in F$, exactly one component is
+instead an unrooted tree $T_0$; if its bipartition has sizes $p$ and $q$, its
+additional squared factor is $(p-q)^2$.  The other components have the two
+types above.
+
+For completeness, this follows by splitting the incidence matrix into
+connected blocks.  A rooted tree block has determinant magnitude $1$; an
+unsigned unicyclic incidence block is nonsingular precisely for an odd cycle,
+when its determinant has magnitude $2$.  For the unique unrooted tree, the
+signed bipartition vector spans the left nullspace of its incidence matrix,
+so adjoining $\one$ gives determinant magnitude $|p-q|$.  The numerator
+minors have the same description after adjoining an implicit root at $i$;
+the product in (12) retains the signs required off the diagonal.  Under the
+source's self-loop convention, the formula itself extends verbatim by using
+the incidence column $\sqrt2e_v$.
+
+\section*{Verification, scope, and novelty}
+
+The accompanying script exhausts all 74 labelled simple graphs on two,
+three, or four vertices, at three positive $t$ values per graph.  It checks
+(11)--(12) against direct determinants and inverses in all 222 cases, as well
+as the exact $3\times3$ counterexample.  This is a sign/index audit, not part
+of the proof.
+
+A bounded search through 17 August 2026 used the source id/title, citation
+trails, and close variants of ``Conjecture 8.1,'' ``signless Laplacian inverse
+entries,'' and ``exact combinatorial formula $(S+tP)^{-1}$.''  It found
+TU-subgraph formulas for signless-Laplacian characteristic polynomials and
+specialized inverse formulas, but no answer to Conjecture 8.1 or Problem 8.2.
+Because Theorem \ref{thm:resolvent} is an elementary all-minors
+Cauchy--Binet identity, its novelty may be folklore; the claim is only
+``apparently new within the bounded search.''
+
+The source's final determinant conjecture is not new: Minghua Lin proved it
+in arXiv:1212.1934 \cite{Lin}, and the proof appears in the authors' later
+Hadamard-type paper \cite{HW}.  No originality is claimed for that status
+identification.
+
+\section*{Human-review recommendation}
+
+First verify the source's entrywise convention and distinguish the printed
+conjecture from its stronger motivating repair.  Then audit the deleted-row
+order in (13); once the cofactor signs match (9), the resolvent formula is a
+direct Cauchy--Binet identity.
+
+\begin{thebibliography}{9}
+\bibitem{HLW}
+C. Hillar, S. Lin, and A. Wibisono,
+``Inverses of symmetric, diagonally dominant positive matrices and
+applications,'' arXiv:1203.6812 (2012).
+
+\bibitem{Lin}
+M. Lin, ``An upper bound for the determinant of a diagonally balanced
+symmetric matrix,'' arXiv:1212.1934 (2012).
+
+\bibitem{HW}
+C. Hillar and A. Wibisono, ``A Hadamard-type lower bound for symmetric
+diagonally dominant positive matrices,'' Linear Algebra Appl. 472 (2015),
+135--141.
+\end{thebibliography}
+
+\end{document}

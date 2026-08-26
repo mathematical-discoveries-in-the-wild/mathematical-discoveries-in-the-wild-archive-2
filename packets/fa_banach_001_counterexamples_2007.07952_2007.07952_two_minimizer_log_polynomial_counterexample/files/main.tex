@@ -1,0 +1,390 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\T}{\mathbb T}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\vol}{\operatorname{vol}}
+
+\title{Two minimizing log-polynomials in every even degree at least eight}
+\author{Candidate counterexample for arXiv:2007.07952\\
+\small autonomous proof-search run \texttt{fa\_banach\_001}}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\linewidth}{\textbf{Status.} Candidate full negative
+answer, likely valid, pending expert review.  For every even $d\geq8$ we
+construct a normalized integrable log-concave function on $\R^2$ for which
+Problem~1 of the source paper has exactly two minimizers.}}
+\end{center}
+
+\section{Source question}
+
+Alonso-Guti\'errez, Gonz\'alez Merino and Villa consider, for even $d$, the
+problem of minimizing
+\begin{equation}\label{eq:problem}
+ \int_{\R^n}t\exp\{-g(x)^{1/d}\}\,dx
+   =t n!\,|G_1(g)|,
+ \qquad G_1(g)=\{x:g(x)\leq1\},
+\end{equation}
+over $t\geq1$ and nonnegative homogeneous degree-$d$ polynomials $g$, subject
+to
+\[
+ f(x)\leq t\exp\{-g(x)^{1/d}\}.
+\]
+They prove existence for normalized integrable log-concave $f$.  On PDF
+page~4, after Theorem~1.1, they note that uniqueness is known for $d=2$ but is
+not known in general, and that they know no example with a nonunique
+minimization point \cite{AGMV}.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=.94\linewidth]{figures/open_problem_crop.png}
+\caption{The residual uniqueness question in the source paper (PDF page~4).}
+\end{figure}
+
+We give such examples for every even $d\geq8$.
+
+\section{Proof intuition}
+
+Write $f=e^{-u}$ and put $r=\log t$.  The source reduction says that the
+fixed-$r$ polynomial must contain
+\[
+ H_{e^r}(f)=\{u^*\leq r\}^{\circ}.
+\]
+Thus we may design the sublevel bodies $D_r=\{u^*\leq r\}$ first and then
+recover $f$ by convex duality.
+
+We take a nested family $D_r$ whose middle piece linearly interpolates, by
+Minkowski addition, between two scaled and rotated polynomial dual balls.
+At the endpoints, the optimal outer polynomial bodies are known exactly.
+Along the middle piece, symmetry forces every optimizer to have only the two
+Fourier modes $1$ and $\cos(d\theta)$.  Its containment constraint becomes the
+problem of finding the largest affine minorant of a concave power mean, hence
+the optimizer is exactly the chord joining the endpoint values.
+
+The endpoint scale is selected so that their weighted volumes agree.  A
+uniform Taylor calculation then gives
+\[
+ \log\frac{e^{r_\lambda}v(r_\lambda)}{e^{r_0}v(r_0)}
+ =\frac2d\left(1-\frac6d\right)\lambda(1-\lambda)\eps^2
+  +O\bigl(\lambda(1-\lambda)\eps^3\bigr).
+\]
+For $d\geq8$ this is positive throughout $0<\lambda<1$ when $\eps$ is small.
+Simple homotheties make the objective strictly decreasing before the first
+endpoint and strictly increasing after the second.  The endpoint pairs are
+therefore the two global minimizers.
+
+\section{Reduction to a family of polar bodies}
+
+For a compact set $K\subset\R^2$ containing the origin, let
+\[
+ L_d(K)=\min\left\{\,|G_1(g)|\ \middle|\
+ \begin{array}{l}
+ g\text{ is a nonnegative homogeneous degree-$d$ polynomial,}\\[-2pt]
+ K\subseteq G_1(g)
+ \end{array}\right\}.
+\]
+Lasserre's theorem gives a unique optimizing polynomial \cite{Lasserre}; we
+use the theorem in precisely the form recorded in the source paper.
+
+\begin{lemma}[Realizing nested bodies]\label{lem:realize}
+Let $(D_r)_{r\geq0}$ be compact origin-symmetric convex bodies satisfying
+\begin{enumerate}
+\item $D_a\subseteq D_b$ for $a\leq b$;
+\item $D_{(1-\lambda)a+\lambda b}\supseteq
+ (1-\lambda)D_a+\lambda D_b$;
+\item $D_0=\{0\}$ and $\bigcup_{r\geq0}D_r=\R^2$.
+\end{enumerate}
+Then there is an even finite convex function $w$ with $w(0)=0$ and
+$\{w\leq r\}=D_r$.  If $u=w^*$ and $f=e^{-u}$, then $f$ is even,
+log-concave, $f(0)=\|f\|_\infty=1$, integrable, and
+\begin{equation}\label{eq:polar-reduction}
+ \overline{H_{e^r}(f)}=D_r^\circ .
+\end{equation}
+Consequently the best fixed-$r$ value in \eqref{eq:problem}, with the fixed
+factor $2!$ omitted, is
+\begin{equation}\label{eq:objective}
+ \Phi(r)=e^r L_d(D_r^\circ).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Set $w(x)=\inf\{r:x\in D_r\}$.  The nesting gives
+$\{w\leq r\}=D_r$ (closedness also handles the infimum), and the Minkowski
+concavity gives convexity of $w$.  The remaining assertions except
+integrability follow from elementary Fenchel duality.  In particular
+$u^*=w$, and the polarity calculation in Lemma~3.3 of \cite{AGMV} gives
+\eqref{eq:polar-reduction}.
+
+In our application below, $D_r=(r/r_0)D_+$ for $0\leq r\leq r_0$.  Thus
+$w(x)=r_0\|x\|_{D_+}$ wherever $w(x)\leq r_0$, and
+\[
+ u(y)=\sup_x(\langle x,y\rangle-w(x))
+ \geq \sup_{0\leq a\leq1}a(h_{D_+}(y)-r_0)
+ =(h_{D_+}(y)-r_0)_+.
+\]
+Since $D_+$ contains a Euclidean ball, $h_{D_+}(y)\geq c|y|$ for some
+$c>0$.  Hence $e^{-u(y)}\leq e^{-(c|y|-r_0)_+}$ is integrable.
+The equivalence between feasibility and $H_{e^r}(f)\subseteq G_1(g)$ proved
+in Lemma~3.1 of \cite{AGMV} now yields \eqref{eq:objective}.
+\end{proof}
+
+\section{The construction and the exact fixed-height optimizer}
+
+Fix an even integer $d\geq8$, write $\alpha=1/d$, and fix $\kappa>0$.  For a
+sufficiently small $\eps\in(0,1)$, use polar coordinates
+$x=\rho(\cos\theta,\sin\theta)$
+and define
+\[
+ p_+(x)^d=\rho^d(1+\eps\cos d\theta),\qquad
+ p_-(x)^d=s^d\rho^d(1-\eps\cos d\theta),
+ \qquad \sigma=\left(\frac{1+\eps}{1-\eps}\right)^\alpha,\qquad
+ s=\sigma e^{\kappa\eps^2}.
+\]
+The expressions on the right are homogeneous polynomials: they equal
+$(x^2+y^2)^{d/2}\pm\eps\operatorname{Re}(x+iy)^d$, with the second one
+multiplied by $s^d$.  For small $\eps$, $p_\pm$ are norms.  Indeed the unit
+circle of $p_+$ has radial function
+$R(\theta)=(1+\eps\cos d\theta)^{-1/d}$, and
+$R^2+2(R')^2-RR''=1+O_d(\eps)$ uniformly; the same applies to $p_-$.  Let
+$C_\pm=\{p_\pm\leq1\}$ and $D_\pm=C_\pm^\circ$.
+
+The ratio $p_-/p_+$ ranges from $s/\sigma=e^{\kappa\eps^2}$ to $s\sigma$.
+Thus $C_-\subset\operatorname{int}C_+$ and, after polarity,
+$D_+\subset\operatorname{int}D_-$.  Put
+\[
+ \Delta=2\log s,\qquad r_0=\frac12,\qquad r_1=r_0+\Delta,
+ \qquad
+ \eta=\frac{(s/\sigma)-1}{2\Delta(s/\sigma)}.
+\]
+and define, for $r\geq0$,
+\begin{equation}\label{eq:Dr}
+D_r=
+\begin{cases}
+ \dfrac{r}{r_0}D_+,&0\leq r\leq r_0,\\
+ (1-\lambda)D_++\lambda D_-,&r=r_0+\lambda\Delta,
+       \quad0\leq\lambda\leq1,\\
+ \bigl(1+\eta(r-r_1)\bigr)D_-,&r\geq r_1.
+\end{cases}
+\end{equation}
+This family is increasing.  Its support function is concave in $r$: it is
+linear on each of the three intervals, and at the two knots its slopes obey
+\[
+ \frac{h_{D_-}-h_{D_+}}{\Delta}\leq\frac{h_{D_+}}{r_0},
+ \qquad
+ \frac{h_{D_-}-h_{D_+}}{\Delta}\geq\eta h_{D_-}.
+\]
+Indeed, on writing $q=h_{D_-}/h_{D_+}=p_-/p_+$, we have
+$s/\sigma\leq q\leq s\sigma$.  The first assertion follows for small
+$\eps$ from
+\[
+ \frac{s\sigma-1}{\Delta}\longrightarrow1<\frac1{r_0}=2,
+\]
+and the second follows directly from
+$(q-1)/(\Delta q)\geq((s/\sigma)-1)/(\Delta(s/\sigma))=2\eta$.
+Moreover $\eta>0$, so the family exhausts $\R^2$, and $\eta\to0$ as
+$\eps\to0$.  Hence Lemma~\ref{lem:realize} applies.
+
+We next compute $L_d(D_r^\circ)$ on the middle interval.  Since the support
+function of $D_\pm=C_\pm^\circ$ is $p_\pm$, the polar of the Minkowski sum in
+\eqref{eq:Dr} has radial function
+\begin{equation}\label{eq:radial}
+ R_\lambda(\theta)
+ =\frac{1}{(1-\lambda)(1+\eps\cos d\theta)^\alpha
+       +\lambda s(1-\eps\cos d\theta)^\alpha}.
+\end{equation}
+
+\begin{lemma}[Exact optimizer on the middle segment]\label{lem:optimizer}
+For $0\leq\lambda\leq1$, set
+\begin{align*}
+ a_\lambda&=(1-\lambda)(1+\eps)^\alpha
+                 +\lambda s(1-\eps)^\alpha,\\
+ b_\lambda&=(1-\lambda)(1-\eps)^\alpha
+                 +\lambda s(1+\eps)^\alpha,\\
+ A_\lambda&=\frac{a_\lambda^d+b_\lambda^d}{2},\qquad
+ B_\lambda=\frac{a_\lambda^d-b_\lambda^d}{2}.
+\end{align*}
+Then the unique Lasserre polynomial of $D_{r_0+\lambda\Delta}^\circ$ is
+\begin{equation}\label{eq:g-lambda}
+ g_\lambda(\rho,\theta)=\rho^d(A_\lambda+B_\lambda\cos d\theta).
+\end{equation}
+In particular
+\begin{equation}\label{eq:volume}
+ L_d(D_{r_0+\lambda\Delta}^\circ)
+ =\frac12\int_0^{2\pi}
+ (A_\lambda+B_\lambda\cos d\theta)^{-2/d}\,d\theta.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The body in \eqref{eq:radial} is invariant under reflection and rotation by
+$2\pi/d$.  Uniqueness of the Lasserre polynomial makes the optimizer invariant
+under these symmetries.  A real homogeneous degree-$d$ polynomial restricted
+to the circle has Fourier frequencies $d,d-2,\ldots,-d$.  Rotation by
+$2\pi/d$ retains only $0,\pm d$, and reflection removes the sine term; hence
+it has the form $\rho^d(A+B\cos d\theta)$.
+
+Containment is equivalent, with $z=\cos d\theta$, to
+\begin{equation}\label{eq:minorant}
+ A+Bz\leq
+ F_\lambda(z):=\bigl((1-\lambda)(1+\eps z)^\alpha
+       +\lambda s(1-\eps z)^\alpha\bigr)^d,\qquad -1\leq z\leq1.
+\end{equation}
+The weighted power mean $M_\alpha(x,y)=((1-\lambda)x^\alpha+\lambda
+y^\alpha)^{1/\alpha}$ is concave and coordinatewise increasing for
+$0<\alpha\leq1$ (the reverse Minkowski inequality).  Since
+$x=1+\eps z$ and $y=s^d(1-\eps z)$ are affine in $z$, $F_\lambda$ is
+concave.  Therefore its endpoint chord
+\[
+ \ell_\lambda(z)=\frac{F_\lambda(1)+F_\lambda(-1)}2
+ +\frac{F_\lambda(1)-F_\lambda(-1)}2z
+ =A_\lambda+B_\lambda z
+\]
+is feasible.  Every other feasible affine function $q(z)$ obeys
+$q(\pm1)\leq\ell_\lambda(\pm1)$, so the affine difference
+$q-\ell_\lambda$ is nonpositive throughout $[-1,1]$.  Thus its polynomial
+sublevel body contains that of \eqref{eq:g-lambda}, proving optimality.
+Formula \eqref{eq:volume} is the polar-coordinate area formula.
+\end{proof}
+
+\section{The two minima}
+
+\begin{lemma}[Middle barrier]\label{lem:barrier}
+For every fixed even $d\geq8$, all sufficiently small $\eps>0$ satisfy
+\[
+ e^{r_0+\lambda\Delta}L_d(D_{r_0+\lambda\Delta}^\circ)
+ >e^{r_0}L_d(C_+)\qquad(0<\lambda<1),
+\]
+whereas equality holds for $\lambda=0,1$.
+\end{lemma}
+
+\begin{proof}
+Let $V_\lambda$ denote the right-hand side of \eqref{eq:volume} and define
+\[
+ Q(\lambda,\eps)=\lambda\Delta+\log V_\lambda-\log V_0.
+\]
+At $\lambda=0$, $g_\lambda=p_+^d$; at $\lambda=1$,
+$g_\lambda=p_-^d$.  Rotation does not change area, so
+$V_1=s^{-2}V_0$ and $Q(0,\eps)=Q(1,\eps)=0$ exactly.
+
+All quantities are real analytic near the compact square
+$[0,1]\times\{0\}$.  Direct Taylor expansion, using
+\[
+ \frac1{2\pi}\int_0^{2\pi}\cos(d\theta)\,d\theta=0,
+ \qquad
+ \frac1{2\pi}\int_0^{2\pi}\cos^2(d\theta)\,d\theta=\frac12,
+\]
+gives, uniformly for $0\leq\lambda\leq1$,
+\begin{equation}\label{eq:taylor}
+ Q(\lambda,\eps)
+ =2\alpha(1-6\alpha)\lambda(1-\lambda)\eps^2
+   +O\bigl(\lambda(1-\lambda)\eps^3\bigr).
+\end{equation}
+For completeness, here is an auditable coefficient calculation.  Uniformly
+in $\lambda$,
+\begin{align*}
+ A_\lambda&=1+2\lambda\eps+a_2(\lambda)\eps^2+O(\eps^3),\\
+ B_\lambda&=(1-2\lambda)\eps+b_2(\lambda)\eps^2+O(\eps^3),\\
+ a_2(\lambda)&=\lambda\left(4\alpha(1-\lambda)+4\lambda-2
+                    +\frac{\kappa}{\alpha}\right),\\
+ b_2(\lambda)&=2\lambda(2\alpha\lambda-2\alpha-2\lambda+1),\\
+ \Delta&=4\alpha\eps+2\kappa\eps^2+O(\eps^3).
+\end{align*}
+Writing $c_\lambda=B_\lambda/A_\lambda$, the angular average in
+\eqref{eq:volume} gives
+\[
+ \log V_\lambda
+ =\log\pi-2\alpha\log A_\lambda
+  +\frac{\alpha(2\alpha+1)}2c_\lambda^2+O(\eps^3).
+\]
+Substitution and subtraction of the value at $\lambda=0$ cancel both the
+linear term and the $\kappa$ term, leaving
+\[
+ 2\alpha(1-6\alpha)\lambda(1-\lambda).
+\]
+The displayed remainder has the endpoint factors because $Q$ is analytic and
+vanishes identically at $\lambda=0,1$: successive analytic division by
+$\lambda$ and $1-\lambda$ makes the quotient bounded on a fixed
+neighborhood.  Since $1-6\alpha>0$ for $d\geq8$, \eqref{eq:taylor} is
+positive for every $0<\lambda<1$ once $\eps$ is sufficiently small.
+\end{proof}
+
+\begin{theorem}[Negative answer to the uniqueness question]\label{thm:main}
+For every even integer $d\geq8$ there is an even normalized integrable
+log-concave function $f:\R^2\to[0,1]$ for which Problem~1 of \cite{AGMV}
+has exactly two minimizing pairs.
+\end{theorem}
+
+\begin{proof}
+Choose $\eps$ as in Lemma~\ref{lem:barrier}, small enough also that
+$\eta<1/2$, construct $D_r$ by \eqref{eq:Dr}, and let $f$ be supplied by
+Lemma~\ref{lem:realize}.  On $0<r\leq r_0$, homogeneity gives
+\[
+ L_d(D_r^\circ)=L_d((r_0/r)C_+)=(r_0/r)^2L_d(C_+),
+\]
+so $\Phi(r)$ is strictly decreasing there because $r\leq r_0=1/2<2$.
+On $r\geq r_1$,
+\[
+ L_d(D_r^\circ)=\bigl(1+\eta(r-r_1)\bigr)^{-2}L_d(C_-),
+\]
+and
+\[
+ \frac{d}{dr}\log\Phi(r)
+ =1-\frac{2\eta}{1+\eta(r-r_1)}>0.
+\]
+
+The endpoint separation is $\Delta=2\log s$, so
+$e^{r_1}|C_-|=e^{r_0+\Delta}s^{-2}|C_+|=e^{r_0}|C_+|$.
+Here $L_d(C_\pm)=|C_\pm|$, because $C_\pm$ are themselves the sublevel
+bodies of $p_\pm^d$, while no containing body can have smaller volume.
+Lemma~\ref{lem:barrier} puts every point of the middle segment strictly above
+this common value.  The two outer pieces
+move away from the common value, so the only global minimizers occur at
+$r=r_0$ with polynomial $p_+^d$ and at $r=r_1$ with polynomial $p_-^d$.
+They are distinct because $\eps>0$.
+\end{proof}
+
+\section{Verification and limitations}
+
+The accompanying script independently checks the symbolic coefficient in
+\eqref{eq:taylor} and samples the exact integral \eqref{eq:volume}.  Those
+checks are sanity tests, not proof.  The argument proves nonuniqueness for
+every even $d\geq8$ in dimension two.  It does not decide the borderline
+degrees $d=4$ and $d=6$: the quadratic coefficient is negative for $d=4$ and
+zero for $d=6$.
+
+A bounded novelty search on 13 August 2026 covered the run indexes, exact
+title/id, author/title combinations, and arXiv/web searches for
+log-polynomial, $d$-Lasserre--L\"owner, uniqueness, and nonunique minimizers.
+It found no later resolution.  This is not proof of novelty.
+
+\paragraph{Human-review recommendation.}
+Check (i) realization of the nested family, (ii) the support-slope bookkeeping
+at the two knots, (iii) the invariant-polynomial reduction, (iv) concavity and
+chord optimality in Lemma~\ref{lem:optimizer}, and (v) the uniform endpoint
+factor in \eqref{eq:taylor}.
+
+\begin{thebibliography}{9}
+\bibitem{AGMV}
+D. Alonso-Guti\'errez, B. Gonz\'alez Merino, and R. Villa,
+\emph{Best approximation of functions by log-polynomials},
+J. Funct. Anal. 280 (2021), 108999; arXiv:2007.07952.
+
+\bibitem{Lasserre}
+J.-B. Lasserre,
+\emph{A generalization of L\"owner--John's ellipsoid theorem},
+Math. Program. 152 (2015), 559--591; arXiv:1302.1056.
+\end{thebibliography}
+
+\end{document}

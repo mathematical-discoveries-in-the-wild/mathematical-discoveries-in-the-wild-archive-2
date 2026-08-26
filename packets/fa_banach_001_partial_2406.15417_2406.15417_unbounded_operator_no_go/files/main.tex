@@ -1,0 +1,237 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=27mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{example}{Example}
+\newcommand{\N}{\mathbb N}
+\newcommand{\C}{\mathbb C}
+\newcommand{\D}{\mathcal D}
+
+\title{A no-go theorem for the literal unbounded-operator extension\\
+\large Fractional difference equations with finite delay}
+\author{Candidate partial-result packet}
+\date{August 11, 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+Candidate sharp obstruction, likely valid pending expert review.
+
+\section{Source direction}
+
+Zhang and Bu study, for $2<\alpha<3$, the explicit fractional difference
+equation
+\begin{equation}\label{eq:model}
+ \Delta^\alpha u(n)=Au(n)+\gamma u(n-\lambda)+f(n),
+ \qquad n\in\N_0,
+\end{equation}
+with
+\begin{equation}\label{eq:initial}
+ u(-\lambda)=\cdots=u(0)=u(1)=u(2)=0.
+\end{equation}
+Their coefficient $A$ is bounded. The introduction says that systems
+including unbounded operators remain an open problem
+\cite{ZhangBu}. The source statement is a broad research direction rather
+than a quantified conjecture.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{The unbounded-operator direction in the source introduction,
+  PDF page 3.}
+\end{figure}
+
+This packet tests the closest literal extension: let
+$A:\D(A)\subseteq X\to X$ be closed, keep \eqref{eq:model}--\eqref{eq:initial},
+and ask for a classical solution for every finitely supported $X$-valued
+forcing. A classical solution must satisfy $u(n)\in\D(A)$ whenever
+$Au(n)$ occurs. This is the solution class needed by the usual maximal
+regularity requirement $Au\in\ell^p(\N_0;X)$.
+
+\section{Proof intuition}
+
+The scheme is explicit: the third forward difference at time zero determines
+the value three time levels ahead. Because the first three values of $u$ are
+zero, an impulse $f(0)=x$ passes through without smoothing and gives
+$u(3)=x$. Three steps later, the same equation asks to apply $A$ to $u(3)$.
+Thus every admissible impulse must already lie in $\D(A)$. If all
+$X$-valued impulses are allowed, then $\D(A)=X$, and closedness makes $A$
+bounded.
+
+This same obstruction is encoded in the source's resolvent sequence:
+$S_\alpha(0)=I$, so the first recurrence step contains $AI=A$. Retaining a
+bounded-operator-valued resolvent sequence also forces boundedness. Finally,
+a diagonal example shows that the frequency-domain resolvent bounds alone
+cannot restore classical solvability.
+
+\section{The domain obstruction}
+
+The source defines
+\[
+ \Delta^\alpha=\Delta^3\Delta^{-(3-\alpha)},\qquad
+ \Delta^{-(3-\alpha)}u=k^{3-\alpha}*u,
+\]
+where $k^\beta(0)=1$ and $\Delta v(n)=v(n+1)-v(n)$.
+
+\begin{theorem}[All-data rigidity]\label{thm:rigidity}
+Let $X$ be a Banach space, $2<\alpha<3$, $\lambda\in\N$, and
+$\gamma\in\C$. Let $A:\D(A)\subseteq X\to X$ be a linear operator.
+Suppose that for every finitely supported $f:\N_0\to X$ there is a classical
+solution of \eqref{eq:model}--\eqref{eq:initial} on all of $\N_0$. Then
+$\D(A)=X$. In particular, if $A$ is closed, then $A\in\mathcal B(X)$.
+\end{theorem}
+
+\begin{proof}
+Fix an arbitrary $x\in X$ and take the impulse forcing
+\[
+ f(0)=x,\qquad f(n)=0\quad(n\ge1).
+\]
+Set $v=\Delta^{-(3-\alpha)}u=k^{3-\alpha}*u$. From
+\eqref{eq:initial},
+\[
+ v(0)=v(1)=v(2)=0,\qquad v(3)=k^{3-\alpha}(0)u(3)=u(3).
+\]
+Consequently,
+\[
+ \Delta^\alpha u(0)=\Delta^3v(0)
+ =v(3)-3v(2)+3v(1)-v(0)=u(3).
+\]
+Evaluating \eqref{eq:model} at $n=0$ and using the zero initial history gives
+\[
+ u(3)=Au(0)+\gamma u(-\lambda)+f(0)=x.
+\]
+Since the solution is classical on all of $\N_0$, equation
+\eqref{eq:model} at $n=3$ requires $u(3)\in\D(A)$. Hence $x\in\D(A)$.
+The vector $x\in X$ was arbitrary, so $\D(A)=X$. A closed everywhere
+defined linear operator on a Banach space is bounded by the closed graph
+theorem.
+\end{proof}
+
+\begin{proposition}[The source resolvent sequence is rigid]\label{prop:S}
+Suppose one keeps Definition 3.1 of \cite{ZhangBu}: all
+$S_\alpha(n)$ are bounded operators,
+$S_\alpha(0)=S_\alpha(1)=S_\alpha(2)=I$,
+$S_\alpha(-j)=0$ for $1\le j\le\lambda$, and the displayed recurrence is an
+identity in $\mathcal B(X)$. Then its coefficient $A$ is bounded. Thus this
+definition has no genuinely unbounded instance.
+\end{proposition}
+
+\begin{proof}
+At $n=0$,
+\[
+ (k^{\alpha-2}*S_\alpha)(0)=S_\alpha(0)=I,\qquad
+ (k^{\alpha-2}*S_\alpha^\lambda)(0)=S_\alpha(-\lambda)=0.
+\]
+The recurrence therefore expresses $A$ as $S_\alpha(3)$ plus a scalar
+multiple of $I$. Both are bounded.
+\end{proof}
+
+\section{The frequency bounds do not rescue the extension}
+
+Write
+\[
+ g(z)=z^{3-\alpha}(z-1)^\alpha,\qquad
+ q(z)=g(z)-\gamma z^{-\lambda}\qquad(|z|=1).
+\]
+The source's characterization uses the two families
+\begin{equation}\label{eq:families}
+ \{g(z)(q(z)-A)^{-1}\},\qquad
+ \{z^{-\lambda}(q(z)-A)^{-1}\},
+\end{equation}
+away from the exceptional points of the circle.
+
+\begin{example}[Frequency conditions without classical solvability]
+\label{ex:diag}
+Let $H=\ell^2(\N;\C)$, put $M=2^\alpha+|\gamma|$, and define
+\[
+ Ae_j=-(M+2+j)e_j,\qquad
+ \D(A)=
+ \left\{x=(x_j):\sum_{j\ge1}(M+2+j)^2|x_j|^2<\infty\right\}.
+\]
+Then $A$ is densely defined, self-adjoint, closed, and unbounded. Both
+families in \eqref{eq:families} are $R$-bounded, but
+\eqref{eq:model}--\eqref{eq:initial} is not classically solvable for every
+finitely supported $H$-valued forcing.
+\end{example}
+
+\begin{proof}
+For $|z|=1$,
+\[
+ |q(z)|\le |z-1|^\alpha+|\gamma|\le 2^\alpha+|\gamma|=M.
+\]
+Since $\sigma(A)=\{-(M+2+j):j\ge1\}$,
+\[
+ \operatorname{dist}(q(z),\sigma(A))\ge3,\qquad
+ \|(q(z)-A)^{-1}\|\le\frac13.
+\]
+Also $|g(z)|\le2^\alpha$. Hence both families in
+\eqref{eq:families} are uniformly norm bounded. On a Hilbert space,
+uniform norm boundedness is equivalent to $R$-boundedness.
+
+Now take $x=(1/j)_{j\ge1}$. Then $x\in H$ but $x\notin\D(A)$. The impulse
+$f(0)=x$, $f(n)=0$ for $n\ge1$, belongs to every
+$\ell^p(\N_0;H)$. The proof of Theorem~\ref{thm:rigidity} forces
+$u(3)=x$, which is outside $\D(A)$, so there is no classical solution on all
+of $\N_0$.
+\end{proof}
+
+\section{Consequences and limitations}
+
+There are two exhaustive outcomes for a naive replacement of
+$A\in\mathcal B(X)$ by a closed operator while retaining the source
+hypotheses:
+
+\begin{itemize}
+\item If the bounded source-style resolvent sequence is retained, then
+Proposition~\ref{prop:S} forces $A$ to be bounded, so the extension has no new
+operators.
+\item If that hypothesis is dropped and only the frequency families are
+retained, Example~\ref{ex:diag} shows that they do not imply all-data
+classical solvability.
+\end{itemize}
+
+Allowing a mild equation in an extrapolation space does not restore the
+standard conclusion $Au\in\ell^p(\N_0;X)$ for arbitrary $X$-valued data:
+the impulse still gives $u(3)=x$, and $Au(3)\in X$ requires $x\in\D(A)$.
+
+This is a complete no-go result for the literal extension, but only a partial
+answer to the source's broad research direction. A positive unbounded theory
+must materially reformulate the problem---for example by imposing compatible
+data in a domain scale, weakening the target regularity, or using an implicit
+scheme where a resolvent of $A$ smooths the newest time level.
+
+\section{Verification and novelty status}
+
+The time-zero identity was independently derived from the source definition
+and cross-checked against the same computation in its proof of Theorem 3.8.
+The diagonal example was checked by its exact spectrum and the elementary
+symbol bound. No numerical evidence is used.
+
+On August 11, 2026, the local result indexes and bounded exact-title,
+quoted-phrase, and core-term web searches found no later resolution of this
+obstruction. Novelty confidence is moderate pending a specialist citation
+search.
+
+\begin{thebibliography}{9}
+
+\bibitem{ZhangBu}
+J. Zhang and S. Bu,
+\emph{Maximal regularity for fractional difference equations with finite
+delay on UMD spaces},
+arXiv:2406.15417 (2024).
+
+\bibitem{Blunck}
+S. Blunck,
+\emph{Maximal regularity of discrete and continuous time evolution
+equations},
+Studia Math. \textbf{146} (2001), 157--176.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,388 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\Aav}{\mathcal A}
+\newcommand{\EA}{E_A}
+\newcommand{\C}{\mathbb C}
+\emergencystretch=1em
+\makeatletter
+\renewcommand{\@seccntformat}[1]{\csname the#1\endcsname\hspace{0.8em}}
+\makeatother
+\title{Low-Dimensional, Rank-One, and First Higher-Cycle\\
+Closures of the Pinching Refinement Conjecture}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 3}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+Dinh asked whether the normalized trace average of all words with \(n\)
+letters \(A\) and \(m\) letters \(B\) dominates the same average after
+pinching \(B\) onto the commutant of \(A\). We prove the conjecture
+(i) for all positive semidefinite \(2\times2\) matrices and all
+\(n,m\geq0\), (ii) for rank-one \(A\) in every dimension and all
+\(n,m\geq0\), (iii) in every dimension when \(n\leq1\), and
+(iv) in every dimension at the first higher-cycle corner
+\((n,m)=(2,3)\). A more general path argument covers every pair for which,
+in an eigenbasis of
+\(A\), a diagonal unitary gauges \(B\) to an entrywise nonnegative
+matrix. The general higher-dimensional, cyclic-phase case remains open.
+The status is \emph{candidate partial result, likely valid, pending human review}.
+\end{abstract}
+
+\section{Source question and notation}
+The source is Trung Hoa Dinh, \emph{On the Failure of the Upper Bound in the
+Refined BMV Conjecture and a Pinching Correction}, arXiv:2605.17782 (2026)
+\cite{Dinh}. Conjecture~5.1, on PDF page~7, is reproduced in
+Figure~\ref{fig:source}. The source proves the conjecture when \(m=2\), but
+leaves the general case open.
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.95\textwidth]{figures/open_problem_crop.png}
+  \caption{Conjecture~5.1 and its equivalent form in the source paper,
+  cropped from PDF page~7.}
+  \label{fig:source}
+\end{figure}
+
+For positive semidefinite matrices \(A,B\in M_d(\C)\), let
+\begin{equation}\label{eq:average}
+ \Aav_{n,m}(A,B)
+ =\frac{1}{\binom{n+m}{n}}\sum_W \Tr W(A,B),
+\end{equation}
+where the sum runs over all words containing exactly \(n\) letters \(A\)
+and \(m\) letters \(B\). If
+\(A=\sum_{\lambda}\lambda P_{\lambda}\) is the spectral decomposition, set
+\begin{equation}\label{eq:pinching}
+ \EA(B)=\sum_{\lambda}P_{\lambda}BP_{\lambda}.
+\end{equation}
+Because \(A\) and \(\EA(B)\) commute, the source conjecture is
+\begin{equation}\label{eq:conjecture}
+ \Aav_{n,m}(A,B)\geq
+ \Aav_{n,m}(A,\EA(B))
+ =\Tr\!\left(A^n\EA(B)^m\right)
+ \qquad(n,m\geq0).
+\end{equation}
+Zero powers are identities. Thus the claim is: \emph{for all positive
+semidefinite \(A,B\) and all nonnegative integers \(n,m\), inequality
+\eqref{eq:conjecture} holds.}
+
+\section{Proof intuition}
+In an eigenbasis of \(A\), expand the trace of a word as a sum over closed
+index paths. An \(A\)-step cannot change the current spectral vertex, while
+a \(B\)-step may. Pinching deletes precisely the \(B\)-edges that cross
+between distinct eigenspaces of \(A\). Thus the desired difference is the
+sum of weights of closed paths that use at least one deleted edge.
+
+This is not a proof in general: in dimension at least three, a closed
+\(B\)-cycle can carry a nontrivial complex phase and hence have negative
+real part. It does prove the claim when all \(B\)-entries can be made
+nonnegative by a diagonal phase gauge. Every \(2\times2\) pair has this
+property, because a single off-diagonal phase can always be removed.
+
+Two further arguments avoid path phases. If \(A\) has rank one, cyclicity
+rewrites the word average as an average over weak compositions of \(m\);
+rank-one collapse then reduces each term to scalar moments of \(B\), which
+dominate the corresponding powers of the first moment. If \(n\leq1\), the
+same scalar moment inequality applied to compressions of \(B\) proves the
+claim in every dimension. At \((n,m)=(2,3)\), cyclicity leaves just two
+trace expressions. One is another compression moment; the other becomes a
+squared-norm estimate after normalizing \(B\) to a correlation matrix.
+None of these mechanisms controls arbitrary higher-dimensional cyclic
+phases, so the original full conjecture remains open.
+
+\section{A compression moment lemma}
+\begin{lemma}[compression moments]\label{lem:compression}
+Let \(B\geq0\), let \(P\) be an orthogonal projection, and let \(r\) be a
+nonnegative integer. Then
+\begin{equation}\label{eq:compression}
+ \Tr(PB^rP)\geq \Tr\bigl((PBP|_{P\C^d})^r\bigr).
+\end{equation}
+Equivalently, with both sides viewed on \(\C^d\),
+\(\Tr(PB^rP)\geq\Tr((PBP)^r)\) for \(r\geq1\); for \(r=0\), the right-hand
+side is understood as the identity on \(P\C^d\).
+\end{lemma}
+\begin{proof}
+Diagonalize the positive compression \(C=PBP|_{P\C^d}\), say
+\(Ce_j=\mu_j e_j\) for an orthonormal basis of \(P\C^d\). If
+\(B=\sum_k t_k Q_k\) is a spectral decomposition, then the nonnegative
+numbers \(\langle e_j,Q_ke_j\rangle\) sum to one. Convexity of
+\(t\mapsto t^r\) on \([0,\infty)\) gives
+\[
+ \langle e_j,B^r e_j\rangle
+ =\sum_k t_k^r\langle e_j,Q_ke_j\rangle
+ \geq
+ \left(\sum_k t_k\langle e_j,Q_ke_j\rangle\right)^r
+ =\mu_j^r.
+\]
+(The cases \(r=0,1\) are equalities.) Summing over \(j\) proves the lemma.
+\end{proof}
+
+\section{The path-positive class and the \(2\times2\) theorem}
+\begin{theorem}[phase-balanced pairs]\label{thm:phase}
+Suppose there is an orthonormal eigenbasis of \(A\) and a diagonal unitary
+\(D\) in that basis such that \(D^*BD\) is entrywise real and nonnegative.
+Then \eqref{eq:conjecture} holds for every \(n,m\geq0\).
+\end{theorem}
+\begin{proof}
+Conjugating both matrices by \(D\) changes neither side of
+\eqref{eq:conjecture}; moreover \(D\) commutes with \(A\), and pinching is
+covariant under this conjugation. We may assume that \(A\) is diagonal with
+nonnegative diagonal entries and every entry of \(B\) is nonnegative.
+
+Fix \(W=X_1\cdots X_{n+m}\), with each \(X_s\) equal to \(A\) or \(B\).
+Its trace has the closed-path expansion
+\begin{equation}\label{eq:path}
+ \Tr W=\sum_{i_0,\ldots,i_{n+m-1}}
+ (X_1)_{i_0i_1}(X_2)_{i_1i_2}\cdots
+ (X_{n+m})_{i_{n+m-1}i_0}.
+\end{equation}
+Every summand is nonnegative. If \(X_s=A\), its factor vanishes unless the
+path stays at the same vertex. Replacing \(B\) by \(\EA(B)\) sets
+\(B_{ij}\) to zero exactly when the eigenvalues of \(A\) at \(i\) and \(j\)
+are different, and leaves all other entries unchanged. Hence pinching
+deletes a subset of nonnegative summands in \eqref{eq:path}. Thus
+\(\Tr W(A,B)\geq\Tr W(A,\EA(B))\) word by word. Averaging proves the claim.
+\end{proof}
+
+\begin{corollary}[all \(2\times2\) cases]\label{cor:two}
+For all positive semidefinite \(A,B\in M_2(\C)\) and all \(n,m\geq0\),
+inequality \eqref{eq:conjecture} holds.
+\end{corollary}
+\begin{proof}
+Choose an eigenbasis of \(A\). If \(A\) is scalar, then \(\EA(B)=B\).
+Otherwise write
+\[
+ B=\begin{pmatrix}x&z\\ \overline z&y\end{pmatrix},
+ \qquad x,y\geq0.
+\]
+A diagonal unitary makes \(z\) real and nonnegative, so
+Theorem~\ref{thm:phase} applies. Directly, a closed two-vertex path uses
+equally many \(1\to2\) and \(2\to1\) transitions, whose product is
+\(|z|^{2q}\geq0\).
+\end{proof}
+\begin{remark}
+Repeated eigenvalues cause no problem: pinching retains all edges within
+each eigenspace and deletes only cross-eigenspace edges.
+\end{remark}
+
+\section{Rank-one \(A\) in arbitrary dimension}
+\begin{lemma}[cyclic composition formula]\label{lem:composition}
+For \(n\geq1\),
+\begin{equation}\label{eq:composition}
+ \Aav_{n,m}(A,B)
+ =\frac{1}{\binom{n+m-1}{m}}
+ \sum_{r_1+\cdots+r_n=m}
+ \Tr\bigl(AB^{r_1}AB^{r_2}\cdots AB^{r_n}\bigr),
+\end{equation}
+where the sum is over weak compositions \(r_j\geq0\).
+\end{lemma}
+\begin{proof}
+Words beginning with \(A\) are in bijection with the weak compositions in
+\eqref{eq:composition}. Mark one of the \(n\) occurrences of \(A\) in each
+unrestricted word and cyclically rotate that occurrence to the first
+position. If \(T\) is the sum over all words and \(S\) the sum over words
+beginning with \(A\), this marked rotation is \(N\)-to-one, where
+\(N=n+m\), even for periodic words (the marked position is retained).
+Cyclic invariance therefore gives \(nT=NS\). Since
+\(\frac nN\binom Nn=\binom{N-1}{n-1}=\binom{n+m-1}{m}\), the unrestricted
+average equals the average over words beginning with \(A\), proving the
+formula.
+\end{proof}
+
+\begin{theorem}[rank-one closure]\label{thm:rankone}
+If \(A\geq0\) has rank one, then \eqref{eq:conjecture} holds in every finite
+dimension for all \(n,m\geq0\).
+\end{theorem}
+\begin{proof}
+The case \(n=0\) follows from Lemma~\ref{lem:compression}, summed over the
+spectral projections of \(A\), and is also in Theorem~\ref{thm:smalln}.
+Assume \(n\geq1\), and write \(A=aP\), where \(a>0\) and
+\(P=|v\rangle\langle v|\) for a unit vector \(v\). Put
+\(\mu=\langle v,Bv\rangle\). Rank-one collapse in \eqref{eq:composition}
+gives
+\begin{equation}\label{eq:rankcollapse}
+ \Tr\bigl(AB^{r_1}\cdots AB^{r_n}\bigr)
+ =a^n\prod_{j=1}^n\langle v,B^{r_j}v\rangle.
+\end{equation}
+For every nonnegative integer \(r\), the scalar spectral-measure argument in
+Lemma~\ref{lem:compression} gives
+\(\langle v,B^rv\rangle\geq\mu^r\). Therefore every summand in
+\eqref{eq:composition} is at least \(a^n\mu^m\), so
+\begin{equation}\label{eq:rank-lhs}
+ \Aav_{n,m}(A,B)\geq a^n\mu^m.
+\end{equation}
+The spectral projections of \(A\) are \(P\) and \(I-P\), hence
+\(\EA(B)=\mu P+(I-P)B(I-P)\), and consequently
+\[
+ \Tr\bigl(A^n\EA(B)^m\bigr)=a^n\mu^m.
+\]
+Together with \eqref{eq:rank-lhs}, this proves the claim.
+\end{proof}
+\begin{remark}
+Rank-one \(A\) also follows from Theorem~\ref{thm:phase}: diagonalize the
+compression of \(B\) to \(v^\perp\), then adjust eigenvector phases so that
+all entries coupling them to \(v\) are nonnegative. The composition proof
+gives an independent scalar-moment mechanism.
+\end{remark}
+
+\section{The range \(n\leq1\) in arbitrary dimension}
+\begin{theorem}[zero or one \(A\)-letter]\label{thm:smalln}
+For arbitrary positive semidefinite matrices \(A,B\) in every finite
+dimension, \eqref{eq:conjecture} holds for \(n=0\) and \(n=1\), for every
+\(m\geq0\).
+\end{theorem}
+\begin{proof}
+Let \(A=\sum_\lambda\lambda P_\lambda\), and write
+\(C_\lambda=P_\lambda BP_\lambda|_{P_\lambda\C^d}\).
+If \(n=0\), Lemma~\ref{lem:compression} gives
+\[
+ \Aav_{0,m}(A,B)=\Tr(B^m)
+ =\sum_\lambda\Tr(P_\lambda B^mP_\lambda)
+ \geq\sum_\lambda\Tr(C_\lambda^m)
+ =\Tr(\EA(B)^m).
+\]
+If \(n=1\), cyclic invariance makes every word trace equal to
+\(\Tr(AB^m)\). Applying Lemma~\ref{lem:compression} blockwise and weighting
+by the nonnegative eigenvalues \(\lambda\) yields
+\begin{align*}
+ \Aav_{1,m}(A,B)
+ &=\Tr(AB^m)
+ =\sum_\lambda\lambda\Tr(P_\lambda B^mP_\lambda)\\
+ &\geq\sum_\lambda\lambda\Tr(C_\lambda^m)
+ =\Tr\bigl(A\EA(B)^m\bigr).
+\end{align*}
+\end{proof}
+
+\section{The first higher-cycle corner}
+\begin{theorem}[the case \((n,m)=(2,3)\)]\label{thm:twothree}
+For arbitrary positive semidefinite matrices \(A,B\) in every finite
+dimension,
+\[
+ \Aav_{2,3}(A,B)\geq \Tr\bigl(A^2\EA(B)^3\bigr).
+\]
+\end{theorem}
+\begin{proof}
+Choose an eigenbasis of \(A\), and within each eigenspace choose a basis
+that diagonalizes the corresponding compression of \(B\). Then
+\(D=\EA(B)\) is diagonal in this basis. The cyclic-composition formula,
+now marking one of the three \(B\)-letters, gives
+\[
+ \Aav_{2,3}(A,B)
+ =\frac{1}{6}\sum_{p+q+r=2}
+   \Tr\bigl(BA^pBA^qBA^r\bigr)
+ =\frac12\left\{\Tr(A^2B^3)+\Tr(ABAB^2)\right\}.
+\]
+Lemma~\ref{lem:compression}, applied on every spectral block of \(A\) and
+weighted by the corresponding eigenvalue squared, yields
+\begin{equation}\label{eq:first-23}
+ \Tr(A^2B^3)\geq\Tr(A^2D^3).
+\end{equation}
+
+It remains to prove the same lower bound for the second trace. Write
+\(d_i=b_{ii}\). If \(d_i=0\), positivity of \(B\) forces its \(i\)-th row
+and column to vanish, so those indices may be discarded. On the remaining
+indices put
+\[
+ C=D^{-1/2}BD^{-1/2},
+ \qquad X=AD.
+\]
+Then \(C\geq0\), \(c_{ii}=1\), and \(X=\operatorname{diag}(x_i)\geq0\)
+with \(x_i=a_i d_i\). Direct substitution and cyclicity give
+\begin{align}
+ \Tr(ABAB^2)
+ &=\Tr(XCXC DC)\notag\\
+ &=\sum_k d_k\,(CXCXC)_{kk}.\label{eq:corr-reduction}
+\end{align}
+For each \(k\),
+\[
+ (CXCXC)_{kk}
+ =\left\|C^{1/2}XC e_k\right\|^2.
+\]
+Since \(\|C^{1/2}e_k\|^2=c_{kk}=1\), Cauchy--Schwarz gives
+\begin{align*}
+ \left\|C^{1/2}XC e_k\right\|^2
+ &\geq
+ \left|\left\langle C^{1/2}e_k,C^{1/2}XC e_k\right\rangle\right|^2\\
+ &=\left(\sum_j x_j|c_{jk}|^2\right)^2
+ \geq x_k^2.
+\end{align*}
+Substitution in \eqref{eq:corr-reduction} proves
+\[
+ \Tr(ABAB^2)\geq\sum_k d_kx_k^2
+ =\sum_k a_k^2d_k^3
+ =\Tr(A^2D^3).
+\]
+Combining this with \eqref{eq:first-23} and the displayed average identity
+proves the theorem.
+\end{proof}
+
+\section{Verification and adversarial checks}
+The script \texttt{code/check\_pinching\_subcases.py} independently computes
+word averages as coefficients of \(\Tr(A+tB)^{n+m}\), constructs spectral
+pinching, and checks random complex instances of all proved classes. It is a
+sanity check, not part of any proof. It covers random \(2\times2\) pairs,
+arbitrary-dimensional \(n=0,1\), random rank-one \(A\), phase-balanced
+pairs, the all-dimensional \((n,m)=(2,3)\) theorem, and the source's known
+\(m=2\) range.
+
+A bounded counterexample search preceded promotion: random real and complex
+PSD matrices in dimensions \(3,4,5\), ranks from one to full, total word
+degree up to \(20\), continuous optimization over Gram factors, and
+structured correlation-matrix families. No negative gap was found. This is
+evidence only. Convexity in \(B\) was tested and rejected as a proof route:
+the Hessian of the full coefficient can have negative directions, so a
+direct Jensen argument for the full word average is unavailable.
+
+The formal proofs have these independent failure checks.
+\begin{itemize}
+\item Theorem~\ref{thm:phase} keeps, rather than deletes, edges inside
+repeated eigenspaces.
+\item In Corollary~\ref{cor:two}, Hermitian symmetry makes the two directed
+off-diagonal factors conjugates.
+\item The normalization in \eqref{eq:composition} is exactly the number
+\(\binom{n+m-1}{m}\) of weak compositions.
+\item Lemma~\ref{lem:compression} uses scalar convexity in spectral measures,
+not the false claim that \(t^r\) is operator convex for every \(r\).
+\item Theorem~\ref{thm:twothree} removes zero diagonal entries before using
+\(D^{-1/2}\), and its correlation estimate is a squared norm rather than a
+termwise assertion about signed three-cycles.
+\end{itemize}
+
+\section{Scope, novelty, and review}
+This packet does \emph{not} prove Conjecture~5.1 in full. It closes the first
+higher-cycle corner \((n,m)=(2,3)\), but leaves open the remaining cases
+with \(d\geq3\), \(n\geq2\), \(m\geq3\) and genuinely unbalanced cycle
+phases. The source already proves \(m=2\) in all dimensions; that known case
+is not claimed as new.
+
+A bounded novelty search on 11 August 2026 used the exact arXiv id, title,
+the phrases \emph{pinching refinement} and \emph{BMV pinching conjecture},
+and exact text from Conjecture~5.1. It checked the local run indexes and
+arXiv/web results. It found the source and literature on the failed
+refined-BMV upper bound, but no later proof, counterexample, or statement of
+the \(2\times2\), rank-one-\(A\), \(n\leq1\), phase-balanced, or
+\((n,m)=(2,3)\) closures.
+This bounded search is not a guarantee of global novelty.
+
+Recommended human review: \emph{promote as a likely-valid partial result
+after checking the path-deletion identification in Theorem~\ref{thm:phase}
+the marked-word count in Lemma~\ref{lem:composition}, and the correlation
+normalization in Theorem~\ref{thm:twothree}.} The genuinely open next target
+is control of signed higher-dimensional cycle phases.
+
+\begin{thebibliography}{9}
+\bibitem{Dinh}
+T.~H. Dinh,
+\emph{On the Failure of the Upper Bound in the Refined BMV Conjecture and a
+Pinching Correction}, arXiv:2605.17782 (2026),
+\url{https://arxiv.org/abs/2605.17782}.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,385 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.88in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,graphicx,microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newcommand{\D}{\mathbb D}
+\newcommand{\T}{\mathbb T}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Pcal}{\mathcal P}
+\newcommand{\X}{\mathcal X}
+\newcommand{\A}{\mathcal A_0}
+\newcommand{\dd}{\mathop{\rm dist}}
+\newcommand{\Om}{\Omega_{\rm max}}
+
+\title{Every Boundary \(F_\sigma\) Set Is a Banach Maximal Domain}
+\author{Candidate full solution packet\\
+\small arXiv:2407.15997, Problem 4.7}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.} Candidate full affirmative answer in the Banach
+category, subject to expert review.  For every $F_\sigma$ set
+$\Gamma\subset\T$ we construct a Banach space of holomorphic functions on
+$\D$ satisfying P1--P3 of Mironov--Sampat and having maximal domain precisely
+$\D\cup\Gamma$.
+
+\section{Source problem}
+
+Let $\X\subset\operatorname{Hol}(\D)$ be a Hausdorff topological vector
+space such that:
+\begin{enumerate}
+\item[(P1)] the analytic polynomials are dense in $\X$;
+\item[(P2)] evaluation at every point of $\D$ is continuous;
+\item[(P3)] multiplication by $z$ is continuous on $\X$.
+\end{enumerate}
+Its maximal domain is
+\[
+ \Om(\X)=\{w\in\C:p\mapsto p(w)\text{ is continuous on the
+ polynomial subspace of }\X\}.
+\]
+After realizing $\D\cup\Gamma$ for $\Gamma$ both $F_\sigma$ and
+$G_\delta$, Mironov and Sampat ask the following on printed page 13 of
+\cite{MS}.
+
+\begin{center}
+\includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\begin{quote}
+\textbf{Problem 4.7.} Does there exist a Hilbert/Banach space $\mathcal H$
+satisfying P1--P3 on $\D$ with $\Om=\D\cup\Gamma$ for any given
+$F_\sigma$ set $\Gamma\subset\T$?
+\end{quote}
+
+The phrase ``Hilbert/Banach'' permits an affirmative Banach-space
+construction.  We do not claim here that the space can always be Hilbert.
+
+\section{Proof intuition}
+
+Write $\Gamma$ as a countable union of closed sets $K_j$.  The natural plan
+is to impose a norm for each $K_j$ which makes evaluation continuous on
+$K_j$, and then take a summable combination of those norms.  The obstruction
+is uniformity: for a boundary peak at $w\notin\Gamma$, the distance from $w$
+to $K_j$ may tend to zero arbitrarily quickly as $j$ grows.
+
+The key is a local norm whose peak estimates are bounded independently of
+that distance.  Let $\A$ be the analytic coefficient space whose Taylor
+coefficients form a $c_0$ sequence.  At $\gamma\in\T$, control
+\[
+ p(\gamma),\qquad
+ \Delta_\gamma p(z):=\frac{p(z)-p(\gamma)}{z-\gamma}
+\]
+in $\C\oplus\A$.  This is weak enough that the divided differences of the
+standard peaks are uniformly bounded.  It is also strong enough to be an
+honest function norm: the only possible kernel would contain
+$1/(\gamma-z)$, whose Taylor coefficients have constant modulus and hence
+do not belong to $c_0$.
+
+Away from the peak, the divided-difference coefficients are oscillatory
+tails of a binomial distribution.  Abel summation makes their supremum tend
+to zero.  Thus every fixed closed layer contributes a quantity tending to
+zero, all layers have a common bound, and dominated convergence handles the
+summable outer norm.  An $H^2$ term supplies interior evaluation and a
+canonical holomorphic limit; the local injectivity just described rules out
+invisible completion vectors.
+
+\section{The local coefficient model}
+
+Define
+\[
+ \A=\left\{g(z)=\sum_{n=0}^{\infty}a_nz^n:(a_n)_{n\ge0}\in c_0\right\},
+ \qquad \|g\|_{\A}=\sup_{n\ge0}|a_n|.
+ \tag{1}\label{eq:A0}
+\]
+Every member of $\A$ is holomorphic on $\D$, convergence in $\A$ implies
+locally uniform convergence, polynomials are dense, and multiplication by
+$z$ is an isometry.
+
+For $\gamma\in\T$ and a polynomial $p$, put
+\[
+ \|p\|_\gamma
+ :=|p(\gamma)|+\|\Delta_\gamma p\|_{\A}.
+ \tag{2}\label{eq:local-norm}
+\]
+
+\begin{lemma}[No local ghost vectors]\label{lem:local}
+The completion of the polynomials for \eqref{eq:local-norm} is isometric to
+$\C\oplus_1\A$ through
+\[
+ p\longmapsto\bigl(p(\gamma),\Delta_\gamma p\bigr),
+ \tag{3}\label{eq:pair-map}
+\]
+and the associated map into $\operatorname{Hol}(\D)$,
+\[
+ (c,g)\longmapsto c+(z-\gamma)g(z),
+ \tag{4}\label{eq:function-map}
+\]
+is injective.  Moreover,
+\[
+ \|zp\|_\gamma\le 2\|p\|_\gamma
+ \qquad(p\in\Pcal).
+ \tag{5}\label{eq:shift-local}
+\]
+\end{lemma}
+
+\begin{proof}
+Finite Taylor truncations in $\A$ show that every pair $(c,g)$ is a limit
+of polynomials $c+(z-\gamma)g_m$, so \eqref{eq:pair-map} has dense range.  If
+$c+(z-\gamma)g(z)=0$ on $\D$, then
+\[
+ g(z)=\frac{c}{\gamma-z}
+ =\sum_{n=0}^{\infty}c\gamma^{-n-1}z^n.
+\]
+The coefficients on the right have constant modulus $|c|$.  Since the
+coefficients of $g$ tend to zero, $c=0$, and then $g=0$.  This proves
+injectivity.
+
+Writing $p=c+(z-\gamma)g$ gives
+\[
+ zp=\gamma c+(z-\gamma)(c+zg).
+\]
+The constant has $\A$-norm $|c|$ and $z$ is an isometry on $\A$; hence
+\[
+ \|zp\|_\gamma
+ \le |c|+|c|+\|g\|_{\A}\le2\|p\|_\gamma.
+\]
+\end{proof}
+
+For a closed $K\subset\T$, with the empty supremum interpreted as zero,
+set
+\[
+ \|p\|_K:=\sup_{\gamma\in K}\|p\|_\gamma.
+ \tag{6}\label{eq:K-norm}
+\]
+
+\section{Construction of the Banach function space}
+
+Fix an arbitrary $F_\sigma$ set $\Gamma\subset\T$ and closed sets
+$K_j\subset\T$ such that
+\[
+ \Gamma=\bigcup_{j=1}^{\infty}K_j.
+ \tag{7}\label{eq:Gamma-layers}
+\]
+On the polynomials define
+\[
+ \|p\|_{\X}
+ :=\|p\|_{H^2}+\sum_{j=1}^{\infty}2^{-j}\|p\|_{K_j},
+ \tag{8}\label{eq:X-norm}
+\]
+and let $\X$ be the abstract completion.
+
+\begin{proposition}\label{prop:functionspace}
+The natural map from $\X$ into $H^2\subset\operatorname{Hol}(\D)$ is
+injective.  Consequently $\X$ is a Banach space of holomorphic functions on
+$\D$.  It satisfies P1--P3, and
+\[
+ \D\cup\Gamma\subset\Om(\X).
+ \tag{9}\label{eq:easy-inclusion}
+\]
+\end{proposition}
+
+\begin{proof}
+The $H^2$ term gives a continuous map $J:\X\to H^2$.  We prove that
+$J$ has zero kernel.  Let $(p_m)$ be Cauchy for \eqref{eq:X-norm} and suppose
+$p_m\to0$ in $H^2$, hence locally uniformly on $\D$.
+
+Fix $j$ and $\gamma\in K_j$.  The pairs
+$(p_m(\gamma),\Delta_\gamma p_m)$ are Cauchy in $\C\oplus_1\A$.  If their
+limit is $(c_\gamma,g_\gamma)$, the identity
+\[
+ p_m(z)=p_m(\gamma)+(z-\gamma)\Delta_\gamma p_m(z)
+\]
+and local uniform convergence give
+$c_\gamma+(z-\gamma)g_\gamma(z)=0$ on $\D$.  Lemma~\ref{lem:local} forces
+$(c_\gamma,g_\gamma)=0$.
+
+Because $(p_m)$ is Cauchy uniformly over $K_j$, this pointwise conclusion is
+uniform: given $\varepsilon>0$, choose $m_0$ such that
+$\|p_m-p_n\|_{K_j}<\varepsilon$ for $m,n\ge m_0$, and then let $n\to\infty$
+in each local norm.  Thus $\|p_m\|_{K_j}\le\varepsilon$ for $m\ge m_0$.
+Finally, Cauchyness in the weighted sum and Fatou's lemma yield
+\[
+ \sum_j2^{-j}\|p_m\|_{K_j}
+ \le \liminf_{n\to\infty}
+ \sum_j2^{-j}\|p_m-p_n\|_{K_j}\longrightarrow0.
+\]
+Together with $\|p_m\|_{H^2}\to0$, this proves $p_m\to0$ in $\X$ and hence
+injectivity of $J$.
+
+P1 holds by construction.  Since \eqref{eq:X-norm} dominates the $H^2$ norm,
+interior evaluations are continuous, proving P2.  Lemma~\ref{lem:local},
+\eqref{eq:K-norm}, and the $H^2$ shift isometry give
+$\|zp\|_{\X}\le2\|p\|_{\X}$, so the shift extends boundedly and P3 holds.
+Finally, if $\gamma\in K_j$, then
+\[
+ |p(\gamma)|\le\|p\|_{K_j}\le2^j\|p\|_{\X}.
+\]
+Thus every point of $\Gamma$, as well as every point of $\D$, belongs to the
+maximal domain.
+\end{proof}
+
+\section{Uniform boundary peaks}
+
+\begin{lemma}\label{lem:peaks}
+Fix $w\in\T$ and define
+\[
+ q_N(z)=\left(\frac{1+\overline wz}{2}\right)^N.
+ \tag{10}\label{eq:peak}
+\]
+Then:
+\begin{enumerate}
+\item $q_N(w)=1$ and $\|q_N\|_{H^2}\to0$;
+\item $\sup_{N\ge1,\,\gamma\in\T}\|q_N\|_\gamma\le2$;
+\item if $K\subset\T$ is closed and $w\notin K$, then
+      $\|q_N\|_K\to0$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Write
+\[
+ q_N(z)=\sum_{k=0}^{N}a_{N,k}z^k,
+ \qquad
+ a_{N,k}=2^{-N}\binom Nk\overline w^{,k}.
+\]
+The standard binomial identity gives
+\[
+ \|q_N\|_{H^2}^2
+ =4^{-N}\sum_{k=0}^{N}\binom Nk^2
+ =4^{-N}\binom{2N}{N}\longrightarrow0.
+ \tag{11}\label{eq:H2-peak}
+\]
+
+Polynomial division gives
+\[
+ \Delta_\gamma q_N(z)=\sum_{n=0}^{N-1}b_{N,n}(\gamma)z^n,
+ \qquad
+ b_{N,n}(\gamma)
+ =\sum_{k=n+1}^{N}a_{N,k}\gamma^{k-1-n}.
+ \tag{12}\label{eq:division}
+\]
+Since $|a_{N,k}|=2^{-N}\binom Nk$ and those numbers sum to one,
+\[
+ |b_{N,n}(\gamma)|\le1.
+ \tag{13}\label{eq:uniform-bound}
+\]
+Also $|q_N(\gamma)|\le1$, proving assertion 2.
+
+For assertion 3 put $u=\overline w\gamma$.  Up to a unimodular factor,
+$b_{N,n}(\gamma)$ is the binomial tail
+\[
+ \sum_{k=n+1}^{N}2^{-N}\binom Nk u^k.
+ \tag{14}\label{eq:tail}
+\]
+Abel summation, splitting the unimodal binomial coefficients at their mode,
+shows that for $u\ne1$
+\[
+ \sup_{0\le n<N}|b_{N,n}(\gamma)|
+ \le \frac{C}{|1-u|}
+       \max_{0\le k\le N}2^{-N}\binom Nk
+ \le \frac{C'}{|w-\gamma|\sqrt{N+1}}.
+ \tag{15}\label{eq:Abel}
+\]
+For completeness, the first inequality uses only
+$|\sum_{r=s}^{t}u^r|\le2/|1-u|$ on each monotone half; the second is the
+elementary central-binomial estimate.
+
+If $K$ is closed and does not contain $w$, then
+$\delta=\dd(w,K)>0$.  Equation \eqref{eq:Abel} makes the $\A$ term in
+\eqref{eq:local-norm} tend to zero uniformly for $\gamma\in K$.  Moreover,
+\[
+ \sup_{\gamma\in K}|q_N(\gamma)|
+ \le \left(\sup_{\gamma\in K}
+       \left|\frac{1+\overline w\gamma}{2}\right|\right)^N
+ =\rho_K^N
+\]
+with $\rho_K<1$.  Hence $\|q_N\|_K\to0$.
+\end{proof}
+
+\section{Main theorem}
+
+\begin{theorem}\label{thm:main}
+For every $F_\sigma$ set $\Gamma\subset\T$, the Banach space $\X$ obtained
+from \eqref{eq:X-norm} satisfies P1--P3 on $\D$ and
+\[
+ \Om(\X)=\D\cup\Gamma.
+ \tag{16}\label{eq:maximal-domain}
+\]
+Therefore Problem 4.7 of \cite{MS} has an affirmative answer in the Banach
+category.
+\end{theorem}
+
+\begin{proof}
+Proposition~\ref{prop:functionspace} gives the inclusion from right to left
+in \eqref{eq:maximal-domain}.  Let $w\in\T\setminus\Gamma$.  Then $w\notin K_j$ for every
+$j$.  Lemma~\ref{lem:peaks} gives
+\[
+ \|q_N\|_{K_j}\longrightarrow0\quad\text{for every fixed }j,
+ \qquad
+ \|q_N\|_{K_j}\le2\quad\text{for all }N,j.
+\]
+Dominated convergence for the counting measure with masses $2^{-j}$, along
+with \eqref{eq:H2-peak}, yields
+\[
+ \|q_N\|_{\X}
+ =\|q_N\|_{H^2}+\sum_j2^{-j}\|q_N\|_{K_j}\longrightarrow0.
+\]
+But $q_N(w)=1$, so polynomial evaluation at $w$ is not continuous on $\X$.
+
+It remains to exclude $|w|>1$.  Put $r_N(z)=(z/w)^N$.  Then
+$r_N(w)=1$, $\|r_N\|_{H^2}=|w|^{-N}$, and, for every $\gamma\in\T$,
+\[
+ |r_N(\gamma)|=|w|^{-N},\qquad
+ \Delta_\gamma r_N(z)
+ =w^{-N}\sum_{n=0}^{N-1}\gamma^{N-1-n}z^n.
+\]
+Thus $\|r_N\|_\gamma=2|w|^{-N}$ uniformly in $\gamma$, and
+$\|r_N\|_{\X}\le3|w|^{-N}\to0$.  Evaluation at $w$ is again unbounded.
+This proves that no point outside $\D\cup\Gamma$ lies in $\Om(\X)$ and
+completes the proof.
+\end{proof}
+
+\section{Verification, scope, and novelty}
+
+The proof is noncomputational.  A finite script supplied with the packet
+checks the polynomial-division formula \eqref{eq:division} and the global coefficient
+bound \eqref{eq:uniform-bound}; it is only a sanity check.  The essential reviewer checks
+are the Abel estimate \eqref{eq:Abel} and the no-ghost argument in
+Proposition~\ref{prop:functionspace}.
+
+The result settles the existence question because a Banach space is one of
+the two requested categories.  It does not prove that every such maximal
+domain has a Hilbert realization.  It also does not address the separate
+higher-dimensional question $\Om=\Omega_{\rm env}$ in the source paper.
+
+A bounded novelty search through 11 August 2026 covered the run indexes,
+arXiv:2407.15997v2, DOI 10.1090/proc/17344, exact title and problem wording,
+author and citation searches, and combinations of ``maximal domain,''
+``$F_\sigma$,'' ``Hilbert/Banach,'' and the rational-boundary example.  The
+retrieved records still state only the source's $F_\sigma\cap G_\delta$
+Hilbert theorem, and no later answer to Problem 4.7 was found.  This is not a
+proof of priority, so novelty confidence is moderate.
+
+\medskip
+\noindent\textbf{Human-review recommendation.} Verify \eqref{eq:Abel} uniformly
+in the tail index and the passage from pointwise local limits to the
+supremum and weighted-sum norms.  Subject to those checks, the construction
+is a complete affirmative Banach-space solution.
+
+\begin{thebibliography}{9}
+\bibitem{MS}
+M. Mironov and J. Sampat,
+\emph{Jointly cyclic polynomials and maximal domains},
+Proc. Amer. Math. Soc. \textbf{153} (2025), 4781--4795;
+arXiv:2407.15997v2, DOI: 10.1090/proc/17344.
+\end{thebibliography}
+
+\end{document}

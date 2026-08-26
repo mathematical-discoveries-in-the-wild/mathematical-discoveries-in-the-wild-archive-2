@@ -1,0 +1,369 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newcommand{\K}{\mathbb K}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Lop}{\mathcal L}
+\newcommand{\SG}{(\mathrm{S}_G)}
+
+\title{A Relative Schur Classification of Finite-Order\\
+Weak--Strong Differentiability Principles}
+\author{Automatic mathematics run \texttt{fa\_banach\_001}}
+\date{9 August 2026}
+
+\begin{document}
+\setlength{\emergencystretch}{3em}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{
+\textbf{Status.} Candidate strong partial result, likely valid, for human
+review.  For Banach targets it completely classifies the finite-order
+weak--strong principle for each boundedness-determining pair $(E,G)$.  It
+answers the full-dual Banach part of Question~6.9(i) affirmatively (already
+covered by Bachir--Lancien's 2003 theorem) and extends the classification to
+arbitrary $G\subset E'$ that determine boundedness.  It does not classify all
+locally convex targets or spaces that work uniformly for every admissible $G$.
+}}
+\end{center}
+
+\section{Source question}
+
+The source is Karsten Kruse, \emph{Extension of vector-valued functions and
+weak-strong principles for differentiable functions of finite order},
+arXiv:1910.01952 \cite{Kruse}.  Theorem~6.6 proves the full finite-order
+principle when $E$ is semi-Montel and $G\subset E'$ determines boundedness.
+Question~6.9(i), on printed page~21, asks whether there are other target spaces
+and whether the positive $C^0$ result for spaces whose bounded sets are
+precompact extends to positive finite order.  The complete source question is
+reproduced below.
+
+\begin{center}
+\includegraphics[width=0.98\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+We solve a precise Banach-space slice of the first sentence.  The result also
+shows that, once the theorem permits a proper test set $G\subset E'$, the
+answer depends on the pair $(E,G)$ and not only on $E$.
+
+\section{Definitions and statement}
+
+Let $E$ be a real or complex Banach space and let $G\subset E'$ determine
+boundedness, meaning that a set $B\subset E$ is norm bounded whenever
+\[
+  \sup_{x\in B}|g(x)|<\infty \qquad\text{for every }g\in G.
+  \tag{1}
+\]
+This already forces $G$ to separate points: if every $g\in G$ annihilates
+$x$, then $\{nx:n\in\N\}$ is $G$-bounded, so (1) implies $x=0$.
+
+We say that $(E,G)$ has the \emph{relative sequential Schur property} if
+\[
+ \SG\qquad
+ \left.
+ \begin{array}{c}
+ (x_n)\subset E\text{ is norm bounded},\\
+ g(x_n)\longrightarrow0\text{ for every }g\in G
+ \end{array}
+ \right\}
+ \Longrightarrow \|x_n\|\longrightarrow0.
+ \tag{2}
+\]
+Because $G$ determines boundedness, every $G$-null sequence is automatically
+norm bounded.  Thus the boundedness line in (2) is logically redundant here,
+but records the standard relative Schur formulation.
+
+\begin{theorem}[Banach-pair classification]\label{thm:classification}
+Let $E$ be a Banach space, let $G\subset E'$ determine boundedness, and fix
+$k\in\N$.  The following are equivalent.
+\begin{enumerate}
+\item[(i)] The pair $(E,G)$ has property $\SG$.
+\item[(ii)] For every real Banach space $Y$, every open $U\subset Y$, and every map
+      $f:U\to E$, the conditions
+      \[
+        g\circ f\in C^k(U,\K)\qquad(g\in G)
+      \]
+      imply $f\in C^k(U,E)$ in the Fr\'echet sense.
+\item[(iii)] The implication in (ii) holds just for $Y=\R$ and open intervals
+      $U\subset\R$.
+\end{enumerate}
+In particular, the same relative Schur condition characterizes the principle
+for every positive finite order, and one-dimensional curves already detect
+failure.
+\end{theorem}
+
+The theorem is stronger in its domain than the source question, which only
+requires $U\subset\R^d$.
+
+\section{Proof intuition}
+
+There are two short mechanisms.  First, $G$-scalar smoothness makes all the
+relevant differences, difference quotients, Taylor remainders, and derivative
+differences converge coordinatewise under $G$.  Condition (1) makes each such
+sequence norm bounded, while $\SG$ upgrades its $G$-convergence to norm
+convergence.  This constructs the derivatives and proves their continuity.
+
+Conversely, if $\SG$ fails, take a bounded $G$-null sequence $(x_n)$ that stays
+away from zero.  Put increasingly narrow smooth bumps with values in the
+directions $x_n$ at points $t_n\downarrow0$.  Scale the $n$th bump by the
+$k$th power of its width.  Its first $k-1$ derivatives then disappear at the
+accumulation point.  The $k$th derivative still takes the value $x_n$ at the
+bump centers, so it is not norm continuous; after applying any fixed $g\in G$,
+those values become $g(x_n)\to0$, so every scalarization is nevertheless
+$C^k$.
+
+\section{Proof of the classification}
+
+\begin{proof}[Proof of Theorem~\ref{thm:classification}]
+The implication (ii)$\Rightarrow$(iii) is immediate.  We first prove
+(i)$\Rightarrow$(ii), and then build a counterexample proving
+(iii)$\Rightarrow$(i).
+
+\medskip
+\noindent\textbf{Step 1: the case $k=1$.}
+Suppose $\SG$ holds and $g\circ f\in C^1(U)$ for every $g\in G$.  If
+$y_n\to y$ in $U$, then
+\[
+  g(f(y_n)-f(y))\longrightarrow0\qquad(g\in G).
+\]
+This difference sequence is norm bounded by (1), and hence converges to zero
+in norm by $\SG$.  Since $U$ and $E$ are metrizable, $f$ is continuous.
+
+Fix $y\in U$ and $h\in Y$.  For nonzero $t$ sufficiently close to zero put
+\[
+  q_t(h)=\frac{f(y+th)-f(y)}{t}.
+\]
+If these quotients were not norm Cauchy as $t\to0$, there would be
+$s_n,t_n\to0$ and $\varepsilon>0$ such that
+$\|q_{s_n}(h)-q_{t_n}(h)\|\geq\varepsilon$.  But for every $g\in G$,
+\[
+  g(q_{s_n}(h)-q_{t_n}(h))\longrightarrow0
+\]
+because $g\circ f$ is differentiable at $y$.  Boundedness determination and
+$\SG$ give a contradiction.  Completeness of $E$ therefore gives a limit
+\[
+  A_yh:=\lim_{t\to0}q_t(h)\in E,
+  \qquad
+  g(A_yh)=D(g\circ f)(y)h.
+  \tag{3}
+\]
+Since $G$ separates points, (3) makes $A_y$ linear.  Moreover,
+\[
+ \sup_{\|h\|\leq1}|g(A_yh)|=\|D(g\circ f)(y)\|<\infty
+ \qquad(g\in G).
+\]
+Thus $A_y$ maps the unit ball of $Y$ to a $G$-bounded set, and (1) shows that
+$A_y\in\Lop(Y,E)$.
+
+We next show that $A_y$ is the Fr\'echet derivative.  If not, there are
+$h_n\to0$ with $h_n\ne0$ and $\varepsilon>0$ such that
+\[
+ z_n:=\frac{f(y+h_n)-f(y)-A_yh_n}{\|h_n\|},
+ \qquad \|z_n\|\geq\varepsilon.
+ \tag{4}
+\]
+Equation (3) and scalar Fr\'echet differentiability give
+$g(z_n)\to0$ for every $g\in G$.  Again (1) and $\SG$ contradict (4).  Hence
+$Df(y)=A_y$.
+
+Finally $Df$ is operator-norm continuous.  Otherwise, for some $y_n\to y$ we
+could choose $\|h_n\|=1$ and $\varepsilon>0$ with
+\[
+ \|(Df(y_n)-Df(y))h_n\|\geq\varepsilon.
+\]
+For each $g\in G$ the left-hand vectors are $G$-null, since
+\[
+ |g((Df(y_n)-Df(y))h_n)|
+ \leq\|D(g\circ f)(y_n)-D(g\circ f)(y)\|\longrightarrow0.
+\]
+This contradicts $\SG$.  We have proved $f\in C^1(U,E)$.
+
+\medskip
+\noindent\textbf{Step 2: induction on the order.}
+Assume the assertion has been proved through order $m-1$, where $m\geq2$,
+and suppose every $g\circ f$ is $C^m$.  By induction $f\in C^{m-1}$.
+Write
+\[
+ F(y)=D^{m-1}f(y)\in\Lop^{m-1}(Y,E).
+\]
+For fixed $y$ and $v_1,\ldots,v_m\in Y$, apply the quotient argument from
+Step~1 to
+\[
+ \frac{[F(y+tv_1)-F(y)](v_2,\ldots,v_m)}{t}.
+\]
+It converges in $E$; call its limit
+$B_y(v_1,\ldots,v_m)$.  Scalarization gives
+\[
+ g(B_y(v_1,\ldots,v_m))
+   =D^m(g\circ f)(y)(v_1,\ldots,v_m).
+ \tag{5}
+\]
+Separation by $G$ makes $B_y$ $m$-linear.  For each $g$, (5) is bounded on
+the product of the unit balls by $\|D^m(g\circ f)(y)\|$.  Thus (1) makes the
+whole image norm bounded, and $B_y\in\Lop^m(Y,E)$.
+
+The map $F$ is Fr\'echet differentiable at $y$ with derivative
+$h\mapsto B_y(h,\cdot)$.  Indeed, failure in operator norm would give
+$h_n\to0$ and unit vectors $v_{2,n},\ldots,v_{m,n}$ such that the $E$-valued
+normalized remainders
+\[
+ \frac{[F(y+h_n)-F(y)-B_y(h_n,\cdot)]
+ (v_{2,n},\ldots,v_{m,n})}{\|h_n\|}
+ \tag{6}
+\]
+stay away from zero.  Applying $g$ bounds (6) by the operator norm of the
+normalized Fr\'echet remainder of $D^{m-1}(g\circ f)$, which tends to zero.
+Property $\SG$ again contradicts the assumed lower bound.
+
+The same unit-vector argument proves continuity of $y\mapsto B_y$ in
+$\Lop^m(Y,E)$: if it failed along $y_n\to y$, evaluate
+$B_{y_n}-B_y$ on unit $m$-tuples witnessing the failure and use continuity
+of every scalar $D^m(g\circ f)$.  Therefore $F\in C^1$ and
+$f\in C^m$.  Induction proves (i)$\Rightarrow$(ii) for the fixed $k$.
+
+\medskip
+\noindent\textbf{Step 3: a smooth-bump converse.}
+Suppose $\SG$ fails.  After passing to a subsequence, there are a bounded
+sequence $(x_n)\subset E$ and $\delta>0$ such that
+\[
+ g(x_n)\longrightarrow0\quad(g\in G),
+ \qquad \|x_n\|\geq\delta\quad(n\in\N).
+ \tag{7}
+\]
+Choose $\phi\in C_c^\infty((-1,1))$ with $\phi^{(k)}(0)=1$.  Let
+\[
+ t_n=2^{-n},\qquad w_n=2^{-3n},\qquad
+ I_n=(t_n-w_n,t_n+w_n).
+\]
+The intervals $I_n$ are pairwise disjoint and accumulate only at zero.  Set
+\[
+ f(t)=
+ \begin{cases}
+  w_n^k\,\phi\!\left(\dfrac{t-t_n}{w_n}\right)x_n,&t\in I_n,\\[6pt]
+  0,&t\notin\bigcup_n I_n.
+ \end{cases}
+ \tag{8}
+\]
+Compact support of $\phi$ makes (8) smooth across every endpoint of $I_n$.
+For $t\in I_n$ and $0\leq j\leq k$,
+\[
+ f^{(j)}(t)=w_n^{k-j}
+ \phi^{(j)}\!\left(\frac{t-t_n}{w_n}\right)x_n.
+ \tag{9}
+\]
+For $0\leq j\leq k-1$, boundedness of $(x_n)$ and (9) give
+\[
+ \frac{\|f^{(j)}(t)\|}{|t|}
+ \leq C_j\frac{w_n^{k-j}}{t_n-w_n}
+ \leq 2C_j\frac{w_n}{t_n}
+ =2C_j2^{-2n}\longrightarrow0.
+ \tag{10}
+\]
+Starting with $j=0$ and proceeding successively, (10) proves that all
+derivatives through order $k$ exist at zero and equal zero; (9) also gives
+continuity there through order $k-1$.
+
+For any fixed $g\in G$, the scalar $k$th derivative on $I_n$ is
+\[
+ (g\circ f)^{(k)}(t)=
+ \phi^{(k)}\!\left(\frac{t-t_n}{w_n}\right)g(x_n).
+\]
+Its supremum on $I_n$ tends to zero by (7).  Thus
+$g\circ f\in C^k(\R)$ for every $g\in G$.  On the other hand,
+\[
+ f^{(k)}(t_n)=x_n,
+ \qquad f^{(k)}(0)=0,
+\]
+so (7) says that $f^{(k)}$ is not norm continuous at zero.  Consequently
+$f\notin C^k(\R,E)$, contradicting (iii).  Hence (iii) implies $\SG$ and the
+proof is complete.
+\end{proof}
+
+\section{Consequences and sharpness}
+
+\begin{corollary}[Full dual]\label{cor:full-dual}
+For a Banach space $E$ and any fixed $k\geq1$, every weakly $C^k$ map from
+an open subset of any Banach space into $E$ is $C^k$ if and only if $E$ has
+the Schur property.
+\end{corollary}
+
+For $G=E'$, condition $\SG$ is exactly the ordinary Schur property.  The
+positive implication, including arbitrary Banach domains and all finite
+orders, is Corollaries~2.2--2.3 of Bachir--Lancien \cite{BachirLancien};
+their Proposition~2.4 also gives a differentiability-level converse.  Thus
+Corollary~\ref{cor:full-dual} is not claimed as new.
+
+Taking $E=\ell_1$ and $G=E'=\ell_\infty$ gives an infinite-dimensional
+affirmative example for the first sentence of Question~6.9(i) in the
+full-dual Banach setting.  It is not semi-Montel: an infinite-dimensional
+Banach space has non-precompact closed unit ball.
+
+The dependence on $G$ is sharp even for that same $E$.  Regard
+$c_0\subset\ell_\infty=(\ell_1)'$.  The set $c_0$ determines boundedness of
+$\ell_1$: if $B\subset\ell_1$ is pointwise bounded on $c_0$, view its members
+as continuous linear functionals on the Banach space $c_0$ and apply uniform
+boundedness.  But the unit vectors $(e_n)$ satisfy
+\[
+ \langle e_n,a\rangle=a_n\longrightarrow0\qquad(a\in c_0),
+ \qquad \|e_n\|_1=1.
+\]
+Hence $(\ell_1,c_0)$ fails $\SG$, and (8) gives an explicit weak--strong
+counterexample for every finite $k\geq1$.  Therefore no classification that
+mentions only the Banach target $E$ can describe all admissible proper test
+sets $G$.
+
+\section{Literature and novelty bounds}
+
+Bachir--Lancien's 2003 paper \cite{BachirLancien} proves the full-dual Schur
+case and is the essential closest result.  The argument above deliberately
+credits that mechanism; its candidate advance is the exact equivalence for
+an arbitrary boundedness-determining pair $(E,G)$, the reduction to curves,
+and the sharp contrast between $(\ell_1,\ell_\infty)$ and
+$(\ell_1,c_0)$ in the framework of Kruse's question.
+
+On 9 August 2026, bounded searches of the run indexes, the local full-source
+arXiv corpus, and official-arXiv/web results used the source title and the
+terms ``weakly $C^k$,'' ``weak--strong principle,'' ``Schur property,''
+``$\tau$-Schur,'' and ``$\sigma(E,G)$-Schur.''  They recovered the 2003
+full-dual theorem and literature on relative Schur topologies, but no source
+stating the differentiability classification for boundedness-determining
+$G$.  This is a limited novelty audit, not publication-level certification.
+
+\section{Scope and human review}
+
+Theorem~\ref{thm:classification} is a complete Banach-pair result and a
+substantial partial answer to Question~6.9(i).  It does not settle the
+locally convex precompact-bounded-set question, Questions~6.9(ii)--(iv), or
+the possible classification of Banach spaces for which the principle holds
+simultaneously for every $G$ that determines boundedness.
+
+Human review should focus on the higher-order operator-norm induction, the
+interpretation of the source question when $G$ varies, and whether the
+relative extension has appeared under $\tau$-Schur terminology.  The bump
+construction and the $c_0$ boundedness-determination example are also worth
+checking independently.
+
+\begin{thebibliography}{9}
+\bibitem{Kruse}
+K. Kruse,
+\emph{Extension of vector-valued functions and weak-strong principles for
+differentiable functions of finite order},
+arXiv:1910.01952.
+\url{https://arxiv.org/abs/1910.01952}
+
+\bibitem{BachirLancien}
+M. Bachir and G. Lancien,
+\emph{On the Composition of Differentiable Functions},
+Canadian Mathematical Bulletin \textbf{46} (2003), 481--494.
+\url{https://doi.org/10.4153/CMB-2003-047-2}
+\end{thebibliography}
+
+\end{document}

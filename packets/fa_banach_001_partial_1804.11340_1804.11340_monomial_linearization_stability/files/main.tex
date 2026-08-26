@@ -1,0 +1,240 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!55!black,urlcolor=blue!55!black,citecolor=blue!55!black}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\id}{I}
+\newcommand{\Sop}{\mathcal S}
+\newcommand{\Lop}{\mathcal L}
+\title{Bulk stability for every monomial linearization\\a partial answer to arXiv:1804.11340}
+\author{Candidate partial-result packet}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\linewidth}{\textbf{Status:} candidate partial result likely valid. Assumptions (M1)--(M2) hold in every degree for the standard linearization of $p_k(x)=1+x^k$, subject to human review.}}
+\end{center}
+
+\section{Source problem}
+
+Erdos, Kruger, and Nemish prove an optimal local law for a self-adjoint
+polynomial once a nilpotent linearization satisfies two uniform conditions in
+every $\kappa$-bulk~\cite{EKN}. In the notation of their Assumption~2.12,
+\begin{align*}
+ \text{(M1)}&\quad \sup\|M(z)\|<\infty,\\
+ \text{(M2)}&\quad \sup\|\Lop(z)^{-1}\|<\infty,
+\end{align*}
+where $M$ solves the Dyson equation for the linearization and
+\[
+ \Lop[R]=R-M\Sop[R]M.
+\]
+They verify these conditions for general homogeneous quadratic polynomials and
+for symmetrized products, then ask whether an appropriate linearization works
+for every self-adjoint polynomial.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/assumption_context_crop.png}
+
+\smallskip
+\emph{The two conditions in Assumption 2.12 of the source, page 8.}
+\end{center}
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+
+\smallskip
+\emph{The open question immediately after Theorem 2.14, source page 8.}
+\end{center}
+
+\section{Proof intuition}
+
+For $1+x^k$, the source's standard symmetric linearization is a companion
+pencil whose coefficient of $x$ is the reversal permutation $A_k$. Multiplying
+the pencil by $A_k$ turns it into $xI+C_z$, where the eigenvalues of $-C_z$ are
+the $k$ roots of $z-1$. Thus the matrix Dyson solution, after the same reversal,
+is obtained by applying the scalar semicircle Stieltjes transform to those
+roots.
+
+The vectorized stability operator has eigenvalues
+$1-m_{\rm sc}(r_i)m_{\rm sc}(r_j)$. The semicircle identity
+$m^2+rm+1=0$ is rigid: a product $m_{\rm sc}(r_i)m_{\rm sc}(r_j)=1$ forces
+$r_i=r_j$. Distinctness of the roots then reduces failure to
+$m_{\rm sc}(r_i)=\pm1$, hence $r_i=\mp2$, which is a spectral edge. The only
+place where roots collide is $z=1$, where the pushforward density is infinite.
+The source's $\kappa$-bulk excludes both mechanisms.
+
+\section{Partial theorem}
+
+Let $A_n$ denote the $n\times n$ reversal permutation matrix, let
+$J=e_1e_1^T$, and embed $A_{k-1}$ in the lower-right corner by
+\[
+ D_k=\begin{pmatrix}0&0\\0&A_{k-1}\end{pmatrix}.
+\]
+
+\begin{theorem}[All one-variable monomial degrees]
+For every integer $k\ge2$, the standard symmetric linearization
+\begin{equation}\label{eq:pencil}
+ L_k(x)=J-D_k+xA_k
+\end{equation}
+of $p_k(x)=1+x^k$ satisfies assumptions \textup{(M1)} and \textup{(M2)} of
+arXiv:1804.11340 uniformly on every $\kappa$-bulk. Consequently Theorem~2.14
+of the source yields the optimal bulk local law for
+$p_k(X^{(N)})=I+(X^{(N)})^k$ under its Wigner moment hypotheses.
+\end{theorem}
+
+\begin{proof}
+The matrix in~\eqref{eq:pencil} is exactly the basic monomial linearization in
+Appendix~A.1 of the source, with constant term added in the $(1,1)$ entry.
+Its Schur complement is $1+x^k$, and the source proves that standard
+linearizations of this form are nilpotent.
+
+Fix $z\in\C_+$, set $w=z-1$, and define
+\[
+ C_z=((1-z)J-D_k)A_k.
+\]
+Since $A_k^2=I$,
+\begin{equation}\label{eq:companion}
+ (L_k(x)-zJ)A_k=xI+C_z,
+ \qquad \det(xI+C_z)=x^k-w.
+\end{equation}
+For $w\ne0$, let $r_1,\ldots,r_k$ be the distinct roots of $r^k=w$.
+Equation~\eqref{eq:companion} says that $C_z$ is diagonalizable with
+eigenvalues $-r_j$.
+
+Let $s$ be a standard semicircular element with law $\mu_{\rm sc}$. The source's
+construction of the Dyson solution gives
+\[
+ M(z)=\int_{-2}^2 (L_k(x)-zJ)^{-1}\,d\mu_{\rm sc}(x).
+\]
+Writing
+\[
+ m_{\rm sc}(r):=\int_{-2}^2\frac{d\mu_{\rm sc}(x)}{x-r},
+\]
+functional calculus in~\eqref{eq:companion} shows that the eigenvalues of
+$M(z)A_k$ are
+\begin{equation}\label{eq:eigenvalues}
+ m_j=m_{\rm sc}(r_j),\qquad j=1,\ldots,k.
+\end{equation}
+The chosen semicircle branch satisfies
+\begin{equation}\label{eq:scidentity}
+ m_{\rm sc}(r)^2+r\,m_{\rm sc}(r)+1=0,
+ \qquad r=-\left(m_{\rm sc}(r)+m_{\rm sc}(r)^{-1}\right).
+\end{equation}
+
+We first establish (M2). In the present one-variable pencil the self-energy is
+$\Sop[R]=A_kRA_k$. Both $A_k$ and $M$ are symmetric. With column
+vectorization,
+\[
+ \operatorname{vec}(M A_k R A_k M)
+ =\bigl((A_kM)^T\otimes M A_k\bigr)\operatorname{vec}R
+ =\bigl(MA_k\otimes MA_k\bigr)\operatorname{vec}R.
+\]
+Therefore $\Lop$ is singular precisely when
+\begin{equation}\label{eq:product}
+ m_i m_j=1
+\end{equation}
+for some $i,j$. If~\eqref{eq:product} holds, then
+\eqref{eq:scidentity} gives
+\[
+ r_j=-\left(m_j+m_j^{-1}\right)
+     =-\left(m_i^{-1}+m_i\right)=r_i.
+\]
+When $w\ne0$ the roots are distinct, so $i=j$. Then $m_i^2=1$, and
+\eqref{eq:scidentity} yields $r_i=\mp2$. Hence
+$w=r_i^k=(\mp2)^k$, a spectral-edge value. For $\Im z>0$ this is impossible,
+and for a real boundary value it is outside every $\kappa$-bulk.
+
+It remains to justify uniformity and (M1). The limiting density of
+$p_k(s)=1+s^k$ is the elementary pushforward
+\begin{equation}\label{eq:density}
+ \rho_k(E)=
+ \sum_{\substack{x\in(-2,2)\\1+x^k=E}}
+ \frac{\sqrt{4-x^2}}{2\pi k|x|^{k-1}}.
+\end{equation}
+Thus a fixed $\kappa$-bulk stays a positive distance from the edges and from
+$E=1$, where the density diverges. In particular, $|w|$ is bounded below and
+the roots $r_j$ remain uniformly separated when $0\le\Im z\le1$ and
+$\Re z$ lies in that bulk. Diagonalizing $C_z$ in~\eqref{eq:companion}, the
+boundary values in~\eqref{eq:eigenvalues} are uniformly bounded, and so is
+$M(z)$. This proves (M1) for $0<\Im z\le1$.
+
+On the same compact parameter set, the preceding product argument shows that
+$\Lop(z)$ is never singular, including at the boundary. Continuity and compactness
+therefore give a uniform bound for $\|\Lop(z)^{-1}\|$. For $\Im z\ge1$, the
+source's general nilpotent-resolvent estimate bounds $M$. Moreover, direct
+adjugate expansion of~\eqref{eq:companion} shows that $M(z)A_k$ has a finite
+limit as $\Im z\to\infty$: the denominator is $x^k-w$, while every cofactor is
+affine in the rank-one parameter $w$. All its eigenvalues
+$m_{\rm sc}(r_j)$ tend to zero, so this limiting matrix is nilpotent. Hence
+$I-MA_k\otimes MA_k$ has an invertible limit. Enlarging the constant over the
+remaining compact strip completes both uniform bounds. Thus (M1)--(M2) hold
+exactly in the sense of Assumption~2.12.
+\end{proof}
+
+\section{Verification report}
+
+The proof was checked in four independent ways.
+\begin{enumerate}
+\item Direct symbolic inversion gives
+$(L_k(x)-zJ)^{-1}_{11}=(1+x^k-z)^{-1}$.
+\item For $2\le k\le12$, the included SymPy check confirms
+$\det((L_k(x)-zJ)A_k)=x^k-z+1$ exactly.
+\item The vectorization identity reduces the $k^2$-dimensional stability
+determinant to the pairwise products in~\eqref{eq:product}.
+\item Numerical root checks for degrees $3,4,7,10$ at three nonreal spectral
+parameters confirm the semicircle quadratic identity and find no unit product.
+\end{enumerate}
+The computational checks do not prove the all-degree theorem; the companion
+factorization and identity~\eqref{eq:scidentity} do.
+
+\section{Scope and limitations}
+
+This proves the source's desired stability for the infinite family of
+one-variable monomials, but not for arbitrary sums or genuinely
+noncommutative multivariable polynomials. The remaining difficulty is that a
+general linearization need not reduce to a single companion matrix whose
+stability eigenvalues are scalar semicircle transforms of distinct roots.
+
+For a single Wigner matrix, the local law for $1+X^k$ can also be transferred
+from the usual Wigner local law by spectral mapping away from critical values.
+The contribution here is therefore the exact verification of the source's
+linearization conditions (M1)--(M2), not a previously inaccessible
+one-variable universality phenomenon.
+
+\section{Bounded novelty check}
+
+The search through 11 August 2026 covered the run registry and packet indexes;
+the exact open sentence; arXiv:1804.11340 and its title combined with
+\emph{general polynomial}, \emph{monomial}, \emph{minimal linearization},
+\emph{stability operator}, and \emph{bulk local law}; and later arXiv work on
+polynomials of Wigner matrices. The search found later edge results for
+multivariate quadratic polynomials, but no exact all-degree monomial
+verification of (M1)--(M2). Novelty confidence is moderate-to-low because the
+companion-matrix mechanism may be known folklore; mathematical validity does
+not depend on novelty.
+
+\section{Conclusion and review recommendation}
+
+The full arbitrary-polynomial question remains open, but every monomial degree
+admits the desired stable linearization. Promotion as a likely valid partial
+result is recommended after checking the compactness argument and the source's
+linearization sign convention.
+
+\begin{thebibliography}{9}
+\bibitem{EKN}
+L. Erdos, T. Kruger, and Y. Nemish,
+\emph{Local laws for polynomials of Wigner matrices},
+J. Funct. Anal. 278 (2020), 108507; arXiv:1804.11340.
+\url{https://arxiv.org/abs/1804.11340}.
+\end{thebibliography}
+
+\end{document}

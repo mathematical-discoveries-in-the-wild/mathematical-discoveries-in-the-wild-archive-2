@@ -1,0 +1,162 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,graphicx,microtype}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\T}{\mathfrak T}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\title{A Gaussian counterexample to the mixed-norm tensor identity\\in arXiv:2405.09378}
+\author{Autonomous mathematical discovery run \texttt{fa\_banach\_001}}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+\texttt{candidate\_counterexample\_likely\_valid}.  This packet disproves
+the explicit identity used to motivate the source's final conjectural route;
+it does not solve the broader, non-theorem-shaped program of characterizing
+all mixed norms of metaplectic Wigner distributions.
+
+\section{Source statement}
+
+The source is Giacchi's arXiv:2405.09378, later published in the
+\emph{Journal of Fourier Analysis and Applications} \cite{Giacchi2024}.
+On page 28 of the arXiv PDF, equation (57) in the final remark states that,
+for
+\[
+ M=\begin{pmatrix}
+ I+P_{12}Q_{12}^{T}&-P_{12}\\
+ -Q_{12}^{T}&I
+ \end{pmatrix},
+\]
+the rescaling operator has the tensor-product property
+\begin{equation}\label{source-identity}
+ \norm{\T_M(f\otimes g)}_{L^{p,q}}
+ =\norm f_p\norm g_q.
+\end{equation}
+The remark conjectures that this identity can be used to study and possibly
+characterize mixed norms of metaplectic Wigner distributions.  The published
+version contains the same assertion as equation (42) in Remark 8.5.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{The full-width source excerpt, arXiv PDF page 28.}
+\end{figure}
+
+\section{Definitions and proof intuition}
+
+The source uses
+\[
+ \norm F_{L^{p,q}}
+ =\left(\int_{\R^d}\left(\int_{\R^d}|F(x,\xi)|^p\,dx\right)^{q/p}d\xi\right)^{1/q}
+\]
+for finite positive $p,q$, and
+$\T_LF(z)=|\det L|^{1/2}F(Lz)$.  We need only finite exponents.
+
+\paragraph{Proof intuition.}
+Choose $P_{12}=0$.  Then $M$ is a determinant-one lower shear, so a tensor
+$f(x)g(\xi)$ becomes $f(x)g(\xi-Q^Tx)$.  An ordinary $L^p$ norm cannot see
+such a measure-preserving shear, but a mixed norm with unequal exponents does:
+the inner Gaussian integration changes the covariance of the outer Gaussian.
+The determinant of that covariance change is exactly
+$\det(I+Q^TQ)$, producing a nontrivial factor whenever $p\ne q$.
+
+\section{Counterexample and exact lower-shear calculation}
+
+\begin{theorem}\label{thm:counterexample}
+Let $d\ge1$, $0<p,q<\infty$, and $Q\in\R^{d\times d}$.  Set
+\[
+ P_{12}=0,
+ \qquad
+ M_Q=\begin{pmatrix}I&0\\-Q^T&I\end{pmatrix},
+ \qquad
+ \gamma(x)=e^{-\pi|x|^2}.
+\]
+Then, with $D=\det(I+Q^TQ)$,
+\begin{equation}\label{exact-ratio}
+ \frac{\norm{\T_{M_Q}(\gamma\otimes\gamma)}_{L^{p,q}}}
+ {\norm\gamma_p\norm\gamma_q}
+ =D^{\frac1{2q}-\frac1{2p}}.
+\end{equation}
+Consequently, if $Q\ne0$ and $p\ne q$, the source identity
+\eqref{source-identity} is false.  In particular, $d=1$, $Q=1$, $p=1$,
+and $q=2$ give the ratio $2^{-1/4}$.
+\end{theorem}
+
+\begin{proof}
+The shear has determinant one, hence
+\[
+ \T_{M_Q}(\gamma\otimes\gamma)(x,\xi)
+ =\exp\bigl(-\pi(|x|^2+|\xi-Q^Tx|^2)\bigr).
+\]
+Put $A=I+QQ^T$.  Completing squares gives
+\begin{align*}
+ |x|^2+|\xi-Q^Tx|^2
+ &=(x-A^{-1}Q\xi)^TA(x-A^{-1}Q\xi)\\
+ &\quad+\xi^T(I+Q^TQ)^{-1}\xi.
+\end{align*}
+Here we used the standard identities
+$I-Q^TA^{-1}Q=(I+Q^TQ)^{-1}$ and
+$\det A=\det(I+Q^TQ)=D$.  Gaussian integration in $x$ therefore yields
+\[
+ \norm{\T_{M_Q}(\gamma\otimes\gamma)(\cdot,\xi)}_p
+ =p^{-d/(2p)}D^{-1/(2p)}
+ \exp\bigl(-\pi\xi^T(I+Q^TQ)^{-1}\xi\bigr).
+\]
+Taking the outer $L^q$ norm gives
+\[
+ \norm{\T_{M_Q}(\gamma\otimes\gamma)}_{L^{p,q}}
+ =p^{-d/(2p)}q^{-d/(2q)}D^{-1/(2p)+1/(2q)}.
+\]
+On the other hand,
+$\norm\gamma_p\norm\gamma_q=p^{-d/(2p)}q^{-d/(2q)}$, proving
+\eqref{exact-ratio}.  If $Q\ne0$, the positive semidefinite matrix $Q^TQ$
+is nonzero, so $D>1$; unequal exponents then make the last power nonzero.
+\end{proof}
+
+\begin{remark}[Exact correction within the chosen subfamily]
+For $P_{12}=0$, identity \eqref{source-identity} holds for all tensor inputs
+when $p=q$, because $L^{p,p}=L^p$ and $M_Q$ is measure preserving.  It also
+holds when $Q=0$, when $M_Q=I$.  Theorem \ref{thm:counterexample} proves that
+for $0<p,q<\infty$, these are the only possibilities if the identity is
+required for every tensor input.
+\end{remark}
+
+\section{Verification, scope, and novelty}
+
+The proof is exact and uses no numerical approximation.  A reviewer should
+check two convention-sensitive points: the source puts the $L^p$ norm in the
+$x$ variable inside the $L^q$ norm in $\xi$, and the determinant factor in
+$\T_M$ is one for $M_Q$.  Both match the source definitions.
+
+A bounded search on 11 August 2026 used the exact equation phrase, the title,
+arXiv id 2405.09378, ``mixed norm tensor products,'' and ``erratum.''  It found
+the arXiv and final journal versions, both containing the assertion, but no
+erratum or prior correction.  Novelty confidence is moderate because this is
+an elementary Gaussian calculation that may be informally known.
+
+The result does not characterize $\norm{W_{\mathcal A}(f,g)}_{L^{p,q}}$ in
+general.  It shows that the proposed route cannot begin from
+\eqref{source-identity} without additional hypotheses or a replacement
+inequality.
+
+\paragraph{Human-review recommendation.}
+Accept as a likely-valid counterexample to equation (57)/(42), after checking
+the mixed-norm order.  Do not count it as a full solution of the broad final
+research program.
+
+\begin{thebibliography}{9}
+\bibitem{Giacchi2024}
+G.~Giacchi,
+\emph{Boundedness of metaplectic operators within $L^p$ spaces, applications
+to pseudodifferential calculus, and time-frequency representations},
+J. Fourier Anal. Appl. \textbf{30} (2024), Article 69;
+arXiv:2405.09378, \url{https://arxiv.org/abs/2405.09378}.
+\end{thebibliography}
+
+\end{document}
+

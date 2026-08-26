@@ -1,0 +1,295 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\K}{\mathbb K}
+\newcommand{\ellp}{\ell_p}
+\newcommand{\spn}{\operatorname{span}}
+
+\title{Devaney-chaotic Rolewicz sums are\\densely distributionally chaotic}
+\author{Candidate full solution to the conjecture in arXiv:1504.02445}
+\date{12 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.} Candidate full solution, pending expert review.
+
+\medskip
+\noindent\textbf{Source.} D.~Bongiorno, U.~B. Darji, and L.~Di Piazza,
+\emph{Rolewicz-type chaotic operators}~\cite{BDD}.  The conjecture is on
+printed page~4 of the source PDF (arXiv:1504.02445).
+
+\section{The question}
+For a strictly increasing map $f:\N\to\N$, define
+\[
+ T_f(x_1,x_2,\ldots)=(x_{f(1)},x_{f(2)},\ldots)
+ \qquad (x\in\ell_p).
+\]
+Two such maps $f,g$ are \emph{almost disjoint} in the source's sense if
+$\{k:f(k)=g(k)\}$ is finite and $f(k)\ne g(k')$ whenever $k\ne k'$.
+The source conjectures that, for pairwise almost-disjoint
+$f_1,\ldots,f_t$ and real $c_1,\ldots,c_t$, Devaney chaos of
+\[
+             T=\sum_{i=1}^t c_iT_{f_i}:\ell_p\longrightarrow\ell_p
+\tag{1}\label{eq:T}
+\]
+implies distributional chaos.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{The conjecture in the original paper, printed page~4.  This is a
+full-width crop rendered from the archived source PDF.}
+\end{figure}
+
+\paragraph{Transcription.}
+``We conjecture that if $f_1,\ldots,f_t$ are strictly increasing pairwise
+almost disjoint functions and $c_1,\ldots,c_t$ are real numbers, then
+$T=\sum_{i=1}^t c_iT_{f_i}$ being chaotic (in the sense of Devaney) implies
+that $T$ is distributionally chaotic.''
+
+\section{Proof intuition}
+Far enough along the coordinates, almost disjointness turns $T$ into a
+perfect branching backward shift: every input coordinate is used in at most
+one branch and row.  The norm of a tail row is therefore exactly the dual
+norm
+\[
+ C=\|(c_1,\ldots,c_t)\|_{p'}.
+\]
+Hypercyclicity passes to this tail factor and forces $C>1$.
+
+There may be collisions in finitely many initial rows.  Hypercyclicity forces
+each such row to have a nonzero coefficient that eventually escapes into the
+collision-free tail; otherwise the adjoint would have a nonzero
+finite-dimensional invariant subspace.  Beyond escape, coefficients branch
+with dual norm growing like $C^N$.  Norming functionals therefore produce a
+right inverse $R_N$ of $T^N$ with $\|R_N\|\le K C^{-N}<1$.
+
+A contracting right inverse gives shadowing by a convergent correction
+series.  Thus $T$ has finite shadowing.  A theorem of Bernardes and
+Peris~\cite[Theorem~11]{BP} then upgrades Devaney chaos plus finite shadowing
+to \emph{dense} distributional chaos.  The latter is stronger than the
+conjectured conclusion.
+
+\section{The theorem}
+Let $p'$ denote the conjugate exponent when $p>1$, and put $p'=\infty$ when
+$p=1$.
+
+\begin{theorem}\label{thm:main}
+Let $1\le p<\infty$, let $f_1,\ldots,f_t:\N\to\N$ be strictly increasing and
+pairwise almost disjoint, and let $T$ be given by \eqref{eq:T}.
+If $T$ is hypercyclic, then some power $T^N$ has a bounded right inverse
+$R_N$ satisfying $\|R_N\|<1$.  Consequently $T$ has the positive and finite
+shadowing properties.
+
+If $T$ is Devaney chaotic, then $T$ is densely distributionally chaotic.  In
+particular, the conjecture of Bongiorno--Darji--Di Piazza is true.
+\end{theorem}
+
+We split the proof into four elementary lemmas.
+
+\begin{lemma}[collision-free tail]\label{lem:tail}
+There is $m\in\N$ such that, on
+$Y=\overline{\spn}\{e_k:k\ge m\}$, the factor $D$ determined by
+\[
+                P_YT=DP_Y
+\]
+has norm
+\[
+ C:=\|D\|=\|(c_1,\ldots,c_t)\|_{p'}.
+\tag{2}\label{eq:C}
+\]
+If $T$ is hypercyclic, then $C>1$.
+\end{lemma}
+
+\begin{proof}
+Choose $m$ so that $f_i(k)\ne f_j(k)$ for $i\ne j$ and $k\ge m$.
+Strict increase gives $f_i(k)\ge k$, so coordinates $k\ge m$ depend only on
+the tail and $P_YT=DP_Y$.  For $k\ge m$, all $f_i(k)$ are distinct.  Moreover,
+if $k\ne \ell$, almost disjointness gives
+$f_i(k)\ne f_j(\ell)$ for every $i,j$.  Hence all input coordinates appearing
+in the tail rows are globally distinct.
+
+Hölder's inequality, followed by this disjointness, gives
+\[
+ \|Dy\|_p^p
+ =\sum_{k\ge m}\left|\sum_i c_i y_{f_i(k)}\right|^p
+ \le C^p\sum_{k\ge m}\sum_i|y_{f_i(k)}|^p
+ \le C^p\|y\|_p^p.
+\]
+Equality is attained by putting a dual norming vector for $(c_i)$ on the
+children of one row.  The same proof with the maximum norm covers $p=1$.
+Thus \eqref{eq:C} holds.
+
+If $x$ is hypercyclic for $T$, then $P_Yx$ is hypercyclic for $D$, since
+$P_YT^nx=D^nP_Yx$ and the projection of a dense orbit is dense.  An operator
+of norm at most one has a bounded orbit from every vector and cannot be
+hypercyclic on the unbounded space $Y$.  Therefore $C>1$.
+\end{proof}
+
+For a word $\sigma=(i_1,\ldots,i_r)$, write
+$f_\sigma=f_{i_r}\circ\cdots\circ f_{i_1}$ and
+$c_\sigma=c_{i_1}\cdots c_{i_r}$.
+
+\begin{lemma}[finite-prefix escape]\label{lem:escape}
+Assume that $T$ is hypercyclic.  For every $k<m$ there are $r_k\ge0$, an
+index $a_k\ge m$, and a nonzero scalar $\beta_k$ such that $\beta_k$ is the
+coefficient of $e_{a_k}^*$ in $(T^*)^{r_k}e_k^*$.
+\end{lemma}
+
+\begin{proof}
+If no such coefficient existed, the cyclic subspace
+\[
+ M_k=\spn\{(T^*)^ne_k^*:n\ge0\}
+\]
+would be a nonzero $T^*$-invariant subspace of
+$\spn\{e_1^*,\ldots,e_{m-1}^*\}$, hence finite-dimensional.  Its annihilator
+would give a nonzero finite-dimensional factor of $T$.  A dense orbit of $T$
+would project to a dense orbit on that factor, contradicting the standard
+fact that no linear operator on a nonzero finite-dimensional real or complex
+space is hypercyclic.
+\end{proof}
+
+For $k\ge m$, set $r_k=0$, $a_k=k$, and $\beta_k=1$.
+
+\begin{lemma}[contracting right inverse of a power]\label{lem:right}
+If $T$ is hypercyclic, there are $K<\infty$ and, for every sufficiently large
+$N$, a bounded operator $R_N$ such that
+\[
+                  T^NR_N=I,
+       \qquad \|R_N\|\le K C^{-N}.
+\tag{3}\label{eq:right}
+\]
+In particular, $\|R_N\|<1$ for some $N$.
+\end{lemma}
+
+\begin{proof}
+Fix $N\ge\max_{k<m}r_k$.  Once the path from $k$ reaches $a_k\ge m$, distinct
+continuation words never collide.  Indeed, equality of two equal-depth
+descendants can be pulled back one level using injectivity and the
+cross-input clause in almost disjointness; at a common input at least $m$,
+the choice of branch is also unique.  Likewise, equal-depth descendant sets
+from distinct starting rows are disjoint.
+
+It follows that the coordinates
+\[
+      J_{k,N}=\{f_\sigma(a_k):|\sigma|=N-r_k\}
+\]
+occur in row $k$ of $T^N$ with coefficients
+$(\beta_kc_\sigma)_\sigma$, and occur in no other row.  Their $\ell_{p'}$
+norm is
+\[
+       |\beta_k|
+       \left(\sum_{|\sigma|=N-r_k}|c_\sigma|^{p'}\right)^{1/p'}
+       =|\beta_k|C^{N-r_k},
+\]
+with the evident maximum-norm formula for $p=1$.  By $\ell_p$--$\ell_{p'}$
+duality there is a vector $u_{k,N}$ supported on $J_{k,N}$ such that
+\[
+ T^Nu_{k,N}=e_k,
+ \qquad
+ \|u_{k,N}\|_p=|\beta_k|^{-1}C^{-(N-r_k)}.
+\tag{4}\label{eq:column}
+\]
+The supports of the vectors $u_{k,N}$ are pairwise disjoint.  Thus the rule
+$R_Ne_k=u_{k,N}$ extends boundedly to $\ell_p$, satisfies $T^NR_N=I$, and
+has norm equal to the supremum of the column norms in \eqref{eq:column}.
+Since only the indices $k<m$ have exceptional $(r_k,\beta_k)$, \eqref{eq:right}
+holds with
+\[
+ K=\max\left\{1,\max_{k<m}|\beta_k|^{-1}C^{r_k}\right\}.
+\]
+Now $C>1$ by Lemma~\ref{lem:tail}, so $KC^{-N}<1$ for large $N$.
+\end{proof}
+
+\begin{lemma}[right inverse implies shadowing]\label{lem:shadow}
+If a bounded operator $A$ on a Banach space has a right inverse $R$ with
+$\|R\|=\rho<1$, then $A$ has positive shadowing.  If $T^N$ has positive
+shadowing, then $T$ has positive shadowing.
+\end{lemma}
+
+\begin{proof}
+Let $(x_j)_{j\ge0}$ be a positive pseudo-orbit for $A$ and write
+$e_j=x_{j+1}-Ax_j$.  The series
+\[
+                y=x_0+\sum_{j=0}^\infty R^{j+1}e_j
+\tag{5}\label{eq:shadowseries}
+\]
+converges.  Since $AR=I$, cancellation of the first $n$ error terms gives
+\[
+ A^ny-x_n=\sum_{j=n}^\infty R^{j+1-n}e_j,
+ \qquad
+ \|A^ny-x_n\|\le \frac{\rho}{1-\rho}\sup_j\|e_j\|.
+\]
+This proves positive shadowing for $A$.
+
+For the second assertion, group a $\delta$-pseudo-orbit of $T$ into blocks of
+length $N$.  Its sampled sequence at times $0,N,2N,\ldots$ is a
+$\delta\sum_{r=0}^{N-1}\|T\|^r$-pseudo-orbit for $T^N$.  Shadow the sampled
+sequence, then propagate over each of the finitely many intermediate times.
+The estimate
+\[
+ \|T^r(T^{jN}y-x_{jN})\|
+ +\delta\sum_{s=0}^{r-1}\|T\|^s,
+ \qquad 0\le r<N,
+\]
+is made arbitrarily small by first choosing the shadowing tolerance for
+$T^N$ and then $\delta$.  Hence $T$ has positive shadowing.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Lemmas~\ref{lem:tail}--\ref{lem:shadow} show that a hypercyclic $T$ has
+positive shadowing.  Positive shadowing immediately implies finite
+shadowing.  If $T$ is Devaney chaotic, Bernardes and Peris
+\cite[Theorem~11]{BP} apply on the Fréchet space $\ell_p$ and imply that $T$
+is densely distributionally chaotic.  This proves, and strengthens, the
+source conjecture.
+\end{proof}
+
+\section{Verification and limitations}
+The exact-arithmetic script \texttt{code/verify\_right\_inverse.py} checks the
+dual normalization, disjoint supports, and $T^NR_N=I$ for a finite two-branch
+tree with rational coefficients.  It is only a sanity check; the proof above
+is symbolic.
+
+The theorem does not assert that every formal sum \eqref{eq:T} is chaotic; it
+starts from the conjecture's exact conditional hypothesis.  In particular,
+it does not rely on the source paper's separate sufficient condition for
+chaos.  The proof also genuinely uses the source's strong cross-input
+almost-disjointness condition, not merely eventual pointwise inequality of
+the functions.
+
+\paragraph{Novelty check.}
+On 12 August 2026, bounded searches of arXiv and the run indexes used the
+exact title and arXiv id together with ``distributionally chaotic'',
+``shadowing'', ``finite shadowing'', ``pseudo-shift'', and ``generalized
+backward shift''.  They found the general Bernardes--Peris theorem but no
+paper explicitly resolving this conjecture or giving the contracting-power
+right-inverse argument for these almost-disjoint sums.  Novelty confidence is
+therefore moderate, not definitive.
+
+\paragraph{Human-review recommendation.}
+Prioritize review.  The central points to check are the escape lemma and the
+absence of descendant collisions used in Lemma~\ref{lem:right}; after those,
+the quantitative contraction and shadowing steps are routine.
+
+\begin{thebibliography}{9}
+\bibitem{BDD}
+D.~Bongiorno, U.~B. Darji, and L.~Di Piazza,
+\emph{Rolewicz-type chaotic operators}, arXiv:1504.02445 (2015).
+
+\bibitem{BP}
+N.~C. Bernardes Jr. and A.~Peris,
+\emph{On shadowing and chain recurrence in linear dynamics},
+arXiv:2305.02714 (2023), Theorem~11.
+\end{thebibliography}
+
+\end{document}

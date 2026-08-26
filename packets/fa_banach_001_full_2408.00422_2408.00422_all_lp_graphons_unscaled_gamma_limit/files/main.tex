@@ -1,0 +1,180 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=0.92in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\Y}{\mathcal{Y}}
+\newcommand{\TV}{\operatorname{TV}}
+\newcommand{\GL}{\operatorname{GL}}
+
+\title{No Extra Epsilon Scaling for Unbounded \(L^p\) Graphons\\
+\large An \(L^1\) sharp-interface theorem and coefficient trichotomy}
+\author{fa\_banach\_001, lane 4}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\textbf{Status.} Candidate full solution, likely valid; specialist review requested.
+
+\section{Source question}
+
+Zhang, Scott, Du, and Porter \cite{ZSDP} define a graphon Ginzburg--Landau functional on Young measures and prove its sharp-interface limit for bounded graphons. Section~6.2 of arXiv:2408.00422v2 asks how the Dirichlet term should be scaled for unbounded \(L^p\) graphons, suggesting that the rate should depend on the singularity of \(W\). Their conclusion again states that this scaling was not determined for general \(L^p((0,1)^2)\) kernels. The source takes \(p\geq1\).
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.98\textwidth]{figures/open_problem_crop.png}
+\caption{The scaling question and the source's \(L^\infty\)-only theorem on page 18 of arXiv:2408.00422v2.}
+\end{figure}
+
+\section{Idea of the proof}
+
+The apparent obstruction disappears once one distinguishes boundedness of the functional from finiteness on its limiting domain. Every \(L^p\) graphon in the source regime belongs to \(L^1\). On a binary Young measure, the phase difference is at most \(2\), so the Dirichlet energy is at most \(4\lVert W\rVert_1\), even when \(W\) is unbounded.
+
+Global continuity of the Dirichlet energy under narrow convergence is neither true nor needed. Truncate the unbounded integrand \(|\lambda-\mu|^2\). Narrow convergence of product Young measures gives weak-star convergence for every bounded truncation, which can be tested against \(W\in L^1\). Letting the truncation level increase proves lower semicontinuity. The same device handles the quartic double-well potential. The liminf and constant recovery sequence then give the full Gamma-limit. This also classifies every convergent prefactor \(a_\epsilon\).
+
+\section{Definitions and result}
+
+Let \(X=(0,1)\) with Lebesgue measure. Let \(W:X^2\to[0,\infty]\) be measurable with \(W\in L^1(X^2)\). Write \(\Y\) for the source space of parametrized probability Young measures \(\nu=\{\nu_x\}_{x\in X}\), equipped with narrow convergence. Define the extended-valued energies
+\begin{align*}
+D^W(\nu)
+&:=\int_{X^2}W(x,y)\int_{\mathbb R^2}|\lambda-\mu|^2
+\,d\nu_x(\lambda)d\nu_y(\mu)\,dx\,dy,\\
+V(\nu)
+&:=\int_X\int_{\mathbb R}\Phi(\lambda)\,d\nu_x(\lambda)\,dx,
+\end{align*}
+where \(\Phi:\mathbb R\to[0,\infty)\) is continuous and
+\[
+\Phi^{-1}(0)=\{-1,1\}.
+\]
+This includes the source potential \(\Phi(t)=(t^2-1)^2\). Let
+\[
+\Y^b:=\{\nu\in\Y:\nu_x(\{-1,1\})=1\text{ for a.e. }x\}.
+\]
+For positive coefficients \(a_\epsilon\), set
+\[
+F_\epsilon(\nu):=a_\epsilon D^W(\nu)+\frac1\epsilon V(\nu).
+\]
+
+\begin{theorem}[Integrable-graphon scaling classification]\label{thm:main}
+Let \(\epsilon\downarrow0\).
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item If \(a_\epsilon\to a\in[0,\infty)\), then \(F_\epsilon\) Gamma-converges narrowly to
+\[
+F_a(\nu)=
+\begin{cases}
+aD^W(\nu),&\nu\in\Y^b,\\
++\infty,&\nu\notin\Y^b.
+\end{cases}
+\]
+\item If \(a_\epsilon\to+\infty\), then \(F_\epsilon\) Gamma-converges narrowly to
+\[
+F_\infty(\nu)=
+\begin{cases}
+0,&\nu\in\Y^b\text{ and }D^W(\nu)=0,\\
++\infty,&\text{otherwise}.
+\end{cases}
+\]
+\end{enumerate}
+In particular, for \(a_\epsilon\equiv1\),
+\[
+\GL^W_\epsilon\ \mathop{\longrightarrow}^{\Gamma}\ \TV^W
+\]
+for every nonnegative \(W\in L^1(X^2)\), where \(\TV^W\) is exactly the source graphon total variation. Hence the source scaling \(1\) and \(1/\epsilon\) works for every \(L^p\) graphon with \(p\geq1\), without dependence on its singularity strength.
+\end{theorem}
+
+\section{Proof}
+
+We first isolate the only continuity statement that is needed.
+
+\begin{lemma}\label{lem:lsc}
+Both \(D^W\) and \(V\) are lower semicontinuous for narrow convergence on \(\Y\).
+\end{lemma}
+
+\begin{proof}
+Suppose \(\nu^n\to\nu\) narrowly. For \(R>0\), let
+\[
+q_R(\lambda,\mu):=\min\{|\lambda-\mu|^2,R\}.
+\]
+This is bounded and continuous. Narrow convergence of product Young measures \cite[Lemma~8]{BCD} implies that
+\[
+h_{n,R}(x,y):=\int_{\mathbb R^2}q_R(\lambda,\mu)
+\,d\nu^n_x(\lambda)d\nu^n_y(\mu)
+\]
+converges weak-star in \(L^\infty(X^2)\) to the corresponding \(h_R\) for \(\nu\). Because \(W\in L^1(X^2)\),
+\[
+\int_{X^2}Wh_{n,R}\longrightarrow\int_{X^2}Wh_R.
+\]
+Moreover \(D^W(\nu^n)\geq\int Wh_{n,R}\). Therefore
+\[
+\liminf_{n\to\infty}D^W(\nu^n)\geq\int_{X^2}Wh_R.
+\]
+Letting \(R\uparrow\infty\) and using monotone convergence yields
+\[
+\liminf_{n\to\infty}D^W(\nu^n)\geq D^W(\nu).
+\]
+For \(V\), repeat the argument with the bounded continuous truncations
+\(\Phi_R=\min\{\Phi,R\}\), now using the constant test function \(1\in L^1(X)\), and then let \(R\uparrow\infty\).
+\end{proof}
+
+We prove Theorem~\ref{thm:main}. Consider arbitrary sequences \(\epsilon_n\downarrow0\) and \(\nu^n\to\nu\) narrowly. Observe first that
+\[
+V(\nu)=0\quad\Longleftrightarrow\quad\nu\in\Y^b.
+\]
+Indeed, the integrand is nonnegative and its zero set is exactly \(\{-1,1\}\). If \(\nu\notin\Y^b\), then \(V(\nu)>0\). Lemma~\ref{lem:lsc} gives \(\liminf_nV(\nu^n)\geq V(\nu)\), so
+\[
+\liminf_{n\to\infty}\frac{V(\nu^n)}{\epsilon_n}=+\infty.
+\]
+This proves the Gamma-liminf inequality at every nonbinary \(\nu\), for all coefficient regimes.
+
+Suppose now that \(\nu\in\Y^b\). If \(a_{\epsilon_n}\to a\in(0,\infty)\), then for each \(\delta\in(0,a)\), eventually \(a_{\epsilon_n}\geq a-\delta\). Lemma~\ref{lem:lsc} gives
+\[
+\liminf_nF_{\epsilon_n}(\nu^n)
+\geq(a-\delta)D^W(\nu).
+\]
+Let \(\delta\downarrow0\). For \(a=0\), nonnegativity directly gives the required lower bound \(0\). If \(a_{\epsilon_n}\to\infty\) and \(D^W(\nu)>0\), lower semicontinuity implies that \(D^W(\nu^n)\geq D^W(\nu)/2\) for all sufficiently large \(n\); hence the liminf is infinite. If \(D^W(\nu)=0\), nonnegativity gives the required lower bound \(0\).
+
+It remains to construct recovery sequences. If \(\nu\in\Y^b\), take the constant sequence \(\nu^n=\nu\). Then \(V(\nu)=0\), and
+\[
+D^W(\nu)\leq4\lVert W\rVert_{L^1(X^2)}<\infty.
+\]
+Thus \(F_{\epsilon_n}(\nu)=a_{\epsilon_n}D^W(\nu)\), which tends to the stated finite-coefficient limit; it is identically zero in the divergent-coefficient case whenever \(D^W(\nu)=0\). At points where the proposed limit is \(+\infty\), the Gamma-limsup requirement is automatic. This proves both parts.
+
+Finally, for \(\nu\in\Y^b\), the only possible values of \(|\lambda-\mu|\) are \(0\) and \(2\), so
+\[
+|\lambda-\mu|^2=2|\lambda-\mu|.
+\]
+Consequently \(D^W(\nu)\) equals the source definition of \(\TV^W(\nu)\), proving the last assertion. \qed
+
+\section{Scope and novelty check}
+
+The theorem applies to nonnegative integrable kernels. On the finite-measure square, \(L^p\subset L^1\) for every \(p\geq1\), so it resolves the scaling question for the entire \(L^p\)-graphon class defined in the source. It does not address signed kernels or genuinely nonintegrable kernels such as \(|x-y|^{-1-2s}\); those require a different theory and are not \(L^p\) graphons in the stated regime.
+
+The proof deliberately uses lower semicontinuity, not global continuity: moment escape prevents global continuity of \(D^W\) on all Young measures. Extended values away from \(\Y^b\) are harmless in Gamma convergence.
+
+The bounded novelty search, completed 13 August 2026, covered the run's four lightweight indexes, arXiv:2408.00422v2 and its bibliography, exact-title citation searches, and arXiv-oriented searches combining graphon GL, \(L^1/L^p\), unbounded kernels, Gamma convergence, and epsilon scaling. No later resolution of this extension or coefficient trichotomy was located. The source's 2026 publication still states the problem.
+
+\section{Human-review recommendation}
+
+Priority specialist review is recommended. The core check is short: verify the product-narrow weak-star convergence for \(q_R\), the \(L^1\) testing step, and the two monotone-convergence passages. A reviewer should also confirm that the intended graphon convention is nonnegative; this is standard and is used throughout the source's energy arguments.
+
+\begin{thebibliography}{9}
+\bibitem{ZSDP}
+E. J. Zhang, J. Scott, Q. Du, and M. A. Porter,
+\emph{Ginzburg--Landau Functionals in the Large-Graph Limit},
+arXiv:2408.00422v2 (2025); Pure and Applied Functional Analysis 11 (2026), 169--209.
+
+\bibitem{BCD}
+A. Braides, P. Cermelli, and S. Dovetta,
+\emph{Gamma-limit of the cut functional on dense graph sequences},
+ESAIM Control Optim. Calc. Var. 26 (2020), article 26.
+\end{thebibliography}
+
+\end{document}

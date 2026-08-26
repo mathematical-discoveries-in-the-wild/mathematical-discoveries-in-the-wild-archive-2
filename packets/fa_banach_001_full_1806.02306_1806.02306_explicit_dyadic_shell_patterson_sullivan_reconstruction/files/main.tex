@@ -1,0 +1,399 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\D}{\mathbb D}
+\newcommand{\T}{\mathbb T}
+\newcommand{\N}{\mathbb N}
+\newcommand{\dm}{\,dm}
+\newcommand{\Conf}{\operatorname{Conf}}
+
+\title{An explicit critical-density configuration for\\
+simultaneous Patterson--Sullivan reconstruction}
+\author{Autonomous mathematics run \texttt{fa\_banach\_001}, lane 17}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{
+\textbf{Status: claimed full new solution, likely valid, pending human review.}
+An explicit deterministic configuration is constructed.  It answers the
+sharpened question (1.41) of Bufetov--Qiu and supplies an explicit instance
+for the deterministic-set problem in the original paper.
+}}
+\end{center}
+
+\section{Source question and result}
+
+The source paper is A.~I. Bufetov and Y.~Qiu,
+\emph{Patterson--Sullivan measures for point processes and the
+reconstruction of harmonic functions}, arXiv:1806.02306v2
+\cite{BQ2019}.  Section 2.4, printed/PDF page 13, asks for explicit
+deterministic subsets of the disk with the simultaneous reconstruction
+properties established there for random point configurations.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.98\textwidth]{figures/original_open_problems_crop.png}
+  \caption{The original open-problem list in arXiv:1806.02306v2, page 13.}
+\end{figure}
+
+The same authors sharpened the deterministic part in
+\emph{The Patterson--Sullivan Interpolation of Pluriharmonic Functions for
+Determinantal Point Processes on Complex Hyperbolic Spaces},
+arXiv:2101.09622v1 \cite{BQ2021}.  Their Question (1.41), printed page 7
+(PDF page 17), asks whether there is an explicit configuration
+$X\in\Conf(\D)$ of critical upper density such that
+\[
+ f(z)=\lim_{s\downarrow1}
+ \frac{g_X(s,z;f)}{g_X(s,z)}
+ \quad\text{for every }f\in H^\infty(\D)\text{ and }z\in\D,
+\]
+where
+\[
+ g_X(s,z;f)=\sum_{x\in X}e^{-s d_\D(z,x)}f(x),
+ \qquad g_X(s,z)=g_X(s,z;1).
+\]
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.98\textwidth]{figures/open_problem_crop.png}
+  \caption{The sharpened deterministic question (1.41) in
+  arXiv:2101.09622v1, printed page 7.}
+\end{figure}
+
+We use the source normalization
+\[
+ d_\D(u,v)=\log\frac{1+|\varphi_u(v)|}{1-|\varphi_u(v)|},
+ \qquad \varphi_u(v)=\frac{v-u}{1-\overline u v}.
+\]
+Let $P_z(\xi)=(1-|z|^2)/|\xi-z|^2$ be the Poisson kernel on
+$\T$, and let $m$ be normalized Lebesgue measure on $\T$.
+
+\begin{theorem}[Explicit dyadic-shell reconstruction]\label{thm:main}
+For $n\ge1$, set
+\[
+ M_n=2^n,\qquad R_n=\log M_n,\qquad
+ r_n=\tanh(R_n/2)=\frac{M_n-1}{M_n+1},
+\]
+and define the completely explicit configuration
+\[
+ X_{\rm dyad}
+ =\left\{r_n e^{2\pi i j/M_n}: n\ge1,\ 0\le j<M_n\right\}.
+\]
+Then $X_{\rm dyad}$ is uniformly separated and has critical hyperbolic
+upper density.  More precisely,
+\[
+ \#(X_{\rm dyad}\cap B_\D(z,R))\le C e^R
+ \quad(z\in\D,\ R\ge1),
+\]
+while $\#(X_{\rm dyad}\cap B_\D(0,R_n))=2^{n+1}-2$.
+
+For every compact $K\Subset\D$,
+\begin{equation}\label{eq:strong}
+ \lim_{s\downarrow1}\ 
+ \sup_{z\in K}\ 
+ \sup_{\substack{f\text{ bounded harmonic on }\D\\\|f\|_\infty\le1}}
+ \left|
+ \frac{g_{X_{\rm dyad}}(s,z;f)}{g_{X_{\rm dyad}}(s,z)}-f(z)
+ \right|=0.
+\end{equation}
+In particular, the answer to Question (1.41) is affirmative.
+\end{theorem}
+
+\section{Idea of the proof}
+
+At hyperbolic radius $R_n=n\log2$ the construction places exactly $2^n$
+equally spaced points.  Thus its counting exponent is the critical exponent
+one.  For $s>1$, the contribution of the $n$th shell has the Abel weight
+$2^{-n(s-1)}$.
+
+A bounded harmonic function is the Poisson integral of an
+$L^\infty(\T)$ boundary function.  The reconstruction statement therefore
+reduces to convergence of a positive boundary kernel.  If the shell were
+continuously distributed in angle, its boundary kernel would be the Poisson
+convolution of $P_z^s$, and approximate-identity convergence would finish the
+argument.  Replacing the circle by $2^n$ roots of unity introduces Fourier
+aliases near the nonzero multiples of $2^n$.  These aliases do not become
+small shell by shell: this is precisely the critical-density difficulty.
+Instead, aliases from different shells are almost orthogonal.  An alias from
+shell $n$ at the frequency scale $2^k$, $k>n$, is suppressed by
+$r_n^{2^k}\le \exp(-c2^{k-n})$.  The normalized Abel coefficients have
+squared sum $O(s-1)$, so the total alias error tends to zero in $L^2(\T)$.
+This $L^2$, hence $L^1$, convergence closes the simultaneous quantifier over
+the entire unit ball of bounded harmonic functions.
+
+\section{Proof}
+
+\subsection{Geometry and absolute convergence}
+
+Points on different shells are at distance at least $|R_n-R_k|$, so adjacent
+shells are separated by $\log2$.  On one shell, adjacent points satisfy
+\[
+ \sinh\frac{d_\D(r_ne^{2\pi i j/M_n},r_ne^{2\pi i(j+1)/M_n})}{2}
+ =\frac{2r_n\sin(\pi/M_n)}{1-r_n^2}
+ =\frac{M_n^2-1}{2M_n}\sin\frac{\pi}{M_n}\ge\frac34.
+\]
+Thus $X_{\rm dyad}$ is uniformly separated.  Disjoint hyperbolic balls of a
+fixed small radius around its points give, by the usual packing argument,
+\[
+ \#(X_{\rm dyad}\cap B_\D(z,R))\le C e^R.
+\]
+The exact count at $R_n$ is $\sum_{k=1}^n2^k=2^{n+1}-2$, proving criticality.
+
+If $f$ is bounded and $z$ is fixed, the triangle inequality gives
+\[
+ \sum_{x\in X_{\rm dyad}\cap\{|x|=r_n\}}
+ e^{-sd_\D(z,x)}|f(x)|
+ \le \|f\|_\infty e^{s d_\D(0,z)},2^{-n(s-1)}.
+\]
+Hence all sums in Theorem~\ref{thm:main} converge absolutely for $s>1$.
+
+\subsection{The shell weights}
+
+Write $\zeta_{n,j}=e^{2\pi i j/M_n}$ and put
+\[
+ a_{n,z}(\zeta)=e^{R_n-d_\D(z,r_n\zeta)}.
+\]
+If $q=|\varphi_z(r\zeta)|$, then
+\[
+ e^{-d_\D(z,r\zeta)}=\frac{1-q}{1+q}
+ =\frac{(1-|z|^2)(1-r^2)}{|1-\overline z r\zeta|^2(1+q)^2}.
+\]
+Since $e^{R_n}=(1+r_n)/(1-r_n)$, it follows that
+\begin{equation}\label{eq:weight-exact}
+ a_{n,z}(\zeta)
+ =\frac{(1-|z|^2)(1+r_n)^2}
+ {|1-\overline z r_n\zeta|^2(1+|\varphi_z(r_n\zeta)|)^2}.
+\end{equation}
+Consequently, uniformly for $z$ in a fixed compact subset of $\D$ and
+$\zeta\in\T$,
+\begin{equation}\label{eq:busemann}
+ a_{n,z}(\zeta)=P_z(\zeta)+O_K(2^{-n}).
+\end{equation}
+The same estimate holds after taking powers $s$ uniformly for
+$1\le s\le 3/2$.
+
+Put $t=2^{1-s}$ and $w_{s,z}=P_z^s$.  Define the true normalized shell
+kernel
+\[
+ F_{n,s,z}(\eta)=\frac1{M_n}\sum_{j=0}^{M_n-1}
+ a_{n,z}(\zeta_{n,j})^s P_{r_n\zeta_{n,j}}(\eta).
+\]
+Then the unnormalized boundary kernel and its mass are
+\begin{equation}\label{eq:boundarykernel}
+ \mathcal K_{s,z}=\sum_{n\ge1}t^nF_{n,s,z},
+ \qquad
+ D_{s,z}=\int_\T\mathcal K_{s,z}\dm
+ =g_{X_{\rm dyad}}(s,z).
+\end{equation}
+
+We next isolate the only nonstandard estimate.
+
+\subsection{A dyadic quadrature lemma}
+
+\begin{lemma}[Almost orthogonality of critical aliases]\label{lem:alias}
+Let $M_n=2^n$, $r_n=(M_n-1)/(M_n+1)$.  Suppose a family
+$w_\lambda\in L^2(\T)$ satisfies, uniformly in $\lambda$,
+\[
+ |\widehat w_\lambda(k)|\le A\rho^{|k|}
+ \quad(k\in\mathbb Z)
+\]
+for some $A<\infty$ and $0<\rho<1$.  Set
+\begin{align*}
+ Q_{n,\lambda}(\eta)
+ &=\frac1{M_n}\sum_{j=0}^{M_n-1}
+ w_\lambda(\zeta_{n,j})P_{r_n\zeta_{n,j}}(\eta),\\
+ C_{n,\lambda}(\eta)
+ &=\int_\T w_\lambda(\zeta)P_{r_n\zeta}(\eta)\dm(\zeta),
+ \qquad E_{n,\lambda}=Q_{n,\lambda}-C_{n,\lambda}.
+\end{align*}
+There are constants $C,c>0$, independent of $n,k,\lambda$, such that
+\[
+ \|E_{n,\lambda}\|_2\le C,
+ \qquad
+ |\langle E_{n,\lambda},E_{k,\lambda}\rangle|
+ \le C e^{-c2^{|n-k|}}\quad(n\ne k).
+\]
+Consequently, uniformly in $\lambda$,
+\begin{equation}\label{eq:abel-alias}
+ \left\|
+ \frac{\sum_{n\ge1}t^nE_{n,\lambda}}{\sum_{n\ge1}t^n}
+ \right\|_2\le C\sqrt{1-t},\qquad \frac12<t<1.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The Fourier expansion of the Poisson kernel and the root-of-unity filter give
+\begin{equation}\label{eq:alias-fourier}
+ \widehat E_{n,\lambda}(k)
+ =r_n^{|k|}\sum_{\ell\ne0}
+ \widehat w_\lambda(k+\ell M_n).
+\end{equation}
+Write $k=aM_n+u$ with $|u|\le M_n/2$.  Exponential decay of
+$\widehat w_\lambda$ shows that the sum in \eqref{eq:alias-fourier} is at
+most
+\[
+ C\bigl(\mathbf1_{a\ne0}\rho^{|u|}+\rho^{M_n-|u|}\bigr).
+\]
+Moreover,
+\[
+ r_n^{M_n}
+ =\left(\frac{1-M_n^{-1}}{1+M_n^{-1}}\right)^{M_n}\le e^{-2}.
+\]
+Summing by the blocks $aM_n+[-M_n/2,M_n/2]$ therefore gives the uniform
+norm bound and, more precisely,
+\begin{align}
+ \|\mathbf1_{\{|k|<M_n/2\}}\widehat E_{n,\lambda}\|_{\ell^2}
+ &\le Ce^{-cM_n},\label{eq:low}\\
+ \|\mathbf1_{\{|k|\ge LM_n\}}\widehat E_{n,\lambda}\|_{\ell^2}
+ &\le Ce^{-cL}\qquad(L\ge1/2).\label{eq:tail}
+\end{align}
+
+Suppose $n<k$.  Split $E_{k,\lambda}$ at frequency $M_k/2$.
+Its low-frequency part is $O(e^{-cM_k})$ by \eqref{eq:low}.  On the
+complement, the $E_{n,\lambda}$ factor is a tail with
+$L=M_k/(2M_n)=2^{k-n-1}$, so \eqref{eq:tail} and Cauchy--Schwarz give
+\[
+ |\langle E_{n,\lambda},E_{k,\lambda}\rangle|
+ \le Ce^{-c2^{k-n}}.
+\]
+Finally, the summability of $e^{-c2^d}$ yields
+\[
+ \left\|\sum_{n\ge1}t^nE_{n,\lambda}\right\|_2^2
+ \le C\sum_{n\ge1}t^{2n}\le\frac{C}{1-t^2}.
+\]
+Since $\sum_{n\ge1}t^n=t/(1-t)$, this is
+\eqref{eq:abel-alias}.
+\end{proof}
+
+\subsection{Convergence of the boundary kernels}
+
+For $z$ in a fixed compact $K$ and $1\le s\le3/2$, the functions
+$w_{s,z}=P_z^s$ extend holomorphically to one common annulus around $\T$
+after choosing the positive branch there.  Their Fourier coefficients
+therefore satisfy the hypothesis of Lemma~\ref{lem:alias} uniformly in
+$(s,z)$.
+
+Let $Q_{n,s,z}$ and $C_{n,s,z}$ be the quantities in that lemma for
+$w_{s,z}$.  From \eqref{eq:busemann}, positivity of Poisson kernels, and
+\[
+ \left\|\frac1{M_n}\sum_{j=0}^{M_n-1}
+ P_{r_n\zeta_{n,j}}\right\|_2^2
+ =1+2\frac{r_n^{2M_n}}{1-r_n^{2M_n}}\le C,
+\]
+we obtain
+\begin{equation}\label{eq:true-discrete}
+ \|F_{n,s,z}-Q_{n,s,z}\|_2\le C_K2^{-n}.
+\end{equation}
+Also $C_{n,s,z}=P_{r_n}*w_{s,z}$, so the Poisson approximate identity gives
+\begin{equation}\label{eq:continuous}
+ \sup_{z\in K,\,1\le s\le3/2}
+ \|C_{n,s,z}-w_{s,z}\|_2\longrightarrow0.
+\end{equation}
+
+Write $A(t)=\sum_{n\ge1}t^n$.  Combining
+\eqref{eq:abel-alias}, \eqref{eq:true-discrete},
+\eqref{eq:continuous}, and the elementary Abelian fact that normalized Abel
+averages preserve a uniform limit, we get
+\begin{equation}\label{eq:unnormalized-limit}
+ \sup_{z\in K}
+ \left\|\frac{\mathcal K_{s,z}}{A(t)}-P_z^s\right\|_2
+ \longrightarrow0\qquad(s\downarrow1).
+\end{equation}
+Taking integrals in \eqref{eq:unnormalized-limit} gives
+\[
+ \frac{D_{s,z}}{A(t)}-\int_\T P_z^s\dm\longrightarrow0
+ \quad\text{uniformly for }z\in K.
+\]
+Since $\int P_z^s\dm\to1$ and $P_z^s\to P_z$ in $L^2$, uniformly on
+compact $z$-sets, \eqref{eq:boundarykernel} and
+\eqref{eq:unnormalized-limit} imply
+\begin{equation}\label{eq:kernel-final}
+ \sup_{z\in K}\left\|\frac{\mathcal K_{s,z}}{D_{s,z}}-P_z\right\|_2
+ \longrightarrow0.
+\end{equation}
+
+Every bounded complex harmonic $f$ has a radial boundary function
+$f^*\in L^\infty(\T)$ with $f=P[f^*]$ \cite[Chapter I]{Duren}.  Tonelli's
+theorem and absolute convergence give
+\[
+ \frac{g_{X_{\rm dyad}}(s,z;f)}{g_{X_{\rm dyad}}(s,z)}-f(z)
+ =\int_\T f^*(\eta)
+ \left(\frac{\mathcal K_{s,z}(\eta)}{D_{s,z}}-P_z(\eta)\right)\dm(\eta).
+\]
+The absolute value is at most $\|f\|_\infty$ times the $L^1$ norm of the
+kernel difference, which is bounded by its $L^2$ norm.  Equation
+\eqref{eq:kernel-final} proves \eqref{eq:strong} and the theorem.
+\qed
+
+\section{Verification and review priorities}
+
+\begin{itemize}
+\item The exact $z=0$ alias Gram matrix is
+\[
+ \langle E_n,E_k\rangle
+ =2\frac{(r_nr_k)^{2^{\max(n,k)}}}
+ {1-(r_nr_k)^{2^{\max(n,k)}}}.
+\]
+The included script evaluates the normalized Gram sum.  The measured error
+divided by $\sqrt{s-1}$ approaches approximately $0.128$, matching
+Lemma~\ref{lem:alias}.
+\item The same script checks \eqref{eq:busemann} over 2048 boundary angles
+for a nonreal base point.  This is a numerical sanity check, not part of the
+proof.
+\item The main human-review priority is the block estimate
+\eqref{eq:low}--\eqref{eq:tail} and its uniformity for $P_z^s$ on compact
+$z$-sets.  A secondary priority is whether the source's informal phrase
+``critical upper density'' is intended in a convention stronger than the
+standard uniform hyperbolic ball-counting bound proved here.  A literal bound
+by the area of every arbitrary compact Borel set cannot hold for any nonempty
+discrete configuration.
+\end{itemize}
+
+\section{Novelty and limitations}
+
+The literature check was bounded as follows.  The run's registry, solution,
+attempt, and proof-gap indexes were searched for arXiv:1806.02306,
+arXiv:2101.09622, and the core deterministic/critical-density phrases.  The
+full 2000--present source corpus was searched for the exact phrase ``critical
+upper density'' and the sharpened question.  Web/arXiv searches used the
+exact question phrase together with ``Patterson--Sullivan'',
+``deterministic configuration'', ``simultaneous interpolation'', and
+$H^\infty$.  They found the two Bufetov--Qiu papers but no later answer or
+matching dyadic construction.  Thus the mathematical confidence is high
+subject to review, while the novelty confidence is moderate rather than
+certified.
+
+The theorem answers the exact $H^\infty$ question, and in fact all bounded
+harmonic functions.  It does not claim simultaneous reconstruction for the
+larger spaces $\mathcal H^2(\D;\mu)$ associated with arbitrary singular
+boundary measures; the $L^2(m)$ alias cancellation used here does not imply
+$L^2(\mu)$ cancellation.
+
+\begin{thebibliography}{9}
+\bibitem{BQ2019}
+A.~I. Bufetov and Y.~Qiu,
+\emph{Patterson--Sullivan measures for point processes and the
+reconstruction of harmonic functions}, arXiv:1806.02306v2 (2019).
+
+\bibitem{BQ2021}
+A.~I. Bufetov and Y.~Qiu,
+\emph{The Patterson--Sullivan Interpolation of Pluriharmonic Functions for
+Determinantal Point Processes on Complex Hyperbolic Spaces},
+arXiv:2101.09622v1 (2021).
+
+\bibitem{Duren}
+P.~L. Duren, \emph{Theory of $H^p$ Spaces}, Academic Press, 1970.
+\end{thebibliography}
+
+\end{document}

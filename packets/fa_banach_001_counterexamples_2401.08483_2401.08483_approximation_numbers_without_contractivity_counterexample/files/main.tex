@@ -1,0 +1,170 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,graphicx,booktabs}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newcommand{\Hh}{\ell_2(\mathbb N)}
+\newcommand{\ak}{a_k}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.6em}
+
+\title{Contractivity Cannot Be Removed from the Approximation-Number Truncation Theorem}
+\author{Run \texttt{fa\_banach\_001}, lane 14}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\textbf{Status.} Candidate counterexample, likely valid, for human review.
+
+\section{Source question}
+
+Deepesh's Theorem~4 states the following. Let $Y$ be a dual space,
+$T\in B(X,Y)$, and $P_n\in B(X)$, $Q_n\in B(Y)$ satisfy
+$\|P_n\|\,\|Q_n\|\leq 1$. If
+$T_n=Q_nTP_n$ converges to $T$ in the weak-star operator topology, then
+$a_k(T_n)\to a_k(T)$ for every $k\in\mathbb N$
+\cite[Theorem~4]{Deepesh}.
+
+Section~4 asks whether this conclusion still holds when the norm restrictions
+on $P_n$ and $Q_n$ are removed
+\cite[Section~4, PDF pp.~13--14]{Deepesh}. The exact source passage spans two
+pages:
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+
+\smallskip
+\includegraphics[width=\textwidth]{figures/open_problem_crop_continuation.png}
+\end{center}
+
+The first sentence of the passage is the target here; the subsequent request
+about other $s$-numbers is a separate research direction.
+
+\section{Definition}
+
+For $S\in B(X,Y)$, the $k$th approximation number is
+\[
+ a_k(S)=\inf\{\|S-F\|:F\in B(X,Y),\ \operatorname{rank}F<k\}.
+\]
+
+\section{Proof intuition}
+
+Strong convergence only tests each fixed vector, so it cannot see a block
+whose location drifts to infinity. We use finite-rank truncations that are
+correct on the first $n$ coordinates, double the next $n$ coordinates, and
+discard the rest. The doubled block moves outward, so the truncations converge
+strongly to the identity. But its dimension grows: for any fixed $k$, every
+rank-less-than-$k$ approximant misses a nonzero direction in that block.
+Along that direction the truncation still has size $2$, forcing the $k$th
+approximation number to remain $2$ rather than converge to the value $1$ for
+the identity.
+
+\section{Counterexample}
+
+Let $H=\Hh$ with standard orthonormal basis $(e_j)_{j\geq1}$, and let $R_m$
+denote the orthogonal projection onto
+$\operatorname{span}\{e_1,\ldots,e_m\}$. For $n\geq1$, set
+\[
+ P_n=R_{2n},\qquad E_n=R_{2n}-R_n,\qquad
+ Q_n=R_n+2E_n,
+\]
+and take $X=Y=H$ and $T=I_H$.
+
+\begin{theorem}\label{thm:main}
+The operators $P_n$ and $Q_n$ have finite rank and both converge strongly to
+$I_H$. Moreover, if $T_n=Q_nTP_n$, then $T_n\to T$ strongly (hence in the
+weak-star operator topology), but for every fixed $k\in\mathbb N$,
+\[
+ a_k(T_n)=2\quad(n\geq k),
+ \qquad\text{whereas}\qquad a_k(T)=1.
+\]
+Consequently the norm restriction in Theorem~4 cannot be removed, even for
+finite-rank truncation factors that themselves converge strongly to the
+identity.
+\end{theorem}
+
+\begin{proof}
+Both $P_n$ and $Q_n$ have range contained in $R_{2n}H$, hence have finite
+rank. Clearly $P_nx\to x$ for every $x=(x_j)\in H$. The three mutually
+orthogonal pieces $R_nH$, $E_nH$, and $(I-R_{2n})H$ show that
+\[
+ (Q_n-I)x=E_nx-(I-R_{2n})x
+\]
+and therefore
+\[
+ \|(Q_n-I)x\|^2
+ =\sum_{j=n+1}^{2n}|x_j|^2+\sum_{j>2n}|x_j|^2
+ =\sum_{j>n}|x_j|^2\longrightarrow0.
+\]
+Thus $Q_n\to I$ strongly. Since $Q_nR_{2n}=Q_n$,
+\[
+ T_n=Q_n I_H P_n=Q_n,
+\]
+so $T_n\to I_H=T$ strongly. Because $H$ is canonically a dual Hilbert space,
+strong convergence implies the weak-star operator convergence required by the
+source theorem. Notice also that
+\[
+ \|P_n\|=1,\qquad \|Q_n\|=2,
+\]
+so the removed product restriction is violated by the fixed factor $2$.
+
+We next compute the approximation numbers directly. The zero operator gives
+$a_k(I_H)\leq1$. Conversely, if $F$ has rank less than $k$, then $\ker F$ is
+nonzero (indeed infinite dimensional). For a unit vector $x\in\ker F$,
+\[
+ \|(I_H-F)x\|=1,
+\]
+so $a_k(I_H)=1$.
+
+Now fix $k$ and take $n\geq k$. Since $Q_n$ acts as $2I$ on the
+$n$-dimensional space $E_nH$, its norm is $2$, and hence $a_k(Q_n)\leq2$.
+For any $F$ of rank less than $k$, the restriction
+$F|_{E_nH}$ has rank less than $k\leq n=\dim(E_nH)$. It therefore has a
+nonzero kernel vector. Choosing a unit vector $x\in E_nH$ with $Fx=0$ gives
+\[
+ \|(Q_n-F)x\|=\|2x\|=2.
+\]
+Thus $\|Q_n-F\|\geq2$ for every admissible $F$, so $a_k(Q_n)=2$. Since
+$T_n=Q_n$, this proves the displayed failure for every fixed $k$.
+\end{proof}
+
+\section{Verification and exact scope}
+
+Every assertion is checked algebraically in the proof. In particular, the
+example is not exploiting an unbounded sequence: $\sup_n\|P_n\|=1$ and
+$\sup_n\|Q_n\|=2$. It also works simultaneously for all fixed $k$, and both
+truncation factors are finite rank and strongly convergent to the identity.
+
+The counterexample answers the literal first question in Section~4. It does
+not address the separate request for two-sided convergence theorems for other
+$s$-numbers. It also does not determine which intermediate hypotheses---for
+example, asymptotic contractivity---might recover the conclusion.
+
+\section{Novelty check}
+
+The bounded search on 9 August 2026 covered the run's registry, solution,
+attempt, and proof-gap indexes; exact searches for arXiv:2401.08483, its title,
+and the sentence about removing the norm restrictions; and close searches for
+approximation-number truncation counterexamples without contractivity. We
+checked both arXiv v2 and the official 2025 journal version, which still prints
+the question as open. No later exact answer or matching counterexample was
+found. This supports, but cannot certify, novelty.
+
+\section{Human-review recommendation}
+
+Accept as a likely valid negative answer after checking that ``the norm
+restrictions on $P_n$ and $Q_n$ are removed'' is intended literally relative
+to Theorem~4. The finite-rank, strong-convergence construction also satisfies
+the natural truncation conditions suggested by the source's motivation.
+
+\begin{thebibliography}{9}
+\bibitem{Deepesh}
+K. P. Deepesh,
+\emph{Approximation results on $s$-numbers of operators},
+arXiv:2401.08483v2 (2024); published in \emph{Palestine Journal of
+Mathematics} \textbf{14}(3) (2025), 308--318,
+\url{https://arxiv.org/abs/2401.08483}.
+\end{thebibliography}
+
+\end{document}

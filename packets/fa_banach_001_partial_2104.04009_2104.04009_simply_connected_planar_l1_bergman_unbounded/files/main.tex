@@ -1,0 +1,280 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=0.9in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+\newcommand{\D}{\mathbb D}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Berg}{\mathcal B}
+
+\title{Boundary-Free Endpoint Unboundedness on Simply Connected Planar Domains}
+\author{Automatic math-discovery packet for arXiv:2104.04009}
+\date{August 9, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{black}{gray!10}{\parbox{0.91\textwidth}{
+\textbf{Classification: candidate complete theorem for the simply connected
+planar case; partial toward the source question.}
+Every simply connected planar domain of finite area has an $L^1$-unbounded
+Bergman projection.  No boundary regularity, Jordan hypothesis, or boundary
+accessibility assumption is used.
+}}
+\end{center}
+
+\section*{Source question}
+
+The source is G.~M.~Dall'Ara, \emph{Around $L^1$ (un)boundedness of Bergman
+and Szeg\H{o} projections}, arXiv:2104.04009, published in the
+\emph{Journal of Functional Analysis} 283 (2022), Paper No.~109550.
+It proves that the Bergman projection of every bounded smoothly bounded
+domain in $\C^n$ is unbounded on $L^1$, and then asks whether the same is true
+for every bounded domain in $\C^n$.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.94\textwidth]{figures/open_problem_crop.png}
+  \caption{The theorem and open question on page 2 of the source PDF.}
+\end{figure}
+
+Here area measure is unnormalized Lebesgue measure $dA$, and
+$\Berg_\Omega$ denotes the $L^2(\Omega)$ Bergman projection.  Boundedness on
+$L^1(\Omega)$ means that the restriction to
+$L^1(\Omega)\cap L^2(\Omega)$ admits a bounded extension to $L^1(\Omega)$.
+
+\section*{Main result}
+
+\begin{theorem}[finite-area simply connected domains]
+\label{thm:main}
+Let $\Omega\subset\C$ be a simply connected domain with
+$0<A(\Omega)<\infty$.  Then $\Berg_\Omega$ is unbounded on
+$L^1(\Omega)$.
+\end{theorem}
+
+\begin{corollary}
+Every bounded simply connected domain in $\C$, with completely arbitrary
+boundary, has an $L^1$-unbounded Bergman projection.
+\end{corollary}
+
+The finite-area formulation is slightly stronger than the bounded-domain
+subcase of the source question.  It includes non-Jordan domains, domains with
+fractal boundary, and domains with no rectifiable boundary arc.
+
+\section*{Proof intuition}
+
+Let $\psi:\D\to\Omega$ be a Riemann map.  Conformal change of variables
+turns $\Berg_\Omega$ into the ordinary disk Bergman projection acting on
+$L^1(\D,w\,dA)$, where $w=|\psi'|$.  Endpoint boundedness would force every
+weighted kernel column to satisfy
+\[
+  \int_{\D}\frac{w(z)}{\pi|1-z\overline a|^2}\,dA(z)
+  \le Cw(a).                                             \tag{1}
+\]
+
+There is a two-step feedback contradiction.  First, the disk kernel is
+bounded below everywhere, so (1) forces $w$ to have a positive global lower
+bound.  Feeding that lower bound back into (1) and integrating the unweighted
+kernel exactly forces
+\[
+  w(a)\gtrsim \frac{-\log(1-|a|^2)}{|a|^2},
+\]
+uniformly in the argument of $a$.  Thus $|\psi'|$ tends uniformly to infinity
+on concentric circles.  But $\psi'$ never vanishes, so $1/\psi'$ is analytic;
+the maximum principle would then force $1/\psi'$ to vanish identically.
+
+\section*{Conformal transfer}
+
+The disk Bergman kernel is
+\[
+  K_{\D}(z,u)=\frac{1}{\pi(1-z\overline u)^2}.
+\]
+Put $w=|\psi'|$ and define
+\[
+  Uf=(f\circ\psi)\psi'.
+\]
+The change-of-variables formula gives
+\[
+  \|Uf\|_{L^2(\D)}=\|f\|_{L^2(\Omega)},
+  \qquad
+  \|Uf\|_{L^1(\D,w\,dA)}=\|f\|_{L^1(\Omega)}.          \tag{2}
+\]
+The transformation rule for Bergman kernels gives, on $L^2$,
+\[
+  U\Berg_\Omega U^{-1}=\Berg_{\D}.                     \tag{3}
+\]
+Hence $L^1$-boundedness of $\Berg_\Omega$ would imply boundedness of
+$\Berg_{\D}$ on $L^1(\D,w\,dA)$.
+
+Since $\psi$ is injective, the area formula and Cauchy--Schwarz give
+\[
+  \int_{\D}|\psi'(z)|^2\,dA(z)=A(\Omega)<\infty,
+  \qquad
+  0<\int_{\D}w\,dA<\infty.                             \tag{4}
+\]
+
+\section*{The weighted endpoint obstruction}
+
+\begin{lemma}[necessary column estimate]
+\label{lem:column}
+Let $w$ be positive and continuous on $\D$.  If $\Berg_{\D}$ is bounded on
+$L^1(\D,w\,dA)$ with norm at most $C$, then for every $a\in\D$,
+\[
+  I_w(a):=\int_{\D}|K_{\D}(z,a)|w(z)\,dA(z)\le Cw(a).  \tag{5}
+\]
+\end{lemma}
+
+\begin{proof}
+For sufficiently small $\varepsilon>0$, let
+\[
+  h_\varepsilon(u)=\frac{\mathbf 1_{B(a,\varepsilon)}(u)}
+  {A(B(a,\varepsilon))}.
+\]
+Then $h_\varepsilon\in L^2(\D)\cap L^1(\D,w\,dA)$,
+\[
+  \|h_\varepsilon\|_{L^1(w)}
+  =\frac{1}{A(B(a,\varepsilon))}
+    \int_{B(a,\varepsilon)}w(u)\,dA(u)\longrightarrow w(a),
+\]
+and $\Berg_{\D}h_\varepsilon(z)\to K_{\D}(z,a)$ pointwise.  The operator
+bound and Fatou's lemma yield (5).
+\end{proof}
+
+\begin{theorem}[zero-free analytic weights never work]
+\label{thm:weighted}
+Let $g$ be a zero-free analytic function on $\D$ such that
+\[
+  0<\int_{\D}|g|\,dA<\infty.
+\]
+Then $\Berg_{\D}$ is unbounded on $L^1(\D,|g|\,dA)$.
+\end{theorem}
+
+\begin{proof}
+Suppose the contrary, write $w=|g|$, and let $C$ be an operator bound.
+Set
+\[
+  M=\int_{\D}w\,dA>0.
+\]
+Because $|1-z\overline a|\le2$ for $z,a\in\D$, we have
+\[
+  I_w(a)\ge \frac{M}{4\pi}.
+\]
+Combining this with (5) gives the uniform positive lower bound
+\[
+  w(a)\ge m:=\frac{M}{4\pi C}>0
+  \qquad(a\in\D).                                      \tag{6}
+\]
+
+Use (6) once more inside the column integral.  For $a\ne0$, orthogonality of
+the monomials (or direct angular integration) gives
+\begin{align*}
+ \frac1\pi\int_{\D}\frac{dA(z)}{|1-z\overline a|^2}
+ &=\sum_{n=0}^{\infty}\frac{|a|^{2n}}{n+1}\\
+ &=\frac{-\log(1-|a|^2)}{|a|^2}.                       \tag{7}
+\end{align*}
+Therefore (5)--(7) imply
+\[
+  w(a)\ge \frac{m}{C},
+  \frac{-\log(1-|a|^2)}{|a|^2}.                        \tag{8}
+\]
+The right side tends to infinity with $|a|$, independently of the argument
+of $a$.
+
+Since $g$ has no zeros, $1/g$ is analytic on $\D$.  From (8), for
+$0<r<1$,
+\[
+  \max_{|z|=r}\left|\frac1{g(z)}\right|
+  \le \frac{C}{m},
+       \frac{r^2}{-\log(1-r^2)}\longrightarrow0.
+\]
+The maximum principle now gives
+\[
+  \left|\frac1{g(0)}\right|
+  \le \max_{|z|=r}\left|\frac1{g(z)}\right|
+  \longrightarrow0,
+\]
+which is impossible.  This proves the theorem.
+\end{proof}
+
+\section*{Proof of the main theorem}
+
+\begin{proof}[Proof of Theorem \ref{thm:main}]
+Let $\psi:\D\to\Omega$ be a Riemann map.  Its derivative is zero-free,
+and (4) shows that $|\psi'|$ is integrable.  If $\Berg_\Omega$ were bounded
+on $L^1(\Omega)$, (2)--(3) would make $\Berg_{\D}$ bounded on
+$L^1(\D,|\psi'|dA)$, contradicting Theorem \ref{thm:weighted}.
+\end{proof}
+
+\section*{Hostile verification audit}
+
+\begin{center}
+\begin{tabular}{p{0.25\textwidth}p{0.64\textwidth}}
+\toprule
+Potential failure & Resolution \\
+\midrule
+Wrong conformal weight & The multiplier $\psi'$ in $U$ cancels one of the
+two Jacobian factors, leaving exactly $|\psi'|$ in the $L^1$ norm. \\
+Weight not integrable & Finite area gives $\psi'\in A^2(\D)$, hence
+$\psi'\in A^1(\D)$ by Cauchy--Schwarz. \\
+Illegitimate point mass & Lemma \ref{lem:column} uses normalized indicators
+in $L^1(w)\cap L^2$, kernel continuity, and Fatou's lemma. \\
+Lower-bound direction reversed & The global estimate
+$|K_{\D}(z,a)|\ge1/(4\pi)$ combines with $I_w(a)\le Cw(a)$ to give
+$w(a)\ge M/(4\pi C)$. \\
+Incorrect kernel integral & Expanding both geometric series leaves only
+equal powers after angular integration and yields exactly the series in (7). \\
+Growth only almost everywhere & The column estimate holds at every interior
+point because $w$ is continuous; (8) is uniform on each circle. \\
+Reciprocal may be singular & A conformal map has nonvanishing derivative, so
+$1/\psi'$ is analytic throughout $\D$. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section*{Scope, search status, and novelty caution}
+
+This completely removes boundary assumptions in the simply connected planar
+finite-area case, but it does not answer the source question for multiply
+connected planar domains or domains in $\C^n$ with $n\ge2$.  The earlier
+rectifiable-boundary-arc version of this packet is strictly subsumed by
+Theorem \ref{thm:main}.
+
+Bounded searches through August 9, 2026 included the exact source question,
+the source article and its citations, exact phrases combining simply
+connected planar domains with strong $L^1$ Bergman boundedness, and recent
+weighted and weak-type work.  No prior statement of Theorem \ref{thm:main}
+or Theorem \ref{thm:weighted} was located.  This is a bounded novelty check,
+not a claim of priority.  The recent paper \cite{GSW} treats weak-type
+endpoint estimates on simply connected planar domains but does not state the
+strong $L^1$ theorem proved here.
+
+\section*{Human-review recommendation}
+
+Review as a likely valid, high-value partial result.  The proof is short and
+self-contained after standard conformal covariance.  The highest-value checks
+are the single-factor weight in (2), the $L^1$ kernel-column test, and the
+maximum-principle contradiction following the exact integral (7).
+
+\begin{thebibliography}{9}
+
+\bibitem{DA}
+G.~M.~Dall'Ara,
+\emph{Around $L^1$ (un)boundedness of Bergman and Szeg\H{o} projections},
+J. Funct. Anal. 283 (2022), Paper No.~109550; arXiv:2104.04009.
+
+\bibitem{GSW}
+A.~W.~Green, C.~B.~Stockdale, B.~Sweeting, and N.~A.~Wagner,
+\emph{Weak-type estimates for the Bergman projection on planar domains},
+arXiv:2607.09642v1 (2026).
+
+\end{thebibliography}
+
+\end{document}

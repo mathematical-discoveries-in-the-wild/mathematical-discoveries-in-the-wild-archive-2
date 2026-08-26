@@ -1,0 +1,192 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=teal!70!black,citecolor=teal!70!black,urlcolor=teal!70!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Besov}[1]{B^{#1}_{\infty,\infty}}
+\newcommand{\Diff}{\Delta}
+
+\title{Power Majorants in the Zygmund Whitney Problem:\\
+H\"older Cases and Collapse to One Endpoint}
+\author{Run \texttt{fa\_banach\_001}, \texttt{agent\_lane\_14}}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status and source question}
+
+\textbf{Status:} candidate substantial structural partial result, likely
+valid.  Shvartsman~\cite{Shvartsman2009} defines
+$C^k\Lambda^m_\omega(\R^n)$ by bounded derivatives through order $k$ and
+the estimate
+\[
+ \|\Diff_h^mD^\alpha f\|_\infty\leq C\omega(|h|),
+ \qquad |\alpha|=k.
+\]
+On source PDF page~3, Problem~1.2 asks whether these spaces possess the
+finiteness property when $m>2$, or when $m=2$ and $k>0$.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The result below treats all power majorants $\omega(t)=t^s$ with $0<s<m$.
+It settles every noninteger power and shows that every integer power is not a
+new higher-order problem: it is exactly the classical $m=2$, $\omega(t)=t$
+endpoint with a shifted derivative index.
+
+\section*{Proof intuition}
+
+For smoothness $s$ strictly below the chosen difference order $m$, the
+quantity $\sup_h |h|^{-s}\|\Diff_h^m g\|_\infty$ is precisely the usual
+finite-difference norm of the H\"older--Zygmund/Besov space
+$\Besov{s}$.  Taking $k$ bounded classical derivatives simply shifts Besov
+smoothness from $s$ to $k+s$.  If $s$ is nonintegral this is an ordinary
+H\"older space, where the finiteness theorem is known.  If $s=r$ is integral,
+the same space can instead be written using $k+r-1$ derivatives followed by
+one Zygmund derivative; this is $C^{k+r-1}\Lambda_t^2$.  The unresolved part
+is therefore an endpoint selection problem, not a proliferation of distinct
+higher-difference problems.
+
+\section*{Structural partial theorem}
+
+We use inhomogeneous bounded-function norms throughout.
+
+\begin{theorem}[Power-scale classification]\label{thm:classification}
+Let $n\geq1$, $k\geq0$, $m\geq2$, and $0<s<m$.  Put
+$\omega_s(t)=t^s$.  Then
+\begin{equation}\label{eq:main-equivalence}
+ C^k\Lambda^m_{\omega_s}(\R^n)=\Besov{k+s}(\R^n)
+\end{equation}
+with equivalent norms, with constants depending only on $n,k,m,s$.
+
+If $s=a+\theta$ with $a\in\{0,\ldots,m-1\}$ and $0<\theta<1$, then
+\begin{equation}\label{eq:holder}
+ C^k\Lambda^m_{t^s}(\R^n)=C^{k+a,\theta}(\R^n),
+\end{equation}
+again with equivalent norms.  Consequently this space has the finiteness
+property.
+
+If $s=r\in\{1,\ldots,m-1\}$ is integral, then
+\begin{equation}\label{eq:endpoint}
+ C^k\Lambda^m_{t^r}(\R^n)
+ =C^{k+r-1}\Lambda^2_t(\R^n)
+\end{equation}
+with equivalent norms.  Hence every integer power-majorant instance of
+Problem~1.2 is equivalent to the classical Zygmund endpoint family.
+\end{theorem}
+
+\begin{proof}
+The standard finite-difference characterization of inhomogeneous Besov
+spaces~\cite[finite-difference and lifting theorems]{Triebel1983} states that,
+whenever $0<s<m$,
+\begin{equation}\label{eq:difference}
+ \|g\|_{\Besov{s}}
+ \asymp \|g\|_\infty+
+ \sup_{0<|h|\leq1}\frac{\|\Diff_h^m g\|_\infty}{|h|^s}.
+\end{equation}
+The restriction $|h|\leq1$ is immaterial for the source norm, since
+$\|\Diff_h^m g\|_\infty\leq2^m\|g\|_\infty$ for every $h$.
+
+The same theory gives the derivative-lifting equivalence
+\begin{equation}\label{eq:lifting}
+ \|f\|_{\Besov{k+s}}
+ \asymp
+ \sum_{|\beta|\leq k}\|D^\beta f\|_\infty
+ +\sum_{|\alpha|=k}\|D^\alpha f\|_{\Besov{s}}
+\end{equation}
+on $C_b^k(\R^n)$.  Substitution of \eqref{eq:difference} into
+\eqref{eq:lifting} is exactly the norm in the definition of
+$C^k\Lambda^m_{t^s}$, proving \eqref{eq:main-equivalence}.
+
+For nonintegral $s=a+\theta$, the classical identification
+$\Besov{k+a+\theta}=C^{k+a,\theta}$ proves \eqref{eq:holder}.  The finiteness
+property for bounded $C^{q,\theta}$ spaces is part of the Whitney finiteness
+theory quoted in the source introduction and developed in
+Fefferman's work~\cite{Fefferman2005,Fefferman2006}.  Equivalent norms
+transfer both the local hypothesis and the global conclusion, so the
+finiteness property transfers to $C^k\Lambda^m_{t^s}$.
+
+Finally let $s=r$ be integral and put $q=k+r-1$.  Applying
+\eqref{eq:main-equivalence} first to $(k,m,s)=(k,m,r)$ and then to
+$(k,m,s)=(q,2,1)$ gives
+\[
+ C^k\Lambda^m_{t^r}=\Besov{k+r}
+ =\Besov{q+1}=C^q\Lambda^2_t,
+\]
+which is \eqref{eq:endpoint}.
+\end{proof}
+
+\begin{corollary}[The named $Z_m$ scale]
+For every $m\geq2$,
+\[
+ Z_m(\R^n):=\Lambda^m_{t^{m-1}}(\R^n)
+ =C^{m-2}\Lambda^2_t(\R^n)
+\]
+with equivalent norms.  Thus a positive answer for the source's $m=2$
+endpoint for every derivative index would settle all of its named spaces
+$Z_m$.
+\end{corollary}
+
+\section*{Verification, limitations, and upgrade obstruction}
+
+The proof uses the finite-difference characterization only in its valid
+strict range $m>s$.  At an integer $s$ it does \emph{not} identify the space
+with a Lipschitz class; instead it compares two difference descriptions of
+the same endpoint Besov space, which is why \eqref{eq:endpoint} is safe.
+
+This does not settle arbitrary majorants, the borderline case $s=m$, or the
+integer endpoint $C^q\Lambda_t^2$ for $q>0$.  A direct check of the later sharp
+Lipschitz-selection theorem found that its range must lie in a Banach space,
+whereas the source's range is the nonlinear hyperbolic jet space
+$(\mathcal P_L\times\mathcal K,d_\omega)$.  A Kuratowski embedding does not
+preserve convexity of the polynomial fibers.  A second endpoint route would
+be a uniformly bounded-cardinality molecular decomposition of finite sums of
+point evaluations in a $B^{-q-1}_{1,1}$ predual; that decomposition remains
+unproved here.
+
+Exact-title, arXiv-id, exact-problem-phrase, generalized-Zygmund, and
+hyperbolic-jet-space searches through 11 August 2026 found no later full
+resolution.  The equivalences used above are classical, so novelty confidence
+for the structural application is low.
+
+\section*{Human-review recommendation}
+
+Verify the inhomogeneous bounded-function convention in
+\eqref{eq:lifting}, and confirm that the selected $C^{q,\theta}$ finiteness
+formulation has constants independent of the closed trace set.  After that,
+the parameter shift in \eqref{eq:endpoint} is formal.  For a full upgrade,
+focus on the nonlinear-bundle finiteness lemma or the endpoint molecular
+decomposition, not on additional difference-order manipulations.
+
+\begin{thebibliography}{9}
+\bibitem{Shvartsman2009}
+P.~Shvartsman,
+\emph{The Whitney extension problem for Zygmund spaces and Lipschitz
+selections in hyperbolic jet-spaces}, arXiv:0905.2602 (2009).
+
+\bibitem{Triebel1983}
+H.~Triebel,
+\emph{Theory of Function Spaces}, Monographs in Mathematics 78,
+Birkh\"auser, 1983.
+
+\bibitem{Fefferman2005}
+C.~Fefferman,
+\emph{A sharp form of Whitney's extension theorem},
+Ann. of Math. (2) 161 (2005), 509--577.
+
+\bibitem{Fefferman2006}
+C.~Fefferman,
+\emph{Whitney's extension problem for $C^m$},
+Ann. of Math. (2) 164 (2006), 313--359.
+\end{thebibliography}
+
+\end{document}
+

@@ -1,0 +1,156 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\gauss}{\gamma_1}
+
+\title{A Scaling Counterexample to the\\Functional Gardner--Zvavitch Conjecture}
+\author{Automated Mathematics Run \texttt{fa\_banach\_001}\\Lane 11, agent \texttt{agent\_lane\_11}}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{black}{gray!8}{\parbox{0.88\textwidth}{\textbf{Status.}
+Claimed full counterexample, likely valid, pending expert review.  The conjecture fails already for
+$n=p=1$, $t=1/2$, standard Gaussian measure, and smooth positive even strictly log-concave functions.}}
+\end{center}
+
+\section{Source question}
+
+Roysdon and Xing formulate Conjecture~6.2 in Section~6, page~29 of the arXiv PDF
+\cite{RoysdonXing}.  It asks whether an absolute constant $C\geq 1$ makes the following implication valid.
+For $p\in[1,\infty)$, centered integrable functions $f,g:\R^n\to\R_+$, a measure $\mu$,
+$t\in(0,1)$, and measurable $h:\R^n\to\R_+$, assume for every $x,y\in\R^n$ and
+$0<\lambda<1$ that
+\begin{align*}
+h\bigl(&(1-t)^{1/p}(1-\lambda)^{(p-1)/p}x
++ t^{1/p}\lambda^{(p-1)/p}y\bigr)\\
+&\geq f(x)^{(1-t)^{1/p}(1-\lambda)^{(p-1)/p}}
+g(y)^{t^{1/p}\lambda^{(p-1)/p}}.
+\end{align*}
+The proposed conclusion is
+\begin{equation}\label{eq:conclusion}
+\int h\,d\mu\geq \frac{1}{C^p}
+\left[(1-t)\left(\int f\,d\mu\right)^{p/n}
++t\left(\int g\,d\mu\right)^{p/n}\right]^{n/p}.
+\end{equation}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{Conjecture~6.2 as printed in the source paper \cite[p.~29]{RoysdonXing}.}
+\end{figure}
+
+\section{Proof intuition}
+
+At $p=1$ and $t=1/2$, the premise is a geometric-mean inequality.  Consequently it is
+unchanged by the reciprocal amplitude rescaling
+\[
+(f,g)\longmapsto (Mf,M^{-1}g).
+\]
+The proposed conclusion instead contains an arithmetic mean of the two integrals, which grows
+like $M+M^{-1}$.  Starting from one centered log-concave function therefore produces an
+unbounded family of violations.  A Gaussian profile makes every hypothesis and every integral explicit.
+
+\section{Counterexample}
+
+\begin{theorem}\label{thm:counterexample}
+There is no absolute constant $C$ satisfying Conjecture~6.2 as stated.  This remains false if
+$\mu$ is the standard Gaussian measure on $\R$ and $f,g,h$ are required to be smooth, strictly
+positive, even, strictly log-concave, Lebesgue-integrable, and maximized at the origin.
+\end{theorem}
+
+\begin{proof}
+Fix $n=p=1$ and $t=1/2$, and let $\mu=\gauss$ be standard Gaussian measure.  For an
+amplitude $M>0$, define
+\[
+f_M(x)=M e^{-x^2},\qquad g_M(x)=M^{-1}e^{-x^2},\qquad h(x)=e^{-x^2}.
+\]
+These functions have all of the regularity and shape properties asserted in the theorem.  In
+particular they are even, so their barycenters vanish, and each attains its maximum at the origin.
+Thus the example is centered under both standard readings relevant to the source statement.
+
+For $p=1$, the factors containing $\lambda^{(p-1)/p}$ and
+$(1-\lambda)^{(p-1)/p}$ equal one.  At $t=1/2$ the pointwise hypothesis becomes
+\[
+h\left(\frac{x+y}{2}\right)\geq \sqrt{f_M(x)g_M(y)}.
+\]
+For every $x,y\in\R$,
+\begin{align*}
+h\left(\frac{x+y}{2}\right)
+&=\exp\left(-\frac{(x+y)^2}{4}\right),\\
+\sqrt{f_M(x)g_M(y)}
+&=\exp\left(-\frac{x^2+y^2}{2}\right).
+\end{align*}
+The desired comparison follows from the exact identity
+\[
+\frac{x^2+y^2}{2}-\frac{(x+y)^2}{4}=\frac{(x-y)^2}{4}\geq0.
+\]
+It holds for every $0<\lambda<1$, since $\lambda$ has disappeared from the $p=1$ specialization.
+
+Set
+\[
+A:=\int_{\R}e^{-x^2}\,d\gauss(x)=\frac{1}{\sqrt3}>0.
+\]
+Then
+\[
+\int h\,d\gauss=A,\qquad
+\int f_M\,d\gauss=MA,\qquad
+\int g_M\,d\gauss=M^{-1}A.
+\]
+If \eqref{eq:conclusion} held with an absolute constant $C$, it would imply
+\[
+A\geq\frac{1}{C}\left(\frac{MA}{2}+\frac{M^{-1}A}{2}\right),
+\qquad\text{hence}\qquad
+1\geq\frac{M+M^{-1}}{2C}.
+\]
+For any fixed $C$, this is false when $M$ is sufficiently large (for example, $M>2C$).
+Therefore no such absolute constant exists.
+\end{proof}
+
+\section{Structural diagnosis and scope}
+
+The obstruction does not use singular measures, rough functions, lack of symmetry, or tail pathologies.
+It is the mismatch between two homogeneities: the premise is invariant under reciprocal rescaling at
+$p=1,t=1/2$, while the claimed conclusion is not.  The source's nearby Theorem~6.3 assumes
+$\lVert f\rVert_\infty=\lVert g\rVert_\infty$, and its later functional estimate normalizes each
+integral by the corresponding supremum.  Such hypotheses eliminate this scaling family.
+
+This packet disproves only Conjecture~6.2 exactly as printed.  It does not disprove versions imposing
+equal heights, equal masses, probability normalization, or scale-invariant normalized integrals.  It
+also says nothing negative about the geometric Gardner--Zvavitch conjecture for convex bodies.
+
+\section{Verification and novelty check}
+
+The accompanying verifier reduces the pointwise inequality to $(x-y)^2/4\geq0$, evaluates the
+Gaussian integral exactly as $1/\sqrt3$, and checks explicit violating amplitudes.  These symbolic
+checks are confirmations rather than ingredients of the proof.
+
+A bounded literature search on 9 August 2026 used the exact conjecture name and wording,
+arXiv:2004.09737, the Roysdon--Xing title and visible citation neighborhood, the corresponding 2020
+dissertation statement, and later functional Gardner--Zvavitch work.  It found the same conjecture
+statement and normalized or geometric variants, but no matching reciprocal-scaling counterexample.
+Novelty is therefore plausible, not certified.
+
+The main reviewer priority is semantic: confirm that the source's word ``centered'' carries no hidden
+amplitude normalization.  The printed conjecture states none, and the example is centered both by
+barycenter and by location of its maximum.
+
+\begin{thebibliography}{9}
+\bibitem{RoysdonXing}
+M. Roysdon and S. Xing,
+\emph{On $L_p$-Brunn--Minkowski type and $L_p$-isoperimetric type inequalities for measures},
+Trans. Amer. Math. Soc. \textbf{374} (2021), 5003--5036;
+arXiv:2004.09737v2; doi:10.1090/tran/8356.
+\end{thebibliography}
+
+\end{document}

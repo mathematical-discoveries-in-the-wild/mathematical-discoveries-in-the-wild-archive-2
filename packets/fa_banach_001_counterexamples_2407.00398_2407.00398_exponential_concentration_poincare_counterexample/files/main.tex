@@ -1,0 +1,277 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\V}{\mathcal V}
+\newcommand{\sech}{\operatorname{sech}}
+\newcommand{\supp}{\operatorname{supp}}
+
+\title{Exponential STFT concentration does not force a Poincar\'e inequality}
+\author{Run \texttt{fa\_banach\_001}, agent lane 10}
+\date{2026-08-11}
+
+\begin{document}
+\maketitle
+
+\section*{Source and conjecture}
+
+The source is Martin Rathmair, \emph{Stable STFT phase retrieval and
+Poincar\'e inequalities} \cite{rathmair}.  It is available as
+\href{https://arxiv.org/abs/2407.00398}{arXiv:2407.00398}.
+Its short-time Fourier transform convention is
+\[
+ \V_gf(x,\xi)=\int_{\R}f(t)\overline{g(t-x)}e^{-2\pi i\xi t}\,dt.
+\]
+Conjecture 1.18 on page 7 fixes
+\[
+ g(t)=e^{t-e^t},\qquad
+ \gamma(x,\xi)=e^{-a|x|-b|\xi|}\quad(a,b>0),
+\]
+and asks whether
+\[
+ \exists\delta>0:\quad |\V_gf(z)|e^{\delta|z|}\in L^\infty(\R^2)
+ \quad\Longrightarrow\quad
+ C_P\!\left((|\V_gf|^2*\gamma)^2\right)<\infty.
+\]
+Here \(C_P(w)\) is the least constant in
+\[
+ \inf_{c\in\mathbb C}\int_{\R^2}|u-c|^2w
+ \le C_P(w)\int_{\R^2}|\nabla u|^2w,
+ \qquad u\in C_b^\infty(\R^2).
+\]
+
+\begin{center}
+\includegraphics[width=0.96\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Proof intuition}
+
+Strict positivity removes literally disconnected supports, but it does not
+remove arbitrarily thin bottlenecks.  The ambiguity function
+\(A=\V_gg\) is exponentially localized.  We place copies of \(g\) at the
+lacunary positions \(R_n=L2^n\), with coefficients \(e^{-\kappa R_n}\).
+Their exponential decay is enough to preserve the hypothesis of the
+conjecture.  On the other hand, the smoothed spectrogram has a fixed-size
+island near every \(R_n\), while its value halfway from \(R_{n-1}\) to \(R_n\)
+has an additional exponentially small factor.  Step functions changing value
+at those midpoints have non-negligible variance on the \(n\)-th island and
+vanishingly smaller Dirichlet energy in the bottleneck.  Hence no uniform
+Poincar\'e constant exists.
+
+\section*{Counterexample}
+
+Write \(T_Rh(t)=h(t-R)\) and \(A=\V_gg\).  The source computes
+\begin{equation}\label{eq:Aexact}
+ |A(x,\xi)|^2=\frac1{16}\sech^4(x/2)
+ |\Gamma(2-2\pi i\xi)|^2.
+\end{equation}
+Put \(H(\xi)=|\Gamma(2-2\pi i\xi)|\).  In particular,
+\begin{equation}\label{eq:Abound}
+ |A(x,\xi)|\le C e^{-|x|}H(\xi),
+ \qquad
+ \sup_{\xi\in\R}e^{d|\xi|}H(\xi)<\infty\quad(0<d<\pi^2).
+\end{equation}
+The second assertion also follows immediately from the standard Gamma-function
+identity used in the source.
+
+\begin{theorem}\label{thm:counterexample}
+For every \(a,b>0\), there is a nonzero \(f\in L^2(\R)\) such that
+\[
+ |\V_gf(z)|e^{\delta|z|}\in L^\infty(\R^2)
+\]
+for some \(\delta>0\), but, with
+\(\gamma(x,\xi)=e^{-a|x|-b|\xi|}\) and
+\(w=(|\V_gf|^2*\gamma)^2\), one has \(C_P(w)=\infty\).
+Consequently Conjecture 1.18 is false for every parameter pair \(a,b>0\).
+\end{theorem}
+
+\begin{proof}
+Fix \(r\in(0,2)\), \(s\in(0,\min\{a,r\})\), and
+\begin{equation}\label{eq:kappachoice}
+ 0<\kappa<s/4.
+\end{equation}
+For a constant \(L>0\), to be chosen sufficiently large, set
+\[
+ R_n=L2^n,\qquad c_n=e^{-\kappa R_n},\qquad
+ f=\sum_{n=1}^\infty c_nT_{R_n}g.
+\]
+Since \(\sum_nc_n<\infty\), this series converges in \(L^2(\R)\).
+STFT covariance gives
+\begin{equation}\label{eq:Fsum}
+ F(x,\xi):=\V_gf(x,\xi)
+ =\sum_{n=1}^\infty c_ne^{-2\pi i\xi R_n}A(x-R_n,\xi).
+\end{equation}
+
+\paragraph{The concentration hypothesis holds.}
+By \eqref{eq:Abound},
+\[
+ |F(x,\xi)|\le CH(\xi)S(x),\qquad
+ S(x):=\sum_nc_ne^{-|x-R_n|}.
+\]
+If \(0<\delta<\min\{\kappa,1,\pi^2\}\), then
+\[
+ e^{\delta|x|}S(x)
+ \le\sum_nc_ne^{\delta R_n}e^{-(1-\delta)|x-R_n|}
+ \le\sum_ne^{-(\kappa-\delta)R_n}<\infty.
+\]
+Together with \eqref{eq:Abound} and
+\(e^{\delta|(x,\xi)|}\le e^{\delta|x|}e^{\delta|\xi|}\), this proves
+
+\[
+ |F(z)|e^{\delta|z|}\in L^\infty(\R^2).
+\]
+
+\paragraph{An upper bound in the bottlenecks.}
+The centers \(R_n\) are uniformly separated.  Weighted Cauchy--Schwarz gives
+\begin{align}
+ S(x)^2
+ &\le
+ \left(\sum_nc_n^2e^{-r|x-R_n|}\right)
+ \left(\sum_ne^{-(2-r)|x-R_n|}\right)\notag\\
+ &\le C_r\sum_nc_n^2e^{-r|x-R_n|}.\label{eq:Ssquare}
+\end{align}
+Let
+\[
+ q=|F|^2*\gamma,\qquad w=q^2.
+\]
+Convolving \eqref{eq:Ssquare} separately in \(x\) and \(\xi\), and using
+\[
+ e^{-r|\cdot|}*e^{-a|\cdot|}\le C_{r,a,s}e^{-s|\cdot|},
+\]
+we obtain
+\begin{equation}\label{eq:qbound}
+ q(x,\xi)\le C B(\xi)P(x),\qquad
+ B=H^2*e^{-b|\cdot|}\in L^2(\R),\quad
+ P(x)=\sum_nc_n^2e^{-s|x-R_n|}.
+\end{equation}
+The \(L^2\)-claim for \(B\) follows from the exponential decay of \(H\) and
+Young's inequality.
+
+For \(n\ge2\), let
+\[
+ M_n=\frac{R_{n-1}+R_n}{2}=\frac32R_{n-1},\qquad
+ I_n=[M_n-1,M_n+1].
+\]
+An elementary comparison of the terms in \(P\) shows that, uniformly for
+\(x\in I_n\),
+\begin{equation}\label{eq:midpoint}
+ P(x)\le Cc_n^2e^{-\eta R_{n-1}},\qquad
+ \eta:=s/2-2\kappa>0.
+\end{equation}
+Indeed, among \(j<n\) the largest term is \(j=n-1\), because
+\(s-2\kappa>0\), and
+\[
+ \frac{c_{n-1}^2e^{-s(M_n-R_{n-1}-1)}}{c_n^2}
+ =e^{-(s/2-2\kappa)R_{n-1}+s}.
+\]
+Among \(j\ge n\) the largest term is \(j=n\), and its ratio to \(c_n^2\)
+is at most \(e^{-sR_{n-1}/2+s}\).  The remaining lacunary tails are bounded
+geometric sums.  From \eqref{eq:qbound}--\eqref{eq:midpoint},
+\begin{equation}\label{eq:gapmass}
+ \int_{I_n\times\R}w(x,\xi)\,dx\,d\xi
+ \le Cc_n^4e^{-2\eta R_{n-1}}.
+\end{equation}
+
+\paragraph{A lower bound on every island.}
+Since \(A(0,0)\ne0\), choose a small rectangle
+\(Q=[-\varepsilon,\varepsilon]^2\) and \(m>0\) such that
+\(|A|\ge m\) on \(Q\).  Increasing \(L\), if necessary, makes the principal
+term in \eqref{eq:Fsum} dominate all other translates, uniformly in \(n\):
+\[
+ |F(x,\xi)|\ge \frac m2c_n
+ \quad\text{when }(x-R_n,\xi)\in Q.
+\]
+To see this, divide the upper bound for every other term by \(c_n\).  For
+\(j<n\) it is, up to a fixed factor,
+\(e^{-(1-\kappa)(R_n-R_j)}\), while for \(j>n\) it is
+\(e^{-(1+\kappa)(R_j-R_n)}\).  Both lacunary sums tend uniformly to zero as
+\(L\to\infty\).
+
+Let \(Q'\) be a smaller concentric rectangle.  For
+\(E_n=(R_n,0)+Q'\), integrate the convolution defining \(q\) over
+\((R_n,0)+Q\).  The kernel \(\gamma\) has a fixed positive lower bound on the
+relevant bounded difference set, and hence
+\begin{equation}\label{eq:islandmass}
+ q\ge d_0c_n^2\ \text{ on }E_n,\qquad
+ \int_{E_n}w\ge d_1c_n^4
+\end{equation}
+with constants \(d_0,d_1>0\) independent of \(n\).
+
+\paragraph{The Poincar\'e quotients diverge.}
+The function \(q\) lies in \(L^1\cap L^\infty\): Moyal's identity gives
+\(|F|^2\in L^1\), while \(\gamma\in L^1\cap L^\infty\).  Thus
+\(w=q^2\in L^1\).  It is positive and nonzero; write
+\(m_w=\int_{\R^2}w\in(0,\infty)\).
+
+Choose \(\theta\in C^\infty(\R,[0,1])\) with
+\(\theta(t)=0\) for \(t\le-1\), \(\theta(t)=1\) for \(t\ge1\), and bounded
+derivative, and put \(u_n(x,\xi)=\theta(x-M_n)\).  By
+\eqref{eq:gapmass},
+\begin{equation}\label{eq:energy}
+ \int_{\R^2}|\nabla u_n|^2w
+ \le Cc_n^4e^{-2\eta R_{n-1}}.
+\end{equation}
+For every finite measure \(d\mu=w\,dz\),
+\[
+ \inf_c\int|u-c|^2\,d\mu
+ =\frac1{2m_w}\iint|u(z)-u(z')|^2\,d\mu(z)d\mu(z').
+\]
+The mass of \(\{x\le M_n-1\}\) tends to \(m_w\), whereas \(u_n=1\) on
+\(E_n\subset\{x\ge M_n+1\}\) for large \(n\).  Restricting the double integral
+to these two sets and using \eqref{eq:islandmass} yields
+\begin{equation}\label{eq:variance}
+ \inf_c\int_{\R^2}|u_n-c|^2w\ge \frac{d_1}{2}c_n^4
+\end{equation}
+for all sufficiently large \(n\).  Dividing \eqref{eq:variance} by
+\eqref{eq:energy} gives a quotient bounded below by
+\(Ce^{2\eta R_{n-1}}\to\infty\).  Therefore \(C_P(w)=\infty\), completing
+the counterexample.
+\end{proof}
+
+\section*{Verification notes}
+
+The construction is analytic and uses no numerical or unproved dependency.
+The parameter inequalities are simultaneously satisfiable for every
+\(a,b>0\): choose \(r<2\), then \(s<\min\{a,r\}\), then
+\(\kappa<s/4\), and finally \(L\) large.  The three review-critical estimates
+are \eqref{eq:Ssquare}, the midpoint comparison \eqref{eq:midpoint}, and the
+uniform main-translate dominance preceding \eqref{eq:islandmass}.
+
+\section*{Novelty check and limitations}
+
+On 2026-08-11, searches for the exact paper title, the phrases
+\texttt{``Concentration implies finite Poincare constant''} and
+\texttt{``exponential time-frequency concentration''}, and
+\texttt{Conjecture 1.18} together with STFT/Poincar\'e terminology found the
+source arXiv and published versions but no later claimed resolution.  The
+local arXiv source corpus and the run's four lightweight indexes likewise had
+no matching result.  This is a bounded novelty check, not a claim that every
+non-arXiv source has been exhausted.
+
+The theorem disproves the conjecture for all its parameter values.  It does
+not characterize additional structural assumptions on \(f\) (for example,
+unimodality or log-concavity of the spectrogram) that would restore a finite
+Poincar\'e constant.
+
+\section*{Human review recommendation}
+
+Review as a likely-valid full counterexample.  The most useful independent
+check is to verify the exponents in \eqref{eq:midpoint}: the previous island
+contributes \(c_{n-1}^2e^{-s(R_n-R_{n-1})/2}\), while the target island has
+mass scale \(c_n^2\); the choice \(\kappa<s/4\) makes their ratio decay.
+
+\begin{thebibliography}{9}
+\bibitem{rathmair}
+Martin Rathmair,
+\emph{Stable STFT phase retrieval and Poincar\'e inequalities},
+arXiv:2407.00398; International Mathematics Research Notices 2024,
+no.~22, 14094--14114.
+\end{thebibliography}
+
+\end{document}

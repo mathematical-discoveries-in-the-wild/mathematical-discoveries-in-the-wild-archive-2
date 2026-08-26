@@ -1,0 +1,175 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.82in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,microtype}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newcommand{\cP}{\mathcal P}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Dom}{\operatorname{Dom}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\title{A nonclosable Toeplitz matrix with arbitrary analytic part}
+\author{Automated mathematical discovery run \texttt{fa\_banach\_001}, lane 11}
+\date{17 August 2026}
+\begin{document}
+\maketitle
+
+\textbf{Status.} Likely valid full counterexample to the existence question
+as printed.
+
+\section*{Source and exact question}
+
+G. J. Groenewald, S. ter Horst, J. Jaftha, and A. C. M. Ran,
+``A Toeplitz-like operator with rational matrix symbol having poles on the
+unit circle: Matrix representation and spectral analysis,''
+arXiv:2409.19113, Remark 2.2.  For $1<p<\infty$, an operator
+$T:H_m^p\to H_m^p$ is in the Sarason class when it is closed and densely
+defined, its domain is shift invariant, and it satisfies the two additional
+shift conditions stated in the source.  The authors ask:
+
+\begin{quote}
+Start with a Toeplitz matrix and assume the ``analytic part'' is in $H_m^p$.
+Can we then define an unbounded Toeplitz operator from that?  It is clear how
+$T$ acts on the vector polynomials of size $m$.  Is there maybe a unique way
+to extend the operator on $\mathcal P^m$ to one that satisfies (i)--(iv)?
+Even without uniqueness this would be a relevant result.
+\end{quote}
+
+\begin{center}
+\includegraphics[width=.94\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Counterexample theorem}
+
+For matrices $a_j\in\C^{m\times m}$, the semi-infinite Toeplitz matrix is
+$[a_{i-j}]_{i,j\ge0}$.  Its forced action on a vector polynomial
+$f(z)=\sum_{j=0}^Nx_jz^j$ is
+\[
+ T_0f(z)=\sum_{i\ge0}\left(\sum_{j=0}^Na_{i-j}x_j\right)z^i,
+\]
+whenever the displayed output belongs to $H_m^p$.
+
+\begin{theorem}\label{thm:main}
+Fix $1<p<\infty$, $m\ge1$, and any analytic matrix function
+\[
+                 G(z)=\sum_{j=0}^{\infty}A_jz^j\in H^p_{m\times m}.
+\]
+Define a Toeplitz matrix by
+\[
+                 a_j=A_j\quad(j\ge0),\qquad
+                 a_{-k}=k!I_m\quad(k\ge1).                \tag{1}
+\]
+Its analytic part is $G\in H^p_{m\times m}$, and its matrix action maps
+$\cP^m$ into $H_m^p$.  Nevertheless, that polynomial operator is not
+closable.  Consequently there is no closed operator on $H_m^p$ extending
+the matrix action on $\cP^m$, and in particular no extension in the Sarason
+class.
+\end{theorem}
+
+\section*{Proof intuition}
+
+The hypothesis controls only the nonnegative diagonals.  Put factorial
+growth on the uncontrolled negative diagonals and test the matrix on a
+far-out monomial scaled by the same factorial.  The inputs then vanish, but
+the top matrix entry survives as a nonzero constant; all other coanalytic
+entries and the prescribed analytic part disappear.  This produces a
+nonvertical graph limit $(0,e)$ and destroys closability before any of the
+shift axioms can help.
+
+\section*{Proof}
+
+Fix a nonzero $e\in\C^m$.  Since $a_{i-j}=0$ is not assumed for
+$i-j\ge0$, we first separate the two parts.  Applied to the monomial
+$z^ne$, the negative diagonals in (1) contribute only when $0\le i<n$,
+and the nonnegative diagonals contribute when $i\ge n$.  Hence
+\[
+ T_0(z^ne)
+ =\sum_{i=0}^{n-1}(n-i)!z^ie+z^nG(z)e.                   \tag{2}
+\]
+This belongs to $H_m^p$; by linearity the matrix therefore defines $T_0$
+on every vector polynomial.
+
+Set
+\[
+                         f_n(z)=\frac{z^n}{n!}e.
+\]
+Since $\lvert z^n\rvert=1$ almost everywhere on the unit circle,
+\[
+                       \|f_n\|_{H_m^p}=\frac{\|e\|}{n!}\longrightarrow0.
+                                                                    \tag{3}
+\]
+After division of (2) by $n!$,
+\[
+ T_0f_n
+ =e+\sum_{i=1}^{n-1}\frac{(n-i)!}{n!}z^ie
+   +\frac{z^n}{n!}G(z)e.                                  \tag{4}
+\]
+For $n\ge3$, the middle term is uniformly bounded in norm by
+\[
+ \|e\|\sum_{i=1}^{n-1}\frac{(n-i)!}{n!}
+ \le \|e\|\left(\frac1n+\frac{2}{n(n-1)}\right)
+ \longrightarrow0.                                      \tag{5}
+\]
+Indeed, after the first summand, each successive denominator gains a
+factor at least two.  The last term in (4) has $H_m^p$ norm
+\[
+                 \frac{\|G(\,\cdot\,)e\|_{H_m^p}}{n!}
+                 \longrightarrow0.                       \tag{6}
+\]
+Equations (4)--(6) give
+\[
+                         T_0f_n\longrightarrow e
+                         \quad\text{in }H_m^p,             \tag{7}
+\]
+where $e$ denotes the nonzero constant function.
+
+Thus $f_n\to0$ while $T_0f_n\to e\ne0$.  This is the standard sequential
+criterion showing that $T_0$ is not closable.  More directly, if a closed
+operator $T$ extended $T_0$, then closedness and (3), (7) would put
+$(0,e)$ in the graph of $T$, contradicting $T(0)=0$.  Since closedness is
+condition (i) of the Sarason class, no Sarason-class extension exists.
+\qed
+
+\section*{Verification and scope}
+
+The construction satisfies more than the minimal counterexample requires:
+it works for every $1<p<\infty$, every block size $m$, and every prescribed
+admissible analytic part $G$.  Thus adding or changing the controlled
+analytic diagonals cannot repair the obstruction.  The theorem answers the
+unrestricted existence question negatively; it does not classify the
+additional growth or distribution conditions on the negative diagonals that
+would make the polynomial core closable or Sarason-extendable.
+
+\section*{Novelty check}
+
+A bounded search on 17 August 2026 used the exact source question and title,
+as well as combinations of ``Toeplitz matrix analytic part $H^p$,''
+``Sarason class extension,'' ``closable,'' and ``factorial coanalytic
+coefficients.''  It found the source, literature on rational symbols,
+semibounded Toeplitz forms, and general unbounded Toeplitz operators, but no
+answer to this exact matrix-extension question or this construction.  The
+novelty assessment is ``apparently new within the bounded search,'' not an
+exhaustive bibliographic claim.
+
+\section*{Human-review recommendation}
+
+Check the matrix indexing in (2) against the source convention
+$[a_{i-j}]_{i,j\ge0}$.  Once that is fixed, the uniform estimate and the
+closed-graph contradiction are elementary.
+
+\section*{References}
+
+\begin{enumerate}
+\item G. J. Groenewald, S. ter Horst, J. Jaftha, and A. C. M. Ran,
+  ``A Toeplitz-like operator with rational matrix symbol having poles on the
+  unit circle: Matrix representation and spectral analysis,''
+  arXiv:2409.19113.
+\item D. Sarason, ``Unbounded Toeplitz operators,'' Integral Equations
+  Operator Theory 61 (2008), 281--298.
+\end{enumerate}
+
+\end{document}

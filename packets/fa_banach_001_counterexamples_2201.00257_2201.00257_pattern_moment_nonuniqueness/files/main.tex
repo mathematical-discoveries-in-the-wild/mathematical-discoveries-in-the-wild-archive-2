@@ -1,0 +1,189 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{microtype}
+\hypersetup{hidelinks}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\1}{\mathbf 1}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Tr}{\operatorname{Tr}}
+
+\title{Different structured random-matrix patterns can have all the same starred moments}
+\author{Run \texttt{fa\_banach\_001}, agent lane 10}
+\date{2026-08-12}
+
+\begin{document}
+\maketitle
+
+\section*{Source question}
+
+The source is Tapesh Yadav, \emph{Wigner type laws for structured random
+matrices} \cite{yadav}, available as
+\href{https://arxiv.org/abs/2201.00257}{arXiv:2201.00257}.  A pattern is a
+set $S\subset[0,1]^2$ with null boundary.  The source fills the corresponding
+grid cells with centered iid entries of variance one, scaled by $N^{-1/2}$,
+and proves convergence of all normalized starred moments.  Section 5.3 asks:
+
+\begin{quote}
+If two patterns are not similar, must their collections of limiting starred
+moments be different?
+\end{quote}
+
+Here ``similar'' means that their approximating matrices are similar for
+infinitely many sizes.  The answer is no.
+
+\begin{center}
+\includegraphics[width=0.94\linewidth]{figures/open_question_crop.png}
+\end{center}
+
+\section*{Result}
+
+For $S\subset[0,1]^2$, write $K_S=\1_S$.  Call $S$
+\emph{$p$-biregular} if
+\begin{equation}\label{eq:biregular}
+ \int_0^1K_S(x,y)\,dy=p\quad\text{for a.e. }x,
+ \qquad
+ \int_0^1K_S(x,y)\,dx=p\quad\text{for a.e. }y.
+\end{equation}
+
+\begin{theorem}[Biregular moment collapse]\label{thm:general}
+Let $S$ satisfy \eqref{eq:biregular}.  For every starred word $C$ of
+length $2n$,
+\begin{equation}\label{eq:collapse}
+ m_C(S)=p^n m_C([0,1]^2),
+\end{equation}
+where $m_C(S)$ is the limiting normalized expected starred moment of the
+source.  The corresponding odd and unbalanced moments vanish.  Consequently,
+all $p$-biregular patterns have the same complete collection of limiting
+starred moments.
+\end{theorem}
+
+This gives an infinite-dimensional failure of injectivity, not merely an
+isolated coincidence.  The following two elementary patterns make it a full
+counterexample to the source question:
+\begin{align}
+ S_= &:=([0,\tfrac12]^2)\cup([\tfrac12,1]^2),\label{eq:equal}\\
+ S_{\ne}&:=([0,\tfrac12]\times[\tfrac12,1])
+ \cup([\tfrac12,1]\times[0,\tfrac12]).\label{eq:unequal}
+\end{align}
+Changing their boundary points is immaterial.  In block notation their
+indicators are
+\[
+ K_{S_=}\sim\begin{pmatrix}1&0\\0&1\end{pmatrix},
+ \qquad
+ K_{S_{\ne}}\sim\begin{pmatrix}0&1\\1&0\end{pmatrix}.
+\]
+Both are $1/2$-biregular and hence have identical limiting starred moments.
+Nevertheless, their approximating matrices are almost surely never similar
+from size two onward when the allowed iid entry law is continuous.
+
+\section*{Why all moments collapse}
+
+The proof is the tree structure hidden in the source's path-counting formula.
+
+\begin{lemma}[Oriented tree integral]\label{lem:tree}
+Let $T$ be a tree with $n$ edges, each oriented arbitrarily.  If $S$ is
+$p$-biregular, then
+\[
+ \int_{[0,1]^{V(T)}}
+ \prod_{u\to v\in E(T)}K_S(x_u,x_v)\prod_{u\in V(T)}dx_u=p^n.
+\]
+\end{lemma}
+
+\begin{proof}
+Choose a leaf.  If its incident edge points away from the leaf, integration
+in the leaf variable uses the second identity in \eqref{eq:biregular}; if it
+points toward the leaf, it uses the first.  In either case this removes the
+leaf and contributes $p$.  Iterate over all $n$ edges.
+\end{proof}
+
+\begin{proof}[Proof of Theorem \ref{thm:general}]
+Expand $N^{-1}\E\Tr C(X_{N,S},X_{N,S}^*)$.  Centering and independence
+leave, at leading order, pairings in which $n$ distinct entries occur once
+unconjugated and once conjugated.  A leading pairing has $n+1$ free index
+classes.  Its quotient graph is connected because the cyclic trace word
+walks through all its vertices.  It therefore has $n+1$ vertices and $n$
+edges, hence is a tree.
+
+For a fixed leading pairing, the normalized sum over its free indices tends
+to the integral in Lemma \ref{lem:tree}; the orientation records which of the
+two occurrences is unstarred.  Its value is $p^n$, while the same pairing
+has weight one for the full-square pattern.  Summing over the leading
+pairings proves \eqref{eq:collapse}.  If the word is odd or has unequal
+numbers of starred and unstarred letters, no leading conjugate pairing exists,
+so its limit is zero.  This is also a direct specialization of the source's
+polar constraint-path formula: a constraint path of length $2n$ on $n+1$
+colors has precisely such a tree as its underlying graph.
+\end{proof}
+
+For \eqref{eq:equal}--\eqref{eq:unequal}, Lemma \ref{lem:tree} has a discrete
+interpretation.  Every tree has exactly two two-colorings in which adjacent
+labels are equal (the two constant labelings), and exactly two in which they
+are unequal (the two bipartite colorings).  Since there are $2^{n+1}$ block
+assignments, either pattern gives each leading tree the same weight
+$2/2^{n+1}=2^{-n}$.
+
+\section*{Why the two patterns are not similar}
+
+The source declares matrix entry $(i,j)$ active when the cell with horizontal
+index $j$ and vertically reversed row index $i$ meets $S$ in nonempty
+interior.  This vertical reversal interchanges the two block pictures above:
+$S_{\ne}$ yields diagonal-block support, while $S_=$ yields off-diagonal-
+block support.
+
+Every diagonal entry of $X_{N,S_{\ne}}$ is therefore active.  No diagonal
+entry of $X_{N,S_=}$ is active for even $N$.  For odd $N$, only the
+unique central grid cell that straddles $1/2$ is active.  Choose standard
+complex Gaussian entries, which satisfy all assumptions of the source.  For
+each $N\ge2$, the two traces are different linear combinations of
+continuous independent variables; their equality has probability zero.
+Taking the countable intersection over $N$, almost surely
+\[
+ \Tr X_{N,S_=}\ne\Tr X_{N,S_{\ne}}\qquad(N\ge2).
+\]
+Similar matrices have equal trace.  Hence the two approximating matrices are
+not similar for any $N\ge2$, almost surely, and the patterns are not similar
+in the source's sense.  Combined with Theorem \ref{thm:general}, this proves
+the claimed full counterexample.
+
+\section*{Verification and scope}
+
+The accompanying script exhaustively enumerates complex-Gaussian leading
+pairings for every balanced word through length ten.  It checked 350 words
+and 1618 leading pairings; in every term both block patterns have weight
+$2^{-n}$.  This is a finite audit of the combinatorics, while the leaf
+argument above proves all orders.
+
+Searches on 2026-08-12 for the exact title and exact moment-uniqueness wording,
+as well as searches for biregular/doubly-stochastic variance profiles and
+starred moments, found literature on circular laws for variance profiles but
+no later paper answering this pattern-injectivity question.  The run's four
+cheap indexes likewise contained no result for arXiv:2201.00257.  This is a
+bounded novelty check rather than a claim to have exhausted non-arXiv sources.
+
+The theorem fully answers the yes/no injectivity question negatively and
+identifies a large moment-equivalence class.  It does not classify every pair
+of patterns with the same starred moments.  Note also that the proof of
+non-similarity uses only the necessary trace invariant, so it does not depend
+on any convention about whether ordinary or unitary similarity was intended.
+
+\section*{Human review recommendation}
+
+Review as a likely-valid full counterexample.  The two useful independent
+checks are: (i) every leading pairing quotient really is a tree, and (ii) the
+vertical row-index reversal makes $S_{\ne}$, rather than $S_=$, the
+diagonal-block approximant.  Neither point affects the equality-of-moments
+proof, but both make the non-similarity witness transparent.
+
+\begin{thebibliography}{9}
+\bibitem{yadav}
+Tapesh Yadav,
+\emph{Wigner type laws for structured random matrices},
+arXiv:2201.00257, 2022.
+\end{thebibliography}
+
+\end{document}

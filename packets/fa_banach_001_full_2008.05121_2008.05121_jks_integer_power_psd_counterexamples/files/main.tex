@@ -1,0 +1,243 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\TN}{\mathrm{TN}}
+\newcommand{\JKS}{\mathrm{JKS}}
+\newcommand{\pos}[1]{[#1]_+}
+
+\title{All integer-power counterexamples for the\\
+Jain--Karlin--Schoenberg kernel}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 10}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{
+\textbf{Status: candidate full solution, likely valid; novelty not certified.}
+For every integer $m\geq0$ an explicit increasing $(m+3)$-tuple gives a
+symmetric Jain--Karlin--Schoenberg Gram matrix whose entrywise $m$th power has
+negative determinant.  This answers both parts of Question~5.5 in
+arXiv:2008.05121 and, together with Theorem~C there, closes the full-plane
+$\TN_p$ power classification.
+}}
+\end{center}
+
+\section{Source question}
+
+Khare's paper \cite{KhareJKS} studies the symmetric kernel
+\[
+ K_{\JKS}(x,y):=\max(1+xy,0),\qquad x,y\in\R.
+\]
+Question~5.5, in Section~5 on printed page~19 of arXiv:2008.05121v2,
+asks for every integer $\alpha\geq0$ whether
+$K_{\JKS}^{\circ\alpha}$ can be shown not to be
+$\TN_{\alpha+3}$ on $\R\times\R$.  Its stronger form asks for a witness with
+the same increasing tuple in both arguments, equivalently a symmetric matrix
+that is not positive semidefinite.  As in the source, $0^0=0$.
+
+\begin{figure}[ht]
+ \centering
+ \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+ \caption{Question~5.5 and the two low-degree examples in the source paper,
+ printed page~19.}
+\end{figure}
+
+\section{Proof intuition}
+
+The substitution $x=\tan u$ converts the kernel, up to harmless positive
+diagonal factors, into the positive part of the cosine difference kernel.
+Choose $m+3$ equally spaced angles whose total span is just over $\pi/2$, but
+whose every shorter pairwise span is below $\pi/2$.  Truncation then deletes
+exactly the two opposite corner entries of the untruncated cosine-power
+matrix.
+
+The untruncated matrix has a finite Fourier Gram representation with only
+$m+1$ frequencies, hence rank $m+1=(m+3)-2$.  Its middle $(m+1)$-square block
+is nevertheless positive definite, by a square Vandermonde determinant.
+Expanding after deleting the two corners, the constant and linear terms vanish
+by the rank deficiency; the unique quadratic term is the negative of the
+middle determinant.  This gives an exact negative determinant in every
+degree, including $m=0$.
+
+\section{The construction and determinant identity}
+
+\begin{theorem}[Symmetric witness in every integer degree]\label{thm:main}
+Let $m\in\mathbb Z_{\geq0}$ and put $n=m+3$.  Choose any
+\[
+ \frac{\pi}{2(n-1)}<\delta<\frac{\pi}{2(n-2)},
+ \qquad
+ u_j=\left(j-\frac{n+1}{2}\right)\delta,
+ \qquad x_j=\tan u_j
+ \quad(1\leq j\leq n).
+\]
+Then $x_1<\cdots<x_n$, and the symmetric matrix
+\[
+ M=\left(K_{\JKS}(x_j,x_k)^m\right)_{j,k=1}^n
+\]
+has negative determinant.  Consequently it is not positive semidefinite, and
+$K_{\JKS}^{\circ m}$ is not $\TN_{m+3}$ on $\R\times\R$.
+\end{theorem}
+
+\begin{proof}
+Write $L=(n-1)\delta$.  The choice of $\delta$ gives
+\[
+ \frac\pi2<L<\pi.
+\]
+Indeed, the second inequality is immediate when $n=3$, and for $n>3$ follows
+from $(n-1)/(2(n-2))<1$.  Hence all $u_j$ lie in $(-\pi/2,\pi/2)$, so the
+$x_j=\tan u_j$ are well-defined and strictly increasing.
+
+For $u,v\in(-\pi/2,\pi/2)$,
+\begin{equation}\label{eq:tan}
+ K_{\JKS}(\tan u,\tan v)
+ =\sec u\,\sec v\,\pos{\cos(u-v)}.
+\end{equation}
+Define
+\[
+ A_{jk}:=\pos{\cos(u_j-u_k)}^m,
+ \qquad
+ C_{jk}:=\cos^m(u_j-u_k).
+\]
+For $m=0$, the first definition uses the source convention $0^0=0$, while
+the second has the usual value $a^0=1$ because all occurring cosines in $C$
+are nonzero.  Every pair other than $\{1,n\}$ has separation at most
+$(n-2)\delta<\pi/2$, whereas $|u_n-u_1|=L>\pi/2$.  Thus truncation changes
+exactly the two opposite corners.  With
+\[
+ c:=\cos^m L
+\]
+(so $c=1$ when $m=0$), we have
+\begin{equation}\label{eq:corner}
+ A=C-c(E_{1n}+E_{n1}).
+\end{equation}
+
+The elementary Fourier expansion
+\begin{equation}\label{eq:fourier}
+ \cos^m t=2^{-m}\sum_{r=0}^m \binom mr e^{i(m-2r)t}
+\end{equation}
+expresses $C$ as $VDV^*$, where
+\[
+ V_{jr}=e^{i(m-2r)u_j}\quad(0\leq r\leq m),
+ \qquad
+ D_{rr}=2^{-m}\binom mr>0.
+\]
+Therefore $C$ is positive semidefinite and $\operatorname{rank}C\leq m+1=n-2$.
+
+Let
+\[
+ B=C[\{2,\ldots,n-1\},\{2,\ldots,n-1\}].
+\]
+This is the Gram matrix from the middle $m+1$ rows of $V$.  That square
+submatrix of $V$ is nonsingular: after extracting $e^{imu_j}$ from row $j$,
+it is the Vandermonde matrix
+\[
+ \bigl(z_j^r\bigr)_{j=2,\ldots,n-1;\ r=0,\ldots,m},
+ \qquad z_j=e^{-2iu_j}.
+\]
+The nodes are distinct, since $0<|u_j-u_k|<\pi$ for $j\ne k$.  Hence
+$B$ is positive definite and
+\begin{equation}\label{eq:Bpositive}
+ \det B>0.
+\end{equation}
+
+It remains to expand \eqref{eq:corner}.  Regard the determinant as a polynomial
+in the two changes at positions $(1,n)$ and $(n,1)$.  Its constant term is
+$\det C=0$.  Each linear coefficient is an $(n-1)$-minor of $C$ and hence
+vanishes because $\operatorname{rank}C\leq n-2$.  The coefficient of the
+product of the two changes is $-\det B$: a contributing permutation exchanges
+the two endpoint columns, producing one minus sign, and its remaining part is
+the determinant of the middle block.  Since both changes equal $-c$,
+\begin{equation}\label{eq:detidentity}
+ \det A=-c^2\det B<0.
+\end{equation}
+Here $c\ne0$ because $L\in(\pi/2,\pi)$; this also covers $m=0$, when
+$B=[1]$ and \eqref{eq:detidentity} reads $\det A=-1$.
+
+Finally, \eqref{eq:tan} yields $M=D_m A D_m$ with
+$D_m=\operatorname{diag}(\sec^m u_1,\ldots,\sec^m u_n)$.  Thus
+\[
+ \det M=\left(\prod_{j=1}^n\sec(u_j)^{2m}\right)\det A<0.
+\]
+A positive-semidefinite matrix has nonnegative determinant, so $M$ is not
+positive semidefinite.  Its negative full minor also violates
+$\TN_n=\TN_{m+3}$.
+\end{proof}
+
+\section{The completed full-plane classification}
+
+\begin{corollary}\label{cor:classification}
+For every integer $p\geq2$ and every real $\alpha\geq0$,
+\[
+ K_{\JKS}^{\circ\alpha}\text{ is }\TN_p\text{ on }\R\times\R
+ \quad\Longleftrightarrow\quad
+ \alpha\geq p-2.
+\]
+\end{corollary}
+
+\begin{proof}
+Theorem~C(1) of \cite{KhareJKS} proves the forward construction for every
+$\alpha\geq p-2$.  Theorem~C(2) there proves that a $\TN_p$ power below
+$p-2$ would have to be an integer.  If such an integer is $m$, then
+$m\leq p-3$, and Theorem~\ref{thm:main} gives an $(m+3)$-minor with negative
+determinant.  Since $m+3\leq p$, this contradicts $\TN_p$.
+\end{proof}
+
+\section{Verification}
+
+The exact argument was audited at the following points.
+\begin{itemize}
+ \item The interval for $\delta$ is nonempty and places exactly one unordered
+ endpoint pair beyond the cosine cutoff.
+ \item Formula \eqref{eq:fourier} gives at most $m+1=n-2$ Gram vectors with
+ strictly positive weights.
+ \item The middle evaluation matrix is a square Vandermonde matrix on distinct
+ unit-circle nodes, so no hidden singularity remains.
+ \item A direct determinant expansion confirms both the sign and the middle
+ minor in \eqref{eq:detidentity}.
+ \item The convention at $m=0$ was checked separately and is also contained in
+ the same formula.
+\end{itemize}
+
+The reusable script \texttt{code/verify\_jks\_family.py} evaluates the matrices
+at 180-digit precision for $m=0,\ldots,16$.  It checks $\det B>0$, $\det A<0$,
+and $\det A=-\cos^{2m}(L)\det B$ to relative error below $10^{-70}$.  All 17
+cases pass.  This computation is a regression check, not part of the proof.
+
+\section{Novelty search, limitations, and review recommendation}
+
+The run's registry, solution, attempt, and proof-gap indexes were searched for
+the arXiv id, title, kernel name, and core formula, with no duplicate found.
+A bounded external search through 17 August 2026 used the exact Question~5.5
+label, ``Jain--Karlin--Schoenberg kernel'', \texttt{max(1+xy,0)},
+``integer powers'', ``alpha+3'', and ``positive semidefinite''.  The current
+author-hosted PDF still states the question.  Close later arXiv papers checked
+included 2103.12550, 2110.08206, and 2411.03391; none was found to state this
+construction or resolve Question~5.5.  Novelty is therefore plausible but is
+not certified by this bounded search.
+
+There is no conditional dependency in the proof.  The main human-review focus
+should be the two-entry determinant coefficient in
+\eqref{eq:detidentity} and the inference in Corollary~\ref{cor:classification}
+from an $(m+3)$-minor to failure of $\TN_p$.  Subject to that check and a
+specialist literature search, promote as a full solution.
+
+\begin{thebibliography}{9}
+\bibitem{KhareJKS}
+A.~Khare,
+\emph{Multiply positive functions, critical exponent phenomena, and the
+Jain--Karlin--Schoenberg kernel},
+arXiv:2008.05121v2, Question~5.5 and Theorem~C (2020--2021).
+\end{thebibliography}
+
+\end{document}

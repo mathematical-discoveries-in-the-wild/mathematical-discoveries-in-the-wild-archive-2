@@ -1,0 +1,267 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!60!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathcal R}
+\newcommand{\spb}{\operatorname{s}}
+\newcommand{\ran}{\operatorname{ran}}
+
+\title{Eventual Norm Continuity Does Not Preserve the\\Spectral-Gap Necessity for Eventual Domination}
+\author{Automated mathematics run \texttt{fa\_banach\_001}\\Lane 0 --- candidate for human review}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Candidate counterexample, likely valid.  This gives a full negative answer to
+the first explicit question in source Remark~3.3: implication
+\textup{(i)}$\Rightarrow$\textup{(iii)} of Theorem~3.1 fails when analyticity
+is replaced by eventual norm continuity.  The separate question in the same
+remark about removing one smoothing assumption is not resolved here.}}
+\end{center}
+
+\section{Source question and answer}
+
+Gl\"uck and Mugnolo characterize individual eventual domination between two
+distinct real analytic semigroups under spectral, smoothing, and eventual
+positivity hypotheses \cite[Theorem~3.1]{GlueckMugnolo2021}.  Their assertion
+\textup{(i)} says that for every $0<f$ the orbit of $B$ eventually dominates
+the nonnegative orbit of $A$; assertion \textup{(iii)} is the strict spectral
+gap $\spb(B)>\spb(A)$.  Immediately after the proof they ask whether
+\textup{(i)}$\Rightarrow$\textup{(iii)} remains true when analyticity is
+weakened, for instance to eventual norm continuity.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_question_crop.png}
+  \caption{Source PDF page~9, Remark~3.3.  The first displayed open question is
+  answered negatively below.}
+\end{figure}
+
+The answer is no.  The mechanism is finite-time erasure: two different
+semigroups may have exactly the same tail without being the same semigroup.
+We retain every other hypothesis of the source theorem, including nonempty
+spectrum, pole conditions, both smoothing inclusions, and the stated
+positivity assumptions.
+
+\section{A nilpotent shift with empty generator spectrum}
+
+Let $H=L^2(0,1;\C)$ and define the left-shift semigroup $(S(t))_{t\geq0}$ by
+\[
+ (S(t)g)(x)=
+ \begin{cases}
+   g(x+t),&x+t\leq1,\\
+   0,&x+t>1.
+ \end{cases}
+\]
+It is a real $C_0$-semigroup and $S(t)=0$ for $t\geq1$.  Its generator is
+\[
+ Gg=g',\qquad
+ D(G)=\{g\in H^1(0,1):g(1)=0\}.
+\]
+
+\begin{lemma}\label{lem:empty-spectrum}
+The spectrum of $G$ is empty.
+\end{lemma}
+
+\begin{proof}
+For every $\lambda\in\C$ and $h\in H$, set
+\[
+ (K_\lambda h)(x)=\int_x^1 e^{\lambda(x-s)}h(s)\,ds.
+\]
+This bounded Volterra operator maps $H$ into $D(G)$.  Differentiation gives
+$(K_\lambda h)'=\lambda K_\lambda h-h$, so
+$(\lambda-G)K_\lambda h=h$.  Conversely, integration of the scalar
+differential equation with terminal value $g(1)=0$ gives
+$K_\lambda(\lambda-G)g=g$ for $g\in D(G)$.  Hence
+$K_\lambda=\R(\lambda,G)$ for every complex $\lambda$, proving
+$\sigma(G)=\varnothing$.
+\end{proof}
+
+\section{Counterexample}
+
+On the Banach lattice $E=L^2(0,1;\C)$, put $u=\one$ and define
+\[
+ \varphi(f)=\int_0^1 f(s)\,ds,
+ \qquad Pf=\varphi(f)\one,
+ \qquad Q=I-P,
+ \qquad F=\ker\varphi.
+\]
+Thus $P$ is a real rank-one projection, $E=\operatorname{span}\{\one\}
+\oplus F$, and $F$ is a real-invariant separable infinite-dimensional Hilbert
+space.  Choose a complex-linear unitary $J:H\to F$ which maps real functions
+to real functions; such a $J$ is obtained by choosing real orthonormal bases
+and complexifying.  Write
+\[
+ W(t)=J S(t)J^{-1}\quad\text{on }F.
+\]
+Finally, define two operator families on $E$ by
+\begin{equation}\label{eq:semigroups}
+ T_A(t)=P+W(t)Q,
+ \qquad
+ T_B(t)=P+W(2t)Q.
+\end{equation}
+
+\begin{theorem}\label{thm:counterexample}
+The families in \eqref{eq:semigroups} are distinct real $C_0$-semigroups that
+satisfy every assumption of source Theorem~3.1 after ``analytic'' is replaced
+by ``eventually norm continuous.''  Assertion \textup{(i)} of that theorem
+holds, but
+\[
+ \spb(A)=\spb(B)=0,
+\]
+so assertion \textup{(iii)} fails.
+\end{theorem}
+
+\begin{proof}
+\medskip\noindent\textbf{Semigroup law, reality, and distinctness.}
+Relative to $E=\operatorname{span}\{\one\}\oplus F$, the two families are
+unitarily similar to
+\[
+ 1\oplus S(t)\quad\text{and}\quad 1\oplus S(2t),
+\]
+respectively.  They are therefore real $C_0$-semigroups.  They are distinct:
+if $g=\one\in H$ and $h=Jg\in F$, then at $t=\tfrac14$ their complementary
+components are $J\one_{(0,3/4)}$ and $J\one_{(0,1/2)}$.
+
+\medskip\noindent\textbf{Eventual norm continuity and smoothing.}
+Nilpotence of $S$ gives
+\[
+ T_A(t)=P\quad(t\geq1),
+ \qquad
+ T_B(t)=P\quad(t\geq\tfrac12).
+\]
+Both semigroups are thus constant in operator norm for all sufficiently large
+times.  Moreover
+\[
+ E_u=L^\infty(0,1),
+ \qquad T_A(1)E=T_B(1)E=PE=\operatorname{span}\{\one\}\subseteq E_u.
+\]
+This verifies both smoothing inclusions with the common time $t_0=1$.
+
+\medskip\noindent\textbf{Spectra and peripheral poles.}
+The generators are, under the same decomposition,
+\[
+ A=0\oplus JGJ^{-1},
+ \qquad B=0\oplus 2JGJ^{-1}.
+\]
+Lemma~\ref{lem:empty-spectrum} and its scaled version yield
+$\sigma(A)=\sigma(B)=\{0\}$.  More precisely, near zero,
+\begin{align*}
+ \R(\lambda,A)
+   &=\lambda^{-1}P+J\R(\lambda,G)J^{-1}Q,\\
+ \R(\lambda,B)
+   &=\lambda^{-1}P+J\R(\lambda,2G)J^{-1}Q.
+\end{align*}
+The second terms are operator-valued entire functions of $\lambda$.  Thus
+$0$ is a simple pole for both generators, their peripheral spectra are
+$\{0\}$, and both spectral bounds equal zero.  In particular, the
+construction does not evade the source's nonempty-spectrum condition.
+
+\medskip\noindent\textbf{Positivity and domination.}
+If $0<f\in E$, then strict positivity of integration gives
+\[
+ Pf=\varphi(f)u\gg_u0.
+\]
+Hence $(T_A(t))$ is uniformly eventually positive and $(T_B(t))$ is uniformly
+eventually strongly positive with respect to $u$; these are stronger than the
+two source positivity assumptions.  Finally, for every $0<f\in E$ and every
+$t\geq1$,
+\[
+ T_B(t)f=T_A(t)f=Pf\geq0.
+\]
+Source assertion \textup{(i)} therefore holds, even with a time independent
+of $f$, while the strict inequality in \textup{(iii)} fails.  This completes
+the hypothesis crosswalk and the counterexample.
+\end{proof}
+
+\section{Why analyticity is the exact fault line}
+
+In the equal-spectral-bound case, the published proof eventually derives
+$T_B(t)f=T_A(t)f$ for all sufficiently large $t$ and every $0<f$.  Analytic
+unique continuation then extends this equality to every positive time,
+contradicting distinctness.  Eventual norm continuity has no analogous
+backward-uniqueness property.  In the example above the complementary
+subspace $F$ is erased in finite time, after which two different histories
+are indistinguishable.
+
+The semigroups above cannot be analytic.  Indeed, $T_A(t)=P$ for $t\geq1$ has
+the nontrivial kernel $F$, whereas every positive-time operator of an analytic
+$C_0$-semigroup is injective: if $T(t_0)x=0$, the semigroup law makes the
+analytic orbit vanish on a tail, the identity theorem makes it vanish on
+$(0,\infty)$, and strong continuity at zero gives $x=0$.
+
+\section{Deep-upgrade attempt on the second source question}
+
+Remark~3.3 separately asks whether the inclusion $e^{t_0B}E\subseteq E_u$ is
+needed for \textup{(iii)}$\Rightarrow$\textup{(ii)}.  A later refinement by
+Arora and Gl\"uck proves domination without that $B$-smoothing inclusion if
+one directly assumes that for every $0<f$ there are $c_f>0$ and $t_f$ such
+that
+\[
+ e^{tB}f\geq c_f u\qquad(t\geq t_f)
+\]
+\cite[Proposition~4.2]{AroraGlueck2023}.  This is stronger than individual
+eventual strong positivity: in the latter definition the witness in
+$e^{tB}f\gg_u0$ may depend on $t$.
+
+The additional attack tested whether spectral convergence or a Baire
+argument forces such a time-uniform lower constant.  Strong convergence in
+$E$ does not control the gauge norm of $E_u$, whose positive order interior
+is generally not open in the ambient norm; this is precisely where the source
+proof uses $B$-smoothing.  Conversely, a moving-spike construction must obey
+both the semigroup law and eventual strong positivity for every positive
+initial vector, and no rigorous example survived those constraints.  Thus the
+second question remains outside the scope of the present full counterexample
+to the first question.
+
+\section{Novelty and verification}
+
+The proof was audited in nine separate checks: the nilpotent semigroup law,
+the all-parameter resolvent formula, the real unitary decomposition, the two
+semigroup laws, distinctness, spectrum and pole order, smoothing, positivity,
+and the domination quantifiers.  No numerical approximation is used.
+
+A bounded search on 11 August 2026 covered the run indexes, the local parsed
+full-source corpus, the exact source wording, the exact arXiv id and title,
+and close arXiv searches involving eventual norm continuity, eventual
+equality, nilpotent shift semigroups, empty spectrum, and rank-one tails.  The
+later refinement \cite{AroraGlueck2023} was also inspected directly.  No prior
+answer to the first source question or matching construction was found.  The
+construction is elementary, so novelty confidence is medium; mathematical
+validity confidence is high pending human review.
+
+\paragraph{Human review focus.}
+Check the real-unitary identification $J$, the resolvent formula in
+Lemma~\ref{lem:empty-spectrum}, the direct-sum pole calculation, and the exact
+match with every hypothesis of source Theorem~3.1 under the proposed
+regularity weakening.
+
+\begin{thebibliography}{9}
+\bibitem{GlueckMugnolo2021}
+J.~Gl\"uck and D.~Mugnolo,
+\emph{Eventual domination for linear evolution equations},
+Math. Z. 297 (2021), 301--330;
+\href{https://arxiv.org/abs/1912.13057}{arXiv:1912.13057v2}.
+
+\bibitem{AroraGlueck2023}
+S.~Arora and J.~Gl\"uck,
+\emph{Criteria for eventual domination of operator semigroups and resolvents},
+Operator Theory: Advances and Applications 292 (2023), 1--26;
+\href{https://arxiv.org/abs/2204.00146}{arXiv:2204.00146v3}.
+\end{thebibliography}
+
+\end{document}

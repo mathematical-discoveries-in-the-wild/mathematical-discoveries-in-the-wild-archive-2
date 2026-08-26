@@ -1,0 +1,459 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{accent}{HTML}{174A6E}
+\definecolor{statusbg}{HTML}{EEF5F8}
+\definecolor{statusline}{HTML}{6B95AD}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\Tp}{T_p}
+\newcommand{\mfun}{\mathfrak m}
+\newcommand{\lesssimc}{\mathrel{\lesssim}}
+\newcommand{\gtrsimc}{\mathrel{\gtrsim}}
+\newcommand{\asympc}{\mathrel{\asymp}}
+\newcommand{\Lp}{L_p(0,1)}
+\newcommand{\ellM}{\ell_M}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{accent}{Candidate solution of Conjecture 2}}
+\fancyhead[R]{\small arXiv:1406.4950}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+
+\title{A Staircase Perturbation Proves the\\
+Uniqueness Conjecture for Independent Copies in $L_p$}
+\author{Candidate proof packet for human verification\\
+\small Run \texttt{fa\_banach\_001}, lane 2, model GPT5.6}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent
+\colorbox{statusbg}{%
+  \parbox{0.965\textwidth}{%
+    \textcolor{statusline}{\rule{2pt}{1.15em}}\hspace{0.6em}
+    \textbf{Status: candidate full solution, likely valid.}
+    This packet claims an affirmative proof of Conjecture 2 of
+    Astashkin--Sukochev--Zanin.  It has not been human verified, and no public
+    novelty claim should be made before expert review and an independent
+    citation search.
+  }%
+}
+
+\begin{abstract}
+Let $1\leq p<2$ and let $M$ be a $p$-convex and $2$-concave Orlicz
+function.  Astashkin, Sukochev, and Zanin conjectured that uniqueness, up to
+equivalence near zero, of the distribution of a mean-zero random variable
+whose independent copies are equivalent in $L_p$ to the unit vector basis of
+$\ell_M$ forces $M$ to be $(p+\varepsilon)$-convex and
+$(2-\varepsilon)$-concave for some $\varepsilon>0$.  We prove the conjecture.
+The source paper reduces the generator condition to comparability of a
+two-term Hardy envelope with $\mfun(t)=1/M^{-1}(t)$.  Unless a given generator
+is already comparable with $\mfun$, we add a thinned decreasing staircase
+whose Hardy envelope remains dominated by $\mfun$ but whose ratio to the
+original generator is unbounded on positive-measure intervals.  This produces
+a second non-equivalent generating distribution and contradicts uniqueness.
+\end{abstract}
+
+\section{Source problem}
+
+The source is S.~Astashkin, F.~Sukochev, and D.~Zanin,
+\emph{On uniqueness of distribution of a random variable whose independent
+copies span a subspace in $L_p$}, Studia Mathematica 230 (2015), 41--57,
+arXiv:1406.4950 \cite{ASZ15}.  The conjecture appears on page 3 of the source
+PDF.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{The complete statement of Conjecture 2 in the source paper,
+  rendered from source PDF page 3.}
+  \label{fig:source-conjecture}
+\end{figure}
+
+\paragraph{Transcription of Conjecture 2.}
+Let $1\leq p<2$ and let $M$ be a $p$-convex and $2$-concave Orlicz function.
+If there is a unique (up to equivalence near $0$) mean zero function $f$ whose
+independent copies are equivalent in $L_p$ to the unit vector basis in
+$\ell_M$, then $M$ is $(p+\varepsilon)$-convex and
+$(2-\varepsilon)$-concave for some $\varepsilon>0$.
+
+\section{Definitions and source reductions}
+
+Throughout, $M(1)=1$ and $M$ is a bijection from $[0,\infty)$ onto itself, as
+in the source.  An Orlicz function $M$ is $r$-convex when
+$s\mapsto M(s^{1/r})$ is convex and is $r$-concave when this map is concave.
+For nonnegative functions $x,y$, the notation $x\asympc y$ means two-sided
+comparability by a positive constant.  Equivalence near zero means that this
+comparison holds for all sufficiently small positive arguments.
+
+For a nonnegative decreasing $x$ on $(0,1)$, set
+\begin{equation}\label{eq:T}
+  \Tp x(t)
+  :=
+  \left(\frac1t\int_0^t x(s)^p\,ds\right)^{1/p}
+  +
+  \left(\frac1t\int_t^1 x(s)^2\,ds\right)^{1/2},
+  \qquad 0<t\leq1,
+\end{equation}
+and put
+\begin{equation}\label{eq:m}
+  \mfun(t):=\frac1{M^{-1}(t)}.
+\end{equation}
+
+We use two results proved in the source paper.  Its Proposition 6 says that if
+$f\in\Lp$ is mean zero, then its independent copies are equivalent in $L_p$
+to the unit vector basis of $\ell_M$ if and only if
+\begin{equation}\label{eq:source-criterion}
+  \Tp(f^*)\asympc\mfun\qquad(0<t\leq1),
+\end{equation}
+where $f^*$ is the decreasing rearrangement of $|f|$.  Its Theorem 9 says,
+under the present $p$-convexity and $2$-concavity assumptions, that
+\begin{equation}\label{eq:source-strict}
+  \Tp\mfun\asympc\mfun
+  \quad\Longleftrightarrow\quad
+  M\text{ is }(p+\varepsilon)\text{-convex and }
+  (2-\varepsilon)\text{-concave for some }\varepsilon>0.
+\end{equation}
+
+Two elementary monotonicities will drive the construction.  Define
+\begin{equation}\label{eq:PQ}
+  P(t):=t\mfun(t)^p,
+  \qquad Q(t):=t\mfun(t)^2.
+\end{equation}
+Writing $t=M(s)$ gives
+\[
+  P(M(s))=\frac{M(s)}{s^p},
+  \qquad
+  Q(M(s))=\frac{M(s)}{s^2}.
+\]
+Convexity of $u\mapsto M(u^{1/p})$ and its vanishing at zero imply that
+$M(s)/s^p$ is increasing.  Concavity of $u\mapsto M(u^{1/2})$ implies that
+$M(s)/s^2$ is decreasing.  Thus
+\begin{equation}\label{eq:monotonicities}
+  P\text{ is increasing},
+  \qquad Q\text{ is decreasing}.
+\end{equation}
+
+\section{Idea of the proof}
+
+Suppose $h=f^*$ is one generating rearrangement.  By
+\eqref{eq:source-criterion}, $\Tp h\asympc\mfun$, and monotonicity of $h$
+immediately gives $h\lesssimc\mfun$.  If the reverse comparison holds near
+zero, then each Hardy term of $\Tp\mfun$ is controlled by the corresponding
+term for $h$; Theorem 9 then supplies the desired strict indices.
+
+The only remaining case is that $\mfun/h$ is unbounded arbitrarily close to
+zero.  At carefully thinned continuity points $t_n\downarrow0$, put a
+staircase level
+\[
+  a_n=2^{-n}\mfun(t_n)
+\]
+on $[t_{n+1},t_n)$.  The thinning makes $(a_n)$ increase with $n$, so the
+staircase is decreasing as a function of $t$.  The geometric coefficient
+$2^{-n}$ makes the $p$-head summable against the increasing quantity $P$ and
+the $2$-tail summable against the decreasing quantity $Q$.  Consequently the
+staircase $u$ satisfies $\Tp u\lesssimc\mfun$.  Yet the points $t_n$ are
+chosen where $h$ is much smaller than $a_n$, and continuity makes this
+domination persist on intervals of positive length.  Hence $g=h+u$ has the
+same admissible Hardy envelope as $h$ but is not equivalent to $h$ near zero.
+An explicit sign symmetrization realizes $g$ as the rearrangement of a
+mean-zero random variable, giving the forbidden second generator.
+
+\section{The staircase lemma}
+
+\begin{lemma}[Admissible non-equivalent perturbation]\label{lem:staircase}
+Let $1\leq p<2$, let $M$ be $p$-convex and $2$-concave, and let $\mfun$ be
+given by \eqref{eq:m}.  Suppose $h\in L_p(0,1)$ is nonnegative, decreasing,
+and
+\begin{equation}\label{eq:h-upper}
+  h\lesssimc\mfun.
+\end{equation}
+If $\mfun/h$ is unbounded in every neighborhood of zero, then there is a
+nonnegative decreasing $u\in L_p(0,1)$ such that
+\begin{equation}\label{eq:u-bound}
+  \Tp u\lesssimc\mfun,
+\end{equation}
+and $(h+u)/h$ is unbounded on positive-measure intervals accumulating at zero.
+\end{lemma}
+
+\begin{proof}
+Because $\mfun(t)\to\infty$ as $t\downarrow0$, and because $\mfun/h$ is
+unbounded in every such neighborhood, we may inductively choose continuity
+points
+\[
+  t_1>t_2>\cdots\downarrow0
+\]
+of the monotone function $h$ so that, for $n\geq2$,
+\begin{equation}\label{eq:selection}
+  t_n<\frac12t_{n-1},
+  \qquad
+  \mfun(t_n)\geq2\mfun(t_{n-1}),
+  \qquad
+  h(t_n)\leq\frac{2^{-n-2}}{n}\mfun(t_n).
+\end{equation}
+The same last inequality is imposed for $n=1$.  Here one may first find a
+point with a sufficiently large ratio and then move slightly to its right to
+a continuity point; right continuity of $h$ and continuity of $\mfun$
+preserve the strict inequality.  After choosing $t_n$, continuity lets us
+fix $0<\delta_n<t_n/2$ such that
+\begin{equation}\label{eq:positive-interval}
+  h(s)\leq\frac{2^{-n-1}}{n}\mfun(t_n)
+  \quad\text{for }t_n-\delta_n<s<t_n.
+\end{equation}
+At the next induction step we additionally require
+$t_{n+1}<t_n-\delta_n$.
+
+Set
+\begin{equation}\label{eq:an}
+  a_n:=2^{-n}\mfun(t_n).
+\end{equation}
+The middle condition in \eqref{eq:selection} gives $a_{n+1}\geq a_n$.  Define
+the right-continuous decreasing staircase, up to irrelevant endpoint values,
+by
+\begin{equation}\label{eq:u}
+  u(t):=
+  \begin{cases}
+    a_n,&t_{n+1}\leq t<t_n,\quad n\geq1,\\
+    0,&t_1\leq t\leq1.
+  \end{cases}
+\end{equation}
+The intervals cover $(0,t_1)$ because $t_n\downarrow0$.
+
+First, $u\in L_p$.  Indeed, using that $P$ is increasing,
+\begin{align}\label{eq:Lp-u}
+  \int_0^1u(t)^p\,dt
+  &\leq\sum_{n\geq1}t_na_n^p
+   =\sum_{n\geq1}2^{-np}P(t_n)\\
+  &\leq P(t_1)\sum_{n\geq1}2^{-np}<\infty.\notag
+\end{align}
+
+Fix $t\in[t_{n+1},t_n)$.  For the head term, again by monotonicity of $P$,
+\begin{align}
+  \int_0^t u(s)^p\,ds
+  &\leq \sum_{k\geq n+1}t_ka_k^p+t a_n^p\notag\\
+  &=\sum_{k\geq n+1}2^{-kp}P(t_k)
+    +t2^{-np}\mfun(t_n)^p\notag\\
+  &\leq P(t)\sum_{k\geq n+1}2^{-kp}+t\mfun(t)^p
+   \lesssimc t\mfun(t)^p.\label{eq:head-u}
+\end{align}
+Here $t_k\leq t$ for $k\geq n+1$, while $t<t_n$ and the decrease of
+$\mfun$ give $\mfun(t_n)\leq\mfun(t)$.
+
+For the tail term, the decreasing character of $Q$ yields
+\begin{align}
+  \int_t^1u(s)^2\,ds
+  &\leq\sum_{k<n}t_ka_k^2+t_na_n^2\notag\\
+  &=\sum_{k<n}2^{-2k}Q(t_k)+2^{-2n}Q(t_n)\notag\\
+  &\leq Q(t)\left(\sum_{k<n}2^{-2k}+2^{-2n}\right)
+   \lesssimc t\mfun(t)^2.\label{eq:tail-u}
+\end{align}
+Indeed $t_k>t$ for $k<n$ and $t_n>t$, so $Q(t_k),Q(t_n)\leq Q(t)$.
+If $t\geq t_1$, the tail vanishes and \eqref{eq:Lp-u}, together with
+$P(t_1)\leq P(t)$, gives the same head estimate.  Equations
+\eqref{eq:head-u} and \eqref{eq:tail-u} prove \eqref{eq:u-bound}.
+
+Finally, the interval $(t_n-\delta_n,t_n)$ lies inside
+$[t_{n+1},t_n)$, so \eqref{eq:positive-interval} gives there
+\[
+  \frac{u(s)}{h(s)}
+  \geq
+  \frac{2^{-n}\mfun(t_n)}{2^{-n-1}\mfun(t_n)/n}
+  =2n.
+\]
+These are positive-length intervals and they accumulate at zero.  Hence
+$(h+u)/h$ is not bounded near zero.
+\end{proof}
+
+\section{Full solution of the conjecture}
+
+\begin{theorem}[Affirmative answer to Conjecture 2]\label{thm:main}
+Let $1\leq p<2$ and let $M$ be a $p$-convex and $2$-concave Orlicz function.
+If there is a unique, up to equivalence of decreasing rearrangements near
+zero, mean-zero function whose independent copies are equivalent in $L_p$ to
+the unit vector basis of $\ell_M$, then $M$ is
+$(p+\varepsilon)$-convex and $(2-\varepsilon)$-concave for some
+$\varepsilon>0$.
+\end{theorem}
+
+\begin{proof}
+Let $f\in\Lp$ be the generator supplied by the hypothesis and set $h=f^*$.
+By Proposition 6 of the source paper,
+\begin{equation}\label{eq:Th}
+  \Tp h\asympc\mfun.
+\end{equation}
+Since $h$ is decreasing,
+\[
+  h(t)\leq
+  \left(\frac1t\int_0^t h(s)^p\,ds\right)^{1/p}
+  \lesssimc\mfun(t),
+\]
+so \eqref{eq:h-upper} holds.
+
+We first dispose of the case in which $\mfun\lesssimc h$ near zero.  Choose
+$t_0>0$ so that this comparison holds on $(0,t_0]$.  For $t\leq t_0$, its
+$p$-head gives
+\[
+  \int_0^t\mfun(s)^p\,ds
+  \lesssimc\int_0^t h(s)^p\,ds
+  \lesssimc t\mfun(t)^p.
+\]
+For the $2$-tail, split at $t_0$:
+\begin{align*}
+  \int_t^1\mfun(s)^2\,ds
+  &\lesssimc \int_t^{t_0}h(s)^2\,ds
+    +\int_{t_0}^1\mfun(s)^2\,ds\\
+  &\lesssimc t\mfun(t)^2+C_0.
+\end{align*}
+The constant $C_0$ is also bounded by a multiple of $t\mfun(t)^2=Q(t)$,
+because $Q$ is decreasing and $t\leq t_0$.  Hence
+$\Tp\mfun\lesssimc\mfun$ for small $t$.  On $[t_0,1]$ the same bound follows
+from compactness, while the reverse inequality
+\[
+  \mfun(t)\leq
+  \left(\frac1t\int_0^t\mfun(s)^p\,ds\right)^{1/p}
+\]
+is automatic since $\mfun$ is decreasing.  Thus
+$\Tp\mfun\asympc\mfun$.  The source paper's Theorem 9,
+\eqref{eq:source-strict}, proves the desired strict indices.
+
+Suppose, toward a contradiction, that the strict indices fail.  The preceding
+paragraph and $h\lesssimc\mfun$ show that $\mfun/h$ must be unbounded in every
+neighborhood of zero.  Apply Lemma~\ref{lem:staircase}, and set
+\[
+  g:=h+u.
+\]
+Then $g$ is nonnegative, decreasing, and belongs to $L_p(0,1)$.  Minkowski's
+inequality in each of the two terms defining $\Tp$ gives
+\[
+  \Tp g\leq\Tp h+\Tp u\lesssimc\mfun,
+\]
+whereas positivity gives $\Tp g\geq\Tp h\gtrsimc\mfun$.  Therefore
+\begin{equation}\label{eq:Tg}
+  \Tp g\asympc\mfun.
+\end{equation}
+
+It remains only to realize $g$ as the decreasing rearrangement of a mean-zero
+random variable on $(0,1)$.  Define, ignoring the single midpoint,
+\begin{equation}\label{eq:symmetrization}
+  y(t):=
+  \begin{cases}
+    g(2t),&0<t<\tfrac12,\\
+    -g(2t-1),&\tfrac12<t<1.
+  \end{cases}
+\end{equation}
+Then $y\in L_p(0,1)$, the two halves cancel so that $\int_0^1y=0$, and
+$|y|$ has exactly the same distribution as $g$.  Thus $y^*=g$.
+By \eqref{eq:Tg} and source Proposition 6, the independent copies of $y$ are
+also equivalent in $L_p$ to the unit vector basis of $\ell_M$.
+
+Lemma~\ref{lem:staircase} says that $g/h$ is unbounded on positive-measure
+intervals accumulating at zero.  Consequently $g$ and $h$ are not equivalent
+near zero.  The mean-zero random variables $y$ and $f$ therefore give two
+non-equivalent generating distributions, contrary to the uniqueness
+hypothesis.  The strict indices cannot fail, and the conjecture follows.
+\end{proof}
+
+\begin{remark}[Constructive strengthening]
+The proof gives slightly more than the contrapositive.  Whenever a generating
+rearrangement $h$ is not comparable with $\mfun$ near zero, it explicitly
+constructs a second generating rearrangement $g\geq h$ for which $g/h$ is
+unbounded on intervals accumulating at zero.
+\end{remark}
+
+\section{Verification and computational check}
+
+The argument is purely analytic.  The included script
+\texttt{code/check\_staircase\_bounds.py} is only a regression check for the
+head and tail bookkeeping.  It uses power envelopes
+$\mfun(t)=t^{-1/q}$ for four pairs $1\leq p<q<2$, three geometric meshes, and
+4000 logarithmic sample points per case.  It verifies monotonic staircase
+levels, finite $L_p$ mass, and a finite sampled upper bound for
+$\Tp u/\mfun$.  Run it from the repository root with
+\begin{verbatim}
+conda run --no-capture-output -n sandbox python \
+  runs/fa_banach_001/solutions/full/\
+  1406.4950_uniqueness_conjecture_staircase_perturbation/\
+  code/check_staircase_bounds.py
+\end{verbatim}
+The symbolic estimates \eqref{eq:head-u}--\eqref{eq:tail-u}, not the finite
+test, prove the lemma.  A detailed adversarial audit appears in
+\texttt{verification.md}.
+
+\section{Scope, novelty check, and limitations}
+
+This packet answers the exact pointwise near-zero equivalence formulation in
+Conjecture 2.  It does not claim a classification for stronger notions of
+quasi-equivalence that allow rescaling the argument of distribution
+functions.
+
+A bounded literature screen was performed on 9 August 2026 before promotion.
+The repository's lightweight indexes were searched for the arXiv id, title,
+and core terms.  External searches used the exact title, ``Conjecture 2,'' the
+three authors, and combinations of ``uniqueness distribution,'' ``independent
+copies,'' ``Orlicz,'' ``$p$-convex,'' and ``$2$-concave.''  No later paper
+claiming this converse and no matching staircase proof was found.
+
+The strongest later-status checks were the same authors' 2022 follow-up
+\cite{ASZ22}, which describes the global uniqueness question as remaining open
+while proving further sufficient theorems, and Astashkin's 2024 survey
+\cite{Ast24}, whose Problem 1 again asks for necessary and sufficient uniqueness
+conditions.  The survey's formulation uses quasi-equivalence, so it is
+supporting evidence that the surrounding problem remained active, not an exact
+identity with Conjecture 2.  This was a bounded search, not a proof of novelty.
+
+The recommended human review should focus on: (i) the two monotonicity
+directions in \eqref{eq:monotonicities}; (ii) the arbitrary-$t$ estimates
+\eqref{eq:head-u} and \eqref{eq:tail-u}; (iii) selection of continuity points
+and positive-length intervals in Lemma~\ref{lem:staircase}; and (iv) the exact
+fit between the symmetrization \eqref{eq:symmetrization} and source
+Proposition 6.
+
+\begin{thebibliography}{9}
+
+\bibitem{ASZ15}
+S.~Astashkin, F.~Sukochev, and D.~Zanin,
+\emph{On uniqueness of distribution of a random variable whose independent
+copies span a subspace in $L_p$},
+Studia Math. \textbf{230} (2015), no.~1, 41--57.
+\href{https://arxiv.org/abs/1406.4950}{arXiv:1406.4950};
+\href{https://doi.org/10.4064/sm8089-1-2016}{doi:10.4064/sm8089-1-2016}.
+
+\bibitem{ASZ22}
+S.~Astashkin, F.~Sukochev, and D.~Zanin,
+\emph{The distribution of a random variable whose independent copies span
+$\ell_M$ is unique},
+Rev. Mat. Complut. \textbf{35} (2022), 815--834.
+\href{https://doi.org/10.1007/s13163-021-00406-x}%
+{doi:10.1007/s13163-021-00406-x}.
+
+\bibitem{Ast24}
+S.~V.~Astashkin,
+\emph{Sequences of independent functions and structure of rearrangement
+invariant spaces},
+Russian Math. Surveys \textbf{79} (2024), no.~3, 375--457.
+\href{https://www.mathnet.ru/eng/rm10171}{Math-Net.Ru record}.
+
+\end{thebibliography}
+
+\end{document}

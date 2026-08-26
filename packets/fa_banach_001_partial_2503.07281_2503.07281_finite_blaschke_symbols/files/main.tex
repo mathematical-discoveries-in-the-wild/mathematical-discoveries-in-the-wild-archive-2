@@ -1,0 +1,236 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Hone}{H^1(\C^+)}
+\newcommand{\BMOA}{\operatorname{BMOA}}
+\newcommand{\supp}{\operatorname{supp}}
+
+\title{Finite Blaschke Products Answer the Existence Part of a\\
+Toeplitz Problem on $H^1(\mathbb C^+)$}
+\author{Run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_08}}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status and source question}
+
+\textbf{Status: substantial partial solution, likely valid, pending human review.}
+
+Bellavita and Peloso \cite{source} study, for a nonconstant inner function
+$\Theta$ on the upper half-plane, the codimension-one subspace
+\[
+ H^1_\Theta=\left\{f\in\Hone:
+       \langle f,\Theta\rangle:=\int_{\R}f(x)\overline{\Theta(x)}\,dx=0
+                 \right\}
+\]
+and the restricted Toeplitz operator
+$T_{\overline\Theta}:H^1_\Theta\to\Hone$.  Their Question~1 on PDF
+page~12 asks whether any inner functions other than $e^{i\tau z}$ yield a
+bounded restricted operator and, more broadly, which inner functions do.
+Their Theorem~1.3 shows that boundedness is equivalent to
+\begin{equation}\label{eq:source-equivalence}
+ H^1_\Theta=K^1_\Theta\oplus\Theta H^1,
+ \qquad
+ K^1_\Theta=\{f\in\Hone:\overline\Theta f\in\overline{\Hone}\}.
+\end{equation}
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{Question 1 on source PDF page 12.}
+\end{figure}
+
+\section*{Proof intuition}
+
+For a finite Blaschke product $B$ of degree $N$, the quotient
+$H^1/BH^1$ is just the $N$-dimensional space of jets at the zeros of $B$.
+The single annihilation condition defining $H^1_B$ cuts this quotient down to
+dimension $N-1$.
+
+At the endpoint $p=1$, one must take care not to import an unavailable Riesz
+projection.  Instead, the model space can be computed directly.  If $Q$ is
+the polynomial whose roots are the reflected zeros of $B$, then analytic and
+anti-analytic Fourier support force every $f\in K^1_B$ to have the form
+$P/Q$.  Boundary integrability is exactly the condition
+$\deg P\leq N-2$.  Thus $K^1_B$ also has dimension $N-1$.  The source's
+elementary inclusion $K^1_B\oplus BH^1\subseteq H^1_B$ must therefore be an
+equality.
+
+\section*{The finite-Blaschke theorem}
+
+\begin{theorem}\label{thm:main}
+Let
+\[
+ B(z)=\eta\prod_{j=1}^{s}
+ \left(\frac{z-a_j}{z-\overline{a_j}}\right)^{m_j},
+ \qquad a_j\in\C^+,\quad |\eta|=1,
+\]
+be a nonconstant finite Blaschke product, with distinct $a_j$, positive
+multiplicities $m_j$, and degree $N=\sum_jm_j$.  Then
+\[
+ H^1_B=K^1_B\oplus BH^1.
+\]
+Consequently $T_{\overline B}:H^1_B\to\Hone$ is bounded.  If
+$f=k+Bh$ is the displayed decomposition, its bounded extension satisfies
+$T_{\overline B}f=h$.
+\end{theorem}
+
+\begin{proof}
+We divide the proof into three short steps.
+
+\emph{Step 1: the jet quotient.}
+Consider the bounded jet map
+\[
+ J:\Hone\longrightarrow\C^N,
+ \qquad
+ Jf=\bigl(f^{(r)}(a_j)\bigr)_{1\leq j\leq s,\ 0\leq r<m_j}.
+\]
+It is onto.  Indeed, fix $M>N+1$.  Hermite interpolation applied to
+functions of the form $P(z)/(z+i)^M$, with $\deg P<N$, realizes arbitrary
+prescribed jets; these rational functions belong to $\Hone$.
+
+The kernel of $J$ is $BH^1$.  One inclusion is immediate.  Conversely, if all
+the prescribed jets of $f$ vanish, then $f/B$ is analytic in $\C^+$ and has
+the same boundary modulus as $f$.  The standard inner--outer factorization
+(equivalently, the Smirnov theorem) gives $f/B\in\Hone$.  Hence
+\begin{equation}\label{eq:jet-quotient}
+ \Hone/BH^1\cong\C^N.
+\end{equation}
+
+Let $L_B(f)=\langle f,B\rangle$.  Since every $h\in\Hone$ has integral zero,
+\[
+ L_B(Bh)=\int_{\R}h(x)\,dx=0,
+\]
+so $BH^1\subseteq H^1_B=\ker L_B$.  The functional $L_B$ is nonzero: under
+the $H^1$--$\BMOA$ duality, it is represented by the nonconstant function
+$B$, which is nonzero modulo constants.  It follows from
+\eqref{eq:jet-quotient} that
+\begin{equation}\label{eq:hyperplane-dimension}
+ \dim(H^1_B/BH^1)=N-1.
+\end{equation}
+
+\emph{Step 2: the endpoint model space.}
+Put
+\[
+ A(z)=\prod_{j=1}^{s}(z-a_j)^{m_j},
+ \qquad
+ Q(z)=\prod_{j=1}^{s}(z-\overline{a_j})^{m_j},
+ \qquad B=\eta A/Q.
+\]
+We claim that
+\begin{equation}\label{eq:model-description}
+ K^1_B=\left\{\frac{P}{Q}: P\text{ is a polynomial and }
+                              \deg P\leq N-2\right\}.
+\end{equation}
+
+Let $f\in K^1_B$.  There is a $g\in\Hone$ such that
+$\overline Bf=\overline g$ on $\R$, and hence
+\[
+ \overline\eta\,Qf=A\overline g
+\]
+as tempered distributions on the boundary.  The Fourier transform of $Qf$
+is supported in $[0,\infty)$, while that of $A\overline g$ is supported in
+$(-\infty,0]$.  Their common Fourier transform is therefore supported at
+$\{0\}$.  A tempered distribution with point support is a finite linear
+combination of derivatives of the Dirac mass, so $Qf=P$ is a polynomial.
+Since $f=P/Q$ belongs to $L^1(\R)$ and $\deg Q=N$, necessarily
+$\deg P\leq N-2$.
+
+Conversely, take such a polynomial $P$ and put
+$P^\#(z)=\overline{P(\overline z)}$.  Both
+\[
+ f=P/Q,
+ \qquad g=\eta P^\#/Q
+\]
+belong to $\Hone$, and on $\R$ one has
+$\overline Bf=\overline g$.  Thus $f\in K^1_B$, proving
+\eqref{eq:model-description}.  In particular,
+\begin{equation}\label{eq:model-dimension}
+ \dim K^1_B=N-1,
+\end{equation}
+with $K^1_B=\{0\}$ when $N=1$.
+
+\emph{Step 3: fill the hyperplane.}
+If $k\in K^1_B$, write $\overline Bk=\overline g$ with $g\in\Hone$.
+Then
+\[
+ \langle k,B\rangle=\int_{\R}\overline{g(x)}\,dx=0,
+\]
+so $K^1_B\subseteq H^1_B$.  Also $K^1_B\cap BH^1=\{0\}$: after cancelling
+$B$, a boundary function lying in both $H^1$ and $\overline{H^1}$ must be
+zero.  Hence $K^1_B$ injects into $H^1_B/BH^1$.  Equations
+\eqref{eq:hyperplane-dimension} and \eqref{eq:model-dimension} show that this
+injection is onto.  Therefore
+$H^1_B=K^1_B\oplus BH^1$.
+
+The boundedness of $T_{\overline B}$ now follows from
+\eqref{eq:source-equivalence}.  On $K^1_B$ the Toeplitz operator vanishes,
+while $T_{\overline B}(Bh)=h$, which gives the asserted action.
+\end{proof}
+
+\begin{corollary}
+Every nonconstant rational inner function on $\C^+$ gives a bounded restricted
+Toeplitz operator.  In particular,
+\[
+ B(z)=\frac{z-i}{z+i}
+\]
+answers the existence part of Question~1 affirmatively; here
+$K^1_B=\{0\}$ and $H^1_B=BH^1$.
+\end{corollary}
+
+\section*{Verification, scope, and novelty}
+
+The proof treats repeated zeros through the full Hermite jet family.  It also
+checks the endpoint feature that a possible $1/x$ rational tail is not in
+$L^1$; this is precisely why the numerator degree in
+\eqref{eq:model-description} is $N-2$, rather than the familiar $N-1$ from
+$K^2_B$.  Since $BH^1$ is closed and $K^1_B$ is finite-dimensional, the
+algebraic direct sum is automatically topological, so its coordinate
+projections and the resulting Toeplitz extension are bounded.
+
+This is a partial answer to the source's classification problem.  It settles
+the existence question and the full rational-inner subcase, but it does not
+classify infinite Blaschke products, singular inner functions, or general
+meromorphic inner functions.
+
+On 9 August 2026 we searched the run's registry, solution, attempt, and
+proof-gap indexes for arXiv:2503.07281 and the core terms.  Bounded web searches
+used the exact paper title, the notation $H^1_\Theta$ and $K^1_\Theta$, the
+displayed equality, finite Blaschke products, and later work by the source
+authors.  They found the source paper and general model-space background, but
+no separate work recording this finite-Blaschke answer.  This supports, but
+does not guarantee, novelty.
+
+\section*{Human-review focus}
+
+The decisive checks are: (i) the endpoint identity
+$\ker J=BH^1$; (ii) the Fourier-support argument proving
+\eqref{eq:model-description}; and (iii) the fact that the nonconstant $B$
+defines a nonzero $H^1$ functional, producing exactly one dimension of
+codimension inside the jet quotient.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+C. Bellavita and M. M. Peloso,
+\emph{On Toeplitz operators on $H^1(\mathbb C^+)$},
+arXiv:2503.07281v1 (2025), accepted in Proc. Amer. Math. Soc.
+
+\bibitem{garnett}
+J. B. Garnett,
+\emph{Bounded Analytic Functions},
+Graduate Texts in Mathematics, Springer, 2006.
+\end{thebibliography}
+
+\end{document}

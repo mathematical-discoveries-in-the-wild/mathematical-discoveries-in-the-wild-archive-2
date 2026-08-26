@@ -1,0 +1,320 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Pfr}{\mathfrak P}
+\newcommand{\ran}{\operatorname{ran}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\id}{\mathrm{id}}
+
+\title{Quiver-Unitary Invariance Characterizes\\Hyper-Reinhardt Free Spectrahedra}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 10}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\begin{minipage}{0.87\textwidth}
+\textbf{Status.} Candidate full solution, likely valid, pending human review.
+The matrix-level invariance in Remark 4.4 of McCullough is proved equivalent
+to the defining path-block form of a hyper-Reinhardt pencil.
+\end{minipage}}
+\end{center}
+
+\section{Source question}
+
+For a tuple $B=(B_1,\ldots,B_g)$ on a finite-dimensional Hilbert space
+$H$, put
+\[
+ L_B(X)=I+\sum_{j=1}^g
+ \bigl(B_j\otimes X_j+B_j^*\otimes X_j^*\bigr),
+ \qquad
+ \Pfr_B[n]=\{X:L_B(X)\succ0\}.
+\]
+McCullough calls a free spectrahedron hyper-Reinhardt when it has a defining
+tuple of path-block form: there is an orthogonal decomposition
+$H=H_0\oplus\cdots\oplus H_g$ for which $B_j$ has only its
+$(j-1,j)$ block nonzero.  Lemma 4.3 of \cite{McC} shows that such a domain is
+invariant under
+\begin{equation}\label{action}
+ X_j\longmapsto W_{j-1}^*X_jW_j,
+ \qquad W_0,\ldots,W_g\in U(n).
+\end{equation}
+Remark 4.4 asks whether this invariance characterizes the class.
+
+The final $\Pfr_A$ in the source's displayed question is necessarily a local
+typo for $\Pfr_B$: $A$ is not attached to the arbitrary domain being tested,
+and the preceding lemma makes the intended statement clear.
+
+\clearpage
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{Official arXiv:2107.11641v4 PDF page 17: all of Remark 4.4 and the
+block-conjugation proof of the forward implication.}
+\end{figure}
+\clearpage
+
+\section{Proof intuition}
+
+The symmetry is stronger than ordinary coordinatewise rotations because the
+$W_j$ are full matrices and the right unitary on $X_j$ is the left unitary on
+$X_{j+1}$.  To exploit that strength, fix a matrix size $n$ and replace the
+entries of each $X_j$ by new free variables.  The original and transformed
+pencils become two monic pencils in $gn^2$ variables.  The hypothesis says
+their free spectrahedra agree at \emph{all} auxiliary levels, so the Linear
+Gleichstellensatz makes their minimal coefficient tuples unitarily
+equivalent.
+
+At $n=2$, the identity $E_{11}E_{21}=0$ can then be transported through this
+unitary equivalence.  If two vertex unitaries in \eqref{action} are
+independent, choose their quotient to be the flip $F$; now
+$E_{11}FE_{21}=E_{11}\ne0$.  The only way the transported product can still
+vanish is for its coefficient-space factor to vanish.  Three placements of
+adjoints give exactly the orthogonality relations of a path representation.
+Their range and source spaces then reconstruct $H_0,\ldots,H_g$.
+
+\section{Complete characterization}
+
+A monic defining tuple is \emph{minimal} if no proper reducing subpencil
+defines the same free spectrahedron (equivalently, no smaller monic pencil
+does).  Every free spectrahedron has a minimal defining
+tuple, unique up to unitary equivalence; we use the Linear Gleichstellensatz
+in this standard form \cite[Proposition 2.2]{EHKM}.  The same tool is used in
+the graph characterization of Reinhardt pencils in \cite[Theorem 3.1]{MT}.
+
+\begin{theorem}[answer to Remark 4.4]\label{main}
+Let $B=(B_1,\ldots,B_g)$ be a minimal monic defining tuple, with every
+$B_j\ne0$.  The following are equivalent.
+\begin{enumerate}
+\item For every $n$, every $X\in\Pfr_B[n]$, and every
+$W_0,\ldots,W_g\in U(n)$, the tuple in \eqref{action} belongs to
+$\Pfr_B[n]$.
+\item There is an orthogonal decomposition
+\[
+ H=H_0\oplus H_1\oplus\cdots\oplus H_g
+\]
+such that, with $P_r$ the projection onto $H_r$,
+\begin{equation}\label{pathform}
+ B_j=P_{j-1}B_jP_j\qquad(1\le j\le g).
+\end{equation}
+\end{enumerate}
+Thus quiver-unitary invariance characterizes hyper-Reinhardt free
+spectrahedra.  If the one-coordinate slices have radius one, the nonzero
+blocks in \eqref{pathform} have norm one, exactly matching the source's
+normalization.
+\end{theorem}
+
+We first verify the one technical point needed before applying the
+Gleichstellensatz.
+
+\begin{lemma}[matrix-unit inflation preserves minimality]\label{inflation}
+Let $B$ be minimal and let $(E_{ab})_{a,b=1}^n$ be the matrix units of $M_n$.
+Then the tuple
+\[
+ C_{j,ab}=B_j\otimes E_{ab}\qquad
+ (1\le j\le g,\ 1\le a,b\le n)
+\]
+is a minimal defining tuple in $gn^2$ variables.
+\end{lemma}
+
+\begin{proof}
+Decompose $B$ into irreducible reducing summands $B^{(\nu)}$.  Minimality
+means that no such summand is redundant.  Fix one summand.  By irreducibility,
+the unital $C^*$-algebra generated by its coefficients is the full matrix
+algebra $M_{d_\nu}$.  The span of positive-length $*$-words in the
+$B_j^{(\nu)}$ is a nonzero two-sided ideal of $M_{d_\nu}$, hence is all of
+$M_{d_\nu}$.
+
+Every positive-length $*$-word $Q$ can be lifted, using a compatible chain of
+matrix units, to $Q\otimes E_{ab}$ in the $*$-algebra generated by the
+$C_{j,ab}^{(\nu)}$.  Therefore that algebra contains
+$M_{d_\nu}\otimes M_n$ and the inflated summand is irreducible.
+
+It remains to exclude redundancy among these summands.  Restrict the new
+variables by setting $Y_{j,aa}=Z_j$ for every $a$ and
+$Y_{j,ab}=0$ for $a\ne b$.  Then
+\[
+ \sum_{a,b}E_{ab}\otimes Y_{j,ab}=I_n\otimes Z_j,
+\]
+and, after a tensor-factor permutation, each inflated summand becomes $n$
+copies of the original summand.  Redundancy after inflation would therefore
+imply redundancy before inflation, a contradiction.  Thus $C$ is minimal.
+\end{proof}
+
+\begin{lemma}[forced products]\label{products}
+Under condition (1) of Theorem \ref{main},
+\begin{align}
+ B_jB_k&=0 &&\text{if }k\ne j+1,\label{same}\\
+ B_jB_k^*&=0 &&\text{if }j\ne k,\label{right}\\
+ B_j^*B_k&=0 &&\text{if }j\ne k.\label{left}
+\end{align}
+\end{lemma}
+
+\begin{proof}
+Fix $n$ and write
+\[
+ X_j(Y)=\sum_{a,b=1}^n E_{ab}\otimes Y_{j,ab}.
+\]
+The pencil $L_B(X(Y))$, after permuting tensor factors, has coefficients
+\[
+ C_{j,ab}=B_j\otimes E_{ab}.
+\]
+For fixed $W_0,\ldots,W_g\in U(n)$, the transformed pencil has coefficients
+\[
+ D_{j,ab}=B_j\otimes W_{j-1}^*E_{ab}W_j.
+\]
+Condition (1), applied at sizes $nm$ for every auxiliary size $m$, says
+precisely that $C$ and $D$ define the same free spectrahedron.  Both are
+minimal by Lemma \ref{inflation}; hence the Linear Gleichstellensatz gives a
+unitary $U_W$ such that
+\begin{equation}\label{intertwine}
+ U_WC_{j,ab}U_W^*=D_{j,ab}
+\end{equation}
+for every $j,a,b$.
+
+Now take $n=2$, let $F=\left(\begin{smallmatrix}0&1\\1&0\end{smallmatrix}\right)$,
+and note
+\begin{equation}\label{witness}
+ E_{11}E_{21}=0,
+ \qquad E_{11}FE_{21}=E_{11}\ne0.
+\end{equation}
+If $k\ne j+1$, then $W_j$ and $W_{k-1}$ are independent choices.  We have
+$C_{j,11}C_{k,21}=0$; choose their quotient
+$W_jW_{k-1}^*=F$.  By \eqref{witness}, the matrix factor of
+$D_{j,11}D_{k,21}$ is nonzero (the remaining outer factors are unitary).
+Equation \eqref{intertwine} carries the zero product to a zero product, so
+$B_jB_k=0$.  This proves \eqref{same}.
+
+For $j\ne k$, start instead with
+\[
+ C_{j,11}C_{k,12}^*=0
+ \quad\text{and choose }W_jW_k^*=F;
+\]
+the same argument gives \eqref{right}.  Finally, start with
+\[
+ C_{j,11}^*C_{k,21}=0
+ \quad\text{and choose }W_{j-1}W_{k-1}^*=F
+\]
+to obtain \eqref{left}.  All choices are available exactly in the stated
+off-diagonal cases.
+\end{proof}
+
+\begin{proof}[Proof of Theorem \ref{main}]
+Assume (1).  Put
+\[
+ R_j=\ran B_j,
+ \qquad S_j=\ran B_j^*.
+\]
+Relation \eqref{left} makes the $R_j$ pairwise orthogonal, and
+\eqref{right} makes the $S_j$ pairwise orthogonal.  Moreover,
+\eqref{same} gives
+\[
+ R_k\perp S_j\qquad\text{unless }k=j+1,
+\]
+because
+$\langle B_kx,B_j^*y\rangle=\langle B_jB_kx,y\rangle$.
+Consequently the subspaces
+\begin{equation}\label{layers}
+ H_0=R_1,\qquad
+ H_r=S_r+R_{r+1}\ (1\le r\le g-1),\qquad
+ H_g=S_g
+\end{equation}
+are pairwise orthogonal.
+
+Let $K$ be the orthogonal complement of their sum.  Since $K$ is orthogonal
+to every $S_j$ and every $R_j$, both $B_j$ and $B_j^*$ vanish on $K$.
+Thus $K$ is a common reducing zero summand.  If $K\ne0$, deleting the identity
+block on $K$ gives a smaller defining pencil, contrary to minimality.  Hence
+the spaces in \eqref{layers} sum to $H$.
+
+In finite dimension, $(\ker B_j)^\perp=S_j$, so $B_j$ vanishes on
+$S_j^\perp$ and has range $R_j$.  Since $S_j\subseteq H_j$ and
+$R_j\subseteq H_{j-1}$, equation \eqref{pathform} follows.  This proves (2).
+
+Conversely assume (2) and set
+\[
+ \mathcal W=\bigoplus_{r=0}^g(I_{H_r}\otimes W_r).
+\]
+A block computation gives
+\[
+ \mathcal W^*L_B(X)\mathcal W
+ =L_B(W_0^*X_1W_1,\ldots,W_{g-1}^*X_gW_g).
+\]
+Positive definiteness is therefore preserved, proving (1).
+
+For the normalization statement, set all coordinates except $X_j$ equal to
+zero.  The only nontrivial block is
+\[
+ \begin{pmatrix}I&C_j\otimes X_j\\C_j^*\otimes X_j^*&I\end{pmatrix},
+ \qquad C_j=B_j|_{H_j}:H_j\to H_{j-1},
+\]
+which is positive exactly when $\|C_j\|\,\|X_j\|<1$.  A coordinate-slice
+radius of one is therefore equivalent to $\|C_j\|=1$.
+\end{proof}
+
+\begin{corollary}[inactive coordinates]
+If some coordinate is absent from a minimal pencil, the characterization
+holds after deleting it, with zero connecting blocks reinserted.  Thus the
+unqualified structural statement remains true if zero-dimensional layers or
+zero connectors are admitted; the source's norm-one convention simply
+excludes these unbounded coordinate directions.
+\end{corollary}
+
+\section{Verification, novelty, and limitations}
+
+The bundled exact checker verifies the $2\times2$ witness, the three families
+of zero-product relations on a nontrivial three-arrow path pencil, and the
+block-conjugation identity.  These checks guard the index and adjoint
+placements; they do not replace Lemma \ref{inflation} or the
+Gleichstellensatz.
+
+Eight focused attempts are recorded in the run attempt note.  A bounded
+literature search on 13 August 2026 covered the exact title, Remark 4.4 phrase,
+arXiv id, authors, and combinations of ``hyper-Reinhardt'', ``unitary
+invariance'', ``quiver'', and ``characterization''.  No later claimed answer
+was found.  McCullough--Tuovila \cite{MT} characterize only the weaker scalar
+torus symmetry.  Ben Jemaa--McCullough \cite{BJM} later use \eqref{action} as
+a necessary obstruction for a particular domain, but do not state the
+converse.  Novelty confidence is moderate because the search was bounded.
+
+Human review should focus on Lemma \ref{inflation} and on the hypotheses of
+the Linear Gleichstellensatz.  No conditional mathematical dependency is
+currently known.  The only statement caveats are the source's obvious
+$A/B$ typo and its harmless norm-one coordinate normalization.
+
+\begin{thebibliography}{9}
+\bibitem{McC}
+S. McCullough,
+\emph{Hyper-Reinhardt Free Spectrahedra},
+arXiv:2107.11641v4; published as a chapter in
+\emph{Recent Developments in Operator Theory, Mathematical Physics and
+Complex Analysis}, 2023.
+
+\bibitem{EHKM}
+E. Evert, J. W. Helton, I. Klep, and S. McCullough,
+\emph{Circular free spectrahedra},
+J. Math. Anal. Appl. 445 (2017), 1047--1070;
+arXiv:1604.05756.
+
+\bibitem{MT}
+S. McCullough and N. Tuovila,
+\emph{Reinhardt free spectrahedra},
+Linear Algebra Appl. 640 (2022), 91--117;
+arXiv:2012.02289.
+
+\bibitem{BJM}
+M. Ben Jemaa and S. McCullough,
+\emph{Reinhardt Free Spectrahedra},
+arXiv:2301.02746v2 (2023).
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,266 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\T}{\mathbb T}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\cT}{\mathcal T}
+\newcommand{\supp}{\operatorname{supp}}
+
+\title{Sharp Fourier sampling numbers in the full linear regime}
+\author{Candidate partial result for arXiv:2508.13991}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+\texttt{candidate\_partial\_likely\_valid}.  The source's full open problem is
+not solved.  We determine the exact asymptotic rate throughout the parameter
+sector \(q\geq2\) or \(p\leq q\), under only the sharp compact-embedding
+condition.
+
+\section{Source problem and theorem}
+
+Equip \(\T^d=(\mathbb R/2\pi\Z)^d\) with normalized measure.  Let
+\[
+ K_q^s=\{f:\|f\|_{B^s_\infty(L_q)}\leq1\}
+\]
+be the unit ball of the periodic Besov space, and define its Fourier sampling
+numbers in \(L_p\) by
+\[
+ s_n^F(K_q^s)_{L_p}
+ =\inf_{\xi_1,\ldots,\xi_n\in\Z^d}
+   \ \sup\left\{\|f\|_{L_p}:f\in K_q^s,\
+   \widehat f(\xi_j)=0\ (1\leq j\leq n)\right\}.                 \tag{1}
+\]
+Siegel determines nearly sharp bounds under \(s/d>1-1/p\) and explicitly
+leaves the remaining smoothness range open.
+
+\begin{center}
+\includegraphics[width=.96\textwidth]{figures/open_problem_crop.png}
+
+\small Real crop from page 3 of the source paper.
+\end{center}
+
+\begin{theorem}\label{thm:main}
+Let \(d\in\N\), \(s>0\), and \(1\leq p,q\leq\infty\).  Suppose
+\[
+             \frac{s}{d}>\left(\frac1q-\frac1p\right)_+          \tag{2}
+\]
+and either \(p\leq q\) or \(q\geq2\).  Then, for \(n\geq2\),
+\[
+ s_n^F(K_q^s)_{L_p}
+ \asymp n^{-s/d+(1/q-1/p)_+}.                                   \tag{3}
+\]
+The constants may depend on \(d,s,p,q\), but not on \(n\).
+\end{theorem}
+
+Thus (3) fills every omitted parameter point in the linear regime for which
+the Besov ball is compact in \(L_p\).  In particular, it covers
+\[
+ \left(\frac1q-\frac1p\right)_+
+ <\frac{s}{d}\leq1-\frac1p,
+\]
+whenever this strip is nonempty and \(q\geq2\) or \(p\leq q\).
+
+\paragraph{Proof intuition.}
+The source's low-frequency upper bound already needs only (2).  For the
+matching lower bound, challenge an arbitrary set of sampled frequencies with
+a block containing twice as many lattice points.  When \(p\leq q\), a single
+unsampled exponential has the required size.  When \(q\geq2\) and \(p>q\),
+sum all unsampled exponentials in the block.  The sum is coherent near the
+origin, producing the \(L_p\) gain, while interpolation between \(L_2\) and
+\(L_\infty\) controls its \(L_q\) norm.
+
+\section{Two standard estimates}
+
+Let \(\cT_m^d\) denote the trigonometric polynomials supported in
+\(\{k\in\Z^d:|k|_\infty\leq m\}\).  We use the standard approximation
+characterization
+\[
+ \|f\|_{B^s_\infty(L_q)}
+ \asymp \|f\|_{L_q}
+  +\sup_{m\geq0}(m+1)^s E_m(f)_q,                                \tag{4}
+\]
+where \(E_m(f)_q=\inf_{P\in\cT_m^d}\|f-P\|_{L_q}\).  We also use the
+de la Vall\'ee Poussin operator \(V_m\): it is supported on
+\([-m,m]^d\), is uniformly bounded on every \(L_r\), and satisfies
+\[
+                  \|f-V_mf\|_{L_r}\lesssim E_{m/2}(f)_r.         \tag{5}
+\]
+
+We record explicitly the inverse estimate needed for the witnesses.
+
+\begin{lemma}\label{lem:inverse}
+If \(P\in\cT_{2N}^d\), \(N\geq1\), then
+\[
+                 \|P\|_{B^s_\infty(L_q)}
+                 \leq C_{d,s,q}N^s\|P\|_{L_q}.                  \tag{6}
+\]
+\end{lemma}
+
+\begin{proof}
+Choose an integer \(r>s\).  Bernstein's inequality for trigonometric
+polynomials and the trivial difference estimate give
+\[
+ \omega_r(P,t)_q
+ \lesssim \min\{1,(Nt)^r\}\|P\|_{L_q}.
+\]
+Consequently
+\[
+ \sup_{t>0}t^{-s}\omega_r(P,t)_q
+ \lesssim N^s\|P\|_{L_q}.
+\]
+Adding the \(L_q\) term proves (6).  The argument includes
+\(q=1,\infty\).
+\end{proof}
+
+\section{Proof of Theorem \ref{thm:main}}
+
+\paragraph{Upper bound.}
+First suppose \(p\leq q\).  Choose the largest even \(m\) for which
+\((2m+1)^d\leq n\), sample every frequency in \([-m,m]^d\), and add
+arbitrary frequencies if needed.  If \(f\in K_q^s\) vanishes on the sampled
+coefficients, then \(V_mf=0\).  By normalized-measure H\"older, (5), and
+(4),
+\[
+ \|f\|_{L_p}\leq\|f\|_{L_q}
+ =\|f-V_mf\|_{L_q}
+ \lesssim m^{-s}\lesssim n^{-s/d}.                              \tag{7}
+\]
+
+Now suppose \(q\geq2\) and \(p>q\).  Put
+\[
+                  t=s-d\left(\frac1q-\frac1p\right)>0.
+\]
+The standard Besov embedding
+\[
+ B^s_\infty(L_q)\hookrightarrow B^t_\infty(L_p)                 \tag{8}
+\]
+and the same low-frequency argument, now in \(L_p\), give
+\[
+ \|f\|_{L_p}\lesssim m^{-t}
+ \lesssim n^{-s/d+1/q-1/p}.                                    \tag{9}
+\]
+This proves the upper half of (3).  Notice that (2), rather than the
+source theorem's stronger assumption, is exactly what makes \(t>0\).
+
+\paragraph{Lower bound: construction of an unsampled block.}
+Fix any proposed set \(\Lambda\subset\Z^d\) of at most \(n\) sampled
+frequencies.  Let \(N\) be the least positive integer with \(N^d\geq2n\)
+and set
+\[
+ A_N=\{k\in\Z^d:N\leq k_1<2N,\quad 0\leq k_j<N\ (2\leq j\leq d)\}.
+                                                                    \tag{10}
+\]
+Then \(|A_N|=N^d\), \(N\asymp n^{1/d}\), and
+\[
+ S=A_N\setminus\Lambda,\qquad M=|S|\geq\tfrac12N^d.              \tag{11}
+\]
+
+If \(p\leq q\), choose \(k\in S\).  The polynomial \(e^{ik\cdot x}\)
+has every \(L_r\)-norm equal to one, and Lemma~\ref{lem:inverse} gives
+Besov norm at most \(CN^s\).  Hence a constant multiple of
+\(N^{-s}e^{ik\cdot x}\) belongs to \(K_q^s\), vanishes on \(\Lambda\),
+and has \(L_p\)-norm comparable to
+\[
+                         N^{-s}\asymp n^{-s/d}.                  \tag{12}
+\]
+
+It remains to treat \(q\geq2\) and \(p>q\).  Define
+\[
+                         D_S(x)=\sum_{k\in S}e^{ik\cdot x}.       \tag{13}
+\]
+Orthogonality and the pointwise triangle inequality imply
+\[
+ \|D_S\|_{L_2}=M^{1/2},\qquad \|D_S\|_{L_\infty}=M.
+\]
+Interpolation therefore gives
+\[
+                         \|D_S\|_{L_q}\leq M^{1-1/q}.            \tag{14}
+\]
+
+For the reverse \(L_p\) estimate, choose
+\(a=[4(d+1)]^{-1}\).  If \(|x_j|\leq a/N\) for every \(j\), then for
+each \(k\in A_N\),
+\[
+ |k\cdot x|\leq(d+1)a=\tfrac14.
+\]
+Thus all summands in (13) have real part at least \(\cos(1/4)\), and
+\[
+ |D_S(x)|\geq \cos(1/4)M
+ \quad\text{on a set of normalized measure }c_dN^{-d}.
+\]
+For \(p<\infty\) this yields
+\[
+                         \|D_S\|_{L_p}\gtrsim MN^{-d/p},         \tag{15}
+\]
+and for \(p=\infty\) the same formula holds with \(N^{-d/p}=1\),
+since \(D_S(0)=M\).  Combining (11), (14), and (15),
+\[
+ \frac{\|D_S\|_{L_p}}{\|D_S\|_{L_q}}
+ \gtrsim M^{1/q}N^{-d/p}
+ \gtrsim N^{d(1/q-1/p)}.                                       \tag{16}
+\]
+
+Lemma~\ref{lem:inverse} shows that
+\[
+             f=\frac{D_S}{C N^s\|D_S\|_{L_q}}                  \tag{17}
+\]
+belongs to \(K_q^s\) for a fixed \(C\).  Its Fourier coefficients vanish
+on \(\Lambda\), while (16) gives
+\[
+ \|f\|_{L_p}
+ \gtrsim N^{-s+d(1/q-1/p)}
+ \asymp n^{-s/d+1/q-1/p}.                                      \tag{18}
+\]
+Because \(\Lambda\) was arbitrary, (12) and (18) prove the lower half
+of (3), completing the proof.
+
+\section{Verification, scope, and novelty}
+
+\paragraph{Internal checks.}
+The witness is supported in \(\cT_{2N}^d\), its sampled coefficients
+vanish identically, and the exponent in (18) is positive in the denominator
+precisely under (2).  A supporting script tested randomly thinned
+one-dimensional blocks at four scales.  Across forty trials per scale, the
+minimum ratios after division by the predicted powers were \(0.633084\) for
+\((q,p)=(2,4)\), \(0.857909\) for \((3,6)\), and \(0.707107\) for
+\((2,\infty)\); all removed coefficients were exactly zero.  These numerical
+checks are not used in the proof.
+
+\paragraph{Limitations.}
+The nonlinear sector \(q<2\) and \(p>q\) remains open outside the source
+range.  We do not settle the logarithmic factors in that sector, the
+nonperiodic-domain problem, or the Radon-measurement analogue.
+
+\paragraph{Novelty check and human review.}
+Exact-title and close-variant searches through 9 August 2026 found the source
+paper but no later statement of (3) under the full compactness condition.
+The upper estimate is already latent in the source proof; the contribution is
+the uniform lower-bound witness closing the asymptotics.  Human review should
+check the endpoint inverse estimate in Lemma~\ref{lem:inverse} and search for
+the dense-unsampled-block argument in older width literature.  Novelty is
+therefore provisional, while the mathematical confidence is high.
+
+\begin{thebibliography}{9}
+\bibitem{Siegel}
+J.~W.~Siegel,
+\emph{Nearly optimal bounds on the Fourier sampling numbers of Besov spaces},
+arXiv:2508.13991v2 (2025).
+
+\bibitem{DeVoreLorentz}
+R.~A.~DeVore and G.~G.~Lorentz,
+\emph{Constructive Approximation},
+Springer, 1993.
+\end{thebibliography}
+
+\end{document}

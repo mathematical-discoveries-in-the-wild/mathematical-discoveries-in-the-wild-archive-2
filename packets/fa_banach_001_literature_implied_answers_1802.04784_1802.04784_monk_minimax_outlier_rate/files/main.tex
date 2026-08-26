@@ -1,0 +1,204 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[hidelinks,hypertexnames=false]{hyperref}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\newtheorem{theorem}{Theorem}
+\newcommand{\Hcal}{\mathcal H}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\MMD}{\operatorname{MMD}}
+\setlist{nosep}
+\title{Minimax-rate optimality of MONK under adversarial contamination\\
+\large A literature-implied answer to the question in arXiv:1802.04784}
+\author{Autonomous mathematical-discovery run \texttt{fa\_banach\_001}}
+\date{12 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\fcolorbox{black}{gray!8}{\parbox{0.94\linewidth}{
+\textbf{Status: literature-implied answer (full minimax-rate resolution).}
+The order of MONK's error due to adversarial outliers is optimal under the
+paper's finite-second-moment hypothesis.  The relation to MONK is identified
+here; the supporting authors do not explicitly state an RKHS corollary.  Exact
+leading constants and the exact breakdown behavior as the fraction of
+contaminated blocks approaches one half are not claimed.
+}}
+
+\section*{Source question and supporting result}
+
+The source is M. Lerasle, Z. Szab\'o, T. Mathieu, and G. Lecu\'e,
+\emph{MONK---Outlier-Robust Mean Embedding Estimation by
+Median-of-Means}, arXiv:1802.04784, ICML 2019.  In the published PDF,
+page 4, ``Remarks,'' bullet ``Dependence on $\delta$,'' the authors ask:
+\begin{quote}
+Whether this robustness to outliers is optimal in the studied setting is an
+open question.
+\end{quote}
+Their Theorems 1--2 and the detailed proof in Appendix A give the upper bound
+needed below.
+
+The decisive later source is X. de Juan and S. Mazuelas,
+\emph{On the Optimality of the Median-of-Means Estimator under Adversarial
+Contamination}, arXiv:2510.07867, NeurIPS 2025.  Its equation (2) and
+Theorem 3.2 identify
+\[
+ \sigma\left(\sqrt{\frac{\log(2/\eta)}{N}}+\sqrt{\alpha}\right)
+\]
+as the finite-variance minimax order and prove that scalar median-of-means,
+with the number of blocks of order $\log(1/\eta)+\alpha N$, attains it.
+That paper discusses scalar means, not the MONK min--max estimator.  The
+connection below is therefore an implication rather than an explicit answer.
+
+\section*{Rate-level answer}
+
+Let $Z=K(\cdot,X)$ take values in a separable RKHS $\Hcal$, let
+$\mu=\mathbb EZ$, and let
+$\Sigma=\mathbb E[(Z-\mu)\otimes(Z-\mu)]$ be trace class.  From $N$ clean
+i.i.d. observations, an adversary may inspect the sample and replace at most
+$m$ entries.  The same convention is used for $m$ contaminated pairs in the
+two-sample MMD problem.
+
+\begin{theorem}[MONK is optimal in its outlier dependence]
+There are universal constants $c,C>0$ with the following property.  If
+$0<\eta\le 1/4$ and
+\[
+ m+\log(1/\eta)\le cN,
+\]
+then MONK can be formed with $Q\asymp m+\log(1/\eta)$ blocks so that, with
+probability at least $1-\eta$,
+\begin{equation}
+ \|\widehat\mu_{P,Q}-\mu_P\|_{\Hcal}
+ \le C\max\left\{
+ \sqrt{\frac{\Tr\Sigma_P}{N}},
+ \sqrt{\frac{\|\Sigma_P\|\,[m+\log(1/\eta)]}{N}}
+ \right\}.                                      \tag{1}
+\end{equation}
+Likewise the MONK MMD estimator satisfies
+\begin{equation}
+ |\widehat{\MMD}_Q(P,R)-\MMD(P,R)|
+ \le C\max\left\{
+ \sqrt{\frac{\Tr\Sigma_P+\Tr\Sigma_R}{N}},
+ \sqrt{\frac{(\|\Sigma_P\|+\|\Sigma_R\|)
+ [m+\log(1/\eta)]}{N}}
+ \right\}.                                      \tag{2}
+\end{equation}
+The corruption term in (1), and also that in (2), cannot be improved in
+order over the class of distributions with only a finite second moment.  More
+precisely, for every $1\le m\le N/4$ and every estimator, there is already a
+one-dimensional linear-kernel instance of covariance at most $\sigma^2$ and
+an adversary replacing at most $m$ observations for which an error
+\[
+ c\sigma\sqrt{m/N}                               \tag{3}
+\]
+occurs with a universal positive probability.
+\end{theorem}
+
+Thus the answer to the source question is affirmative in the standard
+minimax-rate sense: under the stated trace-class covariance assumption,
+MONK has the optimal $\sqrt{m/N}$ outlier dependence.  The clean-sample and
+confidence terms were already known to be optimal in the source paper's
+discussion.
+
+\section*{Why the implication holds}
+
+\paragraph{Upper bound.}
+The detailed proof of Theorem 1 in arXiv:1802.04784 establishes, before its
+confidence reparameterization, that whenever
+$m\le Q(1/2-\gamma)$,
+\begin{equation}
+ \|\widehat\mu_{P,Q}-\mu_P\|_{\Hcal}
+ \le C_0\max\left\{
+ \sqrt{\frac{\|\Sigma_P\|Q}{\gamma N}},
+ \frac1\gamma\sqrt{\frac{\Tr\Sigma_P}{N}}
+ \right\}                                      \tag{4}
+\end{equation}
+with probability at least $1-\exp(-Q\gamma^2/72)$.  Choose
+$\gamma=1/4$ and an integer
+\[
+ Q\ge \max\{4m+1,,1152\log(1/\eta)\}
+\]
+within a universal factor of the right-hand side.  Equation (4) becomes (1).
+If $Q$ does not divide $N$, discard fewer than $Q$ observations and use
+$N'=Q\lfloor N/Q\rfloor$; under the displayed smallness condition,
+$N'\asymp N$, and at most $m$ retained observations are still corrupted.
+The Appendix A proof of Theorem 2 gives the identical substitution with the
+sums of the two covariance norms and traces, proving (2).
+
+This is exactly the block-count balance isolated for scalar median-of-means
+in Theorem 3.2 of arXiv:2510.07867.  The source MONK proof supplies the
+dimension-free Hilbert-space lift.
+
+\paragraph{Matching lower bound for mean embeddings.}
+It is useful to record a self-contained reduction.  Take
+$\mathcal X=\mathbb R$ and the continuous positive-definite linear kernel
+$K(x,y)=xy$.  Its RKHS is $\mathbb R$, its feature map is $x$, and its kernel
+mean embedding is the ordinary scalar mean.  Put
+\[
+ \rho=\frac{m}{2N},\qquad
+ A=\frac{\sigma}{\sqrt{\rho(1-\rho)}},\qquad
+ P_{\pm}=(1-\rho)\delta_0+\rho\delta_{\pm A}.
+\]
+Both alternatives have variance exactly $\sigma^2$ and means
+\[
+ \mu_{\pm}=\pm\sigma\sqrt{\frac{\rho}{1-\rho}}.
+\]
+Let $J$ be the number of nonzero observations.  Since
+$\mathbb EJ=N\rho=m/2$, Markov's inequality gives
+$\Pr(J\le m)\ge1/2$.  After inspecting the sample, the adversary replaces
+all nonzero observations by zero whenever $J\le m$.  On this event the
+statistician sees the all-zero data set under either sign.  For any fixed
+output on that data set, one of the two signs has error at least
+\[
+ \sigma\sqrt{\frac{\rho}{1-\rho}}
+ \ge \sigma\sqrt{\frac{m}{2N}}.
+\]
+This proves (3) with failure probability at least $1/2$ for deterministic
+estimators; the usual conditioning argument gives a universal constant for
+randomized estimators.
+
+\paragraph{Matching lower bound for MMD.}
+Fix $R=\delta_0$.  Compare $P_0=\delta_0$ with
+$P_1=(1-\rho)\delta_0+\rho\delta_A$, with the same $\rho,A$.  For the linear
+kernel,
+\[
+ \MMD(P_0,R)=0,\qquad
+ \MMD(P_1,R)=\sigma\sqrt{\frac{\rho}{1-\rho}}.
+\]
+The observed data are identically all zero under $P_0$ and, after the same
+legal attack, with probability at least $1/2$ under $P_1$.  No estimator can
+be within half the displayed separation for both alternatives on that common
+observation.  This again yields (3) with universal positive probability.
+
+\section*{Scope and provenance}
+
+The theorem settles the dependence on the sample corruption fraction in the
+finite-second-moment model.  It does \emph{not} optimize constants, determine
+the exact finite-sample replacement breakdown point, or prove that the
+source paper's stated 25\% breakdown value is the largest possible.  Those
+are distinct questions from minimax rate optimality.
+
+A bounded search used the exact MONK title and question wording, ``MONK
+optimal robustness outliers,'' and ``mean embedding adversarial contamination
+minimax finite variance.''  It found arXiv:1812.03523, which proves optimal
+contamination exponents under stronger $2+\delta$ moments, and the decisive
+arXiv:2510.07867, which proves the exact finite-variance scalar MoM rate.
+Because the latter makes the core rate result known and the RKHS conclusion is
+a direct identification using the earlier MONK bound, this packet is not a
+claim of new mathematics.
+
+\section*{References}
+
+\begin{enumerate}
+\item M. Lerasle, Z. Szab\'o, T. Mathieu, and G. Lecu\'e,
+\emph{MONK---Outlier-Robust Mean Embedding Estimation by Median-of-Means},
+arXiv:1802.04784; Proceedings of ICML 2019, vol. 97, pp. 3782--3793.
+\item X. de Juan and S. Mazuelas,
+\emph{On the Optimality of the Median-of-Means Estimator under Adversarial
+Contamination}, arXiv:2510.07867; NeurIPS 2025.
+\item S. Minsker, \emph{Uniform bounds for robust mean estimators},
+arXiv:1812.03523 (background comparison only).
+\end{enumerate}
+
+\end{document}

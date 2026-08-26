@@ -1,0 +1,240 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\K}{\mathcal K}
+\newcommand{\Lop}{\mathcal L}
+\newcommand{\Pw}{\mathcal P_w}
+\newcommand{\Poly}{\mathcal P}
+
+\title{Critical-Degree \(M\)-Ideals for Finite-Dimensional Ranges\\
+\large A partial answer to arXiv:1102.3850}
+\author{Run \texttt{fa\_banach\_001}, lane 17\\Model GPT5.6}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+Candidate partial result, likely valid. This packet solves the equality
+endpoint for every nonzero finite-dimensional range space \(F\); it does not
+settle the source question for arbitrary property-\((M)\) spaces \(F\).
+
+\section{Source question}
+
+The source is V. Dimant and S. Lassalle,
+\emph{\(M\)-structures in vector-valued polynomial spaces}, published in
+Journal of Convex Analysis 19 (2012), 685--711 \cite{DL}. Its arXiv id is
+1102.3850.
+On PDF page 22, immediately before Corollary 4.9, the authors state:
+
+\begin{quote}
+\emph{We do not know if the result remains true even for the case
+\(n=cd(E,F)=cd(E)\).}
+\end{quote}
+
+Here the result under discussion is the following lifting statement. If
+\(\K(E)\) is an \(M\)-ideal in \(\Lop(E)\), \(F\) has property \((M)\), and
+\[
+ n=cd(E,F)<cd(E),
+\]
+then \(\Pw(^nE,F)\) is an \(M\)-ideal in \(\Poly(^nE,F)\).
+
+\begin{center}
+\includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section{Definitions and imported results}
+
+The critical degree \(cd(E,F)\), when it exists, is the least positive
+integer \(k\) for which some continuous \(F\)-valued \(k\)-homogeneous
+polynomial on \(E\) is not weakly continuous on bounded sets. We write
+\(cd(E)=cd(E,\mathbb K)\).
+
+A pair \((E,F)\) has the \(n\)-polynomial property \((M)\) when every
+\(P\in\Poly(^nE,F)\) with \(\|P\|\le1\) satisfies
+\[
+ \limsup_\alpha\|v+P(x_\alpha)\|
+ \le
+ \limsup_\alpha\|u+x_\alpha\|^n
+ \tag{1}\label{eq:vectorM}
+\]
+whenever \(\|v\|\le\|u\|^n\) and \((x_\alpha)\) is a bounded weakly
+null net in \(E\).
+
+We use three results already proved in the cited papers.
+
+\begin{enumerate}[label=(\roman*)]
+\item If \(\K(E)\) is an \(M\)-ideal in \(\Lop(E)\), then \(E\) has
+property \((M)\) and admits the compact approximation net appearing in
+Theorem 4.7 of \cite{DL}.
+\item If \(n=cd(E)\) and \(E\) has property \((M)\), then \(E\) has the
+scalar \(n\)-polynomial property \((M)\)
+\cite[Proposition 3.10]{D}.
+\item At \(n=cd(E,F)\), the compact approximation hypotheses in (i) and
+the vector \(n\)-polynomial property \((M)\) imply that
+\(\Pw(^nE,F)\) is an \(M\)-ideal in \(\Poly(^nE,F)\)
+\cite[Theorem 4.7]{DL}.
+\end{enumerate}
+
+\section{Proof intuition}
+
+The only new issue is lifting a scalar property-\((M)\) inequality to a
+vector norm. In finite dimensions a norm can be scalarized coherently along
+the net: choose a norming functional at each point, then pass to a subnet on
+which those functionals converge in norm. The moving scalarizations can
+therefore be replaced by one fixed functional \(f\), reducing the desired
+inequality to scalar property \((M)\) for \(f\circ P\).
+
+This mechanism is unavailable in general infinite-dimensional ranges:
+weak-star convergence of norming functionals does not control their diagonal
+pairing with the moving vectors \(P(x_\alpha)\).
+
+\section{Formal proof}
+
+\begin{lemma}\label{lem:cd}
+If \(F\ne\{0\}\) is finite-dimensional and \(cd(E)\) exists, then
+\[
+ cd(E,F)=cd(E).
+\]
+\end{lemma}
+
+\begin{proof}
+Fix \(0\ne y\in F\). If a scalar \(k\)-homogeneous polynomial \(p\) is
+not weakly continuous on bounded sets, neither is \(x\mapsto p(x)y\).
+Thus \(cd(E,F)\le cd(E)\).
+
+Conversely, let \(k<cd(E)\) and \(P\in\Poly(^kE,F)\). For every
+\(f\in F^*\), the scalar polynomial \(f\circ P\) is weakly continuous
+on bounded sets. Choose a finite basis \(f_1,\dots,f_m\) of \(F^*\).
+If \(x_\alpha\to x\) weakly in a bounded subset of \(E\), then
+\(f_j(P(x_\alpha)-P(x))\to0\) for each \(j\). Coordinate convergence
+in finite-dimensional \(F\) is norm convergence, so
+\(P(x_\alpha)\to P(x)\) in norm. Hence every such \(P\) is weakly
+continuous on bounded sets and \(cd(E,F)\ge cd(E)\).
+\end{proof}
+
+\begin{lemma}\label{lem:lift}
+Let \(F\) be finite-dimensional. If \(E\) has scalar
+\(n\)-polynomial property \((M)\), then \((E,F)\) has vector
+\(n\)-polynomial property \((M)\).
+\end{lemma}
+
+\begin{proof}
+Let \(P\in\Poly(^nE,F)\) have norm at most one. Fix \(u\in E\),
+\(v\in F\) with \(\|v\|\le\|u\|^n\), and a bounded weakly null net
+\((x_\alpha)\). Put
+\[
+ A=\limsup_\alpha\|v+P(x_\alpha)\|,\qquad
+ B=\limsup_\alpha\|u+x_\alpha\|^n.
+\]
+Pass to a subnet, still denoted \((x_\alpha)\), on which the first
+norm converges to \(A\). For every \(\alpha\), Hahn--Banach gives
+\(f_\alpha\in S_{F^*}\) such that
+\[
+ f_\alpha(v+P(x_\alpha))=\|v+P(x_\alpha)\|.
+ \tag{2}\label{eq:norming}
+\]
+This choice is valid over both real and complex scalars.
+
+The unit sphere of \(F^*\) is norm compact. After passing to a further
+subnet, \(f_\alpha\to f\) in norm for some \(f\in B_{F^*}\). The net
+\((v+P(x_\alpha))\) is bounded, so \eqref{eq:norming} implies
+\[
+ |f(v)+(f\circ P)(x_\alpha)|\longrightarrow A.
+\]
+The scalar polynomial \(f\circ P\) has norm at most one and
+\[
+ |f(v)|\le\|v\|\le\|u\|^n.
+\]
+Scalar \(n\)-polynomial property \((M)\) therefore yields
+\[
+ A
+ \le \limsup_\alpha\|u+x_\alpha\|^n
+ \le B.
+\]
+The last inequality holds because the selected net is a subnet of the
+original net. This is exactly \eqref{eq:vectorM}.
+\end{proof}
+
+\begin{theorem}[Finite-dimensional endpoint]\label{thm:main}
+Let \(E\) be a Banach space whose critical degree \(n=cd(E)\) exists,
+and let \(F\ne\{0\}\) be finite-dimensional. If \(\K(E)\) is an
+\(M\)-ideal in \(\Lop(E)\), then
+\[
+ \Pw(^nE,F)\quad\hbox{is an \(M\)-ideal in}\quad\Poly(^nE,F).
+\]
+In particular, Corollary 4.9 of \cite{DL} remains true at
+\(n=cd(E,F)=cd(E)\) for every finite-dimensional \(F\).
+\end{theorem}
+
+\begin{proof}
+The \(M\)-ideal hypothesis on \(\K(E)\) gives property \((M)\) of \(E\)
+and the compact approximation net required by \cite[Theorem 4.7]{DL}.
+By \cite[Proposition 3.10]{D}, \(E\) has scalar \(n\)-polynomial
+property \((M)\). Lemma \ref{lem:lift} upgrades this to vector
+\(n\)-polynomial property \((M)\) for \((E,F)\), while Lemma
+\ref{lem:cd} gives \(n=cd(E,F)\). Applying \cite[Theorem 4.7]{DL}
+proves the conclusion.
+\end{proof}
+
+\section{Deep upgrade attempt and limitation}
+
+The finite-dimensional proof suggests choosing norming functionals
+\(f_\alpha\) for an arbitrary property-\((M)\) range \(F\). Banach--Alaoglu
+only gives a weak-star convergent subnet. It does not imply
+\[
+ (f_\alpha-f)(P(x_\alpha))\longrightarrow0,
+\]
+because both factors move with \(\alpha\), and at the critical degree
+\(P(x_\alpha)\) need not be weakly null. This is exactly the point at which
+the strict inequality \(n<cd(E)\) was used in Proposition 4.8 of \cite{DL}.
+
+I also tested compact-operator approximation on \(F\). A fixed compact
+operator makes the norming-functional argument finite-dimensional on its
+image, but no such operator uniformly approximates the range of an arbitrary
+critical-degree polynomial. The stronger \(M_\infty\)-decomposition estimate
+does handle important infinite-dimensional targets, but that is already the
+mechanism of Propositions 2.7--2.8 in \cite{DL}. No general property-\((M)\)
+upgrade is claimed.
+
+\section{Verification and novelty status}
+
+The proof uses no computation. The separate \texttt{verification.md} audits
+critical-degree equality, complex Hahn--Banach scalarization, limsup subnets,
+and every imported theorem.
+
+Local indexes were searched for arXiv:1102.3850, the exact title,
+\(n\)-polynomial property \((M)\), the equality \(cd(E,F)=cd(E)\), and
+finite-dimensional ranges. Bounded web searches used the same exact phrases
+and checked the source, the scalar predecessor arXiv:1005.1260, and the later
+related arXiv:1512.08741. No exact finite-dimensional endpoint statement was
+found. This is bounded evidence, not a guarantee of novelty.
+
+\section*{Human-review recommendation}
+
+Promote as a likely-valid partial result after checking the two-line subnet
+scalarization in Lemma \ref{lem:lift} and the cited theorem numbers. The main
+claim should remain explicitly limited to finite-dimensional \(F\).
+
+\begin{thebibliography}{9}
+\bibitem{D}
+V. Dimant,
+\emph{\(M\)-ideals of homogeneous polynomials},
+Studia Math. 202 (2011), 81--104;
+arXiv:1005.1260.
+
+\bibitem{DL}
+V. Dimant and S. Lassalle,
+\emph{\(M\)-structures in vector-valued polynomial spaces},
+J. Convex Anal. 19 (2012), 685--711;
+arXiv:1102.3850.
+\end{thebibliography}
+
+\end{document}

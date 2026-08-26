@@ -1,0 +1,197 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\VLIP}{\mathsf{VL}_{\mathsf{IP}}}
+
+\title{Atomic direct limits for interval-preserving maps}
+\author{A partial answer to an open question in arXiv:2208.13813}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+Candidate substantial partial result, likely valid, pending human review.
+The general existence question remains open, but every direct system in
+$\VLIP$ whose objects are lattice-isomorphic to spaces $c_{00}(A)$ has a
+direct limit in $\VLIP$.  This includes systems of finite-dimensional
+\emph{Archimedean} vector lattices.  The qualifier is necessary because the
+source allows non-Archimedean vector lattices.
+
+\section{Source question}
+
+Ding and de Jeu study direct limits in categories of vector lattices, normed
+lattices, and Banach lattices~\cite{DingDeJeu}.  On source PDF page~25 they
+state that it is open whether direct limits always exist in each of six
+exceptional categories.  The first is $\VLIP$: real vector lattices with
+interval-preserving linear maps.  The other five impose norm or completeness
+conditions.  The theorem below solves a broad algebraically atomic subcase of
+the first question.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+A positive linear map $T:E\to F$ is interval preserving when
+\[
+ T([0,x]_E)=[0,Tx]_F\qquad(x\in E_+).
+\]
+An atom is a nonzero $a\geq0$ for which $[0,a]$ is contained in the
+one-dimensional ray $\R a$.  For a set $A$, $c_{00}(A)$ denotes the vector
+lattice of finitely supported real functions on $A$, with coordinatewise
+order.
+
+\section{Proof intuition}
+
+An interval-preserving map out of $c_{00}(A)$ has an elementary form: every
+coordinate atom is sent either to zero or to a positive multiple of an atom.
+Different coordinates may merge onto the same atomic ray.  Thus a direct
+system is combinatorially a directed system of weighted partial maps between
+sets of atoms.  In its ordinary vector-space direct limit, the surviving
+atomic rays form a basis.  Giving that basis the coordinatewise order produces
+the desired vector lattice.  The same atomic description forces every
+factorization map in the universal property to be interval preserving.
+
+\section{Atomic characterization}
+
+\begin{lemma}\label{lem:monomial}
+Let $A$ be a set, let $F$ be a vector lattice, and let
+$T:c_{00}(A)\to F$ be linear.  Then $T$ is interval preserving if and only if
+for every coordinate vector $e_a$, the vector $Te_a$ is either zero or an
+atom of $F$.
+\end{lemma}
+
+\begin{proof}
+If $T$ is interval preserving, it is positive and
+\[
+ [0,Te_a]=T([0,e_a])=\{tTe_a:0\leq t\leq1\}.
+\]
+Consequently a nonzero $Te_a$ is an atom.
+
+Conversely, suppose that every $Te_a$ is zero or an atom.  Then $T$ is
+positive.  Fix $x=\sum_{a\in S}x_ae_a\geq0$, where $S$ is finite, and let
+$0\leq y\leq Tx$.  Group the nonzero vectors $Te_a$ for $a\in S$ according
+to their positive rays.  Choose one atom $b_r$ on every resulting ray and
+write
+\[
+ Tx=\sum_r s_rb_r,
+\]
+where $s_r>0$ and the $b_r$ are pairwise disjoint.  The Riesz decomposition
+property gives $y=\sum_r y_r$ with $0\leq y_r\leq s_rb_r$.  Atomicity gives
+$y_r=t_rb_r$ for some $0\leq t_r\leq s_r$.
+
+Within a fixed group write $Te_a=\beta_ab_r$.  Since
+$s_r=\sum_a x_a\beta_a$, one can choose numbers
+$0\leq z_a\leq x_a$ with $\sum_a z_a\beta_a=t_r$; this is just the fact that
+the sum of the intervals $[0,x_a\beta_a]$ is $[0,s_r]$.  Doing this for every
+group and putting $z=\sum_{a\in S}z_ae_a$ gives $0\leq z\leq x$ and
+$Tz=y$.  Hence $[0,Tx]\subseteq T([0,x])$; the reverse inclusion follows
+from positivity.
+\end{proof}
+
+\section{Existence of the direct limit}
+
+\begin{theorem}\label{thm:limit}
+Let $(E_i,\phi_{ji})$ be a direct system over an arbitrary directed set in
+$\VLIP$.  Suppose that every $E_i$ is lattice-isomorphic to $c_{00}(A_i)$
+for some set $A_i$.  Then the system has a direct limit in $\VLIP$, and its
+underlying vector lattice is lattice-isomorphic to $c_{00}(C)$ for a set
+$C$ of surviving atomic rays.
+\end{theorem}
+
+\begin{proof}
+Choose atomic coordinate vectors $e_{i,a}$ in every $E_i$.  By
+Lemma~\ref{lem:monomial}, each connecting map sends $e_{i,a}$ either to zero
+or to a positive multiple of a coordinate atom at the later stage.
+
+Let $(V,q_i)$ be the ordinary algebraic direct limit of the underlying vector
+spaces.  Consider all nonzero vectors $q_i(e_{i,a})$ and identify two of them
+when they lie on the same positive ray in $V$.  Let $C$ be the set of the
+resulting rays, and choose a positive generator $u_c$ from every ray.
+
+We claim that $(u_c)_{c\in C}$ is a vector-space basis of $V$.  It spans:
+every element of $V$ is the image of an element at one stage, and every such
+element has finite atomic support.  For independence, take a finite relation
+among distinct $u_c$ and represent all of its terms by coordinate atoms at
+their respective stages.  Directedness provides one later stage $k$ receiving
+all of them.  No representative can map to zero there, since its image in
+$V$ is nonzero.  Each therefore maps to a positive multiple of a coordinate
+atom of $E_k$.  Two representatives cannot land on the same coordinate atom,
+since then their images in $V$ would lie on the same positive ray.  Their
+images at stage $k$ are consequently distinct coordinate vectors and are
+linearly independent.  The original relation is trivial.
+
+Use this basis to order $V$ coordinatewise:
+\[
+ V_+=\left\{\sum_{c\in C}\alpha_cu_c:
+        \alpha_c\geq0\text{ and only finitely many }\alpha_c\ne0\right\}.
+\]
+Then $V$ is a vector lattice isomorphic to $c_{00}(C)$.  Each $q_i$ sends a
+coordinate atom to zero or to a positive multiple of a coordinate atom of
+$V$, so Lemma~\ref{lem:monomial} says that every $q_i$ is interval preserving.
+
+It remains to check the universal property in the smaller category, not only
+among vector spaces.  Let $T_i:E_i\to F$ be any compatible cocone of
+interval-preserving maps into a vector lattice $F$.  The vector-space direct
+limit supplies a unique linear map $T:V\to F$ with $Tq_i=T_i$.  Every basis
+atom $u_c$ is a positive multiple of some $q_i(e_{i,a})$, so $Tu_c$ is a
+positive multiple of $T_i(e_{i,a})$.  Lemma~\ref{lem:monomial} shows that
+$Tu_c$ is zero or an atom of $F$.  Applying that lemma once more proves that
+$T$ is interval preserving.  Thus $(V,q_i)$ has precisely the universal
+property of a direct limit in $\VLIP$.
+\end{proof}
+
+\begin{corollary}
+Every direct system of finite-dimensional Archimedean vector lattices and
+interval-preserving linear maps has a direct limit in $\VLIP$.
+\end{corollary}
+
+\begin{proof}
+Every finite-dimensional Archimedean vector lattice is lattice-isomorphic to
+$\R^n=c_{00}(\{1,\ldots,n\})$ with coordinatewise order, so
+Theorem~\ref{thm:limit} applies.
+\end{proof}
+
+\section{Upgrade attempts, novelty, and limits}
+
+The first proof attempt covered only coordinatewise finite-dimensional
+objects.  The key observation that every element uses finitely many atoms
+upgrades the argument to arbitrary $c_{00}(A_i)$ and arbitrary directed index
+sets.  A further attempt to remove Archimedeanity from the finite-dimensional
+corollary does not follow from this method: finite-dimensional
+non-Archimedean lattices, such as lexicographically ordered spaces, need not be
+spanned by atoms.  Likewise $\ell^\infty(A)$ is atomic in the order-theoretic
+sense but is not the algebraic span of its atoms, so the basis construction
+does not cover it.
+
+The result also does not automatically extend to the five normed or Banach
+categories in the source question.  Quotient norms and completion introduce
+conditions absent from the algebraic colimit, and completion can add elements
+that are not finite sums of atoms; interval preservation need not survive the
+last inclusion into the completion.
+
+A bounded novelty search covered the run-wide result and attempt indexes, the
+arXiv identifier, exact phrases around the source question, and combinations
+of ``atomic vector lattice'', ``interval preserving'', and ``direct limit''.
+No primary source stating this atomic subcase was found.  Because the proof is
+elementary and categorical, novelty confidence is moderate; correctness
+confidence is high.  Human review should focus on the basis-independence
+argument and the repeated use of Lemma~\ref{lem:monomial} in the universal
+property.
+
+\begin{thebibliography}{1}
+\bibitem{DingDeJeu}
+C.~Ding and M.~de Jeu,
+\emph{Direct limits in categories of normed vector lattices and Banach
+lattices}, arXiv:2208.13813.
+\end{thebibliography}
+
+\end{document}

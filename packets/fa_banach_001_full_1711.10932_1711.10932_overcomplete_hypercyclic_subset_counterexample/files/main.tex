@@ -1,0 +1,176 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1.9cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{ink}{HTML}{172033}
+\definecolor{accent}{HTML}{385C73}
+\definecolor{soft}{HTML}{EEF5F8}
+\color{ink}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Orb}{\operatorname{Orb}}
+
+\title{An overcomplete sequence which is not a hypercyclic subset}
+\author{Solution packet for Question 6 of arXiv:1711.10932}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{accent}{soft}{\parbox{0.91\textwidth}{
+\textbf{Full negative answer.} There is an overcomplete sequence $C$ in a separable complex Hilbert space and a bounded operator $T$ such that $\Orb(C,T)$ is dense although $T$ is not hypercyclic.  Since overcomplete implies almost overcomplete, this answers the source question negatively in a strictly stronger form.}}
+\end{center}
+
+\section*{Source question}
+For $T\in\mathcal L(H)$ and $C\subset H$, write
+\[
+  \Orb(C,T)=\{T^m c:m\geq0,\ c\in C\}.
+\]
+The set $C$ is a \emph{hypercyclic subset} when density of $\Orb(C,T)$ forces $T$ to be hypercyclic.  A sequence is \emph{overcomplete} if every infinite subsequence has dense closed linear span, and \emph{almost overcomplete} if each such span has finite codimension.  Charpentier and Ernst ask the following on page 33, Question 6 of \cite{CE}.
+
+\begin{center}
+\includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Proof intuition}
+Put a hypercyclic backward shift in one summand and a scalar expansion in a one-dimensional summand.  The scalar expansion prevents the direct-sum operator from being hypercyclic.  Nevertheless, sample a small analytic curve at parameters $t_n\to0$ chosen so that the scalar expansion sends $t_n$ to a prescribed scalar target.  At the same selected times, the backward-shift orbit shadows a prescribed vector target, while the curve's perturbation is killed by the scale separation $2^m/4^m$.
+
+The Taylor coefficients of the curve span the whole Hilbert space.  Therefore the analytic identity theorem forces every infinite sampled subsequence to have dense span.  This is the mechanism that upgrades the constructed sequence from almost overcomplete to overcomplete.
+
+\section*{The construction}
+Let $B:\ell^2(\N)\to\ell^2(\N)$ be the unilateral backward shift,
+\[
+ B(z_0,z_1,z_2,\ldots)=(z_1,z_2,z_3,\ldots),
+\]
+and put $S=2B$.  The operator $S$ is hypercyclic.  For completeness, if $F$ is the forward shift, then for finitely supported $u,v$ and all sufficiently large $m$,
+\[
+ z_m=u+2^{-m}F^m v\longrightarrow u,
+ \qquad S^m z_m=v.
+\]
+Thus $S$ is topologically mixing, and the Birkhoff transitivity theorem gives a dense $G_\delta$ set of hypercyclic vectors (this is also the classical Rolewicz example \cite{Rolewicz,GEP}).  Choose a hypercyclic vector
+\[
+ x=(x_0,x_1,\ldots)\in\ell^2(\N)
+ \quad\text{with}\quad x_0\neq0.
+\]
+This is possible because the hypercyclic vectors are dense.
+
+On the Hilbert space
+\[
+ \mathcal H=\C\oplus\ell^2(\N)
+\]
+define
+\[
+ T=4I_{\C}\oplus S.
+\]
+For $|t|<2$, let
+\[
+ h(t)=\sum_{k=0}^{\infty}2^{-k}t^k e_k,
+ \qquad
+ f(t)=\bigl(t,\,x+t h(t)\bigr).
+\]
+The map $f$ is analytic.  On $|t|\leq1$,
+\begin{equation}\label{eq:M}
+ \|h(t)\|^2=\sum_{k=0}^{\infty}\frac{|t|^{2k}}{4^k}
+ \leq\frac43;
+ \qquad M:=\sup_{|t|\leq1}\|h(t)\|\leq\frac2{\sqrt3}.
+\end{equation}
+
+Choose a tail-dense sequence
+\[
+ q_n=(\alpha_n,y_n)\in\C\oplus\ell^2(\N),
+ \qquad \alpha_n\neq0,
+\]
+meaning that $\{q_n:n\geq N\}$ is dense for every $N$.  Such a sequence is obtained by repeatedly listing a countable dense subset whose first coordinates are nonzero.
+
+Inductively choose strictly increasing integers $m_n$ such that
+\begin{align}
+ \|S^{m_n}x-y_n\|&<\frac1n,\label{eq:visit}\\
+ |\alpha_n|4^{-m_n}&<\min\{1,1/n\},\label{eq:smallt}\\
+ |\alpha_n|2^{-m_n}M&<\frac1n,\label{eq:error}
+\end{align}
+and so that the nonzero numbers
+\[
+ t_n:=\alpha_n4^{-m_n}
+\]
+are pairwise distinct.  This choice is possible: every tail of the orbit of the hypercyclic vector $x$ is dense, the two scalar bounds hold beyond a fixed threshold, and each previously selected $t_j$ rules out at most one integer $m$ through the equation $\alpha_n4^{-m}=t_j$.
+
+Set
+\[
+ C=\{f(t_n):n\geq1\}.
+\]
+
+\begin{theorem}\label{thm:main}
+The sequence $(f(t_n))_{n\geq1}$ is overcomplete in $\mathcal H$, the set $\Orb(C,T)$ is dense in $\mathcal H$, and $T$ is not hypercyclic.  Consequently an overcomplete, and hence almost overcomplete, sequence need not be a hypercyclic subset.
+\end{theorem}
+
+\begin{proof}
+First we prove density of the $C$-orbit.  Since $4^{m_n}t_n=\alpha_n$,
+\[
+ T^{m_n}f(t_n)
+ =\left(\alpha_n,\ S^{m_n}x+t_nS^{m_n}h(t_n)\right).
+\]
+Equations \eqref{eq:M}, \eqref{eq:visit}, and \eqref{eq:error} give
+\begin{align*}
+ \|T^{m_n}f(t_n)-q_n\|
+ &\leq \|S^{m_n}x-y_n\|+|t_n|\,\|S^{m_n}\|\,\|h(t_n)\|\\
+ &<\frac1n+|\alpha_n|4^{-m_n}2^{m_n}M
+ <\frac2n.
+\end{align*}
+Because $(q_n)$ is tail-dense and the error tends to zero, the sequence $(T^{m_n}f(t_n))$ is dense.  Hence $\Orb(C,T)$ is dense.
+
+Next let $(f(t_{n_j}))_{j\geq1}$ be any infinite subsequence, and suppose that a continuous linear functional $L\in\mathcal H^*$ vanishes on it.  The scalar function
+\[
+ g(t)=L(f(t)),\qquad |t|<2,
+\]
+is analytic and vanishes at the distinct points $t_{n_j}\to0$.  The identity theorem gives $g\equiv0$.  Expanding
+\[
+ f(t)=(0,x)+t(1,e_0)
+       +\sum_{k=1}^{\infty}2^{-k}t^{k+1}(0,e_k),
+\]
+we obtain
+\[
+ L(0,x)=0,\qquad L(1,e_0)=0,
+ \qquad L(0,e_k)=0\quad(k\geq1).
+\]
+Since $x_0\neq0$, continuity and the expansion of $x$ in the standard basis imply $L(0,e_0)=0$; then $L(1,0)=0$ as well.  Thus $L=0$.  By Hahn--Banach, the chosen subsequence has dense closed linear span.  Since the subsequence was arbitrary, $(f(t_n))$ is overcomplete.  It is also linearly independent.  Indeed, for a finite relation $\sum_i c_i f(t_i)=0$, the scalar coordinate and then the $e_0$ coordinate (using $x_0\neq0$) give $\sum_i c_it_i=0$ and $\sum_i c_i=0$; the coordinates $e_k$, $k\geq1$, then give all higher moment equations $\sum_i c_it_i^{k+1}=0$.  The ordinary Vandermonde matrix for the distinct $t_i$ forces every $c_i$ to vanish.
+
+Finally, no vector $(a,z)\in\mathcal H$ can be hypercyclic for $T$.  The first-coordinate projection of its orbit is
+\[
+ \{4^m a:m\geq0\}.
+\]
+If $a=0$ this set is $\{0\}$; if $a\neq0$ it stays a positive distance from zero.  In either case it is not dense in $\C$, whereas the continuous image of a dense orbit would be dense.  Hence $T$ is not hypercyclic.  We have therefore exhibited a non-hypercyclic $C$-hypercyclic operator, so $C$ is not a hypercyclic subset.
+\end{proof}
+
+\section*{Verification and scope}
+The construction is entirely deterministic once a hypercyclic vector for $2B$ and a tail-dense target list are fixed.  No numerical evidence is used.  Notice that $t_n\to0$, hence $f(t_n)\to f(0)=(0,x)$; the counterexample sequence is relatively norm-compact, as expected for an almost overcomplete bounded sequence.
+
+The result is existential and settles the universal yes/no question negatively.  It does not characterize which particular almost overcomplete sequences are hypercyclic subsets.
+
+\section*{Bounded novelty check}
+On 11 August 2026, the exact arXiv id, the exact text of Question 6, and the close variants \emph{almost overcomplete hypercyclic subset} and \emph{overcomplete hypercyclic subset} were checked in the run registry, solution, attempt, and proof-gap indexes and by bounded web/arXiv searches.  The searches returned the source paper and background papers on almost overcomplete sequences, but no later paper claiming an answer to Question 6.  This is evidence for novelty, not a definitive literature guarantee.
+
+\begin{thebibliography}{9}
+\bibitem{CE}
+S. Charpentier and R. Ernst,
+\emph{Hypercyclic subsets}, arXiv:1711.10932, version 3, 2018.
+
+\bibitem{Rolewicz}
+S. Rolewicz,
+\emph{On orbits of elements}, Studia Math. \textbf{32} (1969), 17--22.
+
+\bibitem{GEP}
+K.-G. Grosse-Erdmann and A. Peris Manguillot,
+\emph{Linear Chaos}, Universitext, Springer, 2011.
+\end{thebibliography}
+
+\end{document}

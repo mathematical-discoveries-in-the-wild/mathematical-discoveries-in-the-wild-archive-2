@@ -1,0 +1,213 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\N}{\mathbb{N}}
+
+\title{A bounded ultrametric counterexample to the\\
+right-semicontinuous uniform-convergence claim}
+\author{Automatic proof packet for arXiv:2507.05276}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Candidate counterexample, likely valid, pending human review.  The example
+disproves the uniform-on-bounded-sets conclusion of Corollary 3.9 and the
+uniform clause of Theorem 3.11 in Khandani's arXiv:2507.05276v1.  It does not
+challenge the pointwise-convergence or fixed-point clauses.}}
+\end{center}
+
+\section{Source claim}
+
+Khandani's paper \cite{khandani} states in Corollary 3.9 that the bounded-set
+uniform-convergence theorem remains valid when upper semicontinuity of the
+control function is weakened to upper semicontinuity from the right.  The
+corollary depends on Lemma 3.8, which claims that every positive function on a
+compact interval that is lower semicontinuous from the right has positive
+infimum.  Theorem 3.11 then incorporates the same uniform-convergence claim
+under any of three additional fixed-point hypotheses.
+
+The source statements and their proof dependency appear on pages 9--10:
+
+\begin{center}
+\includegraphics[width=0.96\textwidth,height=0.88\textheight,keepaspectratio]{figures/open_problem_crop.png}
+\end{center}
+
+\clearpage
+\begin{center}
+\includegraphics[width=0.96\textwidth,height=0.88\textheight,keepaspectratio]{figures/source_theorem_crop.png}
+\end{center}
+
+\clearpage
+\section{Proof intuition}
+
+Use a bounded ultrametric space consisting of countdown chains of every finite
+length.  The point $x_k$ needs exactly $k$ iterates to reach the fixed point
+$x_0$.  Distances $r_k=k/(k+1)$ approach the unattained diameter $1$.
+One step lowers $r_k$ to $r_{k-1}$, so a control function can lie strictly
+below the identity at every distance.  The gaps $r_k-r_{k-1}$ nevertheless
+tend to zero as $r_k\uparrow1$.  Right semicontinuity at $1$ imposes no
+condition on this left-hand approach.  Consequently every orbit converges
+(indeed terminates), while no common iteration count works for the entire
+bounded space.
+
+\section{The counterexample}
+
+Let
+\[
+ r_0=0,\qquad r_k=\frac{k}{k+1}\quad(k\geq1),
+\]
+and let $X=\{x_k:k\in\N_0\}$.  Define
+\[
+ d(x_j,x_k)=
+ \begin{cases}
+ 0,&j=k,\\
+ r_{\max\{j,k\}},&j\ne k.
+ \end{cases}
+\]
+Define $T:X\to X$ by
+\[
+ Tx_0=x_0,\qquad Tx_k=x_{k-1}\quad(k\geq1).
+\]
+Finally, define $\phi:[0,\infty)\to[0,\infty)$ by $\phi(0)=0$ and
+\[
+ \phi(t)=
+ \begin{cases}
+ t/2,&0<t<r_1,\\
+ 1/4,&r_1\leq t<r_2,\\
+ r_{k-1},&r_k\leq t<r_{k+1}\quad(k\geq2),\\
+ 1/2,&t\geq1.
+ \end{cases}
+\]
+For every positive integer $n$, set $\phi_n=\phi$.
+
+\begin{theorem}
+The complete metric space $(X,d)$, map $T$, and functions $\phi_n=\phi$
+satisfy all hypotheses of Theorem 3.11 in \cite{khandani}.  The map $T$ is
+continuous, has a complete graph and unique fixed point $x_0$, and $T^n x$
+converges to $x_0$ for every $x\in X$.  However, the convergence is not
+uniform on the bounded set $X$.
+\end{theorem}
+
+\begin{proof}
+First, $d$ is an ultrametric.  Indeed, for three distinct indices, the largest
+index determines the two largest pairwise distances, which are equal; cases
+with repeated points are immediate.  Every two distinct points are at
+distance at least $r_1=1/2$.  Hence every Cauchy sequence is eventually
+constant, so $X$ is complete.  Also $\operatorname{diam}X=1$, where the
+diameter is a supremum, so $X$ is bounded.  The same separation shows that
+$X$ is discrete.  Therefore $T$ is continuous, its graph is closed and,
+as a closed subspace of the complete product $X\times X$, its graph is
+complete.
+
+The function $\phi$ is positive and strictly below the identity on
+$(0,\infty)$.  This is immediate on $(0,r_1)$ and $[1,\infty)$.  On
+$[r_1,r_2)$, $\phi=1/4<r_1$, and on
+$[r_k,r_{k+1})$ for $k\geq2$, $\phi=r_{k-1}<r_k$.
+It is right-continuous at every point except that only the one-sided statement
+is needed at the step boundaries; directly from the half-open definition,
+the right limit equals the displayed value.  At $t=1$ and for $t>1$ it is
+constant from the right.  Thus $\phi$ is upper semicontinuous from the right
+at every positive $t$.  Notice that it is not upper semicontinuous at $1$ in
+the two-sided sense, since
+\[
+ \lim_{k\to\infty}\phi(r_k)
+ =\lim_{k\to\infty}r_{k-1}=1>\phi(1)=\frac12.
+\]
+The constant sequence $\phi_n=\phi$ converges uniformly to $\phi$ on every
+bounded interval.
+
+It remains to verify the asymptotic contraction inequality.  We have
+\[
+ T^n x_k=x_{\max\{k-n,0\}}.
+\]
+For distinct $x_j,x_k$, suppose without loss of generality that $j<k$.
+For $n\geq1$, either both iterates are $x_0$, or their distance is
+$r_{k-n}\leq r_{k-1}$.  If $k=1$, both iterates already equal $x_0$;
+if $k\geq2$, then $\phi(d(x_j,x_k))=\phi(r_k)=r_{k-1}$.  Therefore
+\[
+ d(T^n x_j,T^n x_k)\leq\phi_n(d(x_j,x_k))
+ \qquad(n\geq1).
+\]
+The case $j=k$ follows from $\phi_n(0)=0$.  Thus all three numbered
+hypotheses of source Theorem 3.11 hold.
+
+The only fixed point is $x_0$, and each orbit reaches it after finitely many
+steps.  Uniform convergence on $X$ nevertheless fails.  For every $n\geq0$,
+\[
+ T^n x_{n+4}=x_4,
+ \qquad d(T^n x_{n+4},x_0)=r_4=\frac45.
+\]
+Hence no iteration index makes all orbit points even $3/4$-close to $x_0$.
+Equivalently,
+\[
+ \sup_{x\in X}d(T^n x,x_0)=1
+ \qquad\text{for every }n.
+\]
+This contradicts the asserted bounded-set uniform convergence.  Since $T$
+is continuous and has a complete graph, it satisfies both conditions 1 and 3
+listed after the conclusion in source Theorem 3.11.
+\end{proof}
+
+\section{Why the source proof fails}
+
+Lemma 3.8 in \cite{khandani} is false.  For example, on $[1/2,1]$ let
+\[
+ f(t)=1-t\quad(1/2\leq t<1),\qquad f(1)=1.
+\]
+Then $f>0$ and $f$ is lower semicontinuous from the right, but
+$\inf f=0$.  The intervals $[t,t+\delta_t)$ used in the source proof are not
+open in the usual topology, so compactness does not yield the claimed finite
+subcover.  In the constructed dynamical example, the same obstruction is
+encoded by
+\[
+ r_k-\phi(r_k)=r_k-r_{k-1}\longrightarrow0.
+\]
+
+Full upper semicontinuity would prevent this behavior on a compact interval:
+$t-\phi(t)$ would be positive and lower semicontinuous, hence would have a
+positive minimum.  A weaker repair is to assume directly that
+$\inf_{t\in[a,b]}(t-\phi(t))>0$ for every $0<a<b<\infty$.  The packet does
+not claim that this is the weakest possible repair.
+
+\section{Verification and novelty limits}
+
+The accompanying script uses exact rational arithmetic to check all
+ultrametric triples through index $80$, all contraction inequalities for
+iterates $1$ through $40$ on that truncation, and the explicit witnesses
+$x_{n+4}$ for $0\leq n\leq40$.  These tests check transcription and indexing;
+the proof above establishes the infinite statements.
+
+A bounded literature search on 9 August 2026 used the exact source title and
+the phrases ``right upper semicontinuity'', ``uniform convergence'',
+``Kirk asymptotic contractions'', and ``Leader contraction''.  It found the
+source and adjacent positive results but no prior counterexample to the two
+identified source claims.  This supports only moderate novelty confidence;
+specialist review and a broader citation search remain appropriate.
+
+\section{Limitations and review recommendation}
+
+This counterexample is scoped to bounded-set uniform convergence.  It is
+consistent with pointwise convergence, finite-time convergence of every
+individual orbit, existence and uniqueness of the fixed point, and the claim
+that the particular map is a Leader contraction.  A reviewer should verify
+the source's convention $n\geq1$, the values of $\phi$ at $r_k$ and at $1$,
+and the exact conclusion of Corollary 3.9/Theorem 3.11.  Subject to those
+checks, promotion as a valid counterexample is recommended.
+
+\begin{thebibliography}{9}
+\bibitem{khandani}
+H. Khandani,
+\emph{A Study of Kirk's Asymptotic Contractions via Leader Contractions},
+arXiv:2507.05276v1, 2025.
+\end{thebibliography}
+
+\end{document}

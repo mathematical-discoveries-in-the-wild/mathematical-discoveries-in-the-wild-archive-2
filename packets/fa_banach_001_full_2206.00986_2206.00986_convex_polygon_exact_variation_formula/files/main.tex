@@ -1,0 +1,302 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1.02in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\cvar}{\operatorname{cvar}}
+\newcommand{\vf}{\operatorname{vf}}
+\newcommand{\Var}{\operatorname{var}}
+\newcommand{\Per}{\mathcal P}
+
+\definecolor{statusgreen}{RGB}{26,112,70}
+
+\title{The Exact Variation Formula on the\
+Vertices of a Convex Polygon}
+\author{fa\_banach\_001 / agent\_lane\_14}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent
+\fcolorbox{statusgreen}{statusgreen!6}{%
+  \begin{minipage}{0.92\textwidth}
+  \textbf{Status: candidate full solution, likely valid; human review needed.}
+  The lower bound in Doust--Leinert--Stoneham's equation~(2.1) is always
+  exact, for every number of convex-polygon vertices and every complex-valued
+  function.  This affirmatively answers the open question following their
+  Theorem~2.25.
+  \end{minipage}}
+
+\section{Source question}
+
+Ian Doust, Michael Leinert, and Alan Stoneham define a two-dimensional
+variation for functions on compact planar sets and study the associated
+Banach algebras $BV(\sigma)$ and $AC(\sigma)$ \cite{DLS}.  For vertices
+$\sigma=\{z_1,\ldots,z_m\}$ of a convex polygon, listed in cyclic order, their
+Theorem~2.24 gives
+\begin{equation}
+ \frac12\sum_{i=1}^{m}|f(z_i)-f(z_{i+1})|
+ \leq \Var(f,\sigma),
+ \qquad z_{m+1}=z_1,
+ \label{eq:source-lower}
+\end{equation}
+together with a generally larger upper bound.  After proving equality for
+three non-collinear points, they ask on PDF page~16 whether
+\eqref{eq:source-lower} is always an equality when $\sigma$ has more than
+three points.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_context.png}
+  \caption{Theorem~2.24 and equation~(2.1) on PDF page~15 of the source.}
+\end{figure}
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{The exact open question on PDF page~16 of the source.}
+\end{figure}
+
+\section{Definitions}
+
+Let $S=[x_0,\ldots,x_n]$ be a finite ordered list of elements of $\sigma$.
+The source defines
+\[
+ \cvar(f,S)=\sum_{j=1}^{n}|f(x_j)-f(x_{j-1})|.
+\]
+Its variation factor $\vf(S)$ is the largest, over all lines $L$ in the
+plane, of the number of connected components of the intersection of $L$ with
+the polygonal path through $S$.  Equivalently, it is the maximum number of
+crossing segments under the source's endpoint convention.  Then
+\[
+ \Var(f,\sigma)=\sup_S\frac{\cvar(f,S)}{\vf(S)}.
+\]
+For later use, put
+\begin{equation}
+ \Per(f)=\frac12\sum_{i=1}^{m}|f(z_i)-f(z_{i+1})|,
+ \qquad z_{m+1}=z_1.
+ \label{eq:halfperimeter}
+\end{equation}
+Thus the question is whether $\Var(f,\sigma)=\Per(f)$.
+
+\section{Proof intuition}
+
+For a real-valued function, split every absolute difference into its level
+sets.  At a fixed level, the vertices above that level form several runs
+around the polygon.  Convexity lets one cut off each run by a line.  Every
+entry into or exit from that run is therefore a crossing of that line, so one
+run contributes at most $\vf(S)$ transitions to any list.  Integrating over
+the levels gives exactly half the cyclic variation of the vertex values.
+
+This proves the desired upper bound first for real functions, with no
+monotonicity assumption.  A complex distance is the average absolute length
+of its real projections.  Averaging the real theorem over all projection
+directions gives the full complex-valued result, while the source already
+provides the reverse inequality.
+
+\section{The cyclic-run bound}
+
+A \emph{cyclic interval} is a nonempty proper set of consecutive indices in
+$\{1,\ldots,m\}$, with indices read modulo $m$.
+
+\begin{lemma}[Chord separation]
+\label{lem:separator}
+For every cyclic interval $I$, there is a line $L_I$ which strictly separates
+$\{z_i:i\in I\}$ from $\{z_i:i\notin I\}$.
+\end{lemma}
+
+\begin{proof}
+There are exactly two polygon edges at which the boundary arc indexed by $I$
+meets its complementary arc.  Choose one point in the relative interior of
+each of these two edges and let $L_I$ be the line through the chosen points.
+Convexity implies that the intersection of the polygon with $L_I$ is precisely
+the chord between those points.  The two open boundary arcs lie in the two
+opposite open half-planes.  Since the chord endpoints were chosen inside the
+edges, no vertex lies on $L_I$, giving strict separation.
+\end{proof}
+
+For $A\subseteq\{1,\ldots,m\}$ and a list $S=[x_0,\ldots,x_n]$, let
+$N_A(S)$ be the number of $j$ for which exactly one of $x_{j-1},x_j$ belongs
+to $\{z_i:i\in A\}$.
+
+\begin{lemma}[Run-transition inequality]
+\label{lem:runs}
+If $A$ has $k$ cyclic runs, then
+\begin{equation}
+ N_A(S)\leq k\,\vf(S).
+ \label{eq:run-bound}
+\end{equation}
+Here the two trivial sets $A=\varnothing$ and
+$A=\{1,\ldots,m\}$ have $k=0$.
+\end{lemma}
+
+\begin{proof}
+Every transition counted by $N_A(S)$ has a unique endpoint in $A$; assign the
+transition to the cyclic run containing that endpoint.  For one fixed run
+$I$, Lemma~\ref{lem:separator} supplies a line $L_I$ strictly separating its
+vertices from all other vertices.  Both endpoints of every transition
+assigned to $I$ lie on strictly opposite sides of $L_I$.  Its list segment is
+therefore a type-(1) crossing segment on $L_I$.  The number assigned to $I$
+is at most
+\[
+ \vf(S,L_I)\leq\vf(S).
+\]
+Summing over the $k$ runs gives \eqref{eq:run-bound}.
+\end{proof}
+
+\section{Exact formula}
+
+\begin{lemma}[Real-valued case]
+\label{lem:real}
+If $g:\sigma\to\R$, then $\Var(g,\sigma)\leq\Per(g)$.
+\end{lemma}
+
+\begin{proof}
+For $t\in\R$, set
+\[
+ A_t=\{i:g(z_i)>t\},
+\]
+and let $k_t$ be its number of cyclic runs.  The layer-cake identity
+\[
+ |a-b|=\int_{-\infty}^{\infty}
+ \big|\mathbf1_{\{a>t\}}-\mathbf1_{\{b>t\}}\big|\,dt
+\]
+and finiteness of the list give
+\begin{equation}
+ \cvar(g,S)=\int_{-\infty}^{\infty}N_{A_t}(S)\,dt.
+ \label{eq:list-layercake}
+\end{equation}
+Around the cyclically ordered vertices, the indicator of a nontrivial $A_t$
+changes value exactly twice per run.  Applying layer cake to the polygon
+edges therefore gives
+\begin{align}
+ \Per(g)
+ &=\frac12\sum_{i=1}^{m}|g(z_i)-g(z_{i+1})|\notag\\
+ &=\int_{-\infty}^{\infty}k_t\,dt.
+ \label{eq:per-layercake}
+\end{align}
+By Lemma~\ref{lem:runs}, equations \eqref{eq:list-layercake} and
+\eqref{eq:per-layercake} yield
+\[
+ \cvar(g,S)\leq\vf(S)\int_{-\infty}^{\infty}k_t\,dt
+ =\vf(S)\Per(g).
+\]
+Divide by $\vf(S)$ and take the supremum over all lists $S$.
+\end{proof}
+
+\begin{theorem}[Exact finite-convex variation]
+\label{thm:main}
+Let $\sigma=\{z_1,\ldots,z_m\}$ be the vertices of a convex polygon, listed
+in cyclic order.  For every $f:\sigma\to\C$,
+\begin{equation}
+ \boxed{\displaystyle
+ \Var(f,\sigma)=\frac12\sum_{i=1}^{m}|f(z_i)-f(z_{i+1})|},
+ \qquad z_{m+1}=z_1.
+ \label{eq:exact}
+\end{equation}
+In particular, the lower bound in the source's equation~(2.1) is always exact,
+including when $m>3$.
+\end{theorem}
+
+\begin{proof}
+For $0\leq\theta\leq\pi$, define the real-valued projection
+\[
+ g_\theta(z_i)=\Re\bigl(e^{-i\theta}f(z_i)\bigr).
+\]
+The elementary Cauchy projection identity
+\begin{equation}
+ |w|=\frac12\int_0^\pi
+ \big|\Re(e^{-i\theta}w)\big|\,d\theta,
+ \qquad w\in\C,
+ \label{eq:projection}
+\end{equation}
+follows by rotation from $\int_0^\pi|\cos\theta|\,d\theta=2$.
+For any list $S$, finite summation and \eqref{eq:projection} give
+\[
+ \cvar(f,S)=\frac12\int_0^\pi\cvar(g_\theta,S)\,d\theta.
+\]
+Lemma~\ref{lem:real}, applied before taking the list supremum, says
+$\cvar(g_\theta,S)\leq\vf(S)\Per(g_\theta)$.  Hence
+\begin{align*}
+ \cvar(f,S)
+ &\leq \frac{\vf(S)}2\int_0^\pi\Per(g_\theta)\,d\theta\\
+ &=\vf(S)\frac12\sum_{i=1}^{m}|f(z_i)-f(z_{i+1})|\\
+ &=\vf(S)\Per(f),
+\end{align*}
+where the middle equality is another application of
+\eqref{eq:projection}.  Thus $\Var(f,\sigma)\leq\Per(f)$.  The reverse
+inequality is precisely the source's lower bound
+\eqref{eq:source-lower}, completing the proof.
+\end{proof}
+
+\begin{corollary}[Finite norm formula]
+For every $f:\sigma\to\C$,
+\[
+ \lVert f\rVert_{BV(\sigma)}
+ =\max_{1\leq i\leq m}|f(z_i)|
+ +\frac12\sum_{i=1}^{m}|f(z_i)-f(z_{i+1})|.
+\]
+Thus the norm is finitely computable and depends on the polygon only through
+the cyclic order of its vertices.
+\end{corollary}
+
+\begin{proof}
+Substitute Theorem~\ref{thm:main} into the source definition
+$\lVert f\rVert_{BV}=\lVert f\rVert_\infty+\Var(f,\sigma)$.
+\end{proof}
+
+\section{Verification and scope}
+
+The included script \texttt{code/verify\_cyclic\_cut.py} exhaustively checks
+all non-backtracking four-vertex words through length nine against all
+$\{-1,0,1\}$-valued functions.  It also tests 20,000 deterministic random
+complex instances for four through eight vertices.  It verifies the stronger
+combinatorial inequality using the largest cyclic-interval transition count,
+which Lemma~\ref{lem:separator} bounds above by $\vf(S)$.  The computation is
+only a stress test; the proof is analytic.  Commands and outputs are recorded
+in \texttt{verification.md}.
+
+Theorem~\ref{thm:main} answers the finite-convex-set question in its full
+complex-valued scope.  It does not address arbitrary finite planar sets with
+interior points or nonconvex position, nor the separate extension and lattice
+questions later in the source.
+
+\section{Bounded novelty check}
+
+The run's cheap indexes were searched by arXiv id, title, authors, and the
+finite-convex variation terms.  Bounded web/arXiv searches through
+13 August 2026 used the exact open-question language, ``variation factor'',
+``convex polygon'', ``lower bound (2.1)'', and cyclic-run/coarea combinations.
+They found the source and related earlier $AC(\sigma)$ work, but no later
+resolution or matching formula.  Details are in
+\texttt{novelty\_search.md}.  This is a bounded search, not an exhaustive
+novelty or priority claim.
+
+\section{Human-review recommendation}
+
+This packet is suitable for expert review as a candidate full solution.  The
+highest-value check is Lemma~\ref{lem:separator}, especially the cases of a
+single-vertex run and an all-but-one-vertex run.  The chord endpoints lie in
+relative interiors of boundary edges, so strict separation and the source's
+type-(1) crossing convention apply.  The remaining layer-cake and projection
+steps use only finite sums and elementary integrals.
+
+\begin{thebibliography}{9}
+
+\bibitem{DLS}
+I. Doust, M. Leinert, and A. Stoneham,
+\emph{The Banach algebras $AC(\sigma)$ and $BV(\sigma)$},
+arXiv:2206.00986 (2022).
+
+\end{thebibliography}
+
+\end{document}

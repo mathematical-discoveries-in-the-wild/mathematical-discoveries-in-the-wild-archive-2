@@ -1,0 +1,344 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+
+\title{A dimension-order rate for the mean radius of every Orlicz ball\\
+\large Candidate full answer to the centering question in arXiv:2011.07523}
+\author{Automated Mathematics Run \texttt{fa\_banach\_001}, lane 1}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{blue!55!black}{blue!4}{\parbox{0.89\textwidth}{
+\textbf{Status.} Candidate full affirmative solution, subject to human
+verification.  For the uniform measure on an Orlicz ball, the normalized
+second moment differs from its Gibbs limit by $O(n^{-1})$.  This is stronger
+than the $o(n^{-1/2})$ rate needed to transfer the source paper's complete
+moderate-deviation range from the limiting radius to the root-mean-square
+radius.}}
+\end{center}
+
+\section{Source and exact question}
+
+The source is D.~Alonso-Guti\'errez and J.~Prochno,
+\emph{Thin-shell concentration for random vectors in Orlicz balls via
+moderate deviations and Gibbs measures}~\cite{AP}, arXiv:2011.07523,
+published in \emph{Journal of Functional Analysis} 282 (2022), 109291.
+
+Let $M:\mathbb R\to[0,\infty)$ be even and convex, with $M(0)=0$ and
+$M(x)>0$ for $x\ne0$, and put
+\[
+ B_M^n(nR)=\left\{x\in\mathbb R^n:\sum_{i=1}^nM(x_i)\le nR\right\}.
+\]
+The source chooses $\alpha_*<0$ so that the Gibbs random variable $Z$ with
+density
+\[
+ p_M(x)=\frac{e^{\alpha_*M(x)}}{\int_{\mathbb R}e^{\alpha_*M(y)}\,dy}
+\]
+satisfies $\E M(Z)=R$, and writes $L_Z^2=\E Z^2$.  Its Theorem B gives a
+sharp moderate-deviation upper estimate around $L_Z$ when
+$M(x)=\Omega(x^2)$.  In Remark 3.4, on printed and PDF page 13, the authors
+state that they do not know whether
+\[
+ \left(\E\frac{\|X_n\|_2^2}{n}\right)^{1/2}\longrightarrow L_Z
+\]
+fast enough to replace $L_Z$ by the root-mean-square radius in those
+estimates.  Their next theorem performs the transfer under the stronger
+assumption $M(x)=\Omega(x^4)$.  Figure~\ref{fig:problem} reproduces the full
+question and its immediate context.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{Remark 3.4 and the start of Theorem 3.5 on page 13 of~\cite{AP}.}
+  \label{fig:problem}
+\end{figure}
+
+\section{Proof intuition}
+
+The uniform measure on the ball is an exact, one-sided exponential tilt of
+the product Gibbs measure.  If
+\[
+ U=M(Z)-R,\qquad S_n=U_1+\cdots+U_n,\qquad \beta=-\alpha_*>0,
+\]
+then the Radon--Nikodym weight is $e^{\beta S_n}{\bf1}_{\{S_n\le0\}}$.
+Its mass is of order $n^{-1/2}$ and is concentrated in an $O(1)$ boundary
+layer immediately below zero.
+
+Condition on the first coordinate.  The conditional boundary-layer weight
+is a function $H_{n-1}(U_1)$.  A third-order Edgeworth expansion for the sum
+of the remaining energies shows more than the naive fact that $H_{n-1}$ is
+almost constant: after subtracting $H_{n-1}(0)$, its covariance with any
+centered first-coordinate observable having enough moments is
+$O(n^{-3/2})$.  The mechanism is a second-difference cancellation.  The
+normal term gains three powers of $n^{-1/2}$ because $\Phi''(0)=0$; every
+Edgeworth correction has an explicit extra power of $n^{-1/2}$.
+
+For the observable $Z_1^2-L_Z^2$, division by the $n^{-1/2}$ normalizing
+mass therefore gives an $O(n^{-1})$ shift.  Since $n^{-1}=o(t_n)$ whenever
+$t_n\sqrt n\to\infty$, changing centers does not alter the source
+moderate-deviation exponent or prefactor.
+
+\section{A boundary-layer lemma}
+
+We isolate the only probabilistic estimate not already present in the source.
+
+\begin{lemma}\label{lem:boundary}
+Let $U$ be centered, nondegenerate, satisfy Cram\'er's condition
+\[
+ \limsup_{|t|\to\infty}|\E e^{itU}|<1,
+\]
+and have moments of every order.  Let $(U_i)_{i\ge2}$ be independent copies,
+$T_m=U_2+\cdots+U_{m+1}$, and, for a fixed $\beta>0$, set
+\[
+ H_m(u)=\E\!\left[e^{\beta(T_m+u)}
+                 {\bf1}_{\{T_m+u\le0\}}\right].
+\]
+If $(U,W)$ is a coupled pair with $\E W=0$ and
+$\E[|W|(1+|U|^2)]<\infty$, then
+\[
+ \E[W H_m(U)]=O(m^{-3/2}).
+\]
+\end{lemma}
+
+\begin{proof}
+Write $\sigma^2=\Var U$ and let $F_m$ be the distribution function of
+$T_m$.  Integration by parts gives, for every $u\in\mathbb R$,
+\begin{equation}\label{eq:Hcdf}
+ H_m(u)=F_m(-u)-\beta\int_0^\infty e^{-\beta v}F_m(-u-v)\,dv.
+\end{equation}
+By the classical Edgeworth expansion under Cram\'er's condition
+\cite[Chapter 2]{BR},
+\begin{equation}\label{eq:edge}
+ F_m(y)=\Phi\!\left(\frac{y}{\sigma\sqrt m}\right)
+ +\sum_{j=1}^3m^{-j/2}q_j\!\left(\frac{y}{\sigma\sqrt m}\right)
+ +r_m(y),
+ \qquad \sup_y|r_m(y)|=o(m^{-3/2}),
+\end{equation}
+where each $q_j$ is a polynomial times the standard normal density.  All
+second derivatives $q_j''$ are therefore bounded.
+
+For a twice differentiable function $f$, define
+\[
+ (\mathcal B_m f)(u)=f\!\left(-\frac{u}{\sigma\sqrt m}\right)
+ -\beta\int_0^\infty e^{-\beta v}
+ f\!\left(-\frac{u+v}{\sigma\sqrt m}\right)\,dv.
+\]
+Because $\beta\int_0^\infty e^{-\beta v}dv=1$, the difference
+$(\mathcal B_m f)(u)-(\mathcal B_m f)(0)$ is an exponentially averaged
+second difference.  Hence, if $\|f''\|_\infty<\infty$,
+\begin{equation}\label{eq:second-difference}
+ |(\mathcal B_m f)(u)-(\mathcal B_m f)(0)|
+ \le \frac{C_f|u|}{m}.
+\end{equation}
+For $f=\Phi$ one gains another factor $m^{-1/2}$: since
+$\Phi''(x)=-x\phi(x)$,
+\begin{equation}\label{eq:normal-gain}
+ |(\mathcal B_m\Phi)(u)-(\mathcal B_m\Phi)(0)|
+ \le \frac{C|u|(1+|u|)}{m^{3/2}}.
+\end{equation}
+Indeed, before integration in $v$ the mixed second difference is bounded by
+$C|u|v(|u|+v)m^{-3/2}$, and all exponential moments of $v$ are finite.
+
+Apply the linear operator in \eqref{eq:Hcdf} to \eqref{eq:edge}.  Equations
+\eqref{eq:second-difference} and \eqref{eq:normal-gain}, together with the
+explicit factors $m^{-j/2}$, yield
+\[
+ H_m(u)-H_m(0)
+ =O\!\left(\frac{|u|(1+|u|)}{m^{3/2}}\right)
+   +o(m^{-3/2}),
+\]
+where the final remainder is uniform in $u$ (its contribution is at most
+$4\sup_y|r_m(y)|$).  Since $\E W=0$,
+\[
+ \E[W H_m(U)]=\E\{W[H_m(U)-H_m(0)]\}=O(m^{-3/2})
+\]
+by the assumed mixed moment bound.
+\end{proof}
+
+\section{The mean-radius rate and the transfer}
+
+\begin{theorem}\label{thm:main}
+Let $M$ be any Orlicz function in the sense of~\cite{AP}, let $R>0$, and
+let $X_n$ be uniform on $B_M^n(nR)$.  With $Z$, $\alpha_*$, and $L_Z$ as
+above,
+\begin{equation}\label{eq:rate}
+ \frac1n\E\|X_n\|_2^2=L_Z^2+O(n^{-1}).
+\end{equation}
+Consequently,
+\[
+ \left(\frac1n\E\|X_n\|_2^2\right)^{1/2}
+ =L_Z+O(n^{-1}).
+\]
+
+If in addition $M(x)=\Omega(x^2)$ and
+$n^{-1/2}\ll t_n\ll1$, then the source's Theorem B remains valid with the
+limiting second moment replaced by the exact second moment:
+\begin{align}\label{eq:centered-bound}
+ &\Pp\!\left[
+ \left|\frac{\|X_n\|_2^2}{\E\|X_n\|_2^2}-1\right|\ge t_n\right] \\
+ &\quad\le
+ |\alpha_*|\sqrt{2\pi n\,\varphi_M''(\alpha_*)}
+ \exp\!\left\{-\frac{t_n^2nL_Z^4}{2\Var(Z^2)}(1+o(1))\right\}(1+o(1)).
+\end{align}
+The same right-hand side bounds
+\[
+ \Pp\!\left[
+ \left|\frac{\|X_n\|_2}{(\E\|X_n\|_2^2)^{1/2}}-1\right|\ge t_n\right].
+\]
+\end{theorem}
+
+\begin{proof}
+Put $\beta=-\alpha_*>0$, let $Z_1,\ldots,Z_n$ be independent copies of
+$Z$, and define
+\[
+ U_i=M(Z_i)-R,\qquad S_n=\sum_{i=1}^nU_i,
+ \qquad D_n=\E[e^{\beta S_n}{\bf1}_{\{S_n\le0\}}].
+\]
+Changing from Lebesgue measure to the product Gibbs measure gives the exact
+identity
+\begin{equation}\label{eq:gibbs-identity}
+ \E f((X_n)_1)=
+ \frac{\E[f(Z_1)e^{\beta S_n}{\bf1}_{\{S_n\le0\}}]}{D_n}
+\end{equation}
+for every integrable one-coordinate observable $f$.  The sharp normalizer
+estimate used in the source (its equation (3)) is
+\begin{equation}\label{eq:denominator}
+ D_n=\frac{1+o(1)}{\beta\sqrt{2\pi n\,\Var(M(Z))}}.
+\end{equation}
+
+We verify the hypotheses of Lemma~\ref{lem:boundary}.  Convexity and
+$M(x)>0$ for $x\ne0$ make $M$ strictly increasing on $[0,\infty)$.
+Its inverse there is concave and absolutely continuous on compact intervals.
+It follows directly from
+\[
+ \Pp(M(Z)\le y)=
+ \frac{2\int_0^{M^{-1}(y)}e^{-\beta M(x)}\,dx}
+      {\int_{\mathbb R}e^{-\beta M(x)}\,dx}
+\]
+that $M(Z)$ has a Lebesgue density.  Thus its characteristic function tends
+to zero at infinity, so $U=M(Z)-R$ satisfies Cram\'er's condition.  Also
+$\E e^{\eta M(Z)}<\infty$ for every $0<\eta<\beta$, hence $U$ has moments
+of every order and is nondegenerate.
+
+Let $W=Z^2-L_Z^2$.  Every Orlicz function grows at least linearly at
+infinity, so $Z$ and $W$ have moments of every order; in particular
+$\E[|W|(1+|U|^2)]<\infty$.  Condition on $(U_1,Z_1)$ in
+\eqref{eq:gibbs-identity}, set $m=n-1$, and use the function $H_m$ of
+Lemma~\ref{lem:boundary}.  Symmetry of the ball gives
+\begin{align*}
+ \frac1n\E\|X_n\|_2^2-L_Z^2
+ &=\E (X_n)_1^2-L_Z^2 \\
+ &=\frac{\E[(Z_1^2-L_Z^2)H_{n-1}(U_1)]}{D_n}.
+\end{align*}
+The numerator is $O(n^{-3/2})$ by Lemma~\ref{lem:boundary}, while
+\eqref{eq:denominator} is of order $n^{-1/2}$.  This proves
+\eqref{eq:rate}.  Since $L_Z>0$, the square-root assertion follows.
+
+For the transfer, set $Q_n=\|X_n\|_2^2/n$ and
+$\mu_n=\E Q_n$.  From \eqref{eq:rate},
+$|\mu_n-L_Z^2|=O(n^{-1})=o(t_n)$.  Therefore
+\[
+ \left\{\left|Q_n/\mu_n-1\right|\ge t_n\right\}
+ \subseteq
+ \left\{\left|Q_n/L_Z^2-1\right|\ge s_n\right\},
+ \qquad s_n=t_n(1+o(1)).
+\]
+The sequence $s_n$ still satisfies $n^{-1/2}\ll s_n\ll1$.  Applying source
+Theorem B at $s_n$ gives \eqref{eq:centered-bound}, including the same
+moderate-deviation exponent and prefactor.  Finally, for $0<t_n<1$,
+\[
+ \left\{\left|\sqrt{Q_n/\mu_n}-1\right|\ge t_n\right\}
+ \subseteq \left\{\left|Q_n/\mu_n-1\right|\ge t_n\right\},
+\]
+which proves the norm version.
+\end{proof}
+
+\section{Verification notes, limitations, and novelty}
+
+\begin{enumerate}[leftmargin=*,itemsep=0.55em]
+\item \textbf{The main cancellation is genuinely second order.}  Merely
+using a Berry--Esseen bound would leave an error as large as the
+$n^{-1/2}$ denominator.  The third-order Edgeworth remainder and the mixed
+second difference in \eqref{eq:Hcdf} are what produce the
+$n^{-3/2}$ centered numerator.
+
+\item \textbf{No smoothness of $M$ is used.}  Convexity supplies a concave
+inverse and hence an absolutely continuous law for $M(Z)$.  This is enough
+for the one-dimensional Cram\'er condition.  Dense nondifferentiability of
+$M$ causes no difficulty.
+
+\item \textbf{The rate theorem is stronger than needed.}  Equation
+\eqref{eq:rate} holds for every Orlicz function.  The quadratic lower-growth
+condition enters only when invoking the source moderate-deviation theorem.
+
+\item \textbf{Dependence on a standard theorem.}  The proof relies on the
+classical third-order Edgeworth expansion under Cram\'er's condition.  A
+reviewer should verify the normalization and the uniform
+$o(m^{-3/2})$ remainder in \eqref{eq:edge}; all its moment and Cram\'er
+hypotheses are checked explicitly above.
+
+\item \textbf{Exact sanity checks.}  For $M(x)=x^2$, direct integration in
+the Euclidean ball gives
+\[
+ n^{-1}\E\|X_n\|_2^2=\frac{nR}{n+2},\qquad L_Z^2=R.
+\]
+For $M(x)=|x|$, the Dirichlet formula for the cross-polytope gives
+\[
+ n^{-1}\E\|X_n\|_2^2=\frac{2n^2R^2}{(n+1)(n+2)},
+ \qquad L_Z^2=2R^2.
+\]
+Both exact models agree with \eqref{eq:rate}.
+
+\item \textbf{Bounded novelty check.}  The run's registry, solution,
+attempt, and proof-gap indexes were searched for arXiv:2011.07523 and the
+core centering terms.  Web searches through 9 August 2026 used the exact
+question sentence, the title, $L_Z$, ``expectation convergence rate'', and
+``Edgeworth Orlicz ball''.  The closest later work found is
+Fr\"uhwirth--Prochno~\cite{FP}, which proves bivariate Edgeworth and
+quantitative CLT results for a smoother Orlicz class ($C^2$ away from a
+discrete set).  It does not state \eqref{eq:rate} or the exact transfer above,
+and it explicitly notes that its smoothness convention is stronger than the
+general convex convention of~\cite{AP}.  Novelty is therefore plausible but
+not guaranteed.
+
+\item \textbf{Human-review recommendation.}  Prioritize
+Lemma~\ref{lem:boundary}, especially the use of the order-three Edgeworth
+remainder and the uniform treatment of the remainder after applying
+\eqref{eq:Hcdf}.  Then check the exact Gibbs identity and the event inclusion
+used to transfer the source estimate.
+\end{enumerate}
+
+\begin{thebibliography}{9}
+\bibitem{AP}
+D.~Alonso-Guti\'errez and J.~Prochno,
+\emph{Thin-shell concentration for random vectors in Orlicz balls via
+moderate deviations and Gibbs measures}, J. Funct. Anal. 282 (2022), 109291;
+arXiv:2011.07523.
+
+\bibitem{BR}
+R.~N.~Bhattacharya and R.~Ranga Rao,
+\emph{Normal Approximation and Asymptotic Expansions}, SIAM Classics in
+Applied Mathematics 64, 2010 reprint of the 1976 edition, Chapter 2.
+
+\bibitem{FP}
+L.~Fr\"uhwirth and J.~Prochno,
+\emph{Sharp concentration phenomena in high-dimensional Orlicz balls},
+J. Funct. Anal. 290 (2026), 111322; arXiv:2407.15579.
+\end{thebibliography}
+
+\end{document}

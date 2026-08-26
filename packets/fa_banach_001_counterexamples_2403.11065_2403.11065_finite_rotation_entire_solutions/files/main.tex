@@ -1,0 +1,173 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!55!black,urlcolor=blue!55!black,citecolor=blue!55!black}
+\newtheorem{theorem}{Theorem}
+\newcommand{\D}{\mathbb D}
+\newcommand{\T}{\mathbb T}
+\title{Finite elliptic groups give rational solutions beyond the unit disk\\in arXiv:2403.11065}
+\author{Candidate counterexample packet}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\linewidth}{\textbf{Status:} candidate counterexample likely valid. This is a full negative answer to the first open question as stated, while the non-elementary/lattice-generated variant remains open.}}
+\end{center}
+
+\section{Source question}
+
+For a probability measure $\mu$ on $PSU(1,1)$, the source studies holomorphic
+solutions of
+\begin{equation}\label{eq:source}
+ \int f(\gamma^{-1}.z)(\gamma^{-1})'(z)\,d\mu(\gamma)-f(z)
+ =\int \frac{d\mu(\gamma)}{z-\gamma.\infty}.
+\end{equation}
+Its first open question asks whether, for finitely supported $\mu$, every
+solution has radius of convergence exactly $1$.  It also proposes that
+rational solutions should occur only when $\mu$ is supported on a single
+element~\cite{K}.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_question_crop.png}
+
+\smallskip
+\emph{The complete first bullet of Section 6 in the latest arXiv source, page 19.}
+\end{center}
+
+\section{Counterexample}
+
+\begin{theorem}\label{thm:counterexample}
+There is a two-point probability measure $\mu$ on $PSU(1,1)$, both of whose
+support elements move the origin, for which \eqref{eq:source} has the nonzero
+rational solution
+\[
+ f(z)=\frac{1}{2-z}.
+\]
+Its Taylor series at the origin has radius of convergence $2$.  Consequently,
+both literal assertions in the source question are false.
+\end{theorem}
+
+\begin{proof}
+Put $a=\tfrac12$, let $\omega=e^{2\pi i/3}$, and define
+\[
+ h(z)=\frac{z+a}{1+az},\qquad r_j(z)=\omega^jz,\qquad
+ \gamma_j=h\circ r_j\circ h^{-1}\quad(j=1,2).
+\]
+These are elements of $PSU(1,1)$.  Let
+\[
+ \mu=\tfrac12(\delta_{\gamma_1}+\delta_{\gamma_2}),
+ \qquad \nu=h_*m,
+\]
+where $m$ is normalized Lebesgue measure on $\T$.  Rotation invariance gives
+$(r_j)_*m=m$, and hence
+\[
+ (\gamma_j)_*\nu=h_*(r_j)_*m=h_*m=\nu.
+\]
+Thus $\nu$ is invariant under each support element and, in particular, is
+$\mu$-stationary.
+
+We compute its Cauchy transform.  For $k\geq1$, the mean-value property for
+the holomorphic function $h^k$ gives
+\[
+ \int_{\T}\xi^k\,d\nu(\xi)
+ =\int_{\T}h(\eta)^k\,dm(\eta)=h(0)^k=a^k.
+\]
+Since $a$ is real and $|\xi|=1$, conjugation yields
+$\int\xi^{-k}\,d\nu(\xi)=a^k$.  Therefore, for $|z|<1$,
+\[
+ f_\nu(z)
+ =\int_{\T}\frac{d\nu(\xi)}{\xi-z}
+ =\sum_{n\geq0}z^n\int_{\T}\xi^{-(n+1)}\,d\nu(\xi)
+ =\sum_{n\geq0}a^{n+1}z^n
+ =\frac{a}{1-az}=\frac{1}{2-z}.
+\]
+The source's main theorem says that the Cauchy transform of every stationary
+probability measure satisfies \eqref{eq:source}.  Hence $f_\nu$ is a solution.
+It is nonzero and rational, and its unique pole is at $z=2$, so its Taylor
+radius is $2$.
+
+Finally, for $j=1,2$,
+\[
+ \gamma_j(0)=h(-a\omega^j)
+ =\frac{a(1-\omega^j)}{1-a^2\omega^j}\neq0.
+\]
+The two maps are distinct, so $|\operatorname{supp}\mu|=2$.  This completes
+all claimed properties.
+\end{proof}
+
+\section{\hspace{0.25em}Why this is the correct obstruction}
+
+The example is not an accident at the level of a single formula.  If $K$ is
+any finite rotation group, $h\in PSU(1,1)$, and $\mu$ is supported on at least
+two elements of $hKh^{-1}$, then $h_*m$ is invariant under every support
+element.  When $h(0)=a$, after a harmless rotation making $a>0$, its Cauchy
+transform is $a/(1-az)$ and has radius $1/a>1$.  Thus an entire family of
+finite elliptic examples defeats the proposed conclusion.
+
+At the un-conjugated center the kernel is also transparent.  For
+$\rho_\alpha(z)=\alpha z$,
+\[
+ f(z)=\sum_{n\geq0}c_nz^n
+ \quad\Longrightarrow\quad
+ f(\rho_\alpha^{-1}z)(\rho_\alpha^{-1})'(z)
+ =\sum_{n\geq0}c_n\alpha^{-(n+1)}z^n.
+\]
+For a probability measure on rotations, a coefficient $c_n$ may be nonzero
+exactly when every supported rotation satisfies $\alpha^{n+1}=1$.  In a
+cyclic group of order $q$, all functions $z^{q-1}g(z^q)$ solve the homogeneous
+equation.  Choosing $g$ entire gives further nonzero entire solutions with
+multi-point support.  Conjugation produces the stronger off-center rational
+solution used in Theorem~\ref{thm:counterexample}.
+
+\section{Verification and scope}
+
+The accompanying SymPy script performs an independent exact check for
+$a=1/2$ and $q=3$: it constructs $\gamma_1,\gamma_2$ and their inverses,
+checks both maps move $0$, and simplifies the left side of
+\eqref{eq:source} minus the right side to zero.  All arithmetic lies in
+$\mathbb Q(i\sqrt3)(z)$; numerical approximation is not used.
+
+This counterexample meets the source's earlier nontriviality condition that
+some supported map not fix the origin.  It does generate only a finite
+elliptic (hence elementary) subgroup.  It therefore does not settle a
+strengthened question requiring the support to generate a non-elementary
+group or a lattice, which is the setting relevant to the singularity
+conjecture.  Such a hypothesis, or at least exclusion of compact elementary
+subgroups, is necessary for the proposed rigidity statement.
+
+\section{Bounded novelty check}
+
+The search through 11 August 2026 covered the run's registry, solution,
+attempt, and proof-gap indexes; arXiv:2403.11065v2 (17 April 2025); the July
+2026 Journal of Functional Analysis publication page; the exact open-question
+phrases; and combinations of the title or identifier with \emph{rotation},
+\emph{rational solution}, and \emph{radius of convergence}.  It found no
+later source explicitly recording this counterexample.  Novelty confidence is
+moderate pending specialist review; the exact computation is independent of
+novelty.
+
+\section{Conclusion}
+
+The first open question has a negative answer as written.  A two-point measure
+supported on an off-center finite elliptic group admits the stationary Cauchy
+transform $1/(2-z)$, whose radius is $2$.  The same example refutes the
+proposed one-point-support restriction for rational solutions.  Human review
+should confirm the literal scope and, if desired, restate the surviving
+problem with a non-elementary or lattice-generation assumption.
+
+\begin{thebibliography}{9}
+\bibitem{K}
+P. Kosenko,
+\emph{On a complex-analytic approach to stationary measures on $S^1$ with
+respect to the action of $PSU(1,1)$},
+arXiv:2403.11065v2; J. Funct. Anal. 291 (2026), 111476.
+\url{https://arxiv.org/abs/2403.11065}.
+\end{thebibliography}
+
+\end{document}

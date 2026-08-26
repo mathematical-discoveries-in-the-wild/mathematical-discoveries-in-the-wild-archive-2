@@ -1,0 +1,262 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,graphicx,microtype,enumitem}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Nzero}{\mathbb N_0}
+\newcommand{\SOS}{\mathcal S}
+\newcommand{\POS}{\mathcal N}
+\newcommand{\Reach}{\mathcal R}
+
+\title{Constant-coefficient SOS reachability:\\
+an exact classification and a Motzkin counterexample}
+\author{Candidate full negative answer to the final question of arXiv:0811.4374}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Candidate full counterexample and exact classification, likely valid.  For
+every $n\geq2$, the polynomials attainable in the source question are exactly
+the sums of polynomial squares.  Hence every nonnegative non-SOS polynomial
+is a counterexample; an explicit two-variable Motzkin polynomial works in all
+dimensions $n\geq2$.}}
+\end{center}
+
+\section{The source question}
+
+For $n\geq2$, let
+\[
+ \SOS(n)=\left\{\sum_{j=1}^r g_j^2:g_j\in
+ \R[x_1,\ldots,x_n],\ r<\infty\right\}
+\]
+and let $\POS(n)$ be the cone of polynomials nonnegative on $\R^n$.
+Borcea asks whether every $p\in\POS(n)$ can be represented as $T(f)$, where
+$f\in\SOS(n)$ and $T$ is a linear partial differential operator with
+constant coefficients satisfying $T(\SOS(n))\subseteq\POS(n)$
+\cite[p.~11]{Borcea}.  The original question is reproduced in
+Figure~\ref{fig:question}.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/open_question_crop.png}
+\caption{The final question on page 11 of arXiv:0811.4374v3.  The source uses
+$SOS(n)$ and $\overline{POS}(n)$ for the cones denoted here by $\SOS(n)$ and
+$\POS(n)$.}
+\label{fig:question}
+\end{figure}
+
+The answer is no in every dimension under consideration.  In fact, the
+possible outputs admit a complete description.
+
+\section{Exact reachability classification}
+
+As in the source, an operator with constant coefficients may have infinite
+order:
+\begin{equation}\label{eq:T}
+ T=\sum_{\gamma\in\Nzero^n}q_\gamma\,\partial^\gamma,
+ \qquad q_\gamma\in\R.
+\end{equation}
+The sum is nevertheless finite on each polynomial.  Define
+\[
+ \Reach_n=\{T(f): f\in\SOS(n),\ T\text{ is as in \eqref{eq:T}},\
+ T(\SOS(n))\subseteq\POS(n)\}.
+\]
+
+\begin{theorem}[automatic SOS preservation]\label{thm:auto}
+If a constant-coefficient operator $T$ satisfies
+$T(\SOS(n))\subseteq\POS(n)$, then in fact
+\[
+ T(\SOS(n))\subseteq\SOS(n).
+\]
+Consequently,
+\[
+ \boxed{\Reach_n=\SOS(n)}
+\]
+for every $n\geq1$.
+\end{theorem}
+
+\begin{proof}
+Fix $d\geq0$ and index rows and columns by
+$A_d=\{\alpha\in\Nzero^n:|\alpha|\leq d\}$.  Form the finite Hankel matrix
+\begin{equation}\label{eq:H}
+ H_d=\bigl(h_{\alpha\beta}\bigr)_{\alpha,\beta\in A_d},
+ \qquad
+ h_{\alpha\beta}=(\alpha+\beta)!\,q_{\alpha+\beta}.
+\end{equation}
+For arbitrary real coefficients $c_\alpha$, put
+$g(x)=\sum_{\alpha\in A_d}c_\alpha x^\alpha$.  Since $g^2\in\SOS(n)$,
+the hypothesis and evaluation at the origin give
+\begin{equation}\label{eq:psd}
+ 0\leq T(g^2)(0)
+ =\sum_{\alpha,\beta\in A_d}
+ c_\alpha c_\beta(\alpha+\beta)!q_{\alpha+\beta}
+ =c^{\mathsf T}H_dc.
+\end{equation}
+Thus $H_d$ is positive semidefinite.  This is precisely the
+constant-coefficient specialization of the Hankel condition in Theorem 4.4
+of the source, but \eqref{eq:psd} also proves it directly.
+
+Now let $g$ be any polynomial of degree at most $d$, and set
+\[
+ v_\alpha(x)=\frac{\partial^\alpha g(x)}{\alpha!}
+ \qquad(\alpha\in A_d).
+\]
+The multivariate Leibniz rule yields the polynomial identity
+\begin{align}
+ T(g^2)(x)
+ &=\sum_{\gamma}q_\gamma
+   \sum_{\alpha+\beta=\gamma}
+   \frac{\gamma!}{\alpha!\beta!}
+   \partial^\alpha g(x)\partial^\beta g(x) \notag\\
+ &=v(x)^{\mathsf T}H_dv(x).                       \label{eq:gram}
+\end{align}
+Choose a real Gram factorization $H_d=B^{\mathsf T}B$.  Equation
+\eqref{eq:gram} becomes
+\begin{equation}\label{eq:explicit-sos}
+ T(g^2)(x)=\sum_k\left(
+   \sum_{\alpha\in A_d}B_{k\alpha}
+   \frac{\partial^\alpha g(x)}{\alpha!}
+ \right)^2,
+\end{equation}
+an explicit sum of polynomial squares.  Applying \eqref{eq:explicit-sos}
+to every summand of $f=\sum_jg_j^2$ proves
+$T(f)\in\SOS(n)$.
+
+It follows that $\Reach_n\subseteq\SOS(n)$.  The reverse inclusion is
+immediate: for $p\in\SOS(n)$, take $f=p$ and $T$ to be the identity
+operator.  The identity has constant coefficients and maps $\SOS(n)$ into
+$\POS(n)$.
+\end{proof}
+
+\begin{remark}[GNS interpretation]
+Equation \eqref{eq:H} defines a positive semidefinite polynomial moment
+functional $L(x^\gamma)=\gamma!q_\gamma$.  Then
+$T(g^2)(x)=L_t(g(x+t)^2)$.  Only finitely many classes of monomials occur for
+a fixed $g$; choosing an orthonormal basis in their finite-dimensional GNS
+span again turns the squared Hilbert-space norm into the finite SOS
+decomposition \eqref{eq:explicit-sos}.  Thus the conclusion does not require
+the multivariate moment functional to possess a representing measure.
+\end{remark}
+
+\section{An explicit counterexample in every dimension}
+
+Put
+\begin{equation}\label{eq:m}
+ m(x,y)=x^4y^2+x^2y^4+1-3x^2y^2.
+\end{equation}
+The arithmetic--geometric mean inequality gives
+\[
+ x^4y^2+x^2y^4+1
+ \geq3\sqrt[3]{x^6y^6}=3x^2y^2,
+\]
+so $m\geq0$ on $\R^2$.  We include the short standard proof that $m$ is
+not SOS, making the counterexample self-contained.
+
+\begin{lemma}[Newton-polytope support restriction]\label{lem:newton}
+If a real polynomial $P$ is a sum of squares $P=\sum_jQ_j^2$, then
+\[
+ \operatorname{Newt}(Q_j)\subseteq\tfrac12\operatorname{Newt}(P)
+ \qquad\text{for every }j.
+\]
+\end{lemma}
+
+\begin{proof}
+If an exponent in some $Q_j$ lay outside the half polytope, a separating
+linear weight would make twice its weight strictly larger than the maximal
+weight in $P$.  But the highest-weight part of $\sum_jQ_j^2$ is the sum of
+squares of the highest-weight parts of the $Q_j$ and therefore cannot cancel.
+This contradicts the definition of the Newton polytope of $P$.
+\end{proof}
+
+\begin{lemma}\label{lem:motzkin}
+The polynomial $m$ in \eqref{eq:m} does not belong to $\SOS(2)$.
+\end{lemma}
+
+\begin{proof}
+If $m=\sum_jg_j^2$, then $\deg g_j\leq3$.  Homogenizing each $g_j$ to
+degree three would express the Motzkin form
+\begin{equation}\label{eq:M}
+ M(x,y,z)=x^4y^2+x^2y^4+z^6-3x^2y^2z^2
+\end{equation}
+as a sum of squares of cubic forms.
+
+The Newton polytope of $M$ is the triangle with vertices
+$(4,2,0)$, $(2,4,0)$, and $(0,0,6)$; the exponent $(2,2,2)$ is its
+barycenter.  The lattice points in half this triangle are exactly
+\[
+ (2,1,0),\qquad(1,2,0),\qquad(0,0,3),\qquad(1,1,1).
+\]
+Lemma~\ref{lem:newton} therefore forces every cubic summand to have the form
+\[
+ Q_j=a_jx^2y+b_jxy^2+c_jz^3+d_jxyz.
+\]
+In $\sum_jQ_j^2$, the coefficient of $x^2y^2z^2$ is then
+$\sum_jd_j^2\geq0$: no product of two distinct displayed monomials has that
+exponent.  In \eqref{eq:M} the coefficient is $-3$, a contradiction.
+\end{proof}
+
+\begin{corollary}[full negative answer]\label{cor:negative}
+For every $n\geq2$, the answer to Borcea's final question is negative.
+Explicitly, view $m(x_1,x_2)$ as a polynomial in
+$\R[x_1,\ldots,x_n]$.  It belongs to $\POS(n)$, but there are no
+$f\in\SOS(n)$ and no constant-coefficient $T$ with
+$T(\SOS(n))\subseteq\POS(n)$ such that $T(f)=m$.
+\end{corollary}
+
+\begin{proof}
+Theorem~\ref{thm:auto} would force $m=T(f)$ to be SOS in $n$ variables.
+Setting $x_3=\cdots=x_n=0$ in such a decomposition would make $m$ SOS in
+two variables, contrary to Lemma~\ref{lem:motzkin}.
+\end{proof}
+
+\section{Scope, verification, and novelty}
+
+The classification covers the source's full operator class, including
+infinite-order constant-coefficient operators.  No moment-measure theorem is
+used; finite positive-semidefinite Hankel matrices and their Gram
+factorizations suffice.  The argument also isolates why allowing a
+nonnegative output does not enlarge the image cone: positivity on all input
+squares already supplies the same Gram matrix needed for an output SOS.
+
+The Leibniz/Hankel identity, the half-Newton-polytope lattice points, and the
+Motzkin coefficient contradiction were independently checked by the included
+symbolic verifier.  A second derivation through the finite-dimensional GNS
+construction and audits of infinite order, $n=2$, and dimension embedding are
+recorded in the accompanying attempt note.
+
+Novelty is provisional.  Searches through 13 August 2026 covered the exact
+question, the source title and DOI, constant-coefficient SOS-preserver and
+Hankel/Gram variants, the local run corpus, and the four works in the source's
+OpenAlex citation record.  The later positivity-preserver treatments
+arXiv:0902.0279 and arXiv:2407.15654 were inspected directly.  They discuss
+nonnegativity preservation and related heat-flow SOS phenomena, but the
+searches found no statement of Theorem~\ref{thm:auto}, the reachability
+classification, or an answer to the displayed source question.  Priority is
+therefore not claimed.  Human review should focus first on the index matching
+in \eqref{eq:gram}; after that, the result is finite-dimensional linear
+algebra.
+
+\begin{thebibliography}{9}
+\bibitem{Borcea}
+J.~Borcea,
+\emph{Classifications of linear operators preserving elliptic, positive and
+non-negative polynomials}, J. Reine Angew. Math. 650 (2011), 67--82;
+arXiv:0811.4374v3.
+
+\bibitem{Motzkin}
+T.~S.~Motzkin,
+\emph{The arithmetic-geometric inequality}, in \emph{Inequalities}
+(Proc. Sympos. Wright-Patterson Air Force Base, Ohio, 1965), Academic Press,
+New York, 1967, 205--224.
+\end{thebibliography}
+
+\end{document}

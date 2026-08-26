@@ -1,0 +1,215 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,microtype,graphicx}
+\usepackage[colorlinks=true,urlcolor=blue,citecolor=blue]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Rp}{R_p}
+\newcommand{\Mp}{M_p}
+\newcommand{\op}{\mathrm{op}}
+\title{Sharp sparse Rademacher comparison for orthogonal monochromatic blocks}
+\author{Candidate partial result for \texttt{fa\_banach\_001}}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+Candidate substantial partial result; likely valid.  This is not a solution
+of the full arbitrary-matrix or circulant problem.
+
+\section{Source question}
+
+For a scalar matrix $A=(a_{ij})$ and $p\geq1$, Lata\l a and
+\'Swi\k atkowski define
+\[
+ \Rp(A):=\sup_{\|s\|_2,\|t\|_2\leq1}
+ \left\|\sum_{i,j}a_{ij}\varepsilon_{ij}s_it_j\right\|_p
+\]
+and prove in Proposition 1.5 that
+\[
+ \frac12\Mp(A)\leq\Rp(A)
+ \lesssim\sqrt{\log(p+1)}\,\Mp(A),
+ \qquad
+ \Mp(A):=\max_{|I|\leq p}
+ \bigl\|(|a_{ij}|\mathbf1_{(i,j)\in I})\bigr\|_{\op}.
+\]
+They then ask whether the logarithmic factor is necessary
+\cite[Proposition 1.5 and the following sentence, p.~4]{LS2021}.
+
+\begin{figure}[ht]
+ \centering
+ \includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+ \caption{The source question on arXiv PDF page 4.}
+\end{figure}
+
+The same paper proves the constant-factor estimate
+\begin{equation}\label{eq:zeroone}
+ \Rp(B)\leq C_0\Mp(B)
+\end{equation}
+for every $0$--$1$ matrix $B$, with a universal constant $C_0$
+\cite[Proposition 1.4]{LS2021}.  The result below shows that this sharp class
+has a dimension-free direct-sum closure that permits arbitrarily many
+different coefficient scales.
+
+\section{Proof intuition}
+
+An orthogonal block decomposition splits both test vectors into square-summable
+pieces.  The source theorem controls the Rademacher sum inside each block by
+the global sparse norm times the product of the two corresponding block
+lengths.  Minkowski adds these products, while Cauchy--Schwarz bounds their
+sum by one.  Thus neither the number of blocks nor their coefficient scales
+can create the logarithmic accumulation seen in a generic dyadic
+decomposition.  The unresolved case is exactly where different scales share
+rows or columns, destroying this two-sided square summability.
+
+\section{Direct-sum stability}
+
+We allow rectangular matrices in the statement; they can equivalently be
+padded by zero rows or columns.
+
+\begin{theorem}[orthogonal direct-sum stability]\label{thm:stability}
+Fix $p\geq1$.  Suppose $A$ is, after independent permutations of its rows and
+columns, an orthogonal direct sum
+\[
+ A=A_1\oplus\cdots\oplus A_m.
+\]
+If a constant $C$ satisfies
+\[
+ \Rp(A_\ell)\leq C\Mp(A_\ell)
+ \qquad(1\leq\ell\leq m),
+\]
+then the same constant satisfies
+\[
+ \Rp(A)\leq C\Mp(A).
+\]
+\end{theorem}
+
+\begin{proof}
+Fix $s,t$ with $\|s\|_2,\|t\|_2\leq1$.  Let $s_\ell,t_\ell$ be their
+restrictions to the row and column spaces of $A_\ell$, and put
+\[
+ \alpha_\ell=\|s_\ell\|_2,\qquad
+ \beta_\ell=\|t_\ell\|_2.
+\]
+When these quantities are nonzero, write
+$s_\ell=\alpha_\ell u_\ell$ and
+$t_\ell=\beta_\ell v_\ell$ with $u_\ell,v_\ell$ unit vectors.  A zero
+restriction simply contributes zero.  Minkowski's inequality and the assumed
+block estimates give
+\begin{align*}
+ \left\|\sum_{i,j}a_{ij}\varepsilon_{ij}s_it_j\right\|_p
+ &\leq \sum_{\ell=1}^m
+ \alpha_\ell\beta_\ell
+ \left\|\sum_{(i,j)\text{ in block }\ell}
+ (A_\ell)_{ij}\varepsilon_{ij}(u_\ell)_i(v_\ell)_j\right\|_p\\
+ &\leq C\sum_{\ell=1}^m
+ \alpha_\ell\beta_\ell\Mp(A_\ell).
+\end{align*}
+Every set of at most $p$ entries in $A_\ell$ is also an admissible set in
+$A$, and embedding the resulting sparse matrix does not change its operator
+norm.  Hence $\Mp(A_\ell)\leq\Mp(A)$.  Since the row blocks and column blocks
+are respectively disjoint,
+\[
+ \sum_\ell\alpha_\ell^2\leq\|s\|_2^2\leq1,
+ \qquad
+ \sum_\ell\beta_\ell^2\leq\|t\|_2^2\leq1.
+\]
+Cauchy--Schwarz now yields
+\[
+ \sum_\ell\alpha_\ell\beta_\ell\leq1,
+\]
+so the displayed Rademacher norm is at most $C\Mp(A)$.  Taking the supremum
+over $s,t$ proves the assertion.
+\end{proof}
+
+\begin{corollary}[orthogonal monochromatic blocks]\label{cor:blocks}
+Let $R_\ell$ be pairwise disjoint row sets and $C_\ell$ pairwise disjoint
+column sets.  For each $\ell$, let
+$E_\ell\subset R_\ell\times C_\ell$ and let $\lambda_\ell$ be a scalar.
+Suppose that
+\[
+ a_{ij}=\lambda_\ell\mathbf1_{E_\ell}(i,j)
+ \quad\text{on }R_\ell\times C_\ell,
+ \qquad a_{ij}=0\quad\text{otherwise}.
+\]
+Then, with universal constants independent of all the data,
+\[
+ \Rp(A)\asymp\Mp(A).
+\]
+In particular, the factor $\sqrt{\log(p+1)}$ is unnecessary on this class,
+even when the number of blocks and the dynamic range of
+$|\lambda_\ell|$ are arbitrary.
+\end{corollary}
+
+\begin{proof}
+The law defining $\Rp$ is unchanged when deterministic entry signs are
+absorbed into the independent Rademacher variables.  Thus each nonzero block
+may be written as $|\lambda_\ell|B_\ell$ with $B_\ell$ a $0$--$1$ matrix.
+Homogeneity and \eqref{eq:zeroone} give
+\[
+ \Rp(|\lambda_\ell|B_\ell)
+ \leq C_0\Mp(|\lambda_\ell|B_\ell).
+\]
+Theorem~\ref{thm:stability} supplies the upper estimate for $A$.
+
+For completeness, the reverse estimate is the general lower bound from the
+source.  Indeed, choose $I$, $|I|\leq p$, and nonnegative unit vectors $u,v$
+that norm the nonnegative sparse matrix
+$(|a_{ij}|\mathbf1_{(i,j)\in I})$.  Conditional expectation onto the signs in
+$I$ shows that deleting all other summands cannot increase the $L_p$ norm.
+On the event that the signs in $I$ align with the deterministic coefficient
+signs, which has probability $2^{-|I|}$, the selected sum equals
+$\Mp(A)$.  Therefore its $L_p$ norm is at least
+$2^{-|I|/p}\Mp(A)\geq\frac12\Mp(A)$.  Taking the optimal $I$ completes the
+proof.
+\end{proof}
+
+\section{Verification, scope, and novelty status}
+
+The proof has no computational dependency.  The key normalization identities,
+the local-to-global inequality $\Mp(A_\ell)\leq\Mp(A)$, the handling of zero
+blocks and signs, and the noninteger-$p$ lower-bound constant were separately
+audited in \texttt{verification\_report.md}.
+
+The result does not cover a decomposition whose pieces merely have disjoint
+entries: disjointness is required simultaneously in their row spaces and in
+their column spaces.  In particular, the permutation diagonals of a circulant
+matrix overlap in every row and column, so this theorem does not settle the
+main circulant conjecture.  The obstruction persists in current work:
+arXiv:2405.13656 improves the general and circulant estimates but explicitly
+states that a simple sharp estimate for $R_A(p)$ remains unclear
+\cite{Latala2024}; arXiv:2512.23673 still treats the broader conjecture as open
+\cite{Meller2025}.
+
+The run indexes and these two later arXiv sources were searched for the exact
+sparse comparison, block-diagonal variants, and direct-sum terminology.  No
+exact statement of Theorem~\ref{thm:stability} or
+Corollary~\ref{cor:blocks} was found.  Nonetheless the derivation is elementary
+from Proposition 1.4 of the source, so novelty confidence is modest.  The
+recommended human review is to verify the scope and decide whether this
+closure lemma is useful enough to retain as a substantial partial result.
+
+\begin{thebibliography}{9}
+\bibitem{LS2021}
+R.~Lata\l a and W.~\'Swi\k atkowski,
+\emph{Norms of Randomized Circulant Matrices},
+arXiv:2106.03139,
+\url{https://arxiv.org/abs/2106.03139}.
+
+\bibitem{Latala2024}
+R.~Lata\l a,
+\emph{On the spectral norm of Rademacher matrices},
+arXiv:2405.13656,
+\url{https://arxiv.org/abs/2405.13656}.
+
+\bibitem{Meller2025}
+R.~Meller,
+\emph{Spectral norm of matrices with independent entries up to polyloglog},
+arXiv:2512.23673,
+\url{https://arxiv.org/abs/2512.23673}.
+\end{thebibliography}
+
+\end{document}

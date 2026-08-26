@@ -1,0 +1,278 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\B}{\mathcal B}
+\newcommand{\E}{\mathcal E}
+\newcommand{\T}{\mathbb T}
+\newcommand{\Tr}{\operatorname{Tr}}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+
+\title{Kernel Obstructions for Quantum Integration\\
+and a Regular Scalar-Injective POVM}
+\author{Run \texttt{fa\_banach\_001} --- lane 14}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.9\textwidth}{
+\textbf{Status: candidate partial result, likely valid.}
+Two broad density regimes force noninjectivity of the full quantum integration
+map.  Conversely, an explicit nonatomic POVM with norm-continuous uniformly
+coercive density has injective scalar integration, although its full quantum
+integration map is noninjective and its range is nonconvex.  The general
+injectivity question remains open only in a sharply isolated singular-density
+regime.
+}}
+\end{center}
+
+\section{Source problem and setup}
+
+Plosker and Ramsey~\cite{source} define, for a POVM
+$\nu:\Sigma\to\B(\mathcal H)$ and a full-rank density operator $\rho$,
+the scalar measure
+\[
+ \mu=\nu_\rho,\qquad \mu(E)=\Tr(\rho\nu(E)),
+\]
+and the operator-valued Radon--Nikodym density
+$D=d\nu/d\mu$, when it exists.  Their quantum integration map is
+\[
+ \E_\nu:L^\infty_{\mathcal H}(X,\nu)\longrightarrow\B(\mathcal H),
+ \qquad \E_\nu(F)=\int_X F\,d\nu,
+\]
+characterized ultraweakly by
+\begin{equation}\label{eq:integral}
+ \Tr\!\left(s\E_\nu(F)\right)
+ =\int_X\Tr\!\left(sD(x)^{1/2}F(x)D(x)^{1/2}\right)d\mu(x)
+ \quad(s\in\mathcal T(\mathcal H)).
+\end{equation}
+
+On arXiv PDF page~7 they identify ``whether $\E_\nu$ is injective or not''
+as a natural problem.  They then call scalar integration \emph{classically
+non-injective} when, on every nonnull measurable subset, the restriction
+$f\mapsto\E_\nu(fI)$ has a nonzero kernel.  This stronger local scalar
+condition is a hypothesis of their operator-valued Lyapunov theorem.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.94\textwidth]{figures/open_problem_crop.png}
+\caption{The injectivity problem and the classically non-injective condition
+on source PDF page~7.}
+\end{figure}
+
+Throughout, $\mathcal H$ is separable, $\nu(X)=I$, $D$ exists, and $\nu$ is
+nonatomic.  Since $\nu$ and $\mu=\nu_\rho$ are mutually absolutely
+continuous, $\mu$ is nonatomic as well.
+
+\section{Proof intuition}
+
+Formula~\eqref{eq:integral} shows that quantum integration first sandwiches
+$F(x)$ by $D(x)^{1/2}$ and then averages.  A pointwise kernel of $D$ therefore
+gives an immediate kernel element.  At the opposite extreme, if $D$ is
+uniformly invertible on any nonnull region, one can prescribe the sandwiched
+integrand there: conjugate a fixed operator $A$ by $D^{-1/2}$ and multiply by
+a nonzero scalar function of mean zero.
+
+This leaves only one possible regime for injectivity: $D(x)$ must be
+injective but arbitrarily small in some directions almost everywhere.  The
+explicit circle example below shows why the scalar version does not settle
+the full question.  Its off-diagonal blocks record every Fourier coefficient,
+so scalar integration is injective; nevertheless uniform invertibility lets
+the operator-valued cancellation above work.
+
+\section{Two kernel criteria}
+
+\begin{theorem}[Pointwise-kernel criterion]\label{thm:kernel}
+Suppose
+\[
+ K=\{x\in X:\ker D(x)\ne\{0\}\}
+\]
+has positive $\mu$-measure.  Then $\E_\nu$ is not injective.
+\end{theorem}
+
+\begin{proof}
+Let $P(x)=\mathbf 1_{\{0\}}(D(x))$ on $K$, and put $P(x)=0$ off $K$.
+This is a weakly measurable projection field: for example it is the strong
+pointwise limit of $\mathbf 1_K(x)(I+nD(x))^{-1}$.  It is essentially bounded,
+and it is nonzero in $L^\infty_{\mathcal H}(X,\nu)$ because $\mu(K)>0$ and
+$\nu\sim\mu$.  Pointwise,
+\[
+ D(x)^{1/2}P(x)D(x)^{1/2}=0.
+\]
+Equation~\eqref{eq:integral} therefore gives $\E_\nu(P)=0$.
+\end{proof}
+
+\begin{theorem}[Local-coercivity criterion]\label{thm:coercive}
+Suppose there are $E\in\Sigma$ and $c>0$ such that $\mu(E)>0$ and
+\[
+ D(x)\ge cI\qquad\text{for $\mu$-almost every }x\in E.
+\]
+Then $\E_\nu$ is not injective.  More precisely, for every nonzero
+$A\in\B(\mathcal H)$ there is a nonzero $F\in
+L^\infty_{\mathcal H}(X,\nu)$ with $\E_\nu(F)=0$.
+\end{theorem}
+
+\begin{proof}
+By nonatomicity, split $E$ into measurable sets $E_1,E_2$ of positive
+$\mu$-measure and set
+\[
+ g=\mu(E_2)\mathbf 1_{E_1}-\mu(E_1)\mathbf 1_{E_2}.
+\]
+Then $g$ is nonzero, supported in $E$, and $\int_Eg\,d\mu=0$.  Functional
+calculus gives $\|D(x)^{-1/2}\|\le c^{-1/2}$ on $E$.  Define
+\[
+ F(x)=
+ \begin{cases}
+ g(x)D(x)^{-1/2}AD(x)^{-1/2},&x\in E,\\
+ 0,&x\notin E.
+ \end{cases}
+\]
+This is measurable and essentially bounded, is nonzero, and satisfies
+\[
+ D(x)^{1/2}F(x)D(x)^{1/2}=g(x)A.
+\]
+Thus $\E_\nu(F)=A\int_Eg\,d\mu=0$.
+\end{proof}
+
+\begin{proposition}[Necessary shape of an injective density]
+If $\E_\nu$ is injective, then for $\mu$-almost every $x$, the positive
+operator $D(x)$ is injective and has dense, nonclosed range.
+\end{proposition}
+
+\begin{proof}
+Theorem~\ref{thm:kernel} gives $\ker D(x)=0$ almost everywhere, hence
+$\overline{\operatorname{ran}D(x)}=\mathcal H$.  If $D(x)$ were bounded
+below on a positive-measure set, then one of the measurable sets
+$\{x:D(x)\ge n^{-1}I\}$ would have positive measure, contradicting
+Theorem~\ref{thm:coercive}.  Thus $D(x)$ is not bounded below almost
+everywhere.  An injective positive operator with closed range is bounded
+below, so its range here is nonclosed.
+\end{proof}
+
+\section{A regular scalar-injective example}
+
+\begin{theorem}[Fourier POVM]\label{thm:fourier}
+There is a nonatomic quantum probability measure $\nu$ on the circle with a
+norm-continuous Radon--Nikodym density satisfying
+\[
+ \tfrac34 I\le D(z)\le\tfrac54 I,
+\]
+such that:
+\begin{enumerate}
+\item scalar integration $T(f)=\E_\nu(fI)$ is injective on
+      $L^\infty(\T)$, so $\nu$ is not classically non-injective;
+\item the full quantum integration map $\E_\nu$ is noninjective;
+\item the range $\{\nu(E):E\in\Sigma\}$ is not convex.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Let
+$\mathcal H=\bigoplus_{k\ge1}\mathbb C^2$, with basis
+$e_{k,0},e_{k,1}$ in the $k$th block.  Put $a_k=2^{-k-1}$ and, for
+$z\in\T$, define the block diagonal operator
+\[
+ D(z)|_{\mathbb C^2_k}=
+ \begin{pmatrix}
+ 1&a_k z^k\\
+ a_k\overline z^{,k}&1
+ \end{pmatrix}.
+\]
+Each block has eigenvalues $1\pm a_k$, so
+$\frac34I\le D(z)\le\frac54I$.  Since $a_k\to0$, the block tail is
+uniformly small and the finitely many leading blocks are continuous; hence
+$z\mapsto D(z)$ is norm-continuous.  With $m$ normalized Haar measure,
+\[
+ \int_\T D(z)\,dm(z)=I.
+\]
+Define $\nu(E)=\int_E D(z)\,dm(z)$.
+
+Take the full-rank density operator
+\[
+ \rho|_{\mathbb C^2_k}=2^{-k-1}I_2.
+\]
+Its trace is $\sum_{k\ge1}2\cdot2^{-k-1}=1$, and the diagonal form of
+$\rho$ gives $\Tr(\rho D(z))=1$.  Therefore $\nu_\rho=m$ and
+$D=d\nu/d\nu_\rho$.  Mutual absolute continuity with nonatomic $m$ shows
+that $\nu$ is nonatomic.
+
+For $f\in L^\infty(\T)$, the diagonal entries of $T(f)$ equal
+$\int f\,dm$, while the two off-diagonal entries in block $k$ equal
+\[
+ a_k\int_\T f(z)z^k\,dm(z),
+ \qquad
+ a_k\int_\T f(z)\overline z^{,k}\,dm(z).
+\]
+Thus $T(f)=0$ forces every Fourier coefficient of $f$ to vanish.  Since
+$f\in L^1(\T)$, Fourier uniqueness gives $f=0$ almost everywhere.  Hence
+$T$ is injective, and so is its restriction to functions supported on any
+measurable subset.
+
+On the other hand, Theorem~\ref{thm:coercive} applies globally, proving that
+$\E_\nu$ is noninjective.  Explicitly, for any nonzero $A\in\B(\mathcal H)$,
+\[
+ F(z)=zD(z)^{-1/2}AD(z)^{-1/2}
+\]
+is bounded and nonzero, while $\E_\nu(F)=A\int_\T z\,dm(z)=0$.
+
+Finally, if the range of $\nu$ were convex, it would contain the midpoint
+$I/2$ of $0=\nu(\varnothing)$ and $I=\nu(\T)$.  Thus some measurable $E$
+would satisfy
+\[
+ T(\mathbf1_E)=\nu(E)=\tfrac12I=T(\tfrac12).
+\]
+Injectivity of $T$ would force $\mathbf1_E=1/2$ almost everywhere, which is
+impossible.  Hence the range is not convex.
+\end{proof}
+
+\section{Limitations, upgrade attempts, and novelty}
+
+The results do not decide whether an injective $\E_\nu$ exists in the only
+remaining regime: $D(x)$ injective with dense nonclosed range almost
+everywhere.  Six focused upgrade attempts included inverse-density kernels,
+measurable kernel projections, a commutator cancellation formula, a
+Stinespring compression reformulation, a predual density reformulation, and
+a search for an injective Fourier model.  The commutator and inversion routes
+become unbounded exactly in the remaining regime; the functional-analytic
+reformulations supplied no contradiction.  The Fourier search instead
+produced Theorem~\ref{thm:fourier}, which sharply separates scalar from full
+injectivity.
+
+A bounded search through 11 August 2026 checked the run indexes, local arXiv
+corpus, exact source title and id, and web/arXiv queries combining
+``classically non-injective'', ``POVM integration injective'',
+``operator-valued Lyapunov'', and ``Radon--Nikodym density''.  It found the
+source and general informationally complete POVM literature, but no later
+resolution of the stated injectivity problem and no occurrence of the block
+Fourier construction above.  The novelty verdict is therefore provisional
+pending expert review.
+
+\section{Human-review recommendation}
+
+The partial result is recommended for expert review.  The main checks are:
+measurability of the kernel projection in Theorem~\ref{thm:kernel}, domain
+membership of the inverse-density kernel in Theorem~\ref{thm:coercive}, and
+the Fourier uniqueness identification in Theorem~\ref{thm:fourier}.  The
+packet should not be promoted to a full solution unless the singular
+injective-density regime is settled.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+S. Plosker and C. Ramsey,
+\emph{An operator-valued Lyapunov theorem},
+J. Math. Anal. Appl. \textbf{469} (2019), 117--125;
+arXiv:1801.03109.
+\end{thebibliography}
+
+\end{document}

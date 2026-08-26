@@ -1,0 +1,207 @@
+\documentclass[10pt]{article}
+\usepackage[margin=0.82in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage[colorlinks=true,allcolors=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\K}{\mathbb K}
+\newcommand{\N}{\mathbb N}
+\newcommand{\linspan}{\operatorname{span}}
+\newcommand{\codim}{\operatorname{codim}}
+
+\title{A Fr\'echet Type-1 Criterion for Recurrent Subspaces\\
+\large Candidate substantial partial answer to Question 7.7 of arXiv:2212.04464}
+\author{Run \texttt{fa\_banach\_001}, lane 13}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\linewidth}{\textbf{Status: candidate partial result, likely valid pending human review.}
+The proof gives the expected affirmative answer for every Fr\'echet space with a continuous norm and, more generally, for the entire type-1 regime singled out by Menet's no-continuous-norm basic-sequence theory.  The unrestricted type-2 case remains open.}}
+\end{center}
+
+\section*{Source question and scope}
+
+The source is A.~L\'opez-Mart\'inez, \emph{Recurrent subspaces in Banach spaces}, arXiv:2212.04464 (Question 7.7, page 22 of the arXiv PDF; subsequently IMRN 2024).  It asks:
+\begin{quote}
+\emph{Is (a proper variation of) Theorem 3.2 still true for Fr\'echet spaces?}
+\end{quote}
+The following paragraph specifies that ``proper variation'' means replacing the Banach-space equiboundedness assumption by equicontinuity, and conjectures that Menet's basic-sequence theory should prove the result for Fr\'echet spaces with a continuous norm.
+
+\begin{center}
+\includegraphics[width=0.91\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+The theorem below proves that suggested continuous-norm case.  It also removes the continuous norm whenever the decreasing control spaces lie in Menet's type-1 regime.
+
+\section*{Definitions}
+
+Let $X$ be a real or complex Fr\'echet space with topology defined by an increasing sequence $(p_s)_{s\geq1}$ of continuous seminorms, and let $T\colon X\to X$ be continuous and linear.
+An increasing sequence $(k_n)$ is a \emph{quasi-rigidity sequence} if there is a dense set $Y\subset X$ such that
+\[
+T^{k_n}y\longrightarrow y\qquad(y\in Y).
+\]
+A closed infinite-dimensional $F\subset X$ is a \emph{recurrent subspace} when every nonzero $x\in F$ is recurrent.  The conclusion below is stronger: all vectors of $F$ return along one common subsequence.
+
+For decreasing closed subspaces $E_1\supset E_2\supset\cdots$, call the diagonal restrictions \emph{asymptotically equicontinuous} if
+\begin{equation*}
+\forall s\geq1\ \exists C_s>0,\ m_s,N_s\geq1:\quad
+p_s(T^{k_n}x)\leq C_s p_{m_s}(x)
+\quad(n\geq N_s,\ x\in E_n).
+\tag{DE}
+\end{equation*}
+This is the direct Fr\'echet analogue of a uniform bound for $T^{k_n}|_{E_n}$.
+
+\section*{Proof intuition}
+
+Select one vector $u_n$ from each $E_n$ so that $(u_n)$ is a basic sequence stable under very small perturbations.  Perturb $u_n$ to a nearby quasi-rigid vector $f_n$.  A diagonal extraction makes every earlier $f_j$ almost fixed at the chosen return time, while the perturbation was chosen small enough to control every earlier return operator.
+
+For $x=\sum a_jf_j$, split the error $T^{k_n}x-x$ into four pieces: an almost-fixed finite head, the perturbed part of the tail, the unperturbed tail, and the tail of $x$ itself.  The first two pieces are summably small.  The last vanishes because a basic expansion converges.  The key point is that the unperturbed tail lies in $E_n$, so (DE) sends it to zero.  Menet's type-1 theorem supplies both the stable basis and a uniform coefficient bound even when $X$ has no continuous norm.
+
+\section*{Main result}
+
+\begin{theorem}[Fr\'echet type-1 recurrent-subspace criterion]
+Let $X$ be an infinite-dimensional real or complex Fr\'echet space, $(p_s)_{s\geq1}$ an increasing defining sequence of continuous seminorms, and $T\colon X\to X$ continuous and linear.  Let $(k_n)$ be increasing.  Assume:
+\begin{enumerate}[label=\textup{(\roman*)},leftmargin=2.4em]
+\item there is a dense set $Y\subset X$ such that $T^{k_n}y\to y$ for every $y\in Y$;
+\item $E_1\supset E_2\supset\cdots$ are infinite-dimensional closed subspaces;
+\item the diagonal equicontinuity condition \textup{(DE)} holds;
+\item for every $n$, $E_n\cap\ker p_1$ has infinite codimension in $E_n$.
+\end{enumerate}
+Then there are a closed infinite-dimensional subspace $F\subset X$ and indices
+$r_1<r_2<\cdots$ such that
+\[
+T^{k_{r_\ell}}x\longrightarrow x\qquad(x\in F).
+\]
+Moreover $F\cap\ker p_1=\{0\}$, so $F$ is a type-1 recurrent subspace.
+\end{theorem}
+
+\begin{proof}
+Choose positive $(\varepsilon_n)$ with $K:=\prod_n(1+\varepsilon_n)<\infty$.
+Menet's Proposition 1.8 says that (iv) is equivalent to
+\[
+L\cap E_n\not\subset\ker p_1
+\quad\text{for every closed finite-codimensional }L\subset X.
+\tag{1}
+\]
+Apply his Corollary 1.5 recursively, at stage $n$ with $M=E_n$.  We obtain $u_n\in E_n$, $p_1(u_n)=1$, such that for $s\leq n$ and arbitrary scalars,
+\begin{equation*}
+p_s\!\left(\sum_{j=1}^{n}a_ju_j\right)
+\leq(1+\varepsilon_n)
+p_s\!\left(\sum_{j=1}^{n+1}a_ju_j\right).
+\tag{2}
+\end{equation*}
+By Menet's Theorem 1.7, $(u_n)$ is basic.  The same theorem says that if
+\begin{equation*}
+\sum_n2Kp_n(u_n-f_n)<1,
+\tag{3}
+\end{equation*}
+then $(f_n)$ is basic and equivalent to $(u_n)$, its closed span meets $\ker p_1$ only in zero, and the coefficients of $z=\sum a_nu_n$ satisfy
+\begin{equation*}
+|a_n|\leq 2Kp_1(z)\quad(n\geq1).
+\tag{4}
+\end{equation*}
+
+Set $\delta_n=2^{-n-3}/K$.  For every $n$, density of $Y$ and continuity of the finitely many maps $I,T^{k_1},\ldots,T^{k_n}$ allow us to choose $f_n\in Y$ with
+\begin{equation*}
+p_n(f_n-u_n)<\delta_n,
+\qquad
+p_n\bigl(T^{k_i}(f_n-u_n)\bigr)<\delta_n\quad(1\leq i\leq n).
+\tag{5}
+\end{equation*}
+Since $\sum_n2K\delta_n<1$, (3) holds.
+
+Choose $r_1<r_2<\cdots$ recursively so that $r_\ell\geq\ell$,
+$r_\ell\geq\max_{s\leq\ell}N_s$, and
+\begin{equation*}
+p_\ell\bigl(T^{k_{r_\ell}}f_{r_j}-f_{r_j}\bigr)
+<2^{-(\ell+j)}\qquad(j<\ell).
+\tag{6}
+\end{equation*}
+This is possible because the finitely many $f_{r_j}$ belong to $Y$.
+Let
+\[
+F=\overline{\linspan}\{f_{r_j}:j\geq1\}.
+\]
+It is closed and infinite-dimensional, and $F\cap\ker p_1=\{0\}$ by the perturbation theorem.
+
+Fix $x\in F$.  Write $x=\sum_{j\geq1}a_jf_{r_j}$.  Equivalence implies that
+$z=\sum_{j\geq1}a_ju_{r_j}$ converges.  By (4), $A:=\sup_j|a_j|<\infty$.
+Put $z_\ell=\sum_{j\geq\ell}a_ju_{r_j}$.  Because $u_{r_j}\in E_{r_j}\subset E_{r_\ell}$ for $j\geq\ell$ and $E_{r_\ell}$ is closed,
+\[
+z_\ell\in E_{r_\ell}.
+\tag{7}
+\]
+
+Fix a seminorm index $s$.  For all sufficiently large $\ell$, monotonicity of
+$(p_s)$, (5), (6), (7), and (DE) give
+\begin{align*}
+p_s\bigl((T^{k_{r_\ell}}-I)x\bigr)
+&\leq
+p_s\!\left(\sum_{j<\ell}a_j(T^{k_{r_\ell}}f_{r_j}-f_{r_j})\right)\\
+&\quad+p_s\!\left(T^{k_{r_\ell}}\sum_{j\geq\ell}a_j(f_{r_j}-u_{r_j})\right)\\
+&\quad+p_s(T^{k_{r_\ell}}z_\ell)
+   +p_s\!\left(\sum_{j\geq\ell}a_jf_{r_j}\right)\\
+&\leq
+A\sum_{j<\ell}2^{-(\ell+j)}
++A\sum_{j\geq\ell}\delta_{r_j}\\
+&\quad+C_s p_{m_s}(z_\ell)
+   +p_s\!\left(\sum_{j\geq\ell}a_jf_{r_j}\right).
+\tag{8}
+\end{align*}
+For the second term, note that $r_\ell\leq r_j$ and $p_s\leq p_{r_j}$, so (5) applies with $i=r_\ell$; continuity justifies passing from partial sums to the series.  The first two terms in (8) vanish by summability.  The third and fourth vanish because they are tails of convergent series in $X$.  Hence
+$p_s((T^{k_{r_\ell}}-I)x)\to0$.  Since $s$ was arbitrary, the convergence holds in $X$.
+\end{proof}
+
+\begin{corollary}[Continuous-norm case]
+If $X$ has a continuous norm, condition \textup{(iv)} may be omitted: choose an increasing defining sequence of norms.  Thus quasi-rigidity and \textup{(DE)} alone imply the existence of a recurrent subspace with one common return subsequence.
+\end{corollary}
+
+\begin{proof}
+For a defining norm $p_1$, $E_n\cap\ker p_1=\{0\}$, which has infinite codimension in every infinite-dimensional $E_n$.
+\end{proof}
+
+\section*{Verification and upgrade attempts}
+
+The proof was audited at the three nonformal junctions.  First, Menet's Proposition 1.8 makes Corollary 1.5 applicable even though the selected subspace changes from $E_n$ to $E_{n+1}$.  Second, closedness and monotonicity of the $E_n$ give (7), which is exactly where the diagonal control is used.  Third, (5) controls the moving operator on every later perturbation because $r_\ell\leq r_j$.
+
+Two deeper routes toward the unrestricted theorem were examined.  Menet's type-2 triangular bases, built from $u_n\in\ker p_n\setminus\ker p_{n+1}$, allow arbitrary coefficient growth and are explicitly unstable under small perturbations (already on $\omega$).  The quasi-rigid dense set does not provide exact matching in the necessary seminorm kernels, so the perturbation error cannot be summed.  A direct Banach--Steinhaus argument also fails: (DE) controls a moving space $E_n$, not a common fixed subspace, and $\bigcap_nE_n$ can be trivial.  These are obstructions to the present proof, not counterexamples to the unrestricted statement.
+
+No computation is used.  The packet includes the official source PDF and both Menet references.  The final PDF was compiled and every rendered page was visually checked.
+
+\section*{Limitations and novelty status}
+
+The result does not cover the pure type-2 regime, does not answer the Chan-approach Question 7.6, and does not settle the hypercyclic-versus-recurrent equivalence in Question 7.8.  A bounded literature search on 13 August 2026 covered the run indexes, the exact title/arXiv id, exact language from Question 7.7, and combinations of ``recurrent subspace'', ``Fr\'echet'', and ``equicontinuity'', together with Menet's cited papers.  No later answer or matching theorem was found.  Novelty confidence is moderate pending expert checking of later linear-dynamics literature.
+
+\section*{Human-review recommendation}
+
+Check (a) the use of Menet's Corollary 1.5 and Proposition 1.8 with the varying spaces $E_n$; (b) the perturbation theorem and coefficient estimate in Theorem 1.7; and (c) the four-term estimate (8), especially membership of the unperturbed tail in $E_{r_\ell}$.  The type-2 discussion should be read only as an obstruction analysis.
+
+\begin{thebibliography}{9}
+\bibitem{Lopez}
+A. L\'opez-Mart\'inez,
+\emph{Recurrent subspaces in Banach spaces},
+arXiv:2212.04464; International Mathematics Research Notices 2024, no.~11, 9067--9087.
+
+\bibitem{Menet2012}
+Q. Menet,
+\emph{Hypercyclic subspaces and weighted shifts},
+arXiv:1208.4963 (2012), especially the basic-sequence and perturbation lemmas and Theorem 1.11.
+
+\bibitem{Menet2013}
+Q. Menet,
+\emph{Hypercyclic subspaces on Fr\'echet spaces without continuous norm},
+arXiv:1302.6447 (2013), especially Corollary 1.5, Theorem 1.7, and Proposition 1.8.
+\end{thebibliography}
+
+\end{document}

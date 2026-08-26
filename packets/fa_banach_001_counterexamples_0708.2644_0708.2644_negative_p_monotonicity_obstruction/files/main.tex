@@ -1,0 +1,187 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=0.82in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newcommand{\R}{\mathbb{R}}
+
+\title{A smooth counterexample to the negative-\(p\)\\normalized-moment conjecture}
+\author{Automated mathematics run \texttt{fa\_banach\_001}\\Lane 3 --- candidate for human review}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+Candidate full counterexample, likely valid.  The construction disproves the
+negative-exponent extension proposed in Remark~2.2 of Jie Xiao's
+\emph{Optimal Monotonicity of \(L^p\) Integral of Conformal Invariant Green
+Function}, arXiv:0708.2644~\cite{Xiao}.
+
+\section{Source conjecture}
+
+Theorem~2.1(i) of the source fixes \(c>0\), assumes that \(X\geq0\) on
+\((0,\infty)\) and
+\[
+ X'(t)\leq0,
+ \qquad
+ \frac{d}{dt}\bigl(e^{ct}X(t)\bigr)\leq0,
+\]
+and defines
+\[
+ Y_p(0)=-\int_0^\infty t^p\,dX(t).
+\]
+For \(0\leq p_1<p_2\), it proves
+\[
+ \frac{c^{p_2}Y_{p_2}(0)}{\Gamma(p_2+1)}
+ \leq
+ \frac{c^{p_1}Y_{p_1}(0)}{\Gamma(p_1+1)}.                 \tag{1}
+\]
+Remark~2.2, on source-PDF page 6, conjectures that Theorem~2.1(i)
+remains valid for \(-1<p_1<0\), and explicitly discusses
+\(-1<p_1<p_2<0\).  The original passage is reproduced below.
+
+\begin{center}
+ \includegraphics[width=0.96\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+Thus it suffices to find one admissible \(X\), with \(c=1\), for which the
+normalized moment
+\[
+ M(p):=\frac{Y_p(0)}{\Gamma(p+1)}
+\]
+is not nonincreasing on \((-1,0)\).
+
+\section{Proof intuition}
+
+For the exponential extremizer \(X(t)=e^{-t}\), every normalized moment is
+exactly one.  We perturb it by making \(e^tX(t)\) decrease smoothly only after
+time one.  This preserves both differential hypotheses and avoids the
+singularity at the origin.  Integration by parts then shows that every
+negative normalized moment is \emph{strictly larger} than one.  Nevertheless,
+the Gamma factor diverges as \(p\downarrow-1\), forcing these normalized
+moments back to one at the left endpoint.  A nonincreasing function cannot
+have that behavior: starting at the limiting value one, it cannot later rise
+strictly above one.
+
+\section{Construction and counterexample}
+
+Put \(c=1\), and define a continuously differentiable, nondecreasing function
+\(G:[0,\infty)\to[0,1/2]\) by
+\[
+G(t)=
+\begin{cases}
+0, & 0\leq t\leq1,\\[2pt]
+\dfrac12\bigl(3(t-1)^2-2(t-1)^3\bigr), & 1<t<2,\\[4pt]
+\dfrac12, & t\geq2.
+\end{cases}                                                   \tag{2}
+\]
+Set
+\[
+ X(t)=e^{-t}\bigl(1-G(t)\bigr).                              \tag{3}
+\]
+
+\begin{theorem}
+The function \(X\) in \emph{(3)} is positive and \(C^1\), satisfies both
+hypotheses of Theorem~2.1, and has finite \(Y_p(0)\) for every \(p>-1\).
+There exist \(-1<p_1<p_2<0\) for which
+\[
+ \frac{Y_{p_2}(0)}{\Gamma(p_2+1)}
+ >
+ \frac{Y_{p_1}(0)}{\Gamma(p_1+1)}.
+\]
+Consequently, the extension proposed in Remark~2.2 is false.
+\end{theorem}
+
+\begin{proof}
+The cubic in (2) has derivative \(3(t-1)(2-t)\) before multiplication
+by \(1/2\).  Hence \(G\in C^1\), \(G'\geq0\), and \(0\leq G\leq1/2\).
+It follows directly that
+\[
+ X'(t)=-e^{-t}\bigl(1-G(t)+G'(t)\bigr)<0,
+ \qquad
+ \frac{d}{dt}\bigl(e^tX(t)\bigr)=-G'(t)\leq0.               \tag{4}
+\]
+In particular, all the source hypotheses hold.  Near zero, \(-X'(t)=e^{-t}\),
+while at infinity \(-X'(t)=\tfrac12e^{-t}\), so
+\(Y_p(0)=\int_0^\infty t^p(-X'(t))\,dt\) is finite for every \(p>-1\).
+
+For such \(p\), ordinary integration by parts is legitimate because \(G\)
+vanishes on \([0,1]\) and is bounded.  From (4),
+\begin{align*}
+Y_p(0)
+ &=\int_0^\infty t^pe^{-t}\bigl(1-G(t)+G'(t)\bigr)\,dt\\
+ &=\Gamma(p+1)-p\int_0^\infty G(t)t^{p-1}e^{-t}\,dt.         \tag{5}
+\end{align*}
+Indeed, the boundary term in integrating the \(G'\)-term is zero, and its
+\(G(t)t^pe^{-t}\) contribution cancels the preceding \(-G\)-term.
+
+Write
+\[
+ J(p)=\int_0^\infty G(t)t^{p-1}e^{-t}\,dt.
+\]
+Because \(G=0\) on \([0,1]\), the function \(J\) is finite and continuous
+even on a neighborhood of \([-1,0]\).  Moreover \(J(p)>0\).  Thus (5) gives
+\[
+ M(p)=1+\frac{(-p)J(p)}{\Gamma(p+1)}>1
+ \qquad(-1<p<0).                                             \tag{6}
+\]
+On the other hand, \(J(p)\to J(-1)<\infty\), while
+\(\Gamma(p+1)\to\infty\), as \(p\downarrow-1\).  Therefore
+\[
+ \lim_{p\downarrow-1}M(p)=1.                                \tag{7}
+\]
+Fix any \(p_2\in(-1,0)\), for instance \(p_2=-1/2\).  By (6),
+\(M(p_2)>1\); by (7), there is a \(p_1\in(-1,p_2)\) sufficiently close to
+\(-1\) such that \(M(p_1)<M(p_2)\).  This is the strict reverse of (1).
+\end{proof}
+
+\section{Robustness and verification}
+
+The cubic profile is only a convenient explicit choice.  The same proof works
+for every nonzero \(C^1\) nondecreasing \(G\) that vanishes on a neighborhood
+of zero, is eventually constant, and satisfies \(0\leq G<1\).  Thus the
+failure is a stable family of counterexamples rather than an isolated
+numerical accident.
+
+The script \texttt{code/check\_counterexample.py}, run with 80 decimal digits,
+evaluates the exact right-hand side of (5).  It reports
+\[
+ M(-0.99)=1.0002754937621309\ldots,
+ \qquad
+ M(-0.5)=1.0106701090171454\ldots,
+\]
+and confirms the displayed strict reversal.  These decimal values are only
+QA; the existence argument from (6)--(7) is the proof.
+
+\section{Novelty check, limitations, and review focus}
+
+A bounded search on 17 August 2026 checked the run's registry, solution,
+attempt, and proof-gap indexes; arXiv queries using the paper id, author,
+``negative \(p\)'', and normalized Green-function moments; OpenAlex records
+and title/keyword searches; and Crossref title/author searches.  No later
+paper or prior packet answering this exact negative-exponent conjecture was
+found.  OpenAlex listed no citing works for the source record.  This supports,
+but does not prove, novelty; the search was not an exhaustive MathSciNet or
+zbMATH review.
+
+The result addresses the one-dimensional conjecture of Remark~2.2 exactly.
+It does not by itself realize (3) as a Green-function distribution, so it does
+not disprove the later geometric conjectures in Remarks~3.1 and~4.1.  Human
+review should focus on the sign and boundary terms in (5), and on whether
+``Theorem~2.1(i) is still valid'' is intended to retain precisely the stated
+one-dimensional hypotheses when \(p_1<0\).
+
+\begin{thebibliography}{1}
+\bibitem{Xiao}
+Jie Xiao,
+\emph{Optimal Monotonicity of \(L^p\) Integral of Conformal Invariant Green
+Function}, arXiv:0708.2644 (2007), especially Theorem~2.1 and Remark~2.2.
+\end{thebibliography}
+
+\end{document}

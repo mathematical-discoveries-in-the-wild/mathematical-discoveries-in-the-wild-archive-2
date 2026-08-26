@@ -1,0 +1,355 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=0.9in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\NA}{\operatorname{NA}}
+\newcommand{\N}{\mathbb N}
+
+\title{Property \(\boldsymbol{(\ddagger)}\) of the Dual Forces Reflexivity}
+\author{Automatic math-discovery run \texttt{fa\_banach\_001}}
+\date{August 11, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source Problem}
+
+The source is Deepak Gothwal and T.~S.~S.~R.~K. Rao,
+\emph{Some Geometric Aspects Related to Lim's Condition},
+arXiv:2504.09464, first posted in 2025 and revised in 2026
+\cite{GothwalRao}.  On page 11 of the current arXiv PDF, immediately before
+Theorem 18, the authors write:
+
+\begin{quote}
+``We do not know in general if \(X^*\) has \((\ddagger)\), then \(X\) is
+reflexive.''
+\end{quote}
+
+They then prove the affirmative answer under the additional assumption that
+\(X\) contains no isomorphic copy of \(\ell_1\).
+
+\begin{center}
+  \includegraphics[width=\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Result Type}
+
+This packet gives a \textbf{candidate full affirmative solution}.  It removes
+the source theorem's extra hypothesis \(\ell_1\not\hookrightarrow X\).
+
+\section*{Definition}
+
+A Banach space \(E\) has property \((\ddagger)\) if, whenever
+\(0<\varepsilon<2\) and \((f_\alpha)\) is a net of norm-attaining elements of
+\(B_{E^*}\) such that
+\[
+ f_\alpha\xrightarrow{w^*}f,\qquad
+ \norm{f_\alpha-f_\beta}\geq\varepsilon\quad(\alpha\ne\beta),
+\]
+where \(f\in B_{E^*}\) is also norm-attaining, then
+\(\norm f\leq 1-\varepsilon/2\).
+
+Here an element of \(E^*\) is norm-attaining if it attains its norm on
+\(B_E\).  In the source question \(E=X^*\), so the relevant net lies in
+\(B_{X^{**}}\) and the weak-star topology is \(\sigma(X^{**},X^*)\).
+
+\section*{Proof Intuition}
+
+The source paper settles spaces without \(\ell_1\), so the missing case is
+when \(\ell_1\) embeds into \(X\).  James's distortion theorem then supplies a
+normalized sequence which is a \(0.9\)-copy of the \(\ell_1\) basis.  Its
+Stone--\v Cech ultrafilter limits form a weak-star compact family in
+\(B_{X^{**}}\), any two of whose points are at distance at least \(1.8\).
+
+Those ultrafilter limits need not themselves be norm-attaining.  This is the
+main obstruction, and simply replacing them by Bishop--Phelps approximants
+would generally destroy convergence.  The key device is to first translate
+the entire separated family so that one chosen limit becomes a nearby
+norm-attaining functional.  Each translated point is then perturbed by a
+norm-attaining functional with error tending to zero along the net.  The
+perturbed net still converges to the chosen norm-attaining limit and retains a
+uniform separation.  A common rescaling puts everything in the unit ball,
+where property \((\ddagger)\) gives a numerical contradiction.
+
+\section*{Three Lemmas}
+
+\begin{lemma}[Quotient inheritance]\label{lem:quotient}
+Let \(E\) have property \((\ddagger)\), and let \(Z\subset E\) be a closed
+proximinal subspace.  Then \(E/Z\) has property \((\ddagger)\).
+\end{lemma}
+
+\begin{proof}
+Identify \((E/Z)^*\) isometrically with \(Z^\perp\subset E^*\).  The weak-star
+topology induced by \(E/Z\) agrees on \(Z^\perp\) with the restriction of
+\(\sigma(E^*,E)\), because a functional in \(Z^\perp\) depends only on the
+coset of its argument.
+
+It remains to check norm attainment.  Suppose \(f\in Z^\perp\) attains its
+norm as a functional on \(E/Z\), say at \(x+Z\in S_{E/Z}\).  Proximinality
+provides \(z\in Z\) such that
+\(\norm{x+z}=\norm{x+Z}=1\).  Since \(f(z)=0\),
+\[
+  |f(x+z)|=|f(x)|=\norm f.
+\]
+Thus \(f\) also attains its norm as an element of \(E^*\).  Consequently any
+net and limit occurring in the definition for \(E/Z\) also satisfy the
+definition's hypotheses in \(E^*\), with the same norms and separation.
+Property \((\ddagger)\) for \(E\) gives the required estimate.
+\end{proof}
+
+\begin{lemma}[An injective net in \(\N^*\)]\label{lem:net}
+There are a point \(p\in\N^*:=\beta\N\setminus\N\) and a net of pairwise
+distinct points \((q_d)_{d\in D}\subset\N^*\setminus\{p\}\) such that
+\(q_d\to p\).  The directed set may be chosen with a map
+\(n:D\to\N\) satisfying \(n(d)\to\infty\).
+\end{lemma}
+
+\begin{proof}
+Write \(\mathfrak c=2^{\aleph_0}\).  The compact zero-dimensional space
+\(\N^*\) has weight at most \(\mathfrak c\), while every nonempty open subset
+of \(\N^*\) has cardinality \(2^{\mathfrak c}\).  Indeed, such an open set
+contains \(A^*=\overline A^{\,\beta\N}\setminus A\) for some infinite
+\(A\subset\N\), and \(A^*\) has cardinality \(2^{\mathfrak c}\).
+
+Fix \(p\in\N^*\), and choose a neighborhood base \(\mathcal B\) at \(p\), of
+cardinality at most \(\mathfrak c\), closed under finite intersections.  Put
+\(D=\mathcal B\times\N\), ordered by
+\[
+ (U,n)\preceq(V,m)\quad\Longleftrightarrow\quad V\subset U\text{ and }m\geq n.
+\]
+Enumerate \(D\) and recursively choose
+\(q_{(U,n)}\in U\setminus\{p\}\), never reusing a previously chosen point.
+At each stage fewer than or equal to \(\mathfrak c\) points have been used,
+whereas \(U\) has cardinality \(2^{\mathfrak c}\), so the recursion succeeds.
+The resulting net is injective, converges to \(p\), and its second coordinate
+tends to infinity.
+\end{proof}
+
+\begin{lemma}[The \(\ell_1\) obstruction]\label{lem:l1}
+If a Banach space \(X\) contains an isomorphic copy of \(\ell_1\), then
+\(X^*\) does not have property \((\ddagger)\).
+\end{lemma}
+
+\begin{proof}
+By James's distortion theorem \cite{James,DowlingEtAl}, there is a sequence
+\((x_n)\subset S_X\) such that, for every finitely supported scalar sequence
+\((a_n)\),
+\begin{equation}\label{eq:james}
+ \frac9{10}\sum_n|a_n|
+ \leq \norm{\sum_n a_nx_n}
+ \leq \sum_n|a_n|.
+\end{equation}
+The map \(n\mapsto x_n\), considered in
+\((B_{X^{**}},w^*)\), extends continuously to
+\(\Phi:\beta\N\to(B_{X^{**}},w^*)\).  Put \(z_p=\Phi(p)\).
+
+We first record the metric geometry of this compact family.  Given distinct
+\(p,q\in\beta\N\), choose \(h=(h_n)\in B_{\ell_\infty}\) whose continuous
+extension to \(\beta\N\) has values \(1\) at \(p\) and \(-1\) at \(q\).
+On \(\operatorname{span}\{x_n\}\), set
+\[
+ f_h\!\left(\sum_n a_nx_n\right)
+   =\frac9{10}\sum_n a_nh_n.
+\]
+The lower estimate in \eqref{eq:james} gives \(\norm{f_h}\leq1\), so
+Hahn--Banach extends \(f_h\) to an element of \(B_{X^*}\).  Therefore
+\begin{equation}\label{eq:separation}
+ \norm{z_p-z_q}\geq |(z_p-z_q)(f_h)|=\frac95.
+\end{equation}
+Taking \(h_n=1\) also gives
+\begin{equation}\label{eq:normzp}
+ \frac9{10}\leq\norm{z_p}\leq1.
+\end{equation}
+
+Fix \(p\in\N^*\).  Apply the Bishop--Phelps theorem to the Banach space
+\(X^*\) \cite{BishopPhelps}: choose a norm-attaining
+\(w\in X^{**}\) with
+\begin{equation}\label{eq:wclose}
+ \norm{w-z_p}<\frac1{10}.
+\end{equation}
+Let \((q_d)_{d\in D}\) and \(n(d)\) be supplied by Lemma~\ref{lem:net}.
+Write \(a=w-z_p\).  For every \(d\), Bishop--Phelps again gives a
+norm-attaining \(v_d\in X^{**}\) such that
+\begin{equation}\label{eq:vd}
+ \norm{v_d-(z_{q_d}+a)}<\frac1{10n(d)}.
+\end{equation}
+Since \(q_d\to p\), we have \(z_{q_d}+a\xrightarrow{w^*}w\); the errors in
+\eqref{eq:vd} tend to zero in norm, hence \(v_d\xrightarrow{w^*}w\).
+
+Set
+\[
+ \phi_d=\frac56v_d,\qquad \phi=\frac56w.
+\]
+Both the \(\phi_d\)'s and \(\phi\) are norm-attaining.  Moreover,
+\eqref{eq:wclose} and \eqref{eq:vd} show that
+\[
+ \norm{v_d}<1+\frac1{10}+\frac1{10}=\frac65,
+\]
+so \(\phi_d\in B_{X^{**}}\); also \(\phi\in B_{X^{**}}\), and
+\(\phi_d\xrightarrow{w^*}\phi\).  For \(d\ne e\),
+\eqref{eq:separation} and
+\eqref{eq:vd} yield
+\[
+ \norm{\phi_d-\phi_e}
+ >\frac56\left(\frac95-\frac1{10}-\frac1{10}\right)
+ =\frac43.
+\]
+On the other hand, \eqref{eq:normzp} and \eqref{eq:wclose} give
+\[
+ \norm\phi=\frac56\norm w
+ >\frac56\left(\frac9{10}-\frac1{10}\right)=\frac23.
+\]
+If \(X^*\) had property \((\ddagger)\), applying it with
+\(\varepsilon=4/3\) would instead imply
+\(\norm\phi\leq1-(4/3)/2=1/3\), a contradiction.
+\end{proof}
+
+\section*{Main Theorem}
+
+\begin{theorem}\label{thm:main}
+For every Banach space \(X\), if \(X^*\) has property \((\ddagger)\), then
+\(X\) is reflexive.
+\end{theorem}
+
+\begin{proof}
+Suppose first that \(\ell_1\hookrightarrow X\).  Lemma~\ref{lem:l1} says
+that \(X^*\) fails property \((\ddagger)\), contrary to the hypothesis.
+
+It remains to treat \(\ell_1\not\hookrightarrow X\).  We include the source
+paper's argument, making the quotient step explicit.  If \(X\) were
+nonreflexive, separable determination of reflexivity would give a separable
+nonreflexive closed subspace \(Y\subset X\).  Then
+\(\ell_1\not\hookrightarrow Y\).  The annihilator \(Y^\perp\) is proximinal
+in \(X^*\): if \(x^*\in X^*\), extend \(x^*|_Y\) to
+\(g\in X^*\) without increasing its norm; then
+\(x^*-g\in Y^\perp\) and
+\(\norm g=\operatorname{dist}(x^*,Y^\perp)\).  Since
+\(Y^*\cong X^*/Y^\perp\), Lemma~\ref{lem:quotient} shows that \(Y^*\) has
+property \((\ddagger)\).
+
+The Odell--Rosenthal theorem \cite{OdellRosenthal} says that every element of
+\(B_{Y^{**}}\) is a weak-star sequential limit of a bounded sequence in
+\(Y\).  Let \(u\in S_{Y^{**}}\) be norm-attaining.  We may choose a sequence
+\((y_n)\subset S_Y\) with \(y_n\xrightarrow{w^*}u\): start with the bounded
+sequence from Odell--Rosenthal and normalize it, using a norming functional
+for \(u\) to see that its norms tend to one.  If \(u\notin Y\), this sequence
+cannot be norm Cauchy, and a subsequence is \(\varepsilon\)-separated for
+some \(\varepsilon>0\).  Every \(y_n\), viewed in \(Y^{**}\), is
+norm-attaining on \(Y^*\), as is \(u\).  Property \((\ddagger)\) for \(Y^*\)
+would give \(1=\norm u\leq1-\varepsilon/2\), impossible.  Hence every
+norm-attaining element of \(Y^{**}\) belongs to \(Y\).
+
+By Bishop--Phelps, norm-attaining elements of \(Y^{**}=(Y^*)^*\) are norm
+dense in \(Y^{**}\).  Since the canonical copy of \(Y\) is norm closed, it
+follows that \(Y=Y^{**}\), contradicting the choice of \(Y\).  Thus \(X\)
+is reflexive.
+\end{proof}
+
+\begin{corollary}
+The open question on page 11 of Gothwal--Rao has an affirmative answer, with
+no additional structural hypothesis on \(X\).
+\end{corollary}
+
+\section*{Verification Notes}
+
+The proof was audited along the following fault lines.
+
+\begin{itemize}
+\item The Stone--\v Cech map is used only into the weak-star compact Hausdorff
+ball \(B_{X^{**}}\), so its continuous extension exists by the universal
+property of \(\beta\N\).
+\item Pairwise separation is obtained from Hahn--Banach extensions whose norm
+bound follows in the correct direction from the lower \(\ell_1\) estimate.
+\item The net in Lemma~\ref{lem:net} is genuinely injective; a sequence would
+not suffice because \(\N^*\) has no nontrivial convergent sequences.
+\item Bishop--Phelps is first applied to the desired limit, then to translated
+points with errors tending to zero.  This is what preserves both a
+norm-attaining limit and weak-star convergence.
+\item The common factor \(5/6\) places the whole net in the unit ball.  The
+separation lower bound is \(4/3\), while the limit norm is strictly greater
+than \(2/3\); property \((\ddagger)\) would force it to be at most \(1/3\).
+\item Quotient inheritance is proved directly and does not require a separate
+heredity assertion for arbitrary subspaces.
+\end{itemize}
+
+The reusable script \texttt{code/check\_constants.py} verifies the numerical
+margins, including small perturbations of the three chosen tolerances.  It is
+only an arithmetic check; the proof is analytic and topological.
+
+\section*{Deep-Upgrade Audit}
+
+An initial partial route used an asymptotically isometric copy of \(\ell_1\),
+for which the ultrafilter points themselves share an exact norming face.
+That hypothesis is not automatic: Dowling--Johnson--Lennard--Turett
+\cite{DowlingEtAl} construct equivalent norms on \(\ell_1\) containing no
+asymptotically isometric copy.  This invalidates the tempting upgrade from
+James's theorem.  The translated Bishop--Phelps construction above is the
+additional deep attempt that removes the false step and works with the
+fixed-error almost-isometric copy actually guaranteed by James.
+
+\section*{Novelty and Literature Check}
+
+The run's registry, solution, attempt, and proof-gap indexes were searched for
+arXiv:2504.09464, the exact title, ``Lim's condition'',
+``property \((\ddagger)\)'', ``dual'', and ``reflexive''.  No duplicate result
+or attempt was found.  The current arXiv source (revised February 2026) still
+states the general problem as open and proves only the no-\(\ell_1\) case.
+
+A bounded external search on August 11, 2026 used the exact paper title,
+arXiv id, the quoted open sentence, the authors' names, and combinations of
+``property \((\ddagger)\)'', ``dual'', and ``reflexive''.  It found the source
+record and generic mirrors, but no later paper or independent theorem stated
+as resolving this question.  The proof does use classical results of James,
+Odell--Rosenthal, and Bishop--Phelps; the particular translation-and-vanishing-
+perturbation combination answering the source question was not found.
+Accordingly, novelty confidence is moderate rather than definitive.
+
+\section*{Limitations and Human Review Recommendation}
+
+This is a candidate full solution subject to expert review, not a claim of
+established publication priority.  The recommended review focus is
+Lemma~\ref{lem:net}'s cardinal selection and the two-stage Bishop--Phelps
+construction in Lemma~\ref{lem:l1}.  If those steps are accepted, the
+constants give a strict contradiction and the source theorem covers the
+complementary no-\(\ell_1\) case.
+
+\small
+\begin{thebibliography}{9}
+
+\bibitem{GothwalRao}
+D. Gothwal and T.~S.~S.~R.~K. Rao,
+\emph{Some Geometric Aspects Related to Lim's Condition},
+arXiv:2504.09464, 2025; revised 2026.
+
+\bibitem{James}
+R.~C. James,
+\emph{Uniformly non-square Banach spaces},
+Ann. of Math. (2) \textbf{80} (1964), 542--550.
+
+\bibitem{OdellRosenthal}
+E. Odell and H.~P. Rosenthal,
+\emph{A double-dual characterization of separable Banach spaces containing
+\(\ell_1\)},
+Israel J. Math. \textbf{20} (1975), 375--384.
+
+\bibitem{BishopPhelps}
+E. Bishop and R.~R. Phelps,
+\emph{A proof that every Banach space is subreflexive},
+Bull. Amer. Math. Soc. \textbf{67} (1961), 97--98.
+
+\bibitem{DowlingEtAl}
+P.~N. Dowling, W.~B. Johnson, C.~J. Lennard, and B. Turett,
+\emph{The optimality of James's distortion theorems},
+Proc. Amer. Math. Soc. \textbf{125} (1997), 167--174.
+
+\end{thebibliography}
+
+\end{document}

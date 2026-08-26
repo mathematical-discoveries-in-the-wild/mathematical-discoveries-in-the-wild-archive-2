@@ -1,0 +1,410 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\B}{\mathbb{B}}
+\newcommand{\T}{\mathbb{T}}
+
+\title{Exact Incompressible Smoothing for Unitriangular Deformations\\
+and Radial Twists}
+\author{Candidate partial result for arXiv:2502.01336}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Candidate partial result; likely valid; human review requested.  The results
+below solve structured subcases of Open Problem 5 in Hencl's survey, not the
+general incompressible Ball--Evans approximation problem.}}
+\end{center}
+
+\section{Source question}
+
+The source is Stanislav Hencl, \emph{Ball--Evans approximation problem:
+recent progress and open problems}, arXiv:2502.01336v1 (3 February 2025)
+\cite{Hencl}.  Open Problem 5 appears on PDF page 6.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+In transcription, the question asks whether a homeomorphism
+$f\in W^{1,p}(\Omega,\R^n)$ with $J_f=1$ almost everywhere can be
+approximated in the Sobolev norm by incompressible diffeomorphisms (or by
+piecewise affine incompressible homeomorphisms).  The survey emphasizes that
+the question is open even for $n=2$.
+
+\section{Results and proof intuition}
+
+Here ``incompressible'' means that the Jacobian determinant is identically
+one (almost everywhere for a Sobolev map and pointwise for a smooth map).
+
+\subsection*{Proof intuition}
+
+There are two independent mechanisms.
+
+First, a unitriangular deformation changes coordinate $i$ only by a function
+of the later coordinates.  Its derivative is upper triangular with diagonal
+entries one, so ordinary smoothing of the scalar coordinate functions cannot
+change the determinant.  The same order of the coordinates gives an explicit
+back-substitution inverse, so smoothing cannot destroy injectivity either.
+
+Second, a radial twist rotates every sphere $\{|x|=r\}$ through an angle that
+depends on $r$.  Smoothing the angle leaves the radius fixed.  Thus every
+approximant maps the ball onto itself.  In the derivative, the only extra term
+is rank one; the matrix determinant lemma reduces its contribution to a
+quadratic form of a skew-symmetric matrix, hence to zero.  Freezing the angle
+near the origin costs arbitrarily little in the exact weighted Sobolev energy
+and makes the approximants smooth at the origin.
+
+The first theorem covers a large triangular class and, in particular,
+one-dimensional rank-one laminates.  The second theorem has the additional
+features that the source and target ball are fixed and the boundary trace is
+preserved.  General incompressible homeomorphisms need not have either
+structure, and remain outside the argument.
+
+\section{Unitriangular deformations}
+
+For intervals $I_j=(a_j,b_j)$ put
+\[
+ Q=I_1\times\cdots\times I_n,
+ \qquad Q_i=I_i\times\cdots\times I_n.
+\]
+
+\begin{lemma}[Simultaneous uniform and Sobolev smoothing]\label{lem:density}
+Let $V\subset\R^d$ be a bounded open rectangle, $1\leq p<\infty$, and
+$u\in W^{1,p}(V)\cap C(\overline V)$.  There are functions $u_k$, smooth on
+a neighborhood of $\overline V$, such that
+\[
+ \|u_k-u\|_{W^{1,p}(V)}+\|u_k-u\|_{L^\infty(V)}\longrightarrow0.
+\]
+\end{lemma}
+
+\begin{proof}
+Reflect $u$ successively across the faces of $V$.  On a slightly larger
+rectangle this gives a continuous $W^{1,p}$ extension.  Convolution with a
+standard mollifier converges in $W^{1,p}$ by the usual translation
+continuity argument, and converges uniformly because the continuous
+extension is uniformly continuous on a compact neighborhood of
+$\overline V$.
+\end{proof}
+
+\begin{theorem}[Exact smoothing of unitriangular deformations]
+\label{thm:triangular}
+Let $n\geq2$ and $1\leq p<\infty$.  For $i=1,\ldots,n-1$, suppose
+\[
+ u_i\in W^{1,p}(Q_{i+1})\cap C(\overline{Q}_{i+1}),
+\]
+and let $c\in\R$.  Define $F:\overline Q\to\R^n$ by
+\[
+ \begin{aligned}
+ F_1(x)&=x_1+u_1(x_2,\ldots,x_n),\\
+ F_2(x)&=x_2+u_2(x_3,\ldots,x_n),\\
+ &\ \vdots\\
+ F_{n-1}(x)&=x_{n-1}+u_{n-1}(x_n),\\
+ F_n(x)&=x_n+c.
+ \end{aligned}
+\]
+Then $F|_Q$ is an incompressible $W^{1,p}$ homeomorphism of $Q$ onto
+$F(Q)$.  There are smooth incompressible diffeomorphisms
+$F_k:Q\to F_k(Q)$ of the same unitriangular form such that
+\[
+ \|F_k-F\|_{W^{1,p}(Q)}+\|F_k-F\|_{L^\infty(Q)}\longrightarrow0.
+\]
+The conclusion holds in every dimension and for every finite $p$, including
+$p=1$.
+\end{theorem}
+
+\begin{proof}
+Apply Lemma~\ref{lem:density} to each $u_i$, obtaining smooth $u_{i,k}$, and
+define $F_k$ by the displayed formula with $u_i$ replaced by $u_{i,k}$.
+The derivative matrices $DF$ almost everywhere and $DF_k$ everywhere are
+upper triangular, with every diagonal entry equal to one.  Therefore
+\[
+ J_F=1\quad\text{a.e.},\qquad J_{F_k}=1\quad\text{everywhere}.
+\]
+
+Injectivity does not require an estimate.  Given $y=F(x)$, first recover
+$x_n=y_n-c$, then
+\[
+ x_{n-1}=y_{n-1}-u_{n-1}(x_n),
+\]
+and continue backwards until $x_1$ is recovered.  These formulas give a
+continuous inverse on $F(Q)$.  The same formulas, with smooth $u_{i,k}$,
+give a smooth inverse for $F_k$.  They also show directly, by the openness
+of the interval constraints under the recursive recovery, that $F(Q)$ and
+$F_k(Q)$ are open.  Thus $F$ is a homeomorphism onto its image and every
+$F_k$ is a diffeomorphism onto its image.
+
+Let $\pi_i(x)=(x_{i+1},\ldots,x_n)$.  Fubini's theorem gives, for either the
+function or any derivative in a tail variable,
+\[
+ \| (u_{i,k}-u_i)\circ\pi_i\|_{L^p(Q)}^p
+ =\left(\prod_{j=1}^{i}|I_j|\right)
+   \|u_{i,k}-u_i\|_{L^p(Q_{i+1})}^p.
+\]
+The $W^{1,p}$ convergence follows after summing over $i$, while uniform
+convergence is immediate from the coordinate formula.
+\end{proof}
+
+The following is the rank-one laminate form that motivated the construction.
+
+\begin{corollary}[One-dimensional incompressible laminates]
+\label{cor:laminate}
+Let $U\subset\R^{n-1}$ be a bounded open rectangle and $I=(a,b)$.  Let
+$B:\R^{n-1}\to\R^n$ be injective and let
+$\phi\in W^{1,p}(I;\R^n)$.  Suppose
+\[
+ \det[Be_1\mid\cdots\mid Be_{n-1}\mid\phi'(t)]=1
+ \quad\text{for a.e. }t\in I.
+\]
+Then
+\[
+ f(x',t)=Bx'+\phi(t)
+\]
+is an incompressible homeomorphism onto its image and is the uniform and
+$W^{1,p}$ limit of smooth incompressible diffeomorphisms onto their images.
+The approximating curves can be chosen to have the same endpoint values as
+$\phi$.
+\end{corollary}
+
+\begin{proof}
+Let
+\[
+ \Delta(v)=\det[Be_1\mid\cdots\mid Be_{n-1}\mid v].
+\]
+This is a nonzero linear functional, $\ker\Delta=\operatorname{ran}B$, and
+the hypothesis says $\Delta(\phi')=1$.  Choose $v_0$ with
+$\Delta(v_0)=1$.  Absolute continuity on the interval gives
+\[
+ \phi(t)=\phi(a)+(t-a)v_0+B w(t)
+\]
+for some $w\in W^{1,p}(I;\R^{n-1})$ with $w(a)=0$.  This is, after fixed
+affine changes of variables, a one-layer instance of
+Theorem~\ref{thm:triangular}.
+
+For completeness, approximate $w$ in $W^{1,p}$ by smooth curves and preserve
+both endpoint values by the affine correction
+\[
+ \widetilde w_k(t)=w_k(t)
+ +\frac{b-t}{b-a}\bigl(w(a)-w_k(a)\bigr)
+ +\frac{t-a}{b-a}\bigl(w(b)-w_k(b)\bigr).
+\]
+The trace map on a finite interval is continuous on $W^{1,p}$, so this
+correction tends to zero in $W^{1,p}$.  It stays in $\R^{n-1}$, hence after
+multiplication by $B$ it cannot change $\Delta(\phi_k')=1$.  Finally,
+\[
+ \Delta(f(x',t)-\phi(a))=t-a
+\]
+recovers $t$ from the image, after which injectivity of $B$ recovers $x'$.
+\end{proof}
+
+\section{Radial twists of the ball}
+
+Let $\B^n=\{x\in\R^n:|x|<1\}$.  For $s\in\R$, let $R_s\in SO(n)$ be
+rotation through angle $s$ in the $(x_1,x_2)$-plane and the identity on its
+orthogonal complement.
+
+\begin{theorem}[Fixed-ball smoothing of radial twists]
+\label{thm:twist}
+Let $n\geq2$, $1\leq p<\infty$, and let
+$\theta:(0,1]\to\R$ be locally absolutely continuous with
+\[
+ \int_0^1 r^{n-1+p}|\theta'(r)|^p\,dr<\infty.
+ \tag{4.1}\label{eq:weighted}
+\]
+Define
+\[
+ T_\theta(0)=0,
+ \qquad T_\theta(x)=R_{\theta(|x|)}x\quad (x\ne0).
+\]
+Then $T_\theta$ is an incompressible $W^{1,p}$ homeomorphism of
+$\B^n$ onto itself.  There exist $\theta_k\in C^\infty([0,1])$, each
+constant near zero and satisfying $\theta_k(1)=\theta(1)$, such that
+\[
+ T_{\theta_k}\longrightarrow T_\theta
+ \quad\text{in }W^{1,p}(\B^n;\R^n)\text{ and uniformly on }\overline{\B^n}.
+\]
+Every $T_{\theta_k}$ is a smooth incompressible diffeomorphism of $\B^n$
+onto itself, and $T_{\theta_k}=T_\theta$ on $\partial\B^n$.
+No limit of $\theta(r)$ as $r\downarrow0$ is required.
+\end{theorem}
+
+\begin{proof}
+Write $r=|x|$, $e_r=x/r$, $Q(r)=R_{\theta(r)}$, and let a dot denote
+differentiation of $R_s$ with respect to $s$.  At almost every $x\ne0$,
+\[
+ DT_\theta(x)
+ =Q(r)+\theta'(r)\bigl(\dot R_{\theta(r)}x\bigr)\otimes e_r.
+ \tag{4.2}\label{eq:derivative}
+\]
+Consequently $|DT_\theta|\leq C_n(1+r|\theta'|)$, and
+\eqref{eq:weighted}, together with polar coordinates, gives
+$DT_\theta\in L^p(\B^n)$.  Formula~\eqref{eq:derivative} is initially a
+local weak-derivative formula away from the origin.  Integration by parts on
+$\B^n\setminus\overline{\B(0,\varepsilon)}$ produces an inner boundary
+term of size $O(\varepsilon^n)$ because $|T_\theta(x)|=\varepsilon$ there.
+It vanishes as $\varepsilon\downarrow0$, proving that the displayed formula
+is the global weak derivative.
+
+The determinant is exactly one.  Since
+$S_s=R_s^T\dot R_s$ is skew-symmetric, the matrix determinant lemma and
+\eqref{eq:derivative} give
+\[
+ \begin{aligned}
+ \det DT_\theta
+ &=\det Q(r)\left(1+
+ e_r^T Q(r)^T\theta'(r)\dot R_{\theta(r)}x\right)\\
+ &=1+\frac{\theta'(r)}{r}x^TS_{\theta(r)}x=1
+ \end{aligned}
+\]
+almost everywhere.
+
+The identity $|T_\theta(x)|=|x|$ gives a global inverse,
+\[
+ T_\theta^{-1}(y)=R_{-\theta(|y|)}y.
+\]
+Both maps are continuous away from zero and are continuous at zero because
+their norm equals the radius.  Thus $T_\theta$ is a homeomorphism of the ball
+onto itself.
+
+It remains to construct the approximation.  For $0<\delta<1/2$, freeze the
+angle at radius $\delta$:
+\[
+ \theta^\delta(r)=
+ \begin{cases}
+ \theta(\delta),&0<r<\delta,\\
+ \theta(r),&\delta\leq r\leq1.
+ \end{cases}
+\]
+The maps differ only in the ball of radius $\delta$.  From
+\eqref{eq:derivative}, using boundedness of rotations and their first
+derivatives,
+\[
+ \|T_{\theta^\delta}-T_\theta\|_{W^{1,p}(\B^n)}^p
+ \leq C_{n,p}\left(
+ \delta^n+\int_0^\delta r^{n-1+p}|\theta'(r)|^p\,dr\right),
+ \tag{4.3}\label{eq:freeze}
+\]
+which tends to zero.  Also
+$\|T_{\theta^\delta}-T_\theta\|_\infty\leq2\delta$.
+
+For fixed $\delta$, the function $\theta^\delta$ belongs to
+$W^{1,p}(0,1)$ and is constant near zero.  Extend it constantly to the left,
+mollify with radius smaller than $\delta/4$, and, if necessary, add a smooth
+correction supported near $r=1$ to recover the endpoint value
+$\theta(1)$.  This produces smooth $\eta_m$, constant near zero and with
+$\eta_m(1)=\theta(1)$, such that
+\[
+ \|\eta_m-\theta^\delta\|_{W^{1,p}(0,1)}
+ +\|\eta_m-\theta^\delta\|_\infty\longrightarrow0.
+\]
+The derivative formula gives the pointwise estimate
+\[
+ |DT_{\eta_m}-DT_{\theta^\delta}|
+ \leq C_n\left(
+ |\eta_m-\theta^\delta|+r|\eta_m'-(\theta^\delta)'|
+ +r|(	heta^\delta)'|\,|\eta_m-\theta^\delta|
+ \right).
+\]
+Hence $T_{\eta_m}\to T_{\theta^\delta}$ in $W^{1,p}$ and uniformly.
+Taking a diagonal sequence with $\delta\downarrow0$ and using
+\eqref{eq:freeze} yields the required $\theta_k$.
+
+Because every $\theta_k$ is constant near zero, $T_{\theta_k}$ is smooth at
+zero.  The determinant calculation is pointwise, and the explicit inverse is
+smooth, so it is an incompressible diffeomorphism of the ball onto itself.
+Finally $\theta_k(1)=\theta(1)$ gives equality on the boundary sphere.
+\end{proof}
+
+\begin{remark}[A low-regularity example]
+The theorem permits arbitrarily many turns near the origin.  For example,
+$\theta(r)=\log r$ has no limit as $r\downarrow0$, while
+$r\theta'(r)=1$ and condition~\eqref{eq:weighted} holds for every finite
+$p$.  The resulting homeomorphism is still uniformly and strongly Sobolev
+approximable by exact incompressible diffeomorphisms of the ball.
+\end{remark}
+
+\section{Verification and scope}
+
+The proof uses no unproved analytic or computational dependency.  The
+accompanying file \texttt{verification.md} gives an adversarial step check.
+The symbolic script \path{code/check_jacobians.py} verifies representative
+three- and four-dimensional unitriangular examples and two- and
+three-dimensional polynomial-angle radial twists.  Those computations are
+sanity checks only; the proof is the triangular and rank-one determinant
+calculation above.
+
+The triangular result does not generally keep the image $F(Q)$ fixed while
+smoothing; its approximants are diffeomorphisms onto their own images.  The
+radial-twist result does keep both domain and image equal to $\B^n$, and it
+preserves the boundary trace.  Neither result handles an arbitrary
+incompressible Sobolev homeomorphism, so Open Problem 5 remains open in
+general.
+
+\subsection*{Bounded novelty check}
+
+On 9 August 2026 we searched the run's registry, solution, attempt, and
+proof-gap indexes for arXiv:2502.01336 and for the terms ``incompressible'',
+``volume preserving'', ``triangular'', ``laminate'', ``shear'', and ``radial
+twist''.  We also searched arXiv/web indexes for Sobolev approximation by
+volume-preserving diffeomorphisms and exact determinant-one smoothing of
+shears or laminates.  No exact match for either theorem above was found.
+
+Two nearby results delimit the claim.  Mueller proves uniform approximation
+results for volume-preserving homeomorphisms in a high-dimensional manifold
+setting, but the cited abstract does not assert strong $W^{1,p}$ convergence
+\cite{Mueller}.  Campbell, D'Onofrio, and Vitek prove strong Sobolev
+diffeomorphic approximation of general locally finite piecewise affine
+homeomorphisms in dimensions three and four, including simultaneous inverse
+control, but their theorem does not assert exact incompressibility
+\cite{CDV}.  The present result is therefore recorded only as a candidate new
+structured partial theorem.  The search was bounded rather than exhaustive,
+and the mechanism may be folklore.
+
+\subsection*{Human-review recommendation}
+
+Review as a likely valid partial result.  The most useful checks are:
+\begin{enumerate}[leftmargin=2em]
+\item confirm the simultaneous uniform/$W^{1,p}$ density lemma at $p=1$;
+\item verify the distributional derivative across the origin in
+Theorem~\ref{thm:twist};
+\item verify that the fixed-ball and boundary assertions use only radius
+preservation and the endpoint condition;
+\item assess whether exact determinant-preserving triangular or radial-twist
+smoothing is already recorded in the specialist literature.
+\end{enumerate}
+
+\begin{thebibliography}{9}
+
+\bibitem{Hencl}
+S. Hencl,
+\emph{Ball--Evans approximation problem: recent progress and open problems},
+arXiv:2502.01336v1, 2025.
+
+\bibitem{Mueller}
+S. Mueller,
+\emph{Uniform approximation of homeomorphisms by diffeomorphisms},
+arXiv:0901.1002, 2009.
+
+\bibitem{CDV}
+D. Campbell, L. D'Onofrio, and T. Vitek,
+\emph{Diffeomorphic approximation of piecewise affine homeomorphisms},
+arXiv:2507.02854, 2025; Journal of Geometric Analysis 36 (2026), Article 157.
+
+\end{thebibliography}
+
+\end{document}

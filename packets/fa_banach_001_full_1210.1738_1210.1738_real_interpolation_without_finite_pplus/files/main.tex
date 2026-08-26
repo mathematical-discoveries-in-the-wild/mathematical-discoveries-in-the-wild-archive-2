@@ -1,0 +1,322 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\1}{\mathbf 1}
+\newcommand{\lesssimc}{\mathrel{\lesssim}}
+\newcommand{\asympC}{\mathrel{\asymp}}
+\newcommand{\K}{K}
+
+\title{Real interpolation of variable Lorentz spaces\\
+\large Removing the finite upper-exponent hypothesis}
+\author{Automated Math Discovery Run \texttt{fa\_banach\_001}, lane 8}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{black}{blue!5}{\parbox{0.88\linewidth}{
+\textbf{Result.} The assumption $p^+<\infty$ can be removed from
+Kempka--Vyb\'iral's real-interpolation theorem.  The formula remains valid
+when $p$ is unbounded or equals $\infty$ on a set of positive measure.
+}}
+\end{center}
+
+\section{Source question and conclusion}
+
+Kempka and Vyb\'iral introduce variable Lorentz spaces and prove, under
+$p^+<\infty$, that
+\[
+ (L_{p(\cdot),q_0(\cdot)}(\R^n),L_\infty(\R^n))_{\theta,q}
+ \cong L_{\widetilde p(\cdot),q}(\R^n),
+ \qquad \frac1{\widetilde p(\cdot)}=\frac{1-\theta}{p(\cdot)}.
+\]
+Their Remark~4(i) says that finiteness of $p^+$ is used mainly for a
+generalized-inverse argument and asks whether it can be removed
+\cite[Theorem~8 and Remark~4(i), PDF p.~14]{KV}.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.96\linewidth]{figures/open_problem_crop.png}
+\caption{The open problem in arXiv:1210.1738, PDF page 14.}
+\end{figure}
+
+Let $\mathcal P$ denote, exactly as in \cite{KV}, the measurable exponents
+from $\R^n$ into $(0,\infty]$ that are bounded away from zero.  As usual,
+$L_{p(\cdot),q_0(\cdot)}$ is the corresponding variable Lorentz space, and
+$(\cdot,\cdot)_{\theta,q}$ is the real $K$-interpolation functor for
+quasi-Banach couples.
+
+\section{Proof intuition}
+
+For
+\[
+ h_k=\left\|\1_{\{|f|>2^k\}}\right\|_{L_{p(\cdot)}},
+\]
+the target Lorentz quasi-norm is the $\ell_q$ norm of
+$2^k h_k^{1-\theta}$.  This remains true on the set where $p=\infty$:
+the characteristic-function identity
+\[
+ \|\1_E\|_{L_{\widetilde p(\cdot)}}
+ =\|\1_E\|_{L_{p(\cdot)}}^{1-\theta}
+\]
+is exact.
+
+The source proof encoded $h$ through a generalized inverse, whose endpoint
+continuity led to $p^+<\infty$.  We instead work entirely on dyadic levels.
+At the weak Lorentz endpoint, any decomposition of $f$ either leaves a large
+tail or has a large bounded part; this gives
+\[
+ K(f,t)\gtrsim \sup_k 2^k\min\{h_k,t\}.
+\]
+At a constant Lorentz endpoint, clipping $f$ at height $2^m$ gives the
+reverse estimate in terms of a tail of $(2^k h_k)$.  The resulting tail
+operator is a one-sided discrete Hardy operator with a geometric kernel and
+is bounded on every $\ell_q$, including $q<1$.  Monotonicity in the second
+Lorentz exponent then handles variable $q_0$.
+
+\begin{theorem}\label{thm:main}
+Let $p,q_0\in\mathcal P$, with no assumption on $p^+$ or $q_0^+$.
+Let $0<\theta<1$, $0<q\leq\infty$, and define
+\[
+ \frac1{\widetilde p(x)}=\frac{1-\theta}{p(x)},
+\]
+with the convention $\widetilde p(x)=\infty$ when $p(x)=\infty$. Then
+\[
+ (L_{p(\cdot),q_0(\cdot)}(\R^n),L_\infty(\R^n))_{\theta,q}
+ \cong L_{\widetilde p(\cdot),q}(\R^n)
+\]
+with equivalent quasi-norms.  Thus the answer to Remark~4(i) is affirmative.
+\end{theorem}
+
+\section{Dyadic preliminaries}
+
+For a constant $0<r\leq\infty$, the discretization from \cite{KV} gives
+\begin{equation}\label{eq:discrete-lorentz}
+ \|f\|_{L_{p(\cdot),r}}
+ \asympC \|(2^k h_k)_{k\in\mathbb Z}\|_{\ell_r}.
+\end{equation}
+No upper bound on $p$ is needed here.  Moreover, from the Luxemburg
+definition, for every measurable $E$,
+\begin{equation}\label{eq:indicator-power}
+ \|\1_E\|_{L_{\widetilde p(\cdot)}}
+ =\|\1_E\|_{L_{p(\cdot)}}^{1-\theta}.
+\end{equation}
+Indeed, substituting $\mu=\lambda^{1/(1-\theta)}$ in the defining modular
+turns the condition for $L_{\widetilde p(\cdot)}$ exactly into the condition
+for $L_{p(\cdot)}$.  This also covers the $L_\infty$ part of the modular.
+Consequently,
+\begin{equation}\label{eq:target-discrete}
+ \|f\|_{L_{\widetilde p(\cdot),q}}
+ \asympC \|(c_k)_k\|_{\ell_q},
+ \qquad c_k:=2^k h_k^{1-\theta}.
+\end{equation}
+
+Put $W=L_{p(\cdot),\infty}$ and, for $0<r\leq\infty$,
+$R_r=L_{p(\cdot),r}$.  We write $K_W(f,t)=K(f,t;W,L_\infty)$ and similarly
+for $R_r$.
+
+\begin{lemma}[two $K$-functional estimates]\label{lem:K}
+Uniformly for $t>0$,
+\begin{equation}\label{eq:Klower}
+ K_W(f,t)\gtrsim \sup_{k\in\mathbb Z}2^k\min\{h_k,t\}.
+\end{equation}
+For $0<r<\infty$, define
+\[
+ A_m=\left(\sum_{n\geq m}(2^nh_n)^r\right)^{1/r},
+\]
+and for $r=\infty$ define $A_m=\sup_{n\geq m}2^nh_n$. Then
+\begin{equation}\label{eq:Kupper}
+ K_{R_r}(f,t)\lesssimc \inf_{m\in\mathbb Z}(A_m+t2^m).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Consider a decomposition $f=a+b$. If $\|b\|_\infty\leq2^{k-1}$, then
+$|a|>2^{k-1}$ on $\{|f|>2^k\}$, whence
+$\|a\|_W\gtrsim2^kh_k$. If $\|b\|_\infty>2^{k-1}$, then
+$t\|b\|_\infty\gtrsim t2^k$. Taking the infimum over decompositions proves
+\eqref{eq:Klower}.
+
+For \eqref{eq:Kupper}, clip $f$ radially at height $2^m$: let
+\[
+ b(x)=\begin{cases}
+ f(x),&|f(x)|\leq2^m,\\
+ 2^m f(x)/|f(x)|,&|f(x)|>2^m,
+ \end{cases}
+ \qquad a=f-b.
+\]
+Then $\|b\|_\infty\leq2^m$.  If $k<m$, then
+$\{|a|>2^k\}\subset\{|f|>2^m\}$, while if $k\geq m$, then
+$\{|a|>2^k\}\subset\{|f|>2^k\}$.  Thus the part below $2^m$ is bounded by
+the geometric sum with terms $2^kh_m$, and the part at and above $2^m$ is
+bounded by the corresponding tail of $(2^kh_k)$.  Formula
+\eqref{eq:discrete-lorentz} gives $\|a\|_{R_r}\lesssim A_m$ for every
+$0<r\leq\infty$. This proves \eqref{eq:Kupper}.
+\end{proof}
+
+\section{The weak endpoint gives one inclusion}
+
+\begin{lemma}\label{lem:weak}
+For every $0<q\leq\infty$,
+\[
+ (W,L_\infty)_{\theta,q}\hookrightarrow
+ L_{\widetilde p(\cdot),q}.
+\]
+\end{lemma}
+
+\begin{proof}
+Assume first $q<\infty$.  If $h_k=\infty$ for some $k$, then
+\eqref{eq:Klower} makes the interpolation quasi-norm infinite, as is the
+target quasi-norm, so there is nothing to prove.  Otherwise partition the
+indices $k$ with $0<h_k<\infty$ according to
+\[
+ I_j=\{k:2^j\leq h_k<2^{j+1}\}.
+\]
+Fix $N$ and replace $I_j$ temporarily by
+$I_{j,N}=I_j\cap\{-N,\ldots,N\}$.  Whenever this finite set is nonempty,
+let $k_{j,N}=\max I_{j,N}$. Since $h_k$ is nonincreasing in $k$,
+\begin{align}\label{eq:group-upper}
+ \sum_{k\in I_{j,N}}c_k^q
+ &\lesssim 2^{k_{j,N}q}2^{j(1-\theta)q}.
+\end{align}
+For $2^{j-1}\leq t\leq2^j$, we have $t\leq h_{k_{j,N}}$, so
+Lemma~\ref{lem:K} yields $K_W(f,t)\gtrsim2^{k_{j,N}}t$. Hence
+\[
+ \int_{2^{j-1}}^{2^j}
+   [t^{-\theta}K_W(f,t)]^q\,\frac{dt}{t}
+ \gtrsim 2^{k_{j,N}q}2^{j(1-\theta)q}.
+\]
+The intervals in $t$ are disjoint. Summing in $j$, using
+\eqref{eq:group-upper}, and then letting $N\to\infty$ proves the claim by
+\eqref{eq:target-discrete}.  For $q=\infty$, an infinite $h_k$ is handled
+as above; otherwise choose $j$ with $2^j\leq h_k<2^{j+1}$ and evaluate
+\eqref{eq:Klower} at $t=2^j$. Taking the supremum in $k$ gives the same
+conclusion.
+\end{proof}
+
+\section{Constant Lorentz endpoints give the reverse inclusion}
+
+\begin{lemma}\label{lem:strong}
+For every $0<r\leq\infty$ and $0<q\leq\infty$,
+\[
+ L_{\widetilde p(\cdot),q}
+ \hookrightarrow (R_r,L_\infty)_{\theta,q}.
+\]
+\end{lemma}
+
+\begin{proof}
+Let $D_m=2^{-m}A_m$. The sequence $D_m$ decreases at least geometrically:
+$D_{m-1}\geq2D_m$. For nonzero $f$ with $(c_k)\in\ell_q$, it has limits
+$D_m\to\infty$ as $m\to-\infty$ and $D_m\to0$ as $m\to\infty$; the formulas
+below also give this directly.  If $D_m\leq t<D_{m-1}$, then
+\eqref{eq:Kupper} gives
+\[
+ K_{R_r}(f,t)\lesssim t2^m.
+\]
+Therefore, for $q<\infty$,
+\begin{equation}\label{eq:interval-sum}
+ \int_0^\infty[t^{-\theta}K_{R_r}(f,t)]^q\frac{dt}{t}
+ \lesssim \sum_m 2^{mq}D_{m-1}^{(1-\theta)q}.
+\end{equation}
+
+Suppose first $r<\infty$ and put $s=r/(1-\theta)$. A direct substitution
+of $c_n=2^nh_n^{1-\theta}$ gives
+\begin{equation}\label{eq:hardy-formula}
+ 2^mD_m^{1-\theta}
+ =\left(\sum_{j\geq0}
+ 2^{-jr\theta/(1-\theta)}c_{m+j}^{s}\right)^{1/s}.
+\end{equation}
+The operator on the right is bounded on $\ell_q$ for every $0<q<\infty$.
+Indeed, if $q/s\leq1$, raise to the power $q$ and use subadditivity; if
+$q/s\geq1$, apply Young's convolution inequality to $(c_m^s)_m$.  The
+geometric kernel belongs to every required $\ell_u$. It is also bounded on
+$\ell_\infty$.
+
+If $r=\infty$, the corresponding identity is
+\begin{equation}\label{eq:hardy-infty}
+ 2^mD_m^{1-\theta}
+ =\sup_{j\geq0}2^{-j\theta}c_{m+j}.
+\end{equation}
+For finite $q$, its $q$th power is bounded by
+$\sum_{j\geq0}2^{-j\theta q}c_{m+j}^q$; summing in $m$ proves $\ell_q$
+boundedness. The $\ell_\infty$ case is immediate.
+
+Equations \eqref{eq:interval-sum}--\eqref{eq:hardy-infty}, with an harmless
+shift from $m$ to $m-1$, prove the assertion. When $q=\infty$, replace
+\eqref{eq:interval-sum} by
+\[
+ \sup_{t>0}t^{-\theta}K_{R_r}(f,t)
+ \lesssim \sup_m2^mD_{m-1}^{1-\theta}
+\]
+and use the same sequence estimates.
+\end{proof}
+
+\section{Proof of the theorem}
+
+Let $r=q_0^-\in(0,\infty]$.  The monotonicity theorem for variable Lorentz
+spaces \cite[Theorem~7(i)]{KV} gives
+\[
+ R_r=L_{p(\cdot),r}\hookrightarrow
+ X:=L_{p(\cdot),q_0(\cdot)}\hookrightarrow
+ W=L_{p(\cdot),\infty}.
+\]
+Monotonicity of the $K$-functional consequently gives
+\[
+ (R_r,L_\infty)_{\theta,q}\hookrightarrow
+ (X,L_\infty)_{\theta,q}\hookrightarrow
+ (W,L_\infty)_{\theta,q}.
+\]
+Lemma~\ref{lem:strong} embeds the target space into the left member, while
+Lemma~\ref{lem:weak} embeds the right member into the target. This proves
+Theorem~\ref{thm:main}.
+
+Notice where the endpoint and quasi-Banach cases enter.  The set
+$\{p=\infty\}$ is covered by the exact identity
+\eqref{eq:indicator-power}.  The proof of \eqref{eq:Klower} uses only a
+level-set inclusion, not a triangle inequality, so it remains valid when
+$p^-<1$.  The geometric Hardy proof is valid for every $r>0$, including
+$r=q_0^-<1$.  Finally, $q_0^-=\infty$ is covered by
+\eqref{eq:hardy-infty}, and $q=\infty$ uses the displayed supremum estimates.
+No limiting argument in $p^+$ and no local convexity are used.
+
+\section{Verification and novelty notes}
+
+The main verifier targets are:
+\begin{enumerate}
+\item the direction of the two monotone Lorentz embeddings in the final
+sandwich;
+\item the tail identity \eqref{eq:hardy-formula} and its exponents;
+\item the endpoint $r=\infty$ formula \eqref{eq:hardy-infty};
+\item the fact that all constants are independent of dyadic truncations.
+\end{enumerate}
+The included script tests the finite versions of the two geometric Hardy
+operators over random positive sequences and parameters. These tests are only
+sanity checks; the proof above is analytic.
+
+A bounded official-arXiv search through 11 August 2026 used the title and
+arXiv id 1210.1738 together with the phrases ``real interpolation'',
+``variable Lorentz'', ``$p^+=\infty$'', and ``remove $p^+<\infty$''.  It found
+papers on variable-exponent real interpolation and Hardy--Lorentz spaces, but
+no paper removing this hypothesis from Theorem~8.  Recent papers on the
+different mixed sequence space $\ell^{q(\cdot)}(L^{p(\cdot)})$ do not answer
+this interpolation question.  The result should therefore receive expert
+proof review and an independent MathSciNet/zbMATH novelty check before use.
+
+\begin{thebibliography}{9}
+\bibitem{KV}
+H.~Kempka and J.~Vyb\'iral,
+\emph{Lorentz spaces with variable exponents},
+Math. Nachr. 287 (2014), 938--954; arXiv:1210.1738.
+\end{thebibliography}
+
+\end{document}

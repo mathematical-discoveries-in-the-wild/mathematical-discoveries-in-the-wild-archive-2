@@ -1,0 +1,396 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\newcommand{\M}{\mathbb M}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\rank}{\operatorname{rank}}
+
+\title{The trace-arithmetic distance is a metric\\
+on the full rank-one positive cone}
+\author{Codex agent lane 6}
+\date{August 9, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status and source question}
+
+\textbf{Status: candidate partial result, likely valid.}
+
+For $p>0$ and positive semidefinite matrices $A,B$, Zhang \cite{Zhang}
+uses the operations
+\[
+ A\mathbin{\kappa_p}B
+   =\left(A^{p/4}B^{p/2}A^{p/4}\right)^{1/p},
+ \qquad
+ d_p(A,B)^2
+   =\Tr\left(\frac{A+B}{2}-A\mathbin{\kappa_p}B\right).
+\]
+Problem 1.2 on page 2 of the source asks whether $d_p$ is a metric on
+$\M_n(\C)_+$ for every $1<p<2$, and asks the corresponding question for a
+general $C^*$-algebra with a faithful trace.  Here is the source statement.
+
+\begin{center}
+  \includegraphics[width=0.98\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+The source gives a counterexample at $p=1/2$ but states that the full-cone
+case $1<p<2$ remains open \cite[Remark 4.3]{Zhang}.  The result below proves
+the metric property, throughout the entire requested parameter interval, on
+the cone consisting of all positive multiples of rank-one projections, with
+the zero matrix included.  In fact the proof works for every $0<p\leq2$.
+
+\section*{Proof intuition}
+
+Write a rank-one positive matrix as $aP$, where $a\geq0$ and $P$ is a
+rank-one projection.  If $P=uu^*$ and $Q=vv^*$, the trace of the noncommutative
+mean collapses to
+\[
+ \Tr(aP\mathbin{\kappa_p}bQ)
+   =\sqrt{ab}\,|\langle u,v\rangle|^{2/p}.
+\]
+Thus the only directional datum is the Fubini--Study angle
+$\theta(P,Q)=\arccos|\langle u,v\rangle|$.  For $\alpha=2/p\geq1$, deform
+this angle by
+\[
+ f_\alpha(t)=\arccos((\cos t)^\alpha).
+\]
+The key one-variable fact is that $f_\alpha$ is increasing and concave on
+$[0,\pi/2]$, hence it turns the projective angle into another metric.  After
+putting $r=\sqrt a$ and $s=\sqrt b$, the distance becomes
+\[
+ \sqrt2\,d_p(aP,bQ)
+   =\sqrt{r^2+s^2-2rs\cos(f_\alpha(\theta(P,Q)))}.
+\]
+This is exactly the Euclidean cone metric over the deformed projective metric.
+The triangle inequality then follows by realizing any three base distances as
+the angular distances of three unit vectors and applying the ordinary
+Euclidean triangle inequality.  This argument controls the radial variables
+$a,b$ that are absent from the previously known fixed-trace projector result.
+
+The same radial decomposition also gives an exact reformulation of the full
+problem.  On density matrices put
+$F_p(\rho,\sigma)=\Tr(\rho\mathbin{\kappa_p}\sigma)$ and
+$\delta_p=\arccos F_p$.  Then $d_p$ is a metric on the full positive cone if
+and only if $\delta_p$ is a metric on density matrices.  Equivalently, every
+three-state matrix $[F_p(\rho_i,\rho_j)]_{i,j=1}^3$ must be positive
+semidefinite.  This isolates the unresolved part as one explicit trace
+inequality; the packet does not prove that inequality, so the full cone remains
+open.
+
+\section*{Formal proof}
+
+Let
+\[
+ \mathcal R_n^+
+   :=\{0\}\cup\{aP:a>0,\ P\in\M_n(\C)_+,\ P^2=P,\ \rank P=1\}.
+\]
+
+\begin{lemma}[Projective-angle deformation]\label{lem:deformation}
+Let $\theta(P,Q)=\arccos|\langle u,v\rangle|$ for $P=uu^*$ and $Q=vv^*$,
+where $u,v$ are unit vectors.  If $\alpha\geq1$ and
+\[
+ f_\alpha(t)=\arccos((\cos t)^\alpha),\qquad 0\leq t\leq\frac\pi2,
+\]
+then
+\[
+ \delta_\alpha(P,Q):=f_\alpha(\theta(P,Q))
+\]
+is a metric on the rank-one projective space and takes values in
+$[0,\pi/2]$.
+\end{lemma}
+
+\begin{proof}
+The Fubini--Study angle $\theta$ is a metric.  For completeness, this follows
+from the spherical triangle inequality: choose phases of successive unit
+representatives so that the spherical angles of the first and second, and of
+the second and third, are respectively $\theta(P,Q)$ and $\theta(Q,R)$.
+The spherical angle between the first and third representatives is at least
+the minimum over their relative phase, which is $\theta(P,R)$, and is at most
+the sum of the other two angles.
+
+It remains to record the properties of $f_\alpha$.  It is increasing,
+$f_\alpha(0)=0$, and $f_\alpha(t)\geq t$, because
+$(\cos t)^\alpha\leq\cos t$.  We now prove concavity.  On $(0,\pi/2)$,
+\[
+ f_\alpha'(t)
+  =\frac{\alpha(\cos t)^{\alpha-1}\sin t}
+          {\sqrt{1-(\cos t)^{2\alpha}}}.
+\]
+With $y=\cos^2t$, the square of $f_\alpha'(t)/\alpha$ is
+\[
+ G(y)=\frac{y^{\alpha-1}(1-y)}{1-y^\alpha}.
+\]
+After multiplication by the positive denominator, the sign of $G'(y)$ is the
+sign of
+\[
+ h(y)=\alpha-1-\alpha y+y^\alpha.
+\]
+Since $h(1)=0$ and
+$h'(y)=\alpha(y^{\alpha-1}-1)\leq0$ on $[0,1]$, one has $h(y)\geq0$.
+Hence $G$ is increasing in $y$.  Since $y=\cos^2t$ decreases with $t$,
+$f_\alpha'$ decreases, so $f_\alpha$ is concave on $[0,\pi/2]$.
+
+Concavity and $f_\alpha(0)=0$ imply subadditivity whenever
+$x,y,x+y\in[0,\pi/2]$: indeed,
+\[
+ f_\alpha(x)\geq\frac{x}{x+y}f_\alpha(x+y),\qquad
+ f_\alpha(y)\geq\frac{y}{x+y}f_\alpha(x+y).
+\]
+For three projections put $x=\theta(P,Q)$ and $y=\theta(Q,R)$.  If
+$x+y\leq\pi/2$, monotonicity, the triangle inequality for $\theta$, and
+subadditivity give
+\[
+ \delta_\alpha(P,R)\leq f_\alpha(x+y)
+ \leq f_\alpha(x)+f_\alpha(y).
+\]
+If $x+y>\pi/2$, then
+\[
+ \delta_\alpha(P,R)\leq\frac\pi2<x+y
+ \leq f_\alpha(x)+f_\alpha(y).
+\]
+Definiteness and symmetry are immediate.  Thus $\delta_\alpha$ is a metric.
+\end{proof}
+
+\begin{lemma}[Elementary metric-cone lemma]\label{lem:cone}
+Let $(X,\delta)$ be a metric space with $0\leq\delta\leq\pi/2$.  Identify all
+points $(0,x)$ in $[0,\infty)\times X$, and define
+\[
+ D((r,x),(s,y))^2=r^2+s^2-2rs\cos\delta(x,y).
+\]
+Then $D$ is a metric on the resulting cone.
+\end{lemma}
+
+\begin{proof}
+Only the triangle inequality needs proof.  Given $x,y,z\in X$, put
+\[
+ a=\delta(x,y),\qquad b=\delta(y,z),\qquad c=\delta(x,z).
+\]
+The metric inequalities give $|a-b|\leq c\leq a+b$, and $a+b\leq\pi$.
+Consequently there are unit vectors $U,V,W\in\mathbb R^3$ whose pairwise
+angles are $a,b,c$.  Explicitly, when $\sin a\sin b\ne0$, take
+\[
+ V=(1,0,0),\quad U=(\cos a,\sin a,0),
+\]
+\[
+ W=(\cos b,\sin b\cos\gamma,\sin b\sin\gamma),\qquad
+ \cos\gamma=\frac{\cos c-\cos a\cos b}{\sin a\sin b}.
+\]
+The inequalities $|a-b|\leq c\leq a+b$ say exactly that
+$|\cos\gamma|\leq1$; the cases with a zero sine follow by a limit or directly.
+For nonnegative $r,s,t$, the Euclidean triangle inequality now gives
+\[
+ \|rU-tW\|_2\leq\|rU-sV\|_2+\|sV-tW\|_2,
+\]
+which is precisely
+\[
+ D((r,x),(t,z))\leq D((r,x),(s,y))+D((s,y),(t,z)).
+\]
+Symmetry and nonnegativity are clear.  Equality $D=0$ identifies exactly the
+same positive-radius base point, together with the already identified
+zero-radius points.
+\end{proof}
+
+\begin{theorem}[Exact reduction of the full-cone problem]\label{thm:reduction}
+Fix $n\geq2$ and a value of $p$ for which $d_p$ is a definite nonnegative
+function.  Let
+\[
+ \mathcal D_n=\{\rho\in\M_n(\C)_+:\Tr\rho=1\},\qquad
+ F_p(\rho,\sigma)=\Tr(\rho\mathbin{\kappa_p}\sigma),
+\]
+and set $\delta_p(\rho,\sigma)=\arccos F_p(\rho,\sigma)$.  The following are
+equivalent:
+\begin{enumerate}
+  \item $d_p$ is a metric on $\M_n(\C)_+$;
+  \item $\delta_p$ is a metric on $\mathcal D_n$;
+  \item for all $\rho,\sigma,\omega\in\mathcal D_n$,
+  \begin{equation}\label{eq:gram}
+  1+2F_p(\rho,\sigma)F_p(\sigma,\omega)F_p(\omega,\rho)
+  \geq F_p(\rho,\sigma)^2+F_p(\sigma,\omega)^2
+       +F_p(\omega,\rho)^2.
+  \end{equation}
+\end{enumerate}
+For $1<p<2$, therefore, the matrix part of Problem 1.2 is exactly the
+three-state trace inequality \eqref{eq:gram}.
+\end{theorem}
+
+\begin{proof}
+The scalar overlap is symmetric because
+\[
+ F_p(\rho,\sigma)
+ =\Tr\bigl|\sigma^{p/4}\rho^{p/4}\bigr|^{2/p},
+\]
+and an operator and its adjoint have the same singular values.  The assumed
+nonnegativity and definiteness of $d_p$ give
+$0\leq F_p(\rho,\sigma)\leq1$, with equality at the upper endpoint exactly
+when $\rho=\sigma$.  Thus $\delta_p$ is a well-defined symmetric definite
+function with values in $[0,\pi/2]$.
+
+For nonzero $A,B$, write
+\[
+ A=a\rho,\qquad B=b\sigma,\qquad
+ a=\Tr A,\quad b=\Tr B,\quad \rho,\sigma\in\mathcal D_n.
+\]
+Separate homogeneity of the mean gives
+\[
+ \Tr(A\mathbin{\kappa_p}B)=\sqrt{ab}\,F_p(\rho,\sigma),
+\]
+and hence
+\begin{equation}\label{eq:cone-decomposition}
+ 2d_p(A,B)^2
+ =a+b-2\sqrt{ab}\cos\delta_p(\rho,\sigma).
+\end{equation}
+Thus $\sqrt2d_p$ is precisely the cosine-cone distance with radial coordinate
+$\sqrt{\Tr A}$.  Lemma~\ref{lem:cone} proves that (2) implies (1).
+
+Conversely, suppose that the triangle inequality for $\delta_p$ fails.  After
+relabeling, there are density matrices $\rho,\sigma,\omega$ such that
+\[
+ \gamma:=\delta_p(\rho,\omega)
+ >\alpha+\beta,\qquad
+ \alpha:=\delta_p(\rho,\sigma),\quad
+ \beta:=\delta_p(\sigma,\omega).
+\]
+All these angles lie in $[0,\pi/2]$, and strict failure forces
+$\alpha,\beta>0$.  In the Euclidean plane let $X,Y,Z$ be unit vectors on rays
+of angles $0,\alpha,\alpha+\beta$, respectively.  The line segment from $X$
+to $Z$ meets the intermediate ray at $sY$ for some $s>0$.  Apply
+\eqref{eq:cone-decomposition} to
+\[
+ A=\rho,\qquad B=s^2\sigma,\qquad C=\omega.
+\]
+Because $sY$ lies on the segment $[X,Z]$,
+\begin{align*}
+ \sqrt2\bigl(d_p(A,B)+d_p(B,C)\bigr)
+ &=\|X-sY\|_2+\|sY-Z\|_2\\
+ &=\|X-Z\|_2
+ =\sqrt{2-2\cos(\alpha+\beta)}\\
+ &<\sqrt{2-2\cos\gamma}
+ =\sqrt2d_p(A,C).
+\end{align*}
+Thus failure of the angular triangle inequality forces failure on the positive
+cone, proving (1) implies (2).
+
+It remains to identify (2) with (3).  Put
+\[
+ x=F_p(\rho,\sigma)=\cos\alpha,\quad
+ y=F_p(\sigma,\omega)=\cos\beta,\quad
+ z=F_p(\omega,\rho)=\cos\gamma.
+\]
+The left side minus the right side of \eqref{eq:gram} is the determinant of
+the symmetric matrix with diagonal entries $1$ and off-diagonal entries
+$x,y,z$.  Moreover,
+\[
+ 1+2xyz-x^2-y^2-z^2
+ =\sin^2\alpha\sin^2\beta
+  -(\cos\gamma-\cos\alpha\cos\beta)^2.
+\]
+Since $\alpha,\beta,\gamma\in[0,\pi/2]$, nonnegativity is equivalent to
+$|\alpha-\beta|\leq\gamma\leq\alpha+\beta$, exactly the three triangle
+inequalities.  This proves the remaining equivalence.
+\end{proof}
+
+\begin{theorem}[Metricity on the full rank-one positive cone]
+For every $n\geq2$ and every $0<p\leq2$, the restriction of $d_p$ to
+$\mathcal R_n^+$ is a metric.  In particular, this holds for every
+$1<p<2$, the parameter range left open on the full cone in Problem 1.2 of
+\cite{Zhang}.
+\end{theorem}
+
+\begin{proof}
+Let $A=aP$ and $B=bQ$, with $a,b>0$, $P=uu^*$, $Q=vv^*$, and $u,v$ unit
+vectors.  Functional calculus and $PQP=|\langle u,v\rangle|^2P$ yield
+\[
+ A^{p/4}B^{p/2}A^{p/4}
+  =(ab)^{p/2}|\langle u,v\rangle|^2P.
+\]
+Therefore
+\[
+ \Tr(A\mathbin{\kappa_p}B)
+  =\sqrt{ab}\,|\langle u,v\rangle|^{2/p}.
+\]
+The same formula, by continuity, also covers either $a=0$ or $b=0$.
+Put
+\[
+ r=\sqrt a,\qquad s=\sqrt b,\qquad
+ \alpha=\frac2p\geq1,
+\]
+and let $\theta(P,Q)=\arccos|\langle u,v\rangle|$.  Then
+\begin{align*}
+ 2d_p(aP,bQ)^2
+ &=r^2+s^2-2rs(\cos\theta(P,Q))^\alpha\\
+ &=r^2+s^2-2rs\cos\delta_\alpha(P,Q).
+\end{align*}
+By Lemma~\ref{lem:deformation}, $\delta_\alpha$ is a metric with diameter at
+most $\pi/2$.  Lemma~\ref{lem:cone} therefore says that the square root of the
+last expression is a metric on the cone.  Since this square root equals
+$\sqrt2\,d_p$, the same is true of $d_p$.  The cone point at radius zero is
+exactly the zero matrix, so definiteness has the intended matrix meaning.
+\end{proof}
+
+\section*{Verification, scope, and novelty check}
+
+The proofs are analytic; the script \texttt{code/check\_rank\_one\_metric.py}
+only checks the trace formula and random triangle instances and is not part of
+the proof.  The crucial reviewer checks are the sign calculation proving
+concavity of $f_\alpha$, the use of the elementary metric-cone lemma, and both
+directions of Theorem~\ref{thm:reduction}.
+
+This result does \emph{not} settle Problem 1.2 on the full matrix cone or for a
+general $C^*$-algebra.  The noncommutative difficulty begins once matrices have
+rank at least two.  Theorem~\ref{thm:reduction} isolates that difficulty as the
+three-state Gram determinant inequality \eqref{eq:gram}, which is not proved
+here.
+
+A bounded novelty search was performed before promotion:
+\begin{itemize}
+  \item the local run indexes and parsed source collection were searched by
+  arXiv id; related searches used rank-one matrices, projectors, trace
+  arithmetic, and the symmetric Bures--Wasserstein divergence;
+  \item Kom\'alovics--Moln\'ar \cite{KM} prove the threshold only on the
+  normalized rank-one projector set;
+  \item a targeted web/full-text check of Vuong's April 2026 follow-up
+  \cite{Vuong} found the commuting cone and the normalized rank-one projector
+  set, and explicitly says that full-cone metricity for the corresponding
+  parameters remains open;
+  \item no explicit theorem for arbitrary scalar multiples $aP$ was found.
+\end{itemize}
+The extension may be regarded as a natural metric-cone completion of the known
+projector theorem, so novelty confidence is moderate rather than high.
+
+\textbf{Human-review recommendation.}  Promote after checking
+Lemma~\ref{lem:deformation}, especially the monotonicity direction in the
+$G(y)$ calculation, and confirming that the searched literature does not use
+``rank-one cone'' to include arbitrary non-normalized scalar multiples.
+
+\begin{thebibliography}{9}
+
+\bibitem{Zhang}
+T. Zhang,
+\emph{Trace arithmetic--$\kappa_p$ inequality},
+arXiv:2602.11922, 2026.
+
+\bibitem{KM}
+\'A. Kom\'alovics and L. Moln\'ar,
+\emph{On a parametric family of distance measures that includes the Hellinger
+and the Bures distances},
+J. Math. Anal. Appl. 529 (2024), no. 2, article 127226.
+
+\bibitem{Vuong}
+T.-D. Vuong,
+\emph{Quantitative geometry of the symmetric $\alpha$-$z$
+Bures--Wasserstein divergence},
+Filomat, prepublication manuscript, April 2026.
+
+\end{thebibliography}
+
+\end{document}

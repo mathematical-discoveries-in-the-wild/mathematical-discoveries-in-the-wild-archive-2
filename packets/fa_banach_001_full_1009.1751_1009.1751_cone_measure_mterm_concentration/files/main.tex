@@ -1,0 +1,262 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=teal!70!black,citecolor=teal!70!black,urlcolor=teal!70!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Pp}{\mathbb P}
+
+\title{Sharp Concentration of Positive Best $m$-Term Error\\
+under Cone Measure}
+\author{Run \texttt{fa\_banach\_001}, \texttt{agent\_lane\_14}}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status and source question}
+
+\textbf{Status:} candidate full answer, likely valid, pending expert review.
+Let $\mu_p$ be normalized cone measure on the positive part
+\[
+ \Delta_p^n=\{x\in\R_+^n:\textstyle\sum_{i=1}^n x_i^p=1\}
+ \qquad(0<p<\infty),
+\]
+and write $x_1^*\geq\cdots\geq x_n^*$ for the decreasing rearrangement.
+Vyb\'iral~\cite{Vybiral} proves the mean estimate
+\[
+ \sigma_m^{p,\infty}(\mu_p)=\mathbb E_{\mu_p}x_{m+1}^*
+ \asymp_p \left[\frac{\log(en/(m+1))}{n}\right]^{1/p}
+\]
+for $m$ at most a fixed fraction of $n$.  Remark~1(i), source PDF page~16,
+asks for a concentration statement analogous to the known $m=0$ theorem of
+Schechtman--Zinn~\cite{SchechtmanZinn}, for every $m>0$.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+Putting $k=m+1$, the theorem below gives matching two-sided tail exponents
+throughout the entire nontrivial upper-tail range and an explicit
+high-probability window at the mean scale.
+
+\section*{Proof intuition}
+
+Cone measure turns the dependent coordinates into normalized independent
+Gamma variables: $X_i^p=Y_i/(Y_1+\cdots+Y_n)$ with
+$Y_i\sim\mathrm{Gamma}(1/p,1)$.  The denominator is exponentially
+concentrated around a constant multiple of $n$.  Above that radial event,
+$X_k^*>t n^{-1/p}$ means that at least $k$ independent Gamma variables exceed
+a constant multiple of $t^p$.  The number of possible $k$-subsets contributes
+$k\log(en/k)$, explaining both the threshold
+$t^p\asymp\log(en/k)$ and the upper exponent $-\Theta_p(kt^p)$.
+
+For the reverse inequality, choose one fixed $k$-subset, force those Gamma
+variables into a short interval of height $\Theta_p(t^p)$, and keep the
+remaining radial sum below $O_p(n)$.  The deterministic condition
+$kt^p\lesssim_p n$ ensures normalization cannot push the selected coordinates
+below threshold.  This event already has probability
+$\exp[-O_p(kt^p)]$, matching the upper exponent.
+
+\section*{Main result}
+
+\begin{theorem}[Matching concentration tails]\label{thm:tails}
+Fix $0<p<\infty$.  There exist constants
+$A_p>1$, $b_p,c_p,C_p>0$ and $\varepsilon_p\in(0,1/2)$ such that the following
+holds.  Let $n\geq2$, $1\leq k\leq\varepsilon_p n$, and put
+\[
+ L_{n,k}=\log\frac{en}{k}.
+\]
+For every $t$ satisfying
+\begin{equation}\label{eq:range}
+ A_pL_{n,k}^{1/p}\leq t\leq b_p(n/k)^{1/p},
+\end{equation}
+one has
+\begin{equation}\label{eq:tails}
+ \exp(-C_pkt^p)
+ \leq
+ \mu_p\{x\in\Delta_p^n:n^{1/p}x_k^*>t\}
+ \leq
+ \exp(-c_pkt^p).
+\end{equation}
+Thus the Schechtman--Zinn $k=1$ exponent extends to every positive
+best-term index, with the sharp multiplicative factor $k=m+1$.
+\end{theorem}
+
+\begin{corollary}[A high-probability window]\label{cor:window}
+After changing the constants, for every $1\leq k\leq\varepsilon_p n$,
+\begin{align*}
+ \mu_p\!\left\{x_k^*>A_p\left(\frac{L_{n,k}}n\right)^{1/p}\right\}
+ &\leq C_p e^{-c_pkL_{n,k}},\\
+ \mu_p\!\left\{x_k^*<a_p\left(\frac{L_{n,k}}n\right)^{1/p}\right\}
+ &\leq C_p e^{-c_p\sqrt{nk}}
+\end{align*}
+for a constant $a_p>0$.  In particular $x_{m+1}^*$ is concentrated, up to
+fixed $p$-dependent factors, at the mean scale from source Theorem~7.
+\end{corollary}
+
+\begin{theorem}[Exact $p=\infty$ law]\label{thm:infty}
+Let $\mu_\infty$ be cone measure on the positive $\ell_\infty^n$ sphere.
+For $1\leq k\leq n$ and $0\leq r<1$,
+\[
+ \mu_\infty\{x_k^*>r\}
+ =\Pp\{\operatorname{Bin}(n-1,1-r)\geq k-1\}.
+\]
+Hence all concentration estimates in this remaining endpoint are exactly the
+standard binomial Chernoff bounds.
+\end{theorem}
+
+\section*{Proof}
+
+We first record the only one-dimensional estimates needed.
+
+\begin{lemma}[Gamma tails]\label{lem:gamma}
+Let $Y\sim\mathrm{Gamma}(\alpha,1)$ with fixed $\alpha>0$.  There are positive
+constants depending only on $\alpha$ such that, for $u\geq1$,
+\[
+ \Pp(Y>u)\leq C_\alpha e^{-c_\alpha u},
+ \qquad
+ \Pp(Bu\leq Y\leq2Bu)\geq e^{-C_{\alpha,B}u}
+\]
+for each fixed $B\geq1$.  Also
+$\Pp(Y>u)\geq c_\alpha e^{-C_\alpha u}$ for all $u\geq0$.
+If $S_N$ is a sum of $N$ such variables, then for suitable
+$0<d_\alpha<D_\alpha$,
+\[
+ \Pp(S_N<d_\alpha N)+\Pp(S_N>D_\alpha N)\leq2e^{-c_\alpha N}.
+\]
+\end{lemma}
+
+\begin{proof}
+The density is $y^{\alpha-1}e^{-y}/\Gamma(\alpha)$.  Integrating it on
+$[u,\infty)$ and on a unit subinterval of $[Bu,2Bu]$ gives the first three
+bounds, since every fixed power of $u$ is between two exponentials at this
+scale.  The last display is the standard Chernoff bound for
+$S_N\sim\mathrm{Gamma}(N\alpha,1)$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:tails}]
+The cone-measure representation used in the source gives independent
+$Y_i\sim\mathrm{Gamma}(1/p,1)$ such that
+\begin{equation}\label{eq:representation}
+ X_i^p=\frac{Y_i}{S},\qquad S=\sum_{j=1}^nY_j,
+\end{equation}
+and $X=(X_1,\ldots,X_n)$ has law $\mu_p$.
+
+For the upper bound, work first on $S\geq d_pn$.  If
+$n^{1/p}X_k^*>t$, then at least $k$ of the $Y_i$ exceed $d_pt^p$.
+Lemma~\ref{lem:gamma} and a union bound give
+\begin{align*}
+ \Pp\{Y_k^*>d_pt^p\}
+ &\leq \binom{n}{k}\Pp\{Y_1>d_pt^p\}^k\\
+ &\leq \exp\{kL_{n,k}-c_pkt^p\}.
+\end{align*}
+If $A_p$ in \eqref{eq:range} is sufficiently large, this is at most
+$\exp(-c_p'kt^p)$.  The discarded probability $\Pp(S<d_pn)$ is
+$e^{-c_pn}$.  Since the upper restriction in \eqref{eq:range} gives
+$kt^p\leq b_p^pn$, this radial error is absorbed into the same exponential
+after decreasing $b_p$ or $c_p'$.
+
+For the lower bound, choose $D_p$ so that
+\[
+ \Pp\left\{\sum_{i=k+1}^nY_i\leq D_pn\right\}\geq\frac12
+\]
+(Markov's inequality already suffices), and set $B_p=4D_p$.  Consider
+\[
+ E=\{B_pt^p\leq Y_i\leq2B_pt^p\ (1\leq i\leq k)\}
+ \cap\left\{\sum_{i=k+1}^nY_i\leq D_pn\right\}.
+\]
+Choose $b_p^p\leq1/8$.  On $E$ and in the range \eqref{eq:range},
+\[
+ S\leq2B_pkt^p+D_pn\leq\frac{B_p}{2}n,
+ \qquad
+ \frac{nY_i}{S}\geq2t^p\quad(1\leq i\leq k).
+\]
+Thus $E\subset\{n^{1/p}X_k^*>t\}$.  Independence and
+Lemma~\ref{lem:gamma} give
+\[
+ \Pp(E)\geq\frac12
+ \Pp\{B_pt^p\leq Y_1\leq2B_pt^p\}^k
+ \geq e^{-C_pkt^p},
+\]
+after enlarging $C_p$.  This proves \eqref{eq:tails}.
+\end{proof}
+
+\begin{proof}[Proof of Corollary~\ref{cor:window}]
+For the upper estimate, repeat the union-bound argument with
+$t=A_pL_{n,k}^{1/p}$ and choose $A_p$ so large that
+$\Pp(Y_1>d_pA_p^pL_{n,k})\leq e^{-3L_{n,k}}$.  Then the binomial union bound
+is at most $e^{-2kL_{n,k}}$; the lower radial tail is absorbed because
+$kL_{n,k}\leq n$.
+
+For the lower estimate, work on $S\leq D_pn$.  Put
+$u=D_pa_p^pL_{n,k}$ and let $N_u=\#\{i:Y_i>u\}$.  If $N_u\geq k$, then
+$X_k^*>a_p(L_{n,k}/n)^{1/p}$.  By Lemma~\ref{lem:gamma}, $a_p$ can be chosen
+so small that
+\[
+ q:=\Pp(Y_1>u)\geq c_p e^{-L_{n,k}/2}
+ =c_p e^{-1/2}\sqrt{k/n}.
+\]
+After choosing $\varepsilon_p$ small, $nq\geq4k$.  A binomial Chernoff bound
+therefore yields
+\[
+ \Pp(N_u<k)\leq e^{-c_pnq}\leq e^{-c_p'\sqrt{nk}}.
+\]
+The upper radial tail is $e^{-c_pn}$ and is absorbed into this bound.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:infty}]
+Let $U_1,\ldots,U_n$ be independent uniform variables on $[0,1]$ and put
+$M=\max_iU_i$.  Radial projection $U/M$ has cone measure $\mu_\infty$.
+Conditionally on the almost surely unique maximizing index and on $M$, the
+remaining $n-1$ ratios $U_i/M$ are independent uniform variables on $[0,1]$.
+The maximum ratio is $1$, so the $k$th largest ratio exceeds $r$ exactly when
+at least $k-1$ of those $n-1$ uniforms exceed $r$.
+\end{proof}
+
+\section*{Verification, scope, and novelty}
+
+The proof is symbolic; the included Monte Carlo script only checks the scale
+across $p\in\{1/2,1,2\}$, dimensions, and positive $m$.  The result answers
+the source sentence tied to $\sigma_m^{p,\infty}(\mu_p)$ and Theorem~7.  It
+does not claim concentration for Hausdorff surface measure or for finite
+target exponent $q$.
+
+The run indexes and bounded exact-title, arXiv-id, best-$m$-term
+concentration, cone-measure order-statistic, and kth-coordinate searches
+through 11 August 2026 found no matching later resolution.  General
+independent-order-statistic concentration results exist, but the coordinates
+in \eqref{eq:representation} share the random denominator; no searched source
+recorded the normalized theorem or the matching exponent above.  Novelty
+confidence is moderate, subject to specialist citation review.
+
+\section*{Human-review recommendation}
+
+Check the constants in the deterministic implication on the lower event $E$,
+especially $B_p=4D_p$ and $b_p^p\leq1/8$.  Then check that both discarded
+Gamma-sum tails are absorbable in the stated ranges.  Those are the only
+places where the independent order statistic and the normalized cone vector
+differ materially.
+
+\begin{sloppypar}
+\raggedright
+\begin{thebibliography}{9}
+\bibitem{Vybiral}
+J.~Vyb\'iral,
+\emph{Average best $m$-term approximation},
+Constr. Approx. 36 (2012), 83--115; arXiv:1009.1751.
+
+\bibitem{SchechtmanZinn}
+G.~Schechtman and J.~Zinn,
+\emph{On the volume of the intersection of two $L_p^n$ balls},
+Proc. Amer. Math. Soc. 110 (1990), 217--224; arXiv:math/9201206.
+\end{thebibliography}
+\end{sloppypar}
+
+\end{document}

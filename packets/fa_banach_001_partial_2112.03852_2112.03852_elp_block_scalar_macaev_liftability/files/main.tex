@@ -1,0 +1,233 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\Hh}{\mathcal H}
+\newcommand{\Lin}{\operatorname{Lin}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\ELP}{\operatorname{ELP}}
+
+\title{Aligned Macaev Operators Lift Through the Canonical ELP Twist}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 9}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Candidate partial result, likely valid.  The universal Macaev-ideal and
+$O(1/\log n)$ questions remain open.}}
+\end{center}
+
+\section{Source question and scope}
+
+Cabello S\'anchez and Garc\'ia ask on page 5 of
+\cite{CabelloGarcia2022}:
+\begin{quote}
+\emph{Is every operator in the Macaev ideal liftable?}
+\end{quote}
+Here the Macaev ideal consists of compact operators $T$ with
+$\sum_{j\geq1}s_j(T)/j<\infty$.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{The question in arXiv:2112.03852, page 5.}
+\end{figure}
+
+The theorem below proves the question for operators that are scalar on the
+canonical finite-dimensional blocks, and for lifting through the canonical
+Enflo--Lindenstrauss--Pisier (ELP) twisted Hilbert sequence.  It does not prove
+universal liftability.
+
+\section{Definitions}
+
+For a homogeneous quasilinear map $\Phi:E\to F$ between finite-dimensional
+Hilbert spaces, put
+\[
+ \delta(\Phi)=\inf_{L\in\Lin(E,F)}
+ \sup_{x\ne0}\frac{\|\Phi(x)-Lx\|}{\|x\|}.
+\]
+The canonical ELP construction uses $H_n=\ell_2^{3^n}$ and maps
+$\phi_n:H_n\to H_n$.  Write elements of $H_{n+1}$ as triples
+$(x,y,z)\in H_n^3$, let $P_n(x,y,z)=(x,y,0)$, and set
+\[
+ \phi_1(x,y,z)=
+ \left(0,0,\frac{x|y|}{(|x|^2+|y|^2)^{1/2}}\right),
+\]
+with value $0$ when the denominator vanishes, and
+\[
+ \phi_{n+1}(x,y,z)=\left(
+ \phi_n(x),\phi_n(y),
+ \frac{P_nx\,\|P_ny\|}
+ {(\|P_nx\|^2+\|P_ny\|^2)^{1/2}}
+ \right).
+\]
+This is the construction restated in \cite[Section 2.3]{CastilloCorrea2026}.
+On the algebraic direct sum in
+$H=(\bigoplus_{n\ge1}H_n)_2$, define
+\[
+ \Omega_{\ELP}(x_n)_n=(\phi_n(x_n))_n.
+\]
+Its completion gives the canonical ELP twisted Hilbert sequence
+\[
+ 0\longrightarrow H\longrightarrow
+ H\oplus_{\Omega_{\ELP}}H\longrightarrow H\longrightarrow0.
+\]
+For a bounded scalar sequence $a=(a_n)$, let
+$D_a=\bigoplus_{n\ge1}a_n I_{H_n}$.
+
+\section{Idea of the proof}
+
+For a block direct-sum twist, lifting a block scalar operator is exactly a
+uniform finite-block linearization problem: the obstruction on block $n$ is
+$|a_n|\delta(\phi_n)$.  The explicit ELP recursion has size at most
+$\sqrt n/2$, while the classical complementability lower bound forces the
+same $\sqrt n$ order.  Thus the exact lifting condition is
+$\sup_n\sqrt n|a_n|<\infty$.
+
+The endpoint consequence is then a counting observation.  The $n$-th block
+has dimension $3^n$, so it contributes $3^n$ copies of $|a_n|$ to the singular
+sequence.  Macaev summability forces $n|a_n|$ to be bounded, which is stronger
+than the required $\sqrt n|a_n|$ bound.
+
+\section{The partial result}
+
+\begin{theorem}\label{thm:main}
+Let $\delta_n=\delta(\phi_n)$.  For every bounded scalar sequence $a$,
+the following are equivalent:
+\begin{enumerate}
+ \item $D_a$ lifts through the canonical ELP twisted Hilbert sequence;
+ \item $\sup_n |a_n|\delta_n<\infty$;
+ \item $\sup_n \sqrt n\,|a_n|<\infty$.
+\end{enumerate}
+Consequently, $D_a$ lifts through the ELP sequence whenever either
+\[
+ \sum_{j\ge1}\frac{s_j(D_a)}j<\infty
+ \qquad\text{or}\qquad
+ s_j(D_a)=O\!\left(\frac1{\log(j+1)}\right).
+\]
+\end{theorem}
+
+\begin{proof}
+We first prove the exact block criterion.  Suppose $D_a$ has a bounded
+lifting.  In the quasilinear model its restriction to the algebraic direct
+sum has the form
+\[
+ x\longmapsto (Lx,D_ax)
+\]
+for a linear map $L$.  Boundedness says that
+$\|Lx-\Omega_{\ELP}(D_ax)\|\le C\|x\|$.  Restricting to $H_n$ and
+projecting the first coordinate onto $H_n$ gives a linear map $L_n:H_n\to H_n$
+such that
+\[
+ \|L_nx-a_n\phi_n(x)\|\le C\|x\|.
+\]
+Homogeneity of $\phi_n$ therefore gives $|a_n|\delta_n\le C$.
+
+Conversely, suppose $M=\sup_n|a_n|\delta_n<\infty$.  Choose linear
+$L_n:H_n\to H_n$ so that
+\[
+ |a_n|\,\|\phi_n-L_n\|\le M+1.
+\]
+(When $a_n=0$, take $L_n=0$.)  On the algebraic direct sum set
+$L=\bigoplus_n a_nL_n$.  Then
+\[
+ \|Lx-\Omega_{\ELP}(D_ax)\|^2
+ =\sum_n |a_n|^2\|L_nx_n-\phi_n(x_n)\|^2
+ \le (M+1)^2\|x\|^2.
+\]
+Thus $x\mapsto(Lx,D_ax)$ is bounded into the twisted-sum completion and
+extends to a lifting of $D_a$.  This proves (1)$\Leftrightarrow$(2).
+
+We next estimate $\delta_n$.  The elementary inequality
+\[
+ \frac{r^2s^2}{r^2+s^2}\le\frac{r^2+s^2}{4}
+\]
+and the recursion give
+\[
+ \|\phi_1\|\le\frac12,
+ \qquad
+ \|\phi_{n+1}\|^2\le\|\phi_n\|^2+\frac14.
+\]
+Hence $\delta_n\le\|\phi_n\|\le\sqrt n/2$.
+
+For the reverse estimate, the ELP finite block satisfies the classical lower
+bound that its canonical copy of $H_n$ is at least $c\sqrt n$-complemented;
+see \cite[Section 2.3]{CastilloCorrea2026}, which cites the original
+construction \cite{ELP1975}.  If $L:H_n\to H_n$ is linear, then
+\[
+ Q_L(y,x)=(y-Lx,0)
+\]
+is a projection of $H_n\oplus_{\phi_n}H_n$ onto its canonical kernel and
+\[
+ \|Q_L\|\le \max\{1,\|\phi_n-L\|\}.
+\]
+The complementability lower bound therefore yields
+$\delta_n\ge c'\sqrt n$.  Thus $\delta_n\asymp\sqrt n$, proving
+(2)$\Leftrightarrow$(3).
+
+Finally, $H_n$ has dimension $3^n$, so $D_a$ has at least $3^n$ singular
+values not smaller than $|a_n|$; equivalently,
+$s_{3^n}(D_a)\ge|a_n|$.  If
+$M_\omega=\sum_{j\ge1}s_j(D_a)/j<\infty$, then
+\[
+ M_\omega\ge s_{3^n}(D_a)\sum_{j=1}^{3^n}\frac1j
+ \ge |a_n|\,n\log3.
+\]
+It follows that $\sup_n\sqrt n|a_n|<\infty$.  If instead
+$s_j(D_a)\le C/\log(j+1)$, then
+\[
+ |a_n|\le s_{3^n}(D_a)
+ \le \frac{C}{\log(3^n+1)}\le\frac{C'}n,
+\]
+and the same conclusion follows.  Apply (3)$\Rightarrow$(1).
+\end{proof}
+
+\section{Verification and limitations}
+
+The block criterion is two-sided and uses only the standard quasilinear model
+of a twisted sum.  The upper estimate $\delta_n\le\sqrt n/2$ is derived directly
+from the displayed ELP recursion.  The cited complementability estimate is
+used only for the reverse bound and hence only for the exact characterization;
+the positive Macaev and logarithmic-decay conclusions require only the direct
+upper estimate.
+
+The restriction is substantial: $D_a$ must be scalar on the canonical ELP
+blocks, and only lifting through this particular ELP extension is proved.
+Neither arbitrary operators in the Macaev ideal nor arbitrary twisted Hilbert
+extensions are covered.  The canonical $\Omega_{\ELP}$ is not equivalent to a
+centralizer \cite[Proposition 3.1]{CastilloCorrea2026}, so the theorem is not a
+restatement of the source paper's centralizer calculation.
+
+A bounded search of the exact question, its title, Macaev/liftability phrases,
+and the 2026 ELP paper found no claimed resolution of the universal endpoint
+problem or this aligned-block characterization.  Human novelty review remains
+recommended.
+
+\begin{thebibliography}{9}
+\bibitem{CabelloGarcia2022}
+F. Cabello S\'anchez and R. Garc\'ia,
+\emph{The Twisted Hilbert Space Ideals},
+Integral Equations Operator Theory 94 (2022), article 21;
+arXiv:2112.03852.
+
+\bibitem{CastilloCorrea2026}
+J. M. F. Castillo and W. H. G. Corr\^ea,
+\emph{A twisted Hilbert space not isomorphic to its dual},
+arXiv:2603.22484 (2026).
+
+\bibitem{ELP1975}
+P. Enflo, J. Lindenstrauss, and G. Pisier,
+\emph{On the ``three space problem''},
+Math. Scand. 36 (1975), 199--210.
+\end{thebibliography}
+
+\end{document}
+

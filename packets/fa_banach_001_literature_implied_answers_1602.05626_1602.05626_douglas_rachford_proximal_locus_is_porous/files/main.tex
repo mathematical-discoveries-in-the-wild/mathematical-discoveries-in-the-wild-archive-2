@@ -1,0 +1,210 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newcommand{\Sym}{\mathbb S^n}
+\newcommand{\Frob}{\mathrm F}
+\newcommand{\op}{\mathrm{op}}
+\newcommand{\Id}{\mathrm{Id}}
+\newcommand{\Dset}{\mathcal D}
+\newcommand{\Qset}{\mathcal Q}
+\newcommand{\Zset}{\mathcal Z}
+
+\title{The exceptional Douglas--Rachford locus is porous}
+\author{Autonomous mathematics run \texttt{fa\_banach\_001}, lane 17}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{
+\textbf{Status: literature-implied answer (full scope), likely valid,
+pending human review.}  The supporting polynomial-avoidance theorem does not
+mention the source question; the identification below gives a complete
+affirmative answer.
+}}
+\end{center}
+
+\section{Source question and supporting theorem}
+
+Let $X=\mathbb R^n$, $n\ge2$.  Bauschke, Schaad, and Wang
+\cite{BSW} consider the space $\mathcal L\cap\mathcal S$ of symmetric
+maximally monotone linear relations.  For $A$ in this space, write
+\[
+ J_A=(\Id+A)^{-1},\qquad R_A=2J_A-\Id.
+\]
+For a pair $(A,B)$, its Douglas--Rachford map is
+\[
+ T_{A,B}=\tfrac12(\Id+R_BR_A).
+\]
+They equip pairs with the metric
+\begin{equation}\label{eq:source-metric}
+ d((A,B),(A',B'))
+ =\|J_A-J_{A'}\|_{\op}+\|J_B-J_{B'}\|_{\op}
+\end{equation}
+and prove that
+\[
+ \Dset=\{(A,B):T_{A,B}\text{ is a proximal mapping}\}
+\]
+is closed and nowhere dense.  Remark 3.3(ii), printed/PDF page 7 of
+arXiv:1602.05626v1, asks:
+\begin{quote}
+``The set $D$ in Theorem 3.1 is closed and nowhere dense. Is it also a
+porous set?''
+\end{quote}
+
+The later result used here is Corollary 1.7, printed/PDF page 3 of
+Glazyrin--Karasev--Polyanskii, arXiv:2112.05382v5 \cite{GKP}:
+if $P$ is a nonzero real polynomial of degree $m$, then the Euclidean unit
+ball contains a point whose distance from $P^{-1}(0)$ is at least $1/m$.
+By translation and rescaling, the same assertion holds in every Euclidean
+ball, with the distance scaled by its radius.
+
+\section{Identification and affirmative answer}
+
+Let
+\[
+ K=\{R\in\Sym:\|R\|_{\op}\le1\},\qquad \Qset=K\times K.
+\]
+Reflected-resolvent coordinates give a bijection
+\begin{equation}\label{eq:phi}
+ \Phi:(\mathcal L\cap\mathcal S)^2\longrightarrow\Qset,
+ \qquad \Phi(A,B)=(R_A,R_B).
+\end{equation}
+This includes singular boundary points: conversely, for $R\in K$ the
+symmetric firmly nonexpansive matrix $(\Id+R)/2$ is the resolvent of a
+symmetric maximally monotone linear relation.  If $\Qset$ is given the metric
+\begin{equation}\label{eq:rho}
+ \rho((R,S),(R',S'))
+ =\tfrac12\bigl(\|R-R'\|_{\op}+\|S-S'\|_{\op}\bigr),
+\end{equation}
+then \eqref{eq:source-metric} shows that $\Phi$ is an isometry.
+
+The source paper proves that a linear firmly nonexpansive map is proximal
+exactly when it is symmetric.  Hence
+\[
+ T_{A,B}=T_{A,B}^{\mathsf T}
+ \quad\Longleftrightarrow\quad
+ R_BR_A=R_AR_B.
+\]
+It follows that
+\begin{equation}\label{eq:commuting}
+ \Phi(\Dset)=\Zset\cap\Qset,
+ \qquad
+ \Zset=F^{-1}(0),\quad
+ F(R,S)=\|RS-SR\|_{\Frob}^2.
+\end{equation}
+Here $F$ is a nonzero real polynomial of degree four.  Nonzeroness is already
+witnessed in the leading $2\times2$ block by
+\[
+ R=\begin{pmatrix}1&0\\0&-1\end{pmatrix},\qquad
+ S=\begin{pmatrix}0&1\\1&0\end{pmatrix}.
+\]
+
+\begin{theorem}\label{thm:main}
+For every $n\ge2$, the set $\Dset$ in Theorem 3.1 of \cite{BSW} is porous
+in the metric \eqref{eq:source-metric}.  More quantitatively, at every point
+of $\Dset$ and at every sufficiently small radius $r$, the ambient
+$d$-ball of radius $r$ contains a $d$-ball of radius $r/(64n)$ disjoint from
+$\Dset$.
+\end{theorem}
+
+\begin{proof}
+Work first in the Euclidean space
+$E=\Sym\times\Sym$ with product Frobenius norm
+\[
+ \|(R,S)\|_E=(\|R\|_{\Frob}^2+\|S\|_{\Frob}^2)^{1/2}.
+\]
+Fix $x=(R,S)\in\Zset\cap\Qset$, and let $r>0$ be small.  Put
+\[
+ \eta=\frac{r}{4\sqrt{2n}},\qquad x_0=(1-\eta)x.
+\]
+Because $R$ and $S$ commute, $x_0\in\Zset$.  Moreover,
+\[
+ \|x-x_0\|_E\le\eta\sqrt{2n}=r/4.
+\]
+The Euclidean ball $B_E(x_0,\eta)$ lies in $\Qset$: each component of
+$x_0$ has operator norm at most $1-\eta$, while Frobenius norm dominates
+operator norm.
+
+Apply Corollary 1.7 of \cite{GKP} to
+\[
+ u\longmapsto F\bigl(x_0+(\eta/2)u\bigr).
+\]
+This is again a nonzero degree-four polynomial.  There is a point
+$y\in B_E(x_0,\eta/2)$ satisfying
+\[
+ \operatorname{dist}_E(y,\Zset)\ge\eta/8.
+\]
+Consequently,
+\[
+ B_E(y,\eta/8)
+ \subset B_E(x_0,\eta)\setminus\Zset
+ \subset\Qset\setminus(\Zset\cap\Qset).
+\]
+It also lies in $B_E(x,r)$, because
+\[
+ r/4+\eta/2+\eta/8<r.
+\]
+Thus $\Zset\cap\Qset$ is uniformly porous in the Euclidean metric, with
+hole ratio
+\begin{equation}\label{eq:e-constant}
+ c_E=\frac{1}{32\sqrt{2n}}.
+\end{equation}
+
+For $h=(H_1,H_2)\in E$, the norm comparisons are
+\begin{equation}\label{eq:norms}
+ \frac{\|h\|_E}{2\sqrt n}
+ \le \rho(h)
+ \le \frac{\|h\|_E}{\sqrt2}.
+\end{equation}
+Given a $\rho$-ball of radius $r$, apply the Euclidean construction inside
+the $E$-ball of radius $\sqrt2r$, which is contained in that $\rho$-ball.
+The Euclidean hole contains the $\rho$-ball with the same center and radius
+\[
+ \frac{c_E\sqrt2r}{2\sqrt n}=\frac{r}{64n}.
+\]
+This proves the asserted porosity of $\Zset\cap\Qset$ in $(\Qset,\rho)$.
+The isometry \eqref{eq:phi} transfers it to $\Dset$.
+\end{proof}
+
+\section{Provenance, scope, and review}
+
+This is a \emph{literature-implied} answer.  The authors of \cite{GKP} do
+not cite \cite{BSW} or state an application to Douglas--Rachford maps.  The
+implication uses the agent-identified commuting-locus reformulation
+\eqref{eq:commuting}, plus the radial step needed because the parameter space
+is the closed contraction ball rather than all of $E$.
+
+The conclusion answers Remark 3.3(ii) in full for every finite dimension
+$n\ge2$.  It does not address Remark 3.3(i), concerning extensions from
+symmetric linear relations to general subdifferential operators.
+
+The bounded search checked the run's solution, attempt, proof-gap, and ledger
+indexes; the parsed arXiv corpus; and exact-title/exact-phrase and close-term
+arXiv web searches using arXiv id 1602.05626, ``Douglas--Rachford'',
+``proximal'', ``porous'', and ``commuting pairs''.  No later paper explicitly
+answering Remark 3.3(ii) was found.  The supporting theorem was located by a
+separate search for polynomial zero sets and porosity.
+
+Human review should prioritize the boundary-point surjectivity of
+\eqref{eq:phi} and the norm transfer \eqref{eq:norms}.  No computation is used
+in the proof.
+
+\begin{thebibliography}{9}
+\bibitem{BSW}
+H.~H. Bauschke, J.~Schaad, and X.~Wang,
+\emph{On Douglas--Rachford operators that fail to be proximal mappings},
+arXiv:1602.05626v1 (2016).
+
+\bibitem{GKP}
+A.~Glazyrin, R.~Karasev, and A.~Polyanskii,
+\emph{Covering by planks and avoiding zeros of polynomials},
+arXiv:2112.05382v5 (2022), Corollary 1.7.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,358 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\B}{\mathcal B}
+\newcommand{\N}{\mathcal N}
+\newcommand{\R}{\mathcal R}
+\newcommand{\UT}{\mathsf{UT}}
+
+\title{Invertible Completions of Upper-Triangular Operator Matrices\\
+at Every Finite Matrix Size}
+\author{Candidate full solution to the higher-dimensional question in arXiv:2202.04960}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\linewidth}{\textbf{Status.} Candidate full solution,
+likely valid pending expert review.  The criterion is necessary and sufficient
+for every finite matrix size and arbitrary Banach spaces, assuming only that
+the interior diagonal operators are inner regular.}}
+\end{center}
+
+\section{Source question}
+
+Let $X_1,\ldots,X_n$ be Banach spaces, let $D_i\in\B(X_i)$ be fixed,
+and let
+\[
+ T_n^d(A)=
+ \begin{pmatrix}
+ D_1&A_{12}&\cdots&A_{1n}\\
+ 0&D_2&\cdots&A_{2n}\\
+ \vdots&\ddots&\ddots&\vdots\\
+ 0&\cdots&0&D_n
+ \end{pmatrix},
+ \qquad A_{ij}\in\B(X_j,X_i),\quad i<j.
+\]
+Sarajlija and Djordjevi\'c give a $3\times3$ completion theorem on arbitrary
+Banach spaces.  In Section 3 of \cite{SD}, PDF page 10, they ask whether the
+$2\times2$ and $3\times3$ results admit a natural generalization to all
+$n>3$, anticipating multiple Fredholm-type assumptions and several
+left-invertible defect maps.  The complete passage is reproduced below.
+
+\begin{center}
+\includegraphics[width=0.96\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+The theorem below answers this question by isolating the exact recursive
+defect condition.  It also sharpens the source's Theorem 2.1: its condition
+1 is not only sufficient but necessary for an invertible $3\times3$
+completion.
+
+\section{Proof intuition}
+
+An inner regular operator $D_i$ splits into an isomorphism from a complement
+of $\N(D_i)$ onto $\R(D_i)$, together with a zero map from its kernel to its
+cokernel.  After all invertible pieces are collected, ordinary Schur
+elimination reduces the entire completion problem to a single operator
+between defect sums:
+\[
+ \N(D_2)\oplus\cdots\oplus\N(D_n)
+ \longrightarrow
+ X_1/\R(D_1)\oplus\cdots\oplus X_{n-1}/\R(D_{n-1}).
+\]
+The original zero pattern says exactly that this defect operator is upper
+triangular.
+
+The remaining question is purely about Banach spaces: when does an invertible
+upper-triangular operator exist between two finite direct sums?  Its first
+diagonal block must be left invertible and its last diagonal block must be
+right invertible.  Split off those two matched pieces.  Gaussian row and
+column operations leave the same problem with one fewer row and column.
+Iterating this operation gives a finite, exact recursive criterion.  At
+$n=3$ the last residual condition is precisely the quotient isomorphism
+appearing in the source paper.
+
+\section{The recursive defect relation}
+
+All direct sums below are finite topological direct sums; their particular
+standard norm is irrelevant up to isomorphism.  For two lists of Banach
+spaces $(E_1,\ldots,E_m)$ and $(F_1,\ldots,F_m)$, write
+\[
+ \UT(E_1,\ldots,E_m;F_1,\ldots,F_m)
+\]
+if there is an invertible upper-triangular block operator
+\[
+ U:\bigoplus_{j=1}^m E_j\longrightarrow\bigoplus_{i=1}^m F_i,
+ \qquad U_{ij}=0\quad(i>j).
+\]
+
+\begin{lemma}[recursive triangular-isomorphism criterion]\label{lem:rec}
+For $m=1$, $\UT(E_1;F_1)$ holds exactly when $E_1\cong F_1$.
+For $m\geq2$, $\UT(E_1,\ldots,E_m;F_1,\ldots,F_m)$ holds exactly when there
+exist left-invertible operators
+\[
+ L:E_1\to F_1,\qquad J:F_m\to E_m
+\]
+such that
+\begin{equation}\label{eq:recursion}
+ \UT\left(E_2,\ldots,E_{m-1},E_m/J(F_m);
+ F_1/L(E_1),F_2,\ldots,F_{m-1}\right)
+\end{equation}
+holds.  The ranges of $L$ and $J$ are automatically closed and complemented,
+so the displayed quotients are Banach spaces.
+\end{lemma}
+
+\begin{proof}
+Suppose first that $U=(U_{ij})$ is invertible and upper triangular.  Its first
+column is $(U_{11},0,\ldots,0)^t$.  Since $U$ is bounded below,
+$L:=U_{11}:E_1\to F_1$ is bounded below.  More precisely,
+\[
+ F_1\xrightarrow{\iota_1}\bigoplus_iF_i
+ \xrightarrow{U^{-1}}\bigoplus_jE_j
+ \xrightarrow{\pi_1}E_1
+\]
+is a bounded left inverse of $L$.  Thus $L$ is left invertible.  Surjectivity
+of the last row of $U$ shows that $R:=U_{mm}:E_m\to F_m$ is onto, and
+\[
+ F_m\xrightarrow{\iota_m}\bigoplus_iF_i
+ \xrightarrow{U^{-1}}\bigoplus_jE_j
+ \xrightarrow{\pi_m}E_m
+\]
+is a bounded right inverse $J$ of $R$.  In particular, $J:F_m\to E_m$ is
+left invertible and
+\[
+ F_1=L(E_1)\oplus F_1',\qquad
+ E_m=E_m'\oplus J(F_m)
+\]
+for closed complements $F_1'$ and $E_m'$.
+
+Use a triangular domain operation to subtract from the $E_1$ coordinate the
+component that maps the remaining columns into $L(E_1)$.  Use a triangular
+range operation to subtract from the earlier rows the components produced by
+$J(F_m)$, whose last-row image is all of $F_m$.  Both operations are
+invertible.  Relative to the displayed splittings they transform $U$ into
+\[
+ \begin{pmatrix}
+ L_0&0&0\\
+ 0&U'&0\\
+ 0&0&R_0
+ \end{pmatrix},
+\]
+where $L_0:E_1\to L(E_1)$ and $R_0:J(F_m)\to F_m$ are isomorphisms, and
+\[
+ U':E_2\oplus\cdots\oplus E_{m-1}\oplus E_m'
+ \longrightarrow F_1'\oplus F_2\oplus\cdots\oplus F_{m-1}
+\]
+is still upper triangular.  Since $U$ is invertible, $U'$ is invertible.
+Identifying the complements with the corresponding quotients proves
+\eqref{eq:recursion}.
+
+Conversely, choose complements as above and let $U'$ realize
+\eqref{eq:recursion}.  Define $U$ to be $L_0$ on $E_1$, $R_0=J^{-1}$ on
+$J(F_m)$, and $U'$ on the remaining summands, with every other block zero.
+This operator is upper triangular in the original lists and is the direct sum
+of three isomorphisms.  Hence it is invertible.
+\end{proof}
+
+\section{Defect reduction}
+
+Recall that $D\in\B(X)$ is inner regular precisely when its kernel and range
+are closed and complemented.  In that case choose
+\[
+ X=\N(D)\oplus M,\qquad X=\R(D)\oplus K.
+\]
+Then $D|_M:M\to\R(D)$ is an isomorphism and
+$K\cong X/\R(D)$.
+
+\begin{lemma}[Schur reduction to the defects]\label{lem:defect}
+Assume $D_1,\ldots,D_n$ are inner regular.  There is a choice of the
+off-diagonal blocks $A_{ij}$ for which $T_n^d(A)$ is invertible if and only if
+there is an invertible block operator
+\begin{equation}\label{eq:strict}
+ S:\bigoplus_{j=1}^n\N(D_j)\longrightarrow
+   \bigoplus_{i=1}^n X_i/\R(D_i),
+ \qquad S_{ij}=0\quad(i\geq j).
+\end{equation}
+Moreover every strict upper-triangular $S$ in \eqref{eq:strict} can be
+realized by a choice of the $A_{ij}$.
+\end{lemma}
+
+\begin{proof}
+Choose complements $M_i,K_i$ as above and identify $K_i$ with
+$X_i/\R(D_i)$.  Reorder the domain as
+$M\oplus N=(\bigoplus_iM_i)\oplus(\bigoplus_i\N(D_i))$ and the range as
+$R\oplus K=(\bigoplus_i\R(D_i))\oplus(\bigoplus_iK_i)$.  In these
+coordinates any completion has the form
+\[
+ \widetilde T=\begin{pmatrix}P&Q\\ V&W\end{pmatrix}:M\oplus N\to R\oplus K.
+\]
+The block $P:M\to R$ is upper triangular and its diagonal blocks are the
+isomorphisms $D_i|_{M_i}$.  Hence $P$ is invertible.  Schur elimination gives
+\[
+ \begin{pmatrix}I&0\\-VP^{-1}&I\end{pmatrix}
+ \widetilde T
+ \begin{pmatrix}I&-P^{-1}Q\\0&I\end{pmatrix}
+ =\begin{pmatrix}P&0\\0&W-VP^{-1}Q\end{pmatrix}.
+\]
+Thus $\widetilde T$ is invertible exactly when
+$S:=W-VP^{-1}Q:N\to K$ is invertible.
+
+The original block pattern permits a map from the $j$th input to the $i$th
+output only when $i\leq j$, while $D_j$ vanishes on $\N(D_j)$.  Every path
+contributing to $VP^{-1}Q$ has strictly increasing source-to-target index.
+Consequently $S_{ij}=0$ whenever $i\geq j$.
+
+Conversely, given such an $S$, define $A_{ij}$ to equal the composition
+\[
+ X_j\longrightarrow\N(D_j)\xrightarrow{S_{ij}}K_i\hookrightarrow X_i
+\]
+for $i<j$, using the bounded projection associated with the chosen domain
+splitting, and set all other components of $A_{ij}$ to zero.  Then
+$Q=V=0$, $P=\bigoplus_iD_i|_{M_i}$, and the Schur complement is exactly
+$S$.
+\end{proof}
+
+\section{Full all-dimensional characterization}
+
+\begin{theorem}[all-$n$ invertible completion criterion]\label{thm:main}
+Let $n\geq2$, let $X_1,\ldots,X_n$ be arbitrary Banach spaces, and let
+$D_i\in\B(X_i)$.  Assume only that the interior operators
+$D_2,\ldots,D_{n-1}$ are inner regular.  Put
+\[
+ E_r=\N(D_{r+1}),\qquad F_r=X_r/\R(D_r),qquad 1\leq r\leq n-1.
+\]
+Then the following are equivalent:
+\begin{enumerate}
+\item There are blocks $A_{ij}\in\B(X_j,X_i)$, $i<j$, for which
+$T_n^d(A)$ is invertible.
+\item $D_1$ is left invertible, $D_n$ is right invertible, and
+\[
+ \boxed{\ \UT(E_1,\ldots,E_{n-1};F_1,\ldots,F_{n-1})\ }
+\]
+holds, equivalently the finite recursion in Lemma~\ref{lem:rec} terminates in
+an isomorphism.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Suppose $T_n^d(A)$ is invertible.  Its restriction to the first coordinate
+shows that $D_1$ is bounded below and has complemented range: a bounded left
+inverse is obtained from the first coordinate of $T_n^d(A)^{-1}$.  Thus
+$D_1$ is left invertible.  Applying $T_n^d(A)^{-1}$ to vectors supported in
+the last output coordinate gives a bounded right inverse for $D_n$.  Hence
+$D_n$ is right invertible.  In particular both endpoint operators are inner
+regular, so Lemma~\ref{lem:defect} applies.
+
+In \eqref{eq:strict}, the first domain summand $\N(D_1)$ maps to zero and the
+last range summand $X_n/\R(D_n)$ receives only zero.  Invertibility therefore
+forces both spaces to vanish, as already follows from endpoint one-sided
+invertibility.  Deleting them turns \eqref{eq:strict} into an ordinary
+upper-triangular isomorphism
+\[
+ \bigoplus_{r=1}^{n-1}E_r\longrightarrow\bigoplus_{r=1}^{n-1}F_r.
+\]
+This is exactly the displayed $\UT$ condition.
+
+Conversely, endpoint one-sided invertibility and interior regularity make all
+$D_i$ inner regular.  A $\UT$ witness gives the strict defect isomorphism
+in \eqref{eq:strict} after adjoining the zero endpoint defect spaces.
+Lemma~\ref{lem:defect} realizes it by off-diagonal blocks and proves the
+resulting completion invertible.
+\end{proof}
+
+\begin{corollary}[$3\times3$ strengthening]\label{cor:three}
+Under the hypotheses of Theorem 2.1 of \cite{SD}, an invertible completion
+exists if and only if $D_1$ is left invertible, $D_3$ is right invertible,
+and there are left-invertible maps
+\[
+ J_1:\N(D_2)\to X_1/\R(D_1),\qquad
+ J_2:X_2/\R(D_2)\to\N(D_3)
+\]
+such that
+\[
+ \frac{X_1/\R(D_1)}{J_1\N(D_2)}
+ \cong
+ \frac{\N(D_3)}{J_2(X_2/\R(D_2))}.
+\]
+Thus condition 1 of that theorem is equivalent to its completion condition
+2, not merely sufficient for it.
+\end{corollary}
+
+\begin{proof}
+Apply Lemma~\ref{lem:rec} with $m=2$ to Theorem~\ref{thm:main}.
+\end{proof}
+
+For $n=2$, Theorem~\ref{thm:main} reduces to the classical criterion
+$X_1/\R(D_1)\cong\N(D_2)$ of Han, Lee, and Lee \cite{HLL}.  For finite
+dimensional defect spaces, Lemma~\ref{lem:rec} becomes the usual sequence of
+prefix dimension inequalities together with equality of total dimensions.
+
+\section{Verification, scope, and novelty}
+
+The accompanying script constructs a nontrivial upper-triangular defect
+isomorphism with range-block dimensions $(3,1,1)$ and domain-block dimensions
+$(1,1,3)$, embeds it as the Schur complement of an invertible reduced block
+matrix, and checks a dimension pattern with an obstructed first recursive
+embedding.  It also verifies the Schur determinant identity and strict zero
+pattern for random off-diagonal blocks.  These checks are not part of the
+proof.  (A genuinely nontrivial one-sided defect for a square diagonal block
+is inherently infinite-dimensional, so ordinary finite square matrices cannot
+model the whole completion theorem.)
+
+The result is invariant under all choices of kernel/range complements: the
+statement uses canonical quotient spaces, and different complements are
+isomorphic to them.  No separability, Hilbert structure, or Fredholm
+finite-dimensionality is used.  The matrix size must be finite; infinite
+nests would require convergence and uniform-boundedness hypotheses absent
+from the source question.
+
+A bounded novelty check on 17 August 2026 covered the run's four lightweight
+indexes, the local full sources for arXiv:2108.12153, 2110.07387, 2112.02350,
+and 2202.04960, and exact-title/core-keyword web searches through that date.
+Theorem 2.13 of \cite{S21}, cited by the source, gives a sufficient condition
+requiring adjacent defect spaces to be isomorphic and a weaker Hilbert-space
+necessity statement.  The other located papers concern spectral stability or
+Fredholm/Weyl completion, rather than the exact ordinary-invertibility
+criterion above.  No recursive necessary-and-sufficient Banach-space result,
+nor the $3\times3$ necessity upgrade in Corollary~\ref{cor:three}, was
+located.  Novelty confidence is moderate pending a specialist search,
+especially in the block-operator monograph literature.
+
+\section{Human review recommendation}
+
+First check that the Schur complement in Lemma~\ref{lem:defect} retains the
+strict index pattern; this is the bridge from operator completion to defect
+matching.  Then check the two Gaussian eliminations in Lemma~\ref{lem:rec},
+including preservation of upper triangularity.  Finally compare
+Corollary~\ref{cor:three} line by line with condition 1(c) of the source's
+Theorem 2.1.  Those checks settle both the all-$n$ result and the claimed
+$3\times3$ strengthening.
+
+\begin{thebibliography}{9}
+\bibitem{SD}
+N. Sarajlija and D. S. Djordjevi\'c,
+\emph{Completion problem of upper triangular $3\times3$ operator matrices
+on arbitrary Banach spaces}, arXiv:2202.04960v4 (2025), published in
+Bull. Iranian Math. Soc. 51 (2025), Paper 85.
+
+\bibitem{S21}
+N. Sarajlija,
+\emph{Perturbing the spectrum of operator $T_n^d(A)$},
+arXiv:2108.12153; RACSAM 117 (2023), Paper 10, especially Theorem 2.13.
+
+\bibitem{HLL}
+J. K. Han, H. Y. Lee, and W. Y. Lee,
+\emph{Invertible completions of $2\times2$ upper triangular operator
+matrices}, Proc. Amer. Math. Soc. 128 (2000), 119--123.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,256 @@
+\documentclass[10pt]{article}
+\usepackage[a4paper,margin=0.70in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.40em}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newcommand{\C}{\mathbb C}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\HS}{\mathrm{HS}}
+\title{A Fourier criterion and phase engineering for\\optimal quantum lifts of abelian Cayley chains}
+\author{Candidate substantial partial answer to arXiv:2505.12187}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\textbf{Status.} Candidate substantial partial result, likely valid.  The
+open matrix problem is solved for finite abelian Cayley generators; arbitrary
+symmetric $Q$-matrices remain open.
+
+\section*{Source question}
+
+Li and Lu \cite{LL} construct a quantum lift of a symmetric finite-state
+generator $Q$.  On source PDF page 31, after equations (4.21)--(4.22), they ask
+which families of $Q$-matrices admit constants
+\[
+ M\preceq C_1Q^2+C_2(-Q),\qquad
+ \sqrt{C_1}+\sqrt{C_2/\lambda_Q}=O(1),                 \tag{1}
+\]
+where $M$ is the Gram matrix of $y\mapsto[H,[H,\operatorname{diag}y]]$
+and $\lambda_Q$ is the gap of $-Q$.
+
+\begin{center}
+\includegraphics[width=0.82\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Proof intuition}
+
+The second term in (1) does not enlarge the asymptotic class: on mean-zero
+vectors, $\lambda_Q(-Q)\preceq Q^2$.  Thus the problem is a uniform
+``discrete Hessian versus Laplacian'' estimate.  For an abelian Cayley chain,
+translation invariance diagonalizes this Hessian Gram matrix.  Its Fourier
+symbol is unusually simple: an averaged fourth power of differences of the
+Hamiltonian symbol.  That identity gives exact constants.
+
+It also exposes a coherent-phase effect.  Positive square roots make all
+complete-graph amplitudes add at the trivial character, producing a constant
+$|G|/2$.  Cubic phases spread the Fourier mass; Weil's exponential-sum bound
+then makes the same complete-graph lift uniformly optimal.  The part still
+open is a comparably structural characterization without translation
+invariance.
+
+\section*{Exact abelian Fourier criterion}
+
+Let $G$ be a finite abelian group, $N=|G|$, and let
+\[
+ (Qf)(x)=\sum_{s\in G}q(s)\bigl(f(x+s)-f(x)\bigr),
+ \quad q(0)=0,\quad q(-s)=q(s)\geq0,
+\]
+be ergodic.  Choose $h(0)=0$ with
+\[
+ h(-s)=\overline{h(s)},\qquad 2|h(s)|^2=q(s),
+\]
+and let $H_{x,z}=h(z-x)$.  Thus $H=H^*$, and the source's overdamped
+calculation gives exactly $Q$; its canonical choice is $h(s)=\sqrt{q(s)/2}$.
+For a character $\chi_\eta$, put
+\[
+ a(\eta)=\sum_{s\in G}h(s)\overline{\chi_\eta(s)},\qquad
+ \lambda(\xi)=\sum_sq(s)\bigl(1-\chi_\xi(s)\bigr).
+\]
+Symmetry makes both quantities real, and $Q\chi_\xi=-\lambda(\xi)\chi_\xi$.
+Define $M_h$ by
+\[
+ \langle f,M_hf\rangle_{\ell^2(G)}
+ =\|[H,[H,\operatorname{diag}f]]\|_{\HS,N}^{,2},
+\]
+using normalized counting and normalized Hilbert--Schmidt norms.
+
+\begin{theorem}[Fourier diagonalization]\label{thm:fourier}
+Every character $\chi_\xi$ is an eigenvector of $M_h$, with eigenvalue
+\begin{equation}\label{eq:mxi}
+ m(\xi)=\frac1N\sum_{\eta\in\widehat G}
+             |a(\eta)-a(\eta-\xi)|^4.
+\end{equation}
+Consequently the least $C$ for which $M_h\preceq C Q^2$ on constants
+perpendicular is
+\begin{equation}\label{eq:criterion}
+ \mathcal C(Q,h)=\max_{\xi\ne0}
+ \frac{N^{-1}\sum_\eta|a(\eta)-a(\eta-\xi)|^4}
+      {\lambda(\xi)^2}.
+\end{equation}
+For a family of such generators, the source condition (1) holds uniformly if
+and only if $\sup\mathcal C(Q,h)<\infty$.
+\end{theorem}
+
+\begin{proof}
+Take $f=\chi_\xi$ and write the matrix entry with $z=x+d$ and the intermediate
+vertex $x+s$.  A direct expansion gives
+\[
+ [H,[H,\operatorname{diag}f]]_{x,x+d}=\chi_\xi(x)b_\xi(d),
+\]
+where
+\[
+ b_\xi(d)=(1+\chi_\xi(d))(h*h)(d)
+             -2\bigl((h\chi_\xi)*h\bigr)(d).
+\]
+With the displayed convention for $a$, the Fourier transform is the perfect
+square
+\[
+ \widehat b_\xi(\eta)
+   =a(\eta)^2+a(\eta-\xi)^2-2a(\eta)a(\eta-\xi)
+   =(a(\eta)-a(\eta-\xi))^2.
+\]
+Translation covariance makes the characters eigenvectors of the Gram
+operator.  Parseval now gives \eqref{eq:mxi}, and simultaneous diagonalization
+with $Q^2$ gives \eqref{eq:criterion}.
+
+It remains to compare with (1).  Put $L=-Q$.  On constants perpendicular,
+$L\succeq\lambda_Q I$, hence $\lambda_QL\preceq L^2$.  If (1) holds and its
+displayed square-root sum is at most $B$, then
+\[
+ M_h\preceq C_1L^2+C_2L\preceq2B^2L^2.
+\]
+Conversely $M_h\preceq C L^2$ gives (1) with $C_1=C,C_2=0$.
+\end{proof}
+
+\section*{Sharp examples}
+
+\begin{corollary}[hypercubes]\label{cor:cube}
+For the normalized walk on $G=(\Z/2\Z)^d$, with $q(e_j)=1/d$ and the
+canonical positive $h$, one has
+\[
+                         \mathcal C(Q,h)=3-\frac2d.
+\]
+Thus this family satisfies the source's optimal-lift criterion uniformly.
+\end{corollary}
+
+\begin{proof}
+If $\xi$ has Hamming weight $k$, then $\lambda(\xi)=2k/d$ and
+\[
+ a(\eta)-a(\eta-\xi)=\sqrt{\frac2d}
+          \sum_{j\in\operatorname{supp}\xi}(-1)^{\eta_j}.
+\]
+For a sum $S_k$ of $k$ independent Rademacher variables,
+$\E S_k^4=3k^2-2k$.  Hence
+\[
+ \frac{m(\xi)}{\lambda(\xi)^2}
+ =\frac{4(3k^2-2k)/d^2}{4k^2/d^2}=3-\frac2k.
+\]
+The maximum occurs at $k=d$.
+\end{proof}
+
+\begin{proposition}[complete graph: obstruction and repair]\label{prop:complete}
+Let $G$ have order $N$ and $q(s)=1/(N-1)$ for every $s\ne0$.
+
+\emph{(i)} For the canonical positive choice
+$h(s)=1/\sqrt{2(N-1)}$, one has the sharp identity
+\[
+                          M_h=\frac N2Q^2.
+\]
+In particular every pair $C_1,C_2$ in (1) satisfies
+$\sqrt{C_1}+\sqrt{C_2/\lambda_Q}\geq\sqrt{N/2}$.
+
+\emph{(ii)} If $G=\Z/p\Z$ with prime $p\geq5$, set, for $s\ne0$,
+\[
+ h(s)=\frac{\exp(2\pi i s^3/p)}{\sqrt{2(p-1)}}.
+\]
+Then $H=H^*$, it has the same overdamped complete-graph generator $Q$, and
+\[
+                              M_h\preceq256Q^2.
+\]
+Thus Hamiltonian phases restore a dimension-free optimal-lift estimate.
+\end{proposition}
+
+\begin{proof}
+For (i), the Hamiltonian symbol equals $\sqrt{(N-1)/2}$ at the trivial
+character and $-1/\sqrt{2(N-1)}$ elsewhere.  For nontrivial $\xi$, only
+$\eta=0,\xi$ contribute to \eqref{eq:mxi}.  Since
+$\lambda(\xi)=N/(N-1)$, formula \eqref{eq:criterion} gives exactly $N/2$.
+All nonconstant characters have the same eigenvalue, proving the operator
+identity and the lower bound in (1).
+
+For (ii), $h(-s)=\overline{h(s)}$ and $2|h(s)|^2=1/(p-1)$.  Its symbol is a
+cubic additive-character sum with the $s=0$ term removed.  Weil's bound for a
+degree-three polynomial over $\mathbb F_p$ \cite{Weil} yields
+\[
+ |a(\eta)|\leq\frac{2\sqrt p+1}{\sqrt{2(p-1)}}<2.
+\]
+Thus \eqref{eq:mxi} gives $m(\xi)<16\cdot2^4=256$.  Here
+$\lambda(\xi)=p/(p-1)>1$ for $\xi\ne0$, so
+$m(\xi)/\lambda(\xi)^2<256$, and Theorem~\ref{thm:fourier} finishes the proof.
+\end{proof}
+
+\newpage
+\section*{Verification, limitations, and novelty}
+
+The included script checks the exact complete-graph and hypercube constants
+and evaluates the cubic construction for primes through $101$; all assertions
+pass.  These computations are regression tests, not proof.  The argument above
+uses only Fourier inversion, a Rademacher fourth moment, and the classical
+cubic Weil bound.
+
+The result characterizes all abelian Cayley instances but not arbitrary
+symmetric matrices.  It also shows that the answer depends on Hamiltonian
+phases: part (i) concerns exactly the positive square root in source equation
+(4.17), while part (ii) uses the more general self-adjoint Hamiltonian allowed
+by the source's preceding overdamped construction.
+
+\subsection*{Consequences for the source problem}
+
+First, within the abelian Cayley class the two constants in (4.21) carry no
+more asymptotic information than the single fourth-difference ratio
+\eqref{eq:criterion}; the $C_2$ term can always be absorbed into $C_1Q^2$ at a
+universal loss once (4.22) is imposed.  Thus \eqref{eq:criterion} is an exact
+and directly computable answer for this class, not merely a sufficient test.
+
+Second, small spectral gap and large degree are neither individual
+obstructions.  Hypercubes have gap $2/d$ and degree $d$ but a constant below
+$3$, whereas the normalized complete graph has gap tending to one but the
+canonical constant is $N/2$.  The relevant datum is coherent concentration of
+the square-root Hamiltonian symbol.
+
+Third, a characterization purely in terms of $Q$ necessarily presupposes a
+phase convention such as source equation (4.17).  The same complete-graph
+$Q$ fails for the positive convention and succeeds for cubic phases.  This
+suggests separating two future questions: classify the canonical lift, and
+optimize over all self-adjoint Hamiltonians with $2|h_{xz}|^2=Q_{xz}$.
+
+On 11 August 2026, the run registry, solution, attempt, and proof-gap indexes
+were searched for the arXiv id and core quantum-lift/Fourier terms; no answer
+was found.  No broad external literature search was performed, so novelty
+confidence is moderate-to-low.
+
+\textbf{Human-review recommendation.} Check the Fourier shift convention in
+\eqref{eq:mxi}, the deletion of the zero term in the Weil estimate, and the
+application of the source's abstract lift theorem to the phase-modified
+self-adjoint Hamiltonian.  The general non-Cayley problem remains open.
+
+\begin{thebibliography}{9}
+\bibitem{LL}
+B. Li and J. Lu,
+\emph{Speeding up quantum Markov processes through lifting},
+arXiv:2505.12187 (2025), especially Section 4.2 and equations (4.17)--(4.22).
+
+\bibitem{Weil}
+A. Weil,
+\emph{On some exponential sums},
+Proc. Natl. Acad. Sci. USA 34 (1948), 204--207.
+\end{thebibliography}
+
+\end{document}

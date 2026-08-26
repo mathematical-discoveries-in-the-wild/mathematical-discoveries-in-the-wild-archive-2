@@ -1,0 +1,304 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,microtype,graphicx}
+\usepackage[colorlinks=true,urlcolor=blue,citecolor=blue]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Ent}{Ent}
+\DeclareMathOperator{\diam}{diam}
+\title{Transport--entropy inequalities for Connes--Rieffel metrics}
+\author{Solution packet for \texttt{fa\_banach\_001}}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+Scoped full resolution of the transport question in the finite tracial
+framework of Junge--Zeng: an exact necessary-and-sufficient exponential-moment
+criterion for an arbitrary seminorm $L$, an automatic positive answer for
+finite-diameter (hence compact) quantum metric spaces, and a sharp kernel
+obstruction for general spectral triples.  This packet does not claim to
+resolve the source's separate question about deriving $L_p$ Poincar\'e
+inequalities from logarithmic Sobolev inequalities in full generality.
+
+\section*{Source question}
+
+Marius Junge and Qiang Zeng, \emph{Noncommutative martingale deviation and
+Poincar\'e type inequalities with applications}, arXiv:1211.3209, published in
+\emph{Probability Theory and Related Fields} 161 (2015), 449--507,
+DOI \href{https://doi.org/10.1007/s00440-014-0552-1}{10.1007/s00440-014-0552-1}.
+On page 4 of the cached source version, after defining
+\[
+ \rho_L(\phi,\psi)=\sup\{|\phi(a)-\psi(a)|:L(a)\leq1\}
+\]
+and noting that a spectral triple has $L(a)=\|[D,a]\|$, the authors write:
+\begin{quote}
+``It is an interesting question but beyond the scope of this paper to
+determine whether the transportation inequality is possible for $\rho_L$.''
+\end{quote}
+
+\begin{center}
+\includegraphics[width=0.96\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Definitions and scope}
+
+Let $(\mathcal M,\tau)$ be a finite von Neumann algebra with normal faithful
+tracial state.  Let $\mathcal A_{\rm sa}\subseteq\mathcal M_{\rm sa}$ be a real
+linear unital subspace, and let $L:\mathcal A_{\rm sa}\to[0,\infty)$ be a
+seminorm with $L(1)=0$.  For a density $f\in L_1(\mathcal M,\tau)_+$ with
+$\tau(f)=1$, write
+\[
+ \phi_f(a)=\tau(fa),\qquad
+ \Ent_\tau(f)=\tau(f\log f),
+\]
+with the usual value $+\infty$ allowed.  Define
+\[
+ \rho_L(\phi_f,\tau)
+ =\sup\bigl\{|\tau((f-1)a)|:
+       a\in\mathcal A_{\rm sa},\ L(a)\leq1\bigr\}.
+\]
+The transportation inequality $T_1(C)$ means
+\begin{equation}\label{eq:T1}
+ \rho_L(\phi_f,\tau)\leq\sqrt{2C\,\Ent_\tau(f)}
+ \quad\hbox{for every density }f.
+\end{equation}
+This is exactly the normal-state, finite-tracial setting used by the source.
+
+\section*{Proof intuition}
+
+The carré-du-champ does no work in the source's final Bobkov--G\"otze
+duality argument: only the collection of admissible observables matters.
+Replacing that collection by the $L$-unit ball therefore gives an exact
+criterion for $\rho_L$.  Entropy is convex-dual to the logarithmic moment
+generating function, so $T_1(C)$ is equivalent to a common subgaussian bound
+for all centered observables with $L(a)\leq1$.
+
+Finite metric diameter then supplies this bound without any semigroup or
+curvature hypothesis.  Every admissible self-adjoint observable has spectral
+range at most the diameter.  Tilting its spectral distribution and bounding
+the tilted variance by one quarter of the squared range gives Hoeffding's
+constant $\Delta_L^2/8$ in the logarithmic moment generating function, hence
+$C=\Delta_L^2/4$.  In the opposite direction, a non-scalar element killed by
+$L$ can be scaled at no cost and makes $\rho_L$ infinite against an explicit
+bounded density.
+
+\section*{Exact characterization and optimal constant}
+
+Define
+\begin{equation}\label{eq:CL}
+ C_L=\sup_{\substack{a\in\mathcal A_{\rm sa},\ L(a)\leq1\\ t\in\mathbb R\setminus\{0\}}}
+ \frac{2}{t^2}\log\tau\!\left(
+  e^{t(a-\tau(a)1)}\right)\in[0,\infty].
+\end{equation}
+
+\begin{theorem}[Seminorm Bobkov--G\"otze duality]\label{thm:duality}
+For $C\in[0,\infty)$, inequality \eqref{eq:T1} holds if and only if
+\begin{equation}\label{eq:mgf}
+ \log\tau\!\left(e^{t(a-\tau(a)1)}\right)\leq\frac{Ct^2}{2}
+\end{equation}
+for every $a\in\mathcal A_{\rm sa}$ with $L(a)\leq1$ and every
+$t\in\mathbb R$.  Consequently $C_L$ is the optimal $T_1$ constant: a finite
+constant exists exactly when $C_L<\infty$, and then \eqref{eq:T1} holds with
+$C=C_L$.
+\end{theorem}
+
+\begin{proof}
+Put $x=a-\tau(a)1$.  Since $L(1)=0$, the seminorm property gives
+$L(x)=L(a)$.  The Gibbs variational formula in a finite tracial algebra is
+\begin{equation}\label{eq:gibbs}
+ \log\tau(e^h)
+ =\sup_{\substack{f\geq0\\\tau(f)=1}}
+   \{\tau(fh)-\Ent_\tau(f)\}
+\end{equation}
+for bounded self-adjoint $h$.  Indeed, the inequality ``$\geq$'' follows by
+taking $f=e^h/\tau(e^h)$, while the reverse inequality is positivity of the
+relative entropy of $f$ with respect to that Gibbs density.  Truncation gives
+the same formulas for all finite-entropy $L_1$ densities needed below.
+
+Assume \eqref{eq:mgf}.  Formula \eqref{eq:gibbs}, with $h=tx$, gives for
+$t>0$
+\[
+ t\tau(fx)\leq \Ent_\tau(f)+\frac{Ct^2}{2}.
+\]
+Optimizing in $t$ yields
+$\tau(fx)\leq\sqrt{2C\Ent_\tau(f)}$.  Applying this to $-x$ and taking the
+supremum over the $L$-unit ball proves \eqref{eq:T1}.
+
+Conversely, suppose \eqref{eq:T1}.  For $L(a)\leq1$ it implies
+\[
+ t\tau(fx)-\Ent_\tau(f)
+ \leq t\sqrt{2C\Ent_\tau(f)}-\Ent_\tau(f)
+ \leq \frac{Ct^2}{2}
+\]
+for $t\geq0$, because the supremum of
+$t\sqrt{2Cs}-s$ over $s\geq0$ is $Ct^2/2$.  Taking the supremum over $f$ in
+\eqref{eq:gibbs} proves \eqref{eq:mgf} for $t\geq0$; replacing $a$ by $-a$
+handles $t<0$.  The statement about $C_L$ now follows directly from
+\eqref{eq:CL}.
+\end{proof}
+
+\section*{Finite diameter gives a universal positive answer}
+
+Let $S(\mathcal M)$ denote the state space and set
+\[
+ \Delta_L=\diam(S(\mathcal M),\rho_L)
+ =\sup_{\phi,\psi\in S(\mathcal M)}\rho_L(\phi,\psi).
+\]
+
+\begin{theorem}[Diameter theorem]\label{thm:diameter}
+If $\Delta_L<\infty$, then
+\[
+ C_L\leq\frac{\Delta_L^2}{4}
+ \quad\hbox{and hence}\quad
+ \rho_L(\phi_f,\tau)
+ \leq \Delta_L\sqrt{\frac{\Ent_\tau(f)}{2}}
+\]
+for every density $f$.
+\end{theorem}
+
+\begin{proof}
+Fix $a=a^*$ with $L(a)\leq1$.  If $m=\min\sigma(a)$ and
+$M=\max\sigma(a)$, evaluation on states attaining the spectral extrema gives
+\[
+ M-m=\sup_{\phi,\psi\in S(\mathcal M)}|\phi(a)-\psi(a)|\leq\Delta_L.
+\]
+Let $x=a-\tau(a)1$ and $H(t)=\log\tau(e^{tx})$.  Functional calculus reduces
+this to the logarithmic moment generating function of the scalar spectral
+measure of $x$ under $\tau$.  Thus $H(0)=H'(0)=0$, and
+\[
+ H''(t)=\operatorname{Var}_{\mu_t}(x)leq\frac{(M-m)^2}{4}
+ \leq\frac{\Delta_L^2}{4},
+\]
+where $\mu_t$ is the exponentially tilted spectral measure.  The variance
+bound follows from
+$\operatorname{Var}(X)\leq(M-\mathbb EX)(\mathbb EX-m)\leq(M-m)^2/4$
+for every random variable supported in $[m,M]$.  Integrating twice, for
+positive or negative $t$, gives
+\[
+ \log\tau(e^{tx})=H(t)\leq\frac{\Delta_L^2t^2}{8}.
+\]
+Theorem \ref{thm:duality} applies with $C=\Delta_L^2/4$.
+\end{proof}
+
+\begin{corollary}[Compact quantum metric spaces]\label{cor:compact}
+Suppose $L$ is a Rieffel Lip-norm on the self-adjoint part of a unital
+$C^*$-algebra represented in $(\mathcal M,\tau)$, so that $\rho_L$ metrizes
+the weak-star topology on the state space.  Then $\Delta_L<\infty$ and the
+transportation inequality in Theorem \ref{thm:diameter} holds.  In particular,
+the answer is positive for every finite-tracial spectral triple for which
+$L(a)=\|[D,a]\|$ is a Lip-norm.
+\end{corollary}
+
+\begin{proof}
+The state space is weak-star compact.  If $\rho_L$ metrizes that topology, it
+is a compact metric space and therefore has finite diameter.  Apply Theorem
+\ref{thm:diameter}.
+\end{proof}
+
+\section*{The kernel obstruction}
+
+\begin{theorem}[Failure for degenerate spectral triples]\label{thm:kernel}
+If there is a non-scalar $a=a^*\in\mathcal A_{\rm sa}$ with $L(a)=0$, then
+there exists a bounded, strictly positive density $f$ with finite entropy such
+that
+\[
+ \rho_L(\phi_f,\tau)=\infty.
+\]
+Consequently no finite-constant transportation inequality can hold.
+\end{theorem}
+
+\begin{proof}
+Set $b=a-\tau(a)1$.  Then $b\neq0$, $\tau(b)=0$, and $L(b)=0$.  Choose a
+nonzero real $\varepsilon$ with
+$|\varepsilon|<\|b\|_\infty^{-1}$ and put $f=1+\varepsilon b$.  Then $f$ is a
+bounded strictly positive density, so $\Ent_\tau(f)<\infty$.  For every
+$s\in\mathbb R$, the observable $sb$ is admissible because $L(sb)=0$, while
+\[
+ |\tau((f-1)sb)|=|s\varepsilon|\,\tau(b^2).
+\]
+This tends to infinity with $|s|$, proving the claim.
+\end{proof}
+
+\section*{Verification and relation to the source}
+
+The proof has four independent checks.
+\begin{enumerate}
+\item The two directions of Theorem \ref{thm:duality} use the same Gibbs
+variational identity, so the constants can be checked by the scalar maximization
+$\sup_{s\geq0}(t\sqrt{2Cs}-s)=Ct^2/2$.
+\item The diameter constant is checked by the extremal two-point distribution:
+the universal centered log-moment bound for range length $\Delta$ is
+$\Delta^2t^2/8$, exactly corresponding to $C=\Delta^2/4$.
+\item The kernel witness is explicit, positive, normalized, and has finite
+entropy; scaling the zero-seminorm observable forces infinite distance.
+\item For a Rieffel Lip-norm, compactness of the state space immediately gives
+finite diameter, so no unstated semigroup, curvature, or diffusion hypothesis
+enters Corollary \ref{cor:compact}.
+\end{enumerate}
+
+Junge--Zeng prove a Bobkov--G\"otze equivalence for their specific
+carr\'e-du-champ unit ball (their Theorem 3.17) and a finite-diameter criterion
+for that same semigroup metric (their Corollary 3.19).  The new step here is to
+observe and prove that the variational mechanism is completely independent of
+the carr\'e du champ, apply it to the separately posed Connes--Rieffel metric,
+identify the optimal constant \eqref{eq:CL}, obtain the diameter constant
+$\Delta_L^2/4$, and pair it with the exact kernel obstruction.
+
+\section*{Novelty search and limitations}
+
+The run's solution, attempt, registry, and literature indexes were searched for
+arXiv:1211.3209 and the phrases ``Rieffel metric'', ``Connes metric'',
+``transport entropy'', and ``spectral triple''; no duplicate result was found.
+A bounded arXiv search used the combinations ``Rieffel metric transport
+entropy inequality spectral triple'', ``transportation inequality compact
+quantum metric'', and ``rho\_L entropy transportation inequality''.  It found
+work establishing that various Connes seminorms are compact quantum metrics,
+including Rieffel's group $C^*$-algebra examples and later spectral-metric
+examples, but no exact later paper resolving the source's entropy inequality.
+
+The result is mathematically elementary once the correct dual formulation is
+isolated, so originality confidence is lower than validity confidence; a
+reviewer should run a broader citation search before public novelty claims.
+The theorem concerns normal states with densities relative to a finite trace,
+exactly the source's probabilistic framework.  It does not define entropy for
+arbitrary singular states, does not assert finite diameter for every spectral
+triple, and does not resolve the distinct LSI-to-$L_p$ Poincar\'e question.
+
+\section*{Human-review recommendation}
+
+\textbf{Likely valid; promote after checking scope and novelty.}  The formal
+proof is short and constant-exact.  The most important review points are
+(i) retaining the finite-tracial normal-state scope in any public statement,
+(ii) confirming that the intended meaning of ``possible'' in the source
+accepts an exact criterion plus the compact-quantum-metric corollary, and
+(iii) checking whether the seminorm-agnostic abstraction of the source's
+Theorem 3.17 has appeared elsewhere.
+
+\begin{thebibliography}{9}
+\bibitem{JZ}
+M.~Junge and Q.~Zeng,
+\emph{Noncommutative martingale deviation and Poincar\'e type inequalities
+with applications}, Probab. Theory Related Fields 161 (2015), 449--507,
+arXiv:1211.3209.
+
+\bibitem{Rie}
+M.~A. Rieffel,
+\emph{Compact quantum metric spaces}, in Operator algebras, quantization, and
+noncommutative geometry, Contemp. Math. 365 (2004), 315--330.
+
+\bibitem{RieGroup}
+M.~A. Rieffel,
+\emph{Group $C^*$-algebras as compact quantum metric spaces},
+Doc. Math. 7 (2002), 605--651, arXiv:math/0205195.
+
+\bibitem{AC}
+C.~Antonescu and E.~Christensen,
+\emph{Group $C^*$-algebras, metrics and an operator theoretic inequality},
+J. Funct. Anal. 214 (2004), 247--259, arXiv:math/0211312.
+\end{thebibliography}
+
+\end{document}

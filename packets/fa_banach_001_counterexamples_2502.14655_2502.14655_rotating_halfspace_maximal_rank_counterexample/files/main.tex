@@ -1,0 +1,168 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathrsfs}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Sph}{\mathbb S}
+
+\title{Maximal Rank Is Not Necessary for BBM Coercivity:\\
+A Rotating-Half-Space Counterexample}
+\author{Run fa\_banach\_001, agent\_lane\_14}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status and source question}
+
+\textbf{Status:} candidate full counterexample, likely valid pending expert
+review.
+
+Gennaioli--Stefani \cite{GS} consider nonnegative locally integrable kernels
+$\rho_t$ and the BBM functionals
+\[
+ \mathscr F^{\rho}_{t,p}(u)
+ =\int_{\R^N}\frac{\|u(\,\cdot+z)-u\|_{L^p}^p}{|z|^p}
+   \rho_t(z)\,dz,
+ \qquad 1\le p<\infty.
+\]
+Their Theorem~1.2 says that their kernel hypotheses plus maximal rank imply
+coercivity: if $u_k\to u$ in $L^p$ and
+$\liminf_k\mathscr F_{t_k,p}(u_k)<\infty$, then
+$u\in W^{1,p}$ for $p>1$, and $u\in BV$ for $p=1$.  Immediately afterward,
+on source PDF page~3, they ask whether maximal rank is necessary for this
+conclusion.
+
+\begin{center}
+\includegraphics[width=0.98\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Proof intuition}
+
+The functional cannot detect how mass is split between $z$ and $-z$: its
+translation-difference factor is even.  Begin with the normalized radial disk
+kernel, whose energies are coercive.  At every scale, move all mass from one
+half-disk to the opposite half-disk and double what remains.  This changes the
+raw directional mass, but not a single value of the functional.  If the chosen
+half-disk rotates through a dense set of orientations as the scale shrinks,
+every fixed narrow cone is entirely missed infinitely often.  Thus coercivity
+survives exactly while maximal rank fails as strongly as possible.
+
+\section*{Counterexample theorem}
+
+Let $N=2$, let $\omega_2=|B_1|$, and for $0<t<1$ put
+\[
+ \kappa_t(z)=\frac{\mathbf 1_{B_t}(z)}{\omega_2t^2},
+ \qquad
+ v_t=\bigl(\cos(\log(1/t)),\sin(\log(1/t))\bigr),
+\]
+\[
+ \rho_t(z)=2\kappa_t(z)\mathbf 1_{\{z\cdot v_t>0\}},
+ \qquad t_k=e^{-k}.
+\]
+
+\begin{theorem}
+For every $p\in[1,\infty)$, the family $(\rho_{t_k})$ satisfies condition
+\emph{(A)} of Theorem~1.1 in \cite{GS}, and the functionals
+$(\mathscr F^{\rho}_{t_k,p})$ are coercive on
+\[
+ \mathcal S^p(\R^2)=
+ \begin{cases}
+ W^{1,p}(\R^2),&p>1,\\
+ BV(\R^2),&p=1.
+ \end{cases}
+\]
+Nevertheless $(\rho_{t_k})$ does not have maximal rank.  Consequently,
+maximal rank is not necessary for the conclusion of source Theorem~1.2.
+\end{theorem}
+
+\begin{proof}
+The half-disk has half the area of $B_t$, so $\rho_t\ge0$,
+$\rho_t\in L^1(\R^2)$, and $\int\rho_t=1$.  Its support lies in $B_t$;
+hence $\rho_{t_k}\,dz\rightharpoonup^*\delta_0$.  Moreover, for every $R>0$,
+\[
+ R^p\int_{\R^2}\frac{\rho_{t_k}(z)}{R^p+|z|^p}\,dz
+ \le \int_{\R^2}\rho_{t_k}(z)\,dz=1.
+\]
+This is condition~(A), with $\alpha=1$.
+
+For $u\in L^p(\R^2)$ define
+\[
+ A_u(z)=\frac{\|u(\,\cdot+z)-u\|_{L^p}^p}{|z|^p},\qquad z\ne0.
+\]
+A change of variables shows $A_u(-z)=A_u(z)$.  Since $\kappa_t$ is even and
+the hyperplane $z\cdot v_t=0$ is null,
+\begin{align*}
+ \mathscr F^{\rho}_{t,p}(u)
+ &=2\int_{z\cdot v_t>0}A_u(z)\kappa_t(z)\,dz\\
+ &=\int_{z\cdot v_t>0}A_u(z)\kappa_t(z)\,dz
+   +\int_{z\cdot v_t<0}A_u(z)\kappa_t(z)\,dz\\
+ &=\mathscr F^{\kappa}_{t,p}(u).
+\end{align*}
+The equality holds for every $t$, every $p$, and every $u$, including when
+the value is infinite.
+
+The radial family $(\kappa_t)$ has maximal rank and satisfies condition~(A).
+Therefore Theorem~1.2 of \cite{GS} gives: whenever $u_k\to u$ in $L^p$ and
+$\liminf_k\mathscr F^{\kappa}_{t_k,p}(u_k)<\infty$, one has
+$u\in\mathcal S^p(\R^2)$.  The exact functional identity transfers this
+coercivity statement verbatim to $(\rho_{t_k})$.
+
+It remains to disprove maximal rank.  Fix any $w\in\Sph^1$ and
+$\tau\in(0,1)$.  The cone
+\[
+ \mathcal C_\tau(w)
+ =\{z:z\cdot w\ge(1-\tau)|z|\}
+\]
+has angular half-width $a_\tau=\arccos(1-\tau)<\pi/2$.  The sequence
+$v_{t_k}=(\cos k,\sin k)$ has dense tails on $\Sph^1$.  Hence there are
+infinitely many $k$ for which the angle between $v_{t_k}$ and $-w$ is less
+than $\pi/2-a_\tau$.  For each such $k$,
+\[
+ z\cdot v_{t_k}<0
+ \quad\text{for every }z\in\mathcal C_\tau(w)\setminus\{0\},
+\]
+and consequently, for every $\delta>0$,
+\[
+ \int_{B_\delta\cap\mathcal C_\tau(w)}\rho_{t_k}(z)\,dz=0.
+\]
+Thus the liminf cone mass is zero for every fixed $w$ and every admissible
+$\tau$.  No basis can satisfy Definition~2.8 of \cite{GS}; maximal rank
+fails.
+\end{proof}
+
+\section*{Verification, limitations, and novelty}
+
+The proof uses no numerical approximation.  The normalization, condition~(A),
+exact even-part identity, coercivity transfer, and cone exclusion were checked
+separately; details are recorded in \texttt{verification.md}.  Notice that no
+symmetry of $\rho_t$ is among the source hypotheses.  The construction answers
+the literal question, but it does not decide whether maximal rank (or a
+symmetrized variant) is necessary when every kernel is required to be even.
+
+The run indexes and exact-phrase/arXiv searches through 11 August 2026 found
+the current source, whose November 2025 revision still asks the question, but
+no later resolution or matching rotating-half-space construction.  Novelty
+confidence is moderate to high, subject to specialist citation review.
+
+\section*{Human-review recommendation}
+
+Verify that Definition~2.8 is indeed applied to the raw kernel rather than its
+even part.  If so, the counterexample is complete.  A useful follow-up is to
+reformulate maximal rank invariantly in terms of
+$(\rho_t(z)+\rho_t(-z))/2$ and revisit necessity under that added symmetry.
+
+\begin{thebibliography}{9}
+\bibitem{GS}
+L. Gennaioli and G. Stefani,
+\emph{Sharp conditions for the BBM formula and asymptotics of heat
+content-type energies}, arXiv:2502.14655 (2025; revised 2025).
+\end{thebibliography}
+
+\end{document}

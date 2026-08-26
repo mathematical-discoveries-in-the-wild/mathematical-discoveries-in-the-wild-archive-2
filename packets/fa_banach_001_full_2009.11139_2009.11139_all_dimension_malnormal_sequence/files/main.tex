@@ -1,0 +1,218 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.9in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newcommand{\mal}{\operatorname{mal}}
+\newcommand{\M}{\mathbb M}
+
+\title{Malnormal contractions in every matrix dimension}
+\author{Candidate full-proof packet}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+Candidate full proof; likely valid; human review recommended.
+
+\section{Source problem}
+
+For $A\in\M_n$, Mulcahy and Sinclair define
+\[
+ \mal(A)=\inf\left\{\|[A,B]\|_2:
+ B=B^*,\ \|B-\tau(B)I\|_2=1\right\},
+\]
+where $\tau$ is normalized trace and $\|\cdot\|_2$ is the unnormalized
+Hilbert--Schmidt norm.  A sequence is malnormal when its operator norms are
+uniformly bounded and its malnormality constants are uniformly positive.
+
+The source constructs a universal $\kappa_0>0$ and contractions
+$X_m\in\M_{3m}$ for every sufficiently large $m$, with
+$\mal(X_m)\geq\kappa_0$~\cite{MS}.  It then asks for a sequence in every
+dimension.  The exact statement (PDF page~12) is reproduced below.
+
+\begin{center}
+\includegraphics[width=0.94\textwidth]{figures/problem_crop.png}
+\end{center}
+
+We solve the problem by showing that malnormality can be padded upward one
+dimension at a time with quantitative control.
+
+\section{The padding lemma}
+
+The key point is to add a new scalar block outside the spectrum and couple it
+to the old space by one nonzero column.  Different blocks of a small
+commutator then successively control the off-diagonal vector, the old
+self-adjoint block modulo scalars, and the difference between the two scalar
+parts.
+
+\begin{lemma}[one-dimensional padding]\label{lem:padding}
+Let $A\in\M_m$ satisfy $\|A\|\leq M$ and $\mal(A)\geq\kappa>0$.  Choose any
+unit vector $v\in\mathbb C^m$, put $L=M+1$, and define
+\[
+ T=\begin{pmatrix}A&v\\0&L\end{pmatrix}\in\M_{m+1}.
+\]
+Then $\|T\|\leq M+2$ and
+\[
+ \mal(T)\geq D(\kappa,M)^{-1},
+ \qquad
+ D(\kappa,M)^2=\left(\frac2\kappa\right)^2+2+
+ \left(2M+2+\frac2\kappa\right)^2.
+\]
+\end{lemma}
+
+\begin{proof}
+The norm estimate follows by splitting $T$ into its block diagonal and its
+upper-right rank-one block.
+
+Let
+\[
+ B=\begin{pmatrix}C&x\\x^*&b\end{pmatrix}=B^*,
+ \qquad C\in\M_m,\quad x\in\mathbb C^m,\quad b\in\mathbb R,
+\]
+and set $\varepsilon=\|[T,B]\|_2$.  Direct multiplication gives
+\[
+ [T,B]=
+ \begin{pmatrix}
+ [A,C]+vx^* &(A-LI)x+vb-Cv\\
+ x^*(LI-A)&-x^*v
+ \end{pmatrix}.
+\]
+Each block has Hilbert--Schmidt norm at most $\varepsilon$.  Since
+$L-\|A\|=1$, the lower-left block gives
+\[
+ \|x\|_2\leq\|x^*(LI-A)\|_2\leq\varepsilon.
+\]
+The upper-left block now yields
+\[
+ \|[A,C]\|_2\leq\varepsilon+\|vx^*\|_2\leq2\varepsilon.
+\]
+Writing $c=\tau(C)$ and using $\mal(A)\geq\kappa$, we obtain
+\[
+                    \|C-cI\|_2\leq\frac{2}{\kappa}\varepsilon.
+\]
+Finally, the upper-right block can be rewritten as
+\[
+ (A-LI)x+v(b-c)-(C-cI)v.
+\]
+Because $\|v\|=1$, it follows that
+\begin{align*}
+ |b-c|
+ &\leq\varepsilon+(\|A\|+L)\|x\|_2+\|(C-cI)v\|_2\\
+ &\leq\left(2M+2+\frac2\kappa\right)\varepsilon.
+\end{align*}
+Consequently,
+\begin{align*}
+ \|B-cI_{m+1}\|_2^2
+ &=\|C-cI_m\|_2^2+2\|x\|_2^2+|b-c|^2\\
+ &\leq D(\kappa,M)^2\varepsilon^2.
+\end{align*}
+The normalized trace scalar is the Hilbert--Schmidt best scalar
+approximation, so
+\[
+ \|B-\tau(B)I_{m+1}\|_2\leq\|B-cI_{m+1}\|_2.
+\]
+This proves the malnormality estimate.
+\end{proof}
+
+\begin{corollary}[padding contractions]\label{cor:padding}
+If $A$ is a contraction with $\mal(A)\geq\kappa$, then for any unit vector
+$v$ the matrix
+\[
+             P_v(A)=\frac13\begin{pmatrix}A&v\\0&2\end{pmatrix}
+\]
+is a contraction in the next dimension and satisfies
+\[
+ \mal(P_v(A))\geq F(\kappa),\qquad
+ F(\kappa)=\frac{1}{3D(\kappa,1)}>0.
+\]
+\end{corollary}
+
+\begin{proof}
+Apply Lemma~\ref{lem:padding} with $M=1$ and divide the resulting matrix by
+three.  Both the operator norm and the commutator scale linearly.
+\end{proof}
+
+\section{A malnormal contraction in every dimension}
+
+\begin{theorem}\label{thm:alln}
+There are a universal constant $\kappa_*>0$ and contractions
+$A_n\in\M_n$ for every $n\geq1$ such that
+\[
+       \|[A_n,B]\|_2\geq\kappa_*\|B-\tau(B)I_n\|_2
+       \qquad(B=B^*\in\M_n).
+\]
+Thus Problem~5.1 of \cite{MS} has an affirmative answer.
+\end{theorem}
+
+\begin{proof}
+Let $X_m\in\M_{3m}$ be the source's contractions for all $m\geq m_0$, with
+$\mal(X_m)\geq\kappa_0$.  Put
+\[
+ \kappa_1=F(\kappa_0),\qquad
+ \kappa_2=F(\kappa_1),\qquad
+ \kappa_{\mathrm{large}}=\min\{\kappa_0,\kappa_1,\kappa_2\}>0.
+\]
+For $n=3m+r\geq3m_0$, where $r\in\{0,1,2\}$, start with $X_m$ and apply
+Corollary~\ref{cor:padding} exactly $r$ times, choosing an arbitrary unit
+padding vector at each step.  The resulting matrix lies in $\M_n$, is a
+contraction, and has malnormality at least
+$\kappa_{\mathrm{large}}$.
+
+Only finitely many $n$ remain.  For $n\geq2$, let $S_n$ be the nilpotent
+unilateral shift, a single Jordan block with ones on the superdiagonal.  Its
+commutant consists of upper triangular Toeplitz matrices, and a self-adjoint
+upper triangular matrix is diagonal.  Hence every self-adjoint matrix
+commuting with $S_n$ is scalar.  Compactness of the unit sphere in the
+finite-dimensional space of trace-zero self-adjoint matrices gives
+$\mal(S_n)>0$.  For $n=1$ the required inequality is vacuous.  Taking the
+minimum of $\kappa_{\mathrm{large}}$ and these finitely many positive constants
+produces $\kappa_*>0$ and completes the sequence.
+\end{proof}
+
+\begin{corollary}[bounded-gap principle]
+Suppose uniformly malnormal contractions exist in an unbounded set of matrix
+dimensions whose successive gaps are bounded by $q$.  Then uniformly
+malnormal contractions exist in every sufficiently large dimension.
+\end{corollary}
+
+\begin{proof}
+Apply Corollary~\ref{cor:padding} at most $q-1$ times.  The finite list
+$\kappa,F(\kappa),\ldots,F^{q-1}(\kappa)$ has a positive minimum.
+\end{proof}
+
+\section{Scope and literature boundary}
+
+The construction inherits the nonconstructive choice of the source's quantum
+expanders; it resolves the dimension gap, not the separate request for a
+fully explicit algebraic seed.  It also does not address the sharp constant,
+the random-matrix conjecture, or the proposed converse with quantum edge
+expanders.
+
+A bounded novelty search on 11 August 2026 used the exact title and problem
+sentence, all-dimension malnormal sequences, one-dimensional block padding,
+and subsequent references to the paper.  It found the source and unrelated
+group-theoretic uses of ``malnormal,'' but no later solution of Problem~5.1 or
+matching padding lemma.  Novelty confidence is moderate.
+
+\paragraph{Human-review recommendation.}
+Audit the four displayed blocks of $[T,B]$, especially the lower-left inverse
+bound and the shared scalar $c=\tau(C)$.  Then check that the source's
+Proposition~3.3 indeed supplies its $3m$ family for every sufficiently large
+$m$, as used here.
+
+\begin{thebibliography}{9}
+\bibitem{MS}
+G.~Mulcahy and T.~Sinclair,
+\emph{Malnormal matrices},
+Proc. Amer. Math. Soc. \textbf{150} (2022), 2989--3001;
+arXiv:2009.11139.
+\end{thebibliography}
+
+\end{document}

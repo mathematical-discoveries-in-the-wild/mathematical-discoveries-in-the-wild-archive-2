@@ -1,0 +1,313 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\C}{\mathbb C}
+\newcommand{\D}{\mathbb D}
+\newcommand{\M}{\mathcal M}
+\newcommand{\T}{\mathcal T}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+
+\title{Exact Rational Bidisk Lifts for\\ Matrix Laurent Binomials on an Annulus}
+\author{Run \texttt{fa\_banach\_001}, lane 8}
+\date{August 11, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status and source question}
+
+\noindent\textbf{Status:} candidate partial result, likely valid; human review
+requested.
+
+Let
+\[
+ A_{R,r}=\{z\in\C:r\le |z|\le R\},\qquad 0<r<R,
+ \qquad
+ \gamma(z)=\left(\frac zR,\frac rz\right).
+\]
+Baran, Pikul, Woerdeman, and Wojtylak prove in Corollary~5.2 that for every
+rational matrix function \(F\in\M_n(\mathcal R(A_{R,r}))\),
+\begin{equation}\label{eq:source-infimum}
+ \norm{F}_{\T_{A_{R,r}}}
+ =\inf\left\{\norm{G}_{\infty,\overline{\D}^2}:
+ G\in\M_n(\mathcal R(\overline{\D}^2)),\ G\circ\gamma=F\right\}.
+\end{equation}
+They then ask for which functions the infimum is attained, saying that the
+general question is unanswered, and prove a scalar mixed-binomial special
+case in Proposition~5.3 \cite{BPWW}.  The source passage is reproduced below.
+
+\begin{center}
+  \includegraphics[width=\textwidth,height=.53\textheight,keepaspectratio]
+  {figures/open_problem_crop.png}
+\end{center}
+
+The displayed formula in the source screenshot writes its supremum variable
+as though \(G\) were one-variable.  Formula~\eqref{eq:source-infimum} uses the
+bidisk supremum intended by the preceding theorem and used explicitly in the
+source's Proposition~5.3.
+
+For an invertible Hilbert-space operator \(T\), membership in the annular
+class used here is simply
+\begin{equation}\label{eq:annular-class}
+ T\in\T_{A_{R,r}}
+ \quad\Longleftrightarrow\quad
+ \norm{T}\le R\quad\hbox{and}\quad \norm{T^{-1}}\le r^{-1}.
+\end{equation}
+For a matrix-valued function, \(F(T)\) acts on the tensor product with
+\(\C^n\); thus, for example, \(F(z)=z^pA+z^qB\) gives
+\(F(T)=T^p\otimes A+T^q\otimes B\).
+
+\section*{Idea of the proof}
+
+The upper bound comes from an explicit bidisk lift.  For mixed powers
+\(p=k>0>q=-\ell\), the natural lift is
+\[
+ G(z_1,z_2)=R^kz_1^kA+r^{-\ell}z_2^\ell B.
+\]
+Its bidisk norm is the maximum of
+\(\norm{R^kA+\omega r^{-\ell}B}\) over one relative phase
+\(|\omega|=1\).
+
+The key point is to recover every such phase from an annular operator.  Take a
+cyclic weighted shift of size \(k+\ell\), with \(k\) successive weights \(R\)
+and \(\ell\) successive weights \(r\).  It has norm \(R\) and inverse norm
+\(r^{-1}\).  Starting from one carefully chosen coordinate, both \(T^k\) and
+\(T^{-\ell}\) arrive at the same output coordinate, with respective weights
+\(R^k\) and \(r^{-\ell}\).  Replacing \(T\) by \(\alpha T\) changes their
+relative phase by \(\alpha^{-(k+\ell)}\), which sweeps the full unit circle.
+This one compression therefore matches the explicit lift norm even for
+arbitrary matrix coefficients.  Same-sign powers need only scalar operators
+on the appropriate boundary circle.
+
+\section*{Exact Laurent-binomial theorem}
+
+\begin{theorem}\label{thm:main}
+Let \(0<r<R\), let \(p>q\) be integers, and let
+\(A,B\in\M_n(\C)\).  Put
+\[
+ F(z)=z^pA+z^qB.
+\]
+Define the positive amplitudes \(a_p,a_q\) by
+\[
+ (a_p,a_q)=
+ \begin{cases}
+ (R^p,R^q),&q\ge0,\\
+ (r^p,r^q),&p\le0,\\
+ (R^p,r^q),&p>0>q.
+ \end{cases}
+\]
+Then
+\begin{equation}\label{eq:exact-norm}
+ \boxed{
+ \norm{F}_{\T_{A_{R,r}}}
+ =\max_{|\omega|=1}\norm{a_pA+\omega a_qB}.}
+\end{equation}
+In all three cases, the infimum in \eqref{eq:source-infimum} is attained.
+Explicit attaining lifts are
+\begin{equation}\label{eq:lifts}
+ G(z_1,z_2)=
+ \begin{cases}
+ R^pz_1^pA+R^qz_1^qB,&q\ge0,\\
+ r^pz_2^{-p}A+r^qz_2^{-q}B,&p\le0,\\
+ R^pz_1^pA+r^qz_2^{-q}B,&p>0>q.
+ \end{cases}
+\end{equation}
+\end{theorem}
+
+We first isolate a standard elementary observation.
+
+\begin{lemma}\label{lem:torus}
+If \(G\) is a matrix polynomial on the bidisk, then
+\[
+ \sup_{(z_1,z_2)\in\overline\D^2}\norm{G(z_1,z_2)}
+ =\sup_{|z_1|=|z_2|=1}\norm{G(z_1,z_2)}.
+\]
+Consequently, for nonnegative integers \(u,v\) and positive \(a,b\),
+\[
+ \norm{az_1^uA+bz_2^vB}_{\infty,\overline\D^2}
+ =\max_{|\omega|=1}\norm{aA+\omega bB}.
+\]
+The same formula holds when both monomials use the same coordinate and have
+distinct nonnegative powers.
+\end{lemma}
+
+\begin{proof}
+For unit vectors \(x,y\in\C^n\), the scalar function
+\(y^*G(z_1,z_2)x\) is a polynomial.  Applying the maximum-modulus principle
+successively in the two variables, and then taking the supremum over \(x,y\),
+proves the first assertion.  On the torus, multiplication by the scalar phase
+of the first monomial does not change the matrix norm, while the quotient of
+the two monomial phases runs through the whole unit circle.  This proves the
+remaining assertions.  The possibility of a zero exponent causes no change.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Every function in \eqref{eq:lifts} is a matrix polynomial and direct
+substitution of \(\gamma(z)=(z/R,r/z)\) gives \(G\circ\gamma=F\).  For example,
+in the mixed case \(p=k>0>q=-\ell\),
+\[
+ R^k(z/R)^kA+r^{-\ell}(r/z)^\ell B
+ =z^kA+z^{-\ell}B.
+\]
+Lemma~\ref{lem:torus} shows in each of the three cases that
+\begin{equation}\label{eq:upper-lift}
+ \norm{G}_{\infty,\overline\D^2}
+ =\max_{|\omega|=1}\norm{a_pA+\omega a_qB}.
+\end{equation}
+Therefore \eqref{eq:source-infimum} gives the upper inequality in
+\eqref{eq:exact-norm}.
+
+Suppose first that \(q\ge0\).  For every \(|\xi|=1\), the scalar operator
+\(T=R\xi I\) belongs to \(\T_{A_{R,r}}\), and
+\[
+ F(T)=\xi^p\bigl(R^pA+\xi^{q-p}R^qB\bigr).
+\]
+Because \(\xi^{q-p}\) runs through the unit circle, the definition of the
+Agler norm gives the reverse of \eqref{eq:upper-lift}.  If \(p\le0\), use
+instead \(T=r\xi I\).  It again lies in the annular class, and exactly the
+same argument gives the reverse inequality with amplitudes \(r^p,r^q\).
+
+It remains to treat \(p=k>0>q=-\ell\).  Set \(N=k+\ell\), and let
+\(e_1,\ldots,e_N\) be the standard basis of \(\C^N\).  Define the cyclic
+weighted backward shift \(T\) by
+\begin{equation}\label{eq:shift}
+ T e_{j+1}=w_j e_j\quad(1\le j<N),
+ \qquad T e_1=w_Ne_N,
+\end{equation}
+where
+\[
+ w_1=\cdots=w_k=R,
+ \qquad
+ w_{k+1}=\cdots=w_N=r.
+\]
+The columns of \(T\) are orthogonal and have lengths \(w_N,w_1,\ldots,w_{N-1}\).
+Hence
+\[
+ \norm{T}=R,\qquad \norm{T^{-1}}=r^{-1},
+\]
+so \(T\in\T_{A_{R,r}}\).  Following the two directed paths from
+\(e_{k+1}\) in \eqref{eq:shift} gives
+\begin{equation}\label{eq:two-paths}
+ T^ke_{k+1}=R^ke_1,
+ \qquad
+ T^{-\ell}e_{k+1}=r^{-\ell}e_1.
+\end{equation}
+For \(|\alpha|=1\), also \(\alpha T\in\T_{A_{R,r}}\).  Thus, for every
+\(x\in\C^n\), \eqref{eq:two-paths} yields
+\begin{align*}
+ F(\alpha T)(e_{k+1}\otimes x)
+ &=e_1\otimes
+ \bigl(\alpha^kR^kA+\alpha^{-\ell}r^{-\ell}B\bigr)x\\
+ &=\alpha^k e_1\otimes
+ \bigl(R^kA+\alpha^{-(k+\ell)}r^{-\ell}B\bigr)x.
+\end{align*}
+Taking the supremum over unit \(x\), then over \(\alpha\), gives
+\[
+ \norm{F}_{\T_{A_{R,r}}}
+ \ge\max_{|\omega|=1}\norm{R^kA+\omega r^{-\ell}B},
+\]
+because \(\alpha^{-(k+\ell)}\) covers the full unit circle.  This matches
+\eqref{eq:upper-lift}, completing both the norm identity and attainment.
+\end{proof}
+
+\section*{Two broader one-sided classes}
+
+\begin{proposition}\label{prop:one-sided}
+The infimum in \eqref{eq:source-infimum} is attained in either of the
+following situations.
+\begin{enumerate}
+ \item \(H\) is a rational matrix function analytic on a neighbourhood of
+ \(\{z:|z|\le R\}\), and \(F=H|_{A_{R,r}}\).  An attaining lift is
+ \(G(z_1,z_2)=H(Rz_1)\).
+ \item \(K\) is a rational matrix function analytic on a neighbourhood of
+ \(\overline\D\), and \(F(z)=K(r/z)\).  An attaining lift is
+ \(G(z_1,z_2)=K(z_2)\).
+\end{enumerate}
+In the first case the exact norm is
+\(\max_{|z|=R}\norm{H(z)}\); in the second it is
+\(\max_{|w|=1}\norm{K(w)}\).
+\end{proposition}
+
+\begin{proof}
+The proposed functions are admissible rational lifts.  Their bidisk norms are
+the stated boundary maxima by the scalar maximum-modulus argument used in
+Lemma~\ref{lem:torus}.  Conversely, the scalar operators \(T=R\xi I\) in the
+first case and \(T=r\xi I\) in the second case belong to the annular class and
+recover every point on the relevant boundary circle.  The definition of the
+Agler norm supplies matching lower bounds.
+\end{proof}
+
+\section*{Verification notes}
+
+The proof is exact and does not depend on computation.  The script
+\path{code/verify_weighted_shift.py} constructs the shift
+\eqref{eq:shift} for four representative choices of \(R,r,k,\ell,n\).  It
+checks its largest and smallest singular values, the inverse-norm constraint,
+the block compression in \eqref{eq:two-paths}, the phase identity, and the
+restriction \(G\circ\gamma=F\).  The command used was
+\begin{verbatim}
+conda run --no-capture-output -n sandbox python code/verify_weighted_shift.py
+\end{verbatim}
+These are transcription checks, not a replacement for the proof.
+
+\section*{Scope and full-classification upgrade attempts}
+
+Theorem~\ref{thm:main} classifies every two-term Laurent support, all matrix
+sizes, and all annulus radii.  It does \emph{not} classify arbitrary rational
+matrix functions.  In particular, it does not decide attainment for the
+source's example \(z+z^{-1}+1\) on \(A_{1,1/2}\).
+
+Eight focused upgrade attempts were made.  Montel and weak-star compactness
+can produce bounded holomorphic limiting lifts but do not preserve rationality
+or neighbourhood analyticity.  Finite-dimensional realizations give no
+uniform state-dimension bound along a minimizing sequence.  A quotient-ideal
+counterexample scheme would require proving that a rational coset has only a
+nonrational best \(H^\infty\) representative, for which no usable uniqueness
+or nonproximinality criterion was found.  Polynomial-correction optimization
+for the affine source example was exploratory only.  A small exact annular
+operator gives a lower value near \(3.549\), but no matching rational lift was
+proved.  The successful scalar-coefficient, matrix-coefficient, arbitrary-
+radius, same-sign, and one-sided upgrades culminate in the results above.
+
+The obstacle to a mechanical extension to three or more mixed Laurent terms
+is concrete: the cyclic path aligns two powers and supplies one free relative
+phase, while three arbitrary matrix coefficients generally require more
+simultaneous phase information.  With the compactness and quotient routes also
+blocked by the absence of a rational-degree bound, no further credible route
+to the full classification remained in the allotted upgrade budget.
+
+\section*{Bounded novelty check}
+
+A bounded search through August 11, 2026 covered the run's four lightweight
+indexes, the local source corpus, and official-arXiv searches using the arXiv
+identifier, exact title, author names, 'annulus infimum attained,' 'rational
+norm-preserving extension,' 'matrix Laurent binomial,' 'Agler norm,' and
+later papers citing the source.  No duplicate packet, later explicit
+classification, or matching matrix Laurent-binomial theorem was found.  This
+is only a bounded novelty statement, not a claim of priority.
+
+\section*{Human-review recommendation}
+
+Check the orientation of the weighted shift and both paths in
+\eqref{eq:two-paths}; confirm that the matrix-valued maximum-modulus reduction
+in Lemma~\ref{lem:torus} loses no information; and check the scalar boundary
+operators in the same-sign and one-sided cases.  The limitation to two-term
+mixed Laurent support should remain explicit.
+
+\begin{thebibliography}{9}
+\bibitem{BPWW}
+R. Baran, P. Pikul, H. J. Woerdeman, and M. Wojtylak,
+\emph{Contractive realization theory for the annulus and other intersections
+of discs on the Riemann sphere}, arXiv:2504.03236 (2025), especially
+Corollary~5.2 and Proposition~5.3.
+\end{thebibliography}
+
+\end{document}

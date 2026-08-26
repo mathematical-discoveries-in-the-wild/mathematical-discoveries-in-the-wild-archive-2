@@ -1,0 +1,189 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\E}{\mathcal{E}}
+
+\title{Positive non-atomic minimal extrapolations are never unique}
+\author{Full answer to the explicit uniqueness questions in arXiv:1601.05761}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+Candidate full solution, likely valid, pending human review.  The two explicit
+uniqueness questions in Examples~3.8 and~3.9 of the source are both answered
+negatively.  The general theorem also settles every positive non-atomic case
+when the sampled frequency set is finite and contains zero.
+
+\section{Source questions}
+
+Benedetto and Li minimize total variation among measures having prescribed
+Fourier coefficients on a finite set $\Lambda\subset\Z^d$~\cite{BenedettoLi}.
+On source PDF page~20, Example~3.8 says that their theory cannot determine
+whether a positive continuous singular Cantor measure $\sigma_q$ is the unique
+minimal extrapolation.  Example~3.9 asks the same question for
+$\mu=\sigma_A+\sigma_B$, where $\sigma_A$ and $\sigma_B$ are Haar surface
+measure on the horizontal circles $x_2=0$ and $x_2=1/2$ in $\T^2$.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+There is a minor internal inconsistency in Example~3.9: the printed set is
+$\{-2,-1,\ldots,1\}^2$, while the displayed set $\Gamma$ contains frequencies
+with second coordinate $2$.  The explicit answer below matches the data on the
+larger rectangle $\{-2,-1,0,1,2\}^2$, and therefore covers both readings.
+
+\section{Proof intuition}
+
+The zero Fourier coefficient is decisive.  For a positive measure $\mu$, it
+equals $\|\mu\|$, so every extrapolation has norm at least $\|\mu\|$.  Thus
+every positive measure sharing the sampled moments is automatically another
+minimal extrapolation.  Finitely many Fourier constraints impose only
+finitely many real linear equations on a bounded density perturbation $h$.
+A non-atomic measure can be split into more positive-measure pieces than there
+are equations, leaving a nonzero kernel vector.  After scaling $h$, both
+$(1+h)\mu$ and $(1-h)\mu$ remain positive and share all sampled Fourier data.
+
+For the surface-measure example this abstract perturbation can be made fully
+explicit: replace uniform measure in the $x_1$ direction by the uniform
+five-point rule on the fifth roots of unity.  It integrates every Fourier mode
+$m_1=-2,-1,0,1,2$ exactly.
+
+\section{General non-uniqueness theorem}
+
+For a finite positive measure $\mu$ on $\T^d$, write
+\[
+ \widehat\mu(m)=\int_{\T^d}e^{-2\pi i m\cdot x}\,d\mu(x).
+\]
+
+\begin{theorem}\label{thm:general}
+Let $\mu$ be a nonzero positive non-atomic finite measure on $\T^d$, and let
+$\Lambda\subset\Z^d$ be finite with $0\in\Lambda$.  Then $\mu$ is a minimal
+extrapolation of $\widehat\mu|_\Lambda$, but it is not the unique minimal
+extrapolation.  In fact, there are distinct positive measures $\mu_+$ and
+$\mu_-$ such that
+\[
+ \widehat{\mu_+}(m)=\widehat{\mu_-}(m)=\widehat\mu(m)
+ \quad(m\in\Lambda),
+ \qquad
+ \|\mu_+\|=\|\mu_-\|=\|\mu\|.
+\]
+\end{theorem}
+
+\begin{proof}
+Let $r=2|\Lambda|+1$.  Non-atomicity permits a measurable partition
+$\T^d=E_1\sqcup\cdots\sqcup E_r$ modulo $\mu$-null sets, with
+$\mu(E_j)>0$ for every $j$.  For $c=(c_1,\ldots,c_r)\in\mathbb{R}^r$, put
+$h_c=\sum_jc_j\mathbf{1}_{E_j}$.  The conditions
+\begin{equation}\label{eq:constraints}
+ \int_{\T^d} e^{-2\pi i m\cdot x}h_c(x)\,d\mu(x)=0
+ \qquad(m\in\Lambda)
+\end{equation}
+form at most $2|\Lambda|$ homogeneous real linear equations in the $r$
+real unknowns $c_j$.  Hence they admit a nonzero solution $c$.  Rescale it so
+that $\|h_c\|_\infty\le 1/2$, and write $h=h_c$.
+
+Define $d\mu_+=(1+h)d\mu$ and $d\mu_-=(1-h)d\mu$.  These measures are
+positive and distinct, and~\eqref{eq:constraints} gives their asserted Fourier
+data.  Since $0\in\Lambda$, every extrapolation $\nu$ satisfies
+\[
+ \|\nu\|\ge |\widehat\nu(0)|
+   =|\widehat\mu(0)|=\mu(\T^d)=\|\mu\|.
+\]
+On the other hand, positivity and the zero-frequency equality give
+$\|\mu_\pm\|=\mu_\pm(\T^d)=\mu(\T^d)$.  Thus $\mu$, $\mu_+$, and $\mu_-$
+are all minimal extrapolations, proving non-uniqueness.
+\end{proof}
+
+\begin{corollary}[Answer to Example 3.8]
+Under the standing finite-frequency assumption of the source, its positive
+continuous singular Cantor measure $\sigma_q$ is not the unique minimal
+extrapolation from any finite $\Lambda$ containing $0$.
+\end{corollary}
+
+\begin{proof}
+The source constructs $\sigma_q$ as a positive continuous measure of mass one.
+It is therefore non-atomic, and Theorem~\ref{thm:general} applies.
+\end{proof}
+
+\section{Explicit answer to the surface-measure example}
+
+Let $\sigma_A$ and $\sigma_B$ be normalized Haar measure on
+$A=\{x_2=0\}$ and $B=\{x_2=1/2\}$, and set $\mu=\sigma_A+\sigma_B$ as in
+Example~3.9.  Define the positive atomic measure
+\[
+ \nu=\frac15\sum_{j=0}^{4}
+ \left(\delta_{(j/5,0)}+\delta_{(j/5,1/2)}\right).
+\]
+
+\begin{corollary}[Answer to Example 3.9]
+The source measure $\mu$ is not the unique minimal extrapolation.  The measure
+$\nu$ is a distinct minimal extrapolation for the printed frequency set and
+also for the symmetric set $\{-2,-1,0,1,2\}^2$ suggested by the displayed
+$\Gamma$.
+\end{corollary}
+
+\begin{proof}
+For $m=(m_1,m_2)\in\Z^2$,
+\[
+ \widehat\mu(m)=\mathbf{1}_{\{m_1=0\}}
+                    \bigl(1+(-1)^{m_2}\bigr),
+\]
+whereas
+\[
+ \widehat\nu(m)=
+ \left(\frac15\sum_{j=0}^{4}e^{-2\pi i m_1j/5}\right)
+ \bigl(1+(-1)^{m_2}\bigr).
+\]
+The parenthesized roots-of-unity sum is one when $5$ divides $m_1$ and zero
+otherwise.  Hence $\widehat\nu(m)=\widehat\mu(m)$ whenever $|m_1|\le2$,
+with no restriction on $m_2$.  In particular the equality holds on either
+reading of the source frequency set.
+
+Both measures are positive with total mass two, while every extrapolation has
+norm at least the absolute value $2$ of its zero Fourier coefficient.  Thus
+both are minimal.  Finally, $\nu$ is atomic and $\mu$ is non-atomic, so they
+are distinct.
+\end{proof}
+
+\section{Verification, novelty, and scope}
+
+The accompanying script
+\texttt{code/verify\_five\_point\_extrapolation.py} evaluates the explicit
+Fourier formulas on $m_1=-2,\ldots,2$ and a larger range of $m_2$; the exact
+roots-of-unity proof above is independent of the computation.
+
+A bounded novelty search covered the run indexes, exact phrases from
+Examples~3.8--3.9, the promised title ``Super-resolution of singular continuous
+measures on $\T^d$'', and close arXiv searches for positive non-atomic minimal
+extrapolations and finite Fourier moments.  The promised sequel remains listed
+as ``in preparation'' in the later journal version and a 2018 dissertation;
+no primary source giving these answers was found.  The underlying
+finite-moment argument is elementary, so novelty confidence is moderate even
+though correctness confidence is high.
+
+The result fully settles the two explicit source uniqueness questions.  The
+general theorem requires positivity, non-atomicity, a finite frequency set,
+and inclusion of zero; it does not classify signed or complex singular
+continuous measures.  Human review should verify the real dimension count in
+\eqref{eq:constraints} and the scope attached to the word ``full''.
+
+\begin{thebibliography}{1}
+\bibitem{BenedettoLi}
+J.~J. Benedetto and W.~Li,
+\emph{Super-resolution by means of Beurling minimal extrapolation},
+arXiv:1601.05761; Appl. Comput. Harmon. Anal. 48 (2020), 117--148.
+\end{thebibliography}
+
+\end{document}

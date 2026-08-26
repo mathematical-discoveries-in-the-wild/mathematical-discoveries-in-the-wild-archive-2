@@ -1,0 +1,287 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\Oexp}{\mathcal O_{\mathrm{exp}}}
+\newcommand{\Reg}{\mathcal R}
+\newcommand{\LinB}{\widetilde{\operatorname{Lin}}_{\mathbb C}}
+
+\title{Holomorphic Reflexivity with Reductive Identity Component:\\
+A Partial Solution to Conjecture 1.5 of arXiv:2002.03617}
+\author{Run fa\_banach\_001, agent\_lane\_16}
+\date{2026-08-11}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{
+\textbf{Status.} Substantial partial result, likely valid, human review needed.
+The conjecture is proved when the identity component is connected linearly
+complex reductive, without assuming that the component group is finite.
+}}
+\end{center}
+
+\section{Source problem}
+
+For a complex Lie group $G$, Aristov defines the Banach-algebra linearizer
+$\LinB(G)$ as the intersection of the kernels of all holomorphic
+homomorphisms from $G$ into unit groups of Banach algebras.  Conjecture 1.5 of
+\cite{Ar21} asks whether, for every compactly generated Stein group $G$,
+\[
+  \LinB(G)=\{1\}
+  \quad\Longleftrightarrow\quad
+  \mathcal O(G)\text{ is holomorphically reflexive}.
+\]
+The source proves necessity and proves sufficiency when $G$ is abelian,
+discrete, or has finitely many components.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{Conjecture 1.5 and the previously known cases, from
+  arXiv:2002.03617v3, PDF page 7.}
+\end{figure}
+
+\section{Result}
+
+A connected \emph{linearly complex reductive} group is, equivalently for the
+present purpose, the universal complexification of a compact Lie group.  It
+is an affine algebraic complex group.
+
+\begin{theorem}[Algebraic-restriction criterion]\label{thm:criterion}
+Let $G$ be a compactly generated complex Lie group and let $H=G_0$ be its
+connected identity component.  Assume that $H$ is linear.  Let
+\[
+ r:\Oexp(G)\longrightarrow\Oexp(H)
+\]
+be restriction, and set
+\[
+ A_{\rm alg}:=r(\Oexp(G))\cap\Reg(H).
+\]
+If
+\[
+ N(A_{\rm alg})
+ :=\{h\in H:a(h)=a(1)\text{ for every }a\in A_{\rm alg}\}
+ =\{1\},
+\]
+then $\mathcal O(G)$ is holomorphically reflexive.
+\end{theorem}
+
+\begin{corollary}[Reductive identity component]\label{cor:main}
+Let $G$ be a compactly generated complex Lie group whose identity component
+$G_0$ is connected linearly complex reductive.  Then
+\[
+ \mathcal O(G)\text{ is holomorphically reflexive}
+ \quad\Longleftrightarrow\quad
+ \LinB(G)=\{1\}.
+\]
+In particular, Conjecture 1.5 holds in this class even when $G/G_0$ is
+infinite.
+\end{corollary}
+
+\section{Proof intuition}
+
+The source reduces reflexivity to density of the restriction map
+$\Oexp(G)\to\Oexp(G_0)$.  The point is to turn separation into density.
+
+Regular restrictions form a translation-invariant algebra.  Finite
+translation orbits of regular functions show that this algebra is actually a
+Hopf subalgebra of the affine coordinate ring.  If its common kernel is
+trivial, Zariski Noetherianity extracts finitely many coefficient coalgebras
+whose direct sum is a faithful algebraic representation.  The coefficients
+of a faithful representation and its dual generate the entire coordinate
+ring, so all regular functions occur as restrictions.  Regular functions are
+dense among exponential-type functions on every connected linear group.
+
+When $G_0$ is reductive, every exponential-type function on $G_0$ is already
+regular.  Thus the common kernel of the regular restriction algebra is forced
+inside $\LinB(G)$, and the conjectured hypothesis makes it trivial.  The
+mechanism is unavailable verbatim for a general solvable identity component,
+where nonregular exponential-type functions can be essential.
+
+\section{Algebraic lemmas}
+
+All coordinate rings below are over $\mathbb C$.
+
+\begin{lemma}[Translation invariance gives a Hopf subalgebra]
+\label{lem:hopf}
+Let $H$ be an affine algebraic group and let $A\subset\Reg(H)$ be a unital
+subalgebra stable under all left and right translations and under inversion.
+Then $A$ is a Hopf subalgebra of $\Reg(H)$.
+\end{lemma}
+
+\begin{proof}
+Multiplication, unit, counit, and antipode cause no difficulty.  It remains
+to prove $\Delta(A)\subset A\otimes A$ algebraically.
+
+Fix $a\in A$.  Since $a$ is regular, the span
+\[
+ V=\operatorname{span}\{R_y a:y\in H\}
+\]
+of its right translates is finite dimensional; translation invariance gives
+$V\subset A$.  Choose a basis $v_1,\dots,v_m$ of $V$.  There are regular
+functions $c_i$ on $H$ such that
+\[
+ a(xy)=\sum_{i=1}^m v_i(x)c_i(y).
+\]
+Choose points $x_1,\dots,x_m\in H$ for which the matrix
+$(v_i(x_j))_{j,i}$ is invertible.  The displayed identities with $x=x_j$
+show that each $c_i$ is a linear combination of the left translates
+$y\mapsto a(x_jy)$, hence $c_i\in A$.  Therefore
+\[
+ \Delta a=\sum_{i=1}^m v_i\otimes c_i\in A\otimes A.
+\]
+Inversion stability gives antipode stability, completing the proof.
+\end{proof}
+
+\begin{lemma}[Trivial-kernel Hopf subalgebras]
+\label{lem:kernel}
+Let $H$ be an affine algebraic group and $A\subset\Reg(H)$ a Hopf
+subalgebra.  If
+\[
+ N(A):=\{h\in H:a(h)=a(1)\text{ for all }a\in A\}=\{1\},
+\]
+then $A=\Reg(H)$.
+\end{lemma}
+
+\begin{proof}
+By the fundamental theorem of coalgebras, every element of $A$ is contained
+in a finite-dimensional subcoalgebra.  Such a subcoalgebra supplies a
+finite-dimensional algebraic representation of $H$ whose matrix
+coefficients lie in $A$.  The common kernel of all these representations is
+exactly $N(A)$: if $h\in N(A)$ and
+$\Delta a=\sum a_{(1)}\otimes a_{(2)}$, then
+\[
+ a(xh)=\sum a_{(1)}(x)a_{(2)}(h)
+      =\sum a_{(1)}(x)a_{(2)}(1)=a(x).
+\]
+
+The Zariski topology of $H$ is Noetherian.  Since the intersection of the
+kernels is $\{1\}$, finitely many of the above representations have trivial
+kernel intersection.  Their direct sum is a faithful algebraic
+representation $\rho:H\to\operatorname{GL}(V)$, and every matrix coefficient
+of $\rho$ belongs to $A$.
+
+A faithful morphism of affine algebraic groups in characteristic zero is a
+closed immersion.  Consequently $\Reg(H)$ is generated by the pullbacks of
+the coordinate functions on $\operatorname{GL}(V)$: the entries of $\rho$
+and the inverse determinant, equivalently coefficients of $\rho$ and its
+dual.  The former lie in $A$, and the latter lie in $A$ by antipode
+stability.  Hence $\Reg(H)\subset A$, proving equality.
+\end{proof}
+
+\section{Proof of the criterion and corollary}
+
+\begin{proof}[Proof of Theorem~\ref{thm:criterion}]
+The space $\Oexp(G)$ is invariant under left and right translations and
+inversion.  Restriction commutes with these operations.  Therefore
+$A_{\rm alg}$ satisfies Lemma~\ref{lem:hopf}, and the kernel hypothesis plus
+Lemma~\ref{lem:kernel} gives
+\[
+  A_{\rm alg}=\Reg(H).
+\]
+In particular, the range of $r$ contains $\Reg(H)$.
+
+For every connected linear complex Lie group, $\Reg(H)$ is contained and
+dense in $\Oexp(H)$ \cite[Theorem~1]{Ar23}.  Hence $r$ has dense range.
+Corollary 3.10 of the source \cite{Ar21} now says that
+\[
+ \Oexp(G)\longrightarrow\mathcal O(G)
+\]
+is an Arens--Michael envelope.  By source Proposition 3.6, this is equivalent
+to holomorphic reflexivity of $\mathcal O(G)$.
+\end{proof}
+
+\begin{proof}[Proof of Corollary~\ref{cor:main}]
+Put $H=G_0$ and assume first that $\LinB(G)=\{1\}$.  Restriction of an
+exponential-type function on $G$ is of exponential type on $H$: ambient word
+length is bounded above by a constant multiple of intrinsic word length on a
+compact generating set of $H$.  For connected linearly complex reductive
+$H$, Aristov proves
+\[
+ \Oexp(H)=\Reg(H)
+\]
+as locally convex algebras \cite[Theorem~5.9]{Ar19}.  Thus
+$A_{\rm alg}=r(\Oexp(G))$.
+
+Let $N=N(A_{\rm alg})$.  Lemma~\ref{lem:hopf} shows that $N$ is a subgroup,
+and every function in $\Oexp(G)$ is constant on $N$.  Source Corollary 3.5
+then yields $N\subset\LinB(G)=\{1\}$.  Theorem~\ref{thm:criterion} proves
+holomorphic reflexivity.
+
+Conversely, a connected linearly complex reductive group is affine algebraic
+and Stein.  The components of $G$ are translates of $H$, so the underlying
+complex manifold of $G$ is Stein as well.  Source Proposition 4.1 states that
+holomorphic reflexivity of $\mathcal O(G)$ for a compactly generated Stein
+group forces $\LinB(G)=\{1\}$.
+\end{proof}
+
+\section{Verification and limitations}
+
+The source counterexample does not conflict with Corollary~\ref{cor:main}.
+Its identity component is $\mathbb C^\times$, which is reductive, but the
+source proves that every exponential-type function is constant on that
+component; hence its generalized linearizer is nontrivial.
+
+The remaining obstruction is now sharp.  For a general connected linear
+$H$, the regular algebra $\Reg(H)$ is dense in $\Oexp(H)$ but may be strictly
+smaller.  Triviality of $\LinB(G)$ makes the full restriction image separate
+points, but does not formally imply that its regular part does.  Abstractly,
+on $(\mathbb C,+)$ the Hopf algebra generated by
+$e^{\pm z}$ and $e^{\pm\alpha z}$ for nonreal $\alpha$ has trivial common
+period kernel while meeting $\mathbb C[z]$ only in the constants.  This is
+not an example arising from a group extension and is not a counterexample;
+it shows why a full proof needs additional geometry of the component
+extension.
+
+The result leaves Conjecture 1.6 of the source and the general solvable-radical
+case of Conjecture 1.5 open.
+
+\section{Novelty check}
+
+The exact source, conjecture, generalized-linearizer terminology, and the
+reductive-identity-component variant were searched in the run indexes, the
+local parsed arXiv corpus, arXiv, and a bounded citation neighborhood through
+2025.  The only later citation found in that neighborhood was Aristov's HFG
+Hopf-algebra paper \cite{Ar24}; it uses the duality framework but does not
+state this subcase.  The density note \cite{Ar23} supplies a dependency, not
+the restriction-image argument.  No exact prior theorem was found.  This is
+bounded evidence; novelty remains subject to specialist review.
+
+\begin{thebibliography}{9}
+\bibitem{Ar19}
+O. Yu. Aristov,
+\emph{Holomorphic functions of exponential type on connected complex Lie
+groups}, J. Lie Theory 29 (2019), no.~4, 1045--1070;
+arXiv:1903.08080, Theorem 5.9.
+
+\bibitem{Ar21}
+O. Yu. Aristov,
+\emph{On holomorphic reflexivity conditions for complex Lie groups},
+Proc. Edinb. Math. Soc. 64 (2021), no.~4, 800--821;
+arXiv:2002.03617.
+
+\bibitem{Ar23}
+O. Yu. Aristov,
+\emph{On density of polynomials in the algebra of holomorphic functions of
+exponential type on a linear Lie group}, Ufa Math. J. 16 (2024), no.~2,
+76--80; arXiv:2304.00507, Theorem 1.
+
+\bibitem{Ar24}
+O. Yu. Aristov,
+\emph{Holomorphically finitely generated Hopf algebras and quantum Lie
+groups}, Moscow Math. J. 24 (2024), no.~2, 145--180;
+arXiv:2006.12175.
+\end{thebibliography}
+
+\end{document}
+

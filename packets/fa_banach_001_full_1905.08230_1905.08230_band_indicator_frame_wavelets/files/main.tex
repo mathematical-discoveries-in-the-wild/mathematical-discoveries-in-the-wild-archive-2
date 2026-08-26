@@ -1,0 +1,272 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\ind}{\mathbf 1}
+\newcommand{\E}{\mathcal E}
+
+\title{The Missing Band-Indicator Wavelets Are Frames\\
+\large A candidate full solution to Problem 2.7 of arXiv:1905.08230}
+\author{Autonomous proof candidate for human review}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Candidate full affirmative solution, likely valid.  For every
+$1/8<b\leq1/6$, the function whose Fourier transform is
+$\ind_{(-1,-b)\cup(b,1)}$ is a dyadic frame wavelet.  The proof gives the
+explicit non-optimal frame bounds $1/54$ and $6$ under the Fourier convention
+below.}}
+\end{center}
+
+\section{The question and answer}
+
+Bownik and Rzeszotnik ask the following question in Problem 2.7 of
+\cite{BR}.  For $0<b<1$, define $\psi_b\in L^2(\R)$ by
+\[
+ \widehat\psi_b=\ind_{E_b},\qquad
+ E_b=(-1,-b)\cup(b,1).
+\]
+For which $1/8<b\leq1/6$ is $\psi_b$ a frame wavelet?  The neighboring
+parameter ranges were determined by Bownik and Weber \cite{BW}, who also
+expressed heuristic confidence that the missing interval should be positive.
+
+\begin{figure}[ht]
+ \centering
+ \includegraphics[width=\textwidth]{figures/problem_crop.png}
+ \caption{Problem 2.7 in the source survey, PDF page 7.}
+\end{figure}
+
+We use
+\[
+ \widehat f(\xi)=\int_{\R}f(x)e^{-2\pi ix\xi}\,dx,
+ \qquad
+ \psi_{j,k}(x)=2^{j/2}\psi(2^jx-k).
+\]
+
+\begin{theorem}\label{thm:main}
+For every $1/8<b\leq1/6$ and every $f\in L^2(\R)$,
+\begin{equation}\label{eq:frame}
+ \frac1{54}\|f\|_2^2
+ \leq \sum_{j,k\in\Z}|\langle f,(\psi_b)_{j,k}\rangle|^2
+ \leq 6\|f\|_2^2.
+\end{equation}
+Consequently every parameter in the interval asked about in Problem 2.7 gives
+a frame wavelet.
+\end{theorem}
+
+\section{Exact periodization and the alias graph}
+
+Put $F=\widehat f$.  At a fixed scale $P=2^j$, Parseval's identity for
+Fourier series on $[0,P)$ gives
+\begin{equation}\label{eq:periodization}
+ \sum_{k\in\Z}|\langle f,(\psi_b)_{j,k}\rangle|^2
+ =\int_0^P\left|
+ \sum_{n\in\Z}F(x+nP)\ind_{PE_b}(x+nP)
+ \right|^2dx.
+\end{equation}
+Since $PE_b\subset(-P,P)$, only $n=0,-1$ can occur.  Hence the right-hand
+side is exactly
+\begin{equation}\label{eq:threepieces}
+ \int_0^{bP}|F(x-P)|^2dx
+ +\int_{bP}^{(1-b)P}|F(x)+F(x-P)|^2dx
+ +\int_{(1-b)P}^{P}|F(x)|^2dx.
+\end{equation}
+
+This formula has a useful graph interpretation.  Take two signed copies of
+the positive half-line,
+\[
+ X=\{+,-\}\times(0,\infty),
+ \qquad d\mu(\sigma,t)=dt,
+\]
+and define
+\[
+ g(+,t)=F(t),\qquad g(-,t)=-F(-t).
+\]
+For every dyadic power $P$, join $(+,t)$ to $(-,P-t)$ whenever
+\begin{equation}\label{eq:edgecondition}
+ bP<t<(1-b)P.
+\end{equation}
+At either signed vertex of magnitude $t$, put one \emph{pin} whenever
+\begin{equation}\label{eq:pincondition}
+ (1-b)P<t<P.
+\end{equation}
+Edges carry Lebesgue measure in $t$; reflection $t\mapsto P-t$ preserves that
+measure.  Summing \eqref{eq:threepieces} over $j$ yields
+\begin{equation}\label{eq:energy}
+ \sum_{j,k\in\Z}|\langle f,(\psi_b)_{j,k}\rangle|^2
+ =\E(g):=int_{v\sim w}|g(v)-g(w)|^2,d\nu
+ +\int_{v\text{ pinned}}|g(v)|^2,d\mu.
+\end{equation}
+The sign change on the negative copy is the reason that the middle term in
+\eqref{eq:threepieces} becomes a difference across an edge.
+
+\section{The graph has uniform measured expansion}
+
+All statements below ignore countably many dyadic boundary points, which form
+a $\mu$-null set.  Write a magnitude uniquely as
+\begin{equation}\label{eq:mantissa}
+ t=2^m r,\qquad m\in\Z,\quad 1<r<2,
+\end{equation}
+and set
+\[
+ c=8b\in(1,4/3],\qquad a=2(1-b)\in[5/3,7/4).
+\]
+
+\begin{lemma}\label{lem:degrees}
+The total incidence of a vertex (graph edges plus pins) is as follows:
+\[
+\begin{array}{c|c|c}
+\text{mantissa}&\text{graph degree}&\text{number of pins}\\ \hline
+1<r<c&2&0\\
+c<r<a&3&0\\
+a<r<2&2&1.
+\end{array}
+\]
+Moreover, no two vertices in the first row are adjacent.
+\end{lemma}
+
+\begin{proof}
+For a vertex of magnitude $2^mr$, the only possible active powers are
+$2^{m+1},2^{m+2},2^{m+3}$.  Indeed, the first two are always active, the
+third is active exactly when $r>8b=c$, and all later powers are inactive
+because $16b>2>r$.  The $2^{m+1}$ incidence is an edge for $r<a$ and a pin
+for $r>a$; all other active incidences are edges.  This proves the table.
+
+If $1<r<c$, its neighbors along the first two active powers have dyadic
+mantissas
+\begin{equation}\label{eq:neighbors}
+ 4-2r\qquad\text{and}\qquad 2-r/2.
+\end{equation}
+Since $c\leq4/3$, both quantities are strictly larger than $c$ when $r<c$.
+Thus the two-edge, unpinned class is independent.
+\end{proof}
+
+Orient each graph edge from the endpoint of larger magnitude toward the
+endpoint of smaller magnitude.  A vertex of magnitude $t$ has at most one
+outgoing edge.  In fact, if $P=t+s$ and $s<t$, then the overlap condition at
+$t$ implies
+\begin{equation}\label{eq:oneout}
+ \frac{t}{1-b}<P<2t.
+\end{equation}
+The ratio of the endpoints in this interval is $2(1-b)<2$, so it contains at
+most one power of two.
+
+Let $A\subset X$ be measurable with finite measure.  Write
+\[
+ \ell=\mu(A\cap L),\qquad h=\mu(A\cap H),
+\]
+where $L$ is the first row of Lemma~\ref{lem:degrees} and $H=X\setminus L$.
+Let $B(A)$ be the measure of graph edges crossing from $A$ to $X\setminus A$,
+plus the measure of pins based in $A$.  Finally, let $e(A)$ denote the measure
+of graph edges having both endpoints in $A$.
+
+Because the edge orientation has out-degree at most one and each reflection
+preserves measure,
+\begin{equation}\label{eq:internal}
+ e(A)\leq\mu(A)=\ell+h.
+\end{equation}
+The incidence table and the handshake identity now give
+\begin{equation}\label{eq:firstboundary}
+ B(A)=2\ell+3h-2e(A)\geq h.
+\end{equation}
+Every $L$-vertex has two graph neighbors, both in $H$.  Counting these
+incidences inside $A$, and charging the rest to crossing edges, gives
+\begin{equation}\label{eq:secondboundary}
+ 2\ell\leq3h+B(A).
+\end{equation}
+If $\ell\leq2h$, then \eqref{eq:firstboundary} implies
+$B(A)\geq(\ell+h)/3$.  If $\ell>2h$, then
+\eqref{eq:secondboundary} implies the same inequality.  We have proved the
+measured isoperimetric estimate
+\begin{equation}\label{eq:cheeger}
+ B(A)\geq\frac13\mu(A).
+\end{equation}
+
+\section{Cheeger inequality and proof of the theorem}
+
+First take $g$ bounded with support of finite measure and put
+$A_s=\{v:|g(v)|^2>s\}$.  Integrating \eqref{eq:cheeger} over $s>0$ and using
+the layer-cake formula gives
+\begin{align}
+ \frac13\|g\|_2^2
+ &\leq
+ \int_{v\sim w}\big||g(v)|^2-|g(w)|^2\big|,d\nu
+ +\int_{v\text{ pinned}}|g(v)|^2,d\mu.\label{eq:coarea}
+\end{align}
+By Cauchy--Schwarz and the elementary inequality
+$\big||z|-|w|\big|\leq|z-w|$, the right-hand side is at most
+\begin{equation}\label{eq:cs}
+ \E(g)^{1/2}
+ \left(
+ \int_{v\sim w}(|g(v)|+|g(w)|)^2d\nu
+ +\int_{v\text{ pinned}}|g(v)|^2d\mu
+ \right)^{1/2}.
+\end{equation}
+The second factor squared is bounded by $6\|g\|_2^2$: each graph edge is
+charged twice at each endpoint after using $(u+v)^2\leq2(u^2+v^2)$, and
+Lemma~\ref{lem:degrees} gives
+\[
+ 2\deg_{\rm graph}(v)+\deg_{\rm pin}(v)\leq6.
+\]
+Therefore
+\[
+ \E(g)\geq\frac1{54}\|g\|_2^2.
+\]
+Truncation and density extend this estimate to every $g\in L^2(X)$.
+
+Conversely, $|z-w|^2\leq2(|z|^2+|w|^2)$ and the same incidence table give
+\[
+ \E(g)\leq6\|g\|_2^2.
+\]
+Since \eqref{eq:energy} is exact and Plancherel gives
+$\|g\|_{L^2(X)}=\|F\|_2=\|f\|_2$, these are precisely the two inequalities
+in \eqref{eq:frame}.  This proves Theorem~\ref{thm:main}.
+
+\section{Endpoint and sharp-threshold checks}
+
+At $b=1/6$, the exceptional mantissa $r=4/3$ supports a degree-two
+cancellation chain.  It is a countable null fiber, so it does not affect the
+$L^2$ estimate.  On either side, Lemma~\ref{lem:degrees} forces the extra
+branching used by \eqref{eq:cheeger}.
+
+The mechanism breaks at exactly the known negative threshold.  If $b>1/6$,
+then $c=8b>4/3$, and the two quantities in \eqref{eq:neighbors} can again lie
+below $c$.  Adjacent unpinned degree-two vertices can then form arbitrarily
+long cancellation corridors, in agreement with the construction in
+\cite{BW}.  Thus the graph proof also explains why $1/6$ is the endpoint.
+
+\section{Novelty status}
+
+A bounded search of the run indexes, exact phrases from Problem 2.7, the
+source survey, the original Bownik--Weber paper, and later web/arXiv records
+located no published solution of the missing interval.  Priority is not
+asserted.  The result should be checked by a wavelet/frame specialist,
+especially the measured edge-counting formulation, before dissemination.
+
+\begin{thebibliography}{9}
+\bibitem{BR}
+M.~Bownik and Z.~Rzeszotnik,
+\emph{Open problems in wavelet theory},
+in \emph{Operator Theory, Operator Algebras and Their Interactions with
+Geometry and Topology}, Oper. Theory Adv. Appl. 278 (2020), 77--100;
+arXiv:1905.08230.
+
+\bibitem{BW}
+M.~Bownik and E.~Weber,
+\emph{Affine frames, GMRA's, and the canonical dual},
+Studia Math. 159 (2003), 453--479.
+\end{thebibliography}
+
+\end{document}

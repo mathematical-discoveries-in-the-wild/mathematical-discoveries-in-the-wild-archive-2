@@ -1,0 +1,227 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newcommand{\Cc}{\mathcal C}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\STP}{\mathrm{STP}}
+\newcommand{\TP}{\mathrm{TP}}
+
+\title{The gamma-composition kernel is strictly TP$_2$, but not TP$_3$}
+\author{Run \texttt{fa\_banach\_001}, agent lane 10}
+\date{2026-08-11}
+
+\begin{document}
+\maketitle
+
+\section*{Source and open problems}
+
+For \(s,x>0\), write
+\[
+ Q(s,x)=\frac{\Gamma(s,x)}{\Gamma(s)}
+       =\frac1{\Gamma(s)}\int_x^\infty t^{s-1}e^{-t}\dd t
+\]
+for the regularized upper incomplete gamma function, and let \(Q^{-1}(s,v)\)
+denote its inverse in the second variable.  Richards and Uhler
+\cite{richards-uhler} introduced, for fixed \(c>0\),
+\[
+ \Cc_c(u,v)=Q\bigl(u+c,Q^{-1}(u,v)\bigr),
+ \qquad u>0,\quad 0\le v<1.
+\]
+In Remark 4.4 they report substantial numerical evidence that
+\((u,v)\mapsto\Cc_c(u,v)\) is both \(\STP_2\) and \(\STP_3\), and pose these as
+open problems.  Their decreasing-order convention asks for positive minors
+when \(u_1>\cdots>u_r\) and \(v_1>\cdots>v_r\).
+
+\begin{center}
+\includegraphics[width=0.96\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Answer and proof intuition}
+
+The two orders behave differently.  Differentiate \(\Cc_c\) in \(v\).  The
+Jacobian of the inverse gamma CDF cancels the old gamma density, leaving a
+positive factor times the \(c\)-th power of the relevant gamma quantile.
+Saunders and Moran's strict quantile-ratio theorem \cite{saunders-moran} says
+exactly that these powers form an \(\STP_2\) kernel.  Because all rows of
+\(\Cc_c\) start at the common value zero when \(v=0\), integration preserves
+strict order-two positivity.
+
+Order three fails.  A simple rational parameter choice gives a determinant
+near \(-1.21\times10^{-4}\).  We certify its sign by positive-series
+enclosures of the incomplete gamma ratios, monotone bracketing of all inverse
+quantiles, and outward-rounded interval arithmetic.
+
+\begin{theorem}[Resolution of the two questions]\label{thm:main}
+For every \(c>0\), the kernel \(\Cc_c\) is \(\STP_2\) on
+\((0,\infty)\times(0,1)\).  It extends to a \(\TP_2\) kernel on
+\((0,\infty)\times[0,1)\), but the extension is not strict at \(v=0\).
+
+The proposed general \(\STP_3\) assertion is false.  Indeed, at \(c=1/8\),
+the decreasing triples
+\[
+ (u_1,u_2,u_3)=\left(100,\frac{18}{5},\frac6{25}\right),\qquad
+ (v_1,v_2,v_3)=\left(\frac{99}{100},\frac{63}{100},\frac3{20}\right)
+\]
+give
+\[
+ \det\bigl(\Cc_{1/8}(u_i,v_j)\bigr)_{i,j=1}^3<0.
+\]
+Thus the two open problems have answers \emph{yes} at order two and
+\emph{no} at order three.
+\end{theorem}
+
+\section*{The positive \texorpdfstring{\(\STP_2\)}{STP2} theorem}
+
+Let \(F_u\) be the CDF and \(f_u(x)=x^{u-1}e^{-x}/\Gamma(u)\) the density of a
+unit-scale gamma variable of shape \(u\).  Put
+\[
+ q_u(p)=F_u^{-1}(p),\qquad x_u(v)=q_u(1-v).
+\]
+Then
+\[
+ \Cc_c(u,v)=1-F_{u+c}(x_u(v)).
+\]
+Implicit differentiation of \(F_u(x_u(v))=1-v\) gives
+\[
+ \frac{\partial x_u}{\partial v}=-\frac1{f_u(x_u(v))}.
+\]
+Consequently
+\begin{equation}\label{eq:derivative}
+ h_c(u,v):=\frac{\partial}{\partial v}\Cc_c(u,v)
+ =\frac{f_{u+c}(x_u(v))}{f_u(x_u(v))}
+ =\frac{\Gamma(u)}{\Gamma(u+c)}x_u(v)^c.
+\end{equation}
+
+Saunders and Moran proved that, whenever \(0<\beta<\alpha<1\),
+\begin{equation}\label{eq:SM}
+ u\longmapsto\frac{q_u(\alpha)}{q_u(\beta)}
+ \quad\text{is strictly decreasing on }(0,\infty).
+\end{equation}
+Fix \(u_1>u_2>0\) and \(v_1>v_2\).  Applying \eqref{eq:SM} with
+\(\beta=1-v_1\) and \(\alpha=1-v_2\), and rearranging, yields
+\begin{equation}\label{eq:ratio-x}
+ \frac{x_{u_1}(v_1)}{x_{u_2}(v_1)}
+ >\frac{x_{u_1}(v_2)}{x_{u_2}(v_2)}.
+\end{equation}
+By \eqref{eq:derivative}, the ratio
+\[
+ \frac{h_c(u_1,v)}{h_c(u_2,v)}
+ =\frac{\Gamma(u_1)\Gamma(u_2+c)}
+        {\Gamma(u_1+c)\Gamma(u_2)}
+  \left(\frac{x_{u_1}(v)}{x_{u_2}(v)}\right)^c
+\]
+is therefore strictly increasing in \(v\).  Equivalently, \(h_c\) is
+\(\STP_2\).
+
+For completeness, strict positivity survives integration here by an elementary
+identity.  Let \(h_1,h_2>0\), suppose \(r=h_1/h_2\) is strictly increasing,
+and set \(H_i(v)=\int_0^v h_i(t)\dd t\).  Then
+\begin{equation}\label{eq:integral-ratio}
+ \left(\frac{H_1}{H_2}\right)'(v)
+ =\frac{h_2(v)}{H_2(v)^2}
+   \int_0^v\bigl(r(v)-r(t)\bigr)h_2(t)\dd t>0.
+\end{equation}
+Since \(\Cc_c(u,0)=0\), equation \eqref{eq:derivative} gives
+\(\Cc_c(u,v)=\int_0^v h_c(u,t)\dd t\).  Taking
+\(h_i(t)=h_c(u_i,t)\) in \eqref{eq:integral-ratio} proves that
+\(\Cc_c(u_1,v)/\Cc_c(u_2,v)\) is strictly increasing.  This is precisely the
+positivity of every ordered \(2\times2\) minor, proving \(\STP_2\) on the
+interior.
+
+If one of the ordered \(v\)'s equals zero, the corresponding column is zero.
+The determinant is then nonnegative but not positive.  This proves the exact
+boundary statement in Theorem \ref{thm:main}.
+
+\section*{The certified \texorpdfstring{\(3\times3\)}{3x3} counterexample}
+
+At the parameters in Theorem \ref{thm:main}, the kernel matrix is, to 18
+decimal places,
+{\small
+\[
+\begin{pmatrix}
+0.990341980391842966&0.634744085941809884&0.152888248142902939\\
+0.992092691738034760&0.656560587655528763&0.165231530309850930\\
+0.999117517495731797&0.785807279598486534&0.233184274842588704
+\end{pmatrix}.
+\]
+}
+Its high-precision determinant is approximately
+\[
+ -0.0001210585212763807470565673499421878.
+\]
+The following certification removes any reliance on rounded displayed values.
+For \(s,x>0\), use the positive series
+\begin{equation}\label{eq:series}
+ P(s,x):=F_s(x)
+ =\frac{x^se^{-x}}{\Gamma(s+1)}
+   \sum_{n=0}^{\infty}\frac{x^n}{(s+1)_n}.
+\end{equation}
+After the ratio of successive terms becomes less than \(1/2\), the remaining
+tail is at most twice the next term.  The accompanying script evaluates
+\eqref{eq:series} with outward-rounded intervals.  For each pair \((u,v)\), it
+first finds numbers \(x_-<x_+\) and certifies
+\[
+ P(u,x_-)<1-v<P(u,x_+).
+\]
+Monotonicity then encloses the kernel entry by
+\[
+ 1-P(u+c,x_+)\le \Cc_c(u,v)\le 1-P(u+c,x_-).
+\]
+Set \(D=\det(\Cc_{1/8}(u_i,v_j))\).  Interval evaluation of its six-term
+expansion gives the outward-rounded enclosure
+\[
+\begin{aligned}
+ -1.210585212763807470565673499423\times10^{-4}&\le D,\\
+ D&\le-1.210585212763807470565673499421\times10^{-4}.
+\end{aligned}
+\]
+The upper endpoint is strictly negative, proving failure of \(\TP_3\), hence
+of \(\STP_3\).
+
+\section*{Verification, novelty, and scope}
+
+The interval certificate is in \texttt{code/interval\_certificate.py} and uses
+80 decimal digits of outward-rounded interval arithmetic.  Its approximate
+root finder is not trusted: every root is independently bracketed by the
+certified series before it enters the determinant calculation.
+
+On 2026-08-11, exact-title, exact-kernel, STP terminology, and citation searches
+found the source and its published version but no later paper claiming a
+resolution of these two questions.  The run's four lightweight indexes and
+local arXiv corpus likewise contained no matching result.  This is a bounded
+novelty check, not an exhaustive review of all non-arXiv literature.
+
+The theorem proves \(\STP_2\) for every \(c>0\) and refutes the proposed general
+\(\STP_3\) statement with one certified \(c\).  It does not classify those
+individual values of \(c\), if any, for which the order-three kernel might
+still be strictly totally positive.  Additional searches beyond the certified
+small-\(c\) witness produced only cancellation-scale signals for larger \(c\),
+so no such classification is asserted.
+
+\section*{Human review recommendation}
+
+Review as a likely-valid full resolution.  The two highest-value independent
+checks are: (i) verify the direction change from \eqref{eq:SM} to
+\eqref{eq:ratio-x}; and (ii) run the interval certificate and confirm that its
+determinant upper endpoint is negative.
+
+\begin{thebibliography}{9}
+\bibitem{richards-uhler}
+Donald St. P. Richards and Caroline Uhler,
+\emph{Loading Monotonicity of Weighted Premiums, and Total Positivity
+Properties of Weight Functions}, arXiv:1806.07957 (2018).
+
+\bibitem{saunders-moran}
+I. W. Saunders and P. A. P. Moran,
+\emph{On the quantiles of the gamma and F distributions},
+Journal of Applied Probability \textbf{15} (1978), no.~2, 426--432,
+doi:10.2307/3213414.
+\end{thebibliography}
+
+\end{document}

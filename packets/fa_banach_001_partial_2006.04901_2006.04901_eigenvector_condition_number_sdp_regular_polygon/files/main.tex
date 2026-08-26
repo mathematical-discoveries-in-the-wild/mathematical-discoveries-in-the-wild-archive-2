@@ -1,0 +1,399 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\D}{\mathbb D}
+\newcommand{\C}{\mathbb C}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\cond}{\kappa_2}
+\newcommand{\spec}{\sigma}
+
+\title{Best-Conditioned Eigenvectors of Finite Compressed Shifts:\\
+an Exact Diagonal SDP and the Regular-Polygon Formula}
+\author{Candidate solution packet for arXiv:2006.04901, Question 1.1}
+\date{12 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\linewidth}{
+\textbf{Status.} Candidate major partial result; likely valid; pending human
+review.  The arbitrary-zero problem receives an exact semidefinite
+optimization characterization.  Closed formulas are proved in degree two and
+for all regular pseudohyperbolic polygons.  No elementary closed formula for a
+generic zero configuration is claimed.
+}}
+\end{center}
+
+\section{Source question}
+
+The source is Bickel, Gorkin, Greenbaum, Ransford, Schwenninger, and Wegert,
+\emph{Crouzeix's Conjecture and Related Problems}, arXiv:2006.04901
+\cite{BGGRSW}.  If $\Theta$ is a finite Blaschke product with distinct zeros
+$z_1,\dots,z_n\in\D$, the compressed shift $S_\Theta$ has an $n\times n$
+matrix representation $M_\Theta$.  For a matrix $A$ with distinct eigenvalues,
+the source defines
+\[
+ \eta(A)=\inf\{\|X\|_2\|X^{-1}\|_2:A=X\Lambda X^{-1},\ \Lambda
+ \text{ diagonal}\}.
+\]
+Question 1.1 on source page 4 asks:
+\begin{quote}
+\emph{What is the minimal condition number of an eigenvector matrix $X$ of
+$M_\Theta$ for a general finite Blaschke product $\Theta$ with distinct
+zeros?}
+\end{quote}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.94\linewidth]{figures/open_problem_crop.png}
+\caption{The definition of $\eta$ and Question 1.1 on source page 4.}
+\end{figure}
+
+\section{Statement of the result}
+
+For $z_1,\dots,z_n\in\D$, let $G=G(z_1,\dots,z_n)$ be the normalized
+Szeg\H{o}-kernel Gram matrix
+\begin{equation}\label{eq:G}
+ G_{ij}=\frac{\sqrt{(1-|z_i|^2)(1-|z_j|^2)}}
+ {1-\overline{z_i}z_j}.
+\end{equation}
+It is positive definite when the points are distinct.  With the opposite
+inner-product convention, the column Gram matrix is $\overline G$ instead;
+complex conjugation preserves all eigenvalues and the Loewner inequalities
+below because the comparison matrices are real diagonal.  For positive Hermitian
+matrices $B,C$, write $B\preceq C$ for the Loewner order, and write
+$\cond(B)=\lambda_{\max}(B)/\lambda_{\min}(B)$.
+
+\begin{theorem}[Exact diagonal SDP]\label{thm:sdp}
+Let $\Theta$ be a finite Blaschke product with distinct zeros
+$z_1,\dots,z_n$.  Then
+\begin{align}
+ \eta(M_\Theta)^2
+ &=\min_{D>0\ \mathrm{diagonal}}\cond(DGD) \label{eq:scale}\\
+ &=\min\left\{t\geq1:\text{ there is a positive diagonal $P$ with }
+ P\preceq G\preceq tP\right\}. \label{eq:sdp}
+\end{align}
+Both minima are attained.  Thus $\eta(M_\Theta)^2$ is the optimum of a
+one-parameter quasiconvex semidefinite feasibility problem depending only on
+the zero set, not on its ordering.
+\end{theorem}
+
+Let
+\[
+ \rho(z,w)=\left|\frac{z-w}{1-\overline zw}\right|
+\]
+denote pseudohyperbolic distance.
+
+\begin{theorem}[Degree two and a pairwise lower bound]\label{thm:two}
+If $n=2$, put $\rho=\rho(z_1,z_2)$ and
+$c=\sqrt{1-\rho^2}$.  Then
+\begin{equation}\label{eq:two}
+ \eta(M_\Theta)=\sqrt{\frac{1+c}{1-c}}=\frac{1+c}{\rho}.
+\end{equation}
+For arbitrary $n$, the sharp pairwise obstruction is
+\begin{equation}\label{eq:pair-bound}
+ \eta(M_\Theta)\geq
+ \max_{i<j}\sqrt{\frac{1+c_{ij}}{1-c_{ij}}},
+ \qquad c_{ij}=\sqrt{1-\rho(z_i,z_j)^2}.
+\end{equation}
+\end{theorem}
+
+Call a zero set a \emph{regular pseudohyperbolic $n$-gon of radius $r$} if it
+is the image under one disk automorphism of
+\[
+ \{r,r\omega,\dots,r\omega^{n-1}\},\qquad
+ \omega=e^{2\pi i/n},\quad 0<r<1.
+\]
+
+\begin{theorem}[Regular-polygon formula]\label{thm:regular}
+If the zeros of $\Theta$ form a regular pseudohyperbolic $n$-gon of radius
+$r$, then
+\begin{equation}\label{eq:regular}
+ \boxed{\eta(M_\Theta)=r^{-(n-1)}.}
+\end{equation}
+Equal norms for the eigenvectors are optimal; no unequal column scaling can
+improve the condition number.
+\end{theorem}
+
+The source observes that $\eta(A)\leq2$ is sufficient for Crouzeix's
+conjecture for $A$.  Theorem~\ref{thm:regular} therefore makes that test exact
+for this family:
+\begin{corollary}\label{cor:threshold}
+For a regular pseudohyperbolic $n$-gon, the condition-number test
+$\eta(M_\Theta)\leq2$ holds exactly when
+\[
+ r\geq 2^{-1/(n-1)}.
+\]
+This is a statement about the sufficient test, not a failure assertion for
+Crouzeix's conjecture below the threshold.
+\end{corollary}
+
+\section{Idea of the proof}
+
+The source diagonalizes $M_\Theta$ using an explicit triangular matrix, but
+that formula depends on an ordering of the zeros and obscures the minimization
+over eigenvector lengths.  Passing to the adjoint removes both issues.  The
+eigenvectors of $S_\Theta^*$ are precisely the normalized Szeg\H{o} kernels at
+the zeros, so every choice of eigenvector matrix differs only by diagonal
+column scaling.  Its squared singular values are the eigenvalues of $DGD$.
+This gives the exact diagonal-scaling problem, and a congruence turns it into
+the SDP in \eqref{eq:sdp}.
+
+For a regular polygon, $G$ is circulant and its Fourier eigenvectors are flat:
+every coordinate has modulus $n^{-1/2}$.  Pull the largest- and
+smallest-eigenvalue Fourier vectors back by $D^{-1}$.  Their Rayleigh
+quotients for $DGD$ have exactly the same denominator, regardless of $D$.
+Their quotient therefore certifies that diagonal scaling cannot beat
+$\cond(G)$.  A geometric-series computation of the Fourier eigenvalues then
+gives $r^{-2(n-1)}$ for the squared condition number.
+
+\section{Proofs}
+
+\subsection{Kernel eigenvectors and the diagonal SDP}
+
+Let
+\[
+ k_z(w)=\frac1{1-\overline zw},\qquad
+ e_z=(1-|z|^2)^{1/2}k_z.
+\]
+If $\Theta(z_j)=0$, then $k_{z_j}\in K_\Theta=H^2\ominus\Theta H^2$ because
+$\langle \Theta h,k_{z_j}\rangle=(\Theta h)(z_j)=0$.  Since $K_\Theta$ is
+backward-shift invariant,
+\[
+ S_\Theta^*k_{z_j}=S^*k_{z_j}=\overline{z_j}k_{z_j}.
+\]
+The eigenvalues are distinct, so these $n$ kernel vectors form an eigenbasis
+of the $n$-dimensional model space.
+
+If $A=X\Lambda X^{-1}$, then
+$A^*=X^{-*}\Lambda^*X^*$ and
+$\cond(X^{-*})=\cond(X)$.  Applying the same observation to $A^*$ gives
+\begin{equation}\label{eq:adjoint}
+ \eta(A)=\eta(A^*).
+\end{equation}
+Unitary changes of basis also preserve $\eta$.  It follows that every
+eigenvector matrix relevant to $\eta(M_\Theta)$ can be represented by columns
+$d_je_{z_j}$, where $d_j>0$: phases and permutations have no effect on the
+singular values.  Its Gram matrix is $DGD$ or $D\overline GD$, according to
+inner-product convention, with $D=\diag(d_1,\dots,d_n)$.  The two matrices
+have the same eigenvalues, so we use $DGD$.  Since
+\[
+ \cond(X)^2=\cond(X^*X),
+\]
+this proves \eqref{eq:scale}.
+
+Fix $t\geq1$.  The inequality $\cond(DGD)\leq t$ holds if and only if there is
+an $s>0$ such that
+\[
+ sI\preceq DGD\preceq tsI.
+\]
+Congruencing by $D^{-1}$ gives
+\[
+ sD^{-2}\preceq G\preceq tsD^{-2}.
+\]
+Thus $P=sD^{-2}$ is feasible in \eqref{eq:sdp}.  Conversely, if
+$P\preceq G\preceq tP$ for a positive diagonal $P$, then
+$D=P^{-1/2}$ gives
+\[
+ I\preceq DGD\preceq tI.
+\]
+This proves equality of the two optima.
+
+For completeness, the second optimum is attained.  It is feasible at
+$t_0=\cond(G)$ by taking $P=\lambda_{\min}(G)I$.  If $t\leq t_0$ is feasible,
+then comparison of diagonal entries in $P\preceq G\preceq tP$ and $G_{ii}=1$
+gives
+\[
+ t_0^{-1}\leq p_i\leq1.
+\]
+The relevant feasible set is therefore compact, and the Loewner inequalities
+are closed.  This proves Theorem~\ref{thm:sdp}.
+
+\subsection{Automorphisms of the disk}
+
+We record the invariance needed below.  It suffices to consider
+\[
+ \phi(z)=e^{i\theta}\frac{z-a}{1-\overline az}.
+\]
+The identities
+\begin{align*}
+ 1-|\phi(z)|^2&=\frac{(1-|a|^2)(1-|z|^2)}{|1-\overline az|^2},\\
+ 1-\overline{\phi(z_i)}\phi(z_j)
+ &=\frac{(1-|a|^2)(1-\overline{z_i}z_j)}
+ {(1-a\overline{z_i})(1-\overline az_j)}
+\end{align*}
+show that
+\begin{equation}\label{eq:mobius}
+ G(\phi(z_1),\dots,\phi(z_n))=U^*G(z_1,\dots,z_n)U,
+ \quad
+ U_{jj}=\frac{1-\overline az_j}{|1-\overline az_j|}.
+\end{equation}
+The diagonal unitary $U$ commutes with every positive diagonal $D$, so
+\eqref{eq:scale} is invariant under applying one disk automorphism to all
+zeros.
+
+\subsection{Two points and the pairwise obstruction}
+
+For two points, a diagonal unitary changes $G$ to
+\[
+ \begin{pmatrix}1&c\\c&1\end{pmatrix},\qquad
+ c=|G_{12}|.
+\]
+A direct calculation gives
+\begin{equation}\label{eq:c-rho}
+ c^2=\frac{(1-|z_1|^2)(1-|z_2|^2)}
+ {|1-\overline{z_1}z_2|^2}=1-\rho(z_1,z_2)^2.
+\end{equation}
+Let $D=\diag(a,b)$.  Overall scalar multiplication does not change a condition
+number, so normalize $ab=1$.  Then the determinant of $DGD$ is $1-c^2$, while
+its trace is $a^2+b^2\geq2$, with equality exactly when $a=b=1$.  For a
+positive $2\times2$ matrix with fixed determinant, the ratio of its two
+eigenvalues is strictly increasing with its trace.  Equal scaling is therefore
+optimal, and
+\[
+ \eta(M_\Theta)^2=\frac{1+c}{1-c}.
+\]
+Using $\rho^2=1-c^2$ gives both forms in \eqref{eq:two}.
+
+For general $n$ and any positive diagonal $D$, the $(i,j)$ principal block of
+$DGD$ is a scaled two-point Gram matrix.  Eigenvalue interlacing implies
+\[
+ \cond(DGD)\geq
+ \cond\big((DGD)_{\{i,j\}\times\{i,j\}}\big)
+ \geq\frac{1+c_{ij}}{1-c_{ij}}.
+\]
+Taking square roots, then the maximum over pairs and the infimum over $D$,
+proves Theorem~\ref{thm:two}.
+
+\subsection{Regular polygons}
+
+By \eqref{eq:mobius}, it is enough to treat $z_j=r\omega^j$ for
+$j=0,\dots,n-1$.  Put $q=r^2$.  Then
+\begin{equation}\label{eq:circulant}
+ G_{ij}=\frac{1-q}{1-q\omega^{j-i}},
+\end{equation}
+so $G$ is circulant.  For $0\leq\ell<n$, let
+\[
+ f_\ell=n^{-1/2}(1,\omega^{-\ell},\dots,
+ \omega^{-(n-1)\ell})^T.
+\]
+Expanding $(1-q\omega^k)^{-1}$ as a geometric series and using the
+root-of-unity filter gives
+\begin{align*}
+ \lambda_\ell
+ &=(1-q)\sum_{k=0}^{n-1}\frac{\omega^{-\ell k}}
+ {1-q\omega^k}\\
+ &=n(1-q)\sum_{h=0}^{\infty}q^{\ell+hn}
+ =\frac{n(1-q)q^\ell}{1-q^n}.
+\end{align*}
+Thus $Gf_\ell=\lambda_\ell f_\ell$, with largest eigenvalue $\lambda_0$
+and smallest eigenvalue $\lambda_{n-1}$.
+
+It remains to prove that a diagonal scaling cannot reduce their ratio.  Fix a
+positive diagonal $D=\diag(d_0,\dots,d_{n-1})$, put $H=DGD$, and set
+$x_\ell=D^{-1}f_\ell$.  Because all Fourier coordinates have modulus
+$n^{-1/2}$,
+\[
+ \|x_\ell\|^2=\frac1n\sum_{j=0}^{n-1}d_j^{-2}=:\alpha_D
+ \quad\text{for every }\ell.
+\]
+Moreover,
+\[
+ \frac{x_\ell^*Hx_\ell}{\|x_\ell\|^2}
+ =\frac{f_\ell^*Gf_\ell}{\alpha_D}
+ =\frac{\lambda_\ell}{\alpha_D}.
+\]
+The variational characterization of extreme eigenvalues now yields
+\[
+ \lambda_{\max}(H)\geq\frac{\lambda_0}{\alpha_D},
+ \qquad
+ \lambda_{\min}(H)\leq\frac{\lambda_{n-1}}{\alpha_D}.
+\]
+Consequently
+\[
+ \cond(DGD)\geq\frac{\lambda_0}{\lambda_{n-1}}
+ =q^{-(n-1)}=r^{-2(n-1)}.
+\]
+Equality holds when $D$ is scalar.  Taking square roots proves
+Theorem~\ref{thm:regular}; Corollary~\ref{cor:threshold} is immediate.
+
+\section{Verification and limitations}
+
+\paragraph{Independent checks.}
+The accompanying script constructs the kernel Gram matrices directly and
+optimizes over logarithmic diagonal scales.  For $2\leq n\leq8$ and
+$r\in\{0.2,0.5,0.8\}$, it reproduces $r^{-(n-1)}$ to numerical precision and
+returns scalar optimal scaling.  It also checks the degree-two expression on
+100 random pairs and verifies disk-automorphism invariance.  A generic
+five-point example exhibits a strict improvement from unequal scaling,
+confirming that the regular-polygon argument is genuinely special.  These
+computations are sanity checks, not ingredients of the proof.
+
+\paragraph{Scope.}
+Equation \eqref{eq:sdp} is an exact general characterization and supports
+certified numerical computation by bisection in $t$.  It does not simplify the
+answer for an arbitrary nonsymmetric zero set to a scalar expression in the
+pairwise pseudohyperbolic distances.  Random tests show that simply taking
+$D=I$ is false as a general optimality rule.  Thus the broad closed-form part
+of Question 1.1 remains open outside the solved families.
+
+\paragraph{Bounded novelty check.}
+On 12 August 2026, searches covered the run's registry, solution, attempt, and
+proof-gap indexes; exact phrases involving ``minimal condition number'',
+``finite Blaschke product'', ``compressed shift'', and $M_\Theta$; the
+OpenAlex-indexed citation descendants of \cite{BGGRSW}; and the most relevant
+later primary sources found in that search, including arXiv:2306.12183
+\cite{OV}, arXiv:2312.04537 \cite{BCGGV}, and arXiv:2506.15444 \cite{Renard}.
+No exact diagonal-SDP reduction or regular-polygon formula was located.  This
+is a bounded search, not a proof of novelty; novelty confidence is medium.
+
+\paragraph{Human-review focus.}
+The most useful checks are: (i) the passage from $M_\Theta$ to the kernel
+eigenvectors of $S_\Theta^*$ and equality \eqref{eq:adjoint}; (ii) the
+congruence equivalence in Theorem~\ref{thm:sdp}; (iii) the diagonal-unitary
+factor in \eqref{eq:mobius}; and (iv) the common-denominator Rayleigh quotient
+that proves optimality for the regular polygon.
+
+\begin{thebibliography}{9}
+
+\bibitem{BGGRSW}
+K. Bickel, P. Gorkin, A. Greenbaum, T. Ransford, F. L. Schwenninger, and
+E. Wegert,
+\emph{Crouzeix's Conjecture and Related Problems},
+Comput. Methods Funct. Theory \textbf{20} (2020), 701--728;
+\href{https://arxiv.org/abs/2006.04901}{arXiv:2006.04901}.
+
+\bibitem{OV}
+R. O'Loughlin and J. Virtanen,
+\emph{Crouzeix's conjecture for classes of matrices},
+Linear Algebra Appl. \textbf{697} (2024), 277--292;
+\href{https://arxiv.org/abs/2306.12183}{arXiv:2306.12183}.
+
+\bibitem{BCGGV}
+K. Bickel, G. Corbett, A. Glenning, C. Guan, and M. Vollmayr-Lee,
+\emph{Crouzeix's conjecture, compressions of shifts, and classes of nilpotent
+matrices}, Concrete Operators \textbf{11} (2024);
+\href{https://arxiv.org/abs/2312.04537}{arXiv:2312.04537}.
+
+\bibitem{Renard}
+A. Renard,
+\emph{Contractive upper triangular matrices with prescribed diagonals and
+superdiagonals}, Linear Algebra Appl. \textbf{724} (2025), 83--95;
+\href{https://arxiv.org/abs/2506.15444}{arXiv:2506.15444}.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,205 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\cL}{\mathcal L}
+
+\title{Question 6 beyond Hilbert spaces:\\a Hilbert-separating factor criterion}
+\author{Autonomous mathematical discovery packet\\
+Run \texttt{fa\_banach\_001}, lane 0, \texttt{agent\_lane\_00}}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Substantial partial result, likely valid, pending human review.  The arbitrary
+nonseparable case remains open.}}
+\end{center}
+
+\section{Source question}
+
+Thieu and Yen~\cite{TY} ask the following.  Let $E$ be a real normed space
+and let $F\subset E$ be an infinite-dimensional linear subspace.  Do there
+exist a continuous map $\psi:E\to E^*$ and a bounded linear map
+$\varphi:E\to E^*$ such that
+\begin{align*}
+ &\text{for every }y\in E\text{ some }x\in F\text{ has }\psi(y)(x)\ne0,
+ \tag{a3}\\
+ &\text{for every }x\in F\setminus\{0\}\text{ some }y\in E\text{ has }
+ \varphi(y)(x)\ne0,
+ \tag{b3}
+\end{align*}
+and
+\begin{equation}\label{eq:disp}
+ \sup_{y\in E}\|\varphi(y)-\psi(y)\|_{E^*}<\infty?
+\end{equation}
+They prove this when $E$ is Hilbert and state that the non-Hilbert case
+remains open.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.94\textwidth]{figures/open_problem_crop.png}
+\caption{Question 6 in arXiv:2502.00746v1, page 20.}
+\end{figure}
+
+We use their following theorem~\cite[Theorem 4.5]{TY}: every
+infinite-dimensional normed space $M$ admits a continuous map
+$h:M\to M$ such that
+\begin{equation}\label{eq:source}
+ h(m)\ne0\quad(m\in M),\qquad
+ \sup_{m\in M}\|h(m)-m\|\le1.
+\end{equation}
+
+\section{Proof intuition}
+
+The Hilbert structure is needed only to manufacture a positive bilinear form,
+not on the ambient space itself.  If a bounded operator sends $E$ into a
+Hilbert space and is injective on $F$, then
+$\varphi=T^*T$ has two key properties.  It separates every nonzero vector of
+$F$, and no nonzero element of its range can vanish identically on $F$.
+The range $M=\varphi(E)$ is therefore a normed space whose nonzero vectors are
+already good for condition (a3).  Applying \eqref{eq:source} inside $M$ and
+composing with $\varphi$ removes the sole zero without changing $\varphi$ by
+more than one.
+
+\section{The Hilbert-factor criterion}
+
+\begin{theorem}\label{thm:criterion}
+Let $E$ be a real normed space and $F\subset E$ an infinite-dimensional
+linear subspace.  Suppose there are a real Hilbert space $H$ and a bounded
+linear operator $T_0:E\to H$ whose restriction to $F$ is injective.  Then
+Question 6 has an affirmative answer.  In fact, $\varphi$ and $\psi$ can be
+chosen so that the supremum in \eqref{eq:disp} is at most $1$.
+\end{theorem}
+
+\begin{proof}
+Let $G=\overline{T_0(F)}\subset H$, let $P_G:H\to G$ be the orthogonal
+projection, and put $T=P_GT_0:E\to G$.  For $x\in F$ one has
+$T_0x\in G$, hence $Tx=T_0x$.  Thus $T|_F$ is injective and $T(F)$ is dense
+in $G$.
+
+Define
+\[
+ \varphi=T^*T:E\longrightarrow E^*.
+\]
+For $x,y\in E$,
+\begin{equation}\label{eq:gram}
+ \varphi(y)(x)=\langle Ty,Tx\rangle_G.
+\end{equation}
+If $x\in F\setminus\{0\}$, then
+\[
+ \varphi(x)(x)=\|Tx\|_G^2>0.
+\]
+This proves (b3), with $y=x$.  It also shows that $\varphi|_F$ is injective,
+so the normed subspace
+\[
+ M:=\varphi(E)\subset E^*
+\]
+is infinite-dimensional.
+
+We next record the decisive range property:
+\begin{equation}\label{eq:restriction}
+ m\in M\setminus\{0\}\quad\Longrightarrow\quad m|_F\ne0.
+\end{equation}
+Indeed, write $m=\varphi(y)$.  If $m(x)=0$ for every $x\in F$, then
+\eqref{eq:gram} says that $Ty$ is orthogonal to $T(F)$.  Since $Ty\in G$ and
+$T(F)$ is dense in $G$, this forces $Ty=0$, whence
+$m=T^*Ty=0$.  This proves \eqref{eq:restriction}.
+
+Apply the source theorem \eqref{eq:source} to the infinite-dimensional normed
+space $M$ (no closedness of $M$ is required) and obtain a continuous
+nonvanishing $h:M\to M$ with $\|h(m)-m\|\le1$.  Set
+\[
+ \psi=h\circ\varphi:E\longrightarrow M\subset E^*.
+\]
+For every $y\in E$, $\psi(y)$ is a nonzero member of $M$, so
+\eqref{eq:restriction} supplies an $x\in F$ with $\psi(y)(x)\ne0$.  Thus
+(a3) holds.  Finally,
+\[
+ \|\psi(y)-\varphi(y)\|_{E^*}
+ =\|h(\varphi(y))-\varphi(y)\|_M\le1,
+\]
+which proves \eqref{eq:disp} with the asserted bound.
+\end{proof}
+
+\section{Countably total and separable subspaces}
+
+A family $(f_n)\subset F^*$ is \emph{total} if
+$f_n(x)=0$ for every $n$ implies $x=0$.
+
+\begin{corollary}\label{cor:total}
+Question 6 has an affirmative answer whenever $F^*$ contains a countable
+total family.  In particular, it has an affirmative answer whenever $F$ is
+separable.  The subspace $F$ need not be closed or complemented, and $E$ need
+not be complete or Hilbert.
+\end{corollary}
+
+\begin{proof}
+Let $(f_n)_{n\ge1}\subset F^*$ be total.  By Hahn--Banach, extend each $f_n$
+to $\widetilde f_n\in E^*$ without changing its norm.  Put
+\[
+ a_n=\frac{2^{-n}}{1+\|\widetilde f_n\|},\qquad
+ T_0y=(a_n\widetilde f_n(y))_{n\ge1}\in\ell_2.
+\]
+Then
+\[
+ \|T_0y\|_2^2\le \|y\|^2\sum_{n\ge1}4^{-n},
+\]
+so $T_0:E\to\ell_2$ is bounded.  Its restriction to $F$ is injective because
+all $a_n$ are nonzero and $(f_n)$ is total.  Theorem~\ref{thm:criterion}
+applies.
+
+If $F$ is separable, choose a dense sequence $(u_n)$ in its unit sphere and,
+by Hahn--Banach, choose $f_n\in F^*$ with $\|f_n\|=f_n(u_n)=1$.  For nonzero
+$x\in F$, some $u_n$ lies within $1/2$ of $x/\|x\|$, and then
+\[
+ f_n(x/\|x\|)>f_n(u_n)-\tfrac12=\tfrac12.
+\]
+Thus $(f_n)$ is total.
+\end{proof}
+
+\begin{remark}
+Theorem~\ref{thm:criterion} also recovers the source's Hilbert case, including
+nonclosed $F$: take $H=E$ and $T_0$ to be the orthogonal projection onto
+$\overline F$, which restricts to the identity on $F$.
+\end{remark}
+
+\section{Scope, upgrade obstruction, and novelty}
+
+The theorem covers all separable $F$ and also nonseparable spaces possessing
+a countable total dual family.  For a completely arbitrary nonseparable
+$F$, an uncountable total family does not automatically yield a bounded map
+into $\ell_2(I)$: a summable positive weight family has countable support,
+while unweighted evaluations need not be square summable.  More generally,
+(b3) already requires a bounded bilinear form that is right-nondegenerate on
+$F$.  No universal construction or explicit counterexample was found, so the
+full arbitrary-$F$ question remains open.
+
+A bounded search through 11 August 2026 covered the run indexes; exact arXiv
+id, title, question, and authors; follow-up and citation queries; non-Hilbert
+maximum displacement; Hilbert-separating operators; countable total dual
+families; and nondegenerate bounded bilinear forms.  No later answer or this
+criterion was found.
+
+\begin{thebibliography}{9}
+\bibitem{TY}
+N. N. Thieu and N. D. Yen,
+\emph{The Hartman--Stampacchia Theorem and the Maximum Displacements of
+Nonvanishing Continuous Vector-Valued Functions}, arXiv:2502.00746v1 (2025),
+especially Question 6 and Theorems 4.5--4.6.
+\end{thebibliography}
+
+\end{document}
+

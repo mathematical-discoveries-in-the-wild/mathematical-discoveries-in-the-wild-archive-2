@@ -1,0 +1,333 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=0.87in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\R}{\mathbb R}
+\newcommand{\D}{\mathcal D}
+\newcommand{\Aone}{A_1(\mathcal D)}
+
+\title{The sharp mixed-norm threshold\\for the Pure Greedy Algorithm}
+\author{Solution packet for arXiv:2304.06423}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\linewidth}{\textbf{Candidate full answer.}
+The rate $\gamma_m(\alpha,H)=O(m^{-\alpha/2})$ holds precisely for
+$0<\alpha\leq\alpha_*$, where
+\[
+ \alpha_*=0.365551412606085\ldots.
+\]
+It therefore extends strictly beyond $1/3$, but fails for every
+$\alpha>\alpha_*$.}}
+\end{center}
+
+\section{The question}
+
+Let $H$ be a real Hilbert space and let $\D\subset H$ be a symmetric
+dictionary of unit vectors with dense linear span.  For $f\in H$, the Pure
+Greedy Algorithm (PGA) starts with $r_0=f$ and iterates
+\[
+ d_m=\sup_{g\in\D}|\langle r_m,g\rangle|,
+ \qquad r_{m+1}=r_m-d_m g_{m+1},
+\]
+where the sign and $g_{m+1}\in\D$ are chosen so that
+$\langle r_m,g_{m+1}\rangle=d_m$.  Write $\|f\|_{\Aone}$ for the gauge of
+the closed convex hull of $\D$, and define
+\[
+ \gamma_m(\alpha,H)=
+ \sup_{\D,f,\mathrm{PGA}}
+ \frac{\|r_m\|}{\|f\|^{1-\alpha}\|f\|_{\Aone}^{\alpha}},
+ \qquad 0<\alpha\leq1.
+\]
+The source, V.~N. Temlyakov, \emph{On the rate of convergence of greedy
+algorithms}, arXiv:2304.06423v1 \cite{Temlyakov2023}, proves
+\begin{equation}\label{eq:source}
+ \tfrac12m^{-\alpha/2}\leq\gamma_m(\alpha,H)
+ \leq m^{-\alpha/2},\qquad 0<\alpha\leq\tfrac13,
+\end{equation}
+and asks on PDF page 5 whether the upper rate continues to hold for
+$\alpha>1/3$.  It notes, using the lower exponent known at the time, that it
+cannot continue beyond $0.3796$.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.96\linewidth]{figures/source_question.png}
+\caption{The exact question and the source's original obstruction on page 5
+of arXiv:2304.06423v1.}
+\end{figure}
+
+We determine the exact transition point.  Let $\Gamma\in[1,3/2]$ be the
+unique root of
+\begin{equation}\label{eq:root}
+ (1+x)^{1/(2+x)}\left(1+\frac1{1+x}\right)-1-\frac1x=0.
+\end{equation}
+Numerically,
+\[
+ \Gamma=1.1523436882652335\ldots,
+ \qquad
+ \alpha_*:=\frac{\Gamma}{2+\Gamma}
+ =0.3655514126060854\ldots.
+\]
+
+\section{Proof intuition}
+
+The familiar PGA proof tracks two quantities: residual energy
+$a_m=\|r_m\|^2$ and accumulated atomic mass
+$b_m=\|f\|_{\Aone}+\sum_{j<m}d_j$.  One elementary recurrence gives
+$a_mb_m^{-2}\lesssim m^{-1}$.  Sil'nichenko's sharp standard-rate proof
+contains a second invariant, customarily normalized with
+$\|f\|_{\Aone}=1$.  Its scalar differential inequality is actually
+invariant under \emph{independent} rescaling of the horizontal mass variable
+by $\|f\|_{\Aone}$ and the vertical energy variable by $\|f\|^2$.  Restoring
+both scales gives
+\[
+ a_mb_m^\Gamma\lesssim
+ \|f\|^2\|f\|_{\Aone}^{\Gamma}.
+\]
+Taking the right powers of these two invariants cancels $b_m$ and gives the
+desired mixed estimate at $\alpha_*$.  Interpolation with the trivial bound
+$\|r_m\|\leq\|f\|$ covers all smaller $\alpha$.  The sharp matching-pursuit
+lower construction of Klusowski--Siegel then forbids the rate for every
+larger $\alpha$.
+
+\section{The two-scale envelope lemma}
+
+We record the part of Sil'nichenko's argument that carries the new scaling.
+
+\begin{lemma}[two-scale Sil'nichenko invariant]\label{lem:envelope}
+Let $r_m$ be a PGA residual sequence, put
+\[
+ h=\|f\|,\quad A=\|f\|_{\Aone},\quad
+ a_m=\|r_m\|^2,\quad b_0=A,\quad b_{m+1}=b_m+d_m.
+\]
+With $\Gamma$ defined by \eqref{eq:root}, there is an absolute constant
+$C_\Gamma$ such that
+\begin{equation}\label{eq:secondinv}
+ a_m b_m^\Gamma\leq C_\Gamma h^2A^\Gamma
+ \qquad(m\geq0).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+We expose the scaling in the scalar proof of \cite{Silnichenko2004}.  The PGA
+identities and the atomic norm give
+\begin{equation}\label{eq:basic}
+ a_{m+1}=a_m-d_m^2,\qquad
+ \|r_m\|_{\Aone}\leq b_m.
+\end{equation}
+For $\ell\geq k$, the definition of $d_\ell$ and
+$\|r_k\|_{\Aone}\leq b_k$ imply
+\[
+ d_\ell b_k\geq |\langle r_\ell,r_k\rangle|.
+\]
+Since $r_\ell=r_k-\sum_{j=k}^{\ell-1}d_jg_{j+1}$ and
+$|\langle r_k,g_{j+1}\rangle|\leq d_k$, it follows that
+\begin{equation}\label{eq:cross}
+ d_\ell\geq
+ \frac{a_k-d_k(b_\ell-b_k)}{b_k}
+\end{equation}
+whenever the numerator is positive; if it is nonpositive the inequality is
+automatic.
+
+Interpolate $a_m$ and $b_m$ linearly in the iteration variable.  On an
+interval corresponding to step $m$, \eqref{eq:basic} gives
+$a'=-d_m^2$ and $b'=d_m$.  Regarding energy as a function $F$ of accumulated
+mass, so $F(b(t))=a(t)$, gives $F'=-d_m$.  Inequality
+\eqref{eq:cross}, first at knots and then by linear interpolation, becomes
+the scalar envelope inequality
+\begin{equation}\label{eq:envelope}
+ F'(x_2)\leq
+ \frac{-F(x_1)-F'(x_1)(x_2-x_1)}{x_1},\qquad A\leq x_1\leq x_2.
+\end{equation}
+
+The barrier lemma proved in \cite{Silnichenko2004} states that a nonnegative
+decreasing piecewise-linear function $\Phi$ on $[1,\infty)$ satisfying
+\eqref{eq:envelope} and $\Phi(1)\leq1$ obeys
+\begin{equation}\label{eq:barrier}
+ \Phi(x)x^\Gamma\leq C_\Gamma,\qquad x\geq1,
+\end{equation}
+where the largest admissible exponent $\Gamma$ is characterized by
+\eqref{eq:root}.  For completeness, its proof sets
+$x=e^t$ and $G(t)=e^{\Gamma t}\Phi(e^t)$; applying
+\eqref{eq:envelope} at the optimizing delay
+$t_0=\log(1+\Gamma)/(2+\Gamma)$ gives a delayed linear inequality for $G$.
+The equality case for the barrier is exactly \eqref{eq:root}, and integration
+over consecutive intervals of length $t_0$ bounds $G$ uniformly.
+The same conclusion up to the right endpoint holds when the domain is a
+finite interval, by applying the argument only to intervals that precede
+that endpoint.  Thus no assumption that $b_m\to\infty$ is needed.
+
+The key point is that no relation between the two initial scales was used in
+this scalar lemma.  Define
+\[
+ \Phi(z)=\frac{F(Az)}{h^2},\qquad z\geq1.
+\]
+Then $\Phi(1)=1$, and direct substitution shows that \eqref{eq:envelope} is
+unchanged: both sides acquire the same factor $A/h^2$.  Applying
+\eqref{eq:barrier} at $z=b_m/A$ gives
+\[
+ \frac{a_m}{h^2}\left(\frac{b_m}{A}\right)^\Gamma
+ \leq C_\Gamma,
+\]
+which is \eqref{eq:secondinv}.
+\end{proof}
+
+\section{Sharp upper range}
+
+The other invariant is elementary.
+
+\begin{lemma}\label{lem:first}
+For every $m\geq0$,
+\begin{equation}\label{eq:firstinv}
+ a_mb_m^{-2}\leq (m+1)^{-1}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The atomic duality estimate gives
+$d_m\geq a_m/\|r_m\|_{\Aone}\geq a_m/b_m$.  Hence, with
+$x_m=a_mb_m^{-2}$ and using $b_{m+1}\geq b_m$,
+\[
+ x_{m+1}\leq x_m(1-x_m).
+\]
+Also $x_0=h^2/A^2\leq1$.  The standard reciprocal induction yields
+$x_m\leq(m+1)^{-1}$.
+\end{proof}
+
+\begin{theorem}[sharp upper endpoint]\label{thm:upper}
+There is an absolute constant $C$ such that, for every Hilbert space,
+dictionary, target, realization of the PGA, and $m\geq1$,
+\begin{equation}\label{eq:endpoint}
+ \|r_m\|\leq C
+ \|f\|^{1-\alpha_*}\|f\|_{\Aone}^{\alpha_*}
+ m^{-\alpha_*/2}.
+\end{equation}
+Consequently, for every $0<\alpha\leq\alpha_*$,
+\begin{equation}\label{eq:allupper}
+ \gamma_m(\alpha,H)\leq C_\alpha m^{-\alpha/2}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Raise \eqref{eq:secondinv} to the power $2/(2+\Gamma)$ and
+\eqref{eq:firstinv} to the power $\Gamma/(2+\Gamma)$, and multiply.  The
+powers of $b_m$ cancel and give
+\[
+ a_m\leq C_\Gamma^{2/(2+\Gamma)}
+ h^{4/(2+\Gamma)}A^{2\Gamma/(2+\Gamma)}
+ (m+1)^{-\Gamma/(2+\Gamma)}.
+\]
+Taking square roots and using
+$\alpha_*=\Gamma/(2+\Gamma)$ proves \eqref{eq:endpoint}.
+
+For $0<\alpha<\alpha_*$, put $\lambda=\alpha/\alpha_*$.  Energy decreases,
+so $\|r_m\|\leq h$.  The elementary inequality
+$\min\{u,v\}\leq u^{1-\lambda}v^\lambda$ applied to this trivial bound and
+\eqref{eq:endpoint} proves \eqref{eq:allupper}.
+\end{proof}
+
+The orthonormal example already used in the source shows that this rate is
+optimal throughout the upper range.  Namely, take
+$f=\sum_{j=1}^{2m}e_j$ and the signed orthonormal dictionary.  After $m$
+steps, $\|r_m\|=m^{1/2}$, while $\|f\|=(2m)^{1/2}$ and
+$\|f\|_{\Aone}=2m$.  Thus
+\begin{equation}\label{eq:ortholower}
+ \gamma_m(\alpha,H)\geq
+ 2^{-(1+\alpha)/2}m^{-\alpha/2}
+ \geq\tfrac12m^{-\alpha/2}.
+\end{equation}
+
+\section{Failure above the threshold}
+
+Klusowski and Siegel \cite{KlusowskiSiegel2025} proved the sharp lower
+exponent for the standard PGA problem.  In the present notation, if
+\[
+ p_*:=\frac{\Gamma}{2(2+\Gamma)}=\frac{\alpha_*}{2},
+\]
+then for every $p>p_*$ there are a fixed Hilbert space, a fixed dictionary,
+and a fixed nonzero $f\in A_1(\D)$ whose PGA residuals satisfy
+\begin{equation}\label{eq:KS}
+ \|r_m\|\geq c_p\|f\|_{\Aone}m^{-p}
+\end{equation}
+for all sufficiently large $m$.
+
+\begin{theorem}[sharp failure]\label{thm:failure}
+If $\alpha>\alpha_*$, there is no constant $C_\alpha$ for which
+$\gamma_m(\alpha,H)\leq C_\alpha m^{-\alpha/2}$ holds uniformly in $m$.
+\end{theorem}
+
+\begin{proof}
+Choose $p$ with $p_*<p<\alpha/2$ and take the fixed example in
+\eqref{eq:KS}.  Since $h=\|f\|$ and $A=\|f\|_{\Aone}$ are fixed positive
+numbers,
+\[
+ \gamma_m(\alpha,H)
+ \geq \frac{c_pA}{h^{1-\alpha}A^\alpha}m^{-p}
+ =c'_{p,\alpha}m^{-p}.
+\]
+Multiplying by $m^{\alpha/2}$ tends to infinity, which contradicts any
+uniform target bound.
+\end{proof}
+
+\begin{corollary}[complete answer to the source question]
+The upper rate in \eqref{eq:source} extends beyond $1/3$ exactly through
+\[
+ \alpha_*=\frac{\Gamma}{2+\Gamma}
+       =0.365551412606085\ldots .
+\]
+For $0<\alpha\leq\alpha_*$ its order is exactly $m^{-\alpha/2}$; for every
+$\alpha>\alpha_*$ that order is impossible uniformly over dictionaries and
+targets.
+\end{corollary}
+
+\section{Scope, novelty, and review}
+
+The result concerns the order of the uniform rate; constants may depend on
+$\alpha$.  It does not assert that the unit constant in the source's display
+remains optimal beyond $1/3$.  The threshold comes from combining a new
+two-norm reading of Sil'nichenko's upper proof with the later sharp lower
+construction.  Neither supporting paper states the mixed characteristic
+$\gamma_m(\alpha,H)$ at this threshold.
+
+The run indexes, parsed corpus, exact formula, source question, and bounded
+primary-source web searches through 11 August 2026 found no explicit prior
+statement of this characterization.  Temlyakov's 2025 survey records the
+sharp standard exponent but not the two-scale invariant or mixed threshold.
+Novelty confidence is moderate because the rescaling is short and may be
+implicit folklore.
+
+The proof is analytic.  The only numerical value is an evaluation of the
+uniquely characterized root and is not used as evidence.  Expert review
+should focus on the passage from the discrete cross-iteration inequality to
+the scalar envelope inequality, the independent $(A,h^2)$ rescaling in
+Lemma~\ref{lem:envelope}, and the quantifiers in the Klusowski--Siegel lower
+theorem.
+
+\begin{thebibliography}{3}
+\bibitem{Temlyakov2023}
+V.~N. Temlyakov,
+\newblock \emph{On the rate of convergence of greedy algorithms},
+\newblock Mathematics \textbf{11} (2023), 2559; arXiv:2304.06423v1.
+
+\bibitem{Silnichenko2004}
+A.~V. Sil'nichenko,
+\newblock \emph{Rate of convergence of greedy algorithms},
+\newblock Math. Notes \textbf{76} (2004), 582--586.
+
+\bibitem{KlusowskiSiegel2025}
+J.~M. Klusowski and J.~W. Siegel,
+\newblock \emph{Sharp convergence rates for matching pursuit},
+\newblock IEEE Trans. Inform. Theory \textbf{71} (2025), 5556--5572;
+arXiv:2307.07679.
+\end{thebibliography}
+
+\end{document}

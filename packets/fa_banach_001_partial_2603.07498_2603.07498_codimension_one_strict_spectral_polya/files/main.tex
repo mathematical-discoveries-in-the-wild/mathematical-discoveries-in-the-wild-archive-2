@@ -1,0 +1,236 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+\usepackage{xcolor}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
+\newcommand{\M}{\mathcal M}
+\newcommand{\C}{\mathbb C}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\rank}{\operatorname{rank}}
+
+\title{Schatten--\(p\) approximation selects the strict spectral
+approximant for every matrix hyperplane}
+\author{Candidate partial result for arXiv:2603.07498}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+\texttt{candidate\_partial\_likely\_valid}.  The source conjecture is not
+settled for arbitrary subspaces.  We prove it for every complex
+codimension-one subspace, in all finite rectangular dimensions.
+
+\section{Source problem and result}
+
+For \(A\in M_{m\times n}(\C)\) and a complex linear subspace \(\M\), let
+\(Y_p\in\M\) minimize the Schatten \(p\)-norm \(\|A-Y\|_p\), where
+\(1<p<\infty\).  Grover and Gupta ask in their Conjecture~(5) whether
+\[
+                  Y_p\longrightarrow Y^{(\mathrm{st})}
+                  \qquad (p\to\infty),
+\]
+where \(Y^{(\mathrm{st})}\) is the strict spectral approximant: among
+spectral-norm minimizers, it lexicographically minimizes the complete
+singular-value vector of the residual.
+
+\begin{center}
+\includegraphics[width=.62\textwidth]{figures/open_problem_crop.png}
+
+\small Real crop from page 2 of the source paper, including Conjecture~(5).
+\end{center}
+
+\paragraph{Proof intuition.}
+A hyperplane has a single normal matrix \(G\).  Schatten duality makes the
+finite-\(p\) residual the unique equality case in one H\"older inequality,
+so it can be written explicitly from the singular values of \(G\).  At
+\(p=\infty\), equality in nuclear/operator duality forces the same maximal
+singular block in \emph{every} spectral minimizer.  The strict minimizer is
+then obtained by setting the unconstrained complementary block equal to
+zero.  The explicit finite-\(p\) formula converges to precisely that
+matrix.
+
+\section{The hyperplane theorem}
+
+\begin{theorem}
+Let \(G\in M_{m\times n}(\C)\setminus\{0\}\) and
+\[
+       \M=\{X\in M_{m\times n}(\C):\tr(G^*X)=0\}.
+\]
+For \(A\in M_{m\times n}(\C)\), let \(Y_p\) be its unique Schatten
+\(p\)-best approximant from \(\M\), \(1<p<\infty\).  Then
+\[
+                         Y_p\longrightarrow Y^{(\mathrm{st})}.
+\]
+More explicitly, set \(c=\tr(G^*A)\).  If \(c=0\), then
+\(Y_p=Y^{(\mathrm{st})}=A\).  If \(c\ne0\), take a thin singular value
+decomposition
+\[
+ G=U_r\diag(g_1,\ldots,g_r)V_r^*,\qquad
+ g_i>0,\quad r=\rank G,
+\]
+and set \(\omega=c/|c|\), \(q=p/(p-1)\).  Then
+\begin{align}
+ A-Y_p
+   &=\frac{\omega |c|}{\sum_{i=1}^r g_i^q}\,
+     U_r\diag\!\left(g_1^{q-1},\ldots,g_r^{q-1}\right)V_r^*,       \tag{1}\\
+ A-Y^{(\mathrm{st})}
+   &=\frac{\omega |c|}{\sum_{i=1}^r g_i}\,U_rV_r^*.              \tag{2}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Approximating \(A\) from \(\M\) is equivalent to minimizing
+\(\|R\|_p\) subject to
+\[
+                         \tr(G^*R)=c,                             \tag{3}
+\]
+where \(R=A-Y\).  The assertion for \(c=0\) is immediate, so suppose
+\(c\ne0\).
+
+Schatten H\"older duality, with \(q=p/(p-1)\), gives every feasible
+\(R\) the lower bound
+\[
+ |c|=|\tr(G^*R)|\leq \|G\|_q\|R\|_p,\qquad
+ \|G\|_q=\Bigl(\sum_i g_i^q\Bigr)^{1/q}.                          \tag{4}
+\]
+The matrix on the right side of (1) is feasible and attains equality
+in (4), hence is a minimizer.  Since the Schatten \(p\)-norm is strictly
+convex for \(1<p<\infty\), the minimizer is unique.  This proves (1).
+
+It remains to identify the strict spectral residual.  Put
+\[
+                         \rho=\frac{|c|}{\|G\|_1}
+                              =\frac{|c|}{\sum_i g_i}.
+\]
+Nuclear/operator duality gives \(\|R\|_\infty\geq\rho\) for every
+feasible \(R\), while
+\[
+                         R_0=\omega\rho\,U_rV_r^*                 \tag{5}
+\]
+is feasible and has operator norm \(\rho\).  Thus \(\rho\) is the
+optimal spectral error.
+
+We now determine all equality cases.  Write \(u_i,v_i\) for the
+singular vectors in the displayed decomposition of \(G\).  If \(R\) is
+any spectral minimizer, then
+\begin{equation}
+\begin{split}
+ |c|
+ &=\left|\sum_{i=1}^r g_i\,u_i^*Rv_i\right|\\
+ &\leq\sum_{i=1}^r g_i|u_i^*Rv_i|
+ \leq\rho\sum_{i=1}^r g_i
+ =|c|.
+\end{split}
+\tag{6}
+\end{equation}
+All inequalities are equalities.  Because every \(g_i>0\), equality in
+the last inequality yields \(|u_i^*Rv_i|=\rho\) for every \(i\), and
+equality in the triangle inequality gives their common phase:
+\[
+                         u_i^*Rv_i=\omega\rho.                    \tag{7}
+\]
+Moreover,
+\[
+ \rho=|u_i^*Rv_i|\leq\|Rv_i\|_2\leq\|R\|_\infty=\rho.
+\]
+Equality in Cauchy--Schwarz implies \(Rv_i=\omega\rho u_i\).
+Applying the same argument to \(R^*\) gives
+\(R^*u_i=\overline\omega\rho v_i\).  Consequently, relative to the
+orthogonal decompositions
+\[
+ \C^n=\operatorname{span}\{v_i\}_{i=1}^r\oplus V^\perp,\qquad
+ \C^m=\operatorname{span}\{u_i\}_{i=1}^r\oplus U^\perp,
+\]
+every spectral-minimizing residual has block form
+\[
+                         R=\begin{pmatrix}
+                              \omega\rho I_r&0\\[2pt]0&B
+                            \end{pmatrix},
+                    \qquad \|B\|_\infty\leq\rho.                  \tag{8}
+\]
+Its singular-value vector therefore begins with at least \(r\) copies
+of \(\rho\).  Formula (5) corresponds to \(B=0\), so its vector is
+\[
+                 (\underbrace{\rho,\ldots,\rho}_{r\ \mathrm{times}},
+                  0,\ldots,0),
+\]
+which is lexicographically smallest among (8).  It is also the unique
+matrix with this vector, because zero remaining singular values force
+\(B=0\).  Hence \(R_0=A-Y^{(\mathrm{st})}\), proving (2).
+
+Finally, \(q\downarrow1\) as \(p\to\infty\), so
+\(g_i^{q-1}\to1\) and \(\sum_i g_i^q\to\sum_i g_i\).  Formula (1)
+therefore converges to (2).
+\end{proof}
+
+\section{Why this is beyond the unique spectral case}
+
+Rank-deficient \(G\) produces genuinely nonunique spectral
+approximations.  For example, take
+\[
+ G=\diag(2,1,0),\qquad A=\diag(1,1,0),\qquad
+ \M=\ker\!\bigl(X\mapsto\tr(G^*X)\bigr).
+\]
+Here \(c=3\), \(\rho=1\), and all residuals
+\(\diag(1,1,z)\), \(|z|\leq1\), are spectral minimizers.  The strict
+residual is \(\diag(1,1,0)\), whereas (1) gives
+\[
+ A-Y_p=\frac{3}{2^q+1}\diag(2^{q-1},1,0)
+          \longrightarrow\diag(1,1,0).
+\]
+
+\section{Verification, limitations, and novelty}
+
+\paragraph{Computational check.}
+The accompanying script generated \(1{,}000\) random complex
+hyperplanes of sizes \(3\times4\) and \(4\times4\), including all
+possible ranks.  At \(p=2,4,10,50,200\), it checked feasibility,
+compared (1) against random feasible perturbations, and checked
+convergence to (2).  The maximum feasibility error was
+\(5.024\cdot10^{-15}\), the minimum sampled optimality slack was
+\(5.813\cdot10^{-7}\), and the maximum \(p=200\) Frobenius error to the
+strict residual was \(3.231\cdot10^{-2}\).  These tests are not used as
+proof.
+
+\paragraph{Limitations.}
+The unrestricted conjecture remains open.  In codimension at least two,
+the dual norming matrix can vary with \(q\), so the single-normal
+equality argument above does not supply a uniform lexicographic
+selection theorem.
+
+\paragraph{Novelty check.}
+A bounded search of the run indexes, the source paper, and directly
+related older literature found no statement of this all-hyperplane
+theorem.  Ziętak's pointwise eventual comparison theorem for a fixed
+competitor does not by itself control the moving minimizers \(Y_p\).
+This is a preliminary novelty assessment, not a literature claim.
+
+\paragraph{Human-review recommendation.}
+Check especially the equality passage from (6) to the block form (8)
+and search for an existing codimension-one theorem stated in duality
+language.  If both checks pass, the result appears ready to promote as
+a rigorous partial resolution.
+
+\begin{thebibliography}{9}
+\bibitem{GG}
+P.~Grover and K.~K.~Gupta,
+\emph{Properties of best approximations with respect to the Ky Fan
+\(p\)-\(k\) norm, and the strict spectral approximant of a matrix},
+arXiv:2603.07498v2 (2026).
+
+\bibitem{Zietak}
+K.~Ziętak,
+\emph{Strict spectral approximation of a matrix and some related
+problems},
+Applicationes Mathematicae \textbf{44} (2017), 267--280.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,242 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\essinf}{\operatorname*{ess\,inf}}
+\newcommand{\Lop}{\mathbb L}
+\newcommand{\Aop}{\mathcal A}
+
+\title{A rank-one counterexample to the graphon Perron converse}
+\author{Automated mathematics run \texttt{fa\_banach\_001}\\
+Lane 10 --- candidate result for expert review}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{black!30}{gray!7}{\parbox{0.91\textwidth}{
+\textbf{Status.} Candidate counterexample to the literal open problem in
+Bonnet--Pouradier Duteil--Sigalotti, together with an exact characterization
+inside the full-support rank-one class. The proof is elementary and appears
+complete, but the interpretation caveat in Section~\ref{sec:caveat} is
+important.
+}}
+\end{center}
+
+\section{Source question}
+
+Bonnet, Pouradier Duteil, and Sigalotti ask on printed page 25 of
+arXiv:2111.03900, after Theorem 4.7, whether the finite-dimensional Perron
+converse persists for graphon Laplacians \cite{source}. Their question is:
+
+\begin{quote}
+Is it true that an interaction topology is a countable disjoint union of
+strongly connected components whenever there exists an element
+$v\in L^\infty(I,\mathbb R_+^*)$ such that $\Lop^*v=0$?
+\end{quote}
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{The open problem in the source paper, printed page 25. The crop is
+  rendered from the local copy \texttt{source\_paper.pdf}.}
+\end{figure}
+
+Here $I=[0,1]$, an adjacency kernel $a\in L^\infty(I\times I,[0,1])$
+defines
+\[
+ (\Aop x)(i)=\int_I a(i,j)x(j)\,dj,\qquad
+ d(i)=\int_I a(i,j)\,dj,\qquad
+ \Lop=M_d-\Aop.
+\]
+The source's Definition 4.5 requires a strongly connected topology to satisfy
+both qualitative reachability through row supports and the quantitative bound
+$\inf_{i\in I}d(i)>0$.  A disjoint union must consist of at most countably many
+closed positive-measure components and satisfy the corresponding normalized
+degree bound with one uniform positive constant.
+
+\section{Proof intuition}
+
+The adjoint-null equation is a balance law, whereas Definition 4.5 also asks
+for a uniform interaction rate.  Rank-one kernels separate these two demands
+completely.  If $a(i,j)=p(i)q(j)$, the adjoint equation can be solved explicitly:
+the stationary weight is proportional to $q/p$.  In contrast, the degree is
+proportional to $p$.  Taking $p=q$ makes the stationary weight constant no
+matter how close $p$ comes to zero.  Full support prevents a partition from
+hiding the low-degree region inside different components.
+
+\section{Rank-one characterization}
+
+All assertions below are understood up to null sets, as is standard for
+$L^\infty$ kernels.  For the final continuous counterexample, ordinary and
+essential supports and infima give the same conclusion.
+
+\begin{theorem}[Full-support rank-one class]\label{thm:rankone}
+Let $p,q\in L^\infty(I)$ satisfy $0<p,q\leq1$ almost everywhere, and put
+\[
+ a(i,j)=p(i)q(j),\qquad Q=\int_I q(j)\,dj.
+\]
+Then:
+\begin{enumerate}
+\item A function $v\in L^\infty(I)$ with $v>0$ almost everywhere satisfies
+      $\Lop^*v=0$ if and only if
+      \[
+      v=c\,\frac{q}{p}
+      \]
+      for some $c>0$. Consequently such a bounded strictly positive weight
+      exists exactly when $q/p\in L^\infty(I)$; with $\int_Iv=1$ it is unique.
+\item If $q>0$ almost everywhere, every nonzero row has support $I$. Hence a
+      Definition 4.5 disjoint-union decomposition exists if and only if the
+      whole space is its single component, which occurs if and only if
+      \[
+      \essinf_{i\in I}p(i)>0.
+      \]
+\end{enumerate}
+In particular, bounded positive adjoint-null weights do not imply the
+quantitative strong-connectivity conclusion.
+\end{theorem}
+
+\begin{proof}
+For $x\in L^2(I)$,
+\[
+ (\Aop x)(i)=p(i)\int_Iq(j)x(j)\,dj,
+ \qquad d(i)=Qp(i).
+\]
+The adjoint of the rank-one operator is
+\[
+ (\Aop^*y)(i)=q(i)\int_Ip(j)y(j)\,dj.
+\]
+Writing $C=\int_Ip(j)v(j)\,dj$, the equation $\Lop^*v=0$ is therefore
+\[
+ Qp(i)v(i)=q(i)C \quad\text{for almost every }i.
+\]
+Since $p,v>0$ almost everywhere, $C>0$, and this identity is equivalent to
+$v=(C/Q)(q/p)$. Conversely, if $v=cq/p$, then
+$C=c\int_Iq=cQ$, so the displayed equation holds. Normalizing the integral
+fixes $c=(\int_Iq/p)^{-1}$. This proves the first assertion.
+
+For almost every $i$, $p(i)>0$, so the row $a(i,\cdot)$ is a positive scalar
+multiple of $q$. Since $q>0$ almost everywhere, its support is all of $I$.
+The qualitative path condition in Definition 4.5(a) is automatic: any two
+eligible points are joined in one step.
+
+Suppose $\{I_n\}$ were a disjoint-union decomposition in the sense of that
+definition. Each $I_n$ has positive measure. Choosing an eligible
+$i\in I_n$ gives
+\[
+ I=\operatorname{supp}a(i,\cdot)\subset I_n
+\]
+up to null sets. Thus there can only be one component, namely $I$ itself.
+On this component Definition 4.5(b) is precisely
+\[
+ 0<\inf_{i\in I}d(i)=Q\inf_{i\in I}p(i),
+\]
+or, invariantly, $\essinf p>0$. The converse is immediate: when this bound
+holds, $I$ itself satisfies both conditions of Definition 4.5.
+\end{proof}
+
+\section{The minimal counterexample}
+
+\begin{corollary}\label{cor:counterexample}
+The open problem has a negative answer as literally stated.  Define
+\[
+ a(i,j)=ij\qquad (i,j\in[0,1]).
+\]
+Then $v\equiv1$ belongs to $L^\infty(I,\mathbb R_+^*)$ and satisfies
+$\Lop^*v=0$, but the topology is not a disjoint union of strongly connected
+components in the sense of Definition 4.5.
+\end{corollary}
+
+\begin{proof}
+This is Theorem~\ref{thm:rankone} with $p(i)=q(i)=i$ (the value at the null
+point $i=0$ is immaterial). Directly,
+\[
+ d(i)=\int_0^1ij\,dj=\frac{i}{2},
+ \qquad
+ (\Aop1)(i)=\frac{i}{2},
+\]
+and $\Aop$ is self-adjoint because $a$ is symmetric. Hence
+$\Lop^*1=\Lop1=d-\Aop1=0$. For each $i>0$, the continuous function
+$j\mapsto ij$ has support $I$, so an admissible closed component containing
+$i$ must be all of $I$. But
+\[
+ \inf_{i\in I}d(i)=\inf_{i\in I}\frac{i}{2}=0,
+\]
+contradicting Definition 4.5(b).
+\end{proof}
+
+\section{Interpretation caveat and corrected rank-one statement}
+\label{sec:caveat}
+
+The example is qualitatively strongly connected: for $i,j>0$, the edge weight
+$a(i,j)$ is positive, and the exceptional point $i=0$ is negligible. It fails
+only the uniform degree condition built into the source's terminology.
+Therefore:
+\begin{itemize}
+\item Under Definition 4.5 exactly as printed, Corollary~\ref{cor:counterexample}
+      is a full counterexample.
+\item If ``strongly connected components'' in the open problem was intended to
+      mean only qualitative mutual reachability, this example does not refute
+      that weaker intended statement. It instead identifies the missing
+      quantitative hypothesis.
+\item In the full-support rank-one class, the exact repair is
+      $\essinf p>0$. The stationary equation alone controls $q/p$ and cannot
+      supply this bound.
+\end{itemize}
+
+There is also a same-source warning about novelty. In Section 5.4 the authors
+give a different symmetric, qualitatively connected kernel whose degree
+infimum is zero \cite{source}. Symmetry automatically yields $\Lop^*1=0$.
+Thus the obstruction to the literal open problem is already latent in the
+source paper, although that section does not state that it answers the open
+problem. The rank-one calculation above isolates the mechanism and gives a
+complete elementary family, but priority for the bare negative answer should
+be treated as low.
+
+\section{Verification and novelty bounds}
+
+The proof is symbolic and uses no numerical computation. The following checks
+were made explicitly:
+\begin{enumerate}
+\item the adjoint of the rank-one operator was computed from its defining
+      $L^2$ pairing;
+\item substituting $v=cq/p$ reproduces the same scalar $C=cQ$;
+\item full row support rules out every multi-component partition allowed by
+      Definition 4.5;
+\item for $a(i,j)=ij$, both the literal and essential degree infima vanish.
+\end{enumerate}
+
+A bounded search on 9 August 2026 covered the run's registry, solution,
+attempt, and proof-gap indexes; arXiv id 2111.03900; the exact open-problem
+phrase; the paper title combined with ``Perron''; and web searches for positive
+stationary graphon weights and strong components. It found the source and
+later citing papers, but no separate paper explicitly resolving this converse.
+This is not an exhaustive MathSciNet or zbMATH priority search. The latent
+Section 5.4 example is the principal novelty limitation.
+
+\paragraph{Human-review recommendation.}
+Check first whether the authors intended Definition 4.5 in full in the open
+problem. If so, the counterexample is immediate and the rank-one theorem is a
+sharp diagnosis. If only qualitative reachability was intended, retain the
+rank-one theorem as a statement correction and do not advertise the weaker
+problem as solved.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+B. Bonnet, N. Pouradier Duteil, and M. Sigalotti,
+\emph{Consensus Formation in First-Order Graphon Models with Time-Varying
+Topologies}, Math. Models Methods Appl. Sci. 32 (2022), no. 11, 2121--2188;
+arXiv:2111.03900; DOI: \href{https://doi.org/10.1142/S0218202522500518}{10.1142/S0218202522500518}.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,215 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx,microtype,enumitem,xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\Bcal}{\mathcal B}
+
+\title{The Quantum Sharp Young Inequality\\at the Plancherel Endpoint}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 10}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.} Candidate partial result,
+likely valid, pending human review.  It proves one full exponent slice of
+Conjecture V.16, not the finite-exponent conjecture.}}
+\end{center}
+
+\section{Source conjecture and result}
+
+De Palma, Trevisan, Giovannetti, and Ambrosio formulate a quantum sharp Young
+inequality for the $n$-mode beam-splitter and two-mode squeezer
+\cite{DPTGA2018}.  Their Conjecture V.16 asserts that the bilinear Schatten
+constant
+\[
+ C_n(p,q,r,\lambda)=
+ \sup_{X,Y\ne0}
+ \frac{\|\Bcal_\lambda^{\otimes n}(X\otimes Y)\|_r}
+      {\|X\|_p\|Y\|_q}
+\]
+is obtained by restricting to thermal Gaussian inputs and is multiplicative
+in $n$.  The exact source statement and its finiteness prediction appear on
+PDF page 28:
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{Conjecture V.16 and Remark V.17 in \cite{DPTGA2018}.}
+\end{figure}
+
+We prove the conjecture on the Plancherel endpoint
+$(p,q,r)=(2,2,\infty)$, including both kinds of Gaussian mixing and every
+mode number.
+
+\section{Proof intuition}
+
+A Gaussian mixing unitary acts linearly on phase-space displacements.  The
+Weyl characteristic function of the output is therefore the pointwise product
+of two rescaled input characteristic functions.  At Schatten exponent two,
+the Weyl transform is exactly Plancherel.  Cauchy--Schwarz bounds the $L^1$
+norm of that product, and Weyl inversion bounds the output operator norm.  The
+rescaling Jacobians produce the exact constant.  High-energy thermal states,
+with their two energies chosen in the inverse ratio of the mixing weights,
+meet the constant asymptotically.
+
+\section{The exact endpoint}
+
+\begin{theorem}[Plancherel endpoint of Conjecture V.16]\label{thm:endpoint}
+Let $n\ge1$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item If $0<\lambda<1$ (beam-splitter), then
+\[
+ C_n(2,2,\infty,\lambda)
+ =\bigl[\lambda(1-\lambda)\bigr]^{-n/2}.
+\]
+\item If $\lambda>1$ (two-mode squeezer), then
+\[
+ C_n(2,2,\infty,\lambda)
+ =\bigl[\lambda(\lambda-1)\bigr]^{-n/2}.
+\]
+\item At $\lambda=0$ or $\lambda=1$, the constant is infinite.
+\end{enumerate}
+For every nondegenerate $\lambda$, the sharp value is approached by thermal
+Gaussian inputs.  In particular,
+\[
+ C_n(2,2,\infty,\lambda)=C_1(2,2,\infty,\lambda)^n,
+\]
+so Conjecture V.16 and the critical-case prediction of Remark V.17 hold on
+this exponent slice.
+\end{theorem}
+
+\section{Proof}
+
+For $z\in\C^n$, let $D(z)$ be the $n$-mode Weyl displacement and set
+\[
+ \chi_X(z)=\Tr[X D(z)],
+ \qquad d\nu(z)=\pi^{-n}\,d^{2n}z.
+\]
+With this normalization, Weyl inversion and Plancherel are
+\begin{align}
+ X&=\int_{\C^n}\chi_X(z)D(-z)\,d\nu(z),\label{eq:inv}\\
+ \int_{\C^n}|\chi_X(z)|^2\,d\nu(z)&=\|X\|_2^2.\label{eq:planch}
+\end{align}
+These standard identities are initially read on a convenient dense class and
+extend to Hilbert--Schmidt operators; see, for example, Folland
+\cite{Folland1989}.
+
+Let $Z=\Bcal_\lambda^{\otimes n}(X\otimes Y)$.  The action of the Gaussian
+mixing unitary on displacement operators gives, when $0<\lambda<1$,
+\begin{equation}\label{eq:beam-char}
+ \chi_Z(z)=\chi_X(\sqrt\lambda\,z)
+           \chi_Y(\sqrt{1-\lambda}\,z).
+\end{equation}
+For the squeezer $\lambda>1$, the corresponding identity is
+\begin{equation}\label{eq:squeeze-char}
+ \chi_Z(z)=\chi_X(\sqrt\lambda\,z)
+           \chi_Y(-\sqrt{\lambda-1}\,\overline z).
+\end{equation}
+The reflection and conjugation in the second factor preserve Lebesgue measure.
+
+Write $a=\lambda$ and $b=|1-\lambda|$.  Equations
+\eqref{eq:beam-char}--\eqref{eq:squeeze-char}, Weyl inversion, unitarity of
+$D(z)$, Cauchy--Schwarz, and \eqref{eq:planch} yield
+\begin{align*}
+ \|Z\|_\infty
+ &\le \int |\chi_X(\sqrt a\,z)\chi_Y(\sqrt b\,z)|\,d\nu(z)\\
+ &\le
+ \left(\int|\chi_X(\sqrt a\,z)|^2d\nu(z)\right)^{1/2}
+ \left(\int|\chi_Y(\sqrt b\,z)|^2d\nu(z)\right)^{1/2}\\
+ &=a^{-n/2}b^{-n/2}\|X\|_2\|Y\|_2.
+\end{align*}
+For finite-rank $X,Y$ this is a direct estimate of the physical partial-trace
+formula.  Since finite-rank operators are dense in the Hilbert--Schmidt class,
+the bound also defines and uniquely extends the bilinear map on
+$S_2\times S_2$ with values in bounded operators.  This proves the required
+upper bound.
+
+It remains to prove sharpness.  The one-mode thermal state of mean photon
+number $E$ satisfies
+\[
+ \|\widehat\omega(E)\|_2=(2E+1)^{-1/2},
+ \qquad
+ \|\widehat\omega(E)\|_\infty=(E+1)^{-1}.
+\]
+Products of thermal states remain thermal under each modewise mixing.  For a
+beam-splitter their output energy is
+\[
+ E_{\rm out}=\lambda E_A+(1-\lambda)E_B,
+\]
+whereas for a squeezer it is
+\[
+ E_{\rm out}=\lambda E_A+(\lambda-1)(E_B+1).
+\]
+Consequently the thermal quotient for $n$ modes equals
+\begin{equation}\label{eq:thermalratio}
+ \frac{[(2E_A+1)(2E_B+1)]^{n/2}}{(E_{\rm out}+1)^n}.
+\end{equation}
+Set $E_A=bt$ and $E_B=at$.  In both cases, as $t\to\infty$,
+the expression in \eqref{eq:thermalratio} converges to
+$(ab)^{-n/2}$.  This matches the upper bound, proves sharpness, and proves
+multiplicativity.
+
+At $\lambda=1$, the mixing is degenerate: the retained output is the first
+input multiplied by the trace of the second.  Taking the first thermal input
+to be vacuum and sending the second energy to infinity makes the quotient
+diverge because its Hilbert--Schmidt norm tends to zero.  The symmetric
+argument applies at $\lambda=0$.  This completes the proof.
+
+In particular, thermal inputs still give the correct value $+\infty$ at the
+two degenerate parameters, so the restriction equality in Conjecture V.16 is
+not contradicted.  However, the finite-critical-case statement in Remark V.17
+is literally false at $\lambda=0,1$ and should be read with nondegenerate
+mixing assumed.
+
+\section{Verification, scope, and upgrade obstruction}
+
+The script \texttt{code/check\_endpoint.py} constructs the exact beam-splitter
+isometry on a four-level input Fock sector without truncating its possible
+output photon number.  It checks 300 deterministic random matrix pairs at each
+of three transmissivities and checks three beam-splitter and three squeezer
+thermal asymptotics.  It reports
+\begin{verbatim}
+PASS: Plancherel-endpoint sanity checks completed
+\end{verbatim}
+This is supplementary verification, not the proof.
+
+The result does not settle Conjecture V.16 at finite critical exponents, the
+$p\to q$ Gaussian-maximizer conjecture, the Entropy Photon-number Inequality,
+or multimode constrained minimum output entropy.  The same characteristic
+function route at finite exponents requires sharp Hausdorff--Young estimates
+for the Weyl transform.  Ordinary interpolation proves nonsharp boundedness
+but produces a constant strictly larger than the thermal value, so it cannot
+upgrade the endpoint proof to the full conjecture.
+
+\section{Novelty check and review recommendation}
+
+Bounded searches on 11 August 2026 covered the run indexes and open web/arXiv
+results using arXiv:1803.02360, the exact conjecture name, the authors, the
+phrases ``$C_n(2,2,\infty)$,'' ``Hilbert--Schmidt to operator norm,'' ``Weyl
+Plancherel,'' and close beam-splitter/squeezer variants.  They found known
+one-mode, $p=1$, $p=q$, Gaussian-input, and related partial results, but no
+explicit statement of this endpoint.  Novelty confidence is moderate rather
+than high because the proof is short and may be folklore.
+
+Human review is recommended, focusing on phase-space normalization, the
+finite-rank density extension, and the squeezer characteristic-function
+identity.
+
+\begin{thebibliography}{9}
+\bibitem{DPTGA2018}
+G. De Palma, D. Trevisan, V. Giovannetti, and L. Ambrosio,
+\emph{Gaussian optimizers for entropic inequalities in quantum information},
+J. Math. Phys. 59 (2018), 081101; arXiv:1803.02360.
+
+\bibitem{Folland1989}
+G. B. Folland,
+\emph{Harmonic Analysis in Phase Space},
+Princeton University Press, 1989.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,311 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\Ent}{\operatorname{Ent}}
+\newcommand{\KL}{\operatorname{KL}}
+\newcommand{\osc}{\operatorname{osc}}
+\newcommand{\cP}{\mathcal P}
+\newcommand{\cD}{\mathcal D}
+\newcommand{\cA}{\mathcal A}
+\newcommand{\cK}{\mathcal K}
+
+\title{All-temperature exponential ergodicity for nonlinear spin exchange\\
+\large A bounded-Gibbs-reweighting solution to arXiv:2511.05223, Section 4.5}
+\author{Candidate full solution produced in run \texttt{fa\_banach\_001}}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+\texttt{candidate\_full\_solution\_likely\_valid\_human\_review\_needed}.
+The argument removes the high-temperature hypothesis from the exact
+multi-component mean-field setting of Caputo--Morellini's Theorem~1.7.
+
+\medskip
+\noindent\textbf{Source.}
+P.~Caputo and M.~Morellini, \emph{Kac's Program and Relative Entropy Decay
+for Nonlinear Spin-Exchange Dynamics}, arXiv:2511.05223v1 (7 November
+2025), Section~4.5, PDF page~34 \cite{source}.
+
+\section{Source question}
+
+The source asks whether exponential decay to equilibrium continues to hold
+for \emph{every} symmetric interaction matrix $J$, allowing a rate that may
+deteriorate exponentially in the dimension.  It proposes, as one route, a
+uniform-in-tilt covariance estimate for the associated canonical particle
+system.  The full source passage is reproduced below.
+
+\begin{center}
+\includegraphics[width=0.98\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The proof below bypasses the proposed particle-system covariance conjecture.
+It transports the already-proved $J=0$ nonlinear modified logarithmic Sobolev
+inequality (NMLSI) through a bounded Gibbs reweighting.
+
+\section{Definitions and statement}
+
+Let $\Omega=\{-1,+1\}^n$, let $J$ be an arbitrary real symmetric
+$n\times n$ matrix, and set
+\[
+ E_J(\sigma)=\frac12\sigma^{\mathsf T}J\sigma,
+ \qquad w(\sigma)=e^{E_J(\sigma)},
+ \qquad
+ \rho_J=\frac{\min_{\sigma\in\Omega}w(\sigma)}
+                  {\max_{\sigma\in\Omega}w(\sigma)}
+       =e^{-\osc_{\sigma\in\Omega}E_J(\sigma)}.
+\]
+Fix a partition $\cA$ of $[n]$ and the multi-component mean-field transport
+kernel $\cK_{\cA}$ of the source.  Write
+\[
+ S_A(\sigma)=\sum_{i\in A}\sigma_i,\qquad A\in\cA,
+\]
+and let $\Gamma_{\cA}$ be the space of fields constant on each $A\in\cA$.
+The equilibrium family is
+\[
+ \mu^J_h(\sigma)=\frac{1}{Z_J(h)}
+ e^{E_J(\sigma)+\langle h,\sigma\rangle},
+ \qquad h\in\Gamma_{\cA}.
+\]
+For an $\cA$-regular law $p$, let $h_J(p)$ be the unique field for which
+$p$ and $\mu^J_{h_J(p)}$ have the same $\cA$-magnetization profile, and put
+\[
+ I_J(p)=\KL\bigl(p\,\|\,\mu^J_{h_J(p)}\bigr).
+\]
+The source defines a nonlinear entropy production $\cD_J(p)$ by writing
+$p=f\mu^J_{h_J(p)}$ in its H-theorem.  We use the standard boundary
+convention for
+\[
+ \Phi(x,y)=(x-y)\log(x/y),
+\]
+so $\Phi(x,x)=0$ and $\Phi(x,0)=+\infty$ for $x>0$.
+
+\begin{theorem}[All-temperature exponential ergodicity]\label{thm:main}
+For every real symmetric interaction matrix $J$, every partition $\cA$ of
+$[n]$, and the multi-component mean-field kernel $\cK_{\cA}$, the nonlinear
+spin-exchange dynamics of \cite{source} satisfies
+\[
+ I_J(p_t)\le e^{-\alpha_Jt}I_J(p_0),\qquad t\ge0,
+\]
+for every $\cA$-regular initial law $p_0$, where the equilibrium entering
+$I_J$ is fixed along the evolution by the conserved magnetization and
+\[
+ \boxed{\displaystyle
+ \alpha_J=\frac{\rho_J^3}{4n}
+ =\frac1{4n}\exp\!\left[-3\,
+       \osc_{\sigma\in\Omega}\!\left(\frac12\sigma^{\mathsf T}J\sigma\right)
+                 \right]>0.}
+\]
+Thus the answer to the exponential-ergodicity question in Section~4.5 is
+affirmative.  No definiteness or spectral-radius assumption on $J$ is needed.
+\end{theorem}
+
+\section{Proof intuition}
+
+Multiplication by the bounded weight $w=e^{E_J}$ maps the noninteracting
+exponential family exactly onto the interacting Ising family.  This same
+change of density also has a particularly favorable effect on the Barker
+acceptance rule used by the collision kernel.  For a proposed exchange, the
+two Gibbs pair weights appear through their harmonic mean.  After the change
+of density, the nonlinear entropy-production integrand becomes the $J=0$
+integrand times a coefficient bounded below by $\rho_J^2$.  Separately, a
+bounded likelihood update can increase KL divergence by at most
+$\rho_J^{-1}$; an accept/reject channel proves this in one line.  The source's
+$J=0$ NMLSI then transfers with total loss $\rho_J^3$.
+
+The information-projection step is important: the transformed law need not
+have the same magnetization as the naively transformed target.  Instead, one
+projects the transformed law onto the whole $J=0$ equilibrium family and maps
+that competitor back.  This avoids any unjustified matching of fields.
+
+\section{Proof}
+
+For a probability $q$ on $\Omega$, define the bounded likelihood transform
+\[
+ T_wq(\sigma)=\frac{w(\sigma)q(\sigma)}{q[w]},
+ \qquad q[w]=\sum_{\sigma}w(\sigma)q(\sigma).
+\]
+This is a bijection of the probability simplex, preserves supports, and
+satisfies
+\begin{equation}\label{eq:family-map}
+ T_w\mu^0_h=\mu^J_h,\qquad h\in\Gamma_{\cA}.
+\end{equation}
+
+\subsection{KL comparison}
+
+\begin{lemma}[Bounded likelihood updates]\label{lem:kl}
+If $a=\min w$ and $b=\max w$, then for all probabilities $q,r$ on
+$\Omega$,
+\[
+ \KL(T_wq\,\|\,T_wr)\le\frac ba\KL(q\,\|\,r).
+\]
+Consequently, if $p=T_wq$, then
+\begin{equation}\label{eq:information-comparison}
+ I_0(q)\ge\rho_J I_J(p).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Apply to both $q$ and $r$ the same channel which, conditionally on
+$X=\sigma$, sets an auxiliary bit $B=1$ with probability $w(\sigma)/b$.
+The accepted conditional laws are $T_wq$ and $T_wr$.  The chain rule for KL
+gives
+\[
+ \KL(q\|r)\ge \frac{q[w]}{b}\KL(T_wq\|T_wr)
+ \ge\frac ab\KL(T_wq\|T_wr),
+\]
+because the KL terms from the bit marginal and rejected branch are
+nonnegative.  This proves the first assertion.
+
+For the second, recall that the matching-magnetization member of either
+exponential family is its KL information projection.  This follows directly
+by differentiating $\KL(p\|\mu^J_h)$ in $h$; its gradient is the difference
+between the sufficient-statistic means.  Let $r=\mu^0_g$ minimize
+$\KL(q\|\mu^0_g)$ over $g\in\Gamma_{\cA}$.  By
+\eqref{eq:family-map}, $T_wr=\mu^J_g$ is an admissible competitor in the
+interacting family.  Hence
+\[
+ I_J(p)\le\KL(T_wq\|T_wr)
+ \le\rho_J^{-1}\KL(q\|r)=\rho_J^{-1}I_0(q),
+\]
+which is \eqref{eq:information-comparison}.
+\end{proof}
+
+\subsection{Exact entropy-production comparison}
+
+Fix one ordered proposed exchange
+\[
+ x=(\sigma,\sigma')\longmapsto y=(\tau,\tau').
+\]
+The proposal is an involution and conserves the vector
+$S(\sigma)+S(\sigma')$.  Set
+\[
+ A=w(\sigma)w(\sigma'),\qquad B=w(\tau)w(\tau'),
+ \qquad Z=q[w].
+\]
+All external-field factors therefore cancel between the two pair weights.
+The Barker acceptance probability from $x$ to $y$ is exactly
+$B/(A+B)$.
+
+\begin{lemma}[Collision comparison]\label{lem:diss}
+If $p=T_wq$, then
+\begin{equation}\label{eq:diss-comparison}
+ \cD_J(p)\ge\rho_J^2\cD_0(q).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Let $\mu=\mu^J_h$ for any $h\in\Gamma_{\cA}$ and put $f=p/\mu$.
+In the source's entropy-production formula, the contribution of the accepted
+proposal $x\to y$, before the common proposal rate and common factor $1/4$
+are applied, is
+\[
+ \mu(\sigma)\mu(\sigma')\frac{B}{A+B}
+ \Phi\bigl(f(\sigma)f(\sigma'),f(\tau)f(\tau')\bigr).
+\]
+Using pair-statistic conservation, the ratio of the two equilibrium pair
+weights is $A/B$.  Substituting
+$p(\eta)=w(\eta)q(\eta)/Z$ and simplifying gives exactly
+\begin{equation}\label{eq:exact-summand}
+ \frac{AB}{Z^2(A+B)}
+ \Phi\bigl(q(\sigma)q(\sigma'),q(\tau)q(\tau')\bigr).
+\end{equation}
+The rejected proposal contributes zero.  For $J=0$, the acceptance
+probability is $1/2$, so the corresponding coefficient of $\Phi$ is $1/2$.
+The ratio of \eqref{eq:exact-summand}'s coefficient to $1/2$ is
+\[
+ \frac{2AB}{Z^2(A+B)}
+ \ge \frac{\min(A,B)}{Z^2}
+ \ge \frac{a^2}{b^2}=\rho_J^2.
+\]
+The first inequality is the elementary harmonic-mean bound.  Multiplying by
+the identical proposal rates and the identical factor $1/4$, then summing
+over all ordered input pairs and site proposals, proves
+\eqref{eq:diss-comparison}.  The calculation remains valid on the boundary
+of the simplex by the lower-semicontinuous convention for $\Phi$, or by
+positive regularization.
+\end{proof}
+
+\subsection{Completion}
+
+The source proves Theorem~1.7 and its equivalent NMLSI for every partition
+whenever the interaction is nonnegative definite with spectral radius below
+$1/2$ \cite{source}.  At $J=0$ its stated constant is exactly $1/(4n)$.
+Therefore, for every $\cA$-regular $q$,
+\begin{equation}\label{eq:base}
+ \cD_0(q)\ge\frac1{4n}I_0(q).
+\end{equation}
+If $p$ is $\cA$-regular then $q=T_w^{-1}p$ is also $\cA$-regular, because
+the positive transform preserves its support.  Combining
+Lemmas~\ref{lem:kl}--\ref{lem:diss} with \eqref{eq:base} yields
+\[
+ \cD_J(p)ge\rho_J^2\cD_0(q)
+ \ge\frac{\rho_J^2}{4n}I_0(q)
+ \ge\frac{\rho_J^3}{4n}I_J(p).
+\]
+This is the all-temperature NMLSI.  The source H-theorem says that along the
+nonlinear evolution,
+\[
+ \frac{d}{dt}I_J(p_t)=-\cD_J(p_t),
+\]
+while the matching field is fixed by conservation of the $\cA$-magnetization.
+Gr\"onwall's inequality proves Theorem~\ref{thm:main}.
+\qed
+
+\section{Verification and limitations}
+
+\begin{itemize}
+\item The reusable script \texttt{code/verify\_reweighting.py} exhaustively
+  sums every ordered collision and site proposal on small Boolean cubes.  On
+  400 randomized positive-law cases ($n=2,3$), it matched
+  \eqref{eq:exact-summand} to relative error at most
+  $1.30\times10^{-15}$; every dissipation, KL, information-projection, and
+  final comparison had positive numerical slack.
+\item The theorem answers the all-temperature exponential-ergodicity question
+  in the exact quantitative setting of Theorem~1.7: arbitrary partitions and
+  their multi-component mean-field kernels.  It does not claim the result for
+  an arbitrary symmetric transport kernel.
+\item The source's separate uniform covariance conjecture for the Kac particle
+  system is not proved.  The result shows that this conjecture is unnecessary
+  for the nonlinear exponential-decay conclusion.
+\item The rate is deliberately crude.  In particular, it does not recover the
+  expected order-$1/n$ rate throughout the subcritical Curie--Weiss regime.
+  It does establish the source's requested positive $c(J)$, with exponential
+  deterioration in $n$ allowed.
+\item Diagonal modifications of $J$ add a constant to $E_J$ on the Boolean
+  cube, so $\osc E_J$ and the stated rate are invariant under them.
+\end{itemize}
+
+\section{Novelty check and review recommendation}
+
+A bounded search was performed on 13 August 2026 through the run registry,
+solution, attempt, proof-gap, and archive indexes, followed by arXiv/web
+searches using arXiv:2511.05223, the exact title, both authors, the phrases
+``all temperatures'', ``exponential ergodicity'', ``uniform in the tilt'',
+and ``tilted canonical Ising measure'', plus close spectral-independence and
+conditional-product terms.  The source remains at v1 and no later paper or
+preprint explicitly resolving this question was found.  Novelty is therefore
+plausible but not certified.
+
+Human review is strongly recommended.  The highest-value checks are:
+(i) the source normalization yielding coefficient $1/2$ at $J=0$;
+(ii) the proposal-by-proposal simplification in
+\eqref{eq:exact-summand}; and (iii) the information-projection direction in
+Lemma~\ref{lem:kl}.  The included exact finite-state checker targets (i)--(ii).
+
+\begin{thebibliography}{9}
+\bibitem{source}
+P.~Caputo and M.~Morellini,
+\emph{Kac's Program and Relative Entropy Decay for Nonlinear Spin-Exchange
+Dynamics}, arXiv:2511.05223v1, 2025.
+\end{thebibliography}
+
+\end{document}

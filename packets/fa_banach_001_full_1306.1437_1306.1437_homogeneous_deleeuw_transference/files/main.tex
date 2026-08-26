@@ -1,0 +1,369 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\T}{\mathbb T}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\cF}{\mathcal F}
+\newcommand{\M}{\mathcal M}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\wh}{\widehat}
+
+\title{De Leeuw transference on homogeneous $\dot W^{1,1}$}
+\author{Solution packet for arXiv:1306.1437v4}
+\date{12 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+Candidate full solution in the exact space of the source paper, likely valid,
+awaiting human review.
+
+\section{Source question and result}
+
+Kazaniecki and Wojciechowski prove that every Fourier multiplier on
+$\dot W^{1,1}(\R^d)$, $d\ge2$, has a bounded continuous representative
+\cite{KW}.  Their argument needs estimates on the torus.  They observe that
+ordinary $L^1$ has de Leeuw transference, but write that no equivalent was
+known for the homogeneous Sobolev space and leave the general de Leeuw-type
+question open.  The statement is on source PDF page~3:
+
+\begin{center}
+ \includegraphics[width=0.94\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+We prove both analogues of the classical de Leeuw theorems which the source
+states immediately afterward: restriction to a lattice and approximation
+from shrinking lattices.  In particular, we obtain an exact norm identity.
+
+Put $\T^d=\R^d/(2\pi\Z^d)$ and use the seminorms
+\[
+ \|f\|_{\dot W_{\R}}=\sum_{j=1}^d\|\partial_jf\|_{L^1(\R^d)},
+ \qquad
+ \|P\|_{\dot W_{\T}}=\sum_{j=1}^d\|\partial_jP\|_{L^1(\T^d)}.
+\]
+Both spaces are understood modulo constants.  Multiplier norms are denoted
+by $\|m\|_{\M(\dot W_{\R})}$ and
+$\|\gamma\|_{\M(\dot W_{\T})}$.  The coefficient $\gamma_0$ never affects
+the torus seminorm.
+
+\subsection*{Proof Intuition}
+
+For restriction, test the Euclidean multiplier on a trigonometric polynomial
+inside a slowly varying band-limited envelope.  The apparent obstruction is
+that a homogeneous $\dot W^{1,1}$ multiplier need not globally be convolution
+by a measure.  All finitely many wave packets avoid frequency zero, however;
+after a smooth localization there, one can invert a coordinate derivative
+and turn the multiplier into an ordinary $L^1$ measure multiplier.  Translation
+continuity then identifies the torus action with no loss in the limiting
+constant.  In the reverse direction, Poisson summation turns inverse-Fourier
+Riemann sums into periodizations of a band-limited Schwartz function.  The
+input norms converge on expanding period cubes, while the output gradients
+converge locally to the Euclidean multiplier output.  The two limits give the
+reverse inequality and hence exact norm equality.
+
+\begin{theorem}[Homogeneous de Leeuw theorem]\label{thm:main}
+Let $d\ge2$ and let $m:\R^d\to\mathbb C$ be continuous.  For $\eps>0$ set
+\[
+ \gamma_k^{\eps}=m(\eps k),\qquad k\in\Z^d.
+\]
+Then the following statements hold.
+\begin{enumerate}
+\item If $m\in\M(\dot W_{\R})$, then
+\[
+ \gamma^\eps\in\M(\dot W_{\T}),\qquad
+ \|\gamma^\eps\|_{\M(\dot W_{\T})}
+ \le \|m\|_{\M(\dot W_{\R})}
+ \quad(\eps>0).
+\]
+\item If $\eps_n\downarrow0$ and
+$\sup_n\|\gamma^{\eps_n}\|_{\M(\dot W_{\T})}\le C$, then
+\[
+ m\in\M(\dot W_{\R}),\qquad
+ \|m\|_{\M(\dot W_{\R})}\le C.
+\]
+\end{enumerate}
+Consequently,
+\begin{equation}\label{eq:norm-identity}
+ \|m\|_{\M(\dot W_{\R})}
+ =\sup_{\eps>0}\|(m(\eps k))_{k\in\Z^d}\|_{\M(\dot W_{\T})},
+\end{equation}
+with the convention that either side may be infinite.
+\end{theorem}
+
+Because the continuity hypothesis is automatic for Euclidean multipliers by
+the main theorem of \cite{KW}, Theorem~\ref{thm:main} applies to every
+multiplier in the precise setting of that paper.  It does not claim the same
+for every homogeneous order and exponent; see the scope note at the end.
+
+We use the Fourier convention
+\[
+ \wh f(\xi)=\int_{\R^d}f(x)e^{-ix\cdot\xi}\,dx,
+ \qquad
+ f(x)=(2\pi)^{-d}\int_{\R^d}\wh f(\xi)e^{ix\cdot\xi}\,d\xi.
+\]
+
+\section{Two localization lemmas}
+
+The first observation repairs the obstacle in a direct cutoff argument:
+although $m$ need not be a Fourier transform of a measure globally, every
+smooth localization away from the origin is one.
+
+\begin{lemma}[Local $L^1$ multiplier]\label{lem:local-L1}
+Suppose $m\in\M(\dot W_{\R})$ and
+$\chi\in C_c^\infty(\R^d\setminus\{0\})$.  Then $m\chi$ is an ordinary
+$L^1(\R^d)$ multiplier.  Hence $m\chi=\wh\mu$ for a finite complex Borel
+measure $\mu$.
+\end{lemma}
+
+\begin{proof}
+Choose a finite smooth decomposition $\chi=\sum_r\chi_r$ such that, for
+each $r$, some coordinate $\xi_{j_r}$ is bounded away from zero on
+$\operatorname{supp}\chi_r$.  Given $g\in\mathcal S(\R^d)$, define
+\[
+ \wh f_r(\xi)=\frac{\chi_r(\xi)}{i\xi_{j_r}}\wh g(\xi).
+\]
+The multiplier identity gives
+\[
+ T_{m\chi_r}g=\partial_{j_r}T_mf_r.
+\]
+For every $\ell$, the symbol
+$\xi_\ell\chi_r(\xi)/\xi_{j_r}$ is smooth and compactly supported.  Its
+inverse Fourier transform is in $L^1$, so Young's inequality gives
+\[
+ \|f_r\|_{\dot W_{\R}}\le C_{\chi_r}\|g\|_1.
+\]
+It follows that
+\[
+ \|T_{m\chi_r}g\|_1
+ \le \|T_mf_r\|_{\dot W_{\R}}
+ \le \|m\|_{\M(\dot W_{\R})}C_{\chi_r}\|g\|_1.
+\]
+Summing in $r$ makes $m\chi$ an $L^1$ multiplier.  The classical
+characterization of translation-invariant bounded operators on $L^1$
+identifies their symbols with Fourier transforms of finite measures
+\cite{Rudin}.
+\end{proof}
+
+For a finite set $F\subset\Z^d$, write
+$T_{b|F}(\sum_{k\in F}c_ke^{ik\cdot x})
+=\sum_{k\in F}b(k)c_ke^{ik\cdot x}$.
+
+\begin{lemma}[Finite-frequency wave packets]\label{lem:packet}
+Let $b=\wh\mu$ for a finite complex measure $\mu$, let
+$q(x)=\sum_{k\in F}c_ke^{ik\cdot x}$, and let $\Phi\in\mathcal S(\R^d)$.
+Then
+\begin{equation}\label{eq:packet}
+ \delta^d\big\|T_b(\Phi(\delta\,\cdot)q)
+ -\Phi(\delta\,\cdot)T_{b|F}q\big\|_1\longrightarrow0
+ \qquad(\delta\downarrow0).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+For one frequency, convolution by $\mu$ and the change of variables
+$z=\delta x$ bound the normalized error by
+\[
+ \int_{\R^d}\|\Phi(\,\cdot-\delta y)-\Phi\|_1\,d|\mu|(y).
+\]
+This tends to zero by $L^1$ translation continuity and dominated
+convergence, since the integrand is at most $2\|\Phi\|_1$.  Sum over the
+finite set $F$.
+\end{proof}
+
+We also use the elementary periodic averaging formula.  If $a$ is
+$2\pi$-periodic and integrable on $\T^d$, while $\Phi\in\mathcal S$ is
+nonnegative, then
+\begin{equation}\label{eq:averaging}
+ \delta^d\int_{\R^d}\Phi(\delta x)|a(x)|\,dx
+ \longrightarrow A_\Phi\int_{\T^d}|a(y)|\,dy,
+ \qquad
+ A_\Phi=(2\pi)^{-d}\int_{\R^d}\Phi.
+\end{equation}
+One proves this first for continuous $a$ by dividing $\R^d$ into period
+cubes and taking a Riemann sum, then obtains the stated form by $L^1$
+approximation.
+
+\section{Restriction to the torus}
+
+It suffices first to sample on $\Z^d$.  Let $P$ be a trigonometric
+polynomial with zero constant term and finite spectrum
+$F\subset\Z^d\setminus\{0\}$.  Choose a nonzero Schwartz function $\psi$
+whose Fourier transform has compact support and put $\Phi=|\psi|^2$.  Thus
+$\Phi\ge0$, $\Phi\in\mathcal S$, and $\wh\Phi$ is compactly supported.
+Set
+\[
+ f_\delta(x)=\Phi(\delta x)P(x).
+\]
+For all sufficiently small $\delta$, the Fourier support of $f_\delta$ is
+contained in a fixed compact subset of $\R^d\setminus\{0\}$.  Choose
+$\chi\in C_c^\infty(\R^d\setminus\{0\})$ equal to one on that set and put
+$b=m\chi$.  Lemma~\ref{lem:local-L1} applies, and $T_mf_\delta=T_bf_\delta$.
+
+The product rule, \eqref{eq:averaging}, and the extra factor $\delta$ in the
+derivative of the envelope give
+\begin{equation}\label{eq:input-limit}
+ \delta^d\|f_\delta\|_{\dot W_{\R}}
+ \longrightarrow A_\Phi\|P\|_{\dot W_{\T}}.
+\end{equation}
+Indeed,
+\[
+ \partial_jf_\delta
+ =\Phi(\delta x)\partial_jP(x)
+   +\delta(\partial_j\Phi)(\delta x)P(x),
+\]
+and the normalized $L^1$ norm of the second term is $O(\delta)$.
+
+Let $\gamma_k=m(k)$.  Commutation with derivatives gives
+\[
+ \partial_jT_mf_\delta
+ =T_b\big(\Phi(\delta\,\cdot)\partial_jP\big)
+  +\delta T_b\big((\partial_j\Phi)(\delta\,\cdot)P\big).
+\]
+The last term again has normalized norm $O(\delta)$ because convolution by
+the finite measure representing $b$ is $L^1$ bounded.  Lemma~\ref{lem:packet}
+applied to $\partial_jP$, followed by \eqref{eq:averaging}, yields
+\begin{equation}\label{eq:output-limit}
+ \delta^d\|T_mf_\delta\|_{\dot W_{\R}}
+ \longrightarrow A_\Phi\|T_\gamma P\|_{\dot W_{\T}}.
+\end{equation}
+Combining \eqref{eq:input-limit}, \eqref{eq:output-limit}, and the Euclidean
+multiplier inequality proves
+\[
+ \|T_\gamma P\|_{\dot W_{\T}}
+ \le\|m\|_{\M(\dot W_{\R})}\|P\|_{\dot W_{\T}}.
+\]
+Trigonometric polynomials modulo constants are dense, so $\gamma$ extends to
+the asserted torus multiplier.  Finally, the symbol $m_\eps(\xi)=m(\eps\xi)$
+has the same Euclidean multiplier norm as $m$ by dilation.  Applying the
+unit-lattice result to $m_\eps$ proves part~1 of
+Theorem~\ref{thm:main}.
+
+\section{Approximation from shrinking lattices}
+
+Assume $\eps_n\downarrow0$ and
+$\|\gamma^{\eps_n}\|_{\M(\dot W_{\T})}\le C$.  Testing on the nonconstant
+exponentials shows that $|m(\eps_nk)|\le C$ for every $k\ne0$.  Given
+$\xi\in\R^d$, choose nonzero $k_n\in\Z^d$ with $\eps_nk_n\to\xi$; continuity
+then gives $|m(\xi)|\le C$.  Thus $m$ is bounded, as required in the
+multiplier definition.  We first take
+$f\in\mathcal S(\R^d)$ with $\wh f\in C_c^\infty(\R^d)$.  Put
+$L_n=2\pi/\eps_n$ and define the finite trigonometric polynomial
+\begin{equation}\label{eq:Pn}
+ P_n(y)=\sum_{k\in\Z^d}
+ \left(\frac{\eps_n}{2\pi}\right)^d
+ \wh f(\eps_nk)e^{ik\cdot y}.
+\end{equation}
+Poisson summation gives, on the central cube $Q_{L_n}$ of side $L_n$,
+\begin{equation}\label{eq:periodization}
+ P_n(\eps_nx)=F_n(x):=\sum_{\ell\in\Z^d}f(x+L_n\ell).
+\end{equation}
+For each derivative, the period cubes partition $\R^d$.  Hence the triangle
+inequality gives the upper bound by the total Euclidean norm, while the
+reverse triangle inequality on the central summand loses only the exterior
+tail.  Therefore
+\begin{equation}\label{eq:input-period}
+ \sum_{j=1}^d\int_{Q_{L_n}}|\partial_jF_n(x)|\,dx
+ \longrightarrow\|f\|_{\dot W_{\R}}.
+\end{equation}
+
+The rescaled output derivatives are
+\begin{align}
+ H_{n,j}(x)
+ &:=\eps_n(\partial_{y_j}T_{\gamma^{\eps_n}}P_n)(\eps_nx)\notag\\
+ &=\sum_{k\in\Z^d}\left(\frac{\eps_n}{2\pi}\right)^d
+ i\eps_nk_jm(\eps_nk)\wh f(\eps_nk)e^{i\eps_nk\cdot x}.
+ \label{eq:Riemann}
+\end{align}
+For every fixed compact set of $x$'s, this is a Riemann sum converging
+uniformly to
+\begin{equation}\label{eq:limit-gradient}
+ G_j(x)=(2\pi)^{-d}\int_{\R^d}
+ i\xi_jm(\xi)\wh f(\xi)e^{ix\cdot\xi}\,d\xi
+ =\partial_jT_mf(x).
+\end{equation}
+Indeed, the integrand is continuous and compactly supported, and its modulus
+of continuity in $\xi$ is uniform for $x$ in a fixed compact set.
+
+Changing variables $y=\eps_nx$ in the torus multiplier inequality cancels
+the common factor $\eps_n^{1-d}$ and gives
+\begin{equation}\label{eq:scaled-bound}
+ \sum_j\int_{Q_{L_n}}|H_{n,j}(x)|\,dx
+ \le C\sum_j\int_{Q_{L_n}}|\partial_jF_n(x)|\,dx.
+\end{equation}
+Fix a ball $B_R$.  For large $n$, it lies in $Q_{L_n}$.  Uniform convergence
+in \eqref{eq:Riemann}, \eqref{eq:input-period}, and
+\eqref{eq:scaled-bound} show that
+\[
+ \sum_j\int_{B_R}|G_j(x)|\,dx\le C\|f\|_{\dot W_{\R}}.
+\]
+Letting $R\to\infty$ proves
+\begin{equation}\label{eq:dense-bound}
+ \|T_mf\|_{\dot W_{\R}}\le C\|f\|_{\dot W_{\R}}
+\end{equation}
+on the band-limited Schwartz class.
+
+For completeness, that class is dense in $\dot W^{1,1}(\R^d)$ modulo
+constants when $d\ge2$.  The endpoint Sobolev inequality supplies a
+representative $u\in L^{d/(d-1)}$ for every homogeneous class.  If
+$\eta_R(x)=\eta(x/R)$ is a standard cutoff, then
+\[
+ \|(1-\eta_R)\nabla u\|_1\to0,
+ \qquad
+ \|u\nabla\eta_R\|_1
+ \lesssim\|u\|_{L^{d/(d-1)}(\{R\lesssim|x|\lesssim2R\})}\to0.
+\]
+Mollification therefore proves density of $C_c^\infty$.  Convolving a
+compactly supported smooth function with an approximate identity
+$\rho_t\in\mathcal S$ for which $\wh\rho_t$ is compactly supported gives
+band-limited Schwartz approximants and convergence of every first derivative
+in $L^1$.  Thus \eqref{eq:dense-bound} extends uniquely to all of
+$\dot W_{\R}$, proving part~2.  Combining the two parts proves
+\eqref{eq:norm-identity}.
+
+\section{Scope and novelty note}
+
+The theorem is complete for the endpoint first-order homogeneous space
+studied in \cite{KW}: restriction, shrinking-lattice approximation, and
+exact norm equality.  It does not settle all orders and exponents; the
+low-degree polynomial quotients and test-class density across homogeneous
+Sobolev thresholds require separate analysis.
+
+A literature screen through 12 August 2026 found later continuity results on
+$\dot W^{l,1}$ and $\dot W^{l,\infty}$ \cite{Curca}, and related transference
+for the \emph{inhomogeneous} $W^{l,1}$ spaces \cite{CW}.  Neither source
+states the homogeneous shrinking-lattice theorem above.  This is a bounded,
+not exhaustive, novelty screen.
+
+\small
+\begin{thebibliography}{9}
+\bibitem{KW}
+K.~Kazaniecki and M.~Wojciechowski,
+\emph{On the continuity of Fourier multipliers on the homogeneous Sobolev
+spaces $\dot W^1_1(\R^d)$}, Ann. Inst. Fourier 66 (2016), no.~3,
+1247--1260; arXiv:1306.1437.
+
+\bibitem{Rudin}
+W.~Rudin, \emph{Fourier Analysis on Groups}, Wiley, 1962.
+
+\bibitem{Curca}
+E.~Curca, \emph{On the continuity of Fourier multipliers on
+$\dot W^{l,1}(\R^d)$ and $\dot W^{l,\infty}(\R^d)$}, J. Funct. Anal.
+(2022), 109573.
+
+\bibitem{CW}
+E.~Curca and M.~Wojciechowski,
+\emph{Nonexistence of Henkin type projections via a Wiener theorem for
+multipliers}, arXiv:2604.23161 (2026).
+\end{thebibliography}
+
+\end{document}

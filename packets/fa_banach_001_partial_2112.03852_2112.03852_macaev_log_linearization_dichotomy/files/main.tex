@@ -1,0 +1,272 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\Hh}{\mathcal H}
+\newcommand{\Qlin}{Q}
+\newcommand{\Lin}{\operatorname{Lin}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\spanop}{\operatorname{span}}
+
+\title{Macaev Liftability Is Equivalent to\\Logarithmic Local Linearization}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 9}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\fbox{\parbox{0.94\textwidth}{\textbf{Status.} Candidate partial
+result, likely valid. The universal problem is reduced exactly to a sharp
+finite-dimensional estimate, but that estimate is not decided here.}}
+
+\section{Source question}
+
+Cabello Sanchez and Garcia ask on page 5 of \cite{CG} whether every operator
+in the Macaev ideal is liftable through every twisted Hilbert extension.
+Their Macaev ideal consists of compact operators $T$ such that
+\[
+  \sum_{j\geq1}\frac{s_j(T)}j<\infty.
+\]
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.82\textwidth]{figures/open_problem_crop.png}
+  \caption{The source question in arXiv:2112.03852, page 5.}
+\end{figure}
+
+For a homogeneous quasilinear map $\Phi:E\to F$, let $\Qlin(\Phi)$ be the
+least constant in
+\[
+ \|\Phi(x+y)-\Phi(x)-\Phi(y)\|
+ \leq \Qlin(\Phi)(\|x\|+\|y\|),
+\]
+and put
+\[
+ \dist(\Phi,\Lin)
+ =\inf_{L\text{ linear}}\sup_{x\ne0}
+   \frac{\|\Phi(x)-Lx\|}{\|x\|}.
+\]
+Fixing a separable infinite-dimensional Hilbert space $\Hh$, define
+\[
+ \Lambda(m)=\sup\bigl\{\dist(\Phi,\Lin):
+ \Phi:\ell_2^m\to\Hh,\ \Qlin(\Phi)\leq1\bigr\}.
+\]
+This number is finite. Indeed, subtract the linear map agreeing with $\Phi$
+on an orthonormal basis and combine the coordinates in a balanced binary
+tree. At each level Cauchy--Schwarz bounds the sum of the norms of the
+partial coordinate blocks. Summing the resulting geometric series gives,
+for example, $\Lambda(m)\leq4\sqrt m$.
+
+\section{Idea of the proof}
+
+The positive direction is Abel summation. A bound
+$\Lambda(m)=O(\log(m+1))$ gives logarithmically bounded liftings of rank-$m$
+projections. The spectral decomposition
+\[
+ D=\sum_{m\geq1}(s_m-s_{m+1})P_m
+\]
+then becomes a convergent series of liftings precisely because the Macaev
+condition is the discrete integral of those logarithmic costs.
+
+The converse uses the same mechanism in reverse. If the logarithmic bound
+fails, select increasingly bad finite-dimensional quasilinear maps and place
+them on orthogonal blocks. Scalar coefficients are chosen so that their
+Macaev contributions are summable while their block linearization
+obstructions tend to infinity. The resulting block-scalar Macaev operator
+cannot lift through the completed block twist.
+
+\section{The endpoint dichotomy}
+
+\begin{theorem}\label{thm:main}
+The following are equivalent.
+\begin{enumerate}
+\item Every operator in the Macaev ideal on a separable Hilbert space is
+liftable through every twisted Hilbert extension.
+\item There is a universal constant $C$ such that
+\[
+  \Lambda(m)\leq C\log(m+1)\qquad(m\geq1).
+\]
+\end{enumerate}
+More precisely, if (2) fails, a block direct-sum twist and a block-scalar
+Macaev operator give a counterexample to (1).
+\end{theorem}
+
+\begin{proof}
+Assume (2). By the ideal property of liftable operators \cite[Lemma 1]{CG},
+it is enough to treat a positive diagonal compact operator $D$ with decreasing
+diagonal $(s_m)$. Let $P_m$ be the projection onto its first $m$ eigenvectors
+and set $d_m=s_m-s_{m+1}$. Thus
+\[
+ D=\sum_{m\geq1}d_mP_m.
+\]
+
+Fix a twisted Hilbert extension and represent it by a quasilinear map
+$\Phi:\Hh\to\Hh$. Restricting $\Phi$ to $P_m\Hh$ and using (2), choose a
+linear map $L_m:P_m\Hh\to\Hh$ such that
+\[
+ \|\Phi(P_mx)-L_mP_mx\|
+ \leq C\Qlin(\Phi)\log(m+1)\|x\|.
+\]
+Hence $x\mapsto(L_mP_mx,P_mx)$ is a lifting of $P_m$ whose norm, in the
+standard twisted-sum quasinorm, is at most
+$1+C\Qlin(\Phi)\log(m+1)$.
+
+Summation by parts gives
+\begin{align*}
+ \sum_{m\geq1}d_m\log(m+1)
+ &=s_1\log2+
+   \sum_{m\geq2}s_m\bigl(\log(m+1)-\log m\bigr)\\
+ &\leq s_1\log2+\sum_{m\geq2}\frac{s_m}{m}<\infty.
+\end{align*}
+A twisted Hilbert space has an equivalent Banach norm. Therefore the weighted
+series of the displayed liftings converges to a bounded linear lifting of
+$D$. This proves (1).
+
+We prove the converse contrapositively. Suppose that
+$\Lambda(m)/\log(m+1)$ is unbounded. Choose strictly increasing integers
+$m_k$ and maps
+\[
+ \Phi_k:\ell_2^{m_k}\to Y_k,\qquad \Qlin(\Phi_k)\leq1,
+\]
+where the $Y_k$ are Hilbert spaces, so that
+\[
+ \delta_k:=\dist(\Phi_k,\Lin)
+ \geq k^4\log(m_k+1).
+\]
+On the algebraic Hilbertian direct sum define
+\[
+ \Omega((x_k))=(\Phi_k(x_k)).
+\]
+Minkowski's inequality shows that $\Qlin(\Omega)\leq1$. Completing the
+associated twisted sum gives an exact sequence whose quotient is
+$X=(\bigoplus_k\ell_2^{m_k})_2$ and whose kernel is
+$Y=(\bigoplus_kY_k)_2$.
+
+Set
+\[
+ a_k=\frac1{k^2\log(m_k+1)},\qquad
+ D=\bigoplus_{k\geq1}a_k I_{\ell_2^{m_k}}.
+\]
+The numbers $a_k$ decrease to zero, so $D$ is compact. Put
+$N_k=\sum_{i\leq k}m_i$. Since the singular value $a_k$ occurs $m_k$
+times, the contribution of the $k$-th block, for $k\geq2$, satisfies
+\[
+ \sum_{j=N_{k-1}+1}^{N_k}\frac{s_j(D)}j
+ =a_k\sum_{j=N_{k-1}+1}^{N_k}\frac1j
+ \leq a_k\log\frac{N_k}{N_{k-1}}
+ \leq a_k\log(m_k+1)=\frac1{k^2}.
+\]
+The first block contributes only a finite amount, and therefore $D$ belongs
+to the Macaev ideal.
+
+If $D$ had a bounded lifting through the completed block twist, restriction
+to the $k$-th quotient block and projection onto the $k$-th kernel block
+would give a linear $L_k:\ell_2^{m_k}\to Y_k$ with
+\[
+  \sup_k\|a_k\Phi_k-L_k\|<\infty.
+\]
+By homogeneity this forces $\sup_k a_k\delta_k<\infty$. But
+\[
+  a_k\delta_k\geq k^2,
+\]
+a contradiction. Thus $D$ is a Macaev operator which is not liftable, so
+(1) fails.
+\end{proof}
+
+\section{A sharp finite-range theorem}
+
+The full logarithmic estimate remains undecided when the target Hilbert space
+is unrestricted.  There is, however, a sharp theorem when both dimensions are
+controlled.  Let
+\[
+ \Lambda_{\rm c}(m,r)=\sup\bigl\{\dist(\Phi,\Lin):
+ \Phi:\ell_2^m\to\ell_2^r\text{ continuous and homogeneous},\
+ \Qlin(\Phi)\leq1\bigr\}.
+\]
+
+\begin{theorem}\label{thm:finite-range}
+There is a universal constant $C$ such that
+\[
+ \Lambda_{\rm c}(m,r)\leq C\bigl(1+\log(m+r)\bigr).
+\]
+This order is sharp when $m$ and $r$ are comparable.  Consequently, fix a
+continuous quasilinear map $\Phi:\Hh\to\Hh$ and nested finite-dimensional
+subspaces $E_m\subset\Hh$, $\dim E_m=m$.  If, for some fixed $a<\infty$,
+\[
+ \dim\spanop\Phi(E_m)\leq(m+1)^a\qquad(m\geq1),
+\]
+then every positive diagonal Macaev operator whose first $m$ eigenvectors span
+$E_m$ lifts through the twist generated by $\Phi$.
+\end{theorem}
+
+\begin{proof}
+Put $n=\max(m,r)$, embed domain and range isometrically in $\ell_2^n$, and let
+$P:\ell_2^n\to\ell_2^m$ be the orthogonal projection.  The map
+\[
+ \widetilde\Phi(x)=J\Phi(Px):\ell_2^n\longrightarrow\ell_2^n
+\]
+is continuous, homogeneous, and has quasilinearity constant at most one.
+Kalton's logarithmic linearization theorem
+\cite[Theorem~2.2]{Kalton2002} supplies a linear $A:\ell_2^n\to\ell_2^n$
+such that
+\[
+ \|\widetilde\Phi(x)-Ax\|
+ \leq C(1+\log n)\|x\|.
+\]
+Restricting $A$ to the embedded $\ell_2^m$ and orthogonally projecting its
+values to the embedded $\ell_2^r$ proves the upper bound.  Kalton's example
+\cite[Proposition~2.1]{Kalton2002} gives the matching logarithmic lower order
+when the dimensions are comparable.
+
+For the consequence, restrict $\Phi$ to $E_m$ and identify the Hilbert space
+$\spanop\Phi(E_m)$ with $\ell_2^{r_m}$, where $r_m\leq(m+1)^a$.  The first
+part yields linear maps $L_m:E_m\to\Hh$ satisfying
+\[
+ \|\Phi(x)-L_mx\|
+ \leq C_a\Qlin(\Phi)\log(m+1)\|x\|\qquad(x\in E_m).
+\]
+The Abel-summation proof in Theorem~\ref{thm:main} now applies verbatim.
+\end{proof}
+
+\section{Verification and limitation}
+
+The proof uses only two-sided estimates: Abel summation for the positive
+direction and restriction to individual blocks for the negative direction.
+The dense block map is used only to define its completed twisted sum, exactly
+as in standard block constructions of twisted Hilbert spaces. No uniform
+boundedness of the individual maps is assumed or needed.
+
+The endpoint dichotomy identifies the remaining issue sharply, but does not
+decide it.  Theorem~\ref{thm:finite-range} shows that target dimension is the
+only unresolved quantitative parameter in the continuous finite-dimensional
+problem: Kalton's theorem gives $O(\log(m+r))$, whereas the universal Macaev
+question requires $O(\log m)$ with no restriction on $r$, including an
+infinite-dimensional target.  A dualization followed by Maurey's projection
+theorem does not remove this parameter: estimating the required type constant
+is quantitatively equivalent to bounding the original splitting constant.
+The available Schatten-class argument in \cite{CG} supplies a bound depending
+on every fixed exponent $p<\infty$; its cited splitting theorem is
+nonquantitative in $p$. Consequently it does not currently yield the linear
+growth in $p$ that would imply (2). Human review should concentrate on the
+completed block construction and on whether an existing local theory theorem
+already decides the asymptotic behavior of $\Lambda(m)$.
+
+\begin{thebibliography}{9}
+\bibitem{CG}
+F. Cabello Sanchez and R. Garcia,
+\emph{The Twisted Hilbert Space Ideals},
+Integral Equations Operator Theory 94 (2022), article 21;
+arXiv:2112.03852.
+
+\bibitem{Kalton2002}
+N. J. Kalton,
+\emph{A remark on quasi-isometries},
+Proc. Amer. Math. Soc. 131 (2003), 1225--1231.
+\end{thebibliography}
+
+\end{document}

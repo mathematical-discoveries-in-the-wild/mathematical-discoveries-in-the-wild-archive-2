@@ -1,0 +1,242 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\M}{\mathcal M}
+\newcommand{\Om}{\Omega}
+
+\title{Multi-Center \(A_1\) Mixtures at the Rubio de Francia Endpoint}
+\author{Run fa\_banach\_001, agent\_lane\_16}
+\date{2026-08-11}
+
+\begin{document}
+\maketitle
+
+\section*{Source question and status}
+
+For a pairwise disjoint family of intervals \(\Om\) in \(\R\), let
+\[
+ T^{\Om}f(x)=\left(\sum_{\omega\in\Om}|H_\omega f(x)|^2\right)^{1/2},
+ \qquad
+ \widehat{H_\omega f}=\one_\omega\widehat f.
+\]
+After Theorem 5.2 of Amenta--Lorist--Veraar, arXiv:1703.06044, the
+strong estimate at the scalar endpoint \(p=q'\) is recorded as open.  Its
+central \(q=2\) case asks whether
+\begin{equation}\label{eq:conjecture}
+ \|T^{\Om}f\|_{L^2(w)}\lesssim_w\|f\|_{L^2(w)}
+ \quad\text{for every }w\in A_1,
+\end{equation}
+uniformly in \(\Om\).  Di Plinio--Fl\'orez-Amatriain--Parissis--Roncal,
+arXiv:2308.01442, still call \eqref{eq:conjecture} the outstanding
+trigonometric endpoint conjecture.  They prove it when \(w\) is even and
+radially decreasing, as well as for the Walsh analogue.
+
+The result below closes their radial class under arbitrary positive mixtures.
+It produces multi-center and multiscale weights which need not be radially
+decreasing about any point.
+
+\section*{Proof intuition}
+
+The key observation is elementary but powerful: after squaring, an
+\(L^2(w)\) estimate is linear in \(w\).  If the endpoint estimate holds with
+one common constant for each member of a family \((v_s)\), Tonelli's theorem
+lets us integrate the estimates and proves the same bound for every positive
+mixture \(w=\int v_s\).  Uniform \(A_1\) control is also preserved because
+the maximal operator is sublinear.  Combining this cone principle with the
+2023 radial theorem gives the claimed class.
+
+\begin{lemma}[positive-mixture principle]\label{lem:mixture}
+Let \((S,\nu)\) be a measure space and let \(v_s\) be nonnegative locally
+integrable weights, measurable in \((s,x)\).  Suppose that, with a common
+constant \(B\),
+\[
+ \|T^{\Om}f\|_{L^2(v_s)}\le B\|f\|_{L^2(v_s)}
+\]
+for \(\nu\)-almost every \(s\), every finite pairwise disjoint \(\Om\), and
+every Schwartz function \(f\).  If
+\(w(x)=\int_Sv_s(x)\,d\nu(s)\) is finite almost everywhere and locally
+integrable, then
+\[
+ \|T^{\Om}f\|_{L^2(w)}\le B\|f\|_{L^2(w)}.
+\]
+If in addition \([v_s]_{A_1}\le K\) almost everywhere, then
+\([w]_{A_1}\le K\).
+\end{lemma}
+
+\begin{proof}
+Tonelli's theorem gives
+\[
+ \int_\R |T^{\Om}f|^2w
+ =\int_S\int_\R |T^{\Om}f|^2v_s\,dx\,d\nu(s)
+ \le B^2\int_S\int_\R |f|^2v_s\,dx\,d\nu(s)
+ =B^2\int_\R|f|^2w.
+\]
+For the last assertion, positivity and sublinearity give, almost everywhere,
+\[
+ \M w\le\int_S\M v_s\,d\nu(s)
+ \le K\int_Sv_s\,d\nu(s)=Kw.
+\]
+\end{proof}
+
+\begin{theorem}[multi-center radial mixtures]\label{thm:main}
+Fix \(K<\infty\).  For \(s\in S\), let
+\[
+ v_s(x)=\phi_s\!\left(\frac{|x-a_s|}{r_s}\right),
+ \qquad a_s\in\R,\quad r_s>0,
+\]
+where \(\phi_s:[0,\infty)\to[0,\infty)\) is nonincreasing and
+\([v_s]_{A_1}\le K\).  Let \(w=\int_Sv_s\,d\nu(s)\) be finite almost
+everywhere and locally integrable.  There is \(C(K)<\infty\), independent of
+the mixture and of the disjoint family \(\Om\), such that
+\[
+ \|T^{\Om}f\|_{L^2(w)}\le C(K)\|f\|_{L^2(w)}.
+\]
+Moreover \(w\in A_1\) and \([w]_{A_1}\le K\).
+\end{theorem}
+
+\begin{proof}
+Translation and dilation preserve both the \(A_1\) characteristic and the
+form of the Fourier-projection inequality.  Thus the radial endpoint theorem
+of arXiv:2308.01442 applies to every \(v_s\), with a bound depending only on
+\(K\) (its stated bound involves \([v_s]_{A_1}\) and
+\([v_s]_{A_\infty}\), and the latter is controlled by the former).  Lemma
+\ref{lem:mixture} finishes the proof.
+\end{proof}
+
+Here is a concrete, flexible subclass.
+
+\begin{proposition}[polynomial-tail mixtures]\label{prop:kernels}
+Fix \(0<\alpha<1\).  Let \(c_j\ge0\), \(a_j\in\R\), and \(r_j>0\), and
+assume that
+\[
+ w(x)=\sum_{j}c_j
+ \left(1+\frac{|x-a_j|}{r_j}\right)^{-\alpha}
+\]
+is finite almost everywhere and locally integrable.  Then \(w\in A_1\), with
+\([w]_{A_1}\le K_\alpha\), and
+\[
+ \|T^{\Om}f\|_{L^2(w)}\le C_\alpha\|f\|_{L^2(w)}
+\]
+uniformly over all pairwise disjoint \(\Om\).  The same conclusion holds for
+positive integral mixtures of these kernels.
+\end{proposition}
+
+\begin{proof}
+It suffices to check that
+\(k(x)=(1+|x|)^{-\alpha}\) has an \(A_1\) constant depending only on
+\(\alpha\).  Fix an interval \(I\ni x\), put \(R=1+|x|\), and let
+\(L=|I|\).  If \(L\le R/2\), then \(1+|y|\ge R/2\) for \(y\in I\), so
+the average of \(k\) on \(I\) is at most \(2^\alpha k(x)\).  If
+\(L>R/2\), then
+\[
+ \frac1L\int_I(1+|y|)^{-\alpha}\,dy
+ \le C_\alpha L^{-\alpha}
+ \le C'_\alpha R^{-\alpha}=C'_\alpha k(x).
+\]
+Translation and dilation do not change this bound.  The result follows from
+Theorem \ref{thm:main}; integral mixtures follow from Tonelli.
+\end{proof}
+
+For example, two well-separated kernels in Proposition \ref{prop:kernels}
+give two strict peaks, so the resulting weight is not radially decreasing
+about any center.  Arbitrarily many centers and scales are allowed, and the
+constant does not grow with their number.
+
+\section*{A reduction toward the full conjecture}
+
+The cone principle also narrows the remaining problem.  Write \(\M\) for the
+uncentered Hardy--Littlewood maximal operator.
+
+\begin{proposition}[Coifman--Rochberg reduction]\label{prop:reduction}
+Fix \(K\).  There exist \(r>1\) and \(\delta\in(1/r,1)\), depending only on
+\(K\), with the following property.  Every \(w\in A_1\) with
+\([w]_{A_1}\le K\) is pointwise comparable, with constants depending only on
+\(K\), to a positive mixture
+\[
+ v=\sum_{k\in\mathbb Z}2^k(\M\one_{E_k})^\delta,
+ \qquad E_k=\{x:w(x)>2^k\}.
+\]
+Each \((\M\one_{E_k})^\delta\) has a common \(A_1\) bound.  Consequently,
+to prove \eqref{eq:conjecture} for all weights of \(A_1\) characteristic at
+most \(K\), it is enough to prove it uniformly for the special weights
+\((\M\one_E)^\delta\), for arbitrary measurable \(E\subset\R\).
+\end{proposition}
+
+\begin{proof}
+The reverse-H\"older theorem for \(A_1\) gives \(r>1\) and \(A=A(K)\) such
+that
+\[
+ \frac1{|I|}\int_Iw^r\le A\left(\frac1{|I|}\int_Iw\right)^r.
+\]
+At almost every \(x\), for every interval \(I\ni x\), Chebyshev and the
+\(A_1\) inequality imply
+\[
+ \frac{|E_k\cap I|}{|I|}
+ \le 2^{-kr}\frac1{|I|}\int_Iw^r
+ \le A K^r\left(\frac{w(x)}{2^k}\right)^r.
+\]
+Taking the supremum over \(I\) yields
+\begin{equation}\label{eq:levelmax}
+ \M\one_{E_k}(x)
+ \le \min\left\{1,AK^r\left(\frac{w(x)}{2^k}\right)^r\right\}.
+\end{equation}
+Choose \(\delta\in(1/r,1)\).  At Lebesgue points in \(E_k\),
+\(\M\one_{E_k}=1\).  Hence the terms with \(2^k<w(x)\) sum to a quantity
+comparable from above and below to \(w(x)\).  For the remaining terms,
+\eqref{eq:levelmax} and \(r\delta>1\) give a convergent geometric series:
+\[
+ \sum_{2^k\ge w(x)}2^k(\M\one_{E_k}(x))^\delta
+ \le C(K)w(x)^{r\delta}
+ \sum_{2^k\ge w(x)}2^{-k(r\delta-1)}
+ \le C'(K)w(x).
+\]
+Thus \(w\lesssim v\lesssim_Kw\).  The standard Coifman--Rochberg lemma
+states that \((\M g)^\delta\in A_1\), with constant depending only on
+\(\delta\), for every nonnegative \(g\).  If the desired endpoint estimate
+holds uniformly for these special weights, Lemma \ref{lem:mixture} proves it
+for \(v\); pointwise comparability transfers it from \(v\) to \(w\).
+\end{proof}
+
+\begin{remark}[scope]
+Theorem \ref{thm:main} is an unconditional partial result.  Proposition
+\ref{prop:reduction} is a reduction, not a proof of the full conjecture: a
+general weight \((\M\one_E)^\delta\) need not be a positive mixture of
+single-center radial weights by any argument presently supplied here.  The
+case of all \(A_1\) weights, and the source's other endpoint cases
+\(p=q'<2\), remain open.
+\end{remark}
+
+\section*{Novelty check}
+
+Exact-id, title, endpoint-phrase, \(p=q'\), \(A_1\), radial-weight, Walsh,
+and positive-mixture searches were run in the local FA/Banach registry and
+in primary arXiv sources through 2026-08-11.  The decisive later source was
+arXiv:2308.01442.  No full endpoint resolution and no explicit statement of
+the multi-center positive-mixture consequence above was found.  Since the
+main proof is a short cone argument from the 2023 theorem, novelty confidence
+is moderate while validity confidence is high.
+
+\section*{References}
+
+\begin{itemize}
+\item A. Amenta, E. Lorist, and M. Veraar,
+\emph{Rescaled extrapolation for vector-valued functions},
+arXiv:1703.06044.
+\item F. Di Plinio, M. Fl\'orez-Amatriain, I. Parissis, and L. Roncal,
+\emph{Pointwise localization and sharp weighted bounds for Rubio de Francia
+square functions}, arXiv:2308.01442.
+\item R. R. Coifman and R. Rochberg,
+\emph{Another characterization of BMO}, Proc. Amer. Math. Soc. 79 (1980),
+249--254 (maximal-function powers in \(A_1\)).
+\end{itemize}
+
+\end{document}

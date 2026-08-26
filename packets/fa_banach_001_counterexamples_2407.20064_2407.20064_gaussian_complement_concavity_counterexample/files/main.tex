@@ -1,0 +1,204 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\gauss}{\gamma}
+
+\title{Gaussian Balls Refute the Proposed\\Complement-Concavity Extension}
+\author{Counterexample packet for arXiv:2407.20064}
+\date{12 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\begin{minipage}{0.9\textwidth}
+\textbf{Status: candidate full counterexample, likely valid; human review
+requested.}
+The source's final conjecture is false already for the standard Gaussian in
+dimension two.  With \(K=6B_2^2\), \(L=2B_2^2\), and \(t=1/2\), its left
+side is \(e^{-2}\), while its right side is strictly larger than
+\((1-e^{-2})/4>e^{-2}\).  More generally, every absolutely continuous
+probability measure satisfying the conjecture's concavity premise violates
+its proposed conclusion for some two concentric balls.
+\end{minipage}}
+\end{center}
+
+\section{The conjecture}
+
+Let \(\mathcal K_e^n\) denote the origin-symmetric convex bodies in
+\(\R^n\).  The final conjecture in Langharst--Liu--Tang,
+\emph{The Weighted \(L^p\) Minkowski Problem} \cite{LLT}, says that if a
+probability measure \(\mu\) is \((1/n)\)-concave over
+\(\mathcal K_e^n\), then for all \(K,L\in\mathcal K_e^n\) and
+\(t\in(0,1)\),
+\[
+\begin{split}
+ &\mu\bigl((1-t)(\R^n\setminus\operatorname{int}K)+tL\bigr)\\
+ &\quad\ge
+ \left((1-t)\mu(\R^n\setminus\operatorname{int}K)^{1/n}
+       +t\mu(L)^{1/n}\right)^n.
+\end{split}
+\tag{1}
+\]
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.97\textwidth]{figures/source_conjecture_crop.png}
+\caption{The source's final conjecture (PDF page 51).}
+\end{figure}
+
+The premise means that the same inequality, without complements and with the
+usual Minkowski combination, is already known for pairs of symmetric convex
+bodies.  The proposed extension replaces one convex input by its nonconvex,
+unbounded complement.  That change creates an elementary obstruction.
+
+\section{A general ball obstruction}
+
+Write \(B=B_2^n\) for the Euclidean unit ball.
+
+\begin{lemma}[Exact complement sum]
+\label{lem:set}
+Let \(a>b>0\) and set \(t=(a-b)/(a+b)\).  Then
+\[
+ (1-t)(\R^n\setminus\operatorname{int}(aB))+tbB
+ =\R^n\setminus\operatorname{int}(bB).
+ \tag{2}
+\]
+\end{lemma}
+
+\begin{proof}
+The choice of \(t\) gives
+\((1-t)a-tb=b\).  If \(|y|\ge(1-t)a\) and \(|z|\le tb\), the reverse
+triangle inequality gives \(|y+z|\ge b\), proving one inclusion.
+
+Conversely, take \(|x|\ge b\).  If \(|x|\ge(1-t)a\), use \(y=x,z=0\).
+If \(b\le|x|<(1-t)a\), use
+\(y=(1-t)a\,x/|x|\) and \(z=x-y\).  Then
+\(|z|=(1-t)a-|x|\le(1-t)a-b=tb\), so \(x=y+z\) belongs to the left side.
+\end{proof}
+
+\begin{theorem}[Structural failure]
+\label{thm:general}
+Let \(\mu\) be an absolutely continuous probability measure on \(\R^n\)
+which is \((1/n)\)-concave over \(\mathcal K_e^n\).  Then the conclusion
+(1) fails for some \(K,L\in\mathcal K_e^n\) and \(t\in(0,1)\).
+\end{theorem}
+
+\paragraph{Proof intuition.}
+Choose a ball \(L=bB\) carrying more than half the probability.  Take a much
+larger concentric ball \(K=aB\) and tune \(t\) so that adding \(tL\) to the
+scaled exterior of \(K\) produces exactly the exterior of \(L\).  The left
+side of (1) is then the small mass outside \(L\), while the right side retains
+almost all the large mass inside \(L\).  As \(a\to\infty\), the coefficient
+of that impossible term tends to one.
+
+\begin{proof}
+Choose \(b>0\) with \(\alpha:=\mu(bB)>1/2\); absolute continuity makes
+\(\mu(\partial(bB))=0\).  For \(a>b\), set
+\(K=aB\), \(L=bB\), and \(t=(a-b)/(a+b)\).  Lemma~\ref{lem:set} makes the
+left side of (1) equal to \(1-\alpha\).  Its right side is at least
+\[
+ \bigl(t\mu(L)^{1/n}\bigr)^n=t^n\alpha. \tag{3}
+\]
+As \(a\to\infty\), \(t\to1\).  Since \(\alpha>1/2\), one can choose a
+finite \(a\) for which \(t^n\alpha>1-\alpha\).  For that choice, (3) is
+strictly larger than the left side, contradicting (1).
+\end{proof}
+
+Notice that the concavity premise is used to make \(\mu\) an admissible
+measure for the conjecture; the failure mechanism itself needs only
+absolute continuity and finite total mass.
+
+\section{An explicit Gaussian counterexample}
+
+Let \(\gauss_2\) be standard Gaussian measure on \(\R^2\):
+\[
+ d\gauss_2(x)=\frac1{2\pi}e^{-|x|^2/2}\,dx.
+\]
+Eskenazis and Moschidis proved the dimensional Gaussian
+Brunn--Minkowski inequality \cite{EM}: for symmetric convex bodies
+\(A,C\subset\R^n\),
+\[
+ \gauss_n((1-s)A+sC)^{1/n}
+ \ge(1-s)\gauss_n(A)^{1/n}+s\gauss_n(C)^{1/n}.
+ \tag{4}
+\]
+Thus \(\gauss_2\) satisfies exactly the premise of (1).
+
+Take
+\[
+ n=2,\qquad K=6B_2^2,\qquad L=2B_2^2,\qquad t=\frac12.
+ \tag{5}
+\]
+Lemma~\ref{lem:set}, or a direct radius calculation \(3-1=2\), gives
+\[
+ \tfrac12(\R^2\setminus\operatorname{int}K)+\tfrac12L
+ =\R^2\setminus\operatorname{int}(2B_2^2). \tag{6}
+\]
+Polar integration yields
+\[
+ \gauss_2(rB_2^2)=1-e^{-r^2/2}. \tag{7}
+\]
+Consequently, the left side of (1) is \(e^{-2}\), whereas the right side is
+\[
+ \frac14\left(e^{-9}+\sqrt{1-e^{-2}}\right)^2
+ >\frac14(1-e^{-2}). \tag{8}
+\]
+Finally,
+\[
+ e>1+1+\frac12+\frac16=\frac83
+ \quad\Longrightarrow\quad e^2>\frac{64}{9}>5,
+\]
+and hence
+\[
+ e^{-2}<\frac14(1-e^{-2}). \tag{9}
+\]
+Equations (8)--(9) show that the proposed right side is strictly larger than
+the left side.  All bodies are origin-symmetric convex bodies, and (4)
+verifies the only non-elementary hypothesis.
+
+\section{Verification, scope, and novelty}
+
+The counterexample is a full negative answer to the displayed source
+conjecture, not to the weighted \(L^p\) Minkowski existence theorems proved
+elsewhere in the paper.  It also does not challenge Gaussian
+\((1/n)\)-concavity on symmetric convex bodies: one input in (1) is the
+complement of such a body and is neither convex nor bounded.
+
+Review should focus on the exact set identity (2), the Gaussian tail formula
+(7), and the direction of the strict comparison (9).  The accompanying
+script checks the radius, exact elementary certificate, and numerical gap.
+
+On 12 August 2026, the four run indexes and bounded exact/current searches
+for the arXiv id, title, exact complement formula, and later
+citations found no existing proof or refutation.  The current source version
+still states the conjecture on page 51.  Novelty confidence is moderate-high.
+
+\paragraph{Human-review recommendation.}
+Review as a full counterexample.  The example is explicit, two-dimensional,
+uses the canonical measure motivating the paper, and extends to every
+absolutely continuous probability measure satisfying the stated premise.
+
+\begin{thebibliography}{9}
+
+\bibitem{LLT}
+D.~Langharst, J.~Liu, and S.~Tang,
+\emph{The Weighted \(L^p\) Minkowski Problem},
+arXiv:2407.20064, Appendix conjecture on PDF page 51.
+
+\bibitem{EM}
+A.~Eskenazis and G.~Moschidis,
+\emph{The dimensional Brunn--Minkowski inequality in Gauss space},
+J. Funct. Anal. 280 (2021), Paper No.~108914; arXiv:2004.07146.
+
+\end{thebibliography}
+
+\end{document}

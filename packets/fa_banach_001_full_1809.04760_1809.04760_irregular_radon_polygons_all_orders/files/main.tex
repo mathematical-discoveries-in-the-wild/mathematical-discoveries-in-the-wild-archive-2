@@ -1,0 +1,194 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\hypersetup{colorlinks=true,linkcolor=blue!55!black,urlcolor=blue!55!black,citecolor=blue!55!black}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\perpB}{\mathrel{\perp_B}}
+\title{Irregular polygonal Radon planes\\with every admissible number of vertices}
+\author{Candidate full solution for arXiv:1809.04760}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.9\linewidth}{\textbf{Status:} full solution likely valid, subject to human review.}}
+\end{center}
+
+\section{Source question}
+
+Mandal, Sain, and Paul prove that every Euclidean regular polygon with
+$4n+2$ vertices is the unit sphere of a Radon plane and construct irregular
+hexagonal examples.  They then ask the following question on page 11 of
+arXiv:1809.04760v2~\cite{MSP}.
+
+\begin{quote}
+Given any $n\in\mathbb N$, does there exist a Radon plane $X$ such that
+$S_X$ is an irregular polygon with $4n+2$ vertices?  If the answer is
+affirmative, find a generalized algorithm constructing such planes.
+\end{quote}
+
+Here ``regular'' has the source's Euclidean meaning: all side lengths and all
+interior angles agree.  We take $\mathbb N=\{1,2,\ldots\}$, as in the source's
+polygonal statements.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{The open question in the original paper, page 11.}
+\end{figure}
+
+\section{Proof intuition}
+
+The Radon property belongs to the normed linear structure, so it is invariant
+under linear isometry.  Euclidean regularity of a drawn unit polygon is not:
+an anisotropic stretch changes its side lengths.  Start with the regular
+$(4n+2)$-gon, which the source already proves is Radon, and transport its norm
+by the diagonal map $(x,y)\mapsto(\lambda x,y)$.  The transported plane is
+isometric to the original Radon plane, but two explicitly chosen edges of its
+unit polygon have unequal Euclidean lengths whenever $\lambda\ne1$.
+
+\section{Formal result}
+
+Recall that $x\perpB y$ in a normed space if
+$\|x+ty\|\geq\|x\|$ for every $t\in\R$.  A real normed plane is a Radon plane
+when this relation is symmetric.
+
+\begin{lemma}[Transport of Birkhoff--James orthogonality]
+Let $(V,\|\cdot\|)$ be a real normed space, let $T:V\to V$ be invertible and
+define $\|z\|_T=\|T^{-1}z\|$.  Then
+\[
+ x\perpB y \quad\Longleftrightarrow\quad Tx\perpB Ty
+\]
+where the relation on the right is computed using $\|\cdot\|_T$.  In
+particular, the Radon property is preserved.
+\end{lemma}
+
+\begin{proof}
+For every real $t$,
+\[
+ \|Tx+tTy\|_T=\|T^{-1}(Tx+tTy)\|=\|x+ty\|,
+ \qquad \|Tx\|_T=\|x\|.
+\]
+Thus the defining inequalities for the two orthogonality statements are
+identical.  Symmetry is therefore transported in both directions.
+\end{proof}
+
+\begin{theorem}[Uniform affirmative answer]
+For every integer $n\geq1$ and every $\lambda>0$ with $\lambda\ne1$, there is
+a Radon norm on $\R^2$ whose unit sphere is an irregular polygon with exactly
+$4n+2$ vertices.  More precisely, with $m=4n+2$, let
+\[
+ v_k=\left(\cos\frac{2\pi k}{m},\sin\frac{2\pi k}{m}\right),
+ \quad 0\leq k<m,
+ \]
+let $P_m=\operatorname{conv}\{v_0,\ldots,v_{m-1}\}$, and set
+\[
+ T_\lambda(x,y)=(\lambda x,y), \qquad B_{n,\lambda}=T_\lambda(P_m).
+\]
+Then $B_{n,\lambda}$ is the unit ball of such a norm.
+\end{theorem}
+
+\begin{proof}
+Since $m$ is even, $P_m$ is centrally symmetric about the origin and has the
+origin in its interior, so its Minkowski functional is a norm.  The source
+paper proves that this regular $m$-gonal normed plane is Radon~\cite[Theorem
+2.7]{MSP}.  The set $B_{n,\lambda}$ is again a centrally symmetric convex body
+with the origin in its interior and hence is a unit ball.  Its gauge is
+\[
+ \|z\|_{n,\lambda}=\|T_\lambda^{-1}z\|_{P_m}.
+\]
+Consequently $T_\lambda$ is a linear isometry from the regular polygonal norm
+onto this new norm.  The lemma shows that the new plane is Radon.  Because
+$T_\lambda$ is invertible, it maps the vertices and edges of $P_m$ bijectively
+to those of $B_{n,\lambda}$; hence the latter has exactly $m=4n+2$ vertices.
+
+It remains to show that this polygon is not Euclidean regular.  Put
+$a=\pi/m$.  The $k$th original edge vector satisfies
+\[
+ v_{k+1}-v_k
+ =2\sin a\left(-\sin((2k+1)a),\ \cos((2k+1)a)\right),
+\]
+where indices are taken modulo $m$.  Its image therefore has Euclidean length
+\[
+ L_k=2\sin a\sqrt{\lambda^2\sin^2((2k+1)a)
+                         +\cos^2((2k+1)a)}.
+\]
+For $k=n$, the identity $(2n+1)a=\pi/2$ gives
+\[
+ L_n=2\lambda\sin a,
+\]
+whereas
+\[
+ L_0=2\sin a\sqrt{\lambda^2\sin^2a+\cos^2a}.
+\]
+If $L_0=L_n$, squaring and cancelling $4\sin^2a$ would yield
+\[
+ (1-\lambda^2)\cos^2a=0.
+\]
+But $m\geq6$, so $0<a\leq\pi/6$ and $\cos a\ne0$, while
+$\lambda\ne1$.  This is impossible.  Thus two sides have different lengths,
+so $B_{n,\lambda}$ is irregular in the source's sense.
+\end{proof}
+
+\section{Construction algorithm}
+
+Given $n\geq1$, set $m=4n+2$ and output the vertices
+\[
+ \boxed{\quad
+ w_k=\left(2\cos\frac{2\pi k}{m},\ \sin\frac{2\pi k}{m}\right),
+ \quad k=0,\ldots,m-1.\quad}
+\]
+Their convex hull is the unit ball.  This is the preceding theorem with the
+fixed choice $\lambda=2$, so no search or case distinction is needed.
+
+\section{Verification notes}
+
+The argument is symbolic and has no numerical dependency.  The accompanying
+regression script is stored at
+\begin{center}
+\texttt{code/check\_edge\_lengths.py}.
+\end{center}
+It evaluates all image edge lengths for $n=1,\ldots,100$ at $\lambda=2$ and
+checks both the displayed formula and $L_0\ne L_n$.  It is a regression test
+only, not part of the proof.
+
+The main human-review points are: (i) the source theorem for the regular
+$(4n+2)$-gon; (ii) invariance under the transported norm; and (iii) that the
+source uses ``irregular'' in the Euclidean, not affine, sense.  No stronger
+claim about classification of all irregular polygonal Radon planes is made.
+
+\section{Bounded novelty check}
+
+The search, performed through 11 August 2026, covered the run's registry,
+solution, attempt, and proof-gap indexes; exact-title and exact-question web
+searches; arXiv queries for polygonal Radon planes; and combinations of the
+phrases \emph{irregular}, \emph{$4n+2$}, \emph{affine image}, and
+\emph{affinely regular}.  No later paper explicitly answering the exact
+all-orders question was found.  Search results do recognize affine-regular
+hexagonal Radon spheres, and the isometric-invariance observation is
+elementary.  Accordingly, the result is a complete answer to the stated
+question, but its novelty confidence is only moderate-to-low pending a
+specialist citation check.
+
+\section{Conclusion and review recommendation}
+
+The source question has an affirmative answer for every $n\geq1$, with the
+uniform deterministic construction $T_2(P_{4n+2})$.  We recommend promotion as
+\texttt{full\_solution\_likely\_valid}, subject to human verification of the
+terminology and the bounded novelty search.
+
+\begin{thebibliography}{9}
+\bibitem{MSP}
+K. Mandal, D. Sain, and K. Paul,
+\emph{A complete characterization of Radon planes whose unit spheres are regular polygons},
+arXiv:1809.04760v2, 2018.
+\url{https://arxiv.org/abs/1809.04760}.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,359 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathrsfs}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Pj}{\mathbb{RP}^{1}}
+\newcommand{\Crit}{\operatorname{Crit}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Leb}{\mathcal L^2}
+
+\title{A Global Quadratic Sard Theorem\\
+\large for maps from a Hilbert space to the plane}
+\author{Automated mathematical discovery run \texttt{fa\_banach\_001}\\
+Lane 6, \texttt{agent\_lane\_06}}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+Candidate partial result, likely valid, subject to human review.
+
+\medskip
+\noindent\textbf{Source question.}
+Lerario, Rizzi, and Tiberio define a class
+$\mathscr P_d^m(H)$ of polynomial maps from a real Hilbert space to $\R^m$,
+with a weakly continuous and locally Lipschitz differential. After constructing
+counterexamples in degrees at least three, their Remark~3 says:
+\begin{quote}
+The case $d=2$ is special. The authors expect every
+$f\in\mathscr P_2^m(H)$ to satisfy the Sard property globally on $H$.
+\end{quote}
+The exact source passage is on page 3 of arXiv:2407.02296v4 and is reproduced
+below.
+
+\begin{center}
+\includegraphics[width=0.94\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The result here proves the expectation completely for codomain dimension two,
+with no commutativity or regularity assumption on the self-adjoint Hessian
+pencil.
+
+\section{Statement}
+
+Every $f\in\mathscr P_2^2(H)$ has a representation
+\begin{equation}\label{eq:representation}
+ f_j(x)=c_j+2\langle a_j,x\rangle+\langle A_jx,x\rangle,
+ \qquad j=1,2,
+\end{equation}
+where $A_1,A_2$ are compact self-adjoint operators. Put
+\[
+ K=\ker A_1\cap\ker A_2,
+ \qquad
+ L_Kz=\bigl(\langle a_1,z\rangle,\langle a_2,z\rangle\bigr).
+\]
+\begin{theorem}[global quadratic Sard theorem in target dimension two]
+\label{thm:main}
+Let $H$ be a real Hilbert space. Every $f\in\mathscr P_2^2(H)$ satisfies the
+global Sard property:
+\[
+ \Leb\bigl(f(\Crit(f))\bigr)=0.
+\]
+\end{theorem}
+
+\section{Proof intuition}
+
+A critical point has a projective multiplier $[\lambda_1:\lambda_2]$ for
+which the scalar quadratic $\lambda_1f_1+\lambda_2f_2$ is stationary. On a
+bounded ball, all pairs consisting of a stationary point and its multiplier
+form a compact incidence set when the ball is given its weak topology.
+
+The key observation compares two such pairs. If $x,z$ have nearby
+multipliers $\lambda,\mu$, the two exact quadratic Taylor formulas imply
+\[
+ (\lambda+\mu)\cdot(f(z)-f(x))
+ =\langle A_{\lambda-\mu}(z-x),z-x\rangle.
+\]
+Consequently their critical values lie in a thin strip: its normal thickness
+is bounded by a constant times the distance between the multipliers.
+
+The pencil can be singular in uncountably many directions, so uniqueness of
+the stationary point is false in general. The decisive replacement is that
+only countably many multiplier directions can have a stationary fiber on
+which $f$ is nonconstant. Indeed, on an affine chart of the multiplier circle,
+write $B_t=A_2-tA_1$ and $K_t=\ker B_t$. If the quadratic part varies on
+$K_t$, vectors from distinct $K_t$ give a biorthogonal system. If only the
+linear part varies, the stationary gradients give another biorthogonal
+system. Every biorthogonal system in a separable Hilbert space is countable.
+
+Away from those active directions, a multiplier has a unique critical
+\emph{value}, even when it has many stationary points. Compactness of the
+incidence set makes that value uniformly continuous on compact multiplier
+sets. Splitting the multiplier circle into arcs of length $\delta$ covers the
+image by $O(\delta^{-1})$ rectangles, each with one side $O(\delta)$ and the
+other $o(1)$. Countably many active directions can be put inside open arcs of
+arbitrarily small total length. The strip estimate finishes the proof.
+
+\section{Proof}
+
+\subsection{Quadratic representation and compact Hessians}
+
+For a scalar component of $f$, subtract its value and differential at the
+origin. Its restriction to every finite-dimensional subspace is a homogeneous
+quadratic polynomial. Polarization therefore gives a continuous symmetric
+bilinear form on $H$, represented by a bounded self-adjoint operator. This
+gives \eqref{eq:representation}. Moreover,
+\[
+ Df_j(x)h=2\langle A_jx+a_j,h\rangle.
+\]
+If $x_n\rightharpoonup0$, weak continuity of $Df$ into the operator norm gives
+$\|A_jx_n\|\to0$. The weak-null sequence characterization of compact
+operators on Hilbert space shows that $A_j$ is compact.
+
+Only a separable part of $H$ matters. Indeed, the closed span of
+$a_1,a_2,\operatorname{ran}A_1,\operatorname{ran}A_2$ is separable, and $f$ is
+constant on its orthogonal complement. We may consequently assume $H$ is
+separable. On bounded subsets, each compact quadratic form
+$x\mapsto\langle A_jx,x\rangle$ is weakly continuous. Thus $f$ is weakly
+continuous on bounded balls.
+
+\subsection{The common kernel}
+
+On $K$, the restriction of every derivative is the fixed linear map $2L_K$.
+If $\rank L_K=2$, every $Df(x)$ is onto and there are no critical points.
+
+Suppose $\rank L_K=1$. Any multiplier $[\lambda]$ at a critical point must
+annihilate $L_K(K)$, so the projective multiplier is unique. Write
+\[
+ A_\lambda=\lambda_1A_1+\lambda_2A_2,
+ \qquad a_\lambda=\lambda_1a_1+\lambda_2a_2.
+\]
+If $x,z$ are critical, both solve $A_\lambda u+a_\lambda=0$. Hence
+$A_\lambda(z-x)=0$, and the exact Taylor formula gives
+\[
+ \lambda\cdot(f(z)-f(x))
+ =\langle A_\lambda(z-x),z-x\rangle=0.
+\]
+All critical values lie on one affine line and are null.
+
+It remains to consider $L_K=0$. The linear and quadratic terms vanish on $K$,
+including all cross terms, so $f$ factors exactly through $K^\perp$. We replace
+$H$ by $K^\perp$; henceforth $K=\{0\}$.
+
+\subsection{The multiplier incidence and the strip estimate}
+
+Let $P=\Pj$ be the projective multiplier circle. For $R>0$ define
+\[
+ \mathcal I_R=
+ \{([\lambda],x)\in P\times B_H(R):A_\lambda x+a_\lambda=0\}.
+\]
+The equation is invariant under changing the sign of a representative.
+Give $B_H(R)$ its weak topology. It is compact and metrizable. If
+$[\lambda_n]\to[\lambda]$ and $x_n\rightharpoonup x$, choose locally aligned
+unit representatives. Compactness of $A_\lambda$ and norm continuity of the
+pencil give
+\[
+ A_{\lambda_n}x_n+a_{\lambda_n}\longrightarrow A_\lambda x+a_\lambda
+ \quad\hbox{in norm}.
+\]
+Thus $\mathcal I_R$ is compact. Its image under $([\lambda],x)\mapsto f(x)$
+is exactly $f(\Crit(f)\cap B_H(R))$.
+
+We need one quantitative identity. Take $([\lambda],x),([\mu],z)$ in
+$\mathcal I_R$ and choose aligned unit representatives. Put $h=z-x$. Taylor
+expansion at the two stationary points gives
+\begin{align*}
+ \lambda\cdot(f(z)-f(x))&=\langle A_\lambda h,h\rangle,\\
+ \mu\cdot(f(z)-f(x))&=-\langle A_\mu h,h\rangle.
+\end{align*}
+Adding them yields the exact identity
+\begin{equation}\label{eq:slabidentity}
+ (\lambda+\mu)\cdot(f(z)-f(x))
+ =\langle A_{\lambda-\mu}h,h\rangle.
+\end{equation}
+Since $\|h\|\leq2R$ and $f(B_H(R))$ is bounded, \eqref{eq:slabidentity}
+implies
+\begin{equation}\label{eq:slab}
+ |\lambda\cdot(f(z)-f(x))|
+ \leq C_R\|\lambda-\mu\|
+\end{equation}
+for a constant depending only on $R,f$. Thus values whose multipliers lie in
+one short projective arc of length $\ell$ lie in a strip of normal width at
+most $2C_R\ell$.
+
+\subsection{Only countably many stationary fibers are active}
+
+We use the following elementary separability fact.
+
+\begin{lemma}[biorthogonal families]\label{lem:biorthogonal}
+Let $H$ be a separable Hilbert space. If
+$(u_\alpha,v_\alpha)_{\alpha\in I}\subset H\times H$ satisfies
+\[
+ \langle u_\alpha,v_\beta\rangle=
+ \begin{cases}
+ 1,&\alpha=\beta,\\
+ 0,&\alpha\ne\beta,
+ \end{cases}
+\]
+then $I$ is countable.
+\end{lemma}
+
+\begin{proof}
+Rescale so that $\|v_\alpha\|=1$. For $n\geq1$, the vectors $v_\alpha$ with
+$\|u_\alpha\|\leq n$ are pairwise $1/n$-separated, because
+$\langle u_\alpha,v_\alpha-v_\beta\rangle=1$. A separated subset of a
+separable metric space is countable, and the union over $n$ is all of $I$.
+\end{proof}
+
+Call a multiplier direction \emph{active} if the stationary set for that
+direction is nonempty and its image under $f$ contains more than one point.
+
+\begin{lemma}[countability of active directions]\label{lem:active}
+The active projective multiplier directions form a countable subset of
+$\Pj$.
+\end{lemma}
+
+\begin{proof}
+It is enough to work in the affine chart
+$[-t:1]$, $t\in\R$; the single missing projective direction can be added at
+the end. Put
+\[
+ B_t=A_2-tA_1,\qquad b_t=a_2-ta_1,\qquad K_t=\ker B_t.
+\]
+For every $t$ whose stationary set is nonempty, choose one
+$x_t$ satisfying $B_tx_t+b_t=0$ and put
+$g_t=A_1x_t+a_1$.
+
+If $h\in K_t$, exact Taylor expansion gives
+\begin{equation}\label{eq:fiberchange}
+ f_1(x_t+h)-f_1(x_t)
+ =2\langle g_t,h\rangle+\langle A_1h,h\rangle.
+\end{equation}
+The corresponding change in $f_2$ is $t$ times the right side, because
+$f_2-tf_1$ is constant on the affine stationary set $x_t+K_t$.
+
+First consider the set $Q$ of parameters $t$ for which the restriction of the
+symmetric bilinear form $\langle A_1\cdot,\cdot\rangle$ to $K_t$ is nonzero.
+For every $t\in Q$, choose $h_t,k_t\in K_t$ with
+$\langle A_1h_t,k_t\rangle\ne0$. If $s\ne t$ and $k_s\in K_s$, then
+\[
+ t\langle A_1h_t,k_s\rangle
+ =\langle A_2h_t,k_s\rangle
+ =\langle h_t,A_2k_s\rangle
+ =s\langle A_1h_t,k_s\rangle.
+\]
+Thus $\langle A_1h_t,k_s\rangle=0$. After rescaling,
+$(A_1h_t,k_t)_{t\in Q}$ is a biorthogonal system, so
+Lemma~\ref{lem:biorthogonal} makes $Q$ countable.
+
+Now let $t\notin Q$. The quadratic term in \eqref{eq:fiberchange} vanishes
+identically on $K_t$, so the fiber is active exactly when
+$\langle g_t,\cdot\rangle|_{K_t}$ is nonzero. Let $L$ be this set of
+parameters. If $s\ne t$ and $h_s\in K_s$, stationarity at $t$ gives
+\[
+ \langle A_2x_t+a_2,h_s\rangle
+ =t\langle A_1x_t+a_1,h_s\rangle.
+\]
+Self-adjointness and $A_2h_s=sA_1h_s$ give
+\[
+ \langle A_2x_t+a_2,h_s\rangle
+ =s\langle A_1x_t+a_1,h_s\rangle;
+\]
+here we also used
+$\langle a_2-sa_1,h_s\rangle=0$, obtained by pairing
+$B_sx_s+b_s=0$ with $h_s$. Hence
+\[
+ \langle g_t,h_s\rangle=0,\qquad s\ne t.
+\]
+For each $t\in L$, choose $v_t\in K_t$ with
+$\langle g_t,v_t\rangle\ne0$. After rescaling,
+$(g_t,v_t)_{t\in L}$ is biorthogonal. Therefore $L$ is countable.
+
+By \eqref{eq:fiberchange}, every active parameter belongs to $Q\cup L$.
+Adding the missing projective direction proves the lemma.
+\end{proof}
+
+\subsection{The area estimate}
+
+Let $\mathcal E$ be the countable set of active directions from
+Lemma~\ref{lem:active}. Fix $\eta>0$ and cover $\mathcal E$ by an open set
+$O_\eta\subset P$ whose
+component arcs $J_s$ have total length less than $\eta$. We may take
+$\eta$ small enough that all these arcs admit aligned representatives.
+The set $f(B_H(R))$ is bounded, say by $M_R$. By \eqref{eq:slab}, the values
+with multiplier in $J_s$ lie in the intersection of a ball of radius $M_R$
+with a strip of width $2C_R|J_s|$. Hence their planar outer measure is at
+most $C'_R|J_s|$. Countable subadditivity gives
+\begin{equation}\label{eq:badarcs}
+ {\Leb}^{*}\bigl(f(\mathcal I_R|_{O_\eta})\bigr)\leq C'_R\eta.
+\end{equation}
+
+On the compact complement $F_\eta=P\setminus O_\eta$, the stationary point
+need not be unique, but its value under $f$ is unique. The projection of
+$\mathcal I_R|_{F_\eta}$ onto its compact multiplier image is a continuous
+surjection from a compact space to a Hausdorff space and hence a quotient map.
+Since $f$ is constant on every projection fiber, it induces a continuous
+selected value
+\[
+ y([\lambda])=f(x_\lambda)
+\]
+which is uniformly continuous on the compact multiplier set where it is
+defined.
+Let $\omega_\eta(\delta)\to0$ be a modulus of continuity.
+
+Partition $P$ into $O(\delta^{-1})$ arcs of length at most $\delta$. On each
+arc, the selected values have diameter at most $\omega_\eta(\delta)$ and, by
+\eqref{eq:slab}, normal width at most $2C_R\delta$. They therefore fit in a
+rectangle of area at most
+$C_R''\delta\,\omega_\eta(\delta)$. Summing over the arcs and letting
+$\delta\downarrow0$ gives
+\[
+ \Leb\bigl(f(\mathcal I_R|_{F_\eta})\bigr)=0.
+\]
+Together with \eqref{eq:badarcs}, this shows
+\[
+ \Leb\bigl(f(\Crit(f)\cap B_H(R))\bigr)\leq C'_R\eta.
+\]
+Let $\eta\downarrow0$. The bounded critical-value set is null. Finally,
+$\Crit(f)=\bigcup_{N\geq1}(\Crit(f)\cap B_H(N))$, so countable subadditivity
+proves Theorem~\ref{thm:main}.
+
+\section{Limitations and verification}
+
+The source expects global Sard for all $f\in\mathscr P_2^m(H)$. The present
+argument proves the expectation completely for $m=2$, including noncommuting
+pencils with uncountably many singular projective directions. It makes no
+claim for $m>2$. The biorthogonality step is special to a two-dimensional
+target: two distinct projective multipliers force the relevant mixed pairing
+to vanish, whereas in higher target dimension it need only lie in the
+intersection of two hyperplanes.
+
+The Taylor identity was independently checked by the included numerical script
+on random finite-dimensional symmetric pencils. This check is not part of the
+proof. The bounded literature search described in the README found no exact
+statement of the unrestricted target-dimension-two theorem; novelty confidence
+is moderate.
+
+\begin{thebibliography}{9}
+\bibitem{LRT}
+A. Lerario, L. Rizzi, and D. Tiberio,
+\emph{Sard properties for polynomial maps in infinite dimension},
+arXiv:2407.02296v4, accepted in the Journal of the European Mathematical
+Society.
+
+\bibitem{Conway}
+J. B. Conway,
+\emph{A Course in Functional Analysis}, 2nd ed.,
+Springer, 1990.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,327 @@
+\documentclass[11pt]{amsart}
+\usepackage[margin=.85in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\RP}{\mathbb {RP}}
+\newcommand{\supp}{\operatorname{supp}}
+
+\title{Curved projective levels force maximal norm growth}
+\author{Automated proof attempt for arXiv:2308.10582}
+\date{August 13, 2026}
+
+\begin{document}
+
+\begin{abstract}
+We strengthen the stationary-phase criterion in the source paper: a
+nondegenerate extremum is unnecessary.  Maximal $L^p$ multiplier-norm growth
+already follows if one regular level hypersurface of the homogeneous phase
+has nonzero projective Gauss--Kronecker curvature at one point.  This gives a
+complete negative answer to the source question in dimension three.  Using a
+compact-developable classification theorem of Ishikawa--Morimoto, it also
+gives a negative answer for even phases in dimensions four and six.  Thus any
+affirmative example must have every regular projective level developable; the
+existence of such a global phase, and the required analytic upper bound, remain
+open in the unrestricted higher-dimensional case.
+\end{abstract}
+\maketitle
+
+\section{Source question and exact scope}
+
+Let $\Phi\in C^\infty(\R^d\setminus\{0\},\R)$ be homogeneous of degree zero,
+and let $T_\Phi^t$ be the Fourier multiplier with symbol $e^{it\Phi}$.  Closing
+Remark 1 of Bulj~\cite{Bulj} asks exactly:
+\begin{quote}
+``When $d\ge 3$, does there exist a nonconstant unimodular homogeneous
+function $\Phi\in C^\infty(\R^d\setminus\{0\},\R)$ of degree $0$ such that
+\[
+ \liminf_{t\to\infty}
+ \frac{\|T_\Phi^t\|_{L^p\to L^p}}
+ {t^{d|\frac12-\frac1p|}}=0\,?
+\]''
+\end{quote}
+The exact source context is reproduced below.
+
+\begin{center}
+\includegraphics[width=.97\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The question is understood for a fixed $p\in(1,\infty)$.  At $p=2$ the
+operator is unitary and the denominator has exponent zero, so the answer is
+trivially no.  The results below apply simultaneously to every such $p$.
+
+\section{Proof intuition}
+
+The source changes variables from frequency $\xi$ to an affine direction
+$u\in\R^{d-1}$ and a radial coordinate $r$.  At a stationary point, the
+Hessian of the transformed phase is not $H\phi$ but the bordered matrix
+\[
+ \begin{pmatrix}H\phi&-\nabla\phi\\
+                 -\nabla\phi^{\mathsf T}&0\end{pmatrix}.
+\]
+At a regular point this matrix is invertible exactly when the Hessian of
+$\phi$ restricted to the tangent space of its level set is nondegenerate.
+That is precisely nonzero Gauss--Kronecker curvature of the projective level.
+The source's implicit-function and stationary-phase proof then works locally
+without any critical point of $\phi$.
+
+In dimension three, a regular level curve failing this criterion everywhere
+must be a great circle.  Two different regular values would therefore give
+two disjoint great circles, which is impossible.  For even phases in
+dimensions four and six, the same intersection argument uses the theorem that
+compact developable hypersurfaces in $\RP^3$ and $\RP^5$ are projective
+hyperplanes.
+
+\section{The bordered-Hessian criterion}
+
+Write a central affine chart as
+\[
+ \phi(u)=\Phi(u,1),\qquad u\in\R^{d-1}.
+\]
+At a regular point $u_0$, put $a=\nabla\phi(u_0)\ne0$ and
+$E=a^\perp\subset\R^{d-1}$.
+
+\begin{lemma}[Bordered determinant]\label{lem:border}
+The matrix
+\[
+ B(u_0)=
+ \begin{pmatrix}
+ H\phi(u_0)&-a\\-a^{\mathsf T}&0
+ \end{pmatrix}
+\]
+is invertible if and only if the quadratic form
+$H\phi(u_0)|_E$ is nondegenerate.
+\end{lemma}
+
+\begin{proof}
+Choose an orthonormal basis whose first $d-2$ vectors span $E$ and whose last
+vector is $a/|a|$.  In that basis, for some matrix $C$, vector $b$, and scalar
+$h$, the bordered matrix is
+\[
+ \begin{pmatrix}
+ C&b&0\\ b^{\mathsf T}&h&-|a|\\0&-|a|&0
+ \end{pmatrix}.
+\]
+Expanding in the last row and then the last column shows that its determinant
+is nonzero exactly when $\det C\ne0$.  The matrix $C$ represents
+$H\phi(u_0)|_E$.
+\end{proof}
+
+For the regular hypersurface $\{\phi=\phi(u_0)\}$, the second fundamental
+form in this affine chart is, up to the nonzero factor $|a|^{-1}$,
+$H\phi(u_0)|_E$.  Thus Lemma~\ref{lem:border} is equivalently the existence of
+nonzero Gauss--Kronecker curvature.  Nondegeneracy of the projective second
+fundamental form is invariant under changing central charts.
+
+\begin{theorem}[Curved regular level]\label{thm:curved}
+Let $d\ge2$, $p\in(1,\infty)$, and let $\Phi$ be a smooth real nonconstant
+degree-zero homogeneous phase.  Suppose that at some regular point of
+$\Phi|_{S^{d-1}}$, a regular projective level hypersurface has nondegenerate
+second fundamental form.  Then there is $c=c(d,p,\Phi)>0$ such that
+\[
+ \|T_\Phi^t\|_{L^p\to L^p}
+ \ge c\,t^{d|\frac12-\frac1p|}
+ \qquad(t\ge1).
+\]
+In particular, the normalized liminf in the source question is positive.
+\end{theorem}
+
+\begin{proof}
+Rotate coordinates and choose a central chart containing the given point.
+With $u_0$ and $a$ as above, consider the transformed phase used in the source
+paper,
+\[
+ \Psi_x(u,r)=\phi(u)+r(u\cdot x_-+x_d).
+\]
+Set
+\[
+ r_0=1,\qquad x_-^0=-a,\qquad x_d^0=u_0\cdot a.
+\]
+Then $(u_0,1)$ is a stationary point of $\Psi_{x^0}$, since
+\[
+ \nabla_u\Psi_{x^0}(u_0,1)=a+x_-^0=0,
+ \qquad
+ \partial_r\Psi_{x^0}(u_0,1)=u_0\cdot x_-^0+x_d^0=0.
+\]
+Its full $(u,r)$ Hessian is
+\[
+ H_{(u,r)}\Psi_{x^0}(u_0,1)=
+ \begin{pmatrix}H\phi(u_0)&-a\\-a^{\mathsf T}&0\end{pmatrix},
+\]
+which is invertible by Lemma~\ref{lem:border}.
+
+Apply the implicit-function theorem to
+$F((u,r),x)=\nabla_{(u,r)}\Psi_x(u,r)$.  After shrinking neighbourhoods, there
+are open sets $U\ni x^0$ and $V\ni(u_0,1)$ and a unique smooth map
+$g:U\to V$ such that $g(x)$ is the unique stationary point in $V$, and its
+Hessian stays invertible.  Choose the Fourier transform of a fixed Schwartz
+test function to be supported in the image of a sufficiently small compact
+subset of $V$ under the source's diffeomorphism
+$(u,r)\mapsto(ru,r)$ and to equal one on a smaller subset.
+
+The proof of Bulj's main theorem now applies verbatim from this point.  Uniform
+stationary phase gives
+\[
+ |T_\Phi^t f(tx)|\ge c_0t^{-d/2}
+\]
+on a fixed positive-measure open subset of $U$, for all sufficiently large
+$t$.  Scaling $tx$ therefore yields, when $1<p\le2$,
+\[
+ \|T_\Phi^t f\|_p\ge c_1t^{d/p-d/2}.
+\]
+Division by the fixed $\|f\|_p$ gives the operator lower bound.  The case
+$p\ge2$ follows from duality and
+$(T_\Phi^t)^*=T_\Phi^{-t}$, exactly as in the source.  Enlarging constants over
+a compact initial $t$-interval gives the stated form for $t\ge1$.
+\end{proof}
+
+\begin{corollary}[Necessary geometry of any counterexample]\label{cor:necessary}
+If a phase satisfies the zero normalized liminf asked for in the source, then
+every connected component of every regular spherical level is locally
+projectively developable: in every central chart its projective Gauss map has
+rank strictly below $d-2$ everywhere.
+\end{corollary}
+
+\begin{proof}
+Otherwise Theorem~\ref{thm:curved} applies at a point of full Gauss rank.
+\end{proof}
+
+\section{A complete answer in dimension three}
+
+\begin{theorem}[No submaximal phase in $d=3$]\label{thm:d3}
+For every nonconstant smooth real degree-zero homogeneous phase on
+$\R^3\setminus\{0\}$ and every $p\in(1,\infty)$,
+\[
+ \liminf_{t\to\infty}
+ \frac{\|T_\Phi^t\|_{L^p\to L^p}}
+ {t^{3|\frac12-\frac1p|}}>0.
+\]
+Consequently the source question has a negative answer in dimension three.
+\end{theorem}
+
+\begin{proof}
+Suppose the curvature condition in Theorem~\ref{thm:curved} fails at every
+regular point of $\Phi|_{S^2}$.  A regular level component is a compact smooth
+curve.  In every central projective chart its second fundamental form
+vanishes, so it is locally a projective line.  Lifting back to $S^2$, it is
+locally an arc of a great circle.
+
+On a connected component these local great circles agree on overlaps: a
+great circle is determined by any nontrivial open arc.  Hence the component
+lies in one great circle.  It is both open in that great circle (by the local
+description) and closed (by compactness), so it is the whole great circle.
+
+The range of the nonconstant function $\Phi|_{S^2}$ is a nondegenerate compact
+interval.  Sard's theorem supplies two distinct regular values $c_1,c_2$ in
+its interior.  Choose one component of each nonempty level.  The preceding
+paragraph makes them two great circles.  Any two great circles on $S^2$
+intersect, while distinct level sets are disjoint, a contradiction.  Therefore
+a curved regular point exists, and Theorem~\ref{thm:curved} finishes the proof.
+\end{proof}
+
+\section{Even phases in dimensions four and six}
+
+We use the following published projective-geometric fact, attributed there to
+Ishikawa--Morimoto.
+
+\begin{theorem}[Ishikawa--Morimoto~\cite{Ishikawa}]\label{thm:IM}
+Every compact developable $C^\infty$ hypersurface in $\RP^3$ or $\RP^5$ is a
+projective hyperplane.
+\end{theorem}
+
+The same source explains why no unrestricted all-dimensional replacement is
+available: nonsingular compact cubic developables exist in
+$\RP^4,\RP^7,\RP^{13},\RP^{25}$.
+
+\begin{theorem}[Even phases]\label{thm:even}
+Let $d\in\{4,6\}$ and suppose in addition that $\Phi(-\xi)=\Phi(\xi)$.  If
+$\Phi$ is nonconstant, then for every $p\in(1,\infty)$,
+\[
+ \liminf_{t\to\infty}
+ \frac{\|T_\Phi^t\|_{L^p\to L^p}}
+ {t^{d|\frac12-\frac1p|}}>0.
+\]
+\end{theorem}
+
+\begin{proof}
+Evenness makes $\Phi|_{S^{d-1}}$ descend through the antipodal quotient to a
+smooth nonconstant function $\bar\Phi$ on $\RP^{d-1}$.  Suppose no regular
+level has a curved point.  Choose two distinct regular values $c_1,c_2$ in
+the interior of the range, and a connected component $M_i$ of each level.
+Each $M_i$ is a compact embedded smooth hypersurface in $\RP^{d-1}$ and is
+developable everywhere.  Since $d-1$ is $3$ or $5$,
+Theorem~\ref{thm:IM} says that both $M_i$ are projective hyperplanes.  Two
+projective hyperplanes in the same real projective space always intersect,
+contradicting $M_1\subset\bar\Phi^{-1}(c_1)$ and
+$M_2\subset\bar\Phi^{-1}(c_2)$.  Apply Theorem~\ref{thm:curved}.
+\end{proof}
+
+\section{A broad candidate family that cannot work}
+
+\begin{corollary}[All nonconstant quadratic Rayleigh phases]\label{cor:quad}
+Let $A$ be a real symmetric nonscalar $d\times d$ matrix and
+\[
+ \Phi_A(\xi)=\frac{\xi^{\mathsf T}A\xi}{|\xi|^2}.
+\]
+For every $d\ge2$ and $p\in(1,\infty)$, $\Phi_A$ has maximal norm growth in
+the sense of Theorem~\ref{thm:curved}.
+\end{corollary}
+
+\begin{proof}
+Choose $c$ strictly between the smallest and largest eigenvalues of $A$ and
+not itself an eigenvalue.  The projective level $\Phi_A=c$ is the nonempty
+quadric
+\[
+ \xi^{\mathsf T}(A-cI)\xi=0.
+\]
+The bilinear form $Q=A-cI$ is invertible and indefinite.  At a null vector
+$\xi$, the tangent hyperplane is $\{v:Q(\xi,v)=0\}$.  If a tangent vector $v$
+lies in the radical of the induced second fundamental form, then $Q(v,\cdot)$
+annihilates that tangent hyperplane, hence is proportional to
+$Q(\xi,\cdot)$.  Invertibility gives $v\in\R\xi$, which is zero in the
+projective tangent space.  Thus the projective second fundamental form is
+nondegenerate, and Theorem~\ref{thm:curved} applies.
+\end{proof}
+
+\section{Limitations, novelty, and human review}
+
+The unrestricted source question remains open here for $d\ge4$.  The precise
+remaining geometric obstruction is now sharp: an affirmative example must
+make every regular level developable.  Compact nontrivial developables show
+that this condition cannot be dismissed pointwise.  One must either rule out
+a global foliation by such levels or build one and then prove a multiplier
+upper bound.  Degenerate stationary phase alone is not an upper bound and can
+increase oscillatory contributions.
+
+No priority claim is made.  The bordered-Hessian calculation and the
+dimension-three argument appear elementary but should be checked by a
+harmonic analyst and a projective geometer.  The even $d=4,6$ result depends
+on applying Theorem~\ref{thm:IM} to embedded regular-level components after
+descent to projective space; this is why the evenness hypothesis is retained.
+The literature search found no later paper claiming these consequences of
+the source method.
+
+\begin{thebibliography}{9}
+\bibitem{Bulj}
+A. Bulj,
+\emph{Generic norm growth of powers of homogeneous unimodular Fourier
+multipliers}, arXiv:2308.10582, 2023.
+
+\bibitem{Ishikawa}
+G. Ishikawa,
+\emph{Developable hypersurfaces and homogeneous spaces in a real projective
+space}, Lobachevskii J. Math. \textbf{3} (1999), 113--125;
+Hokkaido University Preprint Series in Mathematics 449,
+\href{https://doi.org/10.14943/83595}{doi:10.14943/83595}.
+\end{thebibliography}
+
+\end{document}

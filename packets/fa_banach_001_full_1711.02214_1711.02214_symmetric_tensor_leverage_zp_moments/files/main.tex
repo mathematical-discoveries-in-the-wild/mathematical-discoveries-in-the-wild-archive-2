@@ -1,0 +1,273 @@
+\documentclass[10pt]{article}
+\usepackage[margin=0.9in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newcommand{\R}{\mathbb R}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Mp}{\mathcal M}
+\newcommand{\Zp}{\mathcal Z}
+
+\title{Symmetric-tensor leverage scores give a universal\\answer to Problem 1 on $\mathcal Z_p$-norms}
+\author{Candidate full solution to Problem 1 in arXiv:1711.02214}
+\date{12 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.} Candidate full solution to the first formulation of
+Problem~1, pending expert review.  The stronger $p$-moment formulation is also
+proved for every vector with regular one-dimensional moment growth, including
+centered log-concave vectors.  Problem~2 is proved for $q\le p$; its remaining
+high-moment range is not claimed.
+
+\medskip
+\noindent\textbf{Source.} R.~Lata\l a, \emph{On $\mathcal Z_p$-norms of random
+vectors}, arXiv:1711.02214, Problems~1 and~2 on printed pages 2--3~\cite{source}.
+
+\section{The questions and definitions}
+Let $X$ be an $n$-dimensional random vector and $p\ge2$.  The source defines
+\[
+ \|t\|_{\Mp_p(X)}=(\E|\langle t,X\rangle|^p)^{1/p},\qquad
+ \|x\|_{\Zp_p(X)}=\sup_{\|t\|_{\Mp_p(X)}\le1}|\langle t,x\rangle|.
+\]
+Thus the $\Zp_p(X)$-norm is the dual of the marginal-moment norm.
+
+\paragraph{Transcription of Problem 1.}
+Is it true that, for at least a large class of centered $n$-dimensional random
+vectors $X$,
+\[
+ \big(\E\|X\|_{\Zp_p(X)}^2\big)^{1/2}\le C\sqrt{\frac{n+p}{p}},
+ \qquad p\ge2,
+\]
+or perhaps even with the outer exponent $p$ in place of $2$?
+
+Problem~2 asks, for centered log-concave $X$, $2\le p\le n$, and
+$1\le q\le\sqrt{pn}$, whether
+\[
+ \big(\E\|X\|_{\Zp_p(X)}^q\big)^{1/q}\le C\sqrt{\frac np}.
+\]
+
+\clearpage
+\begin{center}
+\includegraphics[width=0.86\textwidth]{figures/open_problem_crop.jpg}
+
+\small Figure 1: Problem~1 in the archived source PDF, printed page 2.
+\end{center}
+
+\section{Proof Intuition}
+When the exponent is even, say $2k$, the scalar $\langle t,x\rangle^k$ is a
+linear functional after lifting $x$ to its symmetric tensor $x^{\otimes k}$.
+The denominator in the definition of $\Zp_{2k}$ becomes the quadratic form of
+the lifted second-moment matrix
+\[
+ A=\E\big[X^{\otimes k}(X^{\otimes k})^*\big].
+\]
+The original supremum only ranges over rank-one tensors $t^{\otimes k}$.
+Enlarging it to the whole symmetric tensor space turns the bound into an
+ordinary leverage score.  Its expectation is exactly $\operatorname{rank}A$,
+which is at most $\dim\operatorname{Sym}^k(\R^n)=\binom{n+k-1}{k}$.
+
+This argument does not use signs, independence, centering, or log-concavity.
+Rounding $p$ down to an even exponent gives the requested outer second moment
+for arbitrary $p$.  If marginal moments grow regularly, rounding upward gives
+the stronger outer $p$-moment estimate.
+
+\section{The tensor leverage estimate}
+Equip $H_k=\operatorname{Sym}^k(\R^n)$ with the Hilbert structure inherited
+from the tensor product, so that
+\[
+ \langle t^{\otimes k},x^{\otimes k}\rangle=\langle t,x\rangle^k,
+ \qquad \dim H_k=\binom{n+k-1}{k}.
+\]
+
+\begin{lemma}[even-moment master bound]\label{lem:master}
+Let $k\ge1$, and suppose $X$ has a finite $2k$th moment.  Then
+\[
+ \E\|X\|_{\Zp_{2k}(X)}^{2k}
+ \le \operatorname{rank}\!\left(
+ \E[X^{\otimes k}(X^{\otimes k})^*]\right)
+ \le \binom{n+k-1}{k}.                                      \tag{1}
+\]
+No symmetry or centering assumption is needed.
+\end{lemma}
+
+\begin{proof}
+Write $\Phi(x)=x^{\otimes k}$ and
+$A=\E[\Phi(X)\Phi(X)^*]$ on $H_k$.  First note that
+$\Phi(X)\in\operatorname{ran}A$ almost surely.  Indeed, for $v\in\ker A$,
+\[
+ 0=\langle v,Av\rangle=\E|\langle v,\Phi(X)\rangle|^2.
+\]
+Applying this to a finite orthonormal basis of $\ker A$ proves the assertion
+simultaneously outside one null set.
+
+For every $x$ in that full-measure set, homogeneity and the definition of the
+dual norm give
+\begin{align*}
+ \|x\|_{\Zp_{2k}(X)}^k
+ &=\sup_{t\ne0}
+ \frac{|\langle t,x\rangle|^k}
+ {(\E|\langle t,X\rangle|^{2k})^{1/2}}\\
+ &=\sup_{t\ne0}
+ \frac{|\langle t^{\otimes k},\Phi(x)\rangle|}
+ {\langle t^{\otimes k},A t^{\otimes k}\rangle^{1/2}}\\
+ &\le \sup_{v\in H_k:\,\langle v,Av\rangle>0}
+ \frac{|\langle v,\Phi(x)\rangle|}{\langle v,Av\rangle^{1/2}}
+ =\langle\Phi(x),A^\dagger\Phi(x)\rangle^{1/2},             \tag{2}
+\end{align*}
+where $A^\dagger$ is the Moore--Penrose inverse.  The last equality follows
+by diagonalizing $A$ on its range; vectors in its kernel have zero numerator.
+Squaring (2), taking expectations, and using finite-dimensional trace
+cyclicity yields
+\[
+ \E\|X\|_{\Zp_{2k}(X)}^{2k}
+ \le \operatorname{tr}\!\left(A^\dagger
+       \E[\Phi(X)\Phi(X)^*]\right)
+ =\operatorname{tr}(A^\dagger A)=\operatorname{rank}A.
+\]
+The dimension of $H_k$ gives the final inequality.
+\end{proof}
+
+\section{Full answer to Problem 1}
+\begin{theorem}\label{thm:main}
+Let $X$ be an $n$-dimensional random vector with finite $p$th moment.
+
+\begin{enumerate}
+\item For every real $p\ge2$,
+\[
+ \big(\E\|X\|_{\Zp_p(X)}^2\big)^{1/2}
+ \le 2\sqrt e\,\sqrt{\frac{n+p}{p}}.                       \tag{3}
+\]
+\item If $p=2k$ is even, then the stronger exact estimate
+\[
+ \big(\E\|X\|_{\Zp_p(X)}^p\big)^{1/p}
+ \le \binom{n+k-1}{k}^{1/(2k)}                              \tag{4}
+\]
+holds.
+\item Suppose, more generally, that for some $\lambda\ge1$ every marginal
+satisfies
+\[
+ \|\langle t,X\rangle\|_s
+ \le\lambda\frac{s}{q}\|\langle t,X\rangle\|_q,
+ \qquad s\ge q\ge2.                                       \tag{5}
+\]
+Then for every real $p\ge2$,
+\[
+ \big(\E\|X\|_{\Zp_p(X)}^p\big)^{1/p}
+ \le2\sqrt{2e}\,\lambda\sqrt{\frac{n+p}{p}}.             \tag{6}
+\]
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+For (3), set $k=\lfloor p/2\rfloor$ and $r=2k$.  Since $r\le p$,
+monotonicity of scalar moments gives
+$\|t\|_{\Mp_r(X)}\le\|t\|_{\Mp_p(X)}$, and polarity therefore gives
+$\|x\|_{\Zp_p(X)}\le\|x\|_{\Zp_r(X)}$.  As $r\ge2$, Lemma~\ref{lem:master}
+implies
+\[
+ \|\,\|X\|_{\Zp_p(X)}\,\|_2
+ \le\|\,\|X\|_{\Zp_r(X)}\,\|_r
+ \le\binom{n+k-1}{k}^{1/(2k)}.
+\]
+Now $k\ge p/4$ and $\binom{N}{k}\le(eN/k)^k$, whence
+\[
+ \binom{n+k-1}{k}^{1/(2k)}
+ \le\sqrt{e\frac{n+k-1}{k}}
+ \le2\sqrt e\sqrt{\frac{n+p}{p}}.
+\]
+Part (4) is Lemma~\ref{lem:master} with $p=2k$.
+
+For (6), take $k=\lceil p/2\rceil$ and $r=2k$, so $p\le r\le2p$.
+By (5),
+$\|t\|_{\Mp_r(X)}\le\lambda(r/p)\|t\|_{\Mp_p(X)}$.
+Polarity gives
+$\|x\|_{\Zp_p(X)}\le\lambda(r/p)\|x\|_{\Zp_r(X)}$.
+Consequently, Lemma~\ref{lem:master} and $k\ge p/2$ give
+\begin{align*}
+ \|\,\|X\|_{\Zp_p(X)}\,\|_p
+ &\le\lambda\frac rp\|\,\|X\|_{\Zp_r(X)}\,\|_r\\
+ &\le2\lambda\binom{n+k-1}{k}^{1/(2k)}
+ \le2\sqrt{2e}\,\lambda\sqrt{\frac{n+p}{p}}.
+\end{align*}
+\end{proof}
+
+The first part is stronger than the first formulation of Problem~1: it holds
+for every $X$, without centering.  The source records (5) with a universal
+$\lambda$ for centered log-concave random vectors~\cite{source}; hence the
+stronger $p$-moment formulation is affirmative for that principal class.
+
+\section{Consequences and the remaining part of Problem 2}
+\begin{corollary}
+If $X$ is centered and log-concave, $2\le p\le n$, and $1\le q\le p$, then
+\[
+ \big(\E\|X\|_{\Zp_p(X)}^q\big)^{1/q}\le C\sqrt{\frac np}.
+\]
+\end{corollary}
+\begin{proof}
+Outer-moment monotonicity and (6) give the bound with
+$\sqrt{(n+p)/p}\le\sqrt{2n/p}$.
+\end{proof}
+
+This proves Problem~2 through $q=p$.  For $q>p$, applying regular moment
+growth and the tensor lemma at an even exponent comparable to $q$ gives only
+\[
+ \big(\E\|X\|_{\Zp_p(X)}^q\big)^{1/q}
+ \lesssim \lambda\frac qp\sqrt{\frac{n+q}{q}}.              \tag{7}
+\]
+At $q=\sqrt{pn}$, (7) is of order $(n/p)^{3/4}$ rather than the requested
+$(n/p)^{1/2}$.  Eight focused upgrade routes are documented in the companion
+attempt note; the unresolved range is tied to the general weak/strong moment
+problem already identified by the source.  No claim is made for
+$p<q\le\sqrt{pn}$.
+
+\section{Verification, scope, and novelty}
+The script \texttt{code/verify\_tensor\_leverage.py} checks the tensor
+normalization on 80 weighted finite distributions in $\R^2$, for
+$1\le k\le5$.  It includes singular lifted moment matrices, verifies
+$\E\langle\Phi,A^\dagger\Phi\rangle=\operatorname{rank}A$, and compares a
+dense rank-one directional supremum with the full-tensor leverage bound.  All
+checks pass.  This is a normalization and singular-case check, not a substitute
+for the proof.
+
+The theorem assumes the source's ``$n$-dimensional'' condition so that the
+marginal functional is a norm.  Degenerate distributions are handled by
+restricting to their linear span, with $n$ replaced by its dimension.  The
+only remaining limitation relative to the two source problems is the
+high-$q$ portion of Problem~2 stated above.
+
+\paragraph{Novelty check.}
+On 12 August 2026, the run indexes, arXiv/web search, and exact-title searches
+were queried with the source id and combinations of ``$\mathcal Z_p(X)$
+norm'', ``symmetric tensor'', ``tensor leverage score'', ``centroid body'',
+``total $\ell_p$ sensitivity'', and the binomial dimension
+$\binom{n+k-1}{k}$.  Searches also inspected the later algorithmic literature
+on total $\ell_p$ sensitivity~\cite{sensitivity}.  That literature recognizes
+the equivalent discrete sensitivity quantity, but the bounded inspection did
+not locate (1), the universal answer (3), or an explicit answer to Lata\l a's
+Problem~1.  Novelty confidence is moderate, not definitive.
+
+\paragraph{Human-review recommendation.}
+Prioritize expert review.  The critical checks are the enlargement from
+rank-one tensors to all of $H_k$, the almost-sure range statement when $A$ is
+singular, and the polarity directions in the two rounding arguments.  Each is
+isolated in Lemma~\ref{lem:master} and Theorem~\ref{thm:main}.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+R.~Lata\l a, \emph{On $\mathcal Z_p$-norms of random vectors},
+Zapiski Nauchnykh Seminarov POMI \textbf{457} (2017), 211--225;
+arXiv:1711.02214.
+
+\bibitem{sensitivity}
+S.~Padmanabhan, D.~P.~Woodruff, and Q.~Zhang,
+\emph{Computing approximate $\ell_p$ sensitivities}, arXiv:2311.04158 (2023).
+\end{thebibliography}
+
+\end{document}

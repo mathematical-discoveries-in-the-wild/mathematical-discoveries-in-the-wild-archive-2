@@ -1,0 +1,219 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\PhiL}{\Phi_{\lambda,Q}}
+\newcommand{\Sph}{\mathbb{S}}
+
+\title{A Positive-$\gamma$ Counterexample to the Nonlocal Poincar\'e Question as Stated}
+\author{Automated mathematics run \texttt{fa\_banach\_001}\\
+Lane 12, agent \texttt{agent\_lane\_12}, model GPT5.6}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\linewidth}{\textbf{Status.}
+Candidate counterexample, likely valid.  It gives a complete negative answer
+to the positive-$\gamma$ branch under the natural interpretation that the
+displayed estimate is uniform for all $\lambda>0$.  The source does not print
+that quantifier explicitly; a sufficiently-large-$\lambda$ repair is not
+addressed.}}
+\end{center}
+
+\section{Source question and normalization}
+
+The source is Hoai-Minh Nguyen, \emph{Characterizations of the Sobolev norms
+and the total variation via nonlocal functionals, and related problems},
+arXiv:2507.00842v2~\cite{Nguyen}.  Open Question~3 appears at the end of
+Section~9 on PDF page~25.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+For a unit cube $Q\subset\R^N$, the domain-correct normalized local
+functional is
+\begin{equation}\label{eq:local-functional}
+ \Phi_{\lambda,Q}(u)
+ :=\lambda^p\!\iint_{\substack{Q\times Q\\
+ |u(x)-u(y)|>\lambda |x-y|^{1+\gamma/p}}}
+ |x-y|^{-N+\gamma}\,dx\,dy .
+\end{equation}
+The question asks, for $p\ge1$ and
+$\gamma\in\R\setminus(-1,0]$ with $\kappa_{N,p,\gamma}>0$, whether
+\begin{equation}\label{eq:question}
+ \iint_{Q\times Q}|u(x)-u(y)|^p\,dx\,dy
+ \le C_{N,p}\bigl(\Phi_{\lambda,Q}(u)+\lambda^p\bigr),
+ \qquad u\in L^p(Q).
+\end{equation}
+The source displays a free $\lambda$ and a constant independent of $\lambda$;
+we use the standard uniform-in-$\lambda>0$ reading.  Nguyen writes
+$\Phi_\lambda(u)$ in the question even though $u$ is defined only on $Q$.
+Equation~\eqref{eq:local-functional} is the local functional defined in the
+paper.  A global definition in the TeX source accidentally omits the factor
+$\lambda^p$, but the local definition, Theorem~1.3, and all later calculations
+use this factor.
+
+\section{Proof intuition}
+
+For $\gamma>0$ the kernel $|x-y|^{-N+\gamma}$ is integrable across the
+diagonal on a bounded cube.  Consequently the entire normalized nonlocal
+energy is at most a finite constant times $\lambda^p$, no matter what $u$ is.
+Sending $\lambda$ to zero therefore erases the proposed right-hand side, while
+the mean oscillation of any nonconstant $u$ remains positive.
+
+There is one potential logical escape: perhaps no positive $\gamma$ satisfies
+the hypothesis $\kappa_{N,p,\gamma}>0$.  Gobbino and Picenni's
+$\Gamma$-liminf theorem~\cite{GobbinoPicenni} closes that escape.  A clipping
+argument converts Nguyen's convergence-in-measure cell problem to their
+$L^1$ topology without increasing the energy, proving that the cell constant
+is positive for every $\gamma>0$.
+
+\section{The counterexample}
+
+\begin{theorem}[Positive-$\gamma$ branch fails]\label{thm:main}
+Let $N\ge1$, $p\ge1$, $\gamma>0$, and $Q=(0,1)^N$.  Then
+$\kappa_{N,p,\gamma}>0$, but there is no finite constant $C$ for which
+\eqref{eq:question} holds for every $u\in L^p(Q)$ and every $\lambda>0$.
+Indeed the assertion fails for $u(x)=x_1$.  This remains true if $C$ is
+allowed to depend on $N,p,\gamma$, and $Q$.
+\end{theorem}
+
+We separate verification of the premise from the short counterexample.
+
+\begin{proposition}[The positive-$\gamma$ premise is nonvacuous]
+For every $N\ge1$, $p\ge1$, and $\gamma>0$, Nguyen's cell constant satisfies
+\begin{equation}\label{eq:kappa-lower}
+ \kappa_{N,p,\gamma}
+ \ge A_{N,p}\frac{\log 2}{2^{\gamma+1}-1}>0,
+\end{equation}
+where
+$A_{N,p}=\int_{\Sph^{N-1}}|v\cdot\omega|^p\,
+d\mathcal H^{N-1}(\omega)>0$ for any unit vector $v$.
+\end{proposition}
+
+\begin{proof}
+In Nguyen's definition, one takes the infimum of
+$\liminf_{\lambda\to\infty}\Phi_{\lambda,Q}(h_\lambda)$ over measurable
+families converging in measure on $Q$ to
+\[
+ h(x)=\frac{x_1+\cdots+x_N}{\sqrt N}.
+\]
+Fix such a family and let
+$T(t)=\min\{\max\{t,0\},\sqrt N\}$.  Since $T$ is $1$-Lipschitz and
+$T(h)=h$, its exceedance set is contained in that of the original function:
+\[
+ \Phi_{\lambda,Q}(T\circ h_\lambda)
+ \le \Phi_{\lambda,Q}(h_\lambda).
+\]
+Moreover $T\circ h_\lambda\to h$ in measure.  The functions are uniformly
+bounded on the finite-measure cube, so this convergence is also in $L^1(Q)$.
+
+Gobbino--Picenni's Theorem~1.1~\cite{GobbinoPicenni}, applied on the open cube,
+now gives
+\[
+ \liminf_{\lambda\to\infty}
+ \Phi_{\lambda,Q}(T\circ h_\lambda)
+ \ge A_{N,p}\frac{\log2}{2^{\gamma+1}-1}F_p(h,Q).
+\]
+Here $F_p(h,Q)=1$: the gradient of $h$ has Euclidean norm one and $|Q|=1$
+(the same computation is the total variation when $p=1$).  Combining the two
+inequalities and taking the infimum over all families proves
+\eqref{eq:kappa-lower}.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Set $u(x)=x_1$.  By Fubini,
+\begin{align}\label{eq:lhs}
+ \iint_{Q\times Q}|u(x)-u(y)|^p\,dx\,dy
+ &=\int_0^1\!\int_0^1|s-t|^p\,ds\,dt\\
+ &=2\int_0^1\!\int_0^s(s-t)^p\,dt\,ds
+ =\frac{2}{(p+1)(p+2)}>0.\notag
+\end{align}
+On the other hand, because $Q-Q\subset B_{\sqrt N}(0)$ and $\gamma>0$,
+\begin{align}\label{eq:kernel}
+ \nu_\gamma(Q\times Q)
+ &=\iint_{Q\times Q}|x-y|^{-N+\gamma}\,dx\,dy\\
+ &\le |\Sph^{N-1}|\int_0^{\sqrt N}r^{\gamma-1}\,dr
+ =\frac{|\Sph^{N-1}|}{\gamma}N^{\gamma/2}<\infty.\notag
+\end{align}
+The exceedance set in~\eqref{eq:local-functional} is contained in $Q\times Q$,
+so
+\begin{equation}\label{eq:vanish}
+ 0\le\Phi_{\lambda,Q}(u)
+ \le \frac{|\Sph^{N-1}|}{\gamma}N^{\gamma/2}\lambda^p.
+\end{equation}
+Thus $C(\Phi_{\lambda,Q}(u)+\lambda^p)\to0$ as
+$\lambda\downarrow0$ for every finite $C$, contradicting the fixed positive
+quantity~\eqref{eq:lhs}.  The preceding proposition verifies the required
+hypothesis $\kappa_{N,p,\gamma}>0$.
+\end{proof}
+
+\section{Global zero-extension robustness}
+
+Although the local functional is the natural reading, the obstruction also
+survives a normalized global interpretation.  Extend $u(x)=x_1$ on $Q$ by
+zero and call the result $U$ on $\R^N$.  If $(x,y)$ belongs to its exceedance
+set, at least one endpoint lies in $Q$, $|U(x)-U(y)|\le1$, and therefore
+\[
+ |x-y|<R_\lambda:=\lambda^{-p/(p+\gamma)}.
+\]
+Double-counting which endpoint lies in $Q$ gives
+\begin{align*}
+ \Phi_\lambda(U)
+ &\le2\lambda^p\int_Q\int_{|x-y|<R_\lambda}
+ |x-y|^{-N+\gamma}\,dy\,dx\\
+ &=\frac{2|\Sph^{N-1}|}{\gamma}
+ \lambda^pR_\lambda^\gamma
+ =\frac{2|\Sph^{N-1}|}{\gamma}
+ \lambda^{p^2/(p+\gamma)}\longrightarrow0.
+\end{align*}
+Hence zero extension does not rescue the estimate.
+
+\section{Verification, scope, and novelty}
+
+The argument is analytic and exact.  It checks the premise separately, gives
+an explicit positive left-hand side, and bounds the entire energy rather than
+approximating its exceedance set.  It also proves the stronger statement that
+no additive remainder $r(\lambda)\to0$ can make a uniform inequality of this
+form true for positive $\gamma$.
+
+The conclusion is deliberately scoped.  It answers the positive-$\gamma$
+branch of Open Question~3 under the uniform reading forced by the free
+parameter in the display.  It does not address $\gamma\le-1$.  If the intended
+question was instead restricted to all sufficiently large $\lambda$ when
+$\gamma>0$, the present small-$\lambda$ argument does not apply.
+
+A bounded novelty search on 11 August 2026 covered the run indexes, the exact
+arXiv id and title, exact-phrase searches for Open Question~3, searches for
+``nonlocal Poincar\'e'', $\Phi_\lambda$, and $\kappa_{N,p,\gamma}$, and the
+source paper's references.  No later paper explicitly stating this
+counterexample or resolving Open Question~3 was found.  This supports but
+does not certify novelty.  Human review should focus on the intended
+$\lambda$ quantifier and the source's local/global notation.
+
+\begin{thebibliography}{9}
+\bibitem{Nguyen}
+H.-M. Nguyen,
+\emph{Characterizations of the Sobolev norms and the total variation via
+nonlocal functionals, and related problems},
+arXiv:2507.00842v2, 2025.
+
+\bibitem{GobbinoPicenni}
+M. Gobbino and N. Picenni,
+\emph{Gamma-liminf estimate for a class of non-local approximations of Sobolev
+and BV norms},
+J. Funct. Anal. \textbf{289} (2025), no.~9, Paper 111106;
+arXiv:2311.05560.
+\end{thebibliography}
+
+\end{document}
+

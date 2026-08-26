@@ -1,0 +1,281 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\ip}[2]{\langle #1,#2\rangle}
+\newcommand{\HS}{\mathrm{HS}}
+
+\title{Exact solution of the arbitrary-noise\\optimal-signals problem}
+\author{Candidate solution packet for arXiv:2002.03974}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{black}{gray!8}{\parbox{0.91\linewidth}{
+\textbf{Status.} Candidate full solution to Problem~1 of Ambrus--Bai--Hou
+\cite{ABH}, pending expert review.  The source solves the zero-noise case and
+the positive-noise problem restricted to uniform systems.  The theorem below
+gives the exact value and all maximizers for every noise level.
+}}
+\end{center}
+
+\section{Source question}
+
+The source is G.~Ambrus, B.~Bai, and J.~Hou, \emph{Uniform tight frames as
+optimal signals} \cite{ABH}.  It is arXiv:2002.03974v3, Problem~1 on PDF page~2
+and the complete statement and the authors' scope note are shown
+below.
+
+\begin{center}
+\includegraphics[width=0.97\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+Thus, for integers $d\ge 2$ and $N\ge d$, bounds $0<c_1<c_2$, and
+$\sigma\ge0$, one must determine
+\begin{equation}\label{eq:question}
+ \max_{\substack{v_1,\ldots,v_N\in\R^d\\c_1\le \lVert v_i\rVert^2\le c_2}}
+ \min_{1\le k\le N}
+ \log\!\left(1+
+ \frac{\lVert v_k\rVert^2}
+ {\sigma^2+\sum_{\ell\ne k}\ip{v_k}{v_\ell}^2}\right).
+\end{equation}
+The source uses the convention $1/0=+\infty$.
+
+\section{Definitions and exact answer}
+
+A family $u_1,\ldots,u_N\in\R^d$ is a \emph{unit-norm tight frame}
+(UNTF) if
+\[
+ \lVert u_i\rVert=1\quad(1\le i\le N),\qquad
+ \sum_{i=1}^N u_i\otimes u_i=\frac Nd I_d.
+\]
+Real UNTFs exist for every $N\ge d$; see \cite{BF,ABH}.
+
+\begin{theorem}[Complete arbitrary-noise formula]\label{thm:main}
+Assume $N>d$ and put
+\[
+ \alpha=\frac{N-d}{d},\qquad
+ c_\sigma=\min\!\left\{c_2,
+              \max\!\left\{c_1,\frac{\sigma}{\sqrt\alpha}\right\}\right\},
+ \qquad
+ \tau_\sigma=\frac{\sigma^2}{c_\sigma}+\alpha c_\sigma.
+\]
+Then the value of \eqref{eq:question} is
+\begin{equation}\label{eq:value}
+ \boxed{\ \log\!\left(1+\frac1{\tau_\sigma}\right)\ }.
+\end{equation}
+Moreover, a family $(v_i)_{i=1}^N$ is a maximizer if and only if
+\begin{equation}\label{eq:maximizers}
+ v_i=\sqrt{c_\sigma}\,u_i\quad(1\le i\le N)
+\end{equation}
+for a UNTF $(u_i)_{i=1}^N$.
+
+Equivalently,
+\[
+ \tau_\sigma=
+ \begin{cases}
+ \sigma^2/c_1+\alpha c_1,
+   &0\le\sigma\le c_1\sqrt\alpha,\\[2mm]
+ 2\sigma\sqrt\alpha,
+   &c_1\sqrt\alpha\le\sigma\le c_2\sqrt\alpha,\\[2mm]
+ \sigma^2/c_2+\alpha c_2,
+   &\sigma\ge c_2\sqrt\alpha.
+ \end{cases}
+\]
+At the common endpoints the adjacent expressions agree.
+\end{theorem}
+
+For completeness, when $N=d$ and $\sigma>0$, the value is
+$\log(1+c_2/\sigma^2)$ and the maximizers are precisely the orthogonal bases
+whose vectors all have squared norm $c_2$.  When $N=d$ and $\sigma=0$, the
+value is $+\infty$ and the maximizers are precisely the orthogonal bases with
+arbitrary squared norms in $[c_1,c_2]$.
+
+\section{Proof intuition}
+
+Taking reciprocals turns the max--min signal-to-noise problem into a minimax
+problem.  The obstruction in the nonuniform case is that user $i$ sees the
+other squared norms with asymmetric coefficients.  The useful choice is to
+average the reciprocal SINR with weight $1/\lVert v_i\rVert^2$.  For an
+unordered pair $\{i,j\}$, the two directed contributions then combine into
+\[
+ \frac{\lVert v_j\rVert^2}{\lVert v_i\rVert^2}
+ +\frac{\lVert v_i\rVert^2}{\lVert v_j\rVert^2}\ge2.
+\]
+This erases the norm asymmetry.  The surviving angular sum is exactly the
+frame potential controlled by the Welch bound.  Cauchy--Schwarz then replaces
+all inverse squared norms by their mean, reducing the entire optimization to
+the one-variable function $\sigma^2/c+\alpha c$.  A UNTF at its clipped
+minimizing value of $c$ makes every inequality an equality.
+
+\section{Proof}
+
+We give the central estimate separately.
+
+\begin{lemma}[Inverse-norm weighted Welch bound]\label{lem:key}
+Let $N\ge d$, let $a_i\in[c_1,c_2]$, and let $u_i\in S^{d-1}$.  Set
+\[
+ D_i=\frac{\sigma^2}{a_i}
+       +\sum_{j\ne i}a_j\ip{u_i}{u_j}^2,\qquad
+ x_i=\frac1{a_i},\qquad \bar x=\frac1N\sum_{i=1}^N x_i.
+\]
+With $\alpha=(N-d)/d$, one has
+\begin{equation}\label{eq:chain}
+ \max_iD_i
+ \ge \frac{\sum_i x_iD_i}{\sum_i x_i}
+ \ge \frac{\sigma^2\sum_i x_i^2+N\alpha}{\sum_i x_i}
+ \ge \sigma^2\bar x+\frac{\alpha}{\bar x}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The first inequality is a positive weighted average.  Expanding its numerator
+and grouping the two directed terms belonging to each unordered pair gives
+\begin{align*}
+ \sum_i x_iD_i
+ &=\sigma^2\sum_i x_i^2
+   +\sum_{i<j}
+       \left(\frac{a_j}{a_i}+\frac{a_i}{a_j}\right)
+       \ip{u_i}{u_j}^2\\
+ &\ge \sigma^2\sum_i x_i^2
+   +2\sum_{i<j}\ip{u_i}{u_j}^2.
+\end{align*}
+For $T=\sum_i u_i\otimes u_i$, one has $\operatorname{tr}T=N$ and hence
+\[
+ 2\sum_{i<j}\ip{u_i}{u_j}^2
+ =\lVert T\rVert_{\HS}^2-N
+ \ge \frac{(\operatorname{tr}T)^2}{d}-N
+ =\frac{N(N-d)}d=N\alpha.
+\]
+This is the usual Welch bound, here proved directly from Cauchy--Schwarz for
+the eigenvalues of $T$.  Finally,
+$\sum_i x_i^2\ge N\bar x^2$ and $\sum_i x_i=N\bar x$, proving the last step
+of \eqref{eq:chain}.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Write $v_i=\sqrt{a_i}\,u_i$.  The reciprocal of user $i$'s signal-to-noise
+ratio is exactly
+\[
+ \frac{\sigma^2+\sum_{j\ne i}\ip{v_i}{v_j}^2}{\lVert v_i\rVert^2}
+ =D_i.
+\]
+Consequently, maximizing the minimum signal-to-noise ratio is equivalent to
+minimizing $\max_iD_i$.  Since $x_i\in[1/c_2,1/c_1]$, also
+$\bar x\in[1/c_2,1/c_1]$.  Lemma~\ref{lem:key} gives
+\begin{align}
+ \max_iD_i
+ &\ge \min_{x\in[1/c_2,1/c_1]}
+       \left(\sigma^2x+\frac\alpha x\right)\notag\\
+ &=\min_{c\in[c_1,c_2]}
+       \left(\frac{\sigma^2}{c}+\alpha c\right)
+ =\frac{\sigma^2}{c_\sigma}+\alpha c_\sigma
+ =\tau_\sigma.\label{eq:lower}
+\end{align}
+The last scalar function decreases up to
+$c=\sigma/\sqrt\alpha$ and increases thereafter, which yields the stated
+clipping and piecewise formulas.
+
+Let $(u_i)$ be a UNTF and set $v_i=\sqrt{c_\sigma}u_i$.  Its frame operator is
+$(Nc_\sigma/d)I_d$, so for every $i$,
+\[
+ \sum_{j\ne i}\ip{v_i}{v_j}^2
+ =\ip{v_i}{\left(\sum_jv_j\otimes v_j\right)v_i}
+   -\lVert v_i\rVert^4
+ =\frac{N-d}{d}c_\sigma^2=\alpha c_\sigma^2.
+\]
+Thus every $D_i$ equals $\tau_\sigma$, proving sharpness of
+\eqref{eq:lower} and the value \eqref{eq:value}.
+
+It remains to characterize equality.  Suppose first that $\sigma>0$.
+Equality in the last step of Lemma~\ref{lem:key} forces equality in
+$\sum_i x_i^2\ge N\bar x^2$, hence all $x_i$ and all $a_i$ are equal.  The
+strict convexity of $\sigma^2/c+\alpha c$ forces their common value to be
+$c_\sigma$.  Equality in the Welch step forces
+$T=(N/d)I_d$, so the normalized vectors form a UNTF.
+
+If $\sigma=0$ (still with $N>d$), the last expression in
+\eqref{eq:chain} is $\alpha/\bar x\ge\alpha c_1$.  Equality forces
+$\bar x=1/c_1$; because every $x_i\le1/c_1$, this means $a_i=c_1=c_\sigma$
+for every $i$.  Equality in the Welch step again gives a UNTF.  Conversely,
+the displayed construction proves that every family in
+\eqref{eq:maximizers} is a maximizer.
+\end{proof}
+
+\paragraph{The case $N=d$.}
+Here $\alpha=0$.  For $\sigma>0$, the same chain gives
+\[
+ \max_iD_i\ge
+ \frac{\sigma^2\sum_i x_i^2}{\sum_i x_i}
+ \ge\sigma^2\bar x\ge\frac{\sigma^2}{c_2}.
+\]
+Equality forces $a_i=c_2$ for every $i$, and equality in the nonnegative
+pair contribution forces the $u_i$ to be pairwise orthogonal.  Such a scaled
+orthogonal basis attains the bound.  If $\sigma=0$, $\max_iD_i$ is zero
+exactly when all pairwise inner products vanish, and the lengths
+are unrestricted within the given interval.  This proves the boundary claims.
+
+\section{Verification}
+
+The companion script \texttt{code/verify\_bound.py} performs two checks.
+With a fixed seed it tested all four inequalities in \eqref{eq:chain} and
+\eqref{eq:lower} on 120,000 random configurations in six dimension/size
+pairs, with random norm bounds and noise levels (including zero noise).  It
+also constructed explicit real harmonic UNTFs for eight dimension/size pairs
+and verified equality in 48 parameter regimes spanning both clipping
+thresholds.  The command was
+\begin{verbatim}
+conda run --no-capture-output -n sandbox python code/verify_bound.py
+\end{verbatim}
+and all checks passed.  Small $d=2$, $N=3,4,5$ differential-evolution
+searches over lengths and angles also returned the theorem's value across
+small, intermediate, and large noise.  These computations test for algebraic
+or edge-case mistakes; they are not used in the proof.
+
+\section{Novelty check, scope, and reviewer focus}
+
+The bounded check was performed on 13 August 2026.  The run's registry,
+solution, attempt, and proof-gap indexes were searched for arXiv:2002.03974,
+the exact title, and the core max--min/tight-frame terms.  Web and arXiv
+searches used the exact title and id, the phrase ``extremal vector systems are
+not necessarily uniform,'' and formula-level combinations of ``max min,''
+``noise,'' and ``tight frame.''  OpenAlex's citation record for the published
+DOI \href{https://doi.org/10.1016/j.aam.2021.102219}{10.1016/j.aam.2021.102219}
+listed one citing work, \emph{Robustness of Frames and Totally Nonsingular
+Matrices} (2026), whose stated topic is unrelated to this extremum problem.
+No later paper claiming the arbitrary-noise solution was found.  This is a
+bounded search, not a proof of novelty.
+
+The result answers the finite-dimensional real problem exactly as stated.  It
+does not address complex frames, altered interference exponents, unequal
+user-specific noise, or additional coding constraints.  A reviewer should
+check especially (i) the inverse-norm weighting identity, (ii) that every
+inequality in the sharp chain must be an equality at a maximizer, and
+(iii) the separate equality arguments for $\sigma=0$ and $N=d$.  The source
+states informally that positive-noise extremizers need not be uniform
+\cite[p.~4]{ABH}; Theorem~\ref{thm:main} implies the contrary for Problem~1 as
+printed, so this point merits direct expert scrutiny.
+
+\begin{thebibliography}{9}
+\bibitem{ABH}
+G.~Ambrus, B.~Bai, and J.~Hou,
+\emph{Uniform tight frames as optimal signals},
+Advances in Applied Mathematics \textbf{129} (2021), 102219;
+arXiv:2002.03974v3.
+
+\bibitem{BF}
+J.~J.~Benedetto and M.~Fickus,
+\emph{Finite normalized tight frames},
+Advances in Computational Mathematics \textbf{18} (2003), 357--385.
+\end{thebibliography}
+
+\end{document}

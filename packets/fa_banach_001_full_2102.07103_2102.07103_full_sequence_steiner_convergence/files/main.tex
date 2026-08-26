@@ -1,0 +1,196 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\B}{B}
+\newcommand{\dist}{\operatorname{dist}}
+
+\title{A Ball-Convergent Subsequence Forces the Full Steiner Sequence to Converge}
+\author{Candidate full solution of Problem 1 in arXiv:2102.07103}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{\textbf{Status.} Candidate full proof, likely valid, pending human review. Problem 1 has an affirmative answer, with a quantitative Hausdorff estimate.}}
+\end{center}
+
+\section{Source question and answer}
+
+Y. Lin, \emph{The Petty projection inequality for sets of finite perimeter},
+arXiv:2102.07103 \cite{source}, writes $\mathcal C^n$ for the compact sets of
+finite perimeter in $\R^n$ with nonempty interior. For $E\in\mathcal C^n$ and
+directions $u_i\in S^{n-1}$, let
+\[
+ E_i=S_{u_i}\cdots S_{u_1}E,
+\]
+and let $E^\star=\overline B_r$ be the origin-centered ball with
+$|E^\star|=|E|$. Problem 1 asks whether convergence of one subsequence
+$E_{i_j}\to E^\star$ in Hausdorff distance forces the entire sequence to
+converge.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/problem_1_crop.png}
+  \caption{Problem 1 in the source PDF.}
+\end{figure}
+
+The answer is yes. The proof uses only volume preservation and a Lyapunov
+quantity that is especially transparent here: the radius of the smallest
+\emph{origin-centered} ball containing the set.
+
+\section{Proof intuition}
+Steiner symmetrization preserves volume and cannot increase the centered
+circumradius.  The ball-convergent subsequence forces that monotone radius
+to have the ball radius as its limit.  Once every late set lies in an
+arbitrarily thin outer shell around the equal-volume ball, any macroscopic
+hole inside the ball would have more volume than that shell can hold.
+This converts radius convergence into Hausdorff convergence for the whole
+sequence.
+
+\begin{theorem}\label{thm:answer}
+Let $E\in\mathcal C^n$, let $(u_i)$ be any sequence of directions, and put
+$E_i=S_{u_i}\cdots S_{u_1}E$. If a subsequence converges in Hausdorff distance
+to $E^\star=\overline B_r$, then
+\[
+ E_i\longrightarrow E^\star
+ \qquad\text{in Hausdorff distance.}
+\]
+Thus Problem 1 in the source has an affirmative answer.
+\end{theorem}
+
+\section{Equal volume upgrades outer-radius convergence}
+
+For a nonempty compact set $A$, write
+\[
+ R(A)=\max_{x\in A}|x|.
+\]
+
+\begin{lemma}\label{lem:shell}
+Let $A_k\subset\R^n$ be compact measurable sets with
+$|A_k|=|\overline B_r|>0$. If $A_k\subset\overline B_{R_k}$ and
+$R_k\to r$, then $A_k\to\overline B_r$ in Hausdorff distance.
+More quantitatively, for all sufficiently large $k$,
+\begin{equation}\label{eq:quant}
+ d_H(A_k,\overline B_r)
+ \leq \max\left\{R_k-r,\ 2(R_k^n-r^n)^{1/n}\right\}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Equal volume and $A_k\subset\overline B_{R_k}$ imply $R_k\geq r$. The outer
+half of the Hausdorff distance is at most $R_k-r$.
+
+Set
+\[
+ \eta_k=\sup_{x\in\overline B_r}\dist(x,A_k).
+\]
+Fix $x\in\overline B_r$ and $0<\varepsilon<\min\{\dist(x,A_k),2r\}$. Put
+\[
+ y=\left(1-\frac{\varepsilon}{2r}\right)x.
+\]
+Then
+\[
+ B(y,\varepsilon/2)\subset B(x,\varepsilon)\cap\overline B_r
+ \subset \overline B_r\setminus A_k.
+\]
+Consequently,
+\[
+ \omega_n(\varepsilon/2)^n
+ \leq |\overline B_r\setminus A_k|
+ =|A_k\setminus\overline B_r|
+ \leq |\overline B_{R_k}\setminus\overline B_r|
+ =\omega_n(R_k^n-r^n).
+\]
+Since the last term tends to zero, $\eta_k<2r$ for all sufficiently large
+$k$. Letting $\varepsilon\uparrow\dist(x,A_k)$ and then taking the supremum
+over $x$ gives $\eta_k\leq2(R_k^n-r^n)^{1/n}$. This proves
+\eqref{eq:quant} and the lemma.
+\end{proof}
+
+\section{The centered circumradius is monotone}
+
+\begin{lemma}\label{lem:radius}
+For every compact measurable $A\subset\R^n$ and every direction
+$u\in S^{n-1}$,
+\[
+ R(S_uA)\leq R(A).
+\]
+\end{lemma}
+
+\begin{proof}
+Let $R=R(A)$, so $A\subset\overline B_R$. Write a point as $x+tu$ with
+$x\in u^\perp$. The one-dimensional section of $A$ above $x$ is contained in
+\[
+ \left[-\sqrt{R^2-|x|^2},\sqrt{R^2-|x|^2}\right].
+\]
+Its length is therefore at most $2\sqrt{R^2-|x|^2}$. Steiner symmetrization
+replaces that section by the centered interval of the same length, which is
+still contained in the displayed interval. Hence $S_uA\subset\overline B_R$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:answer}]
+Steiner symmetrization preserves Lebesgue measure, so
+$|E_i|=|E|=|\overline B_r|$ for all $i$. Lemma~\ref{lem:radius} shows that
+\[
+ R(E_{i+1})\leq R(E_i).
+\]
+Moreover $R(E_i)\geq r$, since a set of volume $|\overline B_r|$ cannot fit
+inside a smaller centered ball.
+
+The map $A\mapsto R(A)$ is $1$-Lipschitz for the Hausdorff metric. Thus the
+assumed subsequential convergence gives $R(E_{i_j})\to r$. The decreasing
+sequence $R(E_i)$ must consequently converge to $r$. Apply
+Lemma~\ref{lem:shell} with $A_k=E_k$ and $R_k=R(E_k)$ to obtain
+$E_i\to\overline B_r$ in Hausdorff distance.
+\end{proof}
+
+\section{Scope, verification, and Problem 2}
+
+\begin{enumerate}[leftmargin=*,itemsep=0.35em]
+ \item The proof applies to arbitrary compact measurable starting sets of
+ positive finite volume for which successive Steiner symmetrals are compact;
+ finite perimeter is not used for Problem 1.
+ \item Null-set representatives cause no gap: compactness defines $R(A)$ and
+ Hausdorff distance, while the volume comparison in Lemma~\ref{lem:shell}
+ works for the chosen measurable representatives.
+ \item The case where $x$ lies on the boundary of the ball is covered by the
+ explicit inner ball $B(y,\varepsilon/2)$.
+ \item Formula \eqref{eq:quant} was checked independently on model sets
+ consisting of a ball-volume compact set contained in a shrinking outer ball.
+\end{enumerate}
+
+The source's Problem 2 asks in addition whether $P(E_i)\to P(E^\star)$ when
+the full sequence converges in Hausdorff distance. The argument above does not
+settle that question. Hausdorff convergence and equal volume alone do not
+control perimeter: arbitrarily fine boundary corrugations can retain excess
+perimeter. The monotonicity $P(E_{i+1})\leq P(E_i)$ gives existence of a limit
+and lower semicontinuity gives $P(E^\star)\leq\lim_iP(E_i)$, but a new upper
+bound exploiting the iterative Steiner structure would still be required.
+
+The local run indexes were searched for the arXiv identifier, both exact
+problem statements, and the core Steiner/Hausdorff keywords. A bounded
+external search on 11 August 2026 checked the exact wording and later work on
+convergence of symmetrization processes. It found broad convergence theorems
+and pathological direction sequences, but no explicit answer to this precise
+subsequence-to-full-sequence question for the source's compact finite-perimeter
+setting. This is not an exhaustive citation-graph review, so originality
+remains a candidate claim pending expert checking.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+Y. Lin,
+\newblock The Petty projection inequality for sets of finite perimeter,
+\newblock arXiv:2102.07103 (2021),
+\href{https://arxiv.org/abs/2102.07103}{arXiv:2102.07103}.
+\end{thebibliography}
+
+\end{document}

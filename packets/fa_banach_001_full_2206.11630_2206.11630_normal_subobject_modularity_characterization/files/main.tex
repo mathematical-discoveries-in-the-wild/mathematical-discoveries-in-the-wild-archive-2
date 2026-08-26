@@ -1,0 +1,241 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,graphicx,microtype}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\clconv}{\overline{\operatorname{conv}}}
+\newcommand{\dist}{\operatorname{dist}}
+\title{Modularity of the normal-subobject lattice\\
+\large A full answer to the conjecture in arXiv:2206.11630}
+\author{Autonomous proof audit --- lane 9}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\linewidth}{\textbf{Candidate full result.}
+For every real seminormed space and every $0<\varepsilon<1$, the
+normal-subobject lattice considered by Fritz is modular if and only if the
+Hausdorff quotient has dimension at most one.  The proof works for arbitrary
+norms and in arbitrary (possibly incomplete and infinite) dimension.}}
+\end{center}
+
+\section{Source conjecture and transcription}
+
+Fix $0<\varepsilon<1$.  Corollary 4.9 of the source identifies the normal
+subobjects of a seminormed space $(V,p)$ with
+\[
+ \mathcal N_\varepsilon(V,p)
+ =\{q:q\text{ is a seminorm on }V, p\le q\le\varepsilon^{-1}p\},
+\]
+ordered by reverse pointwise order.  The meet and join are
+\[
+ (q_1\wedge q_2)(x)=\max\{q_1(x),q_2(x)\},\qquad
+ (q_1\vee q_2)(x)=\inf_{x_1+x_2=x}\bigl(q_1(x_1)+q_2(x_2)\bigr).
+\]
+Footnote 12 on printed page 23 conjectures:
+\begin{quote}
+$\mathcal N_\varepsilon(V,p)$ is modular if and only if
+$\dim(V/V_0)\le1$, where $V_0=\{x:p(x)=0\}$.
+\end{quote}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.94\linewidth]{figures/open_problem_crop.png}
+\caption{Source evidence: arXiv:2206.11630, printed page 23 and footnote 12.}
+\end{figure}
+
+\section{Idea and geometric translation}
+
+Every admissible $q$ has the same null space $V_0$ as $p$, so the problem
+passes exactly to the normed quotient $X=V/V_0$.  Write $U=\{x:p(x)\le1\}$.
+The unit ball $K_q=\{x:q(x)\le1\}$ is a closed, convex, centrally symmetric
+set satisfying
+\[
+ \varepsilon U\subseteq K_q\subseteq U.
+\]
+Conversely every such set is the unit ball of an admissible norm.  Under this
+correspondence the lattice order is ordinary inclusion and
+\[
+ K\wedge L=K\cap L,
+ \qquad K\vee L=\clconv(K\cup L).
+\]
+Indeed, the pointwise maximum has intersection as its unit ball.  For the
+infimal-convolution join, every decomposition of cost at most one gives a
+convex combination of points of the two balls.  Conversely, decompositions
+of cost at most $1+\delta$ put $x/(1+\delta)$ in their convex hull; letting
+$\delta\downarrow0$ gives the closure.  The join is still bounded between
+$p$ and $\varepsilon^{-1}p$, so its unit ball is closed in the $p$-topology.
+Thus the conjecture becomes a local statement about the lattice of symmetric
+convex bodies in an arbitrarily thin annulus.
+
+The key observation is that every norm ball in dimension at least two has a
+thin exposed cap containing a short line segment.  Three subsets of that
+segment reproduce the elementary nonmodular configuration
+\[
+ \{0\}\subset[0,2],\qquad \{3\}\cap[0,2]=\varnothing,
+ \qquad \operatorname{conv}(\{0,3\})\cap[0,2]=[0,2].
+\]
+Adding a common inner ball and reflecting through the origin makes all three
+sets absorbing and centrally symmetric without changing the exposed cap.
+
+\section{An exposed-cap lemma}
+
+Let $(X,p)$ be a real normed space, let $\varphi\in X^*$ satisfy
+$\|\varphi\|=1$, and choose numbers $0<r<c<1$.  Put
+$H_c=\{x:\varphi(x)=c\}$.  For a nonempty compact convex set
+$S\subset U\cap H_c$, define
+\[
+ K(S)=\clconv\bigl(rU\cup S\cup(-S)\bigr).
+\]
+
+\begin{lemma}[cap localization]
+For every $z\in K(S)$,
+\[
+ \dist_p(z,S)\le \frac{2\,[c-\varphi(z)]}{c-r}.
+\]
+In particular, $K(S)\cap H_c=S$.
+\end{lemma}
+
+\begin{proof}
+First take $z$ in the nonclosed convex hull.  After collecting coefficients
+inside each convex set, write
+\[
+ z=\alpha s-\beta t+\gamma b,
+ \quad s,t\in S,quad b\in rU,quad
+ \alpha,\beta,\gamma\ge0,quad \alpha+\beta+\gamma=1.
+\]
+Since $\varphi(s)=\varphi(t)=c$ and $\varphi(b)\le r$,
+\[
+ c-\varphi(z)
+ \ge 2c\beta+(c-r)\gamma
+ \ge(c-r)(\beta+\gamma)=(c-r)(1-\alpha).
+\]
+Also $S\subset U$ and $b\in rU\subset U$, so
+\[
+ p(z-s)\le(1-\alpha)p(s)+\beta p(t)+\gamma p(b)
+ \le2(1-\alpha).
+\]
+Combining the inequalities proves the estimate.  Approximation by convex
+combinations and compactness of $S$ extend it to the closed convex hull.  If
+$\varphi(z)=c$, the right side is zero, so $z\in S$; the reverse inclusion is
+immediate.
+\end{proof}
+
+\section{The characterization}
+
+\begin{theorem}
+Let $(V,p)$ be a real seminormed space, let
+$V_0=\{x:p(x)=0\}$, and fix $0<\varepsilon<1$.  Then
+$\mathcal N_\varepsilon(V,p)$ is modular if and only if
+$\dim(V/V_0)\le1$.
+\end{theorem}
+
+\begin{proof}
+All admissible seminorms vanish exactly on $V_0$, so quotienting by $V_0$
+gives a lattice isomorphism with the corresponding norm lattice on
+$X=V/V_0$.  We may therefore assume that $p$ is a norm.
+
+If $\dim X=0$, the lattice has one element.  If $\dim X=1$, every norm on
+$X$ is a scalar multiple of $p$.  Hence the admissible norms form a chain
+(the scalar interval $[1,\varepsilon^{-1}]$, with reversed order), and every
+chain is modular.
+
+Assume now that $\dim X\ge2$.  Choose
+\[
+ \varepsilon<r<c<1,qquad x\in X,quad p(x)=1,
+ \qquad \varphi\in X^*,quad \|\varphi\|=1,quad\varphi(x)=1.
+\]
+Hahn--Banach provides $\varphi$.  Choose $y\in\ker\varphi$ with $p(y)=1$
+and $h>0$ so small that $3h<1-c$.  Then the four points
+\[
+ z_j=cx+jhy\qquad(j=0,1,2,3)
+\]
+belong to $U\cap H_c$.  In that hyperplane set
+\[
+ S_A=\{z_0\},\qquad S_C=[z_0,z_2],\qquad S_D=\{z_3\},
+\]
+and define $A=K(S_A)$, $C=K(S_C)$, and $D=K(S_D)$.  These are closed,
+convex, symmetric bodies with
+\[
+ rU\subseteq A,C,D\subseteq U.
+\]
+Their gauges therefore satisfy
+$p\le q\le r^{-1}p<\varepsilon^{-1}p$, so they are elements of the required
+lattice.  Moreover $A\subseteq C$.
+
+We compare the two sides of the modular identity at the exposed hyperplane
+$H_c$.  First,
+\[
+ \dist_p(S_D,S_C)=h.
+\]
+Set $\eta=(c-r)h/5$.  If a point $z$ belonged to $D\cap C$ with
+$\varphi(z)>c-\eta$, the cap lemma applied once to $D$ and once to $C$ would
+give
+\[
+ \dist_p(z,S_D)<2h/5,qquad \dist_p(z,S_C)<2h/5,
+\]
+contradicting the distance $h$ between the two cap sets.  Thus
+\[
+ \sup_{z\in D\cap C}\varphi(z)\le c-\eta.
+\]
+It follows that adjoining $D\cap C$ to $A$ cannot create a new point on the
+top exposed hyperplane: using the cap lemma for $A$, or simply taking
+convex combinations and passing to limits, gives
+\[
+ \bigl(A\vee(D\wedge C)\bigr)\cap H_c=\{z_0\}.
+\]
+
+On the other hand,
+\[
+ (A\vee D)\cap H_c=[z_0,z_3],
+ \qquad C\cap H_c=[z_0,z_2].
+\]
+Therefore
+\[
+ \bigl((A\vee D)\wedge C\bigr)\cap H_c=[z_0,z_2].
+\]
+In particular $z_1$ belongs to the right side but not the left side.  Hence
+\[
+ A\vee(D\wedge C)\ne(A\vee D)\wedge C
+ \quad\text{despite }A\subseteq C,
+\]
+so the lattice is not modular.
+\end{proof}
+
+\section{Verification, scope, and novelty}
+
+The proof was checked against the source's reverse seminorm order and its
+explicit meet/join formulas.  The inner radius $r$ may be chosen strictly
+between $\varepsilon$ and $1$, so the construction works even when
+$\varepsilon$ is arbitrarily close to $1$; no ``sufficiently small'' caveat
+remains.  The cap estimate supplies the uniform gap needed when closed convex
+hulls are used, so neither completeness nor finite dimensionality is hidden in
+the proof.  Quotienting by $V_0$ is exact because every admissible seminorm has
+the same null space.
+
+\paragraph{Scope.}
+This resolves only the real-scalar conjecture stated in the source.  It does
+not develop the paper's broader proposed theory of $\varepsilon$-curved group
+cohomology.  The same geometric idea should adapt to complex spaces after
+realification, but that variant is not claimed here.
+
+\paragraph{Novelty status.}
+Bounded searches by the exact conjectural phrase, title, normal-subobject
+lattice terminology, and seminorm-lattice modularity found the source paper
+and general seminorm-lattice literature, but no later resolution or matching
+exposed-cap proof.  Novelty is therefore plausible, not certified; expert and
+author review are recommended before dissemination.
+
+\begin{thebibliography}{9}
+\bibitem{Fritz}
+T. Fritz,
+\emph{Non-abelian and $\varepsilon$-curved homological algebra with arrow
+categories}, J. Pure Appl. Algebra 227 (2023), 107314;
+arXiv:2206.11630, Corollary 4.9 and footnote 12.
+\end{thebibliography}
+
+\end{document}

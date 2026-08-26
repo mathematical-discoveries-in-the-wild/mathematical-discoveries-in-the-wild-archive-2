@@ -1,0 +1,280 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.82in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,microtype}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\V}{\mathcal V}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\Dom}{\operatorname{Dom}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\title{Exact transmission conditions and inclusions\\
+for finite-step variable bandwidth}
+\author{Automated mathematical discovery run \texttt{fa\_banach\_001}, lane 11}
+\date{17 August 2026}
+\begin{document}
+\maketitle
+
+\textbf{Status.} Likely valid full answers to Questions II.5 and II.6 of
+arXiv:2503.22443, plus a sharp one-sided result toward the sampled-sign
+question.
+
+\section*{Source questions and normalization}
+
+Jaming and Perez ask when local Paley--Wiener pieces patch to their
+finite-step variable-bandwidth space, and whether an order between two step
+coefficients implies inclusion of the corresponding spaces.  The displayed
+comparison in Question II.6 reads $p_1\ge p_2$ although the two functions are
+called $p,\widetilde p$; below it is read in the natural intended sense
+$p\ge\widetilde p$ pointwise.
+
+\begin{center}
+\includegraphics[width=.61\textwidth]{figures/open_questions_crop.png}
+\end{center}
+
+It is cleaner to separate the spectral cutoff from the paper's competing
+$\Omega$ normalizations.  Let
+\[
+ A_p f=-(pf')',\qquad
+ \V_p(B)=\Ran\mathbf 1_{[0,B]}(A_p),\qquad B>0.
+\]
+Suppose $p=p_j>0$ on $I_j=(x_j,x_{j+1})$, where
+$-\infty=x_0<x_1<\cdots<x_N<x_{N+1}=\infty$, and put
+\[
+                         c_j=\sqrt{B/p_j}.
+\]
+Thus an element of $\V_p(B)$ restricts on $I_j$ to an entire member of the
+classical $PW_{c_j}(\R)$.  In the explicit formulas of the source,
+$c_j=\Omega p_j^{-1/2}$, so $B=\Omega^2$.
+
+\section*{Full answer to the local-patching question}
+
+For each $j$, let $F_j\in PW_{c_j}(\R)$, and define
+$f(x)=F_j(x)$ for $x\in I_j$.  Values and derivatives below are those of the
+entire functions $F_j$.
+
+\begin{theorem}[Transmission-jet characterization]\label{thm:jets}
+The piecewise function $f$ belongs to $\V_p(B)$ if and only if, at every jump
+$x_j$ and for every $m\ge0$,
+\begin{align}
+ p_{j-1}^{m}F_{j-1}^{(2m)}(x_j)
+   &=p_j^{m}F_j^{(2m)}(x_j),                         \tag{T$_{2m}$}\label{eq:even}\\
+ p_{j-1}^{m+1}F_{j-1}^{(2m+1)}(x_j)
+   &=p_j^{m+1}F_j^{(2m+1)}(x_j).                    \tag{T$_{2m+1}$}\label{eq:odd}
+\end{align}
+In particular, continuity is only the first of an infinite, explicit family
+of matching conditions.
+\end{theorem}
+
+\begin{proof}
+If $f\in\V_p(B)$, then $f\in\Dom(A_p^m)$ for every $m$.  A function $u$ in
+$\Dom(A_p)$ is continuous at every jump and has continuous flux $pu'$ there.
+On $I_j$,
+\[
+                  A_p^m f=(-1)^m p_j^mF_j^{(2m)}.    \tag{1}
+\]
+Applying continuity and flux continuity to $A_p^m f$ gives
+\eqref{eq:even} and \eqref{eq:odd}.
+
+Conversely, the conditions with $m=0$ put $f$ in $\Dom(A_p)$.  The complete
+family, used inductively, puts $f$ in every $\Dom(A_p^m)$ and proves (1).
+Bernstein's inequality in $PW_{c_j}$ now gives, with
+$C^2=\sum_j\|F_j\|_2^2$,
+\begin{align*}
+ \|A_p^m f\|_2^2
+ &\le \sum_j p_j^{2m}\|F_j^{(2m)}\|_2^2
+ \le \sum_j p_j^{2m}c_j^{4m}\|F_j\|_2^2\\
+ &= C^2B^{2m}.                                      \tag{2}
+\end{align*}
+Let $\mu_f$ be the spectral measure of $f$ for $A_p$.  If
+$\mu_f((B+\varepsilon,\infty))=\delta>0$, then the spectral theorem gives
+\[
+ \|A_p^m f\|_2^2=\int\lambda^{2m}\,d\mu_f(\lambda)
+ \ge\delta(B+\varepsilon)^{2m},
+\]
+contradicting (2) as $m\to\infty$.  Hence $\supp\mu_f\subset[0,B]$ and
+$f\in\V_p(B)$.
+\end{proof}
+
+The conditions also reveal why one local piece determines the global
+function.  At a jump $x$, write the adjacent constants as $p_-,p_+$ and set
+$H_-(t)=F_-(x+\sqrt{p_-}\,t)$.  Then the unique compatible right piece is
+given by
+\begin{equation}
+\begin{aligned}
+ H_+(t):=F_+(x+\sqrt{p_+}\,t)
+ &=\frac{H_-(t)+H_-(-t)}2 \\
+ &\quad+\sqrt{\frac{p_-}{p_+}}
+       \frac{H_-(t)-H_-(-t)}2.
+\end{aligned}
+\tag{3}\label{eq:transfer}
+\end{equation}
+Indeed, the even Taylor coefficients in (3) encode \eqref{eq:even}, and the
+odd ones encode \eqref{eq:odd}.  Both sides have exponential type at most
+$\sqrt B$ in $t$, and reflection and dilation preserve $L^2$ membership.
+Iteration and Theorem~\ref{thm:jets} yield the following useful strengthening
+of the source's uniqueness observation.
+
+\begin{corollary}[Onto local chart]\label{cor:chart}
+For every component $I_j$, restriction followed by entire continuation is a
+real-linear bijection
+\[
+            \V_p(B)_{\R}\longrightarrow PW_{\sqrt{B/p_j}}(\R)_{\R}.
+\]
+\end{corollary}
+
+\section*{Full answer to the inclusion question}
+
+The next theorem allows the finite jump sets of $p$ and $\widetilde p$ to be
+different.
+
+\begin{theorem}[Complete inclusion classification]\label{thm:inclusion}
+For positive finite-step functions $p,\widetilde p$ and $B>0$,
+\[
+ \V_p(B)\subseteq\V_{\widetilde p}(B)
+ \quad\Longleftrightarrow\quad
+ \widetilde p=\alpha p\ \hbox{ for some }0<\alpha\le1.              \tag{4}
+\]
+Consequently, even under the pointwise order $p\ge\widetilde p$, inclusion
+fails unless the coefficients are global scalar multiples.
+\end{theorem}
+
+\begin{proof}
+Assume the inclusion.  At any breakpoint $x$ in the union of the two step
+partitions, denote the one-sided constants by $p_\pm,\widetilde p_\pm$;
+the two constants are equal if the corresponding function has no jump there.
+Every $f\in\V_p(B)$ must satisfy both flux laws
+\[
+ p_-f'(x-)=p_+f'(x+),\qquad
+ \widetilde p_-f'(x-)=\widetilde p_+f'(x+).            \tag{5}
+\]
+If $p_-/p_+\ne\widetilde p_-/\widetilde p_+$, the two equations force both
+derivatives to vanish for every $f\in\V_p(B)$.  This is impossible by
+Corollary~\ref{cor:chart}: in either adjacent local chart, prescribe a real
+Paley--Wiener function whose derivative at $x$ is nonzero.  Thus the ratios
+agree at every breakpoint.  The quotient $\widetilde p/p$ is consequently
+constant across the common refinement, say $\widetilde p=\alpha p$.
+
+Conversely, $A_{\alpha p}=\alpha A_p$ on the same domain, and therefore
+\[
+                      \V_{\alpha p}(B)=\V_p(B/\alpha). \tag{6}
+\]
+Equation (6) gives the inclusion exactly when $\alpha\le1$.  It is strict in
+the opposite direction: a local chart contains functions with Fourier mass
+between the two distinct local band edges.
+\end{proof}
+
+Here is a concrete negative answer to the proposed monotonicity.  With one
+jump at zero, take
+\[
+ p(x)=\begin{cases}4,&x<0,\\1,&x>0,\end{cases}\qquad
+ \widetilde p(x)=\begin{cases}2,&x<0,\\1,&x>0.\end{cases}            \tag{7}
+\]
+Then $p\ge\widetilde p$.  In the left local chart let
+$c=\sqrt B/2$ and prescribe
+\[
+             \widehat F(\xi)=-i\xi\,\mathbf1_{[-c,c]}(\xi).
+\]
+This defines a real $F\in PW_c$ with
+$F'(0)=2c^3/(3\sqrt{2\pi})>0$.  Its lift lies in $\V_p(B)$.  If it also lay
+in $\V_{\widetilde p}(B)$, (5) would simultaneously give
+$f'(0+)=4f'(0-)$ and $f'(0+)=2f'(0-)$, a contradiction.
+
+\section*{Sharp tail sampling and an all-bandwidth set}
+
+The source's final question asks for discrete sign-retrieval sets.  The full
+multi-component classification remains open, but the local chart gives a
+sharp answer for a natural family.
+
+\begin{theorem}[Sharp one-sided lattice]\label{thm:sampling}
+Fix the right unbounded component $I_N=(x_N,\infty)$, choose $a>x_N$, and put
+$c=\sqrt{B/p_N}$.  The one-sided lattice
+\[
+                         \Lambda_h=\{a+nh:n\ge0\}
+\]
+sign retrieves every real member of $\V_p(B)$ if and only if
+\[
+                              0<h<\frac{\pi}{2c}.       \tag{8}
+\]
+\end{theorem}
+
+\begin{proof}
+By Corollary~\ref{cor:chart}, it suffices to work in real $PW_c$.  Suppose
+$h<\pi/(2c)$ and $|F|=|G|$ on $\Lambda_h$.  Then
+$H=F^2-G^2\in PW_{2c}$ and $H(a+nh)=0$ for every $n\ge0$.  If
+$\varphi(\xi)=e^{ia\xi}\widehat H(\xi)$, these zeros say that $\varphi$ is
+orthogonal on $[-2c,2c]$ to every nonnegative mode $e^{inh\xi}$.
+After the change of variable $\theta=h\xi$, extend $\varphi(\theta/h)$ by
+zero to the circle.  Its support is a proper arc because $4ch<2\pi$, while
+the mode conditions put it in one Hardy boundary subspace.  Hardy boundary
+uniqueness forces it to vanish: a nonzero Hardy function cannot have boundary
+values zero on the complementary arc of positive measure.  Thus $H=0$.
+Since entire functions form an integral domain,
+$(F-G)(F+G)=0$ implies $F=G$ or $F=-G$.
+
+For sharpness, let $h\ge\pi/(2c)$ and $d=\pi/(2h)\le c$.  Fill the removable
+singularities in
+\[
+ U(z)=\frac{\sin(d(z-a))}{z-a+2h},\qquad
+ V(z)=\frac{\cos(d(z-a))}{z-a+h}.                      \tag{9}
+\]
+These are nonzero real members of $PW_c$: they have type $d$ and are square
+integrable on $\R$.  At even samples $U=0$, and at odd samples $V=0$.
+Hence $F=U+V$ and $G=U-V$ have the same sampled magnitudes but are not global
+signs of one another.  Their local-chart lifts prove failure in $\V_p(B)$.
+\end{proof}
+
+There is also one discrete set that works for every finite bandwidth at once.
+For $a>x_N$, let
+\[
+                         \Lambda_\infty=\{a+\sqrt n:n\ge1\}.          \tag{10}
+\]
+If a nonzero entire function has finite exponential type, Jensen's formula
+gives only $O(r)$ zeros in $|z|\le r$, whereas (10) contributes order $r^2$.
+Thus (10) is a uniqueness set for $PW_{2c}$ for every finite $c$.  Applying
+the squared-function argument above proves simultaneous sign retrieval in
+$\V_p(B)_\R$ for every $B>0$.  This resolves the literal bandwidth-free
+reading of the source's notation $PW(A_p)$, though the set is not separated
+and no stability claim is made.
+
+\section*{Scope, novelty, and human-review focus}
+
+Theorems~\ref{thm:jets} and \ref{thm:inclusion} fully answer the two questions
+reproduced in the crop.  Theorem~\ref{thm:sampling} and (10) answer substantial
+one-component cases of the final sampled-sign question, not its arbitrary
+multi-component classification.
+
+A bounded search through 17 August 2026 used the exact source title and
+questions together with ``variable bandwidth inclusion,'' ``step
+Sturm--Liouville spectral subspace,'' and ``sampled sign retrieval.''  It
+found the source and Thakur's classical unsigned Paley--Wiener theorem, but no
+answer to these finite-step questions.  Novelty is therefore only
+``apparently new within the bounded search.''
+
+Human review should focus on (i) the source's inconsistent $\Omega$ cutoff,
+which is why the packet uses the unambiguous edge $B$; (ii) the induction from
+the jet conditions to $\Dom(A_p^m)$; and (iii) the intended reading of the
+typo in Question II.6.  None affects the operator-theoretic statement in the
+$B$ normalization.
+
+\section*{References}
+
+\begin{enumerate}
+\item P. Jaming and R. Perez III, ``Sign retrieval in spaces of variable
+  bandwidth,'' arXiv:2503.22443 (2025), Questions II.5, II.6, and Section IV.
+\item K. Gr\"ochenig and A. Klotz, ``What is variable bandwidth?''
+  Comm. Pure Appl. Math. 70 (2017), 2039--2083.
+\item G. Thakur, ``Reconstruction of bandlimited functions from unsigned
+  samples,'' J. Fourier Anal. Appl. 17 (2011), 720--732;
+  arXiv:1007.0198.
+\end{enumerate}
+
+\end{document}

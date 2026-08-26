@@ -1,0 +1,322 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Hh}{\mathcal H}
+\newcommand{\R}{\mathbb R}
+\newcommand{\supp}{\operatorname{supp}}
+
+\title{A sharp two-traversal lower bound for\\one-sided singular damping}
+\author{Candidate partial answer to the second open problem in arXiv:2002.03440}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{black}{gray!8}{\parbox{0.91\linewidth}{\raggedright
+\textbf{Status: candidate partial result, likely valid.}
+For the Dirichlet damped wave equation on the unit interval, no damping that
+is regular away from at most one endpoint can make every energy solution
+extinct before time $2$.  Thus the extinction time $2$ of the critical
+damping $a(x)=1/x$ is optimal throughout this one-sided-singularity class.
+The unrestricted problem remains open when critical nonintegrable damping is
+allowed at both endpoints or in the interior.}}
+\end{center}
+
+\section{Source problem}
+
+Freitas, Hefti, and Siegl study
+\begin{equation}\label{eq:wave}
+ u_{tt}+2a(x)u_t=u_{xx},\qquad 0<x<1,\qquad
+ u(0,t)=u(1,t)=0,
+\end{equation}
+on the energy space
+$\Hh=H^1_0(0,1)\times L^2(0,1)$~\cite{FHS}.
+For $a(x)=1/x$, every solution vanishes after time $2$.  At the end of
+Section~4 (arXiv PDF page 10), they ask:
+
+\begin{quote}
+``Are there damping terms which will cause finite time extinction to occur
+for all solutions for all time larger than some $T$ which is now smaller
+than $2$ (on an interval with unit length)?''
+\end{quote}
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{The second open problem in Section~4 of arXiv:2002.03440,
+  PDF page 10.}
+\end{figure}
+
+For a strongly continuous solution semigroup $S_a(t)$, saying that every
+solution is zero for all $t>T$ is equivalent to $S_a(T)=0$: strong
+continuity supplies the endpoint once $S_a(t)=0$ for $t>T$.
+
+\section{Result and scope}
+
+Call $a$ \emph{one-sided admissible} if
+\begin{equation}\label{eq:class}
+ a\in C^1((0,1]),\qquad a\geq0,\qquad
+ \sup_{0<x\leq1}x a(x)<\infty,
+\end{equation}
+and use the standard maximal-dissipative (form) realization of
+\eqref{eq:wave} on $\Hh$.  The Hardy estimate gives the same energy
+realization used for $\alpha/x$ in~\cite{FHS}; the only fact about this
+realization needed below is ordinary local finite propagation on every
+strip $[\delta,1]\times[0,T]$, where $a$ is bounded and smooth.  The theorem
+therefore also applies to any broader energy realization that agrees locally
+with the classical equation away from $x=0$.
+
+\begin{theorem}[Two-traversal lower bound]\label{thm:main}
+If $a$ is one-sided admissible, then
+\[
+ S_a(T)\neq0\qquad(0<T<2).
+\]
+Consequently, a universal finite extinction time in this class is at least
+$2$.
+\end{theorem}
+
+The reflected statement holds when $a$ may be singular only at $x=1$.
+The growth bound in \eqref{eq:class} is a convenient sufficient condition
+for the energy realization, not the mechanism behind the lower bound.  The
+proof only uses that $a$ is integrable along the broken characteristic before
+it reaches the singular endpoint.
+
+\begin{corollary}[Sharpness of the known example]\label{cor:sharp}
+For $a(x)=1/x$, the universal extinction time is exactly $2$.
+\end{corollary}
+
+Indeed, Theorem~\ref{thm:main} gives the lower bound, while the extinction
+result recalled and reproved in~\cite{FHS} gives the upper bound.
+
+\section{Proof intuition}
+
+Write the wave as two first-order travelling components.  Put
+\[
+ p=u_t+u_x,\qquad q=u_t-u_x.
+\]
+Then $p$ travels left, $q$ travels right, and damping couples them without
+changing their characteristic speeds.  Start with energy data for which
+$q$ has one jump at a point $x_0>0$ and $p$ is continuous.  Along the
+right-going ray, the jump is multiplied by an exponential of a finite
+damping integral, so it cannot disappear.  At the regular endpoint $x=1$,
+the Dirichlet condition reflects it into a nonzero jump of $p$.  That jump
+then travels left and remains nonzero until it reaches the only possible
+singularity at $x=0$, at time $2-x_0$.
+
+Given any $T<2$, choose $x_0<2-T$.  The reflected jump is still in the
+interior at time $T$, so the state cannot be zero.  The key point is not an
+energy estimate: it is the impossibility of annihilating a wavefront by a
+finite damping integral.
+
+\section{Jump propagation}
+
+The following elementary lemma records the local mechanism.  All jumps are
+differences of the two one-sided traces.
+
+\begin{lemma}[Characteristic jump law]\label{lem:jump}
+On a region where $a$ is locally integrable and a solution of
+\eqref{eq:wave} is piecewise $C^1$, the Riemann invariants satisfy
+\begin{equation}\label{eq:riemann}
+ p_t-p_x=-a(p+q),\qquad q_t+q_x=-a(p+q).
+\end{equation}
+If initially $q$ has a jump $J$ at $x_0$ and $p$ is continuous there, then,
+until the ray $x=x_0+t$ meets the boundary,
+\begin{equation}\label{eq:rightamp}
+ [p]=0,\qquad
+ [q](t)=J\exp\!\left(-\int_0^t a(x_0+s)\,ds\right).
+\end{equation}
+At $x=1$ the jump reflects into $p$ with the opposite sign.  On the outgoing
+ray $x=2-x_0-t$, its amplitude is
+\begin{equation}\label{eq:leftamp}
+ [p](t)=-J\exp\!\left(
+ -\int_{x_0}^{1}a(s)\,ds
+ -\int_{2-x_0-t}^{1}a(s)\,ds\right),
+ \qquad 1-x_0<t<2-x_0.
+\end{equation}
+In particular, every displayed amplitude is nonzero when the integrals are
+finite.
+\end{lemma}
+
+\begin{proof}
+Equation~\eqref{eq:riemann} follows directly from
+$u_t=(p+q)/2$ and $u_x=(p-q)/2$.  Across the right-going characteristic
+$x-x_0-t=0$, a jump of $p$ would contribute a Dirac mass with coefficient
+$-2[p]$ to $p_t-p_x$.  The right side of \eqref{eq:riemann} has no Dirac
+mass, so $[p]=0$.  Taking ordinary trace differences in the equation for
+$q$ now gives
+\[
+ \frac{d}{dt}[q](t)=-a(x_0+t)[q](t),
+\]
+which proves \eqref{eq:rightamp}.
+
+For a piecewise classical Dirichlet solution, $u(1,t)=0$ implies
+$u_t(1,t)=0$ and hence $p(1,t)+q(1,t)=0$.  The time jump arriving in $q$
+therefore creates the opposite time jump in the boundary value of $p$.
+Repeating the preceding calculation on the left-going characteristic gives
+the second exponential in \eqref{eq:leftamp}.  This jump calculus is local;
+standard characteristic approximation extends it to the corresponding
+piecewise-smooth energy solution.
+\end{proof}
+
+\section{Proof of Theorem~\ref{thm:main}}
+
+Fix $0<T<2$.  Choose
+\begin{equation}\label{eq:xchoice}
+ 0<x_0<\min\{1,2-T\},\qquad x_0\neq1-T.
+\end{equation}
+The excluded value merely prevents the observed time from being the instant
+when the jump is at the boundary.
+
+We first construct globally legitimate energy data with exactly the desired
+local jump.  Choose a smooth function $\chi$ on $[x_0,1]$ which equals $1$
+near $x_0$ and vanishes near $1$.  Next choose a unit-integral function
+\[
+ \psi\in C_c^\infty((x_0/4,x_0/2)),\qquad \int_0^1\psi=1,
+\]
+and put
+\[
+ c=\int_{x_0}^1\chi(s)\,ds,\qquad
+ q_0(x)=\mathbf 1_{(x_0,1)}(x)\chi(x)-c\psi(x),\qquad p_0(x)=0.
+\]
+Then $q_0$ has a single jump of size $1$ at $x_0$, is smooth elsewhere,
+and has integral zero.  Define
+\begin{equation}\label{eq:data}
+ u_0(x)=-\frac12\int_0^xq_0(s)\,ds,
+ \qquad u_1(x)=\frac12q_0(x).
+\end{equation}
+Thus $u_0\in H^1_0(0,1)$, $u_1\in L^2(0,1)$, and the corresponding initial
+invariants are precisely $p_0=0$ and $q_0$.
+
+The broken ray issued from the jump is
+\begin{equation}\label{eq:ray}
+ \gamma(t)=
+ \begin{cases}
+ x_0+t,&0\leq t\leq1-x_0,\\
+ 2-x_0-t,&1-x_0\leq t<2-x_0.
+ \end{cases}
+\end{equation}
+By \eqref{eq:xchoice}, $T<2-x_0$ and $\gamma(T)>0$; moreover
+$\gamma(T)\neq1$.  The entire ray segment up to time $T$ lies in
+$[\delta,1]$ for some $\delta>0$.  Hence $a$ is bounded there, both damping
+integrals in Lemma~\ref{lem:jump} are finite, and the appropriate invariant
+has a nonzero jump at the interior point $\gamma(T)$.  Therefore
+\[
+ S_a(T)(u_0,u_1)\neq(0,0).
+\]
+Since $T<2$ was arbitrary, the theorem follows.  \qed
+
+\begin{remark}[The critical example]
+For $a(x)=1/x$, the incoming amplitude in \eqref{eq:rightamp} is
+$Jx_0/(x_0+t)$.  After reflection, \eqref{eq:leftamp} becomes
+\[
+ [p](t)=-Jx_0(2-x_0-t),
+ \]
+which is nonzero until the ray reaches $x=0$ at time $2-x_0$.  Letting
+$x_0\downarrow0$ displays geometrically why the sharp universal threshold is
+$2$ even though each fixed tracked jump dies slightly earlier.
+\end{remark}
+
+\section{Focused upgrade attempts}
+
+Because the characteristic theorem is a substantial partial answer, eight
+focused attempts were made to upgrade it to the unrestricted question.
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.06\textwidth}p{0.31\textwidth}p{0.55\textwidth}@{}}
+\toprule
+No. & Route & Outcome \\
+\midrule
+1 & Isolated wavefront & Gave the nonvanishing exponential jump law. \\
+2 & Energy-compatible data & The correction in \eqref{eq:data} produces a genuine $H^1_0\times L^2$ state without adding another jump. \\
+3 & Boundary reflection & Extended survival from one crossing to the full broken-ray time $2-x_0$. \\
+4 & Rough coefficients & The proof only needs a finite line integral along the ray; the packet states a conservative smooth-away-from-zero class to keep the realization unambiguous. \\
+5 & Two endpoint poles & The candidate $a=1/x+1/(1-x)$ defeats this ray: the reflection point itself has infinite damping.  Its spectral ODE did not yield a nilpotent semigroup or a $T<2$ formula. \\
+6 & Spectral determinant & Nilpotence forces empty spectrum, but classifying zero-free entire Dirichlet determinants for arbitrary critical singularities is an unresolved new problem. \\
+7 & Darboux/gauge factorization & A single exponential-affine factorization forces a one-pole logarithmic derivative $a=\pm h'/h$; it does not cover two poles or interior barriers. \\
+8 & Interior absorbers and literature threshold & A critical interior singularity requires a nontrivial choice of energy trace/interface realization.  Existing backward-uniqueness theorems exclude broad subcritical classes but do not settle this critical regime. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The remaining full problem is therefore concentrated in damping with a
+nonintegrable critical barrier at both endpoints or in the interior.  Neither
+the characteristic proof nor the located literature classifies the resulting
+singular scattering realization.  Continuing without such a new theorem had
+low probability of producing a rigorous full answer.
+
+\section{Verification and novelty status}
+
+The proof was audited at the following points: the factor of $a$ in
+\eqref{eq:riemann}; the distributional coefficient forcing $[p]=0$; the
+reflection sign; both exponential integrals; the zero-integral correction in
+the initial data; the strict inequalities in \eqref{eq:xchoice}; and the
+exact $a=1/x$ amplitude.  The accompanying script checks the broken-ray
+geometry and the explicit critical amplitude on a grid of $399$ test times.
+Those computations are sanity checks, not part of the proof.
+
+A bounded novelty search on 13 August 2026 covered the local run indexes, the
+exact source title and quoted question, ``singular damping extinction time
+smaller than 2,'' ``minimal extinction time,'' the arXiv record through 2026,
+and later work citing the critical example.  Kleinhenz and Wang prove optimal
+abstract backward uniqueness under a subcritical unboundedness threshold in
+arXiv:2310.19911~\cite{KW23}; their later Theorem~4 rules out finite-time
+extinction for normally $L^p$ damping, $p>1$~\cite{KW26}.  Both explicitly
+contrast their result with the critical $2/x$ example.  Neither gives a
+minimal-time theorem in the critical one-sided class or answers the
+two-sided/interior-singular case.  No later answer to the exact $T<2$ question
+was found.  Novelty is plausible but not certified, and priority is not
+claimed; the argument may be implicit in standard one-dimensional
+propagation theory.
+
+\section{Limitations and review recommendation}
+
+This is not a full answer to either open problem in~\cite{FHS}.  It does not
+address the norm-constrained optimization question.  For the second problem,
+it does not rule out a damping with critical nonintegrable singularities at
+both endpoints or at an interior interface, and it does not construct such a
+damping.  It also does not claim a general semigroup construction beyond the
+standard one-sided form class \eqref{eq:class}.
+
+Human review should focus first on the local-to-global use of the
+piecewise-smooth energy solution in Lemma~\ref{lem:jump}, then on the boundary
+reflection step.  Once those standard hyperbolic facts are accepted, every
+remaining step is explicit.  The best route to a full result would be a
+classification of maximal-dissipative interface conditions for critical
+interior/two-endpoint singularities, followed by a zero-free spectral-
+determinant or characteristic-scattering analysis.
+
+\begin{thebibliography}{9}
+\bibitem{FHS}
+P.~Freitas, N.~Hefti, and P.~Siegl,
+\emph{The damped wave equation with singular damping},
+Proc. Amer. Math. Soc. \textbf{148} (2020), 4273--4284;
+arXiv:2002.03440.
+
+\bibitem{KW23}
+P.~Kleinhenz and R.~P.~T.~Wang,
+\emph{Optimal backward uniqueness and polynomial stability of second order
+equations with unbounded damping}, arXiv:2310.19911 (2023).
+
+\bibitem{KW26}
+P.~Kleinhenz and R.~P.~T.~Wang,
+\emph{Sharp polynomial decay for polynomially singular damping on the torus},
+Ann. PDE \textbf{12} (2026), Article 6,
+doi:10.1007/s40818-025-00230-2.
+\end{thebibliography}
+
+\end{document}

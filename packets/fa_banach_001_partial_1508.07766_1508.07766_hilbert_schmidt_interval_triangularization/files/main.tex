@@ -1,0 +1,300 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Sone}{\mathcal S_1}
+\newcommand{\Stwo}{\mathcal S_2}
+\newcommand{\tr}{\operatorname{tr}}
+
+\title{Hilbert--Schmidt Operators with Increasing Standard-Compression Spectrum}
+\author{Run fa\_banach\_001, agent\_lane\_14}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status and source question}
+
+This is a \texttt{candidate\_partial\_likely\_valid} result for Roman
+Drnov\v sek, \emph{Triangularizability of trace-class operators with
+increasing spectrum}, arXiv:1508.07766 \cite{Drnovsek}.  Question~3 on PDF
+page~3 asks:
+
+\begin{quote}
+Suppose that $K$ is a compact operator on $L^2(X,\mu)$ that has increasing
+spectrum relative to standard compressions. Does $K$ admit a standard
+triangularization (which need not be multiplicity-free)? In particular, is
+$K$ decomposable?
+\end{quote}
+
+\begin{center}
+\includegraphics[width=0.94\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+For a measurable $E\subseteq[0,1]$, write $P_E$ for multiplication by
+$\mathbf1_E$.  Increasing spectrum means
+\[
+ \sigma(P_EK|_{P_EL^2})\subseteq\sigma(P_FK|_{P_FL^2})
+ \qquad(E\subseteq F).
+\]
+The source's Theorem~5 answers the interval case when $K$ is trace class,
+its kernel is continuous, and its lattice modulus is also trace class.  The
+result below removes all three restrictions, retaining only the strictly
+weaker Hilbert--Schmidt hypothesis.
+
+\section*{Main result}
+
+\begin{theorem}[Hilbert--Schmidt interval case]\label{thm:main}
+Let $K\in\Stwo(L^2[0,1])$ have increasing spectrum relative to standard
+compressions.  Then $K$ is quasinilpotent and admits a standard
+triangularization.
+
+More precisely, if $k\in L^2([0,1]^2)$ is the kernel of $K$ and $T$ is the
+positive Hilbert--Schmidt operator with kernel $|k|$, then $T$ is
+quasinilpotent.  A standard triangularizing chain supplied for $T$ by the
+ideal-triangularization form of de Pagter's theorem consists of
+$K$-invariant standard subspaces as well.
+\end{theorem}
+
+\section*{Proof intuition}
+
+The trace of $K$ need not exist, and a measurable kernel has no meaningful
+diagonal values.  Both apparent losses are avoided by starting with the
+second power.  Every Hilbert--Schmidt compression has trace-class powers
+from exponent two onward, and increasing spectrum makes all of their power
+traces zero.
+
+For $n$ disjoint localization sets, take an alternating sum over all their
+unions.  Boolean inclusion--exclusion cancels every block word that misses a
+set; a word of length $n$ that visits all $n$ sets is necessarily a
+permutation.  Lebesgue differentiation therefore says that the sum of all
+oriented $n$-cycle products is zero almost everywhere.  A shortest nonzero
+cycle cannot cancel in this sum: all its backward chords except the closing
+edge would create shorter cycles, so only its $n$ rotations remain.
+
+Thus the absolute kernel $|k|$ has zero cyclic moments of every order at
+least two.  A separate spectral lemma shows that an Hilbert--Schmidt operator
+with all those power traces zero must be quasinilpotent.  De Pagter's theorem
+then provides the standard chain, and $|Kf|\leq T|f|$ transfers its
+invariance to $K$.  The full compact problem remains open because a compact
+operator need not possess either an $L^2$ kernel or any trace-class power.
+
+\section*{Three lemmas}
+
+We first isolate the only spectral fact needed at the end.
+
+\begin{lemma}[vanishing power traces]\label{lem:power}
+If $A\in\Stwo$ and
+\[
+ \tr(A^n)=0\qquad(n\geq2),
+\]
+then $A$ is quasinilpotent.
+\end{lemma}
+
+\begin{proof}
+Let $(\lambda_j)$ be the nonzero eigenvalues of $A$, repeated according to
+algebraic multiplicity.  Weyl's inequality gives
+$\sum_j|\lambda_j|^2<\infty$, and Lidskii's theorem applied to $A^n\in\Sone$
+gives
+\[
+ 0=\tr(A^n)=\sum_j\lambda_j^n\qquad(n\geq2).
+\]
+Suppose that $r=r(A)>0$, and list the finitely many peripheral eigenvalues
+as $\lambda_1,\ldots,\lambda_m$.  Simultaneous recurrence on the compact
+torus gives integers $n_q\to\infty$ such that
+$(\lambda_j/r)^{n_q}\to1$ for every $j\leq m$.
+
+The remaining eigenvalues have modulus at most some $\rho<r$ outside an
+$\ell_2$ tail of modulus at most $r/2$.  Consequently
+\[
+ r^{-n_q}\sum_{j>m}|\lambda_j|^{n_q}\longrightarrow0:
+\]
+the finite part is $O((\rho/r)^{n_q})$, while the tail is at most
+$r^{-2}2^{-(n_q-2)}\sum_j|\lambda_j|^2$.  Dividing the zero power sum by
+$r^{n_q}$ and passing to the limit therefore gives $0=m$, a contradiction.
+Thus $r(A)=0$.
+\end{proof}
+
+For $n\geq2$, define the cyclic product
+\[
+ c_n(x_1,\ldots,x_n)=
+ k(x_1,x_2)k(x_2,x_3)\cdots k(x_n,x_1)
+\]
+and its complete symmetrization
+\[
+ F_n(x_1,\ldots,x_n)=
+ \sum_{\pi\in S_n}c_n(x_{\pi(1)},\ldots,x_{\pi(n)}).
+\]
+Products of Hilbert--Schmidt kernels around a finite cycle are integrable;
+this follows first for finite simple kernels from the trace formula and then
+for $L^2$ kernels by the Schatten H\"older bound.  Hence $F_n\in L^1$.
+
+\begin{lemma}[localized inclusion--exclusion]\label{lem:sym}
+Under the hypotheses of Theorem~\ref{thm:main},
+\[
+ F_n=0\quad\text{almost everywhere on }[0,1]^n
+ \qquad(n\geq2).
+\]
+\end{lemma}
+
+\begin{proof}
+Drnov\v sek's Theorem~4 \cite{Drnovsek} uses only compactness and the
+compressions $P_{[0,t]}$ to show that $K$ is quasinilpotent.  For every
+measurable $E$, increasing spectrum then gives
+\[
+ \sigma(P_EKP_E|_{P_EL^2})\subseteq\sigma(K)=\{0\}.
+\]
+Thus $K_E=P_EKP_E$ is quasinilpotent.  Since $K_E\in\Stwo$, Lidskii gives
+\begin{equation}\label{eq:localtraces}
+ \tr(K_E^n)=0\qquad(n\geq2).
+\end{equation}
+
+Fix pairwise disjoint measurable sets $E_1,\ldots,E_n$.  For
+$J\subseteq\{1,\ldots,n\}$, put $P_J=P_{\cup_{j\in J}E_j}$.  Taking the
+Boolean alternating sum of \eqref{eq:localtraces} yields
+\begin{equation}\label{eq:boolean}
+ 0=\sum_{J\subseteq[n]}(-1)^{n-|J|}
+       \tr\bigl((P_JKP_J)^n\bigr).
+\end{equation}
+Expand each trace into block words.  If a word uses precisely the index set
+$S$, its coefficient in \eqref{eq:boolean} is
+\[
+ \sum_{J\supseteq S}(-1)^{n-|J|}
+ =\begin{cases}1,&S=[n],\\0,&S\ne[n].\end{cases}
+\]
+A surviving word has length $n$ and uses every one of the $n$ indices, so
+its index word is a permutation.  The standard trace formula for cyclic
+products of Hilbert--Schmidt kernel operators therefore turns
+\eqref{eq:boolean} into
+\[
+ \int_{E_1\times\cdots\times E_n}F_n(x_1,\ldots,x_n)
+ \,dx_1\cdots dx_n=0.
+\]
+
+Take the $E_i$ to be equal-radius intervals centered at distinct points
+$x_i$.  They are disjoint for all sufficiently small radii.  The ordinary
+Lebesgue differentiation theorem on $[0,1]^n$, applied to the integrable
+function $F_n$, gives $F_n(x_1,\ldots,x_n)=0$ for almost every tuple with
+distinct coordinates.  The collision diagonals have measure zero, proving
+the lemma.
+\end{proof}
+
+\begin{lemma}[cycle elimination]\label{lem:cycles}
+For every $n\geq2$, $c_n=0$ almost everywhere.
+\end{lemma}
+
+\begin{proof}
+We induct on $n$.  Since
+$F_2(x_1,x_2)=2c_2(x_1,x_2)$, the base case follows from
+Lemma~\ref{lem:sym}.
+
+Assume the assertion through length $n-1$.  If $c_n$ were nonzero on a set
+of positive measure, we could choose a tuple of distinct coordinates
+$(x_1,\ldots,x_n)$ such that $c_n\ne0$, $F_n=0$, and every shorter cycle on
+every subtuple vanishes.  This simultaneous choice is legitimate because
+only finitely many null sets and their coordinate pullbacks are excluded.
+
+For $1\leq i<j\leq n$ with $j-i\leq n-2$, the forward path
+\[
+ k(x_i,x_{i+1})\cdots k(x_{j-1},x_j)
+\]
+is nonzero.  Closing it with $k(x_j,x_i)$ gives a cycle of length at most
+$n-1$, so the induction hypothesis forces $k(x_j,x_i)=0$.  In any directed
+Hamiltonian cycle on the ordered vertices $1,\ldots,n$, avoiding all such
+backward edges leaves only
+\[
+ 1\to2\to\cdots\to n\to1
+\]
+and its $n$ cyclic rotations: after the unique allowed backward edge
+$n\to1$, every other edge must move forward, and visiting all vertices
+forces their natural order.  Hence every summand of $F_n$ vanishes except
+those $n$ rotations, all equal to $c_n(x_1,\ldots,x_n)$.  This gives
+$0=F_n=n c_n\ne0$, a contradiction.
+\end{proof}
+
+\section*{Proof of the theorem}
+
+The quasinilpotence of $K$ was already obtained in the proof of
+Lemma~\ref{lem:sym}.  Let $T$ be the positive integral operator with kernel
+$|k|$.  Since $|k|\in L^2([0,1]^2)$, $T\in\Stwo$ and is compact.  For every
+$n\geq2$, $T^n\in\Sone$, and the Hilbert--Schmidt cyclic trace formula plus
+Lemma~\ref{lem:cycles} gives
+\[
+ \tr(T^n)=\int_{[0,1]^n}
+ |k(x_1,x_2)|\cdots|k(x_n,x_1)|\,dx_1\cdots dx_n=0.
+\]
+Lemma~\ref{lem:power} shows that $T$ is quasinilpotent.
+
+The ideal-triangularization corollary of de Pagter's theorem for positive
+compact quasinilpotent operators \cite{dePagter,RadjaviRosenthal} supplies a
+maximal standard chain invariant under $T$.  If $L^2(E)$ belongs to this
+chain and $f$ is supported in $E$, then
+\[
+ |Kf|(x)\leq\int_0^1|k(x,y)|\,|f(y)|\,dy=(T|f|)(x).
+\]
+The right side is supported in $E$, so $Kf$ is supported in $E$.  Thus the
+same standard chain is invariant under $K$, proving the asserted standard
+triangularization.  \qed
+
+\section*{Verification, upgrade attempts, and limitations}
+
+The proof uses no numerical approximation.  A finite script included as
+\path{code/check_cycle_combinatorics.py} verifies through $n=8$ both the
+Boolean coefficient in Lemma~\ref{lem:sym} and that exactly the $n$ cyclic
+rotations survive the forbidden-backward-edge condition.  It is a regression
+check, not a substitute for the displayed proofs.
+
+Four focused upgrades were attempted.  First, the source's trace-class
+assumption on the modulus was replaced by Hilbert--Schmidt power traces.
+Second, trace class of $K$ itself was removed, initially for continuous
+kernels.  Third, Boolean localization removed continuity and produced the
+full theorem above.  Fourth, the route was tested against arbitrary compact
+operators.  That last extension stops for a structural reason: a compact
+operator can belong to no $\mathcal S_p$ with finite $p$, so no positive
+power need have a trace; it also need not possess an $L^2$ kernel whose
+absolute value defines a positive compact majorant.  Norm approximation by
+finite-rank operators does not preserve increasing spectra or invariant
+standard subspaces.  Consequently the source question for arbitrary compact
+operators remains open.
+
+A bounded novelty search on 11 August 2026 used the exact source title and
+the combinations \texttt{increasing spectrum relative to standard
+compressions}, \texttt{Hilbert-Schmidt}, and \texttt{standard
+triangularization}, together with the run's registry, solution, attempt, and
+proof-gap indexes.  It found the original 2009 paper \cite{MMR} and the 2017
+source paper, but no later Hilbert--Schmidt theorem.  Novelty confidence is
+moderate pending specialist review.  Human review should focus on the
+$L^2$ cyclic trace formula, the null-set pullbacks in the induction, and the
+precise ideal-triangularization corollary used in the last paragraph.
+
+\begin{thebibliography}{9}
+\bibitem{Drnovsek}
+R. Drnov\v sek,
+\emph{Triangularizability of trace-class operators with increasing spectrum},
+J. Math. Anal. Appl. 447 (2017), 1102--1115; arXiv:1508.07766.
+
+\bibitem{MMR}
+L. W. Marcoux, M. Mastnak, and H. Radjavi,
+\emph{Triangularizability of operators with increasing spectrum},
+J. Funct. Anal. 257 (2009), 3517--3540.
+
+\bibitem{dePagter}
+B. de Pagter,
+\emph{Irreducible compact operators},
+Math. Z. 192 (1986), 149--153.
+
+\bibitem{RadjaviRosenthal}
+H. Radjavi and P. Rosenthal,
+\emph{Simultaneous Triangularization},
+Springer-Verlag, New York, 2000.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,257 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.92in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+\setlist{nosep}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\Ent}{\operatorname{Ent}}
+\newcommand{\Id}{\mathrm I}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+\title{A sharp covariance-only Talagrand deficit bound}
+\author{Full solution packet for arXiv:2201.12478\\
+\small Agent \texttt{agent\_lane\_02} (GPT5.6)}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Bez, Nakamura, and Tsuji ask whether their sharp Talagrand deficit estimate
+for $0<\beta<1$ remains true under the sole hypothesis
+$\Cov(\mu)\leq\beta\Id$.  We prove this and a sharper anisotropic theorem.  If
+$0<\Sigma=\Cov(\mu)\leq\Id$, then
+\[
+ \frac12W_2(\gamma,\mu)^2-H(\mu\mid\gamma)
+ \leq \frac12\log\det\Sigma-\tr\sqrt\Sigma+n.
+\]
+Equality holds exactly for translates of $N(0,\Sigma)$.  The proof is a short
+combination of the Brenier change-of-variables identity, Gaussian integration
+by parts, concavity of $\log\det$, and a block-covariance inequality.
+\end{abstract}
+
+\section{Source question}
+
+Let $\gamma=N(0,\Id)$ on $\R^n$, and write
+\[
+ H(\mu\mid\gamma)=\int_{\R^n}\log\!\left(\frac{d\mu}{d\gamma}\right)d\mu.
+\]
+The source paper \cite{BezNakamuraTsuji} proves, under a
+$\beta$-semi-log-concavity hypothesis, that
+\begin{equation}\label{eq:source}
+ \frac12W_2(\gamma,\mu)^2-H(\mu\mid\gamma)
+ \leq n\left(1+\frac12\log\beta-\sqrt\beta\right)
+ \qquad(0<\beta<1).
+\end{equation}
+In Section 1.4 it asks whether \eqref{eq:source} remains true under only
+$\Cov(\mu)\leq\beta\Id$.  Figure~\ref{fig:question} reproduces Theorem 1.5,
+the explicit sharp value, and the complete two-page question statement.
+
+\begin{figure}[p]
+ \centering
+ \includegraphics[width=\textwidth,height=0.84\textheight,keepaspectratio]{figures/open_problem_crop.png}
+ \caption{Pages 10--11 of arXiv:2201.12478v3: inequality (1.23), its sharp
+ Gaussian value, and the covariance-only open problem.  The image retains the
+ complete page width and stitches the two-line continuation from page 11.}
+ \label{fig:question}
+\end{figure}
+
+Here covariance is centered, so translations are permitted.  In fact, every
+translate of $N(0,\beta\Id)$ attains equality in \eqref{eq:source}.
+
+\section{Proof intuition}
+
+Let $T$ be the Brenier map carrying the standard Gaussian to $\mu$.  The
+Talagrand deficit can be written using only the Jacobian $A=\nabla T$:
+\[
+ \frac12W_2^2-H=\E[\log\det A]-\tr(\E A)+n.
+\]
+Concavity of $\log\det$ says that replacing $A$ by its mean can only increase
+this expression.  Gaussian integration by parts identifies $M=\E A$ with the
+cross-covariance of $T(X)$ and $X$.  Positivity of their joint covariance then
+gives $M^2\leq\Cov(\mu)$.  The remaining scalar-looking matrix functional
+$\log\det M-\tr M+n$ is increasing in Loewner order below the identity.  This
+both proves the conjecture and retains the full covariance spectrum.
+
+\section{Sharp anisotropic theorem}
+
+\begin{theorem}[Covariance-sharp Talagrand deficit]\label{thm:main}
+Let $\mu$ be an absolutely continuous probability measure on $\R^n$ with
+finite second moment, and let $\Sigma=\Cov(\mu)$.  If
+$0<\Sigma\leq\Id$, then
+\begin{equation}\label{eq:matrix}
+ \boxed{
+ \frac12W_2(\gamma,\mu)^2-H(\mu\mid\gamma)
+ \leq \frac12\log\det\Sigma-\tr\sqrt\Sigma+n.}
+\end{equation}
+If the relative entropy is finite, equality holds if and only if $\mu$ is a
+translate of $N(0,\Sigma)$.
+
+In particular, if $0<\beta<1$ and $\Sigma\leq\beta\Id$, then
+\begin{equation}\label{eq:scalar}
+ \frac12W_2(\gamma,\mu)^2-H(\mu\mid\gamma)
+ \leq n\left(1+\frac12\log\beta-\sqrt\beta\right).
+\end{equation}
+Equality in \eqref{eq:scalar} holds if and only if $\mu$ is a translate of
+$N(0,\beta\Id)$.
+\end{theorem}
+
+\begin{proof}
+If $H(\mu\mid\gamma)=+\infty$, the assertion is immediate, so assume it is
+finite.  We first give the argument in the smooth nondegenerate setting; the
+standard approximation step is recorded at the end.
+
+Let $X\sim\gamma$ and let $T=\nabla\varphi$ be the Brenier map transporting
+$\gamma$ to $\mu$; see, for example, \cite[Chapter 10]{Villani}.  Put
+$A(x)=\nabla T(x)=\nabla^2\varphi(x)>0$.  The change-of-variables formula
+gives
+\begin{equation}\label{eq:entropy-map}
+ H(\mu\mid\gamma)
+ =\frac12\E\bigl[|T(X)|^2-|X|^2\bigr]-\E\log\det A(X).
+\end{equation}
+Since $T$ is the optimal quadratic-cost map,
+\begin{equation}\label{eq:w2-map}
+ W_2(\gamma,\mu)^2=\E|T(X)-X|^2.
+\end{equation}
+Subtracting \eqref{eq:entropy-map} from half of \eqref{eq:w2-map}, and using
+$\E|X|^2=n$, yields
+\begin{equation}\label{eq:deficit-map}
+ \frac12W_2^2-H=n-\E[X\cdot T(X)]+\E\log\det A(X).
+\end{equation}
+
+Let $m=\E T(X)$ and $M=\E A(X)$.  Gaussian integration by parts gives
+\begin{equation}\label{eq:stein}
+ M=\E\bigl[(T(X)-m)X^{\mathsf T}\bigr],
+ \qquad
+ \E[X\cdot T(X)]=\tr M.
+\end{equation}
+In particular, $M$ is symmetric positive definite.  Concavity of the matrix
+function $\log\det$ now turns \eqref{eq:deficit-map} into
+\begin{equation}\label{eq:jensen}
+ \frac12W_2^2-H
+ \leq \log\det M-\tr M+n=:F(M).
+\end{equation}
+
+The joint covariance matrix of $(T(X),X)$ is
+\[
+ \begin{pmatrix}
+  \Sigma&M\\ M&\Id
+ \end{pmatrix}\geq0.
+\]
+Its Schur complement gives $M^2\leq\Sigma$.  By operator monotonicity of the
+positive square root,
+\begin{equation}\label{eq:matrix-order}
+ 0<M\leq\sqrt\Sigma\leq\Id.
+\end{equation}
+
+It remains only to observe that $F$ is increasing in Loewner order on the
+positive matrices below $\Id$.  Indeed, if $0<B\leq C\leq\Id$ and
+$C_t=B+t(C-B)$, then
+\[
+ \frac{d}{dt}F(C_t)
+ =\tr\bigl[(C_t^{-1}-\Id)(C-B)\bigr]\geq0.
+\]
+Applying this with \eqref{eq:matrix-order} gives
+\[
+ \frac12W_2^2-H
+ \leq F(\sqrt\Sigma)
+ =\frac12\log\det\Sigma-\tr\sqrt\Sigma+n,
+\]
+which proves \eqref{eq:matrix}.  If $\Sigma\leq\beta\Id<\Id$, the same
+monotonicity gives
+\[
+ F(\sqrt\Sigma)\leq F(\sqrt\beta\Id)
+ =n\left(1+\frac12\log\beta-\sqrt\beta\right),
+\]
+proving the source conjecture.
+
+For equality, strict concavity of $\log\det$ in \eqref{eq:jensen} forces
+$A(x)$ to be constant almost everywhere.  Hence $T(x)=Mx+a$ and $\mu$ is a
+Gaussian translate.  The covariance and the equality in
+\eqref{eq:matrix-order} force $M=\sqrt\Sigma$.  Equality in the scalar step
+further forces $\Sigma=\beta\Id$.  Conversely, direct substitution shows
+that precisely these Gaussian translates attain equality.
+
+For completeness, the same chain works directly without smoothness.  Let
+$A$ be the density of the absolutely continuous part of the distributional
+Hessian of $\varphi$, and define the cross-covariance
+$M=\E[(T(X)-m)X^{\mathsf T}]$.  The generalized Monge--Amp\`ere formula gives
+\eqref{eq:entropy-map} with this Alexandrov derivative.  Distributional
+Gaussian integration by parts gives
+\[
+ \E A\leq M,
+\]
+because the singular part of the Hessian is a positive-semidefinite
+matrix-valued measure.  Therefore Jensen and monotonicity of $\log\det$ give
+\[
+ \E\log\det A\leq\log\det(\E A)\leq\log\det M.
+\]
+The block-covariance argument for $M$ is unchanged, proving the stated
+generality.  Equivalently, this passage can be obtained by the standard smooth
+approximation in the Brenier change-of-variables method
+\cite[Chapter 10]{Villani}.
+\end{proof}
+
+\section{Checks, scope, and novelty status}
+
+For $\mu=N(a,\Sigma)$, the standard Gaussian formulas give
+\[
+ H(\mu\mid\gamma)
+ =\frac12\bigl(\tr\Sigma+|a|^2-n-\log\det\Sigma\bigr),
+\]
+\[
+ W_2(\gamma,\mu)^2
+ =|a|^2+\tr(\Id+\Sigma-2\sqrt\Sigma).
+\]
+Their deficit is exactly the right side of \eqref{eq:matrix}; the mean cancels,
+as required.  The accompanying script checks this identity and the scalar
+specialization on 10,000 random covariance spectra and translations.
+
+The theorem resolves only the first problem in Section 1.4.  It does not
+address the source's separate semi-log-superharmonic hypercontractivity/LSI
+question or the appended Mahler discussion.
+
+For novelty, the run indexes were searched by arXiv id, title, authors, and
+core phrases.  A bounded primary-source web search through 9 August 2026
+checked arXiv:2201.12478, Mikulincer's small-covariance result
+arXiv:1906.05904, the dimensional Talagrand refinements in arXiv:1507.01086,
+and later searches combining ``Talagrand deficit'', ``small covariance'',
+``Brenier'', and ``log det''.  No explicit resolution of the question or
+statement of Theorem~\ref{thm:main} was found.  This is bounded evidence for
+candidate novelty, not an exhaustive claim.
+
+\section{Human-review recommendation}
+
+The core proof is the four-step chain
+\[
+ \text{transport identity}\ \Longrightarrow\ \text{Jensen}\
+ \Longrightarrow\ M^2\leq\Sigma\ \Longrightarrow\ \text{Loewner monotonicity}.
+\]
+The result appears likely valid and resolves the source conjecture sharply.
+A human reviewer should focus on the approximation paragraph and perform an
+independent literature search for the same argument under a covariance-matrix
+or Gaussian optimal-transport formulation.
+
+\begin{thebibliography}{9}
+
+\bibitem{BezNakamuraTsuji}
+N. Bez, S. Nakamura, and H. Tsuji,
+\emph{Stability of hypercontractivity, the logarithmic Sobolev inequality,
+and Talagrand's cost inequality}, arXiv:2201.12478v3 (2022), especially
+Theorem 1.5 and Section 1.4.
+
+\bibitem{Villani}
+C. Villani, \emph{Optimal Transport: Old and New}, Grundlehren der
+mathematischen Wissenschaften 338, Springer, 2009.
+
+\end{thebibliography}
+
+\end{document}

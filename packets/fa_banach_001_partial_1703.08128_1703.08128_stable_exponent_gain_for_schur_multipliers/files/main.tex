@@ -1,0 +1,238 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx,microtype,enumitem,xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
+\newcommand{\M}{\mathcal M}
+\newcommand{\Lcal}{\mathcal L}
+\newcommand{\G}{\Gamma}
+
+\title{Stable Exponent Gain for Schur Multipliers\\Toward Coine's Endpoint Problem}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 7}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.} Substantial partial result,
+likely valid, pending human review.  The result proves a new exponent-gain
+inclusion and gives a direct proof of the known $p=2$ endpoint.  It does not
+settle the question for $1<p<2$.}}
+\end{center}
+
+\section{Source question and result}
+
+Coine's Problem 5.9 asks whether
+\[
+                    \M(p,1)=\M(p,p),\qquad 1<p\le 2,
+\]
+for Schur multipliers on the indicated sequence-space operator classes
+\cite{Coine2018}.  The exact question appears on PDF page 24:
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{Problem 5.9 in \cite{Coine2018}.}
+\end{figure}
+
+The equality at $p=2$ follows from Bennett's inclusion theorem as quoted by
+Coine.  For $1<p<2$, Bennett's equality region reaches every
+$\M(p,q)$ with $q<p$ but not the diagonal endpoint $q=p$.  The following
+result places a substantial family of diagonal multipliers on the desired
+$\M(p,1)$ side.
+
+For an operator $T:E\to F$, write $\gamma_r(T)$ for its $L^r$-factorization
+norm.  Write $L_{1,p'}(T)$ for the infimum of $\|S\|\|R\|$ over
+factorizations
+\[
+ E\xrightarrow{R}L^p(\Omega)
+  \xrightarrow{I_{p,1}}L^1(\Omega)
+  \xrightarrow{S}F
+\]
+on probability spaces.  Coine's Theorem 4.2 and Corollary 4.5 identify these
+operator norms with the relevant Schur multiplier norms.
+
+\begin{theorem}[Stable exponent gain]\label{thm:gain}
+Let $1<p<r\le2$.  Every operator
+$T:\ell_1\to\ell_\infty$ which factors through an $L^r$ space factors
+through a probability-space inclusion $L^p\hookrightarrow L^1$.  Quantitatively,
+\[
+ L_{1,p'}(T)\le
+ \frac{\kappa_{r,p}}{\kappa_{r,1}}\,\gamma_r(T),
+ \]
+where $\kappa_{r,s}=(\mathbb E|\theta_r|^s)^{1/s}$ and $\theta_r$ is a
+normalized symmetric $r$-stable scalar.  Consequently,
+\[
+                         \boxed{\M(r,r)\subseteq\M(p,1)}.
+\]
+In particular, $\M(2,2)\subseteq\M(p,1)$ for every $1<p<2$.
+At $p=r=2$, with Gaussian constants in place of $\kappa_{r,s}$,
+\[
+                         \M(2,1)=\M(2,2).
+\]
+\end{theorem}
+
+\section{Proof intuition}
+
+An $r$-stable random measure turns every vector in an $L^r$ factor into a
+random variable whose $L^s$ norm is an exact constant times the original
+$L^r$ norm for every $s<r$.  Taking $s=p$ makes the new input map bounded
+into $L^p$; taking $s=1$ makes the same map bounded below in $L^1$.  Hence the
+old output map is bounded on the resulting subspace when that subspace is
+given its $L^1$ norm.  The special range $\ell_\infty$ now matters:
+coordinatewise Hahn--Banach extends this output map to all of $L^1$ without
+increasing its norm.  This produces exactly the factorization characterizing
+$\M(p,1)$.
+
+The strict inequality $p<r$ is structural.  A nondegenerate $r$-stable
+variable has finite $s$-moment precisely for $s<r$ (apart from the Gaussian
+case $r=2$), so the same mechanism has no $L^p$ endpoint when $r=p<2$.
+
+\section{Proof of Theorem~\ref{thm:gain}}
+
+Fix a factorization
+\[
+             T=BA,\qquad
+ \ell_1\xrightarrow{A}L^r(\Sigma,\nu)
+       \xrightarrow{B}\ell_\infty.
+\]
+Only the closed linear span
+\[
+ X=\overline{A(\ell_1)}\subseteq L^r(\Sigma,\nu)
+\]
+is relevant, and $X$ is separable.
+
+For $1<r<2$, the standard symmetric $r$-stable random-measure construction
+gives a probability space $(\Omega,\mathbb P)$ and a complex-linear map
+$J:X\to L^0(\Omega)$ such that for every $x\in X$, $Jx$ is an isotropic
+$r$-stable scalar of scale $\|x\|_r$.  Thus, for every $1\le s<r$,
+\begin{equation}\label{eq:moments}
+                  \|Jx\|_{L^s}=\kappa_{r,s}\|x\|_r.
+\end{equation}
+This is the usual stable-process embedding of $L^r$; see
+\cite[Chapter 3]{SamorodnitskyTaqqu1994} and the stable-process discussion
+used in \cite[Theorem 6.4.19]{AlbiacKalton2006}.  For $r=2$, take the
+isonormal complex Gaussian process over the Hilbert space $X$; then
+\eqref{eq:moments} holds for every finite $s$, with Gaussian moment
+constants.
+
+Since $p<r$, equation \eqref{eq:moments} shows that
+\[
+ J:X\longrightarrow L^p(\Omega)
+ \quad\text{has norm }\kappa_{r,p},
+\]
+while the same formula with $s=1$ shows that $JX$ is a closed subspace of
+$L^1(\Omega)$ and that $J^{-1}:JX\to X$ has norm
+$\kappa_{r,1}^{-1}$ when $JX$ carries its inherited $L^1$ norm.
+
+Define
+\[
+ S_0:JX\longrightarrow\ell_\infty,
+ \qquad S_0(Jx)=Bx.
+\]
+This is well-defined and
+\[
+             \|S_0\|\le \frac{\|B\|}{\kappa_{r,1}}.
+\]
+The space $\ell_\infty$ is $1$-injective: writing the coordinate functionals
+of $S_0$ and extending each by Hahn--Banach gives an operator
+\[
+ S:L^1(\Omega)\longrightarrow\ell_\infty
+ \quad\text{with}\quad \|S\|=\|S_0\|.
+\]
+Set $R=JA:\ell_1\to L^p(\Omega)$.  Because the middle map is the canonical
+probability-space inclusion $I_{p,1}:L^p\hookrightarrow L^1$, we have
+\[
+                    T=S I_{p,1}R.
+\]
+Moreover,
+\[
+ \|S\|\|R\|
+ \le \frac{\kappa_{r,p}}{\kappa_{r,1}}\|B\|\|A\|.
+\]
+Taking the infimum over all $L^r$ factorizations proves the operator-norm
+inequality.
+
+For a matrix symbol $\phi$, Coine's characterization gives
+\[
+ \|\phi\|_{\M(r,r)}=\gamma_r(u_\phi),
+ \qquad
+ \|\phi\|_{\M(p,1)}=L_{1,p'}(u_\phi).
+\]
+The claimed Schur-multiplier inclusion and estimate follow.
+
+When $p=r=2$, use the Gaussian construction, for which both the first and
+second moments are finite, to obtain
+$\M(2,2)\subseteq\M(2,1)$.  Conversely, a factorization through
+$L^2\hookrightarrow L^1$ is in particular a factorization through $L^2$
+after composing the last two arrows.  Hence
+$\M(2,1)\subseteq\M(2,2)$, completing the endpoint proof. \qed
+
+\section{Verification, limitations, and upgrade audit}
+
+The proof is analytic and has no computational dependency.  Its two
+nonformal inputs are standard: the stable random-measure embedding and the
+$1$-injectivity of $\ell_\infty$.  All remaining arrows and constants are
+displayed explicitly.
+
+This theorem does not prove $\M(p,p)\subseteq\M(p,1)$ for $1<p<2$ and does
+not give a counterexample.  The exponent gap cannot simply be closed: a
+nondegenerate $p$-stable variable has infinite $p$-th moment.  The associated
+universal-symbol reduction also stops short of a contradiction.  If
+$\sigma:\ell_1\twoheadrightarrow\ell_p$ is a metric quotient and
+$V:\ell_p\hookrightarrow\ell_\infty$ is an isometry, then
+$V\sigma\in\Gamma_p$; a hypothetical $(p,1)$ factorization yields only a
+factorization of $I_{\ell_p}$ through a subspace of a quotient attached to
+$L^p\hookrightarrow L^1$.  It does not yield a direct factorization through
+that inclusion.
+
+Eight focused upgrade attempts were made.  Besides the successful stable
+gain, they tested: the Hilbert endpoint; the universal identity symbol;
+Reisner's $(p,1)$ Gordon--Lewis obstruction; finite-dimensional
+quotient/isometry amplification; Hadamard blocks; the source's Rademacher
+type estimate at its zero-exponent endpoint; and truncation of $p$-stable
+variables.  The detailed log records why none of the remaining routes closes
+the question.
+
+\section{Literature and novelty boundary}
+
+Bounded searches on 17 August 2026 covered the run indexes, the exact arXiv
+id/title/Problem 5.9 wording, Coine's published paper and thesis, Bennett's
+inclusion cases, and combinations of ``$\Gamma_r$'', ``$(p,1)$-factorable'',
+and stable-process factorization.  No explicit later resolution of Problem
+5.9 and no explicit statement of Theorem~\ref{thm:gain} was located.
+Novelty confidence is moderate rather than high because the argument is short
+and may be implicit in standard operator-ideal folklore.
+
+Human review is recommended, focusing on the simultaneous complex stable
+embedding, the coordinatewise extension into $\ell_\infty$, and the exact
+translation through Coine's factorization norms.
+
+\sloppy
+\begin{thebibliography}{9}
+\bibitem{Coine2018}
+C. Coine,
+\emph{Schur multipliers on $\mathcal B(L^p,L^q)$},
+J. Operator Theory 79 (2018), 301--326; arXiv:1703.08128.
+
+\bibitem{AlbiacKalton2006}
+F. Albiac and N. J. Kalton,
+\emph{Topics in Banach Space Theory},
+Graduate Texts in Mathematics 233, Springer, 2006.
+
+\bibitem{SamorodnitskyTaqqu1994}
+G. Samorodnitsky and M. S. Taqqu,
+\emph{Stable Non-Gaussian Random Processes},
+Chapman \& Hall, 1994.
+
+\bibitem{Reisner1995}
+S. Reisner,
+\emph{Operators factoring through Banach lattices and ideal norms},
+Serdica Math. J. 21 (1995), 75--89.
+\end{thebibliography}
+
+\end{document}

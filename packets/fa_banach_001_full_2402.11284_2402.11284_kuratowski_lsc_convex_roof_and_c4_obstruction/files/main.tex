@@ -1,0 +1,291 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{microtype}
+\hypersetup{hidelinks}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\K}{\mathcal K}
+\newcommand{\Hh}{\mathcal H}
+
+\title{A Canonical Lower-Semicontinuous Kuratowski Extension\\
+and the Sharp Obstruction to Affine Interpolation}
+\author{Candidate solution packet for arXiv:2402.11284}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Candidate full two-sided resolution; likely valid, pending human review.
+Every real-valued lower-semicontinuous datum has an explicit finite extension;
+for nonnegative data there is a maximal chord-subaffine extension.  The exact
+endpoint-affine analogue used in the Lipschitz-free-space proof is impossible
+in general.}}
+\end{center}
+
+\section{Source question}
+
+The source is D.~Bate, S.~Eriksson-Bique, and E.~Soultanis,
+\emph{Fragment-wise differentiable structures}, arXiv:2402.11284v1
+\cite{BES}.  In Remark~2.1 on PDF page~7, the authors explain that their
+natural convex extension is not well-defined after the standard Kuratowski
+embedding and ask whether a canonical extension preserving semicontinuity
+exists there.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{Remark~2.1 in the source paper (PDF page~7).}
+\end{figure}
+
+The word ``canonical'' is not axiomatized in the remark.  We resolve the
+question using the strongest natural one-sided interpolation property and
+then show that the corresponding equality property is impossible.
+
+\section{Definitions and statement}
+
+Let $(X,d)$ be a separable metric space, fix $o\in X$, and let
+$D\subset X$ be dense.  The base-pointed Kuratowski embedding is
+\[
+  \K:X\longrightarrow \ell^\infty(D),\qquad
+  \K(x)(s)=d(x,s)-d(o,s).
+\]
+It is an isometry.  Set
+\[
+ \Hh_{\K}(X)=\bigcup_{x,y\in X}[\K(x),\K(y)].
+\]
+All topology below is the relative norm topology on this semihull.
+
+For any $\rho:X\to[0,\infty]$, define its raw two-point roof by
+\begin{equation}\label{eq:raw}
+ R_\rho(z)=\inf\bigl\{(1-t)\rho(a)+t\rho(b):
+ z=(1-t)\K(a)+t\K(b),\ a,b\in X,\ t\in[0,1]\bigr\}.
+\end{equation}
+We use the standard convention $0\cdot\infty=0$.  Define the relaxed roof
+\begin{equation}\label{eq:relaxed}
+ E_\rho(z)=\sup_{r>0}\ \inf\bigl\{R_\rho(w):
+ w\in\Hh_{\K}(X),\ \|w-z\|_\infty<r\bigr\}.
+\end{equation}
+
+\begin{theorem}[Canonical Kuratowski extension]\label{thm:main}
+If $\rho:X\to[0,\infty]$ is lower semicontinuous, then $E_\rho$ is a
+lower-semicontinuous extension of $\rho$:
+\[
+ E_\rho(\K(x))=\rho(x)\qquad(x\in X).
+\]
+Moreover:
+\begin{enumerate}
+\item for all $a,b\in X$ and $t\in[0,1]$,
+\begin{equation}\label{eq:subaffine}
+E_\rho((1-t)\K(a)+t\K(b))
+\le (1-t)\rho(a)+t\rho(b);
+\end{equation}
+\item $E_\rho$ is the greatest lower-semicontinuous function
+$g:\Hh_{\K}(X)\to[0,\infty]$ satisfying every inequality
+\eqref{eq:subaffine};
+\item the assignment $\rho\mapsto E_\rho$ is order preserving, positively
+homogeneous, and preserves nonnegative constant functions.
+\end{enumerate}
+Thus \eqref{eq:relaxed} is canonical by a maximal universal property.
+\end{theorem}
+
+\begin{corollary}[Literal real-valued extension]\label{cor:real}
+Assume additionally that $X$ is complete.  Every lower-semicontinuous
+$\rho:X\to\R$ admits an explicit finite lower-semicontinuous extension
+$T_\rho:\Hh_{\K}(X)\to\R$ with
+$T_\rho\circ\K=\rho$.
+\end{corollary}
+
+\begin{theorem}[Sharp obstruction to the free-space formula]\label{thm:c4}
+There is a four-point metric space $X$ and a continuous
+$\rho:X\to[0,1]$ for which no function
+$G:\Hh_{\K}(X)\to[0,\infty]$ can satisfy
+\[
+G((1-t)\K(a)+t\K(b))=(1-t)\rho(a)+t\rho(b)
+\]
+simultaneously for every $a,b\in X$ and $t\in[0,1]$.
+Consequently no general Kuratowski extension scheme can retain the exact
+endpoint-affine identity of the Lipschitz-free-space construction.
+\end{theorem}
+
+\section{Proof intuition}
+
+The raw roof removes ambiguity by choosing the cheapest value among all chord
+representations.  Its lower-semicontinuous relaxation is automatically the
+largest lower-semicontinuous function compatible with all resulting upper
+bounds.  Relaxation could in principle lower the boundary data.  The special
+geometry of the Kuratowski embedding prevents that: evaluating a barycenter
+near $\K(x)$ at the coordinate $x$ shows that almost all of its barycentric
+mass must lie on endpoints near $x$.  Lower semicontinuity of $\rho$ then
+forces the cost back up to $\rho(x)$.
+
+The obstruction is the cycle metric on four points.  Opposite chords have the
+same midpoint, so exact affine interpolation assigns two incompatible values
+there.  This explains precisely why the free-space construction can be
+replaced by a canonical inequality but not by the exact identity used for
+weighted gap integrals.
+
+For arbitrary real-valued data, first compress the values monotonically into
+the interval $(1,2)$, use the roof theorem there, and keep the extension away
+from the endpoints of that interval by a canonical distance-to-$\K(X)$ floor.
+Completeness makes $\K(X)$ closed, so the floor is strictly above $1$ off the
+embedded space.  Inverting the compression yields a finite real-valued
+lower-semicontinuous extension.
+
+\section{Proofs}
+
+We first isolate the Kuratowski estimate that makes exact boundary recovery
+possible.
+
+\begin{proposition}\label{prop:exposure}
+For $a,b,x\in X$ and $t\in[0,1]$,
+\begin{equation}\label{eq:exposure}
+\bigl\|(1-t)\K(a)+t\K(b)-\K(x)\bigr\|_\infty
+\ge (1-t)d(a,x)+t d(b,x).
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+If $x\in D$, evaluate the vector on the left at $s=x$.  The base-point terms
+cancel, and the value is the nonnegative number on the right.  For general
+$x$, choose $s_n\in D$ with $s_n\to x$.  The coordinate values converge to
+the same number, so their supremum is at least that limit.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+For any extended-real function on a metric space, the expression in
+\eqref{eq:relaxed} is its lower-semicontinuous relaxation, hence $E_\rho$ is
+lower semicontinuous and $E_\rho\le R_\rho$.  Formula \eqref{eq:raw} then
+immediately gives \eqref{eq:subaffine}.
+
+It remains to prove the boundary trace.  Fix $x\in X$.  The representation
+$\K(x)=(1-t)\K(x)+t\K(x)$ shows
+$E_\rho(\K(x))\le R_\rho(\K(x))\le\rho(x)$.
+
+Suppose first that $0<\rho(x)<\infty$, and fix $c<\rho(x)$ with $c\ge0$.
+By lower semicontinuity there is $\delta>0$ such that
+$\rho(u)>c$ whenever $d(u,x)<\delta$.  Let
+$w=(1-t)\K(a)+t\K(b)$ and put $r=\|w-\K(x)\|_\infty$.
+By Proposition~\ref{prop:exposure}, the total barycentric weight of endpoints
+outside $B(x,\delta)$ is at most $r/\delta$.  Nonnegativity therefore gives
+\[
+ (1-t)\rho(a)+t\rho(b)\ge c(1-r/\delta).
+\]
+This holds for every representation of $w$, so
+$R_\rho(w)\ge c(1-r/\delta)$.  Taking the infimum over the radius-$r_0$
+neighborhood of $\K(x)$ and then letting $r_0\downarrow0$ yields
+$E_\rho(\K(x))\ge c$.  Letting $c\uparrow\rho(x)$ proves equality.  If
+$\rho(x)=0$, the lower bound is automatic.  If $\rho(x)=\infty$, repeat the
+argument with an arbitrary finite $c$; then let $c\to\infty$.
+
+For maximality, let $g$ be lower semicontinuous and satisfy all the chord
+inequalities.  Taking the infimum over representations gives $g\le R_\rho$.
+For every $z$,
+\[
+g(z)=\sup_{r>0}\inf_{\|w-z\|_\infty<r}g(w)
+\le \sup_{r>0}\inf_{\|w-z\|_\infty<r}R_\rho(w)=E_\rho(z),
+\]
+where all points $w$ lie in $\Hh_{\K}(X)$.  This proves the universal
+property.  Monotonicity, positive homogeneity, and preservation of constants
+follow directly from \eqref{eq:raw} and \eqref{eq:relaxed}.
+\end{proof}
+
+\begin{proof}[Proof of Corollary~\ref{cor:real}]
+Fix the increasing homeomorphism
+\[
+h:\R\longrightarrow(1,2),\qquad
+h(s)=\frac32+\frac1\pi\arctan s.
+\]
+Apply Theorem~\ref{thm:main} to the lower-semicontinuous function
+$f=h\circ\rho$.  Since every endpoint value lies strictly between $1$ and
+$2$, its relaxed roof satisfies
+\[
+1\le E_f(z)<2\qquad(z\in\Hh_{\K}(X)).
+\]
+The image $\K(X)$ is closed because $X$ is complete and $\K$ is an isometry.
+Put
+\[
+q(z)=1+\frac{\operatorname{dist}(z,\K(X))}
+                 {1+\operatorname{dist}(z,\K(X))},
+\qquad
+T_\rho(z)=h^{-1}\!\left(\max\{E_f(z),q(z)\}\right).
+\]
+The maximum is lower semicontinuous, is strictly between $1$ and $2$ at every
+point, and equals $f(x)$ at $z=\K(x)$: there $q=1$ and
+$E_f(\K(x))=f(x)>1$.  Since $h^{-1}$ is continuous and increasing,
+$T_\rho$ is finite and lower semicontinuous, and
+$T_\rho(\K(x))=\rho(x)$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:c4}]
+Let $X=\mathbb Z/4\mathbb Z$ with the cycle metric
+$d(i,j)=\min\{|i-j|,4-|i-j|\}$, and use base point $0$ and all four points as
+coordinates.  The distance rows are
+\[
+ D_0=(0,1,2,1),\quad D_1=(1,0,1,2),\quad
+ D_2=(2,1,0,1),\quad D_3=(1,2,1,0).
+\]
+Since $\K(i)=D_i-D_0$, the identity $D_0+D_2=D_1+D_3$ gives
+\[
+ \frac{\K(0)+\K(2)}2=\frac{\K(1)+\K(3)}2=:m.
+\]
+Set $\rho(0)=\rho(2)=0$ and $\rho(1)=\rho(3)=1$.  Every function on this
+finite metric space is continuous.  Exact affine interpolation on the first
+opposite chord forces $G(m)=0$, while interpolation on the second forces
+$G(m)=1$, a contradiction.
+\end{proof}
+
+\section{Interpretation and limitations}
+
+Corollary~\ref{cor:real} answers the literal existence question for all
+real-valued lower-semicontinuous data under the completeness hypothesis of the
+source paper.  Theorem~\ref{thm:main} gives the stronger order-theoretic answer
+for the nonnegative integrands used in the application.  It is nontrivial on
+the semihull (unlike the extension that assigns $+\infty$ off $\K(X)$), and it
+is forced as the greatest lower-semicontinuous chord-subaffine extension.
+
+It does not reproduce the identity
+\[
+ \bar\rho((1-t)\K(a)+t\K(b))=(1-t)\rho(a)+t\rho(b)
+\]
+along every gap chord.  Theorem~\ref{thm:c4} shows that this limitation cannot
+be removed for arbitrary metric spaces.  Therefore the positive construction
+does not by itself replace the exact line-integral identity in Section~3.1 of
+the source paper.
+
+\section{Verification and novelty bounds}
+
+The proof is self-contained.  The finite script in the packet independently
+checks the cycle distance matrix, the midpoint identity, and the conflicting
+endpoint averages using exact integer arithmetic.  It is a check of the
+example, not a substitute for the general proof.
+
+On 11 August 2026, exact arXiv-id/title/core-keyword searches of this run's
+registry and result indexes found no prior result.  Exact-phrase and nearby
+keyword searches of the locally parsed arXiv corpus found the question only
+in arXiv:2402.11284.  Locally available citing sources arXiv:2504.16657,
+2508.08017, and 2510.25715 do not discuss the Kuratowski-extension issue.
+Bounded external web searches returned no usable records in this environment;
+novelty confidence is therefore moderate.  No external theorem is used.
+
+\textbf{Human-review recommendation.}  Check the extended-value boundary
+argument and decide whether the maximal chord-subaffine universal property is
+the intended formalization of ``canonical'' in Remark~2.1.  Independently,
+the four-cycle impossibility theorem is unconditional and exact.
+
+\begin{thebibliography}{9}
+\bibitem{BES}
+D.~Bate, S.~Eriksson-Bique, and E.~Soultanis,
+\emph{Fragment-wise differentiable structures}, arXiv:2402.11284v1 (2024).
+\end{thebibliography}
+
+\end{document}

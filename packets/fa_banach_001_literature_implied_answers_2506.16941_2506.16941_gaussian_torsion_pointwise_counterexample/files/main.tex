@@ -1,0 +1,169 @@
+\documentclass[10pt]{article}
+\usepackage[letterpaper,margin=0.75in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newcommand{\R}{\mathbb R}
+\newcommand{\dd}{\,\mathrm d}
+\title{A Direct Gaussian-Interval Counterexample to\\Weighted Torsion Concavity}
+\author{Literature-implied answer and exact pointwise strengthening}
+\date{12 August 2026}
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+Question 18 of Cordero-Erausquin--Eskenazis \cite{CE} has a negative answer.
+Mar\'in Sola--Salerno \cite{MS} already refuted its torsional-rigidity
+consequence for centrally symmetric Gaussian sets.  We give a shorter,
+strictly stronger pointwise obstruction in dimension one.  This is not a
+priority claim.
+
+\section{Source question and literature status}
+
+Let $\mu$ be an even log-concave measure on $\R^n$, let $K,L$ be symmetric
+convex sets, and let $u(\lambda,\cdot)$ solve
+\[
+ \mathcal L_\mu u=-1\quad\hbox{on }\lambda K+(1-\lambda)L,
+ \qquad u=0\quad\hbox{on the boundary}.
+\]
+Question 18 asks whether $(\lambda,x)\mapsto\sqrt{u(\lambda,x)}$ is concave.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth]{figures/source_question18.png}
+\caption{Question 18 in the source PDF, page 26.}
+\end{figure}
+
+\noindent\textbf{Faithful transcription.}
+For an even log-concave $\mu$ and symmetric convex $K,L$, is
+$\sqrt{u(\lambda,x)}$ jointly concave when $u(\lambda,\cdot)$ is the unique
+weighted torsion solution on $\lambda K+(1-\lambda)L$?
+
+The source explains immediately before the question that an affirmative
+answer would imply the weighted Brunn--Minkowski inequality for torsional
+rigidity.  In March 2026, Mar\'in Sola and Salerno explicitly addressed
+\cite[Question 18]{CE} and disproved that consequence for centered Gaussian
+balls in dimensions $n\ge3$.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.96\linewidth]{figures/supporting_negative_answer.png}
+\caption{The later negative answer, arXiv:2603.19164, page 3.}
+\end{figure}
+
+\section{Proof intuition}
+
+On a centered Gaussian interval the differential equation can be integrated
+once.  The outward slope of the torsion function is a positive function
+$B(R)$ satisfying the exceptionally simple ODE $B'=1+RB$.  Its derivative is
+itself strictly convex.  This forces the square root of the torsion value at
+the center to be \emph{strictly convex} as the radius grows, the opposite of
+the proposed concavity.
+
+\section{Exact pointwise counterexample}
+
+Let $\gamma$ be the standard Gaussian measure on $\R$, so
+\[
+ \mathcal L_\gamma v=v''-xv'.
+\]
+For $R>0$, let $u_R$ be the unique solution
+\[
+ u_R''-xu_R'=-1\quad\hbox{on }(-R,R),\qquad u_R(-R)=u_R(R)=0.
+\]
+
+\begin{theorem}
+The function
+\[
+ G(R)=\sqrt{u_R(0)}
+\]
+is strictly convex on $(0,\infty)$.  Consequently, Question 18 is false
+already for $\mu=\gamma$, $K=[-1,1]$, and $L=[-3,3]$.
+\end{theorem}
+
+\begin{proof}
+Evenness and uniqueness give $u_R'(0)=0$.  Multiplying the equation by
+$e^{-x^2/2}$ and integrating from $0$ to $x$ yields
+\[
+ u_R'(x)=-B(x),\qquad
+ B(x):=e^{x^2/2}\int_0^x e^{-s^2/2}\dd s .
+\]
+The boundary condition at $R$ therefore gives
+\[
+ F(R):=u_R(0)=\int_0^R B(t)\dd t.
+\]
+Direct differentiation shows
+\[
+ B'(R)=1+RB(R),\qquad
+ B''(R)=R+(1+R^2)B(R)>0\quad(R>0).
+\]
+Since $F'=B$ and $F''=B'$, the sign of $G''$ is the sign of
+\[
+ H(R):=2F(R)B'(R)-B(R)^2.
+\]
+But $H(0)=0$ and the cancellation $F'=B$ gives
+\[
+ H'(R)=2F(R)B''(R)>0\qquad(R>0).
+\]
+Thus $H(R)>0$ and $G''(R)>0$ for every $R>0$.
+
+Now $\frac12K+\frac12L=[-2,2]$.  Joint concavity in Question 18 would imply,
+at $x=0$,
+\[
+ G(2)\ge \frac{G(1)+G(3)}2,
+\]
+whereas strict convexity gives the reverse strict inequality.
+\end{proof}
+
+\section{Verification, scope, and review}
+
+The high-precision checker \texttt{code/verify\_gaussian\_intervals.py}
+independently integrates the displayed formula.  Its output is
+\begin{verbatim}
+sqrt(u_1(0)) = 0.77184798925226050830374705903
+sqrt(u_2(0)) = 2.12169800306949307422074845125
+sqrt(u_3(0)) = 6.52492402508500893933530599964
+midpoint concavity deficit = 1.52668800409914164959877807808
+strict midpoint violation verified
+\end{verbatim}
+
+\noindent\textbf{Scope and limitations.}
+This settles only Question 18.  It does not resolve hereditary convexity
+(Question 15) or the negative-exponent weighted-marginal problem (Question
+19).  Eight focused upgrade routes were tried for Question 19: separable
+negative moments, a quadratic perspective, max-type functions, radial
+two-piece and multipiece polyhedra in dimensions up to twelve, anisotropic
+quadratic perspectives, smooth log-sum-exp couplings, and anisotropic
+log-concave weights.  No negative Hessian survived certified quadrature.
+
+\medskip
+\noindent\textbf{Novelty boundary.}
+The question is already answered negatively by \cite{MS}; the value here is
+the exact one-dimensional pointwise strengthening and elementary proof.
+A bounded search of the run indexes and primary arXiv sources found no earlier
+statement of this particular strict-convexity identity.  No priority is
+claimed.
+
+\medskip
+\noindent\textbf{Human-review recommendation.}
+High confidence.  Check only the convention
+$\mathcal L_\gamma=\frac{d^2}{dx^2}-x\frac d{dx}$ and the logical
+specialization to centered intervals; all remaining steps are two
+differentiations and a strict sign.
+
+\begin{thebibliography}{9}
+\bibitem{CE}
+D. Cordero-Erausquin and A. Eskenazis,
+\emph{Concavity principles for weighted marginals},
+arXiv:2506.16941 (2025).
+\bibitem{MS}
+F. Mar\'in Sola and F. Salerno,
+\emph{Remarks on Brunn--Minkowski-type inequalities related to the
+Ornstein--Uhlenbeck operator},
+arXiv:2603.19164 (2026).
+\end{thebibliography}
+\end{document}

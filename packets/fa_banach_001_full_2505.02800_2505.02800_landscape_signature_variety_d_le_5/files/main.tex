@@ -1,0 +1,192 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,array,graphicx,microtype,xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,urlcolor=blue!60!black,citecolor=blue!50!black]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\LS}{\mathrm{LS}}
+\newcommand{\M}{\mathcal M}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\wedgec}{\bigwedge\nolimits^{2}}
+\title{A full-dimensional cone of landscape signatures\\
+\large Exact solution of Conjecture 4.3 in arXiv:2505.02800}
+\author{Autonomous mathematical discovery run \texttt{fa\_banach\_001}, lane 5}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\linewidth}{\textbf{Status: candidate full, likely valid (exact computer-assisted certificate).}
+The only machine-assisted step is finite rational arithmetic reproduced by a short standard-library verifier.}}
+\end{center}
+
+\section{Source question}
+
+Vincenzo Galgano, Heather A. Harrington, and Daniel Tolosa,
+\emph{Discrete signature tensors for persistence landscapes},
+arXiv:2505.02800v3 (29 May 2026), Appendix, Conjecture 4.3, p.~26 \cite{source}, ask:
+\begin{quote}
+For $d\leq 5$ the variety of signature matrices of landscapes $\M^{\LS}_{d,2}$ coincides with the variety of signature matrices of loops
+$\M^{\circlearrowright}_{d,2}=\PP(\wedgec\C^d)$.
+\end{quote}
+The source passage is reproduced in Figure~\ref{fig:source}.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.96\linewidth]{figures/open_problem_crop.png}
+\caption{The exact conjecture and its surrounding dimensional discussion in the source paper.}
+\label{fig:source}
+\end{figure}
+
+\section{Definitions and proof intuition}
+
+For an interval $I=[b,e]$, put
+\[
+ h_I(t)=\max\{0,\min(t-b,e-t)\}.
+\]
+For a finite barcode $B$, its $k$th landscape coordinate $\lambda_k^B(t)$ is the $k$th largest number among $\{h_I(t):I\in B\}$, with trailing zeros.  Thus
+$\lambda^B=(\lambda_1^B,\ldots,\lambda_d^B)$ is a piecewise-linear loop in $\R^d$ whenever $B$ has at most $d$ levels.  We use coordinates
+\[
+ S_{ij}(B):=\int \lambda_i^B\,d\lambda_j^B,\qquad 1\leq i<j\leq d.
+\]
+Since the path is closed, integration by parts makes its second signature skew and
+\[
+ S_{ij}(B)=\frac12\int(\lambda_i^B\,d\lambda_j^B-\lambda_j^B\,d\lambda_i^B).
+\]
+
+\paragraph{Proof intuition.}
+The source conjecture is algebraic, so it is enough to find a Euclidean-open family of realized skew signatures.  We first exhibit $\binom d2$ barcodes whose signature vectors form a basis.  A basis alone would not generally imply density of the image, because the image need not be closed under arbitrary linear combinations.  Here, however, the barcode geometry supplies exactly the missing operation: placing clusters on disjoint time intervals concatenates their closed landscape loops, and second signatures add.  Scaling a cluster by $s$ multiplies its signature by $s^2$.  Therefore every \emph{positive} combination of the basis vectors is another single landscape signature.  Those combinations form an open cone, forcing the complex Zariski closure to be the whole skew space.
+
+\section{The theorem}
+
+\begin{theorem}\label{thm:main}
+For every $2\leq d\leq5$,
+\[
+ \M^{\LS}_{d,2}=\PP(\wedgec\C^d).
+\]
+Thus Conjecture 4.3 of \cite{source} holds (the case $d=1$ is vacuous).
+\end{theorem}
+
+We separate the structural argument from the finite certificate.
+
+\begin{lemma}[Positive-cone lemma]\label{lem:cone}
+Suppose there are $N=\binom d2$ finite barcodes $B_1,\ldots,B_N$, each with at most $d$ levels, whose vectors
+$q_k=(S_{ij}(B_k))_{i<j}$ form a basis of $\wedgec\R^d$.  Then
+$\M^{\LS}_{d,2}=\PP(\wedgec\C^d)$.
+\end{lemma}
+
+\begin{proof}
+First translate the time parameters of the barcodes so that their supports are pairwise disjoint and occur in the order $B_1,\ldots,B_N$.  At a time belonging to the support of one cluster, all tents from every other cluster vanish.  Hence the landscape of the union is exactly the concatenation, at the origin, of the individual landscape loops.  In particular it still has at most $d$ nonzero levels.  Direct additivity of line integrals (equivalently, Chen's identity together with vanishing first signatures) gives
+\[
+ S(B_1\sqcup\cdots\sqcup B_N)=\sum_{k=1}^N q_k.
+\]
+
+If every endpoint in $B_k$ is multiplied by $s_k>0$, then
+$\lambda^{s_kB_k}(t)=s_k\lambda^{B_k}(t/s_k)$, and therefore
+$S(s_kB_k)=s_k^2q_k$.  Translation does not change a path signature.  Consequently, for every $c_1,\ldots,c_N>0$, one barcode with disjointly supported clusters has signature
+\[
+ \sum_{k=1}^N c_kq_k,
+\]
+by choosing $s_k=\sqrt{c_k}$.
+
+Because the $q_k$ form a basis, these positive combinations constitute a nonempty Euclidean-open cone in $\wedgec\R^d\cong\R^N$.  A complex polynomial vanishing on all realized signatures vanishes on this real open set, hence is the zero polynomial.  The affine complex Zariski closure is therefore $\wedgec\C^d$, and projectivizing gives the assertion.
+\end{proof}
+
+\section{Exact hierarchical certificate}
+
+The following ten barcodes are multisets of the displayed intervals.  The first
+$\binom d2$ have at most $d$ intervals, so they are admissible in dimension $d$ after padding with zero landscape levels.
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.12}
+\begin{tabular}{c@{\quad}l}
+\toprule
+$k$ & $B_k$ \\
+\midrule
+1 & $[0,14],[7,11]$\\
+2 & $[1,13],[4,9],[2,14]$\\
+3 & $[3,15],[0,14],[4,9]$\\
+4 & $[6,9],[4,16],[2,15],[0,14]$\\
+5 & $[6,15],[2,14],[0,11],[7,17]$\\
+6 & $[1,9],[3,16],[7,15],[6,12]$\\
+7 & $[4,9],[2,14],[0,10],[7,17],[1,16]$\\
+8 & $[0,17],[4,16],[6,10],[7,12],[5,15]$\\
+9 & $[2,11],[1,16],[5,17],[7,9],[0,14]$\\
+10 & $[2,17],[4,14],[5,15],[0,16],[1,9]$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For a polygonal loop with successive vertices $v_0,\ldots,v_m=v_0$, exact integration on each segment gives
+\begin{equation}\label{eq:polygon}
+ S_{ij}=\frac12\sum_{r=0}^{m-1}
+ (v_{r,i}v_{r+1,j}-v_{r,j}v_{r+1,i}).
+\end{equation}
+The verifier constructs the vertex list exactly.  On every interval cut out by tent births, midpoints, and deaths, all tents are affine; the only additional landscape vertices occur where two of those affine pieces cross.  Sorting the rational tent heights at all such points therefore produces the complete landscape polygon, and \eqref{eq:polygon} uses rational arithmetic only.
+
+With lexicographic coordinate order $(S_{12},S_{13},\ldots,S_{d-1,d})$, the matrices whose rows are the first $\binom d2$ signature vectors have determinants
+\[
+\begin{array}{c|cccc}
+d&2&3&4&5\\ \hline
+\det&4&44&-781/8&-667755/2048.
+\end{array}
+\]
+All are nonzero.  For additional transparency, in dimension five four times the full $10\times10$ rational matrix is
+{\scriptsize
+\[
+\begin{pmatrix}
+16&0&0&0&0&0&0&0&0&0\\
+0&-14&0&0&-16&0&0&0&0&0\\
+36&-10&0&0&-24&0&0&0&0&0\\
+21&30&2&0&17&-5&0&-9&0&0\\
+-2&10&9&0&15&-4&0&-8&0&0\\
+21&-5&-4&0&-8&-3&0&-1&0&0\\
+-8&-11&-16&-3&-17&-9&0&5&3&1\\
+63&51&9&0&0&-16&-9&-16&-9&-3\\
+-4&-11&-3&-2&-19&3&3&0&0&0\\
+10&12&19&-12&8&13&-15&7&-8&-9
+\end{pmatrix}.
+\]
+}
+Its determinant is $-341890560\neq0$, equivalently the displayed rational determinant above.  The smaller-dimensional determinants use the natural coordinates for the corresponding leading barcode families.  Lemma~\ref{lem:cone} now proves Theorem~\ref{thm:main}.
+
+\section{Verification, novelty bounds, and limitations}
+
+Run from the repository root:
+\begin{verbatim}
+conda run --no-capture-output -n sandbox python \
+  runs/fa_banach_001/solutions/full/\
+  2505.02800_landscape_signature_variety_d_le_5/code/\
+  verify_signature_basis.py
+\end{verbatim}
+The script uses only \texttt{fractions.Fraction} and \texttt{itertools}; it asserts the four determinants and prints every rational signature vector.  Its captured output is included beside the verifier.
+
+On 11 August 2026, a bounded novelty search covered the run's registry, solution, attempt, and proof-gap indexes and current arXiv/web queries for the exact title, arXiv id, ``variety of signature matrices of landscapes,'' and the displayed conjectural equality.  No duplicate packet or later claimed solution was found; the searches returned the source paper itself and unrelated signature-matrix papers.  Since arXiv coverage and keyword search are incomplete, novelty remains subject to expert literature review.
+
+The theorem is exactly the $d\leq5$ statement asked in the source.  It does not classify the image before Zariski closure, and it makes no claim for $d\geq6$.  The source's nearby parameter count concerns a single $d$-interval barcode; the proof here deliberately uses one barcode formed from many time-disjoint clusters while maintaining at most $d$ simultaneous levels.
+
+\paragraph{Human-review recommendation.}
+Verify one representative vertex computation, the sign convention in \eqref{eq:polygon}, and the four exact determinant assertions.  Then check the positive-cone lemma, especially that time-disjoint union preserves the at-most-$d$-level condition.  No analytic limiting argument or floating-point computation is involved.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+V. Galgano, H. A. Harrington, and D. Tolosa,
+\emph{Discrete signature tensors for persistence landscapes},
+arXiv:2505.02800v3, 2026.
+\url{https://arxiv.org/abs/2505.02800}.
+
+\bibitem{bubenik}
+P. Bubenik,
+\emph{Statistical topological data analysis using persistence landscapes},
+J. Mach. Learn. Res. 16 (2015), 77--102.
+
+\bibitem{chen}
+K.-T. Chen,
+\emph{Iterated integrals and exponential homomorphisms},
+Proc. London Math. Soc. (3) 4 (1954), 502--512.
+\end{thebibliography}
+
+\end{document}

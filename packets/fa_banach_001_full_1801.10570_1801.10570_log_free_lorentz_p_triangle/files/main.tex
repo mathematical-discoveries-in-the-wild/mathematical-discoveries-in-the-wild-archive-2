@@ -1,0 +1,358 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\R}{\mathbb R}
+\newcommand{\1}{\mathbf 1}
+\newcommand{\dd}{\,d}
+
+\title{A Log-Free $p$-Triangle Inequality for $L^{p,r}$\\
+\large A candidate full solution to an open problem in arXiv:1801.10570}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 16}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Candidate full solution, likely valid, awaiting expert review.  The theorem
+removes the logarithmic factor whose necessity is asked about by
+Seeger--Trebels.  The proof is self-contained and quantitative for the
+Lorentz quasi-norm normalization used in the source.}}
+\end{center}
+
+\section{Source problem}
+
+Let $(X,\mu)$ be a nonatomic measure space.  For $0<p,r<\infty$, write
+\begin{equation}\label{eq:lorentz}
+ \|f\|_{p,r}
+ =\left(\frac rp\int_0^\infty
+       [t^{1/p}f^*(t)]^r\frac{\dd t}{t}\right)^{1/r},
+ \qquad
+ \|f\|_{p,\infty}=\sup_{t>0}t^{1/p}f^*(t).
+\end{equation}
+Here $f^*$ is the nonincreasing rearrangement of $|f|$.
+
+Seeger and Trebels prove that, when $0<p<1$ and $p<r<\infty$,
+\begin{equation}\label{eq:ptriangle}
+ \left\|\sum_k f_k\right\|_{p,r}
+ \le C(p,r)\left(\sum_k\|f_k\|_{p,r}^p\right)^{1/p}.
+\end{equation}
+Their bound for $C(p,r)$ contains
+\[
+ \left(1+\frac pr\log\frac1{1-p}\right)^{1/p-1/r}.
+\]
+They ask explicitly whether this logarithmic term is necessary
+\cite[Open problem after (13), and Appendix B]{ST}.  We give a negative
+answer.
+
+\section{Idea of the proof}
+
+Put $\theta=1-p/r$, so that $r=p/(1-\theta)$.  The two endpoints behind
+the result are transparent.  At $r=p$, inequality \eqref{eq:ptriangle} is
+the pointwise $p$-triangle inequality in $L^p$ and has constant one.  At
+$r=\infty$, a common amplitude cutoff gives a weak-$L^p$ estimate of size
+$(1-p)^{-1/p}$.
+
+The main point is to interpolate these endpoints without invoking an
+abstract quasi-Banach interpolation theorem or losing control of constants.
+For every simple $f$, nonatomicity supplies a rank coordinate $\rho$ with
+$|f|=f^*(\rho)$.  The exact factorization
+\[
+ |f|=u^{1-\theta}v^\theta,\qquad
+ v=\rho^{-1/p},\qquad
+ u=|f|^{1/(1-\theta)}
+       \rho^{\theta/[p(1-\theta)]}
+\]
+places $u$ in $L^p$ and $v$ in weak $L^p$.  Its normalization is explicit:
+\[
+ \|u\|_p^p=(1-\theta)\|f\|_{p,r}^r,
+ \qquad \|v\|_{p,\infty}\le1.
+\]
+After rescaling each pair of factors, discrete H\"older turns a sum of
+products into a product of sums.  A two-threshold rearrangement inequality
+then returns that product to $L^{p,r}$.  Optimizing the two thresholds
+produces only the binary-entropy factor
+$\theta^{-\theta}(1-\theta)^{-(1-\theta)}\le2$, not a logarithm.
+
+\section{The log-free theorem}
+
+For $0<\theta<1$, set
+\begin{equation}\label{eq:entropy}
+ \mathcal H(\theta)
+ =\theta^{-\theta}(1-\theta)^{-(1-\theta)}.
+\end{equation}
+As usual, the endpoint values are interpreted by continuity, and
+$1\le\mathcal H(\theta)\le2$.
+
+\begin{theorem}[Entropy-refined log-free bound]\label{thm:main}
+Let $0<p<1$ and $p<r<\infty$, and put $\theta=1-p/r$.  On every nonatomic
+measure space, every finite or countable family with
+$\sum_k\|f_k\|_{p,r}^p<\infty$ satisfies
+\begin{equation}\label{eq:mainsharp}
+ \left\|\sum_k f_k\right\|_{p,r}
+ \le
+ \mathcal H(\theta)^{1/p}
+ p^{-\theta}(1-p)^{-\theta/p}
+ \left(\sum_k\|f_k\|_{p,r}^p\right)^{1/p}.
+\end{equation}
+Consequently, with an absolute constant $A=2e^{1/e}$,
+\begin{equation}\label{eq:clean}
+ C(p,r)\le A^{1/p}
+ \left(\frac1{1-p}\right)^{1/p-1/r}.
+\end{equation}
+In particular, the logarithmic factor in the Seeger--Trebels bound is not
+necessary.
+\end{theorem}
+
+The rest of the packet proves the theorem from three elementary lemmas.
+
+\section{Three lemmas}
+
+\subsection{A self-contained weak endpoint}
+
+\begin{lemma}[Weak $p$-summation]\label{lem:weak}
+For $0<p<1$ and every finite family of measurable functions,
+\begin{equation}\label{eq:weak}
+ \left\|\sum_k |g_k|\right\|_{p,\infty}
+ \le D_p\left(\sum_k\|g_k\|_{p,\infty}^p\right)^{1/p},
+ \qquad
+ D_p=p^{-1}(1-p)^{-1/p}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Put $a_k=\|g_k\|_{p,\infty}$ and
+$S^p=\sum_k a_k^p$.  Fix $\alpha>0$ and a common cutoff $\beta>0$.
+Let
+\[
+ E_\beta=\bigcup_k\{|g_k|>\beta\},
+ \qquad h_k=|g_k|\1_{\{|g_k|\le\beta\}}.
+\]
+The definition of the weak norm gives
+\begin{equation}\label{eq:E}
+ \mu(E_\beta)\le \beta^{-p}S^p.
+\end{equation}
+Layer cake and the same weak estimate give
+\begin{equation}\label{eq:lowL1}
+ \int_X h_k\dd\mu
+ \le\int_0^\beta\mu(|g_k|>s)\dd s
+ \le \frac{a_k^p\beta^{1-p}}{1-p}.
+\end{equation}
+Outside $E_\beta$, the sums of the $|g_k|$ and the $h_k$ agree.  Hence
+Chebyshev's inequality, \eqref{eq:E}, and \eqref{eq:lowL1} imply
+\[
+ \mu\left(\sum_k|g_k|>\alpha\right)
+ \le S^p\left(\beta^{-p}
+       +\frac{\beta^{1-p}}{(1-p)\alpha}\right).
+\]
+The choice $\beta=p\alpha$ minimizes the displayed expression and makes it
+\[
+ S^p\alpha^{-p}\frac{p^{-p}}{1-p}.
+\]
+Taking the supremum of
+$\alpha\,\mu(\sum_k|g_k|>\alpha)^{1/p}$ proves \eqref{eq:weak}.
+\end{proof}
+
+\subsection{Quantitative rank factorization}
+
+\begin{lemma}[Strong--weak factorization]\label{lem:factor}
+Let $0<p<1$, $0<\theta<1$, and $r=p/(1-\theta)$.  If $f$ is a
+nonnegative simple function with support of finite measure on a nonatomic
+measure space, then there are $u,v\ge0$ such that
+\begin{equation}\label{eq:factor}
+ f=u^{1-\theta}v^\theta,\qquad
+ \|v\|_{p,\infty}\le1,\qquad
+ \|u\|_p^p=(1-\theta)\|f\|_{p,r}^r.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Write the positive values of $f$ in decreasing order as
+$c_1>\cdots>c_m>0$ and let $E_j=\{f=c_j\}$.  Set
+$M_j=\sum_{i\le j}\mu(E_i)$ and $M_0=0$.  Nonatomicity, by recursive
+bisection, supplies on every $E_j$ a measurable variable uniformly
+distributed on $(M_{j-1},M_j)$.  Combining these variables gives a rank
+map
+\[
+ \rho:\operatorname{supp}f\longrightarrow(0,M_m)
+\]
+whose pushforward is Lebesgue measure and for which
+$f=f^*(\rho)$ almost everywhere.  This also handles flat levels: each level
+is spread across its full rearrangement interval.
+
+Define
+\[
+ v=\rho^{-1/p},
+ \qquad
+ u=f^{1/(1-\theta)}
+       \rho^{\theta/[p(1-\theta)]}.
+\]
+The factorization in \eqref{eq:factor} is immediate.  Since $\rho$ is
+uniform,
+\[
+ \mu(v>\lambda)=\min\{M_m,\lambda^{-p}\},
+\]
+and therefore $\|v\|_{p,\infty}\le1$.  Also, using
+$r=p/(1-\theta)$ and the normalization \eqref{eq:lorentz},
+\begin{align*}
+ \|u\|_p^p
+ &=\int_0^{M_m}f^*(t)^{p/(1-\theta)}
+       t^{\theta/(1-\theta)}\dd t\\
+ &=\int_0^\infty f^*(t)^r t^{r/p-1}\dd t
+  =(1-\theta)\|f\|_{p,r}^r.
+\end{align*}
+This proves all assertions.
+\end{proof}
+
+\subsection{Returning a product to the Lorentz space}
+
+\begin{lemma}[Product rearrangement]\label{lem:product}
+Let $0<p<\infty$, $0<\theta<1$, and $r=p/(1-\theta)$.  Then
+\begin{equation}\label{eq:product}
+ \|u^{1-\theta}v^\theta\|_{p,r}
+ \le K_\theta\|u\|_p^{1-\theta}
+                 \|v\|_{p,\infty}^\theta,
+\end{equation}
+where
+\begin{equation}\label{eq:K}
+ K_\theta=(1-\theta)^{-2/r}\theta^{-\theta/p}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+For every $0<a<1$ and $t>0$, the elementary two-threshold rearrangement
+bound is
+\begin{equation}\label{eq:two-threshold}
+ (u^{1-\theta}v^\theta)^*(t)
+ \le u^*(at)^{1-\theta}v^*((1-a)t)^\theta.
+\end{equation}
+Indeed, away from the union of the sets where $u$ and $v$ exceed the two
+right-hand thresholds, whose total measure is at most $t$, the product is
+at most the right-hand side.  The weak estimate for $v$ and
+$r(1-\theta)=p$ now give
+\begin{align*}
+ \|u^{1-\theta}v^\theta\|_{p,r}^r
+ &\le \frac rp(1-a)^{-\theta r/p}
+       \|v\|_{p,\infty}^{\theta r}
+       \int_0^\infty u^*(at)^p\dd t\\
+ &=\frac{r}{pa}(1-a)^{-\theta r/p}
+       \|u\|_p^p\|v\|_{p,\infty}^{\theta r}.
+\end{align*}
+Thus \eqref{eq:product} holds with
+\[
+ \left(\frac{r}{pa}\right)^{1/r}(1-a)^{-\theta/p}.
+\]
+Choosing $a=1-\theta=p/r$ yields \eqref{eq:K}.
+\end{proof}
+
+\section{Proof of Theorem~\ref{thm:main}}
+
+We first take finitely many nonnegative simple functions of finite-measure
+support.  Put
+\[
+ F_k=\|f_k\|_{p,r},
+ \qquad
+ S=\left(\sum_kF_k^p\right)^{1/p}.
+\]
+Ignore zero terms.  Lemma~\ref{lem:factor} gives
+$f_k=u_{k,0}^{1-\theta}v_{k,0}^\theta$ and
+\begin{equation}\label{eq:rawbalance}
+ \|u_{k,0}\|_p^{1-\theta}
+ \|v_{k,0}\|_{p,\infty}^\theta
+ \le (1-\theta)^{1/r}F_k.
+\end{equation}
+Rescale the two factors reciprocally, preserving their product, so that the
+new factors $u_k,v_k$ obey
+\begin{equation}\label{eq:scaled}
+ f_k=u_k^{1-\theta}v_k^\theta,\qquad
+ \|u_k\|_p=F_k,\qquad
+ \|v_k\|_{p,\infty}
+ \le (1-\theta)^{1/(r\theta)}F_k.
+\end{equation}
+For completeness, if $u_k=c_ku_{k,0}$ with
+$c_k=F_k/\|u_{k,0}\|_p$, take
+$v_k=c_k^{-(1-\theta)/\theta}v_{k,0}$; the final estimate in
+\eqref{eq:scaled} is exactly \eqref{eq:rawbalance} raised to the power
+$1/\theta$.
+
+Let $U=\sum_k u_k$ and $V=\sum_kv_k$.  Discrete H\"older's inequality at
+each point gives
+\begin{equation}\label{eq:discrete-holder}
+ \sum_k f_k
+ \le U^{1-\theta}V^\theta.
+\end{equation}
+The scalar inequality $(\sum a_k)^p\le\sum a_k^p$ and
+\eqref{eq:scaled} give
+\begin{equation}\label{eq:U}
+ \|U\|_p\le S.
+\end{equation}
+Lemma~\ref{lem:weak} and \eqref{eq:scaled} give
+\begin{equation}\label{eq:V}
+ \|V\|_{p,\infty}
+ \le D_p(1-\theta)^{1/(r\theta)}S.
+\end{equation}
+Applying Lemma~\ref{lem:product} to \eqref{eq:discrete-holder}, then using
+\eqref{eq:U} and \eqref{eq:V}, yields
+\begin{align*}
+ \left\|\sum_k f_k\right\|_{p,r}
+ &\le K_\theta D_p^\theta(1-\theta)^{1/r}S\\
+ &=\mathcal H(\theta)^{1/p}
+   p^{-\theta}(1-p)^{-\theta/p}S.
+\end{align*}
+The last identity uses $1/r=(1-\theta)/p$ and
+$D_p=p^{-1}(1-p)^{-1/p}$.  This is \eqref{eq:mainsharp}.
+
+For arbitrary functions, first use
+$|\sum_k f_k|\le\sum_k|f_k|$.  Approximate each $|f_k|$ increasingly by
+finite-support simple functions.  Such an approximation exists because
+$\mu(|f_k|>\varepsilon)<\infty$ for every $\varepsilon>0$.  The Fatou
+property of the Lorentz quasi-norm passes the proved estimate to the limit.
+Countable families follow by applying the finite result to partial sums and
+using Fatou once more.
+
+Finally, $\theta/p=1/p-1/r$, $\mathcal H(\theta)\le2$, and
+\[
+ p^{-p\theta}\le p^{-p}\le e^{1/e}\qquad(0<p<1).
+\]
+Raising the refined constant in \eqref{eq:mainsharp} to the $p$th power
+therefore gives \eqref{eq:clean} with $A=2e^{1/e}$.  The logarithm is gone.
+\qed
+
+\section{Endpoint checks and scope}
+
+The refined bound has the correct qualitative interpolation limits.  As
+$r\downarrow p$, one has $\theta\downarrow0$ and its right-hand constant
+tends to one, exactly matching $L^{p,p}=L^p$.  As $r\to\infty$, one has
+$\theta\uparrow1$ and the constant tends to
+$D_p=p^{-1}(1-p)^{-1/p}$, the weak endpoint proved above.
+
+The theorem answers the source's stated yes/no issue: no logarithmic factor
+is required in a uniform upper bound.  It does not claim that the displayed
+entropy-refined constant is the exact best value of $C(p,r)$.  Determining
+the exact optimum remains a separate extremal problem.
+
+\begin{thebibliography}{9}
+
+\bibitem{ST}
+A.~Seeger and W.~Trebels,
+\emph{Embeddings for spaces of Lorentz--Sobolev type},
+Math. Ann. \textbf{373} (2019), 1017--1056;
+arXiv:1801.10570.
+
+\bibitem{STW}
+E.~M. Stein, M.~H. Taibleson, and G.~Weiss,
+\emph{Weak type estimates for maximal operators on certain $H^p$ classes},
+Rend. Circ. Mat. Palermo (2), Suppl. 1 (1981), 81--97.
+
+\end{thebibliography}
+
+\end{document}

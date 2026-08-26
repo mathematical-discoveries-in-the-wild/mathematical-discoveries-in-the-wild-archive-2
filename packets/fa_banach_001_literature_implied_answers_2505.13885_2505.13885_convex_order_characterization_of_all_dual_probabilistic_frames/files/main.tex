@@ -1,0 +1,182 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Ptwo}{\mathcal P_2(\R^n)}
+\newcommand{\Id}{\mathrm{Id}}
+\newcommand{\Law}{\operatorname{Law}}
+\begin{document}
+
+\begin{center}
+{\Large\bfseries A Convex-Order Characterization of All Dual Probabilistic Frames}\par
+\vspace{0.5em}
+{\large A literature-implied full answer to the question in arXiv:2505.13885}\par
+\vspace{0.4em}
+Run \texttt{fa\_banach\_001} --- lane 17 \qquad 13 August 2026
+\end{center}
+
+\medskip
+\noindent\fbox{\begin{minipage}{0.94\linewidth}
+\textbf{Status.} Full characterization, obtained by combining conditional
+barycenters with Strassen's martingale theorem. A measure is dual to a fixed
+probabilistic frame precisely when it is a convex-order mean-preserving spread
+of an admissible pushforward-type dual.
+\end{minipage}}
+
+\section{The source question}
+
+Chen, King, and Shonkwiler's \emph{Approximately Dual and Pseudo-Dual
+Probabilistic Frames} \cite{CKS} defines a dual of a probabilistic frame
+$\mu\in\Ptwo$ to be a measure $\nu\in\Ptwo$ for which some coupling
+$\gamma\in\Gamma(\mu,\nu)$ satisfies
+\begin{equation}\label{eq:dual}
+ \int_{\R^n\times\R^n}xy^t\,d\gamma(x,y)=\Id.
+\end{equation}
+The Introduction (printed and PDF page~3) states that characterizing all such
+$\nu$ for a given $\mu$ remains open. The statement occurs in the paragraph beginning
+``Characterizing all the dual probabilistic frames''; the same challenge is
+repeated at the beginning of the section on approximately dual frames.
+
+\section{Exact characterization}
+
+Let
+\[
+ S_\mu:=\int_{\R^n}xx^t\,d\mu(x)
+\]
+be the positive definite frame operator, and define
+\[
+ \mathcal H_\mu:=\left\{h\in L^2(\mu;\R^n):
+       \int_{\R^n}x h(x)^t\,d\mu(x)=0\right\}.
+\]
+For probability measures $\eta,\nu$ with finite first moments, write
+$\eta\preceq_{\rm cx}\nu$ when
+$\int\varphi\,d\eta\leq\int\varphi\,d\nu$ for every convex $\varphi$
+for which the integrals are defined.
+
+\begin{theorem}\label{thm:classification}
+For every probabilistic frame $\mu$ on $\R^n$, its complete class of dual
+probabilistic frames is
+\begin{equation}\label{eq:class}
+ \mathcal D(\mu)=
+ \bigcup_{h\in\mathcal H_\mu}
+ \left\{\nu\in\Ptwo:
+   \big(S_\mu^{-1}\Id+h\big)_\#\mu\preceq_{\rm cx}\nu\right\}.
+\end{equation}
+More explicitly, $\nu$ is dual to $\mu$ if and only if there are
+$h\in\mathcal H_\mu$ and a probability kernel $K_z(dy)$ such that, with
+$T(x)=S_\mu^{-1}x+h(x)$,
+\[
+ \int y\,K_z(dy)=z
+ \quad\text{for }T_\#\mu\text{-a.e. }z,
+ \qquad
+ \nu(B)=\int K_{T(x)}(B)\,d\mu(x).
+\]
+Thus every dual is a mean-preserving spread of a pushforward-type dual, and
+every such spread is a dual.
+\end{theorem}
+
+\begin{proof}
+Suppose first that $\nu$ is dual to $\mu$, witnessed by $\gamma$. Disintegrate
+\[
+ d\gamma(x,y)=d\mu(x)\,K_x(dy)
+\]
+and let $T(x):=\int y\,K_x(dy)$. Conditional Jensen and $\nu\in\Ptwo$ give
+$T\in L^2(\mu;\R^n)$ and
+\[
+ T_\#\mu\preceq_{\rm cx}\nu.
+\]
+Moreover, \eqref{eq:dual} becomes
+\[
+ \int xT(x)^t\,d\mu(x)=\Id.
+\]
+Put $h(x)=T(x)-S_\mu^{-1}x$. Since $S_\mu$ is symmetric,
+\[
+ \int xh(x)^t\,d\mu(x)
+ =\Id-S_\mu(S_\mu^{-1})^t=0.
+\]
+Hence $h\in\mathcal H_\mu$, proving the inclusion from left to right in
+\eqref{eq:class}.
+
+Conversely, take $h\in\mathcal H_\mu$, put
+$T(x)=S_\mu^{-1}x+h(x)$ and $\eta=T_\#\mu$, and suppose
+$\eta\preceq_{\rm cx}\nu$. Strassen's martingale theorem, in the explicit
+multidimensional kernel form \cite[Theorem~2.3]{BB}, supplies a probability
+kernel $K_z(dy)$ with first
+marginal $\eta$, second marginal $\nu$, and barycenter
+$\int yK_z(dy)=z$. Define
+\[
+ d\gamma(x,y):=d\mu(x)\,K_{T(x)}(dy).
+\]
+Then $\gamma\in\Gamma(\mu,\nu)$ and
+\begin{align*}
+ \int xy^t\,d\gamma(x,y)
+ &=\int x\left(\int y\,K_{T(x)}(dy)\right)^t d\mu(x)\\
+ &=\int xT(x)^t\,d\mu(x)\\
+ &=S_\mu(S_\mu^{-1})^t+
+   \int xh(x)^t\,d\mu(x)=\Id.
+\end{align*}
+Thus $\nu$ is a dual. (The same Cauchy--Schwarz argument used in the source
+then shows automatically that $\nu$ is a probabilistic frame.)
+\end{proof}
+
+The point-mass case checks the orientation. If $\mu=\delta_a$ on $\R$ with
+$a\ne0$, then $\mathcal H_\mu=\{0\}$ and the theorem says
+$\nu$ is dual exactly when $\delta_{1/a}\preceq_{\rm cx}\nu$, equivalently
+when $\nu$ has mean $1/a$. This recovers the complete point-mass description
+in Chen and Schmoll \cite[Proposition~5.12]{CS}.
+
+\section{Provenance, search, and scope}
+
+This is a literature-implied answer. Strassen's 1965 theorem says that convex
+order is equivalent to the existence of a martingale coupling; it does not
+mention frames. The theorem is reproduced in explicit multidimensional kernel
+form as Theorem~2.3 in \cite{BB}. The source paper gives the pushforward
+condition (its Lemma~3.7), but does not pass from arbitrary couplings to
+conditional barycenters and convex order. The combination above is the direct
+identification that closes the stated characterization problem.
+
+A bounded search through 13 August 2026 checked the full texts of
+arXiv:2505.13885 and arXiv:2501.02602 for the terms
+``convex order'', ``martingale'', ``Strassen'', ``barycenter'', and
+``conditional expectation'', and searched the exact phrases
+``dual probabilistic frame convex order'', ``transport dual martingale'', and
+close variants. No prior statement of Theorem~\ref{thm:classification} was
+found. The source authors do not cite Strassen here and did not explicitly
+know they were posing an instance of his theorem. No priority claim is made.
+
+The theorem completely characterizes which second marginal measures are
+duals, in every finite dimension. It does not classify extreme points of this
+nonclosed class, choose a canonical admissible $h$ for a prescribed $\nu$, or
+provide a numerical martingale-transport algorithm.
+
+\begin{sloppypar}
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{CKS}
+D. Chen, E. J. King, and C. Shonkwiler,
+\emph{Approximately Dual and Pseudo-Dual Probabilistic Frames},
+arXiv:2505.13885 (2025). See the Introduction, p.~3, and Lemma~3.7, p.~9.
+
+\bibitem{CS}
+D. Chen and M. Schmoll,
+\emph{Probabilistic Frames and Wasserstein Distances},
+arXiv:2501.02602v1 (2025). See Section~5 and Proposition~5.12.
+
+\bibitem{Strassen}
+V. Strassen,
+\emph{The Existence of Probability Measures with Given Marginals},
+Ann. Math. Statist. \textbf{36} (1965), 423--439.
+See Theorem~8.
+
+\bibitem{BB}
+K. Bo{\l}botowski and G. Bouchitt\'e,
+\emph{Kantorovich--Rubinstein Duality Theory for the Hessian},
+arXiv:2412.00516 (2024). See Theorem~2.3, printed and PDF page~15.
+\end{thebibliography}
+\end{sloppypar}
+
+\end{document}

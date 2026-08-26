@@ -1,0 +1,245 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\1}{\mathbf 1}
+\newcommand{\Mor}{L^{p,\lambda}(\R^n)}
+\newcommand{\Vast}{V^{(\ast)}L^{p,\lambda}(\R^n)}
+
+\title{Singular-type operators preserve the Morrey vanishing property $(V^\ast)$}
+\author{Candidate full answer to the question in arXiv:1911.06551}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\fbox{\parbox{0.94\linewidth}{\textbf{Status: candidate full proof, likely valid.}
+For every $1<p<\infty$ and $0\leq\lambda<n$, every $p$-admissible
+sublinear singular-type operator preserves $V^{(\ast)}L^{p,\lambda}(\R^n)$.
+This includes all singular integral operators asked about in the source.}}
+
+\section{Source question and definitions}
+
+For $1<p<\infty$ and $0\leq\lambda<n$, the Morrey space $\Mor$ has norm
+\[
+ \|f\|_{p,\lambda}
+ :=\sup_{x\in\R^n,\ r>0}
+ \left(r^{-\lambda}\int_{B(x,r)}|f(y)|^p\,dy\right)^{1/p}.
+\]
+Writing $\chi_N=\1_{\R^n\setminus B(0,N)}$, define
+\[
+ \mathcal A_{N,p}(f)
+ :=\sup_{x\in\R^n}\int_{B(x,1)}|f(y)|^p\chi_N(y)\,dy.
+\]
+The subspace $\Vast$ consists of the $f\in\Mor$ satisfying
+$\mathcal A_{N,p}(f)\to0$.
+
+The source calls a sublinear operator $T$ \emph{$p$-admissible singular-type}
+if it is bounded on $L^p(\R^n)$ and, for $z\in B(x,r)$,
+\begin{equation}\label{eq:size}
+ \left|T\!\left(f\1_{\R^n\setminus B(x,2r)}\right)(z)\right|
+ \leq C_T\int_{\R^n\setminus B(x,2r)}
+       \frac{|f(y)|}{|y-z|^n}\,dy .
+\end{equation}
+Its Lemma 2.3 implies that such $T$ is bounded on $\Mor$.
+Immediately before Theorem 3.11, the authors ask whether a singular integral
+$S$ in this class preserves $(V^\ast)$ \cite[p.~9]{source}.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\linewidth]{figures/open_problem_crop.png}
+\caption{The exact open question on page 9 of the arXiv PDF.}
+\end{figure}
+
+\section{Proof intuition}
+
+The size condition reduces the only difficult piece to an order-$n$ tail
+potential.  On a dyadic annulus of radius $2^k$, the $(V^\ast)$ hypothesis
+gives a bound by the small far-unit-ball quantity $\eta_N$, but this bound
+alone is not summable in $k$.  The Morrey norm gives the complementary bound
+$M2^{-k(n-\lambda)/p}$.  Taking the better estimate on every annulus and
+summing gives
+\[
+ \sum_{k\geq0}\min\{\eta_N,M2^{-k(n-\lambda)/p}\}
+ \lesssim \eta_N\bigl(1+\log(M/\eta_N)\bigr)\longrightarrow0.
+\]
+This logarithmic interpolation is the missing critical-tail mechanism.
+
+\section{Full positive answer}
+
+\begin{lemma}[Critical tail estimate]\label{lem:tail}
+Let $f\in\Mor$, $M=\|f\|_{p,\lambda}$, and
+\[
+ F_N=f\1_{\R^n\setminus B(0,N)},\qquad
+ \eta_N=\sup_{u\in\R^n}\|F_N\|_{L^p(B(u,1))}.
+\]
+Set $a=(n-\lambda)/p>0$.  If $G$ is any measurable function with
+$|G|\leq|F_N|$ and $G=0$ on $B(x,2)$, then, uniformly for $z\in B(x,1)$,
+\begin{equation}\label{eq:tail-bound}
+ \int_{\R^n}\frac{|G(y)|}{|y-z|^n}\,dy
+ \leq C_{n,p,\lambda}\,eta_N
+ \left(1+\log_+\frac{M}{\eta_N}\right),
+\end{equation}
+with the right side interpreted as $0$ when $\eta_N=0$.
+\end{lemma}
+
+\begin{proof}
+Every ball of radius $R\geq1$ can be covered by at most $C_nR^n$ unit
+balls.  Since multiplication by an indicator does not increase the Morrey
+norm,
+\begin{equation}\label{eq:two-ball-bounds}
+ \|G\|_{L^p(B(z,R))}
+ \leq C_n\min\{\eta_NR^{n/p},\,MR^{\lambda/p}\}.
+\end{equation}
+The support condition and $z\in B(x,1)$ imply $|y-z|\geq1$ on the support of
+$G$.  Split that support into the annuli
+$2^k\leq|y-z|<2^{k+1}$, $k\geq0$.  H\"older's inequality and
+\eqref{eq:two-ball-bounds} yield
+\[
+ \int_{2^k\leq|y-z|<2^{k+1}}
+       \frac{|G(y)|}{|y-z|^n}\,dy
+ \leq C_{n,p}\min\{\eta_N,\,M2^{-ak}\}.
+\]
+Here the first alternative follows because the volume factor
+$2^{kn/p'}$ and the unit-cover factor $2^{kn/p}$ exactly cancel the kernel
+$2^{-kn}$; the second leaves $2^{-k(n-\lambda)/p}$.
+
+If $0<\eta_N\leq M$, let
+\[
+ K=\left\lceil\frac{\log(M/\eta_N)}{a\log2}\right\rceil.
+\]
+The terms with $k<K$ total at most $K\eta_N$, while the remaining geometric
+tail is at most
+$M2^{-aK}/(1-2^{-a})\leq\eta_N/(1-2^{-a})$.
+This proves \eqref{eq:tail-bound}.  The cases $M=0$ or $\eta_N=0$ are
+immediate.  (In fact $\eta_N\leq M$ by the Morrey estimate at radius one.)
+\end{proof}
+
+\begin{theorem}\label{thm:main}
+Let $1<p<\infty$ and $0\leq\lambda<n$.  Every $p$-admissible sublinear
+singular-type operator $T$ maps $\Vast$ boundedly into itself.  In
+particular, every singular integral operator $S$ considered in the source
+preserves the vanishing property $(V^\ast)$.
+\end{theorem}
+
+\begin{proof}
+The source's Morrey boundedness result already gives $Tf\in\Mor$ and
+$\|Tf\|_{p,\lambda}\lesssim\|f\|_{p,\lambda}$.  It remains to prove
+$(V^\ast)$.
+
+Fix $f\in\Vast$, write $M=\|f\|_{p,\lambda}$, and use $\eta_N$ from
+Lemma~\ref{lem:tail}.  Thus $\eta_N=\mathcal A_{N,p}(f)^{1/p}\to0$.
+For fixed $N$ and $|x|>N+3$, decompose
+\[
+ f=u_x+v_N+w_{N,x},
+\]
+where
+\[
+ u_x=f\1_{B(x,2)},\qquad
+ v_N=f\1_{B(0,N)},\qquad
+ w_{N,x}=f\1_{(\R^n\setminus B(0,N))\setminus B(x,2)}.
+\]
+The first two supporting balls are disjoint, so these three pieces cover
+$f$.  By sublinearity and Minkowski's inequality it suffices to estimate the
+three outputs on $B(x,1)$.
+
+First, the global $L^p$ boundedness of $T$ and a fixed finite cover of
+$B(x,2)$ by unit balls give
+\begin{equation}\label{eq:local}
+ \|Tu_x\|_{L^p(B(x,1))}
+ \leq C_T\|u_x\|_{L^p(\R^n)}
+ \leq C_{n,T}\eta_N,
+\end{equation}
+because $B(x,2)\subset\R^n\setminus B(0,N)$.
+
+Second, $v_N$ is supported off $B(x,2)$.  For $z\in B(x,1)$, the size
+condition gives
+\[
+ |Tv_N(z)|
+ \leq C_T\int_{B(0,N)}\frac{|f(y)|}{|y-z|^n}\,dy
+ \leq \frac{C_T\|f\1_{B(0,N)}\|_{L^1}}
+              {( |x|-N-1)^n}.
+\]
+Consequently, for each fixed $N$,
+\begin{equation}\label{eq:origin}
+ \|Tv_N\|_{L^p(B(x,1))}\longrightarrow0
+ \qquad (|x|\to\infty).
+\end{equation}
+
+Finally, $w_{N,x}$ satisfies the hypotheses of Lemma~\ref{lem:tail}; applying
+the size condition and then the lemma gives
+\begin{equation}\label{eq:tailout}
+ \|Tw_{N,x}\|_{L^p(B(x,1))}
+ \leq C_{n,p,\lambda,T}\eta_N
+ \left(1+\log_+\frac{M}{\eta_N}\right).
+\end{equation}
+From \eqref{eq:local}--\eqref{eq:tailout},
+\[
+ \limsup_{|x|\to\infty}\|Tf\|_{L^p(B(x,1))}
+ \leq C\eta_N\left(1+\log_+\frac{M}{\eta_N}\right).
+\]
+Letting $N\to\infty$ makes the right side zero.  Hence the $L^p$ norm of
+$Tf$ on unit balls tends to zero uniformly as their centers go to infinity.
+
+To recover the source's cut-off formulation, note that
+$B(x,1)\cap(\R^n\setminus B(0,R))\neq\varnothing$ implies $|x|>R-1$.
+Therefore
+\[
+ \mathcal A_{R,p}(Tf)^{1/p}
+ \leq\sup_{|x|>R-1}\|Tf\|_{L^p(B(x,1))}\longrightarrow0.
+\]
+Thus $Tf\in\Vast$.
+\end{proof}
+
+\section{Scope, verification, and novelty}
+
+The theorem uses exactly the source definition of a $p$-admissible
+singular-type operator.  It does not require linearity, kernel smoothness, or
+additional cancellation.  The strict inequality $\lambda<n$ is essential to
+this argument because it makes $a=(n-\lambda)/p$ positive.  All source
+parameters, including $\lambda=0$, are covered.
+
+The dyadic transition and vanishing modulus were stress-tested over 72,000
+parameter triples by the included verifier; this is a check of the algebra,
+not a proof.  The formal proof above supplies the exact geometric-series
+argument.
+
+A bounded novelty search on 17 August 2026 covered the local run indexes,
+the arXiv identifier and title, the exact phrase ``we do not know whether
+$S$ preserves the vanishing property $(V^\ast)$'', the authors, singular
+operators on vanishing Morrey spaces, and later citing papers.  The closest
+item is the same authors' generalized-Morrey follow-up \cite{followup}.
+Crucially, its Section 5 again states the same uncertainty and its Theorem 5.3
+only proves invariance of the closure of $C_0^\infty$, not invariance of
+$V^{(\ast)}$ itself.  Searches found no later full answer or matching
+logarithmic dyadic-tail argument.  Novelty confidence is moderate rather than
+high because the argument is elementary and the search was bounded.
+
+\paragraph{Human-review recommendation.}
+Check (i) that the source size condition applies to the noncompact truncated
+tail $w_{N,x}$ under its standard Morrey extension, (ii) the annular H\"older
+exponents in Lemma~\ref{lem:tail}, and (iii) the last equivalence between
+far-center decay and the cut-off definition of $(V^\ast)$.
+
+\begin{thebibliography}{2}
+\bibitem{source}
+A.~\c{C}. Alabalik, A.~Almeida, and S.~Samko,
+\emph{On the invariance of certain vanishing subspaces of Morrey spaces with
+respect to some classical operators}, Banach J. Math. Anal. 14 (2020),
+987--1000; arXiv:1911.06551,
+\url{https://arxiv.org/abs/1911.06551}.
+
+\bibitem{followup}
+A.~\c{C}. Alabalik, A.~Almeida, and S.~Samko,
+\emph{Preservation of certain vanishing properties of generalized Morrey
+spaces by some classical operators}, Math. Methods Appl. Sci. 43 (2020),
+9375--9386, \href{https://doi.org/10.1002/mma.6235}{doi:10.1002/mma.6235}.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,152 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.87in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,microtype}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Reg}{\operatorname{Reg}}
+\newcommand{\supp}{\operatorname{supp}}
+\title{Universal spectral freedom for a fixed positive kernel}
+\author{Autonomous proof attempt for arXiv:2104.11807}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Question 2.12 of Jorgensen--Song--Tian asks for the spectrum of
+$T_\mu T_\mu^*$ as the regular measure $\mu$ varies for a fixed
+positive-definite kernel.  We exhibit one fixed elementary kernel for which
+the answer is maximally free: every nonempty closed subset of $[0,\infty)$
+occurs, including unbounded sets and sets with isolated zero.  We give the
+closed-operator domains explicitly.  Consequently no kernel-independent
+restriction stronger than positivity and closedness is possible.
+\end{abstract}
+
+\section{The theorem}
+
+For a p.d. kernel $K$ on $X$, the source defines $\mu\in\Reg(K)$ when
+$K(\cdot,x)\in L_2(\mu)$ for every $x$, and defines $T_\mu$ initially as
+the identity inclusion of the span of the kernel sections into $L_2(\mu)$.
+The operator is closable; below $T_\mu$ denotes its closure.  The source asks
+for $\sigma(T_\mu T_\mu^*)$ as $\mu$ varies \cite[Question 2.12]{JST}.
+
+Let $X=\{0\}\cup\N$ and fix
+\begin{equation}\label{eq:kernel}
+ K(0,x)=K(x,0)=0,\qquad K(n,m)=\delta_{nm}\quad(n,m\in\N).
+\end{equation}
+This is positive definite.  Its kernel sections are $0,e_1,e_2,\ldots$,
+so they are pairwise distinct and the source distance
+$d_K(x,y)=\|K_x-K_y\|$ is a genuine metric.
+
+\begin{theorem}[Universal fixed kernel]\label{thm:main}
+For the single kernel \eqref{eq:kernel},
+\[
+ \bigl\{\sigma(T_\mu T_\mu^*):0\ne\mu\in\Reg(K)\bigr\}
+ =\bigl\{S\subset[0,\infty):S\text{ is nonempty and closed}\bigr\}.
+\]
+\end{theorem}
+
+The inclusion from left to right is automatic because $T_\mu T_\mu^*$ is
+positive self-adjoint.  The content is the converse, proved below.
+
+\section{Exact diagonalization, including domains}
+
+The RKHS of \eqref{eq:kernel} is
+\[
+ \mathcal H_K=\{f:X\to\mathbb C:f(0)=0, (f(n))_{n\ge1}\in\ell_2\},
+ \qquad \|f\|_{\mathcal H_K}^2=\sum_{n\ge1}|f(n)|^2.
+\]
+Every Borel measure on this discrete $X$ has weights
+$a=\mu(\{0\})$ and $w_n=\mu(\{n\})$.  It lies in $\Reg(K)$ exactly when
+each $w_n<\infty$, because $\|K_n\|_{L_2(\mu)}^2=w_n$; the mass $a$ is
+irrelevant to regularity.  We use nonzero measures with finite singleton
+weights, hence they are $\sigma$-finite.
+
+Discard the indices with $w_n=0$ from $L_2(\mu)$.  The unitary
+\[
+ V:L_2(\mu)\longrightarrow
+   \bigl(\mathbb C\text{ if }a>0\bigr)\oplus\ell_2(\{n:w_n>0\}),
+ \qquad
+ Vf=\bigl(\sqrt a f(0),(\sqrt{w_n}f(n))_n\bigr)
+\]
+turns $T_\mu$ on finite sequences into
+\[
+ c=(c_n)\longmapsto \bigl(0,(\sqrt{w_n}c_n)_n\bigr).
+\]
+Its closure and adjoint therefore have the standard diagonal domains
+\begin{align*}
+ \operatorname{dom}(T_\mu)
+   &=\{c\in\ell_2:\sum_n w_n|c_n|^2<\infty\},\\
+ \operatorname{dom}(T_\mu^*)
+   &=\{(z,y):\sum_n w_n|y_n|^2<\infty\},
+ \qquad T_\mu^*(z,y)=(\sqrt{w_n}y_n)_n.
+\end{align*}
+Consequently
+\begin{equation}\label{eq:diag}
+ \begin{aligned}
+ V(T_\mu T_\mu^*)V^{-1}&=0\oplus M_w,
+ &M_w(y_n)&=(w_ny_n),\\
+ \operatorname{dom}(M_w)&=\{y:\sum_nw_n^2|y_n|^2<\infty\}.
+ \end{aligned}
+\end{equation}
+where the zero summand is present exactly when $a>0$.
+
+\begin{lemma}\label{lem:spectrum}
+For the atomic measure above,
+\[
+ \sigma(T_\mu T_\mu^*)=
+ \overline{\{w_n:w_n>0\}}\ \cup\
+ \begin{cases}\{0\},&a>0,\\ \varnothing,&a=0.\end{cases}
+\]
+\end{lemma}
+\begin{proof}
+Equation \eqref{eq:diag} reduces the claim to a diagonal self-adjoint
+operator, even when the weights are unbounded.  A complex number $\lambda$
+is in its resolvent precisely when
+$\inf_n|w_n-\lambda|>0$; then the inverse is the bounded diagonal operator
+with entries $(w_n-\lambda)^{-1}$.  This proves the closure formula.  The
+extra coordinate contributes the stated zero eigenvalue.
+\end{proof}
+
+The same answer follows directly from the source integral formula:
+\[
+ (T_\mu T_\mu^*f)(n)
+ =\sum_{m\in X}K(m,n)f(m)\mu(\{m\})=w_nf(n),
+ \qquad (T_\mu T_\mu^*f)(0)=0,
+\]
+with \eqref{eq:diag} supplying the required maximal domain.
+
+\section{Realizing an arbitrary closed set}
+
+Let $S\subset[0,\infty)$ be nonempty and closed.  If
+$S_+=S\cap(0,\infty)$ is nonempty, choose a sequence $(s_n)$ in $S_+$
+whose closure, together with $0$ when $0\in S$, is $S$; repeat elements when
+$S_+$ is finite.  Set $w_n=s_n$.  If $S_+=\varnothing$, set every $w_n=0$.
+Finally put
+\[
+ \mu(\{0\})=\begin{cases}1,&0\in S,\\0,&0\notin S.\end{cases}
+\]
+All singleton weights are finite, so $\mu\in\Reg(K)$, and $\mu\ne0$.
+Lemma \ref{lem:spectrum} gives $\sigma(T_\mu T_\mu^*)=S$, proving
+Theorem \ref{thm:main}.
+
+\begin{remark}[Scope]
+The theorem completely answers the variation problem for the fixed kernel
+\eqref{eq:kernel} and classifies what can happen without assumptions on $K$.
+It does not give a closed-form classification for each arbitrary fixed
+kernel.  The latter necessarily depends on that kernel's integral quadratic
+form; the example shows that no further universal spectral law can exist.
+\end{remark}
+
+\begin{thebibliography}{9}
+\bibitem{JST}
+P. E. T. Jorgensen, M.-S. Song, and J. Tian,
+\emph{Positive Definite Kernels, Algorithms, Frames, and Approximations},
+arXiv:2104.11807v1 (2021).
+\end{thebibliography}
+
+\end{document}

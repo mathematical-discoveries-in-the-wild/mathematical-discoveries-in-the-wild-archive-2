@@ -1,0 +1,198 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newcommand{\vol}{\operatorname{vol}}
+\newcommand{\B}{B_2}
+
+\title{A determinant-one counterexample to the proposed\\
+strong-\((B)\) equality classification}
+\author{Automated Math Discovery Run \texttt{fa\_banach\_001}, lane 8}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{black}{red!5}{\parbox{0.88\linewidth}{
+\textbf{Result.} The equality characterization in Conjecture~4.1 of
+Artstein-Avidan--Katzin is false.  There is a centrally symmetric
+unconditional convex body \(K\subset\mathbb R^3\) and a nonzero,
+trace-zero, nonscalar diagonal matrix \(\Lambda\) for which
+\(\vol(e^{s\Lambda}K\cap\B^3)\) is constant on a nontrivial interval,
+although neither \(K\subset\B^3\) nor \(\B^3\subset K\).
+}}
+\end{center}
+
+\section{Source conjecture}
+
+Conjecture~4.1 of \cite{AAK} asserts that, for a convex body
+\(K\subset\mathbb R^n\) and diagonal \(\Lambda\),
+\[
+ \phi(t)=\vol_n(e^{t\Lambda}K\cap\B^n)
+\]
+is log-concave.  In particular it proposes
+\begin{equation}\label{eq:midpoint}
+ \vol_n(e^{t\Lambda/2}K\cap\B^n)^2
+ \ge
+ \vol_n(e^{t\Lambda}K\cap\B^n)\,
+ \vol_n(K\cap\B^n).
+\end{equation}
+It further states that equality occurs if and only if
+\(K\subset\B^n\), or \(\B^n\subset K\), or
+\(\Lambda=\lambda I_n\).  The paper uses this rigidity clause, with
+\(\operatorname{tr}\Lambda=0\), to deduce uniqueness of a maximum
+intersection ellipsoid in the intermediate-radius regime.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.96\linewidth,height=0.42\textheight,keepaspectratio]{figures/open_problem_crop.png}
+\caption{Conjecture~4.1 and Proposition~4.2 in arXiv:1612.01128,
+PDF pages 8--9.}
+\end{figure}
+
+\section{Idea of the counterexample}
+
+Let one coordinate of a box cut the unit ball and make the other coordinate
+widths larger than the ball.  A diagonal deformation supported only on the
+oversized coordinates is invisible to intersection with the ball for as
+long as those widths remain at least one.  Two such redundant coordinates
+can expand and contract reciprocally, making the deformation nontrivial and
+trace zero while leaving the intersection exactly fixed.
+
+\section{The counterexample}
+
+\begin{theorem}\label{thm:counterexample}
+Set
+\[
+ K=[-\tfrac12,\tfrac12]\times[-2,2]\times[-3,3]
+ \quad\text{and}\quad
+ \Lambda=\operatorname{diag}(0,1,-1).
+\]
+Then, for every \(s\in[0,1]\),
+\begin{equation}\label{eq:constant-set}
+ e^{s\Lambda}K\cap\B^3
+ =\{x\in\B^3:|x_1|\le\tfrac12\}.
+\end{equation}
+Consequently \eqref{eq:midpoint} is an equality at \(t=1\), although none
+of its three proposed equality conditions holds.  Moreover
+\(\operatorname{tr}\Lambda=0\).
+\end{theorem}
+
+\begin{proof}
+For \(s\in[0,1]\),
+\[
+ e^{s\Lambda}K
+ =[-\tfrac12,\tfrac12]\times[-2e^s,2e^s]
+   \times[-3e^{-s},3e^{-s}].
+\]
+The second half-width satisfies \(2e^s\ge2>1\), and the third satisfies
+\(3e^{-s}\ge3/e>1\).  Since every \(x\in\B^3\) has
+\(|x_2|,|x_3|\le1\), those two box constraints are redundant inside the
+ball.  This proves \eqref{eq:constant-set}.
+
+Writing \(a=1/2\) and integrating the disk cross-sections gives the common
+volume
+\[
+ \phi(s)=\int_{-a}^{a}\pi(1-u^2)\,du
+ =2\pi\left(a-\frac{a^3}{3}\right)=\frac{11\pi}{12}.
+\]
+Thus \(\phi(1/2)^2=\phi(1)\phi(0)\).
+
+The point \((0,2,0)\) belongs to \(K\setminus\B^3\), while
+\((1,0,0)\) belongs to \(\B^3\setminus K\).  Finally, \(\Lambda\) has
+three unequal diagonal entries, so it is not scalar, while
+\(\operatorname{tr}\Lambda=0+1-1=0\).
+\end{proof}
+
+\section{A robust family of equality cases}
+
+\begin{proposition}\label{prop:family}
+Let \(0<a<1\), let \(I\subset\mathbb R\) be an interval, and put
+\[
+ K=[-a,a]\times\prod_{j=2}^n[-b_j,b_j],\qquad
+ \Lambda=\operatorname{diag}(0,\lambda_2,\ldots,\lambda_n).
+\]
+If \(b_j e^{s\lambda_j}\ge1\) for every \(s\in I\) and every
+\(j\ge2\), then
+\[
+ e^{s\Lambda}K\cap\B^n
+ =\{x\in\B^n:|x_1|\le a\}
+ \qquad(s\in I).
+\]
+In particular, in every dimension \(n\ge3\) one may choose a nonzero
+trace-zero nonscalar \(\Lambda\) and obtain equality on any prescribed
+compact interval after taking the \(b_j\)'s sufficiently large.
+\end{proposition}
+
+\begin{proof}
+Inside \(\B^n\), every coordinate has absolute value at most one.  The
+hypothesis therefore makes all constraints except \(|x_1|\le a\)
+redundant, proving the set identity.  For the final assertion, take two
+indices \(j,k\ge2\), set \(\lambda_j=c\), \(\lambda_k=-c\) with
+\(c\ne0\), and set the remaining eigenvalues to zero.  On a compact
+interval, finite \(b_j,b_k\) can dominate the largest reciprocal scaling.
+\end{proof}
+
+This family shows that the failure is structural.  It is not caused by
+choosing \(t=0\), by a scalar dilation, by non-central symmetry, or by a
+volume-changing deformation.  The intersection set itself, not merely its
+volume, remains fixed on a whole interval.
+
+\section{Why this does not yet settle ellipsoid uniqueness}
+
+Because \(\operatorname{tr}\Lambda=0\), change of variables gives
+\[
+ \vol(e^{s\Lambda}K\cap\B^3)
+ =\vol(K\cap e^{-s\Lambda}\B^3).
+\]
+Thus a continuum of distinct equal-volume ellipsoids has the same overlap
+with \(K\).  To refute uniqueness of the \emph{maximizing} ellipsoid, one
+would still have to prove that this common value is the global maximum.  It
+is not so for the displayed example.
+
+Indeed, use the source's first-variation formula at the unit ball with
+\(A=\operatorname{diag}(-2,1,1)\).  On the sphere,
+\(S^2\cap K=\{x\in S^2:|x_1|\le a\}\), \(a=1/2\), because the other box
+constraints are redundant.  Since spherical area disintegrates as
+\(dS=2\pi\,du\) with \(u=x_1\),
+\begin{align*}
+ \left.\frac d{dt}\right|_{t=0}
+ \vol(K\cap e^{tA}\B^3)
+ &=\int_{S^2\cap K}\langle x,Ax\rangle\,dS\\
+ &=4\pi a-3\left(\frac{4\pi a^3}{3}\right)
+ =4\pi a(1-a^2)>0.
+\end{align*}
+So the unit ball is not even a local maximizer.  This closes the most direct
+upgrade route without overstating the result: the equality rigidity in
+Conjecture~4.1 is false, while the log-concavity inequality and the paper's
+intermediate-radius uniqueness question remain open here.
+
+\section{Verification and novelty notes}
+
+The proof is an exact coordinate calculation.  The accompanying script
+checks all endpoint widths on a 1001-point grid, the exact cross-sectional
+volume, and the positive first variation; the grid is only a transcription
+check, since monotonicity proves the bounds analytically.
+
+A bounded official-arXiv search through 11 August 2026 used arXiv id
+1612.01128 and combinations of ``strong B equality'', ``uniform measure
+ball equality'', and ``maximal intersection ellipsoid uniqueness''.  It
+found the source and related strong-\(B\) literature but no later answer to
+this exact equality claim.  This is not an exhaustive literature review.
+
+\begin{thebibliography}{9}
+\bibitem{AAK}
+S.~Artstein-Avidan and D.~Katzin,
+\emph{Isotropic Measures and Maximizing Ellipsoids: Between John and
+Loewner}, arXiv:1612.01128.
+\end{thebibliography}
+
+\end{document}

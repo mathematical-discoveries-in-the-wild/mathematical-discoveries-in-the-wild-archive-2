@@ -1,0 +1,139 @@
+\documentclass[10pt]{article}
+\usepackage[margin=0.86in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newcommand{\tr}{\operatorname{tr}}
+
+\title{A scalar counterexample to the signed polynomial\\
+mean-value trace conjecture}
+\author{Run \texttt{fa\_banach\_001} --- \texttt{agent\_lane\_11}}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.} Candidate full counterexample; likely valid subject
+to human review. It disproves the polynomial half of the signed mean-value
+trace conjecture of Paulin, Mackey, and Tropp~\cite{source,published}.
+
+\section{The conjecture}
+
+For a Hermitian matrix $X$, write $X_+=\max\{X,0\}$ and
+$X_-=\max\{-X,0\}$ by functional calculus. The polynomial assertion in
+Conjecture~7.3 of the source says that, for all Hermitian $A,B,C$, every
+positive integer $q$, and every $s>0$,
+\begin{align}
+ \tr\!\left[C(A^q-B^q)\right]
+ \leq \frac q2\tr\!\Big[&
+ \big(s(A-B)_+^2+s^{-1}C_+^2\big)|A|^{q-1}\notag\\[-2mm]
+ &+\big(s(A-B)_-^2+s^{-1}C_-^2\big)|B|^{q-1}\Big].
+ \label{eq:conjecture}
+\end{align}
+The technical report omits the trace symbol on the second right side, a
+typographical issue corrected in the published restatement~\cite{published}.
+The distinction disappears for the scalar counterexample below.
+
+\begin{center}
+\includegraphics[width=0.98\textwidth]{figures/source_conjecture_crop.png}
+\end{center}
+
+\section{An invertible odd-power counterexample}
+
+\begin{theorem}\label{thm:counterexample}
+Inequality~\eqref{eq:conjecture} is false already in dimension one, with the
+odd exponent $q=3$. In particular, take
+\[
+ A=\frac1{100},\qquad B=-1,\qquad C=1,\qquad s=1.
+\]
+All three scalar matrices are invertible. The conjectured left side equals
+$1000001/1000000$, while the right side equals $60603/200000000$.
+\end{theorem}
+
+\begin{proof}
+Since $A-B=101/100>0$ and $C=1>0$,
+\[
+ (A-B)_+=\frac{101}{100},\quad (A-B)_-=0,
+ \quad C_+=1,\quad C_-=0.
+\]
+The left side of~\eqref{eq:conjecture} is
+\[
+ C(A^3-B^3)=\frac1{100^3}-(-1)^3
+ =\frac{1000001}{1000000}.
+\]
+Only the $|A|^2$ term survives on the right, so that side is
+\[
+ \frac32\left[\left(\frac{101^2}{100^2}+1\right)\frac1{100^2}\right]
+ =\frac{60603}{200000000}.
+\]
+Hence the asserted inequality would require
+$1.000001\leq0.000303015$, which is false.
+\end{proof}
+
+The failure is strict by more than three orders of magnitude. Continuity of
+both sides shows that it persists on an open neighborhood of this data; it is
+not caused by a zero eigenvalue or an endpoint convention. The choice $q=3$
+also lies in the odd-power family $q=2p-1$ used in matrix moment arguments.
+
+\section{Failure for every power above one}
+
+The same sign-allocation problem yields a uniform family.
+
+\begin{proposition}\label{prop:allq}
+For every integer $q\geq2$, inequality~\eqref{eq:conjecture} has a scalar
+counterexample. Take
+\[
+ A=0,\qquad B=-1,\qquad C=(-1)^{q+1},\qquad s=q.
+\]
+The left side is $1$. The right side is $0$ when $q$ is odd and $1/2$ when
+$q$ is even.
+\end{proposition}
+
+\begin{proof}
+Here $A-B=1$, so $(A-B)_+=1$ and $(A-B)_-=0$, while
+\[
+ C(A^q-B^q)=(-1)^{q+1}\big(-(-1)^q\big)=1.
+\]
+Because $q-1\geq1$, the entire first summand on the right of
+\eqref{eq:conjecture} vanishes after multiplication by $|A|^{q-1}=0$.
+If $q$ is odd, then $C=1$ and the second summand also vanishes. If $q$ is
+even, then $C=-1$, so the second summand is
+$s^{-1}C_-^2|B|^{q-1}=1/q$; multiplication by $q/2$ gives $1/2$.
+Both cases contradict the conjectured bound.
+\end{proof}
+
+\section{Scope and verification}
+
+Conjecture~7.3 asserts both an exponential inequality and the polynomial
+inequality~\eqref{eq:conjecture}. Theorem~\ref{thm:counterexample} gives a
+complete negative answer to the polynomial assertion and therefore disproves
+the conjunction as stated. It makes no claim about the separate exponential
+inequality. Nor does it conflict with the useful \emph{unsigned} polynomial
+mean-value trace inequality proved elsewhere in the source, whose symmetric
+right side avoids this sign-allocation obstruction.
+
+The included exact-arithmetic script verifies the displayed fractions and the
+family in Proposition~\ref{prop:allq}. A bounded search on 13 August 2026 used
+the exact conjecture name and formula. It found the source, the 2016 published
+restatement, and later unsigned variants, but no earlier proof or disproof of
+the signed polynomial assertion. The novelty verdict is therefore
+\emph{apparently new within the bounded search}, not exhaustive.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+D. Paulin, L. Mackey, and J. A. Tropp,
+\emph{Deriving matrix concentration inequalities from kernel couplings},
+arXiv:1305.0612, Conjecture~7.3, p.~17 (2013).
+
+\bibitem{published}
+D. Paulin, L. Mackey, and J. A. Tropp,
+\emph{Efron--Stein inequalities for random matrices},
+Ann. Probab. \textbf{44} (2016), no.~5, 3431--3473,
+Conjecture~13.4; arXiv:1408.3470.
+\end{thebibliography}
+
+\end{document}

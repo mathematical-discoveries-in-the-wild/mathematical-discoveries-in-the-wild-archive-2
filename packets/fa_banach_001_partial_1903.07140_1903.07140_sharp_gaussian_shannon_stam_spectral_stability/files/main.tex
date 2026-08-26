@@ -1,0 +1,219 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.9in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newcommand{\D}{\mathrm D}
+\newcommand{\Cov}{\operatorname{Cov}}
+
+\title{Sharp all-eigenvalue Shannon--Stam stability\\
+for Gaussian covariance pairs}
+\author{Candidate partial-result packet}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+Candidate substantial partial result; likely valid; human review recommended.
+The Poincar\'e-exponent question for arbitrary log-concave inputs remains open
+here.
+
+\section{Source question}
+
+Eldan and Mikulincer prove a Shannon--Stam stability estimate for centered
+log-concave vectors whose constant deteriorates cubically in a normalized
+Poincar\'e parameter~\cite{EM}.  They ask whether the cubic general bound or
+the quadratic uniformly log-concave bound is tight.  They also suggest that
+the minimum-eigenvalue/Poincar\'e factor should be replaced by a quantity
+using all covariance eigenvalues.  The exact source passage (PDF page~4) is
+reproduced below.
+
+\begin{center}
+\includegraphics[width=0.90\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The result below completely answers the covariance part on the subclass of
+all centered Gaussian pairs.  It shows, in particular, that arbitrarily
+ill-conditioned Gaussians cannot force either Poincar\'e exponent.
+
+\section{Proof idea}
+
+Let the average covariance be $C$.  A common whitening sends the two
+covariances to $I+A$ and $I-A$.  Since these matrices are polynomials in one
+symmetric matrix, every quantity diagonalizes in the eigenbasis of $A$.
+The deficit and the total relative entropy become sums of elementary scalar
+logarithmic expressions.
+
+For $\lambda\leq 1/2$, put $c=1-2\lambda$.  The lower estimate is exactly the
+concavity inequality
+\[
+ \log(1-ca)\geq c\log(1-a),
+ \qquad 1-ca=c(1-a)+(1-c)\cdot1.
+\]
+The upper estimate follows because
+$\log(1-ca)+c\log(1+a)$ has its maximum at $a=0$.  Swapping the inputs proves
+the other half of the parameter range.  No spectral estimate or Poincar\'e
+inequality is used.
+
+\section{Exact formula and sharp stability}
+
+For a positive definite matrix $C$, write $G_C$ for the centered Gaussian
+with covariance $C$.  The Shannon--Stam deficit is
+\[
+ \delta_{\lambda}(X,Y)
+ =\lambda\D(X\|G_C)+(1-\lambda)\D(Y\|G_C)
+ -\D\bigl(\sqrt\lambda X+\sqrt{1-\lambda}Y\,\|G_C\bigr).
+\]
+The right side is independent of the chosen centered Gaussian reference,
+because its constant and quadratic terms cancel; it is therefore the same
+deficit as in the source.
+
+\begin{theorem}[sharp Gaussian spectral stability]\label{thm:main}
+Let $X$ and $Y$ be independent centered Gaussian vectors in $\mathbb R^d$
+with positive definite covariance matrices $\Sigma_X$ and $\Sigma_Y$.  Set
+\[
+ C=\frac{\Sigma_X+\Sigma_Y}{2},\qquad
+ A=\frac12 C^{-1/2}(\Sigma_X-\Sigma_Y)C^{-1/2},
+\]
+and let $a_1,\ldots,a_d\in(-1,1)$ be the eigenvalues of $A$.  For every
+$0<\lambda<1$,
+\begin{align}
+ \delta_\lambda(X,Y)
+ &=\frac12\sum_{i=1}^d\bigl[
+ \log(1+(2\lambda-1)a_i)-\lambda\log(1+a_i)
+ -(1-\lambda)\log(1-a_i)\bigr],\label{eq:deficit}\\
+ \D(X\|G_C)+\D(Y\|G_C)
+ &=\frac12\sum_{i=1}^d-\log(1-a_i^2).\label{eq:entropy}
+\end{align}
+Moreover,
+\begin{align}
+ \min\{\lambda,1-\lambda\}
+ [\D(X\|G_C)+\D(Y\|G_C)]
+ &\leq \delta_\lambda(X,Y)\label{eq:lower}\\
+ &\leq \max\{\lambda,1-\lambda\}
+ [\D(X\|G_C)+\D(Y\|G_C)].\label{eq:upper}
+\end{align}
+Both constants are optimal, already in dimension one.  At $\lambda=1/2$
+there is the identity
+\[
+ \delta_{1/2}(X,Y)
+ =\frac12[\D(X\|G_C)+\D(Y\|G_C)]
+\]
+for every such covariance pair.
+\end{theorem}
+
+\begin{proof}
+Apply the common invertible map $C^{-1/2}$.  This leaves the entropy deficit
+unchanged and sends the covariances to $I+A$ and $I-A$.  The covariance of
+$\sqrt\lambda X+\sqrt{1-\lambda}Y$ becomes
+$I+(2\lambda-1)A$.
+
+For centered Gaussians,
+\[
+ \D(G_\Sigma\|G_I)
+ =\frac12\{\operatorname{tr}\Sigma-d-\log\det\Sigma\}.
+\]
+The trace terms cancel in the deficit.  Diagonalizing $A$ gives
+\eqref{eq:deficit}.  Adding the two input entropies also cancels the trace
+terms and gives
+\[
+ -\frac12\log\det((I+A)(I-A))
+ =\frac12\sum_i-\log(1-a_i^2),
+\]
+which is \eqref{eq:entropy}.
+
+It remains to prove a scalar statement.  Define
+\begin{align*}
+ f_\lambda(a)&=\log(1+(2\lambda-1)a)
+ -\lambda\log(1+a)-(1-\lambda)\log(1-a),\\
+ d(a)&=-\log(1-a^2).
+\end{align*}
+Suppose first that $0<\lambda\leq1/2$ and put $c=1-2\lambda\in[0,1)$.
+Then
+\[
+ f_\lambda(a)-\lambda d(a)
+ =\log(1-ca)-c\log(1-a)\geq0
+\]
+by concavity of the logarithm and
+$1-ca=c(1-a)+(1-c)\cdot1$.  On the other hand,
+\[
+ f_\lambda(a)-(1-\lambda)d(a)
+ =h_c(a):=\log(1-ca)+c\log(1+a).
+\]
+Here
+\[
+ h_c'(a)=\frac{-c(1+c)a}{(1-ca)(1+a)},
+\]
+so $h_c$ attains its maximum $h_c(0)=0$ at zero.  Hence
+$\lambda d(a)\leq f_\lambda(a)\leq(1-\lambda)d(a)$.
+For $\lambda\geq1/2$, use
+$f_\lambda(a)=f_{1-\lambda}(-a)$ and $d(-a)=d(a)$.  Summing the scalar
+inequalities proves \eqref{eq:lower}--\eqref{eq:upper}.
+
+If $\lambda<1/2$, the ratio $f_\lambda(a)/d(a)$ tends to $\lambda$ as
+$a\downarrow-1$ and to $1-\lambda$ as $a\uparrow1$.  The limits are reversed
+when $\lambda>1/2$.  Thus both constants are sharp in dimension one.  When
+$\lambda=1/2$, the scalar lower and upper bounds coincide, proving the stated
+identity.
+\end{proof}
+
+\begin{corollary}[source normalization]
+If $\Sigma_X+\Sigma_Y=2I$, then $C=I$ and Theorem~\ref{thm:main} uses exactly
+the source's standard Gaussian $G$.  In particular,
+\[
+ \delta_{EPI,\lambda}(X,Y)\geq
+ \min\{\lambda,1-\lambda\}\,[\D(X\|G)+\D(Y\|G)],
+\]
+uniformly in the dimension, the smallest covariance eigenvalue, and the
+Gaussian Poincar\'e constants.
+\end{corollary}
+
+\section{Scope and obstruction to a full upgrade}
+
+The theorem treats every positive definite Gaussian covariance pair, not
+only commuting covariances assumed in advance: after average whitening they
+automatically have the form $I\pm A$.  Equations~\eqref{eq:deficit} and
+\eqref{eq:entropy} use every eigenvalue and remain sharp as one eigenvalue
+tends to degeneracy.
+
+For non-Gaussian inputs, entropy bookkeeping separates the deficit into the
+Gaussian covariance deficit plus
+\[
+ \lambda\D(X\|G_X)+(1-\lambda)\D(Y\|G_Y)-\D(Z\|G_Z),
+\]
+where each $G_\bullet$ matches the covariance of its variable and
+$Z=\sqrt\lambda X+\sqrt{1-\lambda}Y$.  This residual has no suitable sign
+from ordinary convolution data processing when the input covariances differ.
+Eight focused routes---including perturbation, heat flow, same-law
+polarization, anisotropic preconditioning, and product extremizers---all
+return to control of this nonlinear two-law interaction.  They are documented
+in the associated attempt note.
+
+A bounded novelty search on 11 August 2026 used the exact arXiv identifier and
+question, Gaussian Shannon--Stam covariance stability, log-determinant
+formulas, Poincar\'e-exponent phrases, and later equality/stability work.  It
+found the source and adjacent qualitative or regularized results, but no exact
+match for Theorem~\ref{thm:main} and no later resolution of the general
+exponent question.  Because the Gaussian argument is elementary and may be
+implicit in matrix-entropy literature, novelty confidence is moderate.
+
+\paragraph{Human-review recommendation.}
+Audit the reference-Gaussian cancellation and the two scalar logarithmic
+inequalities.  These are the only substantive steps.  Also check whether the
+sharp two-sided Gaussian formula is already recorded under a different
+log-determinant Jensen-gap terminology.
+
+\begin{thebibliography}{9}
+\bibitem{EM}
+R.~Eldan and D.~Mikulincer,
+\emph{Stability of the Shannon--Stam inequality via the F\"ollmer process},
+ALEA Lat. Am. J. Probab. Math. Stat. \textbf{17} (2020), 487--507;
+arXiv:1903.07140.
+\end{thebibliography}
+
+\end{document}

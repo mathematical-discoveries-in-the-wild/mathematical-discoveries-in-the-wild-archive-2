@@ -1,0 +1,444 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Sym}{\operatorname{Sym}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\Pos}{\mathcal P}
+\newcommand{\M}{\mathcal M}
+\newcommand{\Hess}{\mathrm D^2}
+\newcommand{\Conv}{\operatorname{CONV}}
+\newcommand{\Loc}{\operatorname{LOC}}
+
+\title{A Hessian--measure convexity index for nonsmooth functions\\
+\large Full extension of the future problem in arXiv:1802.09630}
+\author{Candidate solution packet --- agent\_lane\_07}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.9\linewidth}{\textbf{Status.}
+Candidate full solution, likely valid, pending expert review.  The theorem
+extends the source's Hessian/nuclear-norm index to nonsmooth functions with a
+finite matrix-valued distributional Hessian, including the stated
+\(\min/\max\) limits.}}
+\end{center}
+
+\section{Source problem}
+
+Davydov, Moldavskaya, and Zitikis~\cite{DMZ} define, for
+\(h\in C^2(G)\), a global convexity index
+\[
+ \Conv(h;G)=
+ \frac{\int_G\tr(H_h(x))_+\,dx}
+      {\int_G\|H_h(x)\|_*\,dx},
+\]
+where \(H_h\) is the Hessian, \(A_+\) is the spectral positive part of a
+symmetric matrix, and \(\|\cdot\|_*\) is the nuclear norm.  Their Theorem~3.1
+identifies \(\tr(A_-)\) with the nuclear distance from \(A\) to the positive
+semidefinite cone.  On page 15, Section~5, they ask for a modification that
+accommodates functions without second partial derivatives, specifically the
+limits
+\[
+ \min\{g(x),g(y)\},\qquad \max\{g(x),g(y)\}
+\]
+of their power means as \(\beta\to-\infty\) and \(\beta\to+\infty\).
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.98\linewidth]{figures/open_problem_crop.png}
+  \caption{The future problem in the source paper, page 15, Section 5.}
+\end{figure}
+
+\section{Idea of the proof}
+
+The ordinary Hessian is replaced by the distributional Hessian
+\(M=\Hess h\), a symmetric matrix-valued Radon measure.  Write a polar density
+\(M=A\rho\) against any positive control measure and take the spectral parts
+\(A_+\) and \(A_-\) pointwise.  This produces canonical positive-semidefinite
+matrix measures \(M^+=A_+\rho\) and \(M^-=A_-\rho\).  Integrating the source
+paper's finite-dimensional matrix theorem proves that \(M^-\) is exactly the
+nuclear-total-variation distance from \(M\) to the cone of positive
+semidefinite matrix measures.
+
+For a maximum or minimum of two smooth branches, the BV chain rule makes the
+new feature explicit.  In addition to the ordinary Hessians on the two smooth
+regions, the switching hypersurface carries a rank-one measure
+\[
+ \pm |\nabla(u-v)|\,n\otimes n\,\mathcal H^{d-1}.
+\]
+The sign is positive for \(\max\) and negative for \(\min\).  Thus the ridge
+has local index one for a maximum and zero for a minimum.  Finally, the
+rank-one term is recovered as the concentration limit of the Hessians of the
+smooth power means, so the new index is the actual \(\beta\to\pm\infty\)
+limit of the source's indices.
+
+\section{The measure-valued index}
+
+Let \(G\subset\mathbb R^d\) be open.  Denote by
+\(\M(G;\Sym_d)\) the finite symmetric matrix-valued Radon measures.  Its
+nuclear total-variation norm is
+\[
+ \|M\|_{*,\M}
+ :=\sup\left\{\int_G \Phi:dM:
+ \Phi\in C_c(G;\Sym_d),\ \sup_G\|\Phi\|_{\mathrm{op}}\le1\right\}.
+\]
+If \(M=A\rho\) for a positive control measure \(\rho\), then
+\(\|M\|_{*,\M}=\int_G\|A(x)\|_*\,d\rho(x)\).  This is the \(p=1\)
+Hessian--Schatten variation used in the modern nonsmooth framework
+of~\cite{ACU}; see also the standard polar decomposition of vector measures
+in~\cite{AFP}.
+
+Let \(\Pos(G)\) be the cone of positive-semidefinite matrix measures: a
+measure \(P\) belongs to \(\Pos(G)\) when \(z^TPz\) is a positive scalar
+measure for every \(z\in\mathbb R^d\).
+
+\begin{theorem}[Measure-cone projection and nonsmooth convexity index]
+\label{thm:measure}
+Let \(M\in\M(G;\Sym_d)\).  Choose a positive measure \(\rho\) with
+\(M=A\rho\), and define
+\[
+ M^+=A_+\rho,\qquad M^-=A_-\rho.
+\]
+These measures do not depend on the choice of \(\rho\), and
+\[
+ M=M^+-M^-,\qquad
+ \|M\|_{*,\M}=\tr M^+(G)+\tr M^-(G).                 \tag{3.1}
+\]
+Moreover,
+\[
+ \boxed{\quad
+ \inf_{P\in\Pos(G)}\|M-P\|_{*,\M}
+   =\|M^-\|_{*,\M}=\tr M^-(G).
+ \quad}                                               \tag{3.2}
+\]
+
+Consequently, if \(h\in W^{1,1}_{\rm loc}(G)\) and
+\(\Hess h\in\M(G;\Sym_d)\), define
+\[
+ \Loc_{\M}(h;G)=\tr(\Hess h)^-(G),\qquad
+ \Conv_{\M}(h;G)=
+ \frac{\tr(\Hess h)^+(G)}
+ {\tr(\Hess h)^+(G)+\tr(\Hess h)^-(G)}.             \tag{3.3}
+\]
+When the denominator vanishes, \(h\) is affine on each connected component;
+we set \(\Conv_{\M}=1\).  Then:
+\begin{enumerate}
+\item \(\Conv_{\M}(h;G)\in[0,1]\);
+\item \(\Conv_{\M}(h;G)=1\) if and only if \(h\) has a convex
+representative on convex \(G\);
+\item \(\Conv_{\M}(h;G)=0\) if and only if \(h\) has a concave
+representative and is not affine;
+\item if \(h\in W^{2,1}(G)\), formula (3.3) is exactly the source's global
+index, with \(\Hess h=H_h(x)\,dx\).
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Changing the control measure multiplies the density by a nonnegative scalar,
+and spectral positive and negative parts are positively homogeneous.  Hence
+\(M^\pm\) are intrinsic.  The identities in (3.1) follow pointwise from
+\(A=A_+-A_-\) and
+\(\|A\|_*=\tr A_++\tr A_-\).
+
+Fix \(P\in\Pos(G)\), and dominate both \(M\) and \(P\) by
+\(\sigma=|M|_*+\tr P\).  Write \(M=B\sigma\) and \(P=C\sigma\).  Then
+\(C(x)\succeq0\) for \(\sigma\)-almost every \(x\).  The source paper's
+finite-dimensional theorem, applied pointwise, yields
+\[
+ \|B(x)-C(x)\|_*\ge \tr B_-(x).
+\]
+After integration,
+\[
+ \|M-P\|_{*,\M}\ge\int_G\tr B_-\,d\sigma
+ =\tr M^-(G).
+\]
+Equality is attained by \(P=M^+\), because \(M-M^+=-M^-\).  This proves
+(3.2) and (3.3).
+
+For the calibration statement, the classical distributional characterization
+says that a locally integrable function on a convex open set is convex exactly
+when its distributional Hessian is positive semidefinite.  One quick proof is
+to mollify: a positive-semidefinite distributional Hessian gives convex smooth
+mollifications on interior subdomains, and their local \(L^1\) limit has a
+convex representative.  The converse follows by restricting a convex
+function to lines and taking nonnegative second directional derivatives.
+Thus \((\Hess h)^-=0\) is equivalent to convexity.  Applying the same argument
+to \(-h\) proves the concave statement.  The \(W^{2,1}\) specialization is
+immediate from the absolutely continuous density \(H_h(x)\).
+\end{proof}
+
+The pointwise index also has a precise measure analogue.  With
+\[
+ \kappa_h=\tr(\Hess h)^++\tr(\Hess h)^-,
+\]
+set
+\[
+ \Conv_{\M}(h,x)=
+ \frac{d\,\tr(\Hess h)^+}{d\kappa_h}(x)
+ \quad\text{for }\kappa_h\text{-a.e. }x.             \tag{3.4}
+\]
+At Lebesgue points of a classical Hessian this is the source's eigenvalue
+ratio.  Formula (3.4) remains meaningful on singular ridges, where Lebesgue
+measure sees nothing.
+
+\section{Exact formulas for maxima and minima}
+
+\begin{theorem}[Switching-interface formula]
+\label{thm:switch}
+Let \(u,v\in C^2\) on a neighborhood of \(\overline G\), put
+\(\phi=u-v\), and suppose \(0\) is a regular value of \(\phi\).  Let
+\[
+ \Sigma=G\cap\{u=v\},\qquad n=\frac{\nabla\phi}{{|\nabla\phi|}}.
+\]
+Then, as symmetric matrix-valued measures,
+\begin{align}
+ \Hess\max\{u,v\}
+ &=\mathbf1_{\{u>v\}}\Hess u\,dx
+   +\mathbf1_{\{v>u\}}\Hess v\,dx
+   +|\nabla\phi|\,n\otimes n\,\mathcal H^{d-1}\!\restriction\Sigma,
+                                                               \tag{4.1}\\
+ \Hess\min\{u,v\}
+ &=\mathbf1_{\{u<v\}}\Hess u\,dx
+   +\mathbf1_{\{v<u\}}\Hess v\,dx
+   -|\nabla\phi|\,n\otimes n\,\mathcal H^{d-1}\!\restriction\Sigma.
+                                                               \tag{4.2}
+\end{align}
+The singular term has nuclear mass
+\[
+ J_\Sigma=\int_\Sigma|\nabla(u-v)|\,d\mathcal H^{d-1}.          \tag{4.3}
+\]
+It contributes \(J_\Sigma\) entirely to the positive curvature mass of the
+maximum and entirely to the negative curvature mass of the minimum.
+Consequently (3.3) gives explicit indices by adding (4.3) to the appropriate
+bulk spectral mass.
+\end{theorem}
+
+\begin{proof}
+Since \(\max\{u,v\}=v+\phi_+\), the BV chain rule and the Gauss--Green
+formula give
+\[
+ \nabla\max\{u,v\}=\nabla v+\mathbf1_{\{\phi>0\}}\nabla\phi
+\]
+and
+\[
+ D\mathbf1_{\{\phi>0\}}
+ =\frac{\nabla\phi}{|\nabla\phi|}\,
+   \mathcal H^{d-1}\!\restriction\Sigma.
+\]
+Differentiating once more produces (4.1), because
+\(\nabla\phi\otimes\nabla\phi/|\nabla\phi|
+=|\nabla\phi|n\otimes n\).  The minimum identity follows either in the same
+way or from \(\min\{u,v\}=u+v-\max\{u,v\}\).  The rank-one matrix
+\(n\otimes n\) is positive semidefinite and has nuclear norm one, proving
+(4.3) and the sign assertions.
+\end{proof}
+
+The regular-value assumption is a transparent generic hypothesis.  The same
+formula holds whenever the switching set is countably rectifiable and its
+critical part has \(\mathcal H^{d-1}\)-measure zero, which covers isolated
+critical crossings by approximation.
+
+\begin{corollary}[Closed one-dimensional branch formulas]
+\label{cor:branch}
+Let \(I=(a,b)\), let \(g\in C^2(I)\) be strictly monotone with \(g'\ne0\), and
+set \(Q=I^2\).  Define
+\[
+ J=2\int_a^b|g'(t)|\,dt,
+\]
+and
+\[
+ W_{\max}(t)=
+ \begin{cases}t-a,&g\text{ increasing},\\ b-t,&g\text{ decreasing},\end{cases}
+ \qquad
+ W_{\min}(t)=b-a-W_{\max}(t).
+\]
+For \(h_{\max}(x,y)=\max\{g(x),g(y)\}\), its positive and negative masses are
+\begin{align*}
+ P_{\max}&=2\int_a^b W_{\max}(t)(g''(t))_+\,dt+J,\\
+ N_{\max}&=2\int_a^b W_{\max}(t)(g''(t))_-\,dt.
+\end{align*}
+For \(h_{\min}(x,y)=\min\{g(x),g(y)\}\), they are
+\begin{align*}
+ P_{\min}&=2\int_a^b W_{\min}(t)(g''(t))_+\,dt,\\
+ N_{\min}&=2\int_a^b W_{\min}(t)(g''(t))_-\,dt+J.
+\end{align*}
+In both cases \(\Conv_{\M}=P/(P+N)\).
+\end{corollary}
+
+\begin{proof}
+Strict monotonicity makes \(\Sigma\) the diagonal.  Along it,
+\(|\nabla(g(x)-g(y))|=\sqrt2|g'(t)|\) and
+\(d\mathcal H^1=\sqrt2\,dt\), yielding \(J\).  Integrating the selected
+diagonal Hessian \(\operatorname{diag}(g''(x),0)\) or
+\(\operatorname{diag}(0,g''(y))\) over the two triangles gives the weights
+shown above.
+\end{proof}
+
+\section{Recovery as the smooth power-mean limit}
+
+\begin{theorem}[No large-\(|\beta|\) surrogate is needed]
+\label{thm:limit}
+Assume the hypotheses of Theorem~\ref{thm:switch}, with \(u,v\ge m>0\), and
+assume \(\mathcal H^{d-1}(\Sigma\cap\partial G)=0\).  For \(\beta\ne0\), put
+\[
+ h_\beta=\left(\frac{u^\beta+v^\beta}{2}\right)^{1/\beta}.
+\]
+Then on \(G\), in the weak-star sense of matrix measures and strictly in
+nuclear total variation,
+\begin{align*}
+ \Hess h_\beta\,dx&\longrightarrow \Hess\max\{u,v\}
+     &&(\beta\to+\infty),\\
+ \Hess h_\beta\,dx&\longrightarrow \Hess\min\{u,v\}
+     &&(\beta\to-\infty).
+\end{align*}
+The positive and negative spectral masses converge separately.  Hence,
+whenever the limiting denominator is nonzero,
+\[
+ \Conv(h_\beta;G)\longrightarrow
+ \begin{cases}
+ \Conv_{\M}(\max\{u,v\};G),&\beta\to+\infty,\\
+ \Conv_{\M}(\min\{u,v\};G),&\beta\to-\infty.
+ \end{cases}                                             \tag{5.1}
+\]
+\end{theorem}
+
+\begin{proof}
+Write \(a=\log u\), \(b=\log v\), and
+\[
+ p_\beta=\frac{e^{\beta a}}{e^{\beta a}+e^{\beta b}},\qquad
+ m_\beta=p_\beta\nabla a+(1-p_\beta)\nabla b.
+\]
+A direct differentiation gives
+\begin{align}
+ \Hess h_\beta
+ =h_\beta\bigl[&m_\beta\otimes m_\beta
+ +p_\beta\Hess a+(1-p_\beta)\Hess b\notag\\
+ &+\beta p_\beta(1-p_\beta)
+ (\nabla a-\nabla b)\otimes(\nabla a-\nabla b)\bigr].    \tag{5.2}
+\end{align}
+Away from \(\Sigma\), the first line converges to the Hessian of the selected
+branch.  In the second line,
+\(\beta p_\beta(1-p_\beta)\) is the derivative of the logistic function in
+the normal variable \(a-b\), with integral one.  The coarea formula therefore
+gives, for \(\beta\to+\infty\),
+\[
+ \beta h_\beta p_\beta(1-p_\beta)
+ (\nabla a-\nabla b)^{\otimes2}\,dx
+ \stackrel{*}{\rightharpoonup}
+ |\nabla(u-v)|n\otimes n\,
+ \mathcal H^{d-1}\!\restriction\Sigma.
+\]
+Indeed, on \(\Sigma\), where \(u=v=s\), one has
+\(s|\nabla(a-b)|=|\nabla(u-v)|\).  For \(\beta\to-\infty\) the same logistic
+layer has negative sign and selects the minimum.
+
+To obtain strict nuclear convergence, split \(G\) into a thin tubular
+neighborhood of \(\Sigma\) and its complement.  On the complement, dominated
+convergence applies to (5.2).  In the tube, the first line is uniformly
+bounded, while the rank-one last line has the indicated sign and its nuclear
+mass converges by coarea to (4.3).  The integral of the bounded term over the
+tube vanishes with its width.  This proves convergence of total nuclear mass.
+For symmetric matrices,
+\[
+ \tr A_+=\tfrac12(\|A\|_*+\tr A),\qquad
+ \tr A_-=\tfrac12(\|A\|_*-\tr A),
+\]
+so nuclear convergence together with weak convergence of the trace measures
+gives separate convergence of the positive and negative masses.  Formula
+(5.1) follows.
+\end{proof}
+
+\section{The source paper's concrete function}
+
+For
+\[
+ g(t)=\tfrac12(1-t)^2+0.01t^{1/4},
+\]
+one has
+\[
+ g'(t)=t-1+0.0025t^{-3/4},\qquad
+ g''(t)=1-0.001875t^{-7/4}.
+\]
+On \(I=[0.1,0.9]\), \(g\) is strictly decreasing and strictly convex.
+Corollary~\ref{cor:branch} gives
+\[
+ J=0.7917667515752844,qquad
+ P_{\min}=2\int_{0.1}^{0.9}(t-0.1)g''(t)\,dt
+ =0.6360956571149691,
+\]
+and therefore
+\[
+ \boxed{\Conv_{\M}(\min\{g(x),g(y)\};I^2)
+ =0.4454880619053803.}
+\]
+The maximum is convex on this square, so its index is exactly one.  A midpoint
+quadrature of the classical Hessian on an \(800\times800\) grid gives
+\(0.4462763224\) at \(\beta=-100\) and \(1.0000000000\) at \(\beta=100\),
+consistent with Theorem~\ref{thm:limit}.  The reproducible checker is
+\texttt{code/verify\_formulas.py}.
+
+The source's \(g\) is not globally monotone: it has two critical points, and
+\(g''\) is singular at the endpoint zero.  The general switching formula
+(4.1)--(4.3) handles every regular diagonal or off-diagonal equality branch.
+On the full open unit square the Hessian measure is locally finite; global
+finite indices should be taken on compact interior subdomains (as the source
+does for its expanding squares) or defined by exhaustion when the limiting
+ratio exists.
+
+\section{Verification, novelty, and review focus}
+
+\paragraph{Checks.}
+The script tests the finite-dimensional distance inequality against 2,000
+random symmetric/PSD matrix pairs, verifies equality at the spectral positive
+part, evaluates the closed interface formula, and compares it with smooth
+power means.  These computations are sanity checks, not ingredients of the
+proof.
+
+\paragraph{Bounded novelty search.}
+On 11 August 2026 we searched the exact source title and future-problem terms,
+as well as ``distributional Hessian matrix-valued measure distance positive
+semidefinite cone nuclear norm'', ``Hessian-Schatten total variation
+nonsmooth convexity'', and close variants.  We found the later
+Hessian--Schatten framework of Aziznejad--Campos--Unser~\cite{ACU} and related
+2023--2024 work, but no paper stating the signed PSD-measure projection
+identity (3.2), the resulting convexity index, the \(\min/\max\) ridge formulas,
+or the power-mean index limit (5.1).  Novelty is therefore plausible, not
+certified.  The framework itself is known; the signed convexity construction
+and its application to the source problem are the candidate contribution.
+
+\paragraph{Human-review recommendation.}
+Promote for expert review as a candidate full solution.  The most important
+checks are: (i) the intrinsic spectral decomposition of a matrix measure;
+(ii) strict nuclear convergence in Theorem~\ref{thm:limit}, especially if the
+regular-value hypothesis is weakened; and (iii) treatment by exhaustion near
+the source function's endpoint singularity.  None of these affects the exact
+interior formulas under the stated hypotheses.
+
+\begin{thebibliography}{9}
+\bibitem{DMZ}
+Y. Davydov, E. Moldavskaya, and R. Zitikis,
+\emph{Searching for, and quantifying, non-convexity of functions},
+arXiv:1802.09630 (2018).
+
+\bibitem{ACU}
+S. Aziznejad, J. Campos, and M. Unser,
+\emph{Measuring complexity of learning schemes using Hessian--Schatten total
+variation}, arXiv:2112.06209; SIAM J. Math. Data Sci. 5 (2023), 422--445.
+
+\bibitem{AFP}
+L. Ambrosio, N. Fusco, and D. Pallara,
+\emph{Functions of Bounded Variation and Free Discontinuity Problems},
+Oxford Mathematical Monographs, 2000.
+\end{thebibliography}
+
+\end{document}

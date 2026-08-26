@@ -1,0 +1,234 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\B}{\mathcal B}
+\newcommand{\Q}{\mathcal Q}
+\newcommand{\Kc}{\mathcal K}
+\newcommand{\Ad}{\operatorname{Ad}}
+
+\title{A singularizing random-unitary channel whose Cesaro averages diverge\\
+\large Counterexample to a mean-ergodic extension suggested in arXiv:2605.24923}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 5}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Candidate counterexample, likely valid, requiring expert human review. It
+disproves the universal Cesaro-convergence analogue for singularizing
+channels and gives an explicit non-quasi-compact example.}}
+\end{center}
+
+\section{Source direction and precise scope}
+
+Dzhenzher studies random-unitary channels defined by Pettis averaging on
+possibly nonseparable Hilbert spaces \cite{Dzhenzher}. The conclusion asks for
+analogues of strong Cesaro convergence for singularizing channels and points
+to quasi-compactness as a possible route.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{The concluding singularizing-channel direction in
+  \cite[p.~13]{Dzhenzher}.}
+\end{figure}
+
+The source statement is exploratory rather than a numbered yes/no question.
+We answer its universal reading:
+\begin{quote}
+Must the Cesaro averages of a countable-additivity preserving singularizing
+random-unitary channel converge in strong operator topology? Is such a channel
+necessarily quasi-compact in the measurable-cardinal setting?
+\end{quote}
+Both answers are negative. The construction uses exactly the source's standing
+hypothesis that a cardinal carries an atomless countably additive probability
+measure on all of its subsets.
+
+\section{Definitions}
+
+For a Hilbert space $\mathcal H$, a state is a norm-one positive functional on
+$\B(\mathcal H)$. A state is \emph{singular} when it vanishes on
+$\Kc(\mathcal H)$, the compact operators. A channel $\Q$ is
+\emph{singularizing} when $\Q\rho$ is singular for every state $\rho$.
+
+For a group representation $\pi:G\to\mathcal U(\mathcal H)$ and a
+countably additive probability $\nu$ on $2^G$, the source's random-unitary
+channel is
+\[
+ \Q_{\nu,\pi}\rho=\int_G \pi(g)\rho\pi(g)^*\,d\nu(g),
+\]
+where conjugation of a functional is understood by duality. The channel acts
+linearly and contractively on $\B(\mathcal H)^*$. Strong operator convergence
+of channels therefore means pointwise norm convergence on this dual Banach
+space.
+
+\section{Proof intuition}
+
+Use two tensor coordinates for two independent jobs. Atomless averaging of
+translations in the first coordinate singularizes every input: each vector
+matrix coefficient can see only countably many translations. In the second
+coordinate, apply one deterministic bilateral shift at every step. After $n$
+iterations the state is supported exactly on the $n$-th second-coordinate
+slice, regardless of what happened in the first coordinate. Thus the orbit
+states occupy mutually orthogonal corners. Averaging the first $N$ corners
+cannot approach averaging the first $2N$: a diagonal sign observable separates
+the two means by $1$ for every $N$.
+
+\section{Construction and proof}
+
+Let $K$ be an abelian group of cardinality $\kappa$ with identity $0$.
+Assume there is a countably additive probability
+\[
+ \mu:2^K\longrightarrow[0,1],\qquad \mu(\{j\})=0\quad(j\in K).
+\]
+This is the Ulam real-valued measurable-cardinal hypothesis used in the
+source. Put
+\[
+ \mathcal H_1=\ell_2(K),\qquad \mathcal H_2=\ell_2(\mathbb Z),\qquad
+ \mathcal H=\mathcal H_1\otimes\mathcal H_2.
+\]
+Write $(e_k)_{k\in K}$ and $(f_m)_{m\in\mathbb Z}$ for the canonical bases.
+Let $S_j e_k=e_{j+k}$ and let $Uf_m=f_{m+1}$.
+
+Take $G=K\times\mathbb Z$ and the unitary representation
+\[
+ \pi(j,m)=S_j\otimes U^m.
+\]
+Define a probability on all subsets of $G$ by
+\[
+ \nu(E)=\mu\bigl(\{j\in K:(j,1)\in E\}\bigr).
+\]
+It is countably additive and is supported on $K\times\{1\}$. The corresponding
+channel is
+\begin{equation}\label{eq:channel}
+ \Q\rho=\int_K (S_j\otimes U)\rho(S_j\otimes U)^*\,d\mu(j).
+\end{equation}
+By the source's preservation theorem, $\Q$ preserves countable additivity
+\cite{Dzhenzher}.
+
+\begin{lemma}\label{lem:singular}
+The channel $\Q$ is singularizing.
+\end{lemma}
+
+\begin{proof}
+Every vector of $\mathcal H\cong\ell_2(K\times\mathbb Z)$ has countable
+support. Hence, for fixed $x,v\in\mathcal H$, the set
+\[
+ E_{x,v}=\{j\in K:\langle v,(S_j\otimes U)x\rangle\neq0\}
+\]
+is countable: any such $j$ is a difference of first coordinates belonging to
+the two countable supports. Therefore $\mu(E_{x,v})=0$.
+
+Let $\rho$ be normal. A positive trace-class operator has a countable spectral
+decomposition, so $\rho=\sum_r a_r\rho_{x_r}$ with $a_r\geq0$ and
+$\sum_r a_r=1$. For every rank-one projection $P_v$, positivity and monotone
+convergence give
+\[
+ (\Q\rho)(P_v)
+ =\int_K\sum_r a_r|\langle v,(S_j\otimes U)x_r\rangle|^2\,d\mu(j)=0,
+\]
+because the integrand vanishes outside a countable union of countable sets.
+Thus $\Q\rho$ vanishes on the compact ideal.
+
+If $\rho$ is singular, then for every compact $A$ and every $j$,
+$(S_j\otimes U)^*A(S_j\otimes U)$ is compact, so each integrand in
+$(\Q\rho)(A)$ is zero. Finally, every state is a convex combination of a
+normal and a singular state by the normal/singular decomposition recalled in
+\cite{Dzhenzher}. Hence $\Q\rho$ is singular for every state $\rho$.
+\end{proof}
+
+\begin{theorem}\label{thm:main}
+The Cesaro averages
+\[
+ M_N=\frac1N\sum_{n=1}^N\Q^n
+\]
+do not converge in the strong operator topology on $\B(\mathcal H)^*$.
+Indeed, for a vector state $\rho_0$ and every $N\geq1$,
+\[
+ \|M_N\rho_0-M_{2N}\rho_0\|\geq1.
+\]
+Moreover, $\Q$ is not quasi-compact.
+\end{theorem}
+
+\begin{proof}
+Let $\rho_0=\rho_{e_0\otimes f_0}$ and put
+$\sigma_n=\Q^n\rho_0$. Every unitary appearing in the $n$-fold integral has
+second tensor coordinate $U^n$. Therefore, with
+\[
+ R_m=I_{\mathcal H_1}\otimes P_{f_m},
+\]
+we have
+\begin{equation}\label{eq:orthogonal}
+ \sigma_n(R_m)=\begin{cases}1,&m=n,\\0,&m\neq n.\end{cases}
+\end{equation}
+For $N\geq1$ define the self-adjoint contraction
+\[
+ D_N=\sum_{n=1}^N R_n-\sum_{n=N+1}^{2N}R_n.
+\]
+Equation~\eqref{eq:orthogonal} gives
+\[
+ (M_N\rho_0)(D_N)=1,
+ \qquad
+ (M_{2N}\rho_0)(D_N)=0.
+\]
+Since $\|D_N\|=1$, it follows that
+$\|M_N\rho_0-M_{2N}\rho_0\|\geq1$. The vector sequence
+$(M_N\rho_0)$ is not Cauchy, so $(M_N)$ cannot converge strongly.
+
+The same projections show that $\|\sigma_n-\sigma_m\|=2$ for $n\neq m$:
+test against $R_n-R_m$. Hence the power orbit of $\rho_0$ has no relatively
+norm-compact subsequence. A power-bounded quasi-compact operator has relatively
+norm-compact power orbits, by its standard finite-dimensional peripheral
+spectral decomposition \cite[Uniform ergodic theory]{DS}. Since $\Q$ is a
+contraction, it is power bounded, and therefore it cannot be quasi-compact.
+\end{proof}
+
+\section{Verification, scope, and novelty}
+
+The construction remains entirely inside the source's class: $\nu$ is a
+countably additive probability on a group, $\pi$ is unitary, and
+Equation~\eqref{eq:channel} is its Pettis random-unitary channel. The
+large-cardinal measure is not an extra unproved dependency; it is the stated
+hypothesis under which the source constructs its singularizing channels.
+
+The script \texttt{code/check\_cesaro\_gap.py} verifies with exact rational
+arithmetic, for $N=1,\ldots,100$, the scalar weight calculation behind the
+diagonal witness. It returns gap $1$ in every case. This is a finite sanity
+check, not a substitute for the proof.
+
+A bounded novelty search on 9 August 2026 covered the run registry and indexed
+web/arXiv searches for the source id and title, singularizing quantum channels,
+Cesaro nonconvergence, mean ergodicity, and quasi-compactness. It found the
+source paper and general finite-dimensional quantum ergodicity literature,
+but no prior result matching this construction or resolving the source's
+singularizing direction. Novelty confidence is moderate to high, but the
+packet should remain a candidate counterexample until expert review.
+
+The result rules out an unrestricted analogue. It does not preclude strong
+Cesaro convergence or quasi-compactness under additional tightness,
+compactness, or mixing assumptions.
+
+\begin{thebibliography}{9}
+
+\bibitem{Dzhenzher}
+S. V. Dzhenzher,
+\emph{Singularizing preserving countable additivity quantum channels on
+quantum measurable cardinals}, arXiv:2605.24923 (2026).
+
+\bibitem{DS}
+N. Dunford and J. T. Schwartz,
+\emph{Linear Operators, Part I: General Theory},
+Wiley-Interscience, 1958.
+
+\end{thebibliography}
+
+\end{document}

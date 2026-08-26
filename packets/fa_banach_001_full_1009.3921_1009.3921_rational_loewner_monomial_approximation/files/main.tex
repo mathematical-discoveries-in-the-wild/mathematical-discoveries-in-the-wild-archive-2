@@ -1,0 +1,322 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\Loe}{\mathcal L}
+\newcommand{\Pos}{(0,\infty)}
+
+\title{Rational L\"owner Approximation of Positive Monomials}
+\author{Automated Math Discovery Candidate Proof}
+\date{August 9, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Candidate full solution, likely valid pending expert review.  We prove a
+stronger multivariable theorem: every positive monomial of total exponent at
+most one is a compact-open limit of rational globally operator-monotone
+functions.}}
+\end{center}
+
+\section*{Source Question}
+
+Agler, McCarthy, and Young~\cite{AMY} prove that
+$(z^1z^2)^s$ is globally operator monotone on $\Pos^2$ for
+$0\leq s\leq \tfrac12$.  Immediately after that example they ask:
+
+\begin{quote}
+\emph{We do not know if $(z^1z^2)^s$ can be approximated by rational
+functions in the L\"owner class.}
+\end{quote}
+
+The question occurs on source page 49 (PDF page 49) in the final section of
+arXiv:1009.3921v3, immediately after Example~9.8 begins on page 48; in the
+source archive this is \texttt{glob.tex}, lines 247--290.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_context_crop.png}
+
+\medskip
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+We use the standard compact-open meaning of approximation.  Thus a sequence
+on $\Pos^d$ approximates a function if it converges uniformly on every compact
+subset.
+
+\section*{Definitions}
+
+Let $E\subset\R^d$ be open.  A real function $f$ on $E$ is
+\emph{globally operator monotone} if
+\[
+ S^r\leq T^r\quad(1\leq r\leq d)
+ \qquad\Longrightarrow\qquad f(S)\leq f(T)
+\]
+whenever $S$ and $T$ are commuting $d$-tuples of bounded self-adjoint
+operators with joint spectra in $E$.  The coordinates of $S$ commute with
+one another, as do those of $T$; no commutation between the two tuples is
+assumed.
+
+The L\"owner class $\Loe(E)$ is the boundary-value class defined in
+\cite{AMY}.  We need only their Theorem~8.1: for real $C^1$ functions on
+$E$, membership in $\Loe(E)$ is equivalent to local operator monotonicity.
+In particular,
+\begin{equation}\label{eq:global-to-loewner}
+ \text{globally operator monotone on }E
+ \quad\Longrightarrow\quad f\in\Loe(E).
+\end{equation}
+
+\section*{Proof Intuition}
+
+The source function looks nonrational because it contains fractional powers.
+The useful observation is that fractional powers and weighted geometric means
+are positive averages of very simple rational order-preserving maps.
+
+For $0<\theta<1$, the scalar weighted geometric mean has the integral
+\[
+ x^{1-\theta}y^\theta
+ =\frac{\sin(\pi\theta)}{\pi}
+   \int_0^\infty \lambda^{\theta-1}
+   \bigl(x^{-1}+\lambda y^{-1}\bigr)^{-1}\,d\lambda.
+\]
+Each integrand is jointly operator monotone: inversion reverses order, the
+positive sum preserves it, and the final inversion reverses it again.
+Similarly, $t^p$ is a positive integral of the rational operator-monotone
+maps $t/(t+\lambda)$.  Finite positive quadrature sums therefore give
+rational operator-monotone approximants.
+
+Nested composition causes no loss.  Functions of a fixed commuting tuple
+commute, and a globally operator-monotone binary map can be applied to any
+ordered pair of such outputs.  This lets us build an arbitrary weighted
+geometric monomial recursively and then apply the outer power.  The same
+positive integral formulas give uniform convergence on compact sets.
+
+\section*{Main Theorem}
+
+\begin{theorem}\label{thm:main}
+Let $d\geq1$ and let $a_1,\ldots,a_d\geq0$ satisfy
+\[
+                         p:=\sum_{j=1}^d a_j\leq1.
+\]
+There is a sequence of rational functions $R_n$ on $\R^d$, with no poles on
+$\Pos^d$, such that:
+\begin{enumerate}
+\item each $R_n$ is globally operator monotone on $\Pos^d$;
+\item each $R_n$ belongs to the L\"owner class $\Loe(\Pos^d)$;
+\item $R_n\to\prod_{j=1}^d x_j^{a_j}$ uniformly on every compact subset of
+$\Pos^d$.
+\end{enumerate}
+\end{theorem}
+
+\begin{corollary}\label{cor:source}
+For every $0\leq s\leq\tfrac12$, the function
+$(z^1z^2)^s$ on $\Pos^2$ is a compact-open limit of rational functions in
+$\Loe(\Pos^2)$.  Hence the question in \cite{AMY} has an affirmative answer.
+\end{corollary}
+
+\section*{Rational Building Blocks}
+
+\begin{lemma}[Positive quadrature for a power]\label{lem:power}
+For $0<p<1$, the function $t^p$ on $\Pos$ is a compact-open limit of finite
+positive sums of the rational functions
+\[
+                         q_\lambda(t)=\frac{t}{t+\lambda},
+                         \qquad \lambda>0.
+\]
+Every such finite positive sum is operator monotone and strictly positive on
+$\Pos$.
+\end{lemma}
+
+\begin{proof}
+Euler's beta integral gives
+\begin{equation}\label{eq:power-integral}
+ t^p=\frac{\sin(\pi p)}{\pi}
+       \int_0^\infty \lambda^{p-1}\frac{t}{t+\lambda}\,d\lambda.
+\end{equation}
+Indeed, the substitution $\lambda=tu$ reduces the integral to
+$t^p\int_0^\infty u^{p-1}(1+u)^{-1}du$.
+
+The map $q_\lambda$ is operator monotone because
+\[
+ q_\lambda(A)=I-\lambda(A+\lambda I)^{-1},
+\]
+and inversion reverses the order of positive invertible operators.  Hence
+finite positive sums of the $q_\lambda$ are operator monotone.
+
+For $t\in[c,C]\subset\Pos$, the part of \eqref{eq:power-integral} over
+$(0,\delta)$ is at most $\delta^p/p$, uniformly in $t$, and the part over
+$(M,\infty)$ is at most $C M^{p-1}/(1-p)$.  On $[\delta,M]$ ordinary
+positive Riemann sums converge uniformly for $t\in[c,C]$.  Letting
+$\delta\downarrow0$, $M\uparrow\infty$, and the mesh tend to zero produces a
+single sequence converging on every compact subinterval of $\Pos$.
+\end{proof}
+
+\begin{lemma}[Positive quadrature for a weighted geometric mean]
+\label{lem:geometric}
+Let $0<\theta<1$.  The function
+\[
+                         g_\theta(x,y)=x^{1-\theta}y^\theta
+\]
+on $\Pos^2$ is a compact-open limit of finite positive sums of the rational
+functions
+\[
+ h_\lambda(x,y)
+   =\bigl(x^{-1}+\lambda y^{-1}\bigr)^{-1}
+   =\frac{xy}{y+\lambda x},
+ \qquad \lambda>0.
+\]
+Every such sum is globally operator monotone and strictly positive on
+$\Pos^2$.
+\end{lemma}
+
+\begin{proof}
+The beta integral and the substitution $\lambda=(y/x)u$ give
+\begin{equation}\label{eq:geometric-integral}
+ x^{1-\theta}y^\theta
+ =\frac{\sin(\pi\theta)}{\pi}
+   \int_0^\infty \lambda^{\theta-1}
+        \frac{xy}{y+\lambda x}\,d\lambda.
+\end{equation}
+
+Suppose $A_1\leq B_1$ and $A_2\leq B_2$ are positive invertible operators.
+Then
+\[
+ A_1^{-1}+\lambda A_2^{-1}
+ \geq B_1^{-1}+\lambda B_2^{-1},
+\]
+so another inversion yields
+\[
+ (A_1^{-1}+\lambda A_2^{-1})^{-1}
+ \leq(B_1^{-1}+\lambda B_2^{-1})^{-1}.
+\]
+When each pair is commuting, these are exactly the joint functional-calculus
+values of $h_\lambda$.  Thus $h_\lambda$ is globally operator monotone.
+
+For $(x,y)\in[c,C]^2$, the integrand without the constant in
+\eqref{eq:geometric-integral} is bounded by
+$C\lambda^{\theta-1}$ near zero and by
+$C\lambda^{\theta-2}$ near infinity.  The tails therefore tend uniformly to
+zero.  Positive Riemann sums on a truncated compact $\lambda$-interval give
+the asserted rational approximants and compact-open convergence.
+\end{proof}
+
+\section*{Composition and Proof of the Theorem}
+
+\begin{lemma}[Order-preserving composition]\label{lem:composition}
+Let $U,V$ be strictly positive globally operator-monotone functions on
+$\Pos^d$, and let $H$ be globally operator monotone on $\Pos^2$.  Then
+\[
+                         x\longmapsto H(U(x),V(x))
+\]
+is globally operator monotone on $\Pos^d$.  If all three functions are
+rational and have no poles on their positive domains, then so is the
+composition.
+\end{lemma}
+
+\begin{proof}
+For ordered commuting $d$-tuples $S\leq T$, global monotonicity gives
+$U(S)\leq U(T)$ and $V(S)\leq V(T)$.  The pair $(U(S),V(S))$ commutes because
+both entries belong to the joint functional calculus of $S$; the analogous
+pair for $T$ also commutes.  The defining property of $H$ now gives
+\[
+ H(U(S),V(S))\leq H(U(T),V(T)).
+\]
+The rationality assertion is immediate from substitution, and positivity
+keeps all positive-domain denominators away from zero.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+The case $p=0$ is the constant function $1$.  Coordinates with $a_j=0$ may
+be omitted, so assume first that the active exponents are positive.  Put
+\[
+                         w_j=\frac{a_j}{p},
+                         \qquad \sum_j w_j=1.
+\]
+We first approximate the normalized weighted monomial
+$G(x)=\prod_jx_j^{w_j}$.
+
+Order the active coordinates and set $W_k=\sum_{j=1}^k w_j$.  Recursively
+define
+\[
+ G_1(x)=x_1,
+ \qquad
+ G_k(x)=g_{w_k/W_k}\bigl(G_{k-1}(x),x_k\bigr)
+ \quad (k\geq2).
+\]
+A scalar exponent calculation gives
+\[
+                         G_k(x)=\prod_{j=1}^k x_j^{w_j/W_k};
+\]
+hence $G_d=G$.
+
+For every binary $g_{w_k/W_k}$ choose the rational positive quadrature
+approximants from Lemma~\ref{lem:geometric}, and substitute them recursively.
+Lemma~\ref{lem:composition} shows that every resulting nested rational
+function is globally operator monotone.  A standard diagonal choice makes
+these nested functions converge to $G$ uniformly on compact subsets.  For
+completeness, the induction is harmless: on any fixed compact domain,
+$G_{k-1}$ has a compact range bounded away from zero; uniform convergence of
+the preceding stage puts all sufficiently late approximating ranges in a
+slightly larger compact subinterval of $\Pos$, where the next binary
+quadrature converges uniformly.
+
+If $p=1$, these nested approximants already converge to
+$G=\prod_jx_j^{a_j}$.  If $0<p<1$, compose them with the positive rational
+operator-monotone approximants to $t^p$ from Lemma~\ref{lem:power}.  Another
+application of Lemma~\ref{lem:composition}, followed by the same compact-range
+diagonal argument, yields rational globally operator-monotone functions
+converging compact-open to
+\[
+                         G(x)^p=\prod_{j=1}^d x_j^{a_j}.
+\]
+
+Finally, every approximant belongs to $\Loe(\Pos^d)$ by
+\eqref{eq:global-to-loewner}.  This proves all three assertions.
+\end{proof}
+
+\begin{proof}[Proof of Corollary~\ref{cor:source}]
+Take $d=2$ and $a_1=a_2=s$.  The hypothesis of
+Theorem~\ref{thm:main} is exactly $2s\leq1$.  The endpoint $s=0$ is the
+constant $1$, so the entire range in the source question is covered.
+\end{proof}
+
+\section*{Verification and Limitations}
+
+No numerical or symbolic computation is used.  The proof reduces to the two
+positive integral formulas \eqref{eq:power-integral} and
+\eqref{eq:geometric-integral}, two order reversals under inversion, and a
+composition argument inside joint functional calculus.
+
+The packet proves locally uniform approximation on $\Pos^d$.  It does not
+claim uniform approximation up to the boundary, where the monomials may lose
+smoothness, or a degree-optimal approximation rate.
+
+A bounded search on August 9, 2026 used the exact source phrase and close
+variants involving rational L\"owner approximation, operator-monotone
+monomials, and weighted geometric/harmonic means.  It found the source paper
+and later one-variable approximation work, but no explicit answer to the
+question or statement of Theorem~\ref{thm:main}.  Since all ingredients are
+classical, novelty confidence is moderate-to-low pending specialist review.
+
+\begin{thebibliography}{9}
+
+\bibitem{AMY}
+J.~Agler, J.~E. McCarthy, and N.~J. Young,
+\emph{Operator monotone functions and L\"owner functions of several
+variables}, Ann. of Math. (2) \textbf{176} (2012), 1783--1826;
+arXiv:1009.3921.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,309 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\ip}[2]{\langle #1,#2\rangle}
+
+\title{A Smooth Square-Root-Entropy Maximum for\\
+Attained Countable Affine Suprema}
+\author{Candidate partial result for arXiv:1112.1042}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{black}{gray!8}{\parbox{0.88\linewidth}{
+\textbf{Status: candidate partial result, likely valid.}
+The source question remains open for arbitrary convex functions on a
+separable infinite-dimensional Hilbert space.}}
+\end{center}
+
+\section{Source question}
+
+Azagra asks whether every convex function on a separable
+infinite-dimensional Hilbert space which is bounded on bounded sets can be
+globally approximated by $C^2$ convex functions
+\cite[p.~4]{Azagra2011}.  The surrounding corollary and the exact question
+are reproduced below.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{The open question in arXiv:1112.1042, PDF page 4.}
+\end{figure}
+
+In the terminology of the paper, the desired one-sided uniform estimate is
+$f-\eps\leq g\leq f$ on the whole space.  The present packet proves this for
+a nontrivial class of globally Lipschitz convex functions.
+
+\section{Proof intuition}
+
+The usual countable log-sum-exp has a fatal global error: an affine function
+with a tiny reference weight pays a penalty proportional to the logarithm of
+that weight.  We instead maximize over the probability simplex and add the
+bounded concave bonus
+\[
+  \delta\sum_i w_i\sqrt{\alpha_i},
+  \qquad (w_i)\in\ell_2,\qquad \sum_i\alpha_i=1.
+\]
+Cauchy--Schwarz bounds this bonus by $\delta\|w\|_2$, uniformly in the
+number of active affine functions.  Its derivative is infinite at every
+coordinate face, so when the underlying countable maximum is attained, the
+unique maximizing probability has every coordinate positive.
+
+The Lagrange multiplier $\lambda$ is characterized by a single scalar
+equation.  Attainment forces $\lambda$ to lie strictly above the maximum.
+Uniformly bounded affine slopes then make the defining series smoothly
+convergent in a neighborhood of every point, and the Banach-space implicit
+function theorem gives a $C^\infty$ multiplier and hence a $C^\infty$
+convex approximation.  What remains open is how to replace the attained
+countable family by a smoothing device valid for an arbitrary dual domain.
+
+\section{The partial result}
+
+Let $X$ be a real Banach space.  Write an affine continuous function as
+\[
+  \ell_i(x)=x_i^*(x)+b_i,
+  \qquad x_i^*\in X^*,\quad b_i\in\R.
+\]
+
+\begin{theorem}[Square-root-entropy smoothing]\label{thm:main}
+Suppose $(\ell_i)_{i\in\N}$ is a countable family of continuous affine
+functions on $X$ such that
+\[
+  L:=\sup_i\|x_i^*\|<\infty,
+\]
+and suppose
+\[
+  f(x):=\max_{i\in\N}\ell_i(x)
+\]
+is finite and the displayed maximum is attained for every $x\in X$.  Then,
+for every $\eps>0$, there is a $C^\infty$ convex function $h:X\to\R$ such
+that
+\[
+  f-\eps\leq h\leq f
+  \qquad\text{on }X.
+\]
+
+More explicitly, fix positive weights $w_i$ with
+$\sum_iw_i^2=1$, put $c=\eps^2/4$, and let $\lambda(x)>f(x)$ be the unique
+solution of
+\begin{equation}\label{eq:lambda}
+  c\sum_{i=1}^{\infty}
+  \frac{w_i^2}{(\lambda(x)-\ell_i(x))^2}=1.
+\end{equation}
+Then one may take
+\begin{equation}\label{eq:h}
+  h(x)=\lambda(x)+c\sum_{i=1}^{\infty}
+  \frac{w_i^2}{\lambda(x)-\ell_i(x)}-\eps.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Let
+\[
+  \Delta=\left\{\alpha=(\alpha_i)\in\ell_1:
+  \alpha_i\geq0,\ \sum_i\alpha_i=1\right\}.
+\]
+Consider the regularized maximum
+\begin{equation}\label{eq:gdef}
+  g(x)=\sup_{\alpha\in\Delta}
+  \left\{\sum_i\alpha_i\ell_i(x)
+  +\eps\sum_iw_i\sqrt{\alpha_i}\right\}.
+\end{equation}
+The affine average is interpreted in the extended sense
+\[
+ \sum_i\alpha_i\ell_i(x)
+ :=f(x)+\sum_i\alpha_i\bigl(\ell_i(x)-f(x)\bigr)\in[-\infty,f(x)].
+\]
+This is unambiguous because every term in the last series is nonpositive.
+(Equivalently, the bounded-slope hypothesis makes the linear part absolutely
+convergent, while a divergent intercept part can only have value $-\infty$.)
+For each $\alpha\in\Delta$, Cauchy--Schwarz gives
+\[
+  \sum_iw_i\sqrt{\alpha_i}
+  \leq\left(\sum_iw_i^2\right)^{1/2}
+       \left(\sum_i\alpha_i\right)^{1/2}=1.
+\]
+Moreover, $\sum_i\alpha_i\ell_i(x)\leq f(x)$.  Conversely, concentrating
+all mass at one index and taking the supremum over that index yields
+$g(x)\geq f(x)$.  Thus
+\begin{equation}\label{eq:error}
+  f(x)\leq g(x)\leq f(x)+\eps.
+\end{equation}
+As a supremum of affine functions of $x$, with an $x$-independent bonus,
+$g$ is convex.
+
+Fix $x\in X$ and set $M=f(x)$.  For $s>M$, define
+\[
+  \Phi_x(s)=c\sum_i\frac{w_i^2}{(s-\ell_i(x))^2}.
+\]
+This is finite, continuous, and strictly decreasing on $(M,\infty)$, and it
+tends to zero as $s\to\infty$.  Since the maximum defining $M$ is attained,
+say $\ell_k(x)=M$, the $k$th summand shows that
+$\Phi_x(s)\to\infty$ as $s\downarrow M$.  Hence there is a unique
+$\lambda(x)>M$ satisfying \eqref{eq:lambda}.
+
+Define
+\begin{equation}\label{eq:alpha}
+  \alpha_i(x)=c\frac{w_i^2}{(\lambda(x)-\ell_i(x))^2}.
+\end{equation}
+Equation \eqref{eq:lambda} says that $\alpha(x)\in\Delta$, and every
+coordinate is positive.  It is the unique optimizer in \eqref{eq:gdef}.
+Indeed, concavity of the square root gives, for every $a\geq0$ and every
+$r>0$,
+\[
+  \sqrt a\leq\sqrt r+\frac{a-r}{2\sqrt r}.
+\]
+Apply this with $r=\alpha_i(x)$.  From \eqref{eq:alpha},
+\[
+  \frac{\eps w_i}{2\sqrt{\alpha_i(x)}}
+  =\lambda(x)-\ell_i(x).
+\]
+Put $d_i=\lambda(x)-\ell_i(x)>0$.  The tangent inequality says coordinatewise
+that
+\[
+  -d_i\alpha_i+\eps w_i\sqrt{\alpha_i}
+  \leq -d_i\alpha_i(x)+\eps w_i\sqrt{\alpha_i(x)}
+  =c\frac{w_i^2}{d_i}.
+\]
+The right-hand series converges because $d_i\geq\lambda(x)-f(x)>0$.
+Consequently the series on the left has a summable positive part and is
+well-defined in $[-\infty,\infty)$.  Summing the inequalities and using
+$\sum_i\alpha_i=\sum_i\alpha_i(x)=1$ proves that the objective at
+$\alpha$ is at most the objective at $\alpha(x)$.  If equality holds, the
+strict tangent inequality for $\sqrt{\cdot}$ forces every
+$\alpha_i=\alpha_i(x)$, proving uniqueness.  At the optimizer the affine
+average is absolutely convergent: with $d_i=\lambda(x)-\ell_i(x)$,
+\[
+ \sum_i\alpha_i(x)|\ell_i(x)|
+ \leq |\lambda(x)|+c\sum_i\frac{w_i^2}{d_i}<\infty.
+\]
+
+Using $d_i=\lambda(x)-\ell_i(x)$ and
+$\sum_i\alpha_i(x)=1$, the optimizer value simplifies to
+\begin{align*}
+ g(x)
+ &=\sum_i\frac{c w_i^2}{d_i^2}\ell_i(x)
+   +\sum_i\frac{\eps^2w_i^2}{2d_i}\\
+ &=\lambda(x)+c\sum_i\frac{w_i^2}{d_i}.
+\end{align*}
+This is the expression in \eqref{eq:h} before subtracting $\eps$.
+
+It remains to prove smoothness.  Set
+\[
+  F(x,s)=c\sum_i\frac{w_i^2}{(s-\ell_i(x))^2}-1
+  \qquad (s>f(x)).
+\]
+Fix $(x_0,s_0)$ with $s_0=\lambda(x_0)$ and put
+$\eta=s_0-f(x_0)>0$.  Since $\sup_i\|x_i^*\|=L$, after restricting to a
+small product neighborhood of $(x_0,s_0)$ all denominators are at least
+$\eta/2$.  Every derivative of every summand is bounded there by a constant
+depending only on its order, $\eta$, and $L$, times $w_i^2$.  The series and
+all of its derivatives therefore converge uniformly on that neighborhood.
+Thus $F$ is $C^\infty$, and
+\[
+  \partial_sF(x_0,s_0)
+  =-2c\sum_i\frac{w_i^2}{(s_0-\ell_i(x_0))^3}<0.
+\]
+The implicit function theorem on Banach spaces shows that $\lambda$ is
+$C^\infty$ near $x_0$.  The same locally uniform derivative estimates show
+that the series in the formula for $g$ is $C^\infty$.  Since $x_0$ was
+arbitrary, $g$ is $C^\infty$ on $X$.
+
+Finally let $h=g-\eps$.  Convexity and smoothness are unchanged, and
+\eqref{eq:error} becomes $f-\eps\leq h\leq f$.
+\end{proof}
+
+\begin{corollary}\label{cor:simplex}
+On $\ell_2$, the convex Lipschitz function
+\[
+  f(x)=\max\{0,\sup_{n\geq1}x_n\}
+\]
+admits global $C^\infty$ convex minorants within every prescribed uniform
+error.
+\end{corollary}
+
+\begin{proof}
+Use the affine family $0,x_1,x_2,\ldots$.  Its slopes have norm at most one.
+Since $x_n\to0$ for every $x\in\ell_2$, a positive supremum is attained by
+one of the coordinates, while a nonpositive supremum is attained by the
+zero affine function.  Theorem~\ref{thm:main} applies.
+\end{proof}
+
+This example is the support function of the closed convex hull of
+$\{0,e_1,e_2,\ldots\}$.  It is precisely the infinite-simplex stress test on
+which summable-weight log-sum-exp fails: square-root entropy removes the
+unbounded logarithmic penalty.
+
+\section{Limitations and deep-upgrade audit}
+
+The theorem does not solve the source question.  An arbitrary Lipschitz
+convex function on an infinite-dimensional Hilbert space need not be an
+attained countable maximum of affine functions.  For example, a countable
+dense family of linear supports represents the Hilbert norm as a supremum,
+but the supremum is generally not attained.  At a nonattainment point the
+left side of \eqref{eq:lambda} need not diverge as $s\downarrow f(x)$, so the
+strict multiplier gap---and hence the smooth implicit formula---can fail.
+
+A further upgrade attempt asked whether every Lipschitz convex function can
+first be approximated uniformly by an attained countable affine maximum.
+For support functions, uniform additive approximation fixes the recession
+function.  In infinite dimension, forcing attainment with a countable set of
+slopes amounts to a compactness/properness property unavailable on the whole
+unit sphere; simple decaying penalties again allow minimizing sequences to
+escape.  Thus this route does not reduce the full question to the theorem.
+
+The earlier standard routes---Moreau regularization, finite-rank convolution,
+Gaussian convolution, quadratic convexity repair, and countable
+log-sum-exp---are documented for the stronger later question in
+arXiv:1411.0471 \cite{AzagraMudarra2014}.  Moreau regularization stops at
+$C^{1,1}$, while a nondegenerate Gaussian covariance cannot be trace class in
+infinite dimension.  The present result is a genuine improvement over the
+countable-max route, but not over the arbitrary-function problem.
+
+\section{Novelty check and verification}
+
+A bounded search used the source id and title; the exact phrases
+``separable infinite-dimensional Hilbert space'' and ``$C^2$ convex
+functions''; the later paper arXiv:1411.0471; and combinations of
+``countable maximum'', ``square-root entropy'', ``Tsallis entropy'',
+``smooth maximum'', and ``affine functions''.  It found the source papers and
+unrelated uses of Tsallis entropy, but no statement of
+Theorem~\ref{thm:main}.  This supports only bounded novelty confidence.
+
+The proof was checked algebraically in four places: the uniform entropy
+bound, the scalar multiplier equation, the tangent inequality proving the
+optimizer, and local uniform convergence of every differentiated series.
+No numerical computation is used.  Human review should focus on the
+infinite-simplex optimization and the passage from the scalar implicit
+equation to Fr\'echet $C^\infty$ smoothness.
+
+\begin{thebibliography}{9}
+
+\bibitem{Azagra2011}
+D.~Azagra,
+\emph{Global approximation of convex functions},
+arXiv:1112.1042v7 (2012).
+
+\bibitem{AzagraMudarra2014}
+D.~Azagra and C.~Mudarra,
+\emph{Global approximation of convex functions by differentiable convex
+functions on Banach spaces},
+arXiv:1411.0471 (2014).
+
+\end{thebibliography}
+
+\end{document}

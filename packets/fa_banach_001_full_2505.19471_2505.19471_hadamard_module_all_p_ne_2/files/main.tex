@@ -1,0 +1,337 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{xcolor}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Ba}{\operatorname{Ba}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\jj}{\mathsf j}
+
+\title{The Hadamard-diagonal row--column module is C*--like\
+exactly at \(p=2\)}
+\author{Candidate full solution for arXiv:2505.19471, Example 5.2}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Candidate full solution; likely valid, pending human review.  The proof is
+finite-dimensional and analytic.  The included code only checks its explicit
+identities and is not used as proof.}}
+\end{center}
+
+\section{Source question}
+
+Calin, Cartwright, Coffman, Delf\'in, Girard, Goldrick, Nerella and Wu,
+\emph{C*--like modules and matrix \(p\)-operator norms}, arXiv:2505.19471,
+Example 5.2 and the paragraph following it (source PDF, p.~18), ask whether
+their simultaneously Hadamard-diagonalizable unital algebra gives a
+non-C*--like row--column module for
+\(p\in(1,\infty)\setminus\{2\}\) \cite{source}.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.98\textwidth]{figures/open_problem_crop.png}
+  \caption{The exact open-question paragraph and its immediate conclusion in
+  the source paper, p.~18.}
+\end{figure}
+
+The answer is yes for every such \(p\).  More precisely, the source column is
+a witness below \(2\), and its adjoint row is a witness above \(2\).
+
+\section{Definitions and statement}
+
+For \(1<p<\infty\), let
+\[
+ H=2^{-1/2}\begin{bmatrix}1&1\\1&-1\end{bmatrix},\qquad
+ A_p=\{H\diag(\lambda_1,\lambda_2)H:\lambda_1,\lambda_2\in\C\}
+ \subseteq \mathcal L(\ell_p^2),
+\]
+with its inherited \(p\)-operator norm.  Put
+\[
+ a_1=\frac12\begin{bmatrix}3&1\\1&3\end{bmatrix},\qquad
+ a_2=\frac12\begin{bmatrix}3&-1\\-1&3\end{bmatrix},\qquad
+ T=\begin{bmatrix}a_1\\a_2\end{bmatrix}.
+\]
+Thus \(T\in X_p:=M^p_{2,1}(A_p)\), while
+\(T^*=[a_1\ a_2]\in Y_p:=M^p_{1,2}(A_p)\).  The pairing is matrix
+multiplication, \((B\mid C)_{A_p}=BC\).
+
+\begin{theorem}[Full classification of Example 5.2]\label{thm:main}
+For \(1<p<\infty\), the row--column module \((Y_p,X_p)\) over \(A_p\) is
+C*--like if and only if \(p=2\).  More explicitly:
+\begin{enumerate}
+\item if \(1<p<2\), then
+\[
+ \max_{B\in\Ba(Y_p)}\|BT\|_{A_p}<\|T\|_{X_p};
+\]
+\item if \(2<p<\infty\), then
+\[
+ \max_{C\in\Ba(X_p)}\|T^*C\|_{A_p}<\|T^*\|_{Y_p}.
+\]
+\end{enumerate}
+Consequently the first norm-recovery axiom fails below \(2\), and the second
+one fails above \(2\).
+\end{theorem}
+
+\section{Proof intuition}
+
+Below \(2\), the source column has only two norming input directions: the
+coordinate axes.  If a structured row contraction recovered its norm, dual
+smoothness would force the adjoint column contraction to carry a unit vector
+to the unique support functional of \(Te_1\).  Simultaneous Hadamard
+diagonalization makes that adjoint column unique once the unit vector is
+chosen.  Its norm-attainment equations leave only four projective choices:
+\(e_1,e_2,(1,i),(1,-i)\).  Strict Clarkson inequalities exclude the coordinate
+directions, and a positive second variation excludes the two complex phase
+directions.  Compactness then makes the recovery gap strict.
+
+Above \(2\), no new optimization is needed.  Taking Banach adjoints identifies
+columns at \(p\) with rows at the conjugate exponent \(p'\), preserves all
+operator norms, and reverses products.  Thus the strict failure below \(2\)
+becomes strict failure of the other C*--likeness axiom above \(2\).
+
+\section{Scalar lemmas}
+
+For a unit vector \(z\in\ell_r^m\), write
+\(\jj_r(z)=(|z_k|^{r-2}z_k)_k\in\ell_{r'}^m\).  We use the Hermitian dual
+pairing, linear in the first variable.
+
+\begin{lemma}[Scalar Clarkson inequalities]\label{lem:clarkson}
+For \(z,w\in\C\),
+\[
+ |z+w|^r+|z-w|^r
+ \begin{cases}
+ \le 2(|z|^r+|w|^r),&1<r<2,\\
+ \ge 2(|z|^r+|w|^r),&2<r<\infty.
+ \end{cases}
+\]
+In either non-Hilbertian range the inequality is strict when \(zw\ne0\).
+\end{lemma}
+
+\begin{proof}
+Put \(a=|z|\), \(b=|w|\), and write
+\(|z\pm w|^2=a^2+b^2\pm 2ab\cos\theta\).  If \(1<r<2\), concavity of
+\(t^{r/2}\) shows that the sum of the two \(r/2\)-powers is at most
+\(2(a^2+b^2)^{r/2}\), which is at most \(2(a^r+b^r)\).  Both inequalities
+are strict when \(ab>0\).  For \(r>2\), convexity reverses both comparisons.
+\end{proof}
+
+\begin{lemma}[The exceptional-phase inequality]\label{lem:scalar}
+Let \(s>2\) and \(q=3^{1/(s-1)}\).  Then
+\[
+ (s-1)(q^{s-2}+q^2)>q^s+1.
+\]
+\end{lemma}
+
+\begin{proof}
+Set \(L=\log 3\), so \(1<q<3\), \(s-1=L/\log q\), and \(q^{s-1}=3\).
+After multiplying by \(\log q\), the desired inequality is
+\[
+ h(q):=L(3/q+q^2)-(3q+1)\log q>0.
+\]
+We have \(h(3)=0\).  Moreover \(-h'(q)=R(q)\), where
+\[
+ R(q)=3\log q+3+q^{-1}-L(2q-3q^{-2}).
+\]
+For \(1\le q\le3\),
+\[
+ R'(q)=3q^{-1}-q^{-2}-2L-6Lq^{-3}<2-2L<0.
+\]
+Here \(3q^{-1}-q^{-2}\le2\) and \(L>1\).  Hence
+\[
+ R(q)\ge R(3)=\frac{10-8\log3}{3}>0;
+\]
+the last inequality follows, for example, from \(\log3<5/4\).
+Thus \(h'<0\) on \((1,3)\), and \(h(q)>h(3)=0\).
+\end{proof}
+
+\section{Failure for \(1<p<2\)}
+
+Fix \(1<p<2\) and put \(s=p'=p/(p-1)>2\).  For \(x,y\in\C\), Lemma
+\ref{lem:clarkson} gives
+\begin{align*}
+ \left\|T\binom{x}{y}\right\|_p^p
+ &=2^{-p}\bigl(|3x+y|^p+|3x-y|^p
+       +|x+3y|^p+|-x+3y|^p\bigr)\\
+ &\le 2^{1-p}(3^p+1)(|x|^p+|y|^p).
+\end{align*}
+Equality holds at the coordinate axes, and is strict if \(xy\ne0\).  Therefore
+\begin{equation}\label{eq:Tnorm}
+ \|T\|=N:=2^{1/p-1}(3^p+1)^{1/p},
+\end{equation}
+and the only projective norming inputs are \(e_1,e_2\).
+
+Suppose, toward a contradiction, that
+\(\max_{B\in\Ba(Y_p)}\|BT\|=N\).  Finite-dimensional compactness provides
+a contraction \(B\in Y_p\) and a unit vector at which equality holds.  The
+preceding paragraph makes that vector a coordinate axis.  The two cases are
+equivalent.  Indeed, if
+\(S=\begin{bmatrix}0&1\\1&0\end{bmatrix}\in A_p\) and
+\(P=\diag(S,S)\), then \(PTe_1=Te_2\), while \(P\) is an isometry and
+\(BP\in Y_p\) whenever \(B\in Y_p\).  We may therefore use \(e_1\).
+
+Let
+\[
+ \eta=N^{-1}Te_1=\frac1{2N}(3,1,3,-1)^T,
+ \qquad q=3^{p-1},
+\]
+and choose the unit norming functional \(\phi=(u,v)^T\in\ell_s^2\) of
+\(B\eta\).  With \(C=B^*:\ell_s^2\to\ell_s^4\), equality in the contraction
+chain yields
+\begin{equation}\label{eq:support}
+ C\phi=g:=\jj_p(\eta)=D^{-1}(q,1,q,-1)^T,
+ \qquad C^*\eta=\jj_s(\phi),
+\end{equation}
+where
+\begin{equation}\label{eq:D}
+ D^s=2(q^s+1).
+\end{equation}
+Indeed, the first equality is the unique-support-functional equality, while
+the second follows by applying the same equality to the contraction \(C\),
+which maps the unit vector \(\phi\) to the unit vector \(g\).
+
+Write the two blocks of \(C\) as
+\[
+ C_1=H\diag(\mu_1,\mu_2)H,\qquad
+ C_2=H\diag(\mu_3,\mu_4)H,
+\]
+and put \(\alpha=(u+v)/\sqrt2\), \(\beta=(u-v)/\sqrt2\).  The first equality
+in \eqref{eq:support} gives
+\begin{equation}\label{eq:mus}
+ \mu_1\alpha=\frac{q+1}{\sqrt2D},\quad
+ \mu_2\beta=\frac{q-1}{\sqrt2D},\quad
+ \mu_3\alpha=\frac{q-1}{\sqrt2D},\quad
+ \mu_4\beta=\frac{q+1}{\sqrt2D}.
+\end{equation}
+In particular, \(\alpha\beta\ne0\), and \(C\) is uniquely determined by
+\(\phi\).  Insert \eqref{eq:mus} into the second equality in
+\eqref{eq:support}.  After cancelling one common positive constant, the two
+Hadamard coordinates say
+\[
+ \frac1{\bar u+\bar v}=\kappa\bigl(|u|^{s-2}u+|v|^{s-2}v\bigr),\qquad
+ \frac1{\bar u-\bar v}=\kappa\bigl(|u|^{s-2}u-|v|^{s-2}v\bigr)
+\]
+for a nonzero common scalar \(\kappa\).  Adding and subtracting these equations
+shows that, when \(uv\ne0\),
+\begin{equation}\label{eq:phase}
+ -\frac{\bar v}{\bar u}
+ =\frac{|v|^{s-2}v}{|u|^{s-2}u}.
+\end{equation}
+Taking moduli in \eqref{eq:phase} gives \(|u|=|v|\); taking phases then gives
+\(v/u=\pm i\).  If one coordinate vanishes, \(\phi\) is a coordinate vector.
+Up to a unimodular scalar, only
+\begin{equation}\label{eq:four}
+ e_1,\quad e_2,\quad 2^{-1/s}(1,i)^T,\quad 2^{-1/s}(1,-i)^T
+\end{equation}
+remain.
+
+We now show that the unique \(C\) in each case has norm strictly greater than
+one, contradicting \(\|C\|=\|B\|\le1\).
+
+If \(\phi=e_1\), equations \eqref{eq:support} and the block symmetry give
+\[
+ C=D^{-1}\begin{bmatrix}
+ q&1\\1&q\\q&-1\\-1&q
+ \end{bmatrix}.
+\]
+Applying this matrix to \((1,1)^T\), using \eqref{eq:D}, and invoking the
+strict \(s>2\) case of Lemma \ref{lem:clarkson}, gives
+\[
+ \frac{\|C(1,1)^T\|_s^s}{\|(1,1)^T\|_s^s}
+ =\frac{(q+1)^s+(q-1)^s}{2(q^s+1)}>1.
+\]
+The case \(e_2\) is the same after swapping coordinates.
+
+It remains to exclude \(2^{-1/s}(1,i)^T\); complex conjugation handles the
+minus sign.  Let \(\phi_+=(1,i)^T\), \(\phi_-=(1,-i)^T\), and let \(C_0\) be
+the unique structured column satisfying \(C_0\phi_+=g\).  Directly from
+\eqref{eq:mus},
+\[
+ C_0=\frac1{2D}\begin{bmatrix}
+ q-i&1-iq\\1-iq&q-i\\
+ q+i&-1-iq\\-1-iq&q+i
+ \end{bmatrix},
+ \qquad C=2^{1/s}C_0.
+\]
+For real \(t\) near zero set \(\xi_t=\phi_++it\phi_-\).  A direct calculation
+gives
+\begin{align*}
+ F(t)&:=\|C\xi_t\|_s^s-\|\xi_t\|_s^s\\
+ &=\frac{(q+t)^s+(q-t)^s+(1+qt)^s+(1-qt)^s}{q^s+1}
+   -2(1+t^2)^{s/2}.
+\end{align*}
+Thus \(F(0)=F'(0)=0\), while
+\[
+ F''(0)=2s\left(\frac{(s-1)(q^{s-2}+q^2)}{q^s+1}-1\right)>0
+\]
+by Lemma \ref{lem:scalar}.  Hence \(F(t)>0\) for all sufficiently small
+nonzero \(t\), so again \(\|C\|>1\).  This exhausts \eqref{eq:four} and proves
+the first assertion of Theorem \ref{thm:main}.
+
+\section{Adjoint duality and the range \(2<p<\infty\)}
+
+Let now \(2<p<\infty\), and put \(r=p'\in(1,2)\).  Banach adjoints give
+isometric bijections
+\[
+ X_r\longleftrightarrow Y_p,\qquad Y_r\longleftrightarrow X_p,
+\]
+because every matrix in the Hadamard-diagonal algebra has its adjoint in the
+same algebra, and \(\|S\|_{\ell_r\to\ell_r}=\|S^*\|_{\ell_p\to\ell_p}\).
+They also reverse products.  Therefore the already proved strict inequality at
+\(r\) implies
+\begin{align*}
+ \max_{C\in\Ba(X_p)}\|T^*C\|_{A_p}
+ &=\max_{B\in\Ba(Y_r)}\|(BT)^*\|_{A_p}\\
+ &=\max_{B\in\Ba(Y_r)}\|BT\|_{A_r}
+ <\|T\|_{X_r}=\|T^*\|_{Y_p}.
+\end{align*}
+This proves the second assertion.  At \(p=2\), \(H\) is unitary and \(A_2\)
+is a C*--algebra, so the row--column module is C*--like by the standard
+C*--module norm recovery (also Lemma 2.13 of the source paper
+\cite{source}).  Theorem \ref{thm:main} follows.
+
+\section{Verification and novelty status}
+
+The analytic audit is recorded in \nolinkurl{verification_report.md}.  The
+script \nolinkurl{code/check_identities.py} checks the normalization identities,
+the two strict-expansion mechanisms, the scalar monotonicity margin, and random
+samples of the source-column norm for representative exponents.  It is a
+sanity check, not part of the proof.
+
+A bounded novelty check on 11 August 2026 searched the run's registry,
+solution, attempt and proof-gap indexes for arXiv:2505.19471, the exact title,
+``C*--like module'', ``Example 5.2'', and the Hadamard/simultaneously
+diagonalizable formulation.  Web searches for the exact title and exact open
+question found the arXiv paper and its 2026 Annals of Functional Analysis
+publication, whose p.~18 still states the question as open, but no separate
+answer.  This is not a systematic citation-database review; novelty confidence
+is therefore moderate, while the source-question match is high.
+
+\section{Limitations and reviewer focus}
+
+The theorem concerns exactly the two-summand row--column module and algebra of
+Example 5.2.  It does not classify arbitrary simultaneously diagonalizable
+subalgebras or higher-dimensional Hadamard changes of basis.  The most useful
+human checks are: (i) the equality-case passage from \eqref{eq:support} to
+\eqref{eq:phase}; (ii) the normalization \(D^s=2(q^s+1)\); and (iii) the
+adjoint identification of the two module norm-recovery axioms.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+A. Calin, I. Cartwright, L. Coffman, A. Delf\'in, C. Girard, J. Goldrick,
+A. Nerella and W. Wu,
+\emph{C*--like modules and matrix \(p\)-operator norms},
+Ann. Funct. Anal. (2026), DOI: 10.1007/s43034-025-00492-8;
+arXiv:2505.19471.
+\end{thebibliography}
+
+\end{document}

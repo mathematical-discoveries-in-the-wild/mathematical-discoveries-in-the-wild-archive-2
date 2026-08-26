@@ -1,0 +1,316 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\Lzero}{L^0(\mathcal F)}
+\newcommand{\Tep}{\mathcal T_{\varepsilon,\lambda}}
+\newcommand{\epi}{\operatorname{epi}}
+\title{Closed Random Sublevels Force Epigraph Closure in Two Broad Regimes\\
+\large A partial answer to Remark 2.14 of \emph{On random convex analysis}}
+\author{Run \texttt{fa\_banach\_001}, lane 3 (GPT5.6)}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{black}{gray!10}{\parbox{0.91\linewidth}{
+\textbf{Status.} Candidate partial result, likely valid, pending human review.
+The full arbitrary-net question remains open here.}}
+\end{center}
+
+\section{Source question}
+
+Guo, Zhang, Wu, Yang, Yuan, and Zeng ask the following in Remark 2.14 of
+\cite{GuoEtAl}, PDF page 10.  Let $(E,\mathcal P)$ be a random locally convex
+(RLC) module over a sigma-finite measure space $(\Omega,\mathcal F,\mu)$, and
+let $f:E\to\overline{L}^0(\mathcal F)$ be proper and local.  Compare
+\begin{align*}
+(1)'\quad &\{x\in E:f(x)\leq r\}\text{ is $\Tep$-closed for every }r\in\Lzero,\\
+(2)'\quad &\epi(f)=\{(x,r):f(x)\leq r\}\text{ is closed in }
+(E,\Tep)\times(\Lzero,\Tep).
+\end{align*}
+The authors observe $(2)'\Rightarrow(1)'$ and state that they do not know
+whether $(1)'\Rightarrow(2)'$ in general. Their Theorem 2.13 gives the
+implication when the module and seminorm family have the countable
+concatenation property.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{Remark 2.14 in the source paper (PDF page 10).}
+\end{figure}
+
+\section{Idea of the proof}
+
+The obstruction posed by random thresholds disappears for sequences.  If
+$r_n\to r$ in probability, a subsequence converges almost everywhere.  Its
+pointwise supremum is consequently a finite random variable.  On any
+positive-measure set where $f(x)$ lies uniformly above $r$, one can discard a
+finite initial segment so that this supremum remains strictly below $f(x)$ on
+a positive subset.  All corresponding $x_n$ then lie in one fixed random
+sublevel, whose sequential closedness gives the contradiction.
+
+This mechanism yields sequential epigraph closure on every RLC module.  When
+the module topology is first countable, sequential closure is ordinary
+closure, proving the requested implication without countable concatenation.
+
+There is a second mechanism for arbitrary closure nets.  If the module $E$
+has the countable concatenation property, closedness of one fixed sublevel
+provides a separating neighborhood involving only finitely many seminorms.
+One selects countably many epigraph points with summable errors for those
+seminorms, partitions the base by the sets on which their thresholds lie
+below the fixed level, and pastes the points along that partition.  This proves
+the implication without any countable-concatenation hypothesis on the
+seminorm family $\mathcal P$.
+
+\section{The sequential theorem}
+
+We use the standard fact that the $\Tep$ topology on $\Lzero$ is metrizable
+and is convergence in probability for an equivalent probability measure
+$\widehat\mu$ (equivalently, convergence locally in measure for the original
+sigma-finite measure), as recalled in \cite[Section 2]{GuoEtAl}.
+
+\begin{lemma}[random upper envelope]
+\label{lem:envelope}
+Let $r_n,r\in\Lzero$ and $r_n\to r$ in $\Tep$.  Let $B\in\mathcal F$ have
+positive measure and let $\delta>0$.  There are a subsequence
+$(r_{n_j})$, an integer $N$, a positive-measure set $D\subset B$, and
+$q\in\Lzero$ such that
+\[
+r_{n_j}\leq q\quad(j\geq N),
+\qquad q\leq r+\delta\quad\text{on }D.
+\]
+\end{lemma}
+
+\begin{proof}
+Pass to a subsequence, still denoted $(r_{n_j})$, which converges to $r$
+$\widehat\mu$-almost everywhere.  For $N\geq1$, put
+\[
+D_N=B\cap\bigcap_{j\geq N}\{r_{n_j}\leq r+\delta\}.
+\]
+Modulo a null set, $D_N\uparrow B$, so $D_N$ has positive measure for some
+$N$.  After fixing such an $N$, set
+\[
+q=\sup_{j\geq N}r_{n_j}.
+\]
+The supremum is measurable and finite almost everywhere because the
+underlying sequence converges almost everywhere.  Thus $q\in\Lzero$; it
+dominates every retained $r_{n_j}$, and $q\leq r+\delta$ on $D_N$.
+\end{proof}
+
+\begin{theorem}[closed sublevels imply sequentially closed epigraph]
+\label{thm:sequential}
+Let $X$ be any topological space and
+$f:X\to\overline L^0(\mathcal F)$.  Suppose that for every $q\in\Lzero$ the
+sublevel
+\[
+C_q=\{x\in X:f(x)\leq q\}
+\]
+is sequentially closed in $X$.  Then $\epi(f)$ is sequentially closed in
+$X\times(\Lzero,\Tep)$.
+\end{theorem}
+
+\begin{proof}
+Let $(x_n,r_n)\in\epi(f)$ and suppose $(x_n,r_n)\to(x,r)$.  Thus
+$f(x_n)\leq r_n$ for all $n$.  Assume for a contradiction that
+$f(x)\nleq r$.  Then $\{f(x)>r\}$ has positive measure.  By taking a
+countable union of uniform-gap sets, choose $\delta>0$ and a
+positive-measure set $B$ such that
+\[
+f(x)>r+2\delta\quad\text{on }B.
+\]
+Apply Lemma~\ref{lem:envelope}.  For the resulting subsequence, tail, set
+$D$, and random variable $q$, we have
+\[
+f(x_{n_j})\leq r_{n_j}\leq q\qquad(j\geq N).
+\]
+Hence $x_{n_j}\in C_q$ for all $j\geq N$.  This subsequence still converges
+to $x$, and $C_q$ is sequentially closed, so $f(x)\leq q$.  On $D$, however,
+\[
+q\leq r+\delta<f(x),
+\]
+a contradiction on a set of positive measure.  Therefore $f(x)\leq r$ and
+$(x,r)\in\epi(f)$.
+\end{proof}
+
+Theorem~\ref{thm:sequential} is stronger than needed in two respects: it
+requires neither an $L^0$-module structure nor properness or locality of $f$.
+
+\section{The countable-concatenation theorem}
+
+\begin{theorem}[the module CCP alone is sufficient]
+\label{thm:ccp}
+Let $(E,\mathcal P)$ be an RLC module and suppose that $E$ has the countable
+concatenation property; no such assumption is made on $\mathcal P$.  Let
+$f:E\to\overline L^0(\mathcal F)$ be proper and local.  If every sublevel
+$C_q=\{f\leq q\}$, $q\in\Lzero$, is $\Tep$-closed, then $\epi(f)$ is closed
+in $(E,\Tep)\times(\Lzero,\Tep)$.
+\end{theorem}
+
+\begin{proof}
+Write $\widehat\mu$ for the probability measure defining $\Tep$.  Suppose
+that $(x,r)$ belongs to the closure of $\epi(f)$ but not to the epigraph.
+There are a set $B\in\mathcal F$ of positive measure and a deterministic
+$\delta>0$ such that
+\[
+f(x)>r+2\delta\quad\text{on }B.
+\]
+Choose $u\in\operatorname{dom}(f)$ and localize outside $B$ by putting
+\[
+\bar x=I_Bx+I_{B^c}u,
+\qquad
+\bar r=I_Br+I_{B^c}f(u),
+\qquad
+q=I_B(r+\delta)+I_{B^c}f(u).
+\]
+Locality shows that localization sends epigraph points to epigraph points,
+and multiplication by indicators is continuous.  Hence
+$(\bar x,\bar r)$ is still in the closure of $\epi(f)$.  Moreover
+$f(\bar x)>q$ on $B$, so $\bar x\notin C_q$.
+
+Since $C_q$ is closed, choose a finite nonempty $Q\subset\mathcal P$ and
+$\varepsilon,\lambda>0$ such that
+\begin{equation}
+\label{eq:separating-neighborhood}
+\bar x+N_0(Q,\varepsilon,\lambda)\quad\text{is disjoint from }C_q,
+\end{equation}
+where
+\[
+N_0(Q,\varepsilon,\lambda)
+=\{v:\widehat\mu(\{\|v\|_Q<\varepsilon\})>1-\lambda\}.
+\]
+Choose positive numbers $\eta_n$ with $\eta_n\downarrow0$ and
+$\sum_n\eta_n<\lambda$.  Using the closure of the epigraph and then applying
+the preceding localization, choose $(z_n,t_n)\in\epi(f)$ such that
+\begin{align}
+\widehat\mu\{\|z_n-\bar x\|_Q\geq\varepsilon\}&<\eta_n,
+\label{eq:space-errors}\\
+\widehat\mu\{|t_n-\bar r|\geq\delta\}&<\eta_n,
+\label{eq:level-errors}
+\end{align}
+and such that $z_n=u$ and $t_n=f(u)$ on $B^c$.  Let
+$G_n=\{t_n\leq q\}$.  The equality on $B^c$ and
+\eqref{eq:level-errors} give
+\[
+\widehat\mu(G_n^c)<\eta_n.
+\]
+Consequently $\bigcup_nG_n=\Omega$ modulo null sets, since the measure of
+$\bigcap_nG_n^c$ is at most $\inf_n\eta_n=0$.  Define the measurable
+partition
+\[
+D_1=G_1,
+\qquad
+D_n=G_n\setminus\bigcup_{k<n}G_k\quad(n\geq2).
+\]
+
+The CCP of $E$ supplies
+\[
+y=\sum_{n=1}^{\infty}I_{D_n}z_n\in E.
+\]
+For each $n$, locality gives
+$I_{D_n}f(y)=I_{D_n}f(z_n)$.  Because $D_n\subset G_n$ and
+$f(z_n)\leq t_n$, it follows that $f(y)\leq q$; hence $y\in C_q$.
+On the other hand, locality of every random seminorm gives
+\[
+\{\|y-\bar x\|_Q\geq\varepsilon\}
+=\bigcup_n\left(D_n\cap
+\{\|z_n-\bar x\|_Q\geq\varepsilon\}\right)
+\quad\text{modulo null sets}.
+\]
+By \eqref{eq:space-errors}, its probability is at most
+$\sum_n\eta_n<\lambda$.  Thus
+$y\in\bar x+N_0(Q,\varepsilon,\lambda)$, contradicting
+\eqref{eq:separating-neighborhood}.
+\end{proof}
+
+Source Theorem 2.13 assumes that both $E$ and $\mathcal P$ have the
+countable concatenation property.  Theorem~\ref{thm:ccp} removes the
+assumption on $\mathcal P$ for the implication $(1)'\Rightarrow(2)'$.
+
+\section{Affirmative subcases of Remark 2.14}
+
+\begin{corollary}[first-countable case]
+\label{cor:firstcountable}
+Let $(E,\mathcal P)$ be an RLC module such that $(E,\Tep)$ is first
+countable.  For any map $f:E\to\overline L^0(\mathcal F)$, if every random
+sublevel $\{f\leq q\}$ is $\Tep$-closed, then $\epi(f)$ is closed in
+$(E,\Tep)\times(\Lzero,\Tep)$.
+\end{corollary}
+
+\begin{proof}
+Closed sublevels are sequentially closed, so
+Theorem~\ref{thm:sequential} makes the epigraph sequentially closed.  The
+factor $\Lzero$ is metrizable, and the product of a first-countable space
+with a metrizable space is first countable.  In a first-countable space,
+sequentially closed sets are closed.
+\end{proof}
+
+\begin{corollary}[countably generated RLC modules]
+The implication $(1)'\Rightarrow(2)'$ in Remark 2.14 holds, without any
+countable concatenation assumption, if the $\Tep$ topology of $E$ is
+generated by a countable family of random seminorms.  In particular it holds
+for every random normed module.
+\end{corollary}
+
+\begin{proof}
+For a countable seminorm family, finite subfamilies together with positive
+rational values of $\varepsilon$ and $\lambda$ give a countable local base
+for $\Tep$.  Thus Corollary~\ref{cor:firstcountable} applies.  A random normed
+module has a singleton defining seminorm family.
+\end{proof}
+
+\section{Why the full net problem remains}
+
+When $E$ lacks the CCP, the proof of Theorem~\ref{thm:ccp} produces only a
+formal countable paste, which need not be an element of $E$.  The sequential
+proof also cannot simply replace ``subsequence'' by ``subnet.''  A net
+may converge in probability while carrying arbitrarily high values on
+measurable sets whose probabilities shrink and whose locations move with the
+index.  A whole tail then need not possess a finite pointwise random upper
+bound.  Moreover, for an uncountable seminorm family the $\Tep$ topology of
+$E$ need not be first countable or sequential, so a point in the closure of
+the epigraph need not be witnessed by an $E$-convergent sequence.
+
+Thus the theorems settle the sequential content of the source question, all
+first-countable cases, and all modules $E$ with the CCP (regardless of
+$\mathcal P$).  They neither prove nor disprove the implication in the
+remaining regime where $E$ lacks the CCP and its topology is genuinely
+nonsequential.  This is why the packet remains classified as a partial result.
+
+\section{Verification and novelty status}
+
+The proofs use only: (i) the elementary almost-everywhere subsequence
+principle for convergence in probability; (ii) finiteness of the pointwise
+supremum of an almost-everywhere convergent real-valued sequence; and (iii)
+the first-countable characterization of closed sets by sequences; and (iv)
+locality plus summable probability errors for the countable-paste argument.
+No computational or unproved dependency is present.
+
+The run's lightweight indexes and local arXiv corpus were searched for the
+paper id, the exact Remark 2.14 question, and close epigraph/sublevel and
+countable-concatenation terminology.  Bounded web searches on 9 August 2026
+found the source and background papers but no later resolution of either the
+stated subcase or the full question.  This is evidence of plausible novelty,
+not a comprehensive certification.
+
+\paragraph{Human-review focus.}
+Verify Lemma~\ref{lem:envelope}, especially the positive-measure tail set and
+the almost-everywhere finiteness of $q$; verify the localization and good-set
+partition in Theorem~\ref{thm:ccp}; check the summable seminorm-error estimate
+for its pasted point; and verify that the chosen seminorm hypothesis indeed
+supplies a countable $\Tep$ local base.
+
+\begin{thebibliography}{9}
+\bibitem{GuoEtAl}
+T. Guo, E. Zhang, M. Wu, B. Yang, G. Yuan, and X. Zeng,
+\emph{On random convex analysis}, arXiv:1603.07074 (2016), especially
+Section 2 and Remark 2.14.
+\end{thebibliography}
+
+\end{document}

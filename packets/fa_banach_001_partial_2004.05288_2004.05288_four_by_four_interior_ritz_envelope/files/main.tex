@@ -1,0 +1,401 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage[hidelinks]{hyperref}
+
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\conv}{\operatorname{conv}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\spec}{\sigma}
+\newcommand{\cB}{\mathcal B}
+\newcommand{\cC}{\mathcal C}
+\newcommand{\cE}{\mathcal E}
+\newcommand{\cS}{\mathcal S}
+\newcommand{\cM}{\mathcal M}
+\numberwithin{equation}{section}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\title{An exact algebraic envelope for four-by-four Ritz sets\\
+with an interior eigenvalue}
+\author{Candidate partial result for arXiv:2004.05288}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{
+\textbf{Status.} Candidate substantial partial result, likely valid, pending
+human review.  The theorem completely treats the first missing $4\times4$
+case under the stated nondegeneracy assumptions; the source's broad questions
+for arbitrary dimension and for $k\geq3$ remain open.}}
+\end{center}
+
+\begin{abstract}
+Dela Rosa and Woerdeman ask for a characterization of
+$\conv\cB_A(\mu)$ when a normal matrix has eigenvalues in the interior of its
+numerical range.  We derive an explicit real-rooted support polynomial in all
+dimensions.  When $A$ has four distinct noncollinear eigenvalues and
+$\mu\notin\spec(A)$, its weight polytope is a segment and the polynomial has
+bidegree at most $(2,2)$.  In every direction the exact support is attained at
+an endpoint root, an interior simple stationary root, or an interior multiple
+root.  These candidates are algebraic; generically the two interior searches
+reduce to quartics.  Intersecting the resulting supporting half-planes gives
+$\conv\cB_A(\mu)$ exactly.  This covers spectra with an interior eigenvalue,
+where the polygonal formula of the source can fail.
+\end{abstract}
+
+\section{Source question and scope}
+
+The source is K.~L. Dela Rosa and H.~J. Woerdeman, \emph{Location of Ritz
+values in the numerical range of normal matrices}, arXiv:2004.05288,
+published in \emph{Linear and Multilinear Algebra} 69 (2021), 2749--2778
+\cite{DRW-location}.  Section~7, page~30 of the arXiv PDF, asks:
+
+\begin{quote}
+Develop similar results for $k$-Ritz sets, $3\leq k<n-1$.  Also consider a
+normal matrix with some eigenvalues in the interior of its numerical range;
+in that case it is less clear how to characterize $\conv\cB_A(\mu_1)$.
+\end{quote}
+
+The source's Figure~2 shows that its earlier polygonal formula can fail as
+soon as one eigenvalue is interior.  The following is the required source
+screenshot; it includes both open problems and that numerical example.
+
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=0.98\textwidth]{figures/open_problem_crop.png}
+  \caption{The open problems and Figure~2 in \cite[p.~30]{DRW-location},
+  rendered from the stored source PDF.}
+  \label{fig:source}
+\end{figure}
+
+This packet solves the complete $4\times4$ support-envelope problem when the
+eigenvalues are distinct and noncollinear and the prescribed first Ritz value
+is not itself an eigenvalue.  It also gives a structural formula in arbitrary
+dimension.  It does not solve the higher-$k$ question, the singular case
+$\mu\in\spec(A)$, or the search for a comparably simple geometry in dimensions
+$n\geq5$.
+
+\clearpage
+\section{Setting}
+
+For $A\in\C^{n\times n}$ and $\mu\in W(A)$, define
+\[
+ \cB_A(\mu)=\left\{\nu\in\C:
+ V^*AV=\begin{bmatrix}\mu&*\\0&\nu\end{bmatrix}
+ \text{ for some }V\in\C^{n\times2},\ V^*V=I_2\right\}.
+\]
+Unitary similarity lets us take
+$A=\Lambda=\diag(\lambda_1,\ldots,\lambda_n)$.  Put
+\[
+ \cC_\Lambda(\mu)=\left\{t\in\R_+^n:
+ \sum_i t_i=1,\quad \sum_i t_i\lambda_i=\mu\right\}.
+\]
+For $t\in\cC_\Lambda(\mu)$ set $u_i=\sqrt{t_i}$.  The condition that
+$[u,v]$ give an upper triangular compression is precisely
+\[
+ v\perp u,\qquad v\perp\Lambda u.
+\]
+Consequently, if the columns of $F_t$ form an orthonormal basis of
+$\{u,\Lambda u\}^{\perp}$, the standard parametrization in the source is
+\begin{equation}
+ \cB_A(\mu)=\bigcup_{t\in\cC_\Lambda(\mu)}
+ W(F_t^*\Lambda F_t).
+ \label{eq:param}
+\end{equation}
+The choice $u_i\geq0$ loses no generality: phases can be removed by a diagonal
+unitary commuting with $\Lambda$.
+
+For a direction $\theta\in\R$, write
+\[
+ h_i(\theta)=\Re(e^{-i\theta}\lambda_i),\qquad
+ H_\theta=\diag(h_1(\theta),\ldots,h_n(\theta)).
+\]
+The support of $W(F_t^*\Lambda F_t)$ in that direction is the largest
+eigenvalue of $F_t^*H_\theta F_t$.
+
+\section{Idea of the proof}
+
+The apparent obstruction is that \eqref{eq:param} is a continuum of numerical ranges.
+The key observation is that every directional Hermitian compression has a
+single explicit characteristic polynomial.  Cauchy--Binet expands the
+determinant using $(n-2)$-row minors of $F_t$.  Because $F_t$ is completed by
+the two-dimensional space spanned by $u$ and $\Lambda u$, complementary
+minors turn each coefficient into the elementary weight
+\[
+ t_i t_j|\lambda_i-\lambda_j|^2.
+\]
+Thus there is no hidden choice of basis $F_t$.
+
+For four eigenvalues the three real barycentric constraints leave only one
+weight parameter $s$.  The support is the maximum of the larger root of a
+quadratic $P_\theta(s,x)$.  Ordinary one-variable calculus now exhausts every
+maximizer: an endpoint, a differentiable stationary root, or a collision of
+the two roots.  Those three cases are expressed by two endpoint quadratics and
+the systems $P=P_s=0$ and $P=P_x=0$.  The proof below makes both reductions
+exact.  The remaining broad problem is not existence of an algorithm, but a
+simple higher-dimensional geometric description.
+
+\section{The support polynomial in all dimensions}
+
+Define
+\begin{align}
+ \delta(t)&=\sum_{1\leq i<j\leq n}
+ t_it_j|\lambda_i-\lambda_j|^2,\label{eq:delta}\\
+ P_\theta(t,x)&=\sum_{1\leq i<j\leq n}
+ t_it_j|\lambda_i-\lambda_j|^2
+ \prod_{\ell\notin\{i,j\}}(x-h_\ell(\theta)).\label{eq:poly}
+\end{align}
+
+\begin{theorem}[Directional compression polynomial]\label{thm:polynomial}
+Let $\Lambda=\diag(\lambda_1,\ldots,\lambda_n)$ and let
+$\mu\in W(\Lambda)\setminus\spec(\Lambda)$.  For every
+$t\in\cC_\Lambda(\mu)$,
+\begin{equation}
+ \det\bigl(xI_{n-2}-F_t^*H_\theta F_t\bigr)
+   =\frac{P_\theta(t,x)}{\delta(t)}.
+ \label{eq:char}
+\end{equation}
+In particular all zeros of $P_\theta(t,\cdot)$ are real, and
+\begin{equation}
+ h_{\conv\cB_A(\mu)}(\theta)
+ =\max_{t\in\cC_\Lambda(\mu)}
+   \max\{x\in\R:P_\theta(t,x)=0\}.
+ \label{eq:support-general}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Let $Q=[u,\Lambda u]$.  Since $\mu\notin\spec(\Lambda)$, the two columns of
+$Q$ are linearly independent for every feasible $t$: dependence would force
+all positive-weight eigenvalues to equal $\mu$.  Hence
+\[
+ E=Q(Q^*Q)^{-1/2}
+\]
+has orthonormal columns and $U=[F_t,E]$ is unitary.  Since
+$xI-F_t^*H_\theta F_t=F_t^*(xI-H_\theta)F_t$, Cauchy--Binet gives
+\begin{equation}
+ \det(xI-F_t^*H_\theta F_t)
+ =\sum_{|I|=n-2}|\det F_t[I,:]|^2
+   \prod_{\ell\in I}(x-h_\ell(\theta)).
+ \label{eq:cb}
+\end{equation}
+Complementary minors of the unitary $U$ have equal modulus.  If
+$I^c=\{i,j\}$, then
+\begin{align*}
+ |\det F_t[I,:]|^2
+ &=|\det E[\{i,j\},:]|^2\\
+ &=\frac{|\det Q[\{i,j\},:]|^2}{\det(Q^*Q)}
+ =\frac{t_it_j|\lambda_i-\lambda_j|^2}{\det(Q^*Q)}.
+\end{align*}
+Moreover,
+\begin{align}
+ \det(Q^*Q)
+ &=\sum_i t_i|\lambda_i|^2-\left|\sum_i t_i\lambda_i\right|^2\notag\\
+ &=\sum_{i<j}t_it_j|\lambda_i-\lambda_j|^2
+ =\delta(t)>0.\label{eq:gram}
+\end{align}
+Substitution in \eqref{eq:cb} proves \eqref{eq:char}.  Real-rootedness follows because the
+left-hand side is the characteristic polynomial of a Hermitian matrix.
+Finally, \eqref{eq:param} and the variational characterization of the largest Hermitian
+eigenvalue give \eqref{eq:support-general}.  Taking the convex hull does not change a support
+function.
+\end{proof}
+
+\section{Exact four-by-four envelope}
+
+Assume now that $n=4$ and the four eigenvalues are distinct and not all
+collinear.  The real $3\times4$ matrix with rows
+\[
+ (1,1,1,1),\qquad (\Re\lambda_i)_{i=1}^4,
+ \qquad(\Im\lambda_i)_{i=1}^4
+\]
+has rank three.  Thus every nonempty $\cC_\Lambda(\mu)$ is a possibly
+degenerate segment
+\[
+ t(s)=t^0+s d,\qquad a\leq s\leq b.
+\]
+For fixed $\theta$ abbreviate
+\[
+ p(s,x)=P_\theta(t(s),x),
+ \qquad r_+(s)=\max\{x\in\R:p(s,x)=0\}.
+\]
+The polynomial $p$ has degree at most two in each variable.  Its leading
+coefficient as a polynomial in $x$ is $\delta(t(s))>0$.
+
+Define three sets of real candidate values:
+\begin{align*}
+ \cE_\theta&=\{x:p(a,x)=0\text{ or }p(b,x)=0\},\\
+ \cS_\theta&=\{x:\exists s\in[a,b],\ p(s,x)=p_s(s,x)=0\},\\
+ \cM_\theta&=\{x:\exists s\in[a,b],\ p(s,x)=p_x(s,x)=0\}.
+\end{align*}
+If $a=b$, interpret $\cE_\theta$ as the roots at that single point.
+
+\begin{theorem}[Exact $4\times4$ interior-spectrum envelope]
+\label{thm:four}
+Let $A$ be a normal $4\times4$ matrix with four distinct noncollinear
+eigenvalues, and let $\mu\in W(A)\setminus\spec(A)$.  Then, in every direction
+$\theta$,
+\begin{equation}
+ h_{\conv\cB_A(\mu)}(\theta)
+ =\max(\cE_\theta\cup\cS_\theta\cup\cM_\theta).
+ \label{eq:support-four}
+\end{equation}
+Consequently
+\begin{equation}
+ \conv\cB_A(\mu)=
+ \bigcap_{\theta\in\R}
+ \left\{z\in\C:\Re(e^{-i\theta}z)
+ \leq h_{\conv\cB_A(\mu)}(\theta)\right\},
+ \label{eq:halfplanes}
+\end{equation}
+where each support value is determined by polynomial systems of bidegree at
+most $(2,2)$.
+\end{theorem}
+
+\begin{proof}
+If the segment is a point, \eqref{eq:support-four} is immediate.  Suppose $a<b$.  The two roots
+of $p(s,\cdot)$ are eigenvalues of the continuous family of $2\times2$
+Hermitian compressions described by Theorem~\ref{thm:polynomial}; equivalently,
+the quadratic formula shows directly that $r_+$ is continuous.  It therefore
+has a maximizer $s_*$ on $[a,b]$.
+
+If $s_*$ is an endpoint, the value $r_+(s_*)$ lies in $\cE_\theta$.  Suppose
+$s_*\in(a,b)$.  If $r_+(s_*)$ is a simple root, the implicit-function theorem
+applied to $p(s,r_+(s))=0$ gives
+\[
+ r_+'(s_*)=-\frac{p_s(s_*,r_+(s_*))}
+                  {p_x(s_*,r_+(s_*))}=0,
+\]
+so the value lies in $\cS_\theta$.  If it is not simple, it lies in
+$\cM_\theta$.  Hence the right side of \eqref{eq:support-four} is at least the
+support in \eqref{eq:support-general}.
+
+Conversely, every $x$ in any of the three candidate sets is a root of
+$p(s,\cdot)$ for some feasible $s$.  It is therefore at most $r_+(s)$, which
+is at most the support.  This proves \eqref{eq:support-four}.  Formula
+\eqref{eq:halfplanes} is the standard
+supporting-half-plane reconstruction of a compact convex subset of $\C$.
+\end{proof}
+
+\begin{corollary}[Generic quartic computation]\label{cor:quartic}
+Write
+\[
+ p(s,x)=A(x)s^2+B(x)s+C(x)
+       =a(s)x^2+b(s)x+c(s).
+\]
+Generically, the simple stationary candidates in Theorem~\ref{thm:four} are
+obtained from
+\begin{equation}
+ B(x)^2-4A(x)C(x)=0,\qquad
+ s=-\frac{B(x)}{2A(x)}\in(a,b),
+ \label{eq:quartic-stat}
+\end{equation}
+and the multiple-root candidates from
+\begin{equation}
+ b(s)^2-4a(s)c(s)=0,\qquad
+ x=-\frac{b(s)}{2a(s)},\quad s\in(a,b).
+ \label{eq:quartic-mult}
+\end{equation}
+Both displayed polynomial equations have degree at most four.  Together with
+the roots of the endpoint quadratics and feasibility filtering, they give the
+exact support.  In degenerate cases one uses the original systems
+$p=p_s=0$ and $p=p_x=0$; if a stationary component persists, its simple root
+is constant on that component, and its boundary value is already captured by
+an endpoint or a multiple-root candidate.
+\end{corollary}
+
+\begin{proof}
+At a simple stationary solution with $A(x)\neq0$, the equation
+$p_s=2A(x)s+B(x)=0$ gives the stated $s$, and substitution into $p=0$ gives
+$B^2-4AC=0$.  Each of $A,B,C$ has degree at most two in $x$, so this equation
+has degree at most four.  A multiple root in $x$ is exactly a zero of the
+quadratic discriminant $b^2-4ac$, also of degree at most four in $s$; here
+$a(s)=\delta(t(s))>0$.  Vanishing leading coefficients are handled without
+division by retaining the two original polynomial equations.  On any
+positive-dimensional simple-root component of $p=p_s=0$, implicit
+differentiation makes the root constant.  The final assertion follows by
+continuity and the classification in Theorem~\ref{thm:four}.
+\end{proof}
+
+\section{Verification and failed simplifications}
+
+The included script \texttt{code/verify\_envelope.py} constructs the weight
+segment, evaluates \eqref{eq:poly}, and compares its two roots with a direct orthogonal
+nullspace compression.  With deterministic seed 20260817 it passed 600 such
+comparisons; the worst absolute root discrepancy was
+$1.443\times10^{-15}$.  It also numerically optimized directional supports
+and checked $p_s=0$ at 45 interior maximizers, with worst normalized residual
+$5.434\times10^{-10}$.
+
+For the source-like example
+\[
+ (\lambda_1,\lambda_2,\lambda_3,\lambda_4)
+ =(i,0,1,0.35+0.33i),\qquad \mu=0.10+0.30i,
+\]
+the exact segment envelope exceeds the two endpoint ellipses by
+$0.055372249026$ in one tested direction, and 66 of 361 tested directions
+have an interior maximizing weight.  Thus endpoint triangles alone cannot
+recover the Figure~2 phenomenon.  A different tempting relaxation---slicing
+the unrestricted compression-polynomial coefficient polytope by the fixed
+root---overestimates support by as much as $0.196837808229$ in this example.
+The code is a consistency audit, not part of the proof.
+
+\section{Novelty check, limitations, and review recommendation}
+
+A bounded search through 17 August 2026 used the exact source title and
+authors, forward-citation records, and the phrases ``interior eigenvalues'',
+``$k$-Ritz sets'', and ``$\cB_A(\mu)$''.  The closest later work found is Dela
+Rosa and Woerdeman's continuity paper \cite{DRW-continuity}, which proves
+continuity of associated submatrix and Ritz-set maps, not the convex-envelope
+formula here.  Dela Rosa's 2021 dissertation repeats the open directions.
+Searches for algebraic Ritz-tuple characterizations found Cauchy-matrix
+criteria, but no fixed-$\mu$ support-polynomial or quartic envelope theorem.
+No matching solution was found; this is a bounded negative search, not a proof
+of novelty.
+
+The exact remaining limitations are:
+\begin{enumerate}[leftmargin=2em]
+\item Theorem~\ref{thm:four} excludes $\mu\in\spec(A)$, where $Q$ may lose
+rank and a separate analysis is required.
+\item For $n\geq5$, Theorem~\ref{thm:polynomial} gives an exact optimization
+over a higher-dimensional polytope.  Facewise Lagrange-multiplier equations
+give a finite semialgebraic procedure, but not a concise geometric answer.
+\item The source's separate question about simultaneous $k$-Ritz sets for
+$3\leq k<n-1$ remains open.
+\end{enumerate}
+
+The verdict is \textbf{candidate partial, likely valid}.  Human review should
+focus on the minor identity in \eqref{eq:cb}--\eqref{eq:gram} and the exhaustive maximum
+classification in Theorem~\ref{thm:four}.  The degenerate-component sentence
+in Corollary~\ref{cor:quartic} is a third review point.  The packet deliberately
+does not promote the result as a full answer to either broad source question.
+
+\begin{thebibliography}{9}
+\bibitem{DRW-location}
+K.~L. Dela Rosa and H.~J. Woerdeman,
+\emph{Location of Ritz values in the numerical range of normal matrices},
+Linear and Multilinear Algebra \textbf{69} (2021), 2749--2778.
+doi:10.1080/03081087.2020.1761280; arXiv:2004.05288.
+
+\bibitem{DRW-continuity}
+K.~L. Dela Rosa and H.~J. Woerdeman,
+\emph{Continuity of submatrices and Ritz sets associated to a point in the
+numerical range}, Linear Algebra Appl. \textbf{624} (2021), 1--13.
+doi:10.1016/j.laa.2021.03.031.
+\end{thebibliography}
+
+\end{document}

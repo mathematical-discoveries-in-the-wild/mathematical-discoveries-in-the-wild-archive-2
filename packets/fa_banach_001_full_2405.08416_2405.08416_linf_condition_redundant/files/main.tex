@@ -1,0 +1,257 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\BMO}{\mathrm{BMO}}
+\newcommand{\CMO}{\mathrm{CMO}}
+\newcommand{\MO}{\operatorname{MO}}
+
+\title{The $L^\infty$ condition is redundant\\
+\large A completion of the compact $T(1)$ theorem \`a la Stein}
+\author{Automated Math Discovery Run \texttt{fa\_banach\_001}, lane 8}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{black}{blue!5}{\parbox{0.88\linewidth}{
+\textbf{Result.} Condition (i), the normalized-bump $L^2$ decay, is by
+itself necessary and sufficient in B\'enyi--Li--Oh--Torres's compact
+$T(1)$ theorem.  Their $L^\infty$ condition (ii) is automatic.
+}}
+\end{center}
+
+\section{Source question and answer}
+
+B\'enyi, Li, Oh, and Torres prove a compact $T(1)$ theorem \`a la Stein
+for a linear singular integral operator $T:\mathcal S(\R^d)\to
+\mathcal S'(\R^d)$ with a standard Calder\'on--Zygmund kernel
+\cite[Theorem~1]{BLOT}.  Their condition (i) says that, for some bump order
+$M$ and every normalized bump $\phi$ of that order,
+\begin{equation}\label{eq:bump-decay}
+ R^{-d/2}\bigl(\|T(\phi^{x,R})\|_2+
+ \|T^*(\phi^{x,R})\|_2\bigr)\longrightarrow0
+ \quad\text{as } |x|+R+R^{-1}\longrightarrow\infty,
+\end{equation}
+where $\phi^{x,R}(y)=\phi((y-x)/R)$.  Their condition (ii) is a
+precompactness requirement in $\CMO$ for images of weak-star convergent
+$L^\infty$ sequences.  Remark~3.6 asks whether (ii) can be removed.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/open_problem_crop.png}
+\caption{The source question, arXiv:2405.08416v2, PDF page 8.}
+\end{figure}
+
+\section{Proof intuition}
+
+The source proof fixes a large cutoff $\phi_R$ and proves
+$T(\phi_R)\in\CMO$, but some of its estimates are not uniform as
+$R\to\infty$; condition (ii) is then used to extract a strongly convergent
+subsequence.  The key is to avoid a global cutoff.
+
+For each test cube $Q$, cut off the constant function at a scale
+$A\ell(Q)$ centered on $Q$.  The local part is controlled directly by the
+normalized-bump decay, while kernel H\"older regularity makes the far part
+nearly constant on $Q$.  Quantitatively,
+\[
+ \MO_Q(T(1))\lesssim
+ A^{d/2}\varepsilon_T(x_Q,A\ell(Q))+A^{-\delta}.
+\]
+Letting $A$ tend to infinity sufficiently slowly makes both terms vanish,
+uniformly for small cubes, large cubes, and fixed cubes translated to
+infinity.  Thus $T(1),T^*(1)\in\CMO$ without condition (ii).
+
+\begin{theorem}\label{thm:main}
+Let $T$ be a linear singular integral operator with a standard
+Calder\'on--Zygmund kernel, as in Theorem~1 of \cite{BLOT}.  Then $T$
+extends compactly to $L^2(\R^d)$ if and only if
+\eqref{eq:bump-decay} holds.  In particular, condition (ii) of that theorem
+is redundant.
+\end{theorem}
+
+\section{The localized cutoff estimate}
+
+For a locally integrable $f$, write
+\[
+ \MO_Q(f)=\frac1{|Q|}\int_Q|f-f_Q|,
+ \qquad f_Q=\frac1{|Q|}\int_Q f.
+\]
+Choose once and for all $\chi\in C_c^\infty(B(0,1))$ equal to one on
+$B(0,1/2)$.  Multiplying $\chi$ by a fixed constant makes it a normalized
+bump of order $M$; by linearity, \eqref{eq:bump-decay} therefore applies to
+$\chi$ itself.  Set
+\[
+ \varepsilon_T(x,R)=R^{-d/2}\|T(\chi^{x,R})\|_2,
+ \qquad
+ \varepsilon_{T^*}(x,R)=R^{-d/2}\|T^*(\chi^{x,R})\|_2.
+\]
+
+\begin{lemma}\label{lem:local}
+Let $Q$ have center $x_Q$ and side length $\ell$.  If $A\geq A_0(d)$,
+then
+\begin{equation}\label{eq:local}
+ \MO_Q(T(1))
+ \lesssim A^{d/2}\varepsilon_T(x_Q,A\ell)+A^{-\delta},
+\end{equation}
+where $\delta$ is the H\"older exponent of the kernel.  The analogous
+estimate holds for $T^*(1)$.
+\end{lemma}
+
+\begin{proof}
+Put $\eta_Q=\chi^{x_Q,A\ell}$.  For $A_0$ large enough, $\eta_Q=1$ on a
+fixed dilate of $Q$.  The standard distributional definition of $T(1)$
+shows that on $Q$, modulo an additive constant,
+\begin{equation}\label{eq:decomp}
+ T(1)(x)=T(\eta_Q)(x)+F_Q(x),
+\end{equation}
+where one may take
+\[
+ F_Q(x)=\int_{\R^d}
+ [K(x,y)-K(x_Q,y)](1-\eta_Q(y))\,dy.
+\]
+This integral is absolutely convergent: its integrand is supported where
+$|y-x_Q|\gtrsim A\ell$, and the kernel difference decays like
+$|x-x_Q|^\delta|y-x_Q|^{-d-\delta}$.  Consequently,
+\[
+ \sup_{x\in Q}|F_Q(x)|\lesssim A^{-\delta}.
+\]
+For the local part, Cauchy--Schwarz gives
+\[
+ \frac1{|Q|}\int_Q|T(\eta_Q)|
+ \leq |Q|^{-1/2}\|T(\eta_Q)\|_2
+ \lesssim A^{d/2}\varepsilon_T(x_Q,A\ell).
+\]
+Subtracting averages in \eqref{eq:decomp} proves \eqref{eq:local}.  Replacing
+$K$ by its transposed kernel gives the assertion for $T^*$.
+\end{proof}
+
+The representation \eqref{eq:decomp} can equivalently be verified against
+mean-zero test functions supported in $Q$; subtracting $K(x_Q,y)$ makes the
+far-field integral absolutely convergent and removes the irrelevant
+additive constant.
+
+\section{Condition (i) forces the two CMO conditions}
+
+Define the decreasing tail modulus
+\[
+ \Omega(s)=\sup_{|x|+R+R^{-1}\geq s}
+ \bigl(\varepsilon_T(x,R)+\varepsilon_{T^*}(x,R)\bigr).
+\]
+For the fixed cutoff $\chi$, condition \eqref{eq:bump-decay} says precisely
+that $\Omega(s)\to0$.  Put
+$\omega(s)=\max\{\Omega(s),s^{-1}\}$ and
+\[
+ \alpha=1-\frac{d}{2(d+1)}>0.
+\]
+
+We verify the three vanishing-oscillation conditions in the
+Bourdaud--Uchiyama characterization quoted as Lemma~2.3 in \cite{BLOT}.
+
+\paragraph{Small cubes.}
+Let $u=\ell^{-1}$ and
+\[
+ A(u)=\min\{u^{1/2},\omega(u^{1/2})^{-1/(d+1)}\}.
+\]
+Then $A(u)\to\infty$, while $A(u)\ell\leq u^{-1/2}\to0$.  Hence
+$(A\ell)^{-1}\geq u^{1/2}$, and Lemma~\ref{lem:local} gives, uniformly in
+the center of $Q$,
+\[
+ \MO_Q(T(1)) + \MO_Q(T^*(1))
+ \lesssim \omega(u^{1/2})^\alpha+A(u)^{-\delta}\longrightarrow0.
+\]
+Thus the small-cube quantities $\Gamma_1$ vanish.
+
+\paragraph{Large cubes.}
+For each cube put $u=\ell(Q)$ and set
+\[
+ A(u)=\min\{u^{1/2},\omega(u)^{-1/(d+1)}\}.
+\]
+The functions $\omega$ and $A$ are respectively decreasing and increasing.
+Also $A(u)\to\infty$, and $A\ell\geq u$, so for every threshold $U$ the
+same estimate gives
+\[
+ \sup_{\ell(Q)\geq U}
+ \bigl(\MO_Q(T(1))+\MO_Q(T^*(1))\bigr)
+ \lesssim \omega(U)^\alpha+A(U)^{-\delta}\longrightarrow0.
+\]
+Thus $\Gamma_2=0$.
+
+\paragraph{Translations to infinity.}
+Fix a cube $Q_0$.  For $Q=Q_0+x$ and $u=|x|$ sufficiently large, use the
+choice
+\[
+ A(u)=\min\{u^{1/2},\omega(u/2)^{-1/(d+1)}\}.
+\]
+Its center has magnitude at least $u/2$, so
+\[
+ \MO_{Q_0+x}(T(1))+\MO_{Q_0+x}(T^*(1))
+ \lesssim \omega(u/2)^\alpha+A(u)^{-\delta}\longrightarrow0
+\]
+and every far-translation quantity $\Gamma_3^{Q_0}$ vanishes.
+
+Condition (i) implies the bounded Stein bump estimate, so the source proof
+already gives $T(1),T^*(1)\in\BMO$ \cite[Section~4]{BLOT}.  The three
+limits above and the quoted characterization therefore yield
+\begin{equation}\label{eq:cmo}
+ T(1),T^*(1)\in\CMO.
+\end{equation}
+
+\section{Completion of the proof}
+
+Necessity of \eqref{eq:bump-decay} for compact $T$ is established before
+Theorem~1 in \cite{BLOT}: normalized $L^2$ bumps converge weakly to zero in
+the extreme position/scale regimes, and compact operators map weakly
+convergent sequences to norm-convergent sequences.
+
+Conversely, assume \eqref{eq:bump-decay}.  The source proves directly by
+Cauchy--Schwarz that this condition implies the weak compactness property
+\cite[Section~4]{BLOT}.  Equation \eqref{eq:cmo} supplies the other
+hypothesis in the compact $T(1)$ theorem quoted there from
+Mitkovski--Stockdale.  Consequently $T$ is compact on $L^2$.  This proves
+Theorem~\ref{thm:main}.
+
+\section{Verification and novelty notes}
+
+The principal review points are:
+\begin{enumerate}
+\item the local distributional identity \eqref{eq:decomp}, including its
+harmless additive constant;
+\item the factor $A^{d/2}$ in \eqref{eq:local};
+\item the slow-dilation choices in the three CMO regimes;
+\item the exact direction in which the source compact $T(1)$ theorem is
+applied.
+\end{enumerate}
+No numerical experiment is used: the proof is analytic.
+
+A bounded official-arXiv search through 11 August 2026 used arXiv id
+2405.08416, the exact title, and combinations of ``$L^\infty$ condition'',
+``removed'', ``normalized bump'', and ``CMO''.  It found the source and
+adjacent compact $T(1)$ literature, but no later paper removing condition
+(ii).  This packet settles only the linear theorem under the source's
+standard Calder\'on--Zygmund hypotheses; the bilinear analogue in its
+Remark~3.7 is not addressed.  Expert review should focus first on
+Lemma~\ref{lem:local} and the uniform tail modulus $\Omega$.
+
+\begin{thebibliography}{9}
+\bibitem{BLOT}
+\'A.~B\'enyi, G.~Li, T.~Oh, and R.~H.~Torres,
+\emph{Compact $T(1)$ theorem \`a la Stein},
+J. Funct. Anal.; arXiv:2405.08416v2.
+
+\bibitem{MS}
+M.~Mitkovski and C.~B.~Stockdale,
+\emph{On the $T1$ theorem for compactness of Calder\'on--Zygmund operators},
+arXiv:2309.15819.
+\end{thebibliography}
+
+\end{document}

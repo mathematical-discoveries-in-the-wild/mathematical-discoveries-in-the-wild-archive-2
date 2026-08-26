@@ -1,0 +1,206 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\R}{\mathbb{R}}
+
+\title{Regulated Radial $L^p$ Multiplier Profiles Have Continuous Representatives}
+\author{Candidate partial result for arXiv:2602.14623}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.} Candidate partial result, likely valid. This note
+does not solve the full radial multiplier continuity question.
+
+\section{Source question}
+
+Mikael de la Salle asks the following in Question 1.6 of
+\cite{delasalle2026}, page 4:
+
+\begin{quote}
+Is there a discontinuous function $m:(0,\infty)\to\R$ such that the Fourier
+multiplier with symbol $\xi\in\R^d\mapsto m(|\xi|)$ is bounded on
+$L_p(\R^d)$ for some $p\ne 2$?
+\end{quote}
+
+Figure~\ref{fig:question} is a crop of the original source page.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{Question 1.6 in \cite[p.~4]{delasalle2026}.}
+  \label{fig:question}
+\end{figure}
+
+The source proves that if the multiplier is bounded, then the primitive of
+$t\mapsto m(e^t)$ is smooth in Zygmund's sense
+\cite[Theorem~1.7]{delasalle2026}. Proposition 2.4 of the same paper gives the
+equivalent weak-* tangent formulation used below.
+
+\section{Definitions}
+
+A function $u:I\to\R$ on an open interval is \emph{locally regulated} if at
+every $t\in I$ the finite one-sided limits $u(t-)$ and $u(t+)$ exist. We do
+not require either one-sided limit to equal the displayed point value $u(t)$.
+
+Two bounded symbols represent the same Fourier multiplier when they agree
+almost everywhere. Thus the appropriate continuity conclusion is the
+existence of a continuous representative of the multiplier symbol.
+
+\section{Idea of the proof}
+
+The source theorem excludes every nonconstant weak-* tangent of the
+logarithmic radial profile. A regulated jump has a canonical tangent: zooming
+at the jump converges to the step function whose two values are the left and
+right limits. The source theorem therefore forces those limits to agree at
+every point. What remains are only removable point-value defects. A compact
+interval can contain only finitely many defects of any fixed size, so their
+union is countable and replacing them by the common two-sided limits produces
+a continuous representative.
+
+The highly oscillatory symbol singled out in Question 1.8 is not regulated
+near the unit sphere, so this mechanism deliberately does not address it.
+
+\section{Partial theorem and proof}
+
+\begin{theorem}\label{thm:main}
+Let $d\ge 2$, $1<p<\infty$, and $p\ne2$. Let $m\in L_\infty(0,\infty;\R)$
+and assume that
+\[
+  \widehat{T_m f}(\xi)=m(|\xi|)\widehat f(\xi)
+\]
+defines a bounded operator on $L_p(\R^d)$. If the equivalence class of $m$
+contains a locally regulated representative, then it contains a continuous
+representative on $(0,\infty)$.
+\end{theorem}
+
+\begin{proof}
+Choose a locally regulated representative of $m$. Composing it with the
+continuous clipping map to an essential $L_\infty$ bound changes it only on a
+null set and preserves regulatedness. We may therefore take this
+representative to be bounded; still denote it by $m$, and put
+\[
+  u(t)=m(e^t),\qquad t\in\R.
+\]
+Then $u$ is bounded and locally regulated. By Theorem 1.7 and Proposition 2.4
+of \cite{delasalle2026}, every weak-* limit in $\sigma(L_\infty,L_1)$ of a
+sequence
+\[
+  x\longmapsto u(s_n+x/r_n),\qquad r_n\longrightarrow\infty,
+\]
+is constant almost everywhere.
+
+Fix $s\in\R$ and set $a=u(s-)$ and $b=u(s+)$. Take $s_n=s$ and $r_n=n$.
+For each fixed $x<0$,
+\[
+  u(s+x/n)\longrightarrow a,
+\]
+and for each fixed $x>0$ the same expression converges to $b$. The functions
+are uniformly bounded, so dominated convergence against an arbitrary
+$L_1(\R)$ test function shows weak-* convergence to
+\[
+  v(x)=a\mathbf 1_{(-\infty,0)}(x)+b\mathbf 1_{(0,\infty)}(x).
+\]
+The tangent characterization forces $v$ to be constant almost everywhere;
+hence $a=b$. Since $s$ was arbitrary, the two one-sided limits of $u$ agree at
+every point. Denote their common value by $c(s)$.
+
+We next verify that $c$ is continuous. Given $s$ and $\varepsilon>0$, the
+one-sided limit definitions give $\delta>0$ such that
+\[
+  |u(t)-c(s)|<\varepsilon
+  \quad\text{whenever}\quad 0<|t-s|<\delta.
+\]
+If $s<t<s+\delta$, then points approaching $t$ from either side may be chosen
+inside $(s,s+\delta)$, and passing to the corresponding one-sided limit gives
+$|c(t)-c(s)|\le\varepsilon$. The same argument applies on the left. Thus $c$
+is continuous.
+
+It remains to show that $u=c$ almost everywhere. For integers $N,k\ge1$, set
+\[
+  E_{N,k}=\{s\in[-N,N]: |u(s)-c(s)|\ge 1/k\}.
+\]
+This set is finite. Indeed, if it had an accumulation point $s_0$, choose
+distinct $s_j\in E_{N,k}$ with $s_j\to s_0$ and pass to a one-sided
+subsequence. Regulatedness gives $u(s_j)\to c(s_0)$, while continuity gives
+$c(s_j)\to c(s_0)$, contradicting
+$|u(s_j)-c(s_j)|\ge1/k$. Therefore
+$\{u\ne c\}=\bigcup_{N,k}E_{N,k}$ is countable, and $u=c$ almost everywhere.
+
+Finally define $\widetilde m(r)=c(\log r)$. This function is continuous on
+$(0,\infty)$ and equals $m(r)$ almost everywhere, so it represents the same
+Fourier multiplier.
+\end{proof}
+
+\begin{corollary}
+Under the multiplier assumptions of Theorem~\ref{thm:main}, the conclusion
+holds whenever $m$ is locally of bounded variation, locally of finite
+$q$-variation for some $1\le q<\infty$, or locally cadlag. In the cadlag case,
+$m$ itself (rather than merely an almost-everywhere representative) is
+continuous.
+\end{corollary}
+
+\begin{proof}
+Each listed hypothesis implies local regulatedness. For finite
+$q$-variation, failure of a one-sided limit would allow two interlaced
+sequences with values separated by a fixed positive amount, forcing the sum
+of the $q$th powers of successive increments to be infinite. Theorem
+\ref{thm:main} applies. A cadlag function already equals its right-hand limit;
+the proof of the theorem forces the left-hand limit to have the same value,
+so the function is continuous at every point.
+\end{proof}
+
+\section{Verification notes}
+
+\begin{itemize}
+  \item The proof uses no unproved lemma. Its only external dependency is the
+  weak-* tangent characterization in \cite[Theorem~1.7 and Proposition~2.4]
+  {delasalle2026}.
+  \item The step-function tangent is obtained in the full
+  $\sigma(L_\infty,L_1)$ topology, not merely pointwise locally: dominated
+  convergence applies to every $L_1(\R)$ test function.
+  \item The representative issue is explicit. The proof does not claim that
+  arbitrary null-set changes of a multiplier symbol are continuous.
+  \item No computation is used or needed.
+\end{itemize}
+
+\noindent\textbf{Verifier verdict:} likely valid. The most useful human check
+is the elementary compactness argument proving that $u=c$ almost everywhere.
+
+\section{Scope and novelty status}
+
+The full Question 1.6 remains open for bounded measurable profiles, and the
+specific slowly oscillating profile in Question 1.8 is outside the regulated
+class. The result is therefore only a regularity-class subcase.
+
+On 11 August 2026, the local run indexes and parsed arXiv corpus were searched
+for the exact arXiv id and close terminology. Bounded arXiv/web searches used
+the exact id, the exact slowly oscillating candidate, and combinations of
+``regulated'', ``one-sided limits'', ``bounded variation'', and ``radial
+Fourier multiplier''. No explicit prior statement of this corollary was found.
+Novelty confidence is modest because the proof is an elementary deduction
+from Proposition 2.4 of the source paper itself.
+
+\section{Human review recommendation}
+
+Check the regulated-function lemma and retain the packet, if accepted, as a
+narrow partial result. It should not be described as resolving the general
+continuity question or Question 1.8.
+
+\begin{thebibliography}{9}
+\bibitem{delasalle2026}
+Mikael de la Salle,
+\emph{Kakeya conjecture and High-Rank Lattice von Neumann algebras},
+arXiv:2602.14623v1, 2026.
+\url{https://arxiv.org/abs/2602.14623}
+\end{thebibliography}
+
+\end{document}

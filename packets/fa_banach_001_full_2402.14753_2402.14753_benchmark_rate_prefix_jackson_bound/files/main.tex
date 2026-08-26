@@ -1,0 +1,301 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.88in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{microtype}
+\hypersetup{hidelinks}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Sph}{\mathbb S}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\ip}[2]{\left\langle #1,#2\right\rangle}
+
+\title{An Intrinsic-Dimensional Jackson Bound for\\
+Prefix-Tuning a Fixed Attention Head}
+\author{Candidate full solution packet for arXiv:2402.14753}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{\textbf{Status.}
+Candidate full affirmative answer; likely valid, pending human review.  For
+geodesically Lipschitz maps on $\Sph^m$, one finite fixed attention head has a
+prefix of length $O_m((L/\epsilon)^m)$ giving uniform error $\epsilon$.
+Thus the exponent agrees with the trained-network benchmark named in the
+source, rather than the source construction's exponent
+$10+14m+4m^2$.}}
+\end{center}
+
+\section{Source question}
+
+Petrov, Torr, and Bibi prove in \emph{Prompting a Pretrained Transformer Can Be
+a Universal Approximator}, arXiv:2402.14753 [1], that a specially constructed
+fixed attention head is universal under prefix-tuning.  For Lipschitz maps on
+$\Sph^m$ their construction uses
+\[
+ N=O\!\left(\epsilon^{-10-14m-4m^2}\right)
+\]
+prefix positions, whereas they quote $O(\epsilon^{-m})$ trainable parameters
+as the usual benchmark for trained networks.  They ask whether a tighter
+Jackson bound exists, or whether prefix-tuning and prompting inherently lose
+asymptotic efficiency.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.88\textwidth]{figures/open_question_crop.png}
+\caption{The exact open question on source PDF page~9.}
+\end{figure}
+
+We prove that the tighter bound exists in the same idealized fixed-head model.
+The proof is direct: use a geodesic net as the keys, sampled target values as
+the values, and make softmax localize near a closest net point.  This avoids
+both the source's spherical convolution and its uniform Riemann-sum
+approximation.
+
+\section{Model and statement}
+
+Let $\rho(x,y)=\arccos\ip{x}{y}$ be geodesic distance on the unit sphere
+$\Sph^m\subset\R^{m+1}$.  Write $A_j$ for the surface area of $\Sph^j$ and set
+\begin{equation}\label{eq:Cm}
+ C_m=\frac{2m\pi^{m-1}A_m}{A_{m-1}}.
+\end{equation}
+For a sequence $X=(x_1,\ldots,x_T)$ and prefix
+$P=(p_1,\ldots,p_N)$, the source's classical attention head is
+\begin{equation}\label{eq:head}
+ [u(X;P)]_k=
+ \frac{\sum_{i=1}^N e^{x_k^\top Hp_i}W_Vp_i+
+       \sum_{j=1}^T e^{x_k^\top Hx_j}W_Vx_j}
+      {\sum_{i=1}^N e^{x_k^\top Hp_i}+
+       \sum_{j=1}^T e^{x_k^\top Hx_j}}.
+\end{equation}
+
+\begin{theorem}[Benchmark-rate fixed-head Jackson bound]\label{thm:main}
+Fix $m\ge1$ and $T\ge1$.  There are matrices
+$H,W_V\in\R^{3(m+1)\times3(m+1)}$, independent of the target, accuracy,
+prefix length, and input sequence, with the following property.
+
+Let $f:\Sph^m\to\R^{m+1}$ satisfy
+\[
+ \norm{f(x)-f(y)}_2\le L\rho(x,y),\qquad x,y\in\Sph^m,
+\]
+where $L>0$, and put $B=\norm{f}_\infty$.  For every $\epsilon>0$ define
+\[
+ \delta=\min\left\{\frac12,\frac{\epsilon}{6L}\right\}.
+\]
+There is a prefix of length
+\begin{equation}\label{eq:Nbound}
+ N\le C_m\delta^{-m}
+\end{equation}
+such that, after the fixed embedding
+$\Pi x=(x,0,0)\in\R^{3(m+1)}$ and projection onto the first block,
+\begin{equation}\label{eq:uniform}
+ \sup_{(x_1,\ldots,x_T)\in(\Sph^m)^T}
+ \max_{1\le k\le T}
+ \norm{\Pi^{-1}[u(\Pi X;P)]_k-f(x_k)}_2\le\epsilon.
+\end{equation}
+Consequently, for fixed $m,L,T$ and $f$,
+\[
+ N=O_m(\epsilon^{-m})\qquad(\epsilon\downarrow0).
+\]
+Each prefix position has $3(m+1)$ coordinates, so the number of trainable
+prefix coordinates has the same $\epsilon$-exponent $m$.
+\end{theorem}
+
+If $L=0$, the map is constant.  It is represented exactly with one prefix:
+take zero key, value $(T+1)f$, and note that all $T+1$ attention scores are
+zero.  Thus this harmless case is omitted from the quantitative statement.
+
+\section{A small intrinsic net}
+
+\begin{lemma}\label{lem:net}
+For $0<\delta\le1/2$, the sphere has a geodesic $\delta$-net
+$\{b_1,\ldots,b_N\}$ satisfying \eqref{eq:Nbound}.
+\end{lemma}
+
+\begin{proof}
+Choose a maximal geodesic $\delta$-separated set.  Maximality makes it a
+$\delta$-net, while its open caps of radius $\delta/2$ are disjoint.  A cap of
+radius $\delta/2$ has area
+\[
+ A_{m-1}\int_0^{\delta/2}\sin^{m-1}t\,dt.
+\]
+Since $\sin t\ge2t/\pi$ on $[0,\pi/2]$, this is at least
+\[
+ A_{m-1}\left(\frac2\pi\right)^{m-1}
+ \frac{(\delta/2)^m}{m}
+ =\frac{A_{m-1}\delta^m}{2m\pi^{m-1}}.
+\]
+The disjoint caps fit inside a sphere of area $A_m$.  Rearrangement gives
+$N\le C_m\delta^{-m}$.
+\end{proof}
+
+The exponent is $m$, the intrinsic dimension of the domain, rather than the
+ambient dimension $m+1$.
+
+\section{Softmax is a local interpolant}
+
+Fix the net in Lemma~\ref{lem:net}.  For $\lambda>0$ define
+\begin{equation}\label{eq:g}
+ g(x)=\frac{\sum_{i=1}^N e^{\lambda\ip{x}{b_i}}f(b_i)}
+ {\sum_{i=1}^N e^{\lambda\ip{x}{b_i}}}.
+\end{equation}
+
+\begin{lemma}\label{lem:local}
+If
+\begin{equation}\label{eq:lambda-local}
+ \lambda\ge 2\delta^{-2}\log\left(\frac{\pi N}{\delta}\right),
+\end{equation}
+then $\sup_{x\in\Sph^m}\norm{g(x)-f(x)}_2\le3L\delta$.
+\end{lemma}
+
+\begin{proof}
+Fix $x$ and choose $b_j$ with $\rho(x,b_j)\le\delta$.  A net point with
+$\rho(x,b_i)\ge2\delta$ has score at most $\lambda\cos(2\delta)$, whereas the
+denominator in \eqref{eq:g} is at least $e^{\lambda\cos\delta}$.  Moreover,
+\begin{align*}
+ \cos\delta-\cos(2\delta)
+ &=2\sin(3\delta/2)\sin(\delta/2)\\
+ &\ge \frac{6}{\pi^2}\delta^2\ge\frac12\delta^2,
+\end{align*}
+where both sine arguments lie in $[0,\pi/2]$.  Hence the total softmax mass
+$q_x$ assigned outside the $2\delta$ cap obeys
+\[
+ q_x\le N e^{-\lambda\delta^2/2}\le\frac{\delta}{\pi}.
+\]
+Inside the cap, Lipschitzness gives error at most $2L\delta$; everywhere on
+the sphere it gives error at most $\pi L$.  Since \eqref{eq:g} is a convex
+combination,
+\[
+ \norm{g(x)-f(x)}_2
+ \le2L\delta+\pi Lq_x\le3L\delta.
+\]
+The estimate is uniform in $x$.
+\end{proof}
+
+\section{Realization by one finite fixed head}
+
+Use three blocks of size $m+1$ and fix
+\begin{equation}\label{eq:matrices}
+ H=\begin{bmatrix}0&I&0\\0&0&0\\0&0&0\end{bmatrix},
+ \qquad
+ W_V=\begin{bmatrix}0&0&I\\0&0&0\\0&0&0\end{bmatrix}.
+\end{equation}
+For each net point put
+\begin{equation}\label{eq:prefix}
+ p_i=\begin{bmatrix}0\\ \lambda b_i\\ f(b_i)\end{bmatrix}.
+\end{equation}
+Then, for every $x_k$, the projected prefix score is
+$\lambda\ip{x_k}{b_i}$ and the projected prefix value is $f(b_i)$.  Every
+embedded input token has score zero and projected value zero.  Therefore
+\begin{equation}\label{eq:exact-head}
+ \Pi^{-1}[u(\Pi X;P)]_k
+ =\frac{\sum_i e^{\lambda\ip{x_k}{b_i}}f(b_i)}
+        {\sum_i e^{\lambda\ip{x_k}{b_i}}+T}.
+\end{equation}
+This identity uses ordinary finite matrices; no limit is hidden in it.
+
+Let $D(x)=\sum_i e^{\lambda\ip{x}{b_i}}$.  Since some $b_j$ is within
+$\delta$ of $x$, $D(x)\ge e^{\lambda\cos\delta}$.  Equation~\eqref{eq:g} and
+the convexity bound on its numerator give
+\begin{equation}\label{eq:context-error}
+ \norm{\Pi^{-1}u(\Pi X;P)_k-g(x_k)}_2
+ \le \frac{BT}{D(x_k)}
+ \le BT e^{-\lambda\cos\delta}.
+\end{equation}
+Choose $\lambda$ satisfying \eqref{eq:lambda-local} and, in addition,
+\begin{equation}\label{eq:lambda-context}
+ \lambda\ge \frac{1}{\cos\delta}
+ \max\left\{0,\log\left(\frac{2BT}{\epsilon}\right)\right\},
+\end{equation}
+with the second term read as zero when $B=0$.  Lemma~\ref{lem:local}, the
+definition of $\delta$, and \eqref{eq:context-error} now give
+\[
+ \norm{\Pi^{-1}u(\Pi X;P)_k-f(x_k)}_2
+ \le3L\delta+\frac\epsilon2\le\epsilon.
+\]
+This proves Theorem~\ref{thm:main}.
+
+\paragraph{Arbitrary continuous targets.}
+The same proof also removes the source's harmonic-coefficient hypothesis and
+restriction $m\ge8$.  If $f$ is merely continuous, let
+$\omega_f(r)=\sup_{\rho(x,y)\le r}\norm{f(x)-f(y)}_2$.  The near contribution
+in Lemma~\ref{lem:local} is $\omega_f(2\delta)$ and the far contribution is at
+most $2Bq_x$.  First choose $\delta$ from the modulus and then $\lambda$; this
+gives density for every $m\ge1$ with the same finite head.  Lipschitzness is
+needed only to turn this into the explicit Jackson rate \eqref{eq:Nbound}.
+
+\section{What the open question receives}
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+ & Source construction [1] & This packet \\
+\midrule
+Prefix exponent & $10+14m+4m^2$ & $m$ \\
+Sphere dimension & $m\ge8$ & $m\ge1$ \\
+Regularity artefact & extra harmonic constant & none \\
+Pretrained head & limiting block constant & finite fixed matrices \\
+Sequence length $T$ & element-wise extension & same $N$; $T$ enters $\lambda$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For fixed $m$, the number of trainable prefix coordinates is a constant
+multiple of $N$, hence $O(\epsilon^{-m})$.  This answers the affirmative
+branch of the source question: the much larger exponent is an artefact of the
+particular proof, not an inherent prefix-length penalty in its constructed
+fixed-head model.  Via the source's reduction from prefix-tuning to soft
+prompting, the same conclusion applies to that idealized soft-prompt setting.
+
+There is also a small repair to the source's conversion.  Its proof of exact
+split-to-classical realization takes a block constant $M$ ``tending to
+$-\infty$''.  A finite $M$ does not erase the input denominator exactly.
+Equations~\eqref{eq:matrices}--\eqref{eq:lambda-context} instead retain those
+terms, calculate them exactly, and absorb them without increasing $N$.
+
+\section{Novelty check and limitations}
+
+A bounded search through 11 August 2026 found two close later results.  Hu et
+al. [2] prove prompt-tuning universality for a one-head, one-attention-layer
+transformer, but use quantization, additional feed-forward layers, and a long
+prompt indexing a discretized function class; they do not give this uniform
+intrinsic-dimensional prefix Jackson bound.  Liu et al. [3, Theorem A.1] give
+an $O(dnN_X)$ covering-number parameter bound, but their target-dependent
+parameters occur in a trainable linear layer and trainable attention matrices,
+not solely in prefixes of a frozen head.  Exact-phrase, title-citation, and
+architecture-keyword searches found no later proof of the statement here.
+
+The theorem concerns the specially designed frozen head in [1], not an
+arbitrary transformer obtained from real-world pretraining.  Prefix magnitudes
+are not bounded: \eqref{eq:lambda-local} permits
+$\lambda=O(\epsilon^{-2}\log(1/\epsilon))$.  The result counts real trainable
+coordinates, as the source question does, and does not measure their bit
+complexity or optimization difficulty.  It also supplies no minimax lower
+bound for the complete unbounded-prefix hypothesis class.  Thus the rate is
+called \emph{benchmark-rate}, not formally minimax-optimal.
+
+\begin{thebibliography}{9}
+\bibitem{petrov}
+A. Petrov, P. H. S. Torr, and A. Bibi,
+\emph{Prompting a Pretrained Transformer Can Be a Universal Approximator},
+ICML 2024; arXiv:2402.14753.
+
+\bibitem{hu}
+J. Y.-C. Hu, W.-P. Wang, A. Gilani, C. Li, Z. Song, and H. Liu,
+\emph{Fundamental Limits of Prompt Tuning Transformers: Universality,
+Capacity and Efficiency}, ICLR 2025; arXiv:2411.16525.
+
+\bibitem{liu}
+H. Liu, J. Y.-C. Hu, Z. Song, and H. Liu,
+\emph{Attention Mechanism, Max-Affine Partition, and Universal
+Approximation}, NeurIPS 2025; arXiv:2504.19901.
+\end{thebibliography}
+
+\end{document}

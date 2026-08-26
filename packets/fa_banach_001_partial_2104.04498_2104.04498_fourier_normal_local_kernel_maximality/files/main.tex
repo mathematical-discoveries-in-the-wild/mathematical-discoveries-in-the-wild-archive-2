@@ -1,0 +1,238 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\I}{\mathcal I}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+
+\title{A sharp Fourier gap for Z\"ust's coefficient-kernel question}
+\author{Automated mathematics run \texttt{fa\_banach\_001}\\Lane 14, candidate partial result}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.} Candidate substantial partial result, likely valid pending expert review.  We compute the exact Hessian at the north pole, prove that every open-hemisphere profile is stationary, and prove strict nonlinear local maximality on the Fourier-normal slice.  The source's global inequality and equality characterization remain open.}}
+\end{center}
+
+\section{Source question and reformulation}
+
+The source is Roger Z\"ust, \emph{The Riemannian hemisphere is almost calibrated in the injective hull of its boundary}, arXiv:2104.04498v2 (submitted 2021, revised 2025) \cite{Zust}.  Its final Question~2, on PDF page~48, asks whether
+\[
+ \norm{p(f)}_1:=\int_0^\pi\int_\alpha^\pi p_{\alpha,\beta}(f)\,d\beta\,d\alpha
+ \le \frac{\pi^2}{2}
+\]
+for every $f\in E(\mathbf S^1)\setminus\mathbf S^1$, with equality exactly when $f$ belongs to the embedded open hemisphere $\mathbf S^2_+\setminus\mathbf S^1$.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.98\textwidth]{figures/open_problem_crop.png}
+  \caption{The definition and Question~2 in the source PDF, page~48.}
+\end{figure}
+
+In the source's lifted model, $f:\R\to(0,\pi)$ is $1$-Lipschitz and
+$f(\alpha+\pi)+f(\alpha)=\pi$.  Put
+\[
+ a(\alpha)=\cos f(\alpha).
+\]
+Then $a(\alpha+\pi)=-a(\alpha)$ and
+\begin{equation}\label{eq:slope}
+ |a'(\alpha)|^2\le 1-a(\alpha)^2\quad\text{a.e.}
+\end{equation}
+Conversely, these conditions with $|a|<1$ recover an interior point by
+$f=\arccos a$.  Writing $c=\cos(\beta-\alpha)$ and
+$s=\sin(\beta-\alpha)$, the coefficient is
+\begin{equation}\label{eq:p}
+ p_{\alpha,\beta}(a)=
+ \frac{s^2-a(\alpha)^2-a(\beta)^2+2c\,a(\alpha)a(\beta)}
+ {s^2(1-a(\alpha)^2)(1-a(\beta)^2)}.
+\end{equation}
+The embedded hemisphere consists precisely of first harmonics
+$a(\alpha)=A\cos\alpha+B\sin\alpha$ with $A^2+B^2<1$.
+
+\section{Proof intuition}
+
+At the north pole $a=0$, the kernel is identically one, so the functional is
+$\pi^2/2$.  The numerator of \eqref{eq:p} is quadratic in $a$, but the denominator contains all higher nonlinearities.  The quadratic part is nevertheless exactly diagonal in the odd Fourier basis.  Mode~$1$ is neutral because it moves inside the hemisphere; every mode $n\ge3$ loses exactly $(\pi^2/2)(n-1)$ times its squared amplitude.
+
+The nonlinear terms retain this sign near zero.  An exact identity separates the quadratic kernel from a favorable negative quartic term.  The only indefinite remainder is the quadratic kernel multiplied by a factor of order $\norm a_\infty^2$.  A fractional-difference-quotient estimate controls its absolute integral by the same Fourier energy as the Hessian.  On the slice with no first harmonic, the spectral gap absorbs the remainder.
+
+This does not globalize automatically: the denominators couple Fourier modes, and removing the first harmonic is only a linear normal gauge at the north pole.  A separate weighted Hilbert-transform calculation does show that every hemisphere profile is stationary in all directions, strengthening the local geometric picture but not supplying global coercivity.
+
+\section{Exact Hessian and local theorem}
+
+For an antiperiodic real function, use the normalization
+\begin{equation}\label{eq:fourier}
+ a(\alpha)=\sum_{\substack{n\ge1\\n\ \mathrm{odd}}}
+ \bigl(A_n\cos(n\alpha)+B_n\sin(n\alpha)\bigr).
+\end{equation}
+Define
+\begin{equation}\label{eq:q}
+ q_{\alpha,\beta}(a)=
+ \frac{2c\,a(\alpha)a(\beta)-c^2(a(\alpha)^2+a(\beta)^2)}{s^2},
+ \qquad
+ Q[a]=\frac12\int_0^\pi\int_0^\pi q_{\alpha,\beta}(a)\,d\beta\,d\alpha.
+\end{equation}
+
+\begin{theorem}[Sharp north-pole Hessian]\label{thm:hessian}
+For every smooth antiperiodic $a$,
+\begin{equation}\label{eq:spectrum}
+ Q[a]= -\frac{\pi^2}{2}
+ \sum_{\substack{n\ge3\\n\ \mathrm{odd}}}(n-1)(A_n^2+B_n^2).
+\end{equation}
+Consequently, the Hessian of $\I(a):=\frac12\int_0^\pi\int_0^\pi p_{\alpha,\beta}(a)$ at $a=0$ is negative semidefinite, and its kernel is exactly $\operatorname{span}\{\cos\alpha,\sin\alpha\}$, the tangent plane to the embedded hemisphere.
+\end{theorem}
+
+\begin{proof}
+The bilinear polarization of $Q$ is translation invariant on the antiperiodic circle, so distinct odd Fourier modes are orthogonal.  For either sine or cosine mode $n$ with squared amplitude $A_n^2+B_n^2$, direct integration in the base variable gives
+\[
+ Q_n=\frac\pi2(A_n^2+B_n^2)
+ \int_0^\pi\frac{\cos t\cos(nt)-\cos^2t}{\sin^2t}\,dt.
+\]
+Write $n=2k+1$.  The finite identity
+\[
+ \frac{\cos(nt)-\cos t}{\sin t}=-2\sum_{j=1}^k\sin(2jt)
+\]
+and the elementary integral
+$\int_0^\pi\cot t\,\sin(2jt)\,dt=\pi$ give
+\[
+ \int_0^\pi\frac{\cos t\cos(nt)-\cos^2t}{\sin^2t}\,dt
+ =-\pi(n-1).
+\]
+Summing the mutually orthogonal modes proves \eqref{eq:spectrum}.  Expanding \eqref{eq:p} at zero shows that $Q$ is its quadratic term; there is no linear term.  The kernel statement follows immediately.
+\end{proof}
+
+\begin{lemma}[Absolute quadratic-kernel bound]\label{lem:absolute}
+There is an absolute constant $C$ such that every Lipschitz antiperiodic $a$ satisfies
+\begin{equation}\label{eq:absolute}
+ \int_0^\pi\int_0^\pi |q_{\alpha,\beta}(a)|\,d\beta\,d\alpha
+ \le C\sum_{\substack{n\ge1\\n\ \mathrm{odd}}}n(A_n^2+B_n^2).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+For $t=|\beta-\alpha|\le\pi/2$, the numerator in \eqref{eq:q} can be written
+\[
+ q=-\frac{c^2(a(\alpha)-a(\beta))^2}{s^2}
+   +\frac{2c}{1+c}a(\alpha)a(\beta).
+\]
+For $t\ge\pi/2$, instead use
+\[
+ q=-\frac{c^2(a(\alpha)+a(\beta))^2}{s^2}
+   +\frac{2c}{1-c}a(\alpha)a(\beta).
+\]
+The second terms are bounded by a constant times $a(\alpha)^2+a(\beta)^2$.  In the first long-distance term, antiperiodicity gives
+$a(\alpha)+a(\beta)=a(\beta)-a(\alpha+\pi)$, and its circular separation is $\pi-t\le\pi/2$.  Thus the two singular terms are bounded by the usual fractional difference quotient on the $2\pi$-circle.  The standard Fourier identity for that quotient is a constant multiple of
+$\sum |n|(A_n^2+B_n^2)$; Parseval controls the remaining $L^2$ terms.  This proves \eqref{eq:absolute}.
+\end{proof}
+
+\begin{theorem}[Nonlinear strict local maximum on the Fourier-normal slice]\label{thm:local}
+There is $\varepsilon_0>0$ such that the following holds.  Let
+$f\in E(\mathbf S^1)\setminus\mathbf S^1$, put $a=\cos f$, and suppose
+\[
+ \norm a_\infty\le\varepsilon_0,
+ \qquad A_1=B_1=0.
+\]
+Then
+\begin{equation}\label{eq:local}
+ \norm{p(f)}_1\le\frac{\pi^2}{2}
+ -\frac{\pi^2}{4}
+ \sum_{\substack{n\ge3\\n\ \mathrm{odd}}}(n-1)(A_n^2+B_n^2).
+\end{equation}
+Equality holds only for the north pole $f\equiv\pi/2$.
+\end{theorem}
+
+\begin{proof}
+Put $a=a(\alpha)$, $b=a(\beta)$ and
+$D=(1-a^2)(1-b^2)$.  Direct common-denominator algebra gives the exact identity
+\begin{equation}\label{eq:identity}
+ p_{\alpha,\beta}(a)-1=\frac{q_{\alpha,\beta}(a)-a^2b^2}{D}.
+\end{equation}
+Therefore
+\begin{align}
+ \I(a)-\I(0)
+ &=Q[a]+\frac12\iint q_{\alpha,\beta}(a)(D^{-1}-1)
+   -\frac12\iint a^2b^2D^{-1}.\label{eq:remainder}
+\end{align}
+The last term is nonpositive.  If $\norm a_\infty\le1/2$, then
+$0\le D^{-1}-1\le C_0\norm a_\infty^2$.  By Lemma~\ref{lem:absolute}, the absolute value of the middle term in \eqref{eq:remainder} is at most
+\[
+ C_1\norm a_\infty^2
+ \sum_{\substack{n\ge1\\n\ \mathrm{odd}}}n(A_n^2+B_n^2).
+\]
+Since $A_1=B_1=0$ and $n\le\frac32(n-1)$ for odd $n\ge3$, this is at most
+$C_2\norm a_\infty^2 E(a)$, where
+$E(a)=\sum_{n\ge3,\,n\text{ odd}}(n-1)(A_n^2+B_n^2)$.
+Theorem~\ref{thm:hessian} says $Q[a]=-(\pi^2/2)E(a)$.  Choose
+$\varepsilon_0$ so that $C_2\varepsilon_0^2\le\pi^2/4$.  Then
+\eqref{eq:remainder} gives \eqref{eq:local}.  Equality forces $E(a)=0$; the missing first mode then gives $a=0$, hence $f\equiv\pi/2$.
+\end{proof}
+
+\section{A hemisphere-wide stationarity identity}
+
+\begin{proposition}[Every hemisphere profile is stationary]\label{prop:stationary}
+Let $h(\alpha)=r\cos(\alpha-\tau)$ with $|r|<1$.  For every smooth antiperiodic variation $v$,
+\[
+ \left.\frac d{dt}\right|_{t=0}\I(h+tv)=0.
+\]
+\end{proposition}
+
+\begin{proof}
+Rotation lets us take $\tau=0$.  Set $k=(1-r^2)^{1/2}$ and
+$A_x=1-r^2\cos^2x$.  The identity
+\[
+ \cos^2x+\cos^2y-2\cos(y-x)\cos x\cos y=\sin^2(y-x)
+\]
+gives $p_{x,y}(h)=k^2/(A_xA_y)$ and hence $\I(h)=\pi^2/2$.  Differentiating the symmetrized integral reduces the coefficient of $v(x)$ to
+\[
+ \frac{2r}{A_x}\left[-\operatorname{pv}\!\int_0^\pi
+ \frac{\sin y}{\sin(y-x)A_y}\,dy
+ \frac{k^2\cos x}{A_x}\int_0^\pi\frac{dy}{A_y}\right].
+\]
+The elementary weighted Hilbert-transform identities
+\[
+ \int_0^\pi\frac{dy}{A_y}=\frac\pi k,
+ \qquad
+ \operatorname{pv}\!\int_0^\pi
+ \frac{\sin y}{\sin(y-x)A_y}\,dy=\frac{\pi k\cos x}{A_x}
+\]
+make this coefficient zero.  For completeness, the second identity follows by writing
+$\sin y/\sin(y-x)=\cos x+\sin x\cot(y-x)$ and inserting the absolutely convergent Fourier expansion
+\[
+ \frac1{1-r^2\cos^2y}=\frac1k\left(1+2\sum_{m\ge1}
+ \left(\frac{1-k}{1+k}\right)^m\cos(2my)\right).
+\]
+The paired first variation is locally integrable across $x=y$; the principal-value notation only records the symmetrization used above.
+\end{proof}
+
+\section{Verification, limitations, and upgrade audit}
+
+The script \texttt{code/verify\_kernel.py} checks the exact nonlinear identity on 1,000 random nonsingular pairs and compares midpoint quadrature for modes $1,3,5,7,9,11$ with \eqref{eq:spectrum}.  Independent constrained discretizations with 12, 20, and 32 nodes and dozens of starts found no value above $\pi^2/2$.  These computations are sanity checks, not proof.
+
+Eight focused routes were pursued: (1) the cosine-coordinate/Gram reduction; (2) finite Lipschitz optimization; (3) a de Sitter/Lorentz reformulation; (4) the exact Fourier Hessian; (5) nonlinear remainder absorption; (6) the full-hemisphere stationarity identity; (7) a pointwise product domination, disproved by the family $a=0.2\cos(3\alpha)$; and (8) a global Fourier/Morse--Bott normal form.  The last route is obstructed because the nonlinear denominators couple all modes and the first-harmonic projection is not a global admissible gauge.  Neither stationarity nor the north-pole gap currently gives a uniformly coercive transverse Hessian around the full hemisphere.
+
+The cheap run indexes and bounded exact-phrase, title, author, citation, and keyword searches found no later resolution of Question~2.  The present novelty confidence is moderate pending specialist review.  The global inequality, behavior far from the hemisphere, and global equality characterization remain open.
+
+\section*{Human-review recommendation}
+
+Treat Theorems~\ref{thm:hessian} and \ref{thm:local} and Proposition~\ref{prop:stationary} as a likely valid substantial partial.  The highest-value checks are the normalization in the full-square symmetrization, the fractional $H^{1/2}$ estimate at both singular diagonals, and differentiation under the integral in Proposition~\ref{prop:stationary}.  A promising next mathematical step would be a weighted transverse Hessian around $r\cos(\alpha-\tau)$ that is uniform for $r$ in compact subsets of $(-1,1)$.
+
+\begin{thebibliography}{9}
+\bibitem{Zust}
+R.~Z\"ust,
+\emph{The Riemannian hemisphere is almost calibrated in the injective hull of its boundary},
+arXiv:2104.04498v2, 2021; revised 2025.
+\end{thebibliography}
+
+\end{document}

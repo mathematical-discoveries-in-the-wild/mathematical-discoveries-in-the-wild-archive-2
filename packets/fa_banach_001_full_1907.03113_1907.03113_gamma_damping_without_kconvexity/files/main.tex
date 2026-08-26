@@ -1,0 +1,277 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\G}{\mathcal G}
+\newcommand{\R}{\mathbb R}
+\newcommand{\cL}{\mathcal L}
+
+\title{Exponential damping of a bounded semigroup\\
+does not require $K$-convexity}
+\author{Solution packet for arXiv:1907.03113, Question 5.8}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.9\linewidth}{\textbf{Candidate full answer.}
+Question 5.8 has an affirmative answer on every Banach space.  In fact, for
+a bounded semigroup, local $\gamma$-boundedness, one exponentially damped
+$\gamma$-bounded orbit, and all exponentially damped $\gamma$-bounded orbits
+are equivalent.}}
+\end{center}
+
+\section{The question}
+
+The source is Loris Arnold, \emph{$\gamma$-boundedness of $C_0$-semigroups and
+their $H^\infty$-functional calculi}, arXiv:1907.03113v1 \cite{Arnold2019}.
+On PDF page 20 it asks:
+\begin{quote}
+\emph{Question 5.8. Does the assumption $X$ is $K$-convex space in Corollary
+5.5 can be dropped?}
+\end{quote}
+Let $X$ be a Banach space and $(T_t)_{t\geq0}$ a bounded $C_0$-semigroup on
+$X$.  Corollary 5.5 of the source proves, under the assumption that $X$ is
+$K$-convex, that
+\begin{multline*}
+ \{e^{-\delta_0t}T_t:t\geq0\}\text{ is $\gamma$-bounded for one }\delta_0>0
+ \\
+ \Longrightarrow
+ \{e^{-\delta t}T_t:t\geq0\}\text{ is $\gamma$-bounded for every }\delta>0.
+\end{multline*}
+Question 5.8 asks whether $K$-convexity can be dropped.  We prove that it can.
+The proof uses only the semigroup law, ordinary boundedness, and two elementary
+facts about $\gamma$-bounded families.
+
+For a family $\mathscr T\subset\cL(X)$, write $\gamma(\mathscr T)$ for its
+$\gamma$-bound, namely the least $C$ such that
+\[
+ \Bigl\|\sum_{j=1}^N\gamma_j S_jx_j\Bigr\|_{L^2(\Omega;X)}
+ \leq C\Bigl\|\sum_{j=1}^N\gamma_jx_j\Bigr\|_{L^2(\Omega;X)}
+\]
+for all finite choices $S_j\in\mathscr T$ and $x_j\in X$, where the
+$\gamma_j$ are independent complex standard Gaussian variables.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.96\linewidth]{figures/source_question_page.png}
+\caption{Corollary 5.5, the uniformly continuous special case, and Question
+5.8 on page 20 of arXiv:1907.03113v1.}
+\end{figure}
+
+\section{Proof intuition}
+
+Exponential damping makes the long-time part of a bounded semigroup
+summable.  Split time into its integer and fractional parts, $t=n+s$.  The
+fractional-time operators lie in one fixed local family, which inherits
+$\gamma$-boundedness from the single assumed damped orbit.  Meanwhile the
+integer-time operators $e^{-\delta n}T_n$ have summable norms.  A
+norm-summable operator family is $\gamma$-bounded even when selected indices
+repeat: group equal indices and view each Gaussian block as a conditional
+expectation of the full Gaussian sum.  Multiplying the discrete and local
+families then reconstructs every $e^{-\delta t}T_t$.  This is precisely where
+the source's global geometric assumption becomes unnecessary.
+
+\section{Two elementary lemmas}
+
+\begin{lemma}[summable families]\label{lem:summable}
+Let $(A_n)_{n\geq0}\subset\cL(X)$ satisfy
+$\sum_{n\geq0}\|A_n\|<\infty$.  Then $\{A_n:n\geq0\}$ is
+$\gamma$-bounded and
+\[
+ \gamma(\{A_n:n\geq0\})\leq\sum_{n\geq0}\|A_n\|.
+\]
+\end{lemma}
+
+\begin{proof}
+Fix finite choices $n_1,\dots,n_N$ and $x_1,\dots,x_N\in X$.  The selected
+indices may repeat, which is the only point requiring care.  Put
+$I_n=\{j:n_j=n\}$ and
+$Z=\sum_{j=1}^N\gamma_jx_j$.  Conditional expectation onto the Gaussian
+coordinates with indices in $I_n$ gives
+\[
+ P_nZ:=\mathbb E\bigl[Z\mid\sigma(\gamma_j:j\in I_n)\bigr]
+      =\sum_{j\in I_n}\gamma_jx_j,
+ \qquad \|P_nZ\|_{L^2(\Omega;X)}\leq\|Z\|_{L^2(\Omega;X)}.
+\]
+Consequently,
+\begin{align*}
+ \Bigl\|\sum_{j=1}^N\gamma_jA_{n_j}x_j\Bigr\|_{L^2(\Omega;X)}
+ &=\Bigl\|\sum_{n}A_nP_nZ\Bigr\|_{L^2(\Omega;X)}\\
+ &\leq\sum_n\|A_n\|\,\|P_nZ\|_{L^2(\Omega;X)}\\
+ &\leq\Bigl(\sum_n\|A_n\|\Bigr)\|Z\|_{L^2(\Omega;X)}.
+\end{align*}
+Only finitely many $P_nZ$ are nonzero, so all displayed sums are legitimate.
+\end{proof}
+
+\begin{lemma}[products]\label{lem:products}
+If $\mathscr A,\mathscr B\subset\cL(X)$ are $\gamma$-bounded, then
+$\mathscr A\mathscr B=\{AB:A\in\mathscr A,\ B\in\mathscr B\}$ is
+$\gamma$-bounded and
+\[
+ \gamma(\mathscr A\mathscr B)
+ \leq\gamma(\mathscr A)\gamma(\mathscr B).
+\]
+\end{lemma}
+
+\begin{proof}
+For finite choices $A_j,B_j,x_j$, apply the defining estimate first to
+$A_j$ with input $B_jx_j$, and then to $B_j$ with input $x_j$.
+\end{proof}
+
+\section{The full answer}
+
+\begin{theorem}\label{thm:main}
+Let $(T_t)_{t\geq0}$ be a semigroup on an arbitrary Banach space $X$, and
+suppose
+\[
+ M:=\sup_{t\geq0}\|T_t\|<\infty.
+\]
+The following assertions are equivalent:
+\begin{enumerate}
+\item $\{T_s:0\leq s<1\}$ is $\gamma$-bounded;
+\item $\{e^{-\delta_0t}T_t:t\geq0\}$ is $\gamma$-bounded for some
+      $\delta_0>0$;
+\item $\{e^{-\delta t}T_t:t\geq0\}$ is $\gamma$-bounded for every
+      $\delta>0$.
+\end{enumerate}
+More quantitatively, if the family in (2) has $\gamma$-bound $G_0$, then for
+every $\delta>0$,
+\begin{equation}\label{eq:bound}
+ \gamma\bigl(\{e^{-\delta t}T_t:t\geq0\}\bigr)
+ \leq \frac{M e^{(\delta_0-\delta)_+}}{1-e^{-\delta}}\,G_0,
+ \qquad (r)_+:=\max\{r,0\}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The implication (3)$\Rightarrow$(2) is immediate.  If (2) holds, then on
+$0\leq s<1$,
+\[
+ T_s=e^{\delta_0s}(e^{-\delta_0s}T_s).
+\]
+The Gaussian contraction principle therefore gives (1).
+
+Assume (1), fix $\delta>0$, and set
+\[
+ \mathscr A_\delta=\{e^{-\delta n}T_n:n=0,1,2,\ldots\},
+ \qquad
+ \mathscr B_\delta=\{e^{-\delta s}T_s:0\leq s<1\}.
+\]
+Lemma~\ref{lem:summable} and the boundedness of the semigroup give
+\[
+ \gamma(\mathscr A_\delta)
+ \leq\sum_{n=0}^\infty e^{-\delta n}\|T_n\|
+ \leq\frac{M}{1-e^{-\delta}}.
+\]
+The contraction principle shows that $\mathscr B_\delta$ is
+$\gamma$-bounded.  Every $t\geq0$ has a unique decomposition $t=n+s$ with
+$n\in\mathbb N_0$ and $0\leq s<1$, and the semigroup law yields
+\[
+ e^{-\delta t}T_t=(e^{-\delta n}T_n)(e^{-\delta s}T_s)
+ \in\mathscr A_\delta\mathscr B_\delta.
+\]
+Lemma~\ref{lem:products} proves (3).
+
+Finally, under (2),
+\[
+ e^{-\delta s}T_s=e^{(\delta_0-\delta)s}(e^{-\delta_0s}T_s),
+ \qquad 0\leq s<1.
+\]
+Thus $\gamma(\mathscr B_\delta)\leq e^{(\delta_0-\delta)_+}G_0$,
+which combined with the preceding discrete estimate proves
+\eqref{eq:bound}.
+\end{proof}
+
+\begin{corollary}[answer to Question 5.8]
+The $K$-convexity assumption in Corollary 5.5 of arXiv:1907.03113 can be
+dropped completely.
+\end{corollary}
+
+\begin{proof}
+The hypothesis of that corollary is assertion (2) of
+Theorem~\ref{thm:main}, and its conclusion is assertion (3).
+\end{proof}
+
+\section{Upgrade: equality of growth bounds}
+
+Suppose $-A$ generates a $C_0$-semigroup $(T_t)$, and use the source's sign
+convention
+\[
+ \omega(A)=\sup\{b:\sup_{t\geq0}e^{bt}\|T_t\|<\infty\},
+ \qquad
+ \omega^\gamma(A)=\sup\{a:\{e^{at}T_t:t\geq0\}
+                              \text{ is $\gamma$-bounded}\}.
+\]
+
+\begin{corollary}\label{cor:growth}
+On every Banach space, if $(T_t)$ admits at least one $\gamma$-type, then
+\[
+ \omega^\gamma(A)=\omega(A).
+\]
+\end{corollary}
+
+\begin{proof}
+Always $\omega^\gamma(A)\leq\omega(A)$.  For the reverse inequality, fix
+$\beta<\omega(A)$.  Choose $b$ with $\beta<b<\omega(A)$.  By definition,
+$S_t=e^{bt}T_t$ is a bounded semigroup.  Let $a_0$ be any $\gamma$-type of
+$(T_t)$ and choose $a<\min\{a_0,\beta\}$.  The contraction principle shows
+that $a$ is also a $\gamma$-type, so
+\[
+ \{e^{at}T_t:t\geq0\}
+ =\{e^{-(b-a)t}S_t:t\geq0\}
+\]
+is $\gamma$-bounded, with $b-a>0$.  Apply Theorem~\ref{thm:main} to the
+bounded semigroup $(S_t)$ at the new damping $b-\beta>0$.  It follows that
+\[
+ \{e^{-(b-\beta)t}S_t:t\geq0\}
+ =\{e^{\beta t}T_t:t\geq0\}
+\]
+is $\gamma$-bounded.  Hence every $\beta<\omega(A)$ is a $\gamma$-type, which
+proves the claimed equality.
+\end{proof}
+
+\section{Scope and novelty}
+
+No continuity, $K$-convexity, finite cotype, or property $(\alpha)$ enters
+Theorem~\ref{thm:main}; apart from boundedness, only the semigroup identity is
+used.  Corollary~\ref{cor:growth} removes $K$-convexity from the equality
+$\omega^\gamma(A)=\omega(A)$ when a $\gamma$-type exists.  It does
+\emph{not} identify the resolvent abscissa $s_0^\gamma(A)$ and hence does not
+answer the source's separate Question 5.9.
+
+A bounded search of the run indexes, the exact question, the source title,
+and the displayed damped-orbit formula found no later explicit answer.  The
+source proves only the uniformly continuous case in Remark 5.6.  Because the
+argument is elementary, an unindexed folklore antecedent remains possible;
+the mathematical claim is therefore submitted as a candidate full solution
+with moderate novelty confidence.
+
+\section{Verification and review recommendation}
+
+The proof is analytic and uses no computational evidence.  The source crop
+was rendered directly from the official arXiv PDF.  The LaTeX packet was
+compiled with all references resolved, its log was checked for layout
+warnings, and all rendered pages were visually inspected.  Expert review is
+recommended, focusing on the conditional-expectation step for repeated
+indices and on the sign choices in Corollary~\ref{cor:growth}.  Subject to
+that review, the packet should be treated as a full affirmative solution to
+Question 5.8; Question 5.9 remains outside its scope.
+
+\begin{thebibliography}{1}
+\bibitem{Arnold2019}
+Loris Arnold,
+\newblock \emph{$\gamma$-boundedness of $C_0$-semigroups and their
+$H^\infty$-functional calculi},
+\newblock arXiv:1907.03113v1, 2019.
+\end{thebibliography}
+
+\end{document}

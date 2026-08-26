@@ -1,0 +1,190 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.95in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\newcommand{\Hh}{\mathcal H}
+\newcommand{\N}{\mathbb N}
+\newcommand{\T}{T}
+
+\title{Strong Gibbs convergence for every $\ell^2$ initial condition}
+\author{Candidate full answer to Remark (2) in arXiv:2011.00457}
+\date{12 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{\raggedright\textbf{Status: candidate full answer.}
+Under the hypotheses of the source's Main Theorem, the untruncated master-equation
+semigroup converges strongly to its Gibbs-mode projection for every initial
+condition in $\ell^2$.  A quantitative head--tail estimate is available, but
+operator-norm convergence is impossible at every positive time.}}
+\end{center}
+
+\section{Source question and answer}
+
+B\"ogli and Vuillermot~\cite{source} study a compact, nonnormal generator $A$
+on $\ell^2_{\mathbb C}$.  Under the gap-control hypotheses of their Main
+Theorem, its eigenvectors $(\widehat p_k)_{k\geq1}$ form a Schauder basis and
+\begin{equation}\label{eq:spectral}
+ e^{tA}x=\sum_{k=1}^{\infty}
+ \langle x,\widehat q_k\rangle e^{t\nu_k}\widehat p_k
+ \qquad(t\geq0)
+\end{equation}
+in norm.  Here $\nu_1=0$, while
+\begin{equation}\label{eq:order}
+ \nu_2<\nu_3<\cdots<0,\qquad \nu_k\longrightarrow0,
+\end{equation}
+and $\widehat p_1$ is a scalar multiple of the Gibbs vector.
+
+Remark (2) after their corollary proves the limit below for $x\in\ell^1$ and
+asks whether it holds for every $x\in\ell^2$.  Define the bounded coordinate
+projection
+\[
+ \Pi x=\langle x,\widehat q_1\rangle\widehat p_1.
+\]
+
+\begin{theorem}[Full $\ell^2$ convergence]\label{thm:main}
+Under the hypotheses of the source's Main Theorem,
+\begin{equation}\label{eq:limit}
+ \lim_{t\to\infty}\|e^{tA}x-\Pi x\|_2=0
+ \qquad\text{for every }x\in\ell^2_{\mathbb C}.
+\end{equation}
+More precisely, let
+\[
+ P_Nx=\sum_{k=1}^N\langle x,\widehat q_k\rangle\widehat p_k,
+ \qquad K=\sup_N\|P_N\|<\infty.
+\]
+For every $N\geq2$ and $t\geq0$,
+\begin{equation}\label{eq:tail}
+ \|(e^{tA}-\Pi)x\|_2
+ \leq 2K e^{t\nu_N}\|x\|_2
+ +(1+K)\|(I-P_N)x\|_2.
+\end{equation}
+On the other hand,
+\begin{equation}\label{eq:sharp}
+ \|e^{tA}-\Pi\|\geq1\qquad(t\geq0),
+\end{equation}
+so the convergence is never in operator norm and admits no uniform decay rate
+on the unit ball.
+\end{theorem}
+
+\section{Proof intuition}
+
+Coefficientwise convergence in \eqref{eq:spectral} is not enough by itself:
+the eigenvectors are a Schauder basis, not asserted to be unconditional.
+The missing control comes from the order of the eigenvalues.  For fixed $t$,
+the non-Gibbs multipliers
+\[
+ e^{t\nu_2}\leq e^{t\nu_3}\leq\cdots\longrightarrow1
+\]
+are monotone, so their total variation is uniformly bounded.  Abel summation
+transfers that scalar variation bound to the basis multiplier through the
+uniformly bounded partial-sum projections $P_N$.  The resulting operators are
+uniformly bounded in time.  They vanish on each finite basis span as
+$t\to\infty$, and density finishes the proof.
+
+The same calculation separates a finite head, which decays at rate
+$e^{t\nu_N}$, from an arbitrarily small basis tail.  Yet high-index
+eigenvalues are arbitrarily close to zero, and their multipliers are
+arbitrarily close to one at each fixed time; this gives the sharp norm
+obstruction \eqref{eq:sharp}.
+
+\section{Abel multiplier lemma}
+
+\begin{lemma}\label{lem:abel}
+Let $(u_k)$ be a Schauder basis of a Banach space, with partial-sum
+projections $P_N$ and $K=\sup_N\|P_N\|$.  If $(a_k)$ has finite total
+variation and $a_k\to L$, then its basis multiplier satisfies
+\begin{equation}\label{eq:abel}
+ M_a=L I+\sum_{n=1}^{\infty}(a_n-a_{n+1})P_n,
+ \qquad
+ \|M_a\|\leq |L|+K\sum_{n=1}^{\infty}|a_n-a_{n+1}|.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+For every finite basis expansion, the coefficient of $u_k$ on the right of
+\eqref{eq:abel} is
+\[
+ L+\sum_{n=k}^{\infty}(a_n-a_{n+1})=a_k.
+\]
+The series of operators converges absolutely by the variation hypothesis,
+and the norm estimate follows from $\|P_n\|\leq K$.  Density extends the
+identity to the whole space.
+\end{proof}
+
+\section{Proof of Theorem~\ref{thm:main}}
+
+Put $D_t=e^{tA}-\Pi$.  Relative to the basis $(\widehat p_k)$, its scalar
+multipliers are
+\[
+ a_1(t)=0,\qquad a_k(t)=e^{t\nu_k}\quad(k\geq2).
+\]
+By \eqref{eq:order}, $a_k(t)$ increases for $k\geq2$ and tends to $1$.
+Consequently
+\[
+ \sum_{n=1}^{\infty}|a_n(t)-a_{n+1}(t)|
+ =a_2(t)+(1-a_2(t))=1.
+\]
+Lemma~\ref{lem:abel} gives the time-uniform bound
+\begin{equation}\label{eq:uniform}
+ \|D_t\|\leq1+K.
+\end{equation}
+
+To obtain the stated estimate, truncate the multiplier after index $N$.
+The finite scalar sequence
+\[
+ 0,a_2(t),\ldots,a_N(t),0,0,\ldots
+\]
+has total variation $2a_N(t)=2e^{t\nu_N}$ and limit zero.  A second application
+of Lemma~\ref{lem:abel}, followed by \eqref{eq:uniform}, yields
+\begin{align*}
+ \|D_tx\|_2
+ &\leq\|D_tP_Nx\|_2+\|D_t(I-P_N)x\|_2\\
+ &\leq2K e^{t\nu_N}\|x\|_2+(1+K)\|(I-P_N)x\|_2,
+\end{align*}
+which is \eqref{eq:tail}.
+
+Given $x$ and $\varepsilon>0$, first choose $N$ so large that the tail term
+in \eqref{eq:tail} is below $\varepsilon/2$.  Since $\nu_N<0$, next choose
+$t$ so large that the head term is below $\varepsilon/2$.  This proves
+\eqref{eq:limit}.
+
+Finally, $D_t\widehat p_k=e^{t\nu_k}\widehat p_k$ for $k\geq2$.  Hence
+\[
+ \|D_t\|\geq\sup_{k\geq2}e^{t\nu_k}=1
+\]
+because $\nu_k\to0$.  This proves \eqref{eq:sharp} and completes the proof.
+
+\section{Scope and literature check}
+
+The theorem answers exactly the ordinary-$\ell^2$ question under all the
+assumptions used by the source to obtain its Schauder-basis spectral theorem.
+It does not remove those hypotheses.  The estimate \eqref{eq:tail} gives an
+orbit-dependent convergence mechanism, while \eqref{eq:sharp} explains why
+no spectral-gap-style uniform exponential estimate can exist.
+
+Searches through 12 August 2026 located the 2022 journal version of the
+source and a later grand-canonical paper by the same authors in a different,
+weighted self-adjoint sequence space, but no statement of this exact
+nonnormal ordinary-$\ell^2$ conclusion.  Novelty should nevertheless be
+checked in specialist citation databases before publication.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+S. B\"ogli and P.-A. Vuillermot,
+\emph{A spectral theorem for the semigroup generated by a class of infinitely
+many master equations}, Acta Appl. Math. 178 (2022), article 4;
+arXiv:2011.00457.
+\end{thebibliography}
+
+\end{document}

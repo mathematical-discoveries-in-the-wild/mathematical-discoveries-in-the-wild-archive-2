@@ -1,0 +1,238 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\vol}{\operatorname{vol}}
+
+\title{The facet is exactly minimal among all two-level\\
+central sections of the regular simplex}
+\author{Autonomous proof packet for arXiv:2403.13224}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Likely valid substantial partial result.  The theorem below proves the
+conjectured sharp minimum for every central normal having exactly two
+coordinate values, in every dimension.  It does not prove the conjecture for
+an arbitrary normal.}}
+\end{center}
+
+\section{Source question and known boundary}
+
+Let
+\[
+ \Delta_n=\bigl\{x\in\R^{n+1}:x_j\geq0,\ \textstyle\sum_jx_j=1\bigr\}
+\]
+be the regular $n$-simplex of side length $\sqrt2$.  For a unit vector
+$a\perp(1,\ldots,1)$, put
+\[
+ T(a)=\Delta_n\cap\{x:\langle a,x\rangle=0\}.
+\]
+Tang asks whether the central hyperplane parallel to a facet always gives the
+minimum possible $(n-1)$-volume~\cite{Tang2024}.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{Question 16 on page 17 of the source paper~\cite{Tang2024}.}
+\end{figure}
+
+Tang recalls Webb's probabilistic formula.  If $Y_1,\ldots,Y_{n+1}$ are
+independent standard exponential random variables and $G_a$ is the density
+of $\sum_j a_jY_j$, then
+\begin{equation}\label{eq:webb}
+ \vol_{n-1}T(a)=\frac{\sqrt{n+1}}{(n-1)!}\,G_a(0).
+\end{equation}
+For the facet normal,
+\[
+ a_{\rm fac}=\left(\sqrt{\frac n{n+1}},
+ -\frac1{\sqrt{n(n+1)}},\ldots,
+ -\frac1{\sqrt{n(n+1)}}\right),
+\]
+the density is
+\begin{equation}\label{eq:facet-density}
+ c_n:=G_{a_{\rm fac}}(0)=\left(\frac n{n+1}\right)^{n-1/2}.
+\end{equation}
+
+Dirksen proved the sharp bound on the entire chamber with exactly one
+positive coordinate (and, by changing sign, exactly one negative coordinate),
+and proved the full conjecture for $n\leq4$~\cite{Dirksen2016}.  The result
+below is different: it compares all possible sign multiplicities when each
+sign class is internally constant.
+
+\section{Proof intuition}
+
+A two-level central normal is forced by the zero-sum and unit-norm constraints
+once the two multiplicities are fixed.  Its positive and negative exponential
+sums are scaled Gamma variables.  Integrating the two Gamma densities at a
+common positive value gives a closed formula $D_{k,m}$ for $G_a(0)$.
+
+The comparison between adjacent multiplicities then collapses to a
+one-variable monotonicity fact.  Namely,
+\[
+ \frac{D_{k+1,m-1}}{D_{k,m}}
+ =\frac{A(k)}{A(m-1)},\qquad
+ A(x)=\left(1+\frac1x\right)^{x+1/2}.
+\]
+The function $A$ is strictly decreasing.  Moving from the facet multiplicity
+$k=1$ toward a balanced split therefore strictly increases the density and,
+by~\eqref{eq:webb}, the section volume.  What remains open is controlling
+normals whose positive or negative coordinates are not all equal.
+
+\section{Exact theorem}
+
+Call a central normal \emph{two-level} if its coordinates assume exactly two
+distinct values.
+
+\begin{theorem}[Complete two-level classification]\label{thm:main}
+Let $n\geq2$, put $d=n+1$, and let $a\in\R^d$ be a two-level unit vector with
+$\sum_ja_j=0$.  After a permutation and possibly replacing $a$ by $-a$, there
+are integers $k,m\geq1$, $k+m=d$, $k\leq m$, such that
+\[
+ a=(\underbrace{\alpha,\ldots,\alpha}_{k},
+    \underbrace{-\beta,\ldots,-\beta}_{m}),
+ \qquad \alpha,\beta>0.
+\]
+Then
+\begin{equation}\label{eq:Dkm}
+ G_a(0)=D_{k,m}:=\binom{d-2}{k-1}
+ \frac{k^{k-1/2}m^{m-1/2}}{d^{d-3/2}}.
+\end{equation}
+For fixed $d$, the values $D_{k,d-k}$ are strictly increasing for
+$1\leq k\leq\lfloor d/2\rfloor$.  Consequently
+\[
+ G_a(0)\geq D_{1,n}=\left(\frac n{n+1}\right)^{n-1/2}=c_n,
+\]
+with equality if and only if one of the two coordinate values has
+multiplicity one.  Equivalently, among all two-level central sections of
+$\Delta_n$, the sections parallel to a facet are the unique minimizers, up to
+the symmetries of the simplex.
+\end{theorem}
+
+\begin{proof}
+The constraints $k\alpha=m\beta$ and
+$k\alpha^2+m\beta^2=1$ give
+\begin{equation}\label{eq:alphabeta}
+ \alpha=\sqrt{\frac{m}{kd}},\qquad
+ \beta =\sqrt{\frac{k}{md}}.
+\end{equation}
+Let $X\sim\operatorname{Gamma}(k,1)$ and
+$Y\sim\operatorname{Gamma}(m,1)$ be independent.  Then
+$\sum_j a_jY_j$ has the same law as $\alpha X-\beta Y$.  The density of the
+latter variable at zero is the overlap integral of the densities of
+$\alpha X$ and $\beta Y$:
+\begin{align*}
+ G_a(0)
+ &=\int_0^\infty
+ \frac{t^{k-1}e^{-t/\alpha}}{\Gamma(k)\alpha^k}
+ \frac{t^{m-1}e^{-t/\beta}}{\Gamma(m)\beta^m}\,dt\\
+ &=\frac{\Gamma(d-1)}{\Gamma(k)\Gamma(m)}
+ \frac{\alpha^{m-1}\beta^{k-1}}{(\alpha+\beta)^{d-1}}.
+\end{align*}
+Using~\eqref{eq:alphabeta}, one has
+\[
+ \alpha=\frac{m}{\sqrt{kmd}},\qquad
+ \beta=\frac{k}{\sqrt{kmd}},\qquad
+ \alpha+\beta=\frac d{\sqrt{kmd}}.
+\]
+Substitution, together with
+$\Gamma(d-1)/(\Gamma(k)\Gamma(m))=\binom{d-2}{k-1}$, yields
+exactly~\eqref{eq:Dkm}.
+
+It remains to compare multiplicities.  If $1\leq k<m$ and $k+m=d$, direct
+cancellation in~\eqref{eq:Dkm} gives
+\begin{align}\label{eq:ratio}
+ \frac{D_{k+1,m-1}}{D_{k,m}}
+ &=\left(1+\frac1k\right)^{k+1/2}
+   \left(1-\frac1m\right)^{m-1/2}\\
+ &=\frac{A(k)}{A(m-1)},
+ \qquad
+ A(x):=\left(1+\frac1x\right)^{x+1/2}.
+\end{align}
+We claim that $A$ is strictly decreasing on $(0,\infty)$.  Put $t=1/x$.
+Then
+\[
+ \frac{d}{dx}\log A(x)
+ =\log(1+t)-\frac{t(2+t)}{2(1+t)}.
+\]
+If
+\[
+ H(t)=\frac{t(2+t)}{2(1+t)}-\log(1+t),
+\]
+then $H(0)=0$ and
+\[
+ H'(t)=\frac{t^2}{2(1+t)^2}>0\qquad(t>0).
+\]
+Thus $(\log A)'<0$.  For every $1\leq k<\lfloor d/2\rfloor$, the adjacent
+pair $k,k+1$ stays inside the half-range and one has $k<m-1$, hence
+$A(k)>A(m-1)$ and~\eqref{eq:ratio} is strictly greater than one.  Therefore
+$D_{k,d-k}$ is strictly increasing on that range.  Its minimum is $k=1$,
+where~\eqref{eq:Dkm} becomes
+\[
+ D_{1,n}=\frac{n^{n-1/2}}{(n+1)^{n-1/2}}=c_n.
+\]
+The equality and geometric statements follow from~\eqref{eq:webb} and from
+permutation/sign symmetry.
+\end{proof}
+
+\section{Verification and limitations}
+
+The accompanying script independently checks the Gamma overlap integral,
+formula~\eqref{eq:Dkm}, and ratio~\eqref{eq:ratio} at high precision for a
+representative collection of multiplicities, and checks monotonicity through
+$d=200$.  These calculations are sanity checks, not ingredients of the proof.
+
+The theorem does not imply that the minimum inside every fixed sign chamber is
+two-level.  In fact, Dirksen explicitly warns that this tempting reduction is
+false in higher dimensions~\cite[Remark 3.4 and Lemma 3.6]{Dirksen2016}.
+His balancing proposition makes all coordinates on one sign equal but leaves
+the other sign ratios free.  Controlling those remaining ratios is the open
+core of Tang's Question 16.
+
+Several stronger routes were tested.  Numerical quadrature and global
+optimization in dimensions $5$ through $11$ returned the facet normal to
+numerical precision, and a pointwise comparison on Tang's positive contour
+also survived randomized tests.  A sharpened Cauchy--Schwarz step using
+$a\perp(1,\ldots,1)$ yields a genuine positive deficit, but converting that
+deficit into the exact facet constant requires a new rational moment
+inequality.  None of these numerical or unfinished observations is claimed as
+a proof.
+
+\section{Bounded novelty check and review recommendation}
+
+The 11 August 2026 search covered the run's registry/solution/attempt indexes,
+exact arXiv-id and keyword queries, Dirksen's arXiv:1509.06408, and the later
+arXiv:2505.00944 and arXiv:2606.07163.  Dirksen's paper contains the closest
+known analysis, including the one-sign theorem and examples involving
+two-level normals, but the all-multiplicity monotonicity in Theorem
+\ref{thm:main} was not located.  The two later papers concern maximum-section
+or reverse-H\"older questions rather than this exact minimum.  Novelty
+confidence is moderate: the result may be folklore because the Gamma
+calculation is short.
+
+Human review should focus on the Gamma scaling in~\eqref{eq:Dkm} and the
+strictness range in~\eqref{eq:ratio}.  The packet should remain classified as
+a partial result unless the arbitrary multi-level case is separately proved.
+
+\begin{thebibliography}{9}
+\bibitem{Tang2024}
+C. Tang,
+\emph{Simplex slicing: an asymptotically-sharp lower bound},
+arXiv:2403.13224, 2024.
+
+\bibitem{Dirksen2016}
+H. Dirksen,
+\emph{Sections of the regular simplex -- volume formulas and estimates},
+arXiv:1509.06408; Math. Nachr. 290 (2017), 2567--2584.
+\end{thebibliography}
+
+\end{document}

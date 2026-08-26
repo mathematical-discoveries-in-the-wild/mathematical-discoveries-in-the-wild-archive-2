@@ -1,0 +1,234 @@
+\documentclass[11pt]{amsart}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\gammaRho}{\gamma_{n,\rho}}
+
+\begin{document}
+
+\title{Gaussian Multi-Set Concentration from Isoperimetric Contraction}
+\author{Run fa\_banach\_001}
+\date{August 11, 2026}
+\maketitle
+\pagestyle{plain}
+
+\section*{Status}
+
+This is a candidate full answer, subject to human review, to the Gaussian
+multi-set concentration conjecture in Section 5.1 of Gozlan and Herry
+\cite{GH}.  It gives the requested profile with the stronger constant
+$C_{k,\rho,n}=\rho/2$, independent of $k$ and $n$.
+
+\section*{Source Question}
+
+For $k\geq1$, let $\Delta_k$ consist of all
+$a=(a_1,\ldots,a_k)\in[0,1]^k$ such that
+\[
+ \sum_{j=1}^k a_j\leq1,
+ \qquad
+ a_i+\sum_{j=1}^k a_j\geq1
+ \quad(1\leq i\leq k).
+\]
+A probability metric space has the multi-set concentration property of order
+$k$ with profile $\alpha_k$ if, whenever the Borel sets
+$A_1,\ldots,A_k$ are pairwise positively separated and
+$(\mu(A_1),\ldots,\mu(A_k))\in\Delta_k$, their union $A$ satisfies
+\begin{equation}\label{eq:multiset}
+ \mu(A_r)\geq
+ 1-(1-\mu(A))\alpha_k(r),
+ \qquad
+ 0<r\leq\frac12\min_{i\ne j}d(A_i,A_j).
+\end{equation}
+Here $A_r=\{x:d(x,A)<r\}$.
+
+The source asks whether every probability measure
+$d\mu=e^{-V}dx$ on $\R^n$ with $V$ smooth and
+$\operatorname{Hess}V\geq\rho I>0$ has this property with a Gaussian
+profile $\exp(-C_{k,\rho,n}r^2)$.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Proof Intuition}
+
+The condition defining $\Delta_k$ already forces the union of the $k$ sets
+to have mass at least $k/(k+1)$, and hence at least $1/2$.  Strong
+log-concavity makes $\mu$ a $1$-Lipschitz image of the Gaussian measure
+with covariance $\rho^{-1}I$ by Caffarelli's contraction theorem.  Gaussian
+isoperimetry therefore bounds the enlargement of the \emph{union}; no
+separate higher-order estimate is needed.  A one-line shifted-tail
+calculation supplies exactly the multiplicative factor $1-\mu(A)$ required
+in \eqref{eq:multiset}.
+
+\section*{Two Elementary Lemmas}
+
+Let $\Phi$ and $\phi$ denote the distribution and density functions of a
+standard one-dimensional Gaussian, and let
+$\overline\Phi=1-\Phi$.
+
+\begin{lemma}[The $\Delta_k$ mass threshold]\label{lem:mass}
+If $a=(a_1,\ldots,a_k)\in\Delta_k$ and
+$s=\sum_{i=1}^k a_i$, then
+\[
+ s\geq\frac{k}{k+1}\geq\frac12.
+\]
+\end{lemma}
+
+\begin{proof}
+Put $b=1-s$.  The defining inequalities give $a_i\geq b$ for every $i$.
+Thus $s\geq kb=k(1-s)$, which is equivalent to the claim.
+\end{proof}
+
+\begin{lemma}[Multiplicative Gaussian tail shift]\label{lem:tail}
+For $z,t\geq0$,
+\[
+ \overline\Phi(z+t)
+ \leq e^{-t^2/2}\overline\Phi(z).
+\]
+\end{lemma}
+
+\begin{proof}
+Changing variables $u=v+t$ gives
+\[
+ \overline\Phi(z+t)
+ =\int_z^\infty\phi(v+t)\,dv
+ =e^{-t^2/2}\int_z^\infty e^{-tv}\phi(v)\,dv
+ \leq e^{-t^2/2}\overline\Phi(z),
+\]
+because $v\geq z\geq0$.
+\end{proof}
+
+\section*{Full Answer}
+
+\begin{theorem}\label{thm:answer}
+Let $\mu$ be a probability measure on $\R^n$ with smooth density
+$e^{-V}$ and suppose
+\[
+ \operatorname{Hess}V\geq\rho I
+\]
+for some $\rho>0$.  For every $k\geq1$, the space
+$(\R^n,|\cdot|,\mu)$ has the multi-set concentration property of order
+$k$ with
+\[
+ \alpha_k(r)=\exp\!\left(-\frac{\rho r^2}{2}\right),
+ \qquad r\geq0.
+\]
+In particular, the conjecture of \cite[Section 5.1]{GH} holds with
+$C_{k,\rho,n}=\rho/2$.
+\end{theorem}
+
+\begin{proof}
+Let $\gammaRho$ be the centered Gaussian probability measure on $\R^n$
+with covariance $\rho^{-1}I$.  Since
+\[
+ V(x)-\frac\rho2|x|^2
+\]
+is convex, Caffarelli's contraction theorem \cite{Caffarelli} supplies a
+$1$-Lipschitz transport map $F$ with
+$F_\#\gammaRho=\mu$.
+
+We first record the resulting Gaussian isoperimetric comparison.  For a
+Borel set $E\subset\R^n$, put $B=F^{-1}(E)$.  The Lipschitz property gives
+$B_r\subset F^{-1}(E_r)$, so Gaussian isoperimetry yields
+\begin{equation}\label{eq:comparison}
+ \mu(E_r)
+ \geq \gammaRho(B_r)
+ \geq
+ \Phi\!\left(\Phi^{-1}(\mu(E))+\sqrt\rho\,r\right).
+\end{equation}
+
+Now take positively separated Borel sets $A_1,\ldots,A_k$ satisfying the
+hypotheses of the multi-set property and set $A=\bigcup_iA_i$.  Positive
+separation makes the sets disjoint, hence, with
+$a_i=\mu(A_i)$,
+\[
+ s:=\mu(A)=\sum_{i=1}^k a_i.
+\]
+Lemma \ref{lem:mass} gives $s\geq1/2$.  Therefore
+$z=\Phi^{-1}(s)\geq0$.  Taking complements in
+\eqref{eq:comparison}, and applying Lemma \ref{lem:tail} with
+$t=\sqrt\rho\,r$, gives
+\begin{align*}
+ 1-\mu(A_r)
+ &\leq \overline\Phi(z+\sqrt\rho\,r)\\
+ &\leq e^{-\rho r^2/2}\overline\Phi(z)\\
+ &=(1-\mu(A))e^{-\rho r^2/2}.
+\end{align*}
+This is exactly \eqref{eq:multiset} with the asserted profile.  In fact the
+bound holds for every $r\geq0$, stronger than the separation-limited range
+required by the definition.
+\end{proof}
+
+\section*{Verification Notes}
+
+The proof uses only two standard sharp inputs: Caffarelli contraction from
+$\gammaRho$ to a measure whose potential is at least as convex, and Gaussian
+isoperimetry.  All remaining steps are displayed.  The direction of the
+neighborhood inclusion is important: if $x$ is within $r$ of
+$F^{-1}(E)$, then $F(x)$ is within $r$ of $E$, hence
+$(F^{-1}E)_r\subset F^{-1}(E_r)$.
+
+The multiplicative prefactor is not discarded.  Since
+$\overline\Phi(\Phi^{-1}(s))=1-s$, Lemma \ref{lem:tail} produces precisely
+the complement mass in the source definition.  The assumption
+$s\geq1/2$ is exactly what ensures $z\geq0$ in that lemma.
+
+For a half-space under $\gammaRho$ with mass $1/2$, the exponent
+$\rho/2$ is asymptotically sharp as $r\to\infty$, so no larger uniform
+quadratic coefficient can hold in this formulation without an additional
+prefactor or linear term.
+
+\section*{Novelty Check and Scope}
+
+A bounded search was performed on August 11, 2026.  The local run indexes,
+solution registry, attempts, and parsed-source scan were searched for
+arXiv:1804.06133 and combinations of ``Gaussian multi-set concentration'',
+``Caffarelli contraction'', and ``Gaussian isoperimetry''.  External
+exact-phrase searches found the arXiv and 2020 Potential Analysis versions,
+the authors' publication pages, a thesis reproducing the same open question,
+and later work on adjacent higher-order eigenvalue bounds, but no paper
+claiming this answer or applying the contraction argument to the exact
+multi-set profile.  Novelty is plausible, not certified; specialist review
+of MathSciNet and zbMATH remains advisable.
+
+The theorem answers the first question in Section 5.1.  It does not answer
+the separate Section 5.2 converse problem relating multi-set concentration
+to lower bounds on higher eigenvalues, nor does it construct new modified
+functional inequalities.
+
+\section*{Human Review Recommendation}
+
+Check the convention and scaling in the cited form of Caffarelli's
+contraction theorem, then verify the neighborhood inclusion
+$(F^{-1}A)_r\subset F^{-1}(A_r)$.  The rest reduces to Lemmas
+\ref{lem:mass} and \ref{lem:tail}.  If these checks pass, Theorem
+\ref{thm:answer} is a complete and stronger-than-requested solution.
+
+\begin{thebibliography}{9}
+
+\bibitem{Caffarelli}
+L. A. Caffarelli,
+\emph{Monotonicity properties of optimal transportation and the FKG and
+related inequalities},
+Comm. Math. Phys. \textbf{214} (2000), 547--563.
+
+\bibitem{GH}
+N. Gozlan and R. Herry,
+\emph{Multiple sets exponential concentration and higher order eigenvalues},
+Potential Anal. \textbf{52} (2020), 203--221;
+arXiv:1804.06133.
+
+\bibitem{Ledoux}
+M. Ledoux,
+\emph{The Concentration of Measure Phenomenon},
+Mathematical Surveys and Monographs 89, American Mathematical Society, 2001.
+
+\end{thebibliography}
+
+\end{document}

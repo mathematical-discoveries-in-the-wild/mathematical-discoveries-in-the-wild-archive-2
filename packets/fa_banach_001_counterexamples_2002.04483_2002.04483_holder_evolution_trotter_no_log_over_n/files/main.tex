@@ -1,0 +1,218 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\B}{\mathcal B}
+\newcommand{\K}{\mathcal K}
+\newcommand{\Kz}{\mathcal K_0}
+\newcommand{\Q}{\mathcal Q}
+\newcommand{\dist}{\operatorname{dist}}
+
+\title{A H\"older Counterexample to the Proposed
+\texorpdfstring{$O(\log n/n)$}{O(log n/n)} Evolution--Trotter Rate}
+\author{Autonomous proof attempt for arXiv:2002.04483}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{
+\textbf{Status: counterexample likely valid, pending human review.}
+For every $0<\beta<1$, a scalar commuting example satisfying assumptions
+(A1)--(A5) of the source has error $\Omega(n^{-\beta})$ along dyadic $n$.
+Hence the H\"older-time estimate (3.24) cannot in general be improved to
+$O(\log n/n)$.  The separate Lipschitz question for (3.25) is not settled.
+}}
+\end{center}
+
+\section{Source question}
+
+The source is H.~Neidhardt, A.~Stephan, and V.~A.~Zagrebnov,
+\emph{Operator-Norm Convergence of the Trotter Product Formula on Hilbert
+and Banach Spaces: A Short Survey}, arXiv:2002.04483v1 (2020)~\cite{NSZsurvey}.
+In Section~3.4, page~14, after Theorems~3.4--3.5, the authors ask whether
+the rates (3.24) and (3.25) can be improved to $O(\log n/n)$.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+  \caption{The exact open-question passage in arXiv:2002.04483v1, p.~14.}
+\end{figure}
+
+Theorem~3.4 assumes a H\"older exponent $\beta\in(\alpha,1)$ and gives
+$O(n^{-(\beta-\alpha)})$.  The construction below disproves the proposed
+$O(\log n/n)$ improvement for this H\"older branch.  It works in the scalar
+model that the source itself identifies in Section~4.3 as a special case of
+(A1)--(A5).
+
+\section{Idea of the proof}
+
+For a scalar time-dependent multiplication operator, evolution--Trotter error
+is precisely the error of a uniform left- or right-endpoint Riemann sum.  We
+build a nonnegative periodic H\"older function from dyadic tent waves.  On a
+grid with $n=2^M$ points, every wave of frequency below $2^M$ has exactly the
+correct discrete average, while every wave of frequency at least $2^M$
+vanishes at all grid points.  The whole unresolved tail is therefore missed,
+and its integral is exactly a positive constant times $n^{-\beta}$.
+
+\section{Counterexample theorem}
+
+Let $T=3$, $X=\C$, and let $D_0$ be the generator of the right-shift semigroup
+on $L^2([0,T])$.  Fix $0<\alpha<\beta<1$, put $A=I$, and write
+$\Kz=D_0+I$.  Define the one-periodic tent function and its
+Takagi--Landsberg series by
+\[
+ \phi(x)=\dist(x,\Z),\qquad
+ q(t)=\sum_{m=0}^{\infty}2^{-m\beta}\phi(2^m t).
+\]
+Let $B(t)=q(t)I$, let $\Q$ be multiplication by $q$, and let
+$\K=D_0+I+\Q$.
+
+\begin{theorem}\label{thm:main}
+The family $(A,B(t))$ satisfies assumptions (A1)--(A5) of
+\cite[Assumption~3.3]{NSZsurvey}, with the chosen $\alpha$ and $\beta$.
+There is a constant $c_\beta>0$ such that, for every $M\ge1$ and
+$n=2^M$,
+\begin{align*}
+ \sup_{\tau\ge0}\left\|
+   (e^{-\tau\Q/n}e^{-\tau\Kz/n})^n-e^{-\tau\K}
+ \right\| &\ge c_\beta n^{-\beta},\\
+ \sup_{\tau\ge0}\left\|
+   (e^{-\tau\Kz/n}e^{-\tau\Q/n})^n-e^{-\tau\K}
+ \right\| &\ge c_\beta n^{-\beta}.
+\end{align*}
+In particular, neither error is $O(\log n/n)$.
+\end{theorem}
+
+\begin{proof}
+We divide the proof into four short steps.
+
+\emph{Step 1: $q$ is nonnegative, bounded, and $\beta$-H\"older.}
+The first two assertions follow from $0\le\phi\le1/2$ and uniform
+convergence.  Let $h=|t-s|\in(0,1]$ and choose $J\ge0$ so that
+$2^Jh\le1<2^{J+1}h$.  Since $\phi$ is $1$-Lipschitz,
+\begin{align*}
+ |q(t)-q(s)|
+ &\le h\sum_{m=0}^{J}2^{m(1-\beta)}
+   +\sum_{m>J}2^{-m\beta}\\
+ &\le C_\beta h^\beta.
+\end{align*}
+For $h>1$ the same estimate follows after enlarging $C_\beta$.  Thus
+$q\in C^{0,\beta}([0,3])$.
+
+\emph{Step 2: all source hypotheses hold.}
+The scalar $A=I$ is invertible and generates a holomorphic contraction
+semigroup.  Each $B(t)=q(t)I$ is bounded, nonnegative, and generates the
+contraction $e^{-\tau q(t)}I$.  All domain, measurability, and adjoint
+requirements in (A2)--(A4) are automatic.  Since every power of $A$ is $I$,
+(A5) is exactly
+\[
+ \|A^{-1}(B(t)-B(s))A^{-\alpha}\|
+ =|q(t)-q(s)|\le C_\beta|t-s|^\beta.
+\]
+The pair is also Trotter-stable because all factors are contractions.
+
+\emph{Step 3: exact dyadic quadrature defect.}
+Over any interval of length one,
+\[
+ Q_\beta:=\int_1^2q(t)\,dt
+ =\frac14\sum_{m=0}^{\infty}2^{-m\beta}
+ =\frac{1}{4(1-2^{-\beta})},
+\]
+because $\int_0^1\phi(u)\,du=1/4$.  Take $n=2^M$.  For $m<M$, the
+grid average of $\phi(2^m t)$ on $[1,2]$ is $1/4$: after removing repeated
+periods it is
+\[
+ \frac1L\sum_{j=0}^{L-1}\phi(j/L)=\frac14,
+ \qquad L=2^{M-m}\ge2.
+\]
+For $m\ge M$, every grid value is zero.  Hence both endpoint sums agree and
+\begin{align*}
+ R_M
+ &:=\frac1n\sum_{k=0}^{n-1}q(1+k/n)
+  =\frac1n\sum_{k=1}^{n}q(1+k/n)\\
+ &=\frac14\sum_{m=0}^{M-1}2^{-m\beta},
+\end{align*}
+so that
+\begin{equation}\label{eq:defect}
+ \delta_M:=Q_\beta-R_M
+ =\frac{n^{-\beta}}{4(1-2^{-\beta})}.
+\end{equation}
+
+\emph{Step 4: transfer the defect to operator norm.}
+The exact propagator for $D_0+I+\Q$ on the interval $[s,t]$ is the scalar
+multiplier
+\[
+ U(t,s)=\exp\left(-(t-s)-\int_s^tq(y)\,dy\right).
+\]
+The two product orders replace the integral by the left- and right-endpoint
+sums, respectively.  At the interior point $(t,s)=(2,1)$ those sums both
+equal $R_M$.  Proposition~3.8 of the source identifies the evolution-semigroup
+operator norm with the essential supremum of the propagator error.  The
+multipliers are continuous, so this essential supremum is at least their
+value at $(2,1)$.  By \eqref{eq:defect}, for either product order it is at
+least
+\begin{align*}
+ e^{-1-R_M}-e^{-1-Q_\beta}
+ &=e^{-1-Q_\beta}(e^{\delta_M}-1)\\
+ &\ge \frac{e^{-1-Q_\beta}}{4(1-2^{-\beta})}\,n^{-\beta}.
+\end{align*}
+This proves the asserted lower bound.  Finally,
+$n^{-\beta}/(\log n/n)=n^{1-\beta}/\log n\to\infty$, so an
+$O(\log n/n)$ estimate is impossible.
+\end{proof}
+
+\section{Verification and scope}
+
+The script \texttt{code/check\_dyadic\_identity.py} checks finite truncations
+of the exact quadrature identity, the constancy of $n^\beta\delta_M$, and the
+semigroup lower bound.  It is verification only; the proof above is exact.
+
+The result gives a complete negative answer to the (A5), $0<\beta<1$ half of
+the source's proposed $O(\log n/n)$ improvement.  It does not address the
+separate Lipschitz assumption (A6) or whether the general upper rate
+$O(n^{-(\beta-\alpha)})$ can be sharpened to the scalar-optimal
+$O(n^{-\beta})$.
+
+\section{Bounded novelty check}
+
+We searched the run indexes and exact arXiv id; the full sources of
+arXiv:1612.06147, 1703.09536, 1901.02205, and 2002.04483; and arXiv API
+queries through 11 August 2026 for combinations of ``Trotter product'',
+``H\"older'', ``non-autonomous/evolution'', ``sharp'', and ``Riemann sums''.
+The cited scalar paper proves the upper $O(n^{-\beta})$ estimate and arbitrary
+slowness for merely continuous functions, but no H\"older lower example or
+application disproving the survey's open $O(\log n/n)$ question was found.
+The novelty claim is necessarily bounded; the dyadic construction is an
+elementary sharp quadrature example and may be known outside the searched
+Trotter literature.
+
+\paragraph{Human-review recommendation.}
+Check the source's quantifier in the plural open question and the transfer from
+the interior propagator value to the essential supremum.  If confirmed, accept
+this as a counterexample to the H\"older branch, explicitly retaining the A6
+limitation.
+
+\begin{thebibliography}{9}
+\bibitem{NSZsurvey}
+H.~Neidhardt, A.~Stephan, and V.~A.~Zagrebnov,
+\emph{Operator-Norm Convergence of the Trotter Product Formula on Hilbert and
+Banach Spaces: A Short Survey}, arXiv:2002.04483v1, 2020.
+
+\bibitem{NSZremarks}
+H.~Neidhardt, A.~Stephan, and V.~A.~Zagrebnov,
+\emph{Remarks on the operator-norm convergence of the Trotter product
+formula}, arXiv:1703.09536v1, 2017.
+\end{thebibliography}
+
+\end{document}
+

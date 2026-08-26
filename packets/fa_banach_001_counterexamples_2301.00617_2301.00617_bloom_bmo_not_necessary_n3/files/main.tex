@@ -1,0 +1,273 @@
+\documentclass[10pt]{article}
+\usepackage[margin=0.82in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newcommand{\BMO}{\operatorname{BMO}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\R}{\mathbb R}
+
+\title{Bloom's triplet weighted-BMO condition\\is not necessary in dimension three}
+\author{Counterexample packet for arXiv:2301.00617}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.} Complete counterexample to higher-dimensional
+necessity of Bloom's triplet condition, likely valid pending human review.
+Theorem-level overlap with a relevant 2026 paper has not been excluded, so no
+priority claim is made.
+
+\section{Source question and precise scope}
+
+In Remark 7.11 of \cite{Hytonen}, Hytönen considers a matrix weight
+\[
+ W=U^*\Lambda U,\qquad \Lambda=\diag(\lambda_1,\ldots,\lambda_n),
+\]
+where $U$ is unitary and every $\lambda_k$ is a scalar $A_2$ weight.  He asks
+what conditions on $U$ ensure that $W$ is a matrix $A_2$ weight.  Bloom's
+triplet condition, in the convention of \cite[Definition 2.1 and Theorem
+2.2]{NielsenSikic2021}, is
+\begin{equation}\label{eq:bloom}
+ u_{ij}\in \BMO_{\sqrt{\lambda_i/\lambda_k}}
+ \quad\text{for every }i,j,k.
+\end{equation}
+It is sufficient, and Bloom proved it necessary for $2\times2$ matrices
+\cite{Bloom1985,Bloom1989}.  The source says the general case appears open.
+
+\begin{center}
+\includegraphics[width=0.97\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The theorem below disproves necessity of \eqref{eq:bloom} in dimension three.
+It does not give a complete classification of all admissible $U$.
+
+\section{Definitions and proof intuition}
+
+For an interval $I$, write $\langle F\rangle_I=|I|^{-1}\int_I F$.  We use
+the squared matrix characteristic
+\[
+ [W]_{A_2}:=\sup_I
+ \bigl\|\langle W\rangle_I^{1/2}
+ \langle W^{-1}\rangle_I^{1/2}\bigr\|^2.
+\]
+For a scalar weight $\nu$, Bloom's weighted BMO seminorm here is
+\[
+ \|b\|_{\BMO_\nu}:=
+ \sup_I\frac1{\nu(I)}\int_I|b-b_I|\,dx,
+ \qquad b_I=|I|^{-1}\int_Ib,\quad \nu(I)=\int_I\nu.
+\]
+
+\paragraph{Proof intuition.}
+The entrywise test \eqref{eq:bloom} compares every entry of $U$ against every
+eigenvalue scale.  Matrix $A_2$, however, cannot see rotations inside an
+eigenvalue cluster whose members are pointwise comparable.  We rotate a
+two-dimensional cluster with eigenweights $s^{-1}$ and $2s^{-1}$ as rapidly
+as desired.  This preserves matrix $A_2$ by pointwise comparison with a
+block-scalar diagonal weight.  A third eigenweight $4s$ makes the Bloom
+denominator for one rotating entry tend to zero at infinity, while the entry
+continues to oscillate by a fixed amount on every period.
+
+\section{Two elementary lemmas}
+
+\begin{lemma}[Loewner comparability]\label{lem:compare}
+Let $D,W$ be positive-definite matrix weights and suppose
+$cD\le W\le CD$ almost everywhere, where $0<c\le C<\infty$.  If
+$D\in A_2$, then $W\in A_2$, and
+\[
+ [W]_{A_2}\le \frac Cc[D]_{A_2}.
+\]
+\end{lemma}
+
+\begin{proof}
+Inversion reverses Loewner order, so
+$C^{-1}D^{-1}\le W^{-1}\le c^{-1}D^{-1}$.  Fix $I$ and put
+$A=\langle W\rangle_I$, $B=\langle W^{-1}\rangle_I$,
+$A_0=\langle D\rangle_I$, and $B_0=\langle D^{-1}\rangle_I$.  Then
+$A\le CA_0$ and $B\le c^{-1}B_0$.  Hence
+\begin{align*}
+ \|A^{1/2}B^{1/2}\|^2
+ &=\|B^{1/2}AB^{1/2}\|\\
+ &\le C\|B^{1/2}A_0B^{1/2}\|
+ =C\|A_0^{1/2}BA_0^{1/2}\|\\
+ &\le \frac Cc\|A_0^{1/2}B_0A_0^{1/2}\|
+ =\frac Cc\|A_0^{1/2}B_0^{1/2}\|^2.
+\end{align*}
+Taking the supremum proves the claim.
+\end{proof}
+
+\begin{lemma}\label{lem:scalar}
+For every $|\gamma|<1$, the scalar weight
+$x\mapsto(1+x^2)^{\gamma/2}$ belongs to $A_2(\R)$.
+\end{lemma}
+
+\begin{proof}
+It is comparable to $(1+|x|)^\gamma$.  If an interval is farther from the
+origin than its length, this latter weight is comparable to a constant on the
+interval.  Otherwise the interval is contained in a fixed dilation of
+$[-|I|,|I|]$, and direct integration of $(1+t)^{\pm\gamma}$ gives
+\[
+ \langle(1+|x|)^\gamma\rangle_I
+ \langle(1+|x|)^{-\gamma}\rangle_I\lesssim_\gamma1,
+\]
+because both exponents are greater than $-1$.  Scalar $A_2$ is preserved by
+pointwise comparability.
+\end{proof}
+
+\section{Analytic simple-spectrum counterexample}
+
+\begin{theorem}\label{thm:main}
+For every $a\in(0,1)$ there exist globally real-analytic functions
+$U:\R\to SO(3)$ and $0<\lambda_1<\lambda_2<\lambda_3$ such that every
+$\lambda_i$ is scalar $A_2$, the matrix weight
+$W=U^*\diag(\lambda_1,\lambda_2,\lambda_3)U$ belongs to matrix $A_2$, but
+Bloom's condition \eqref{eq:bloom} fails.  In particular, that condition is
+not necessary in dimension three.
+\end{theorem}
+
+\begin{proof}
+Let
+\[
+ s(x)=(1+x^2)^{a/2},\qquad
+ (\lambda_1,\lambda_2,\lambda_3)=(s^{-1},2s^{-1},4s),
+\]
+and let
+\[
+ U(x)=\begin{pmatrix}
+ \cos x&-\sin x&0\\
+ \sin x& \cos x&0\\
+ 0&0&1
+ \end{pmatrix}.
+\]
+These functions are real analytic.  Since $s\ge1$,
+$\lambda_1<\lambda_2<\lambda_3$ everywhere.  Lemma \ref{lem:scalar} shows
+that all three eigenweights are scalar $A_2$.
+
+Set
+\[
+ D(x)=\diag(s^{-1},s^{-1},4s).
+\]
+The first block of $W=U^*\Lambda U$ is an orthogonal conjugate of
+$\diag(s^{-1},2s^{-1})$, while the last coordinate is $4s$.  Therefore
+\[
+ D(x)\le W(x)\le2D(x)\qquad(x\in\R).
+\]
+The diagonal weight $D$ is matrix $A_2$: its characteristic is the maximum of
+the scalar characteristics of $s^{-1}$ and $4s$.  Lemma \ref{lem:compare}
+now gives $W\in A_2$.
+
+It remains to disprove \eqref{eq:bloom}.  Choose $(i,j,k)=(1,1,3)$.  Then
+$u_{11}(x)=\cos x$ and
+\[
+ \sqrt{\frac{\lambda_1(x)}{\lambda_3(x)}}=\frac1{2s(x)}=:\nu(x).
+\]
+For $N\ge1$, let $I_N=[2\pi N,2\pi(N+1)]$.  Since $(\cos)_{I_N}=0$,
+\[
+ \int_{I_N}|\cos x-(\cos)_{I_N}|\,dx=4.
+\]
+On the other hand,
+\[
+ \nu(I_N)
+ =\frac12\int_{I_N}(1+x^2)^{-a/2}\,dx
+ \le \pi(1+(2\pi N)^2)^{-a/2}\longrightarrow0.
+\]
+Thus the weighted-BMO quotients are at least $4/\nu(I_N)\to\infty$.
+Consequently $u_{11}\notin\BMO_{\sqrt{\lambda_1/\lambda_3}}$, although
+$W\in A_2$.
+\end{proof}
+
+\begin{corollary}
+The same conclusion, still with globally simple spectrum, holds in every
+dimension $n\ge3$: append distinct eigenweights $c_4s,\ldots,c_ns$ with
+$4<c_4<\cdots<c_n$ and extend $U$ by the identity.
+\end{corollary}
+
+\section{The structural mechanism}
+
+\begin{theorem}[Comparable-eigenvalue blocks]\label{thm:block}
+Partition $\{1,\ldots,n\}$ into blocks $B_1,\ldots,B_m$.  Suppose that for
+each $r$ there is a scalar $A_2$ weight $w_r$ and constants
+$0<c_r\le C_r<\infty$ such that
+\[
+ c_rw_r\le\lambda_i\le C_rw_r\qquad(i\in B_r).
+\]
+If $U(x)$ is any measurable block-diagonal unitary for this partition, then
+$U^*\diag(\lambda_i)U$ is a matrix $A_2$ weight.  No smoothness or oscillation
+condition on $U$ inside a block is needed.
+\end{theorem}
+
+\begin{proof}
+Let $D_0=\diag(w_{r(i)})$, which is scalar on each block and hence commutes
+with $U$.  With $c=\min c_r$ and $C=\max C_r$,
+\[
+ cD_0=U^*(cD_0)U\le U^*\diag(\lambda_i)U
+ \le U^*(CD_0)U=CD_0.
+\]
+The diagonal weight $D_0$ is matrix $A_2$, so Lemma \ref{lem:compare} applies.
+\end{proof}
+
+This theorem explains exactly why the triplet condition is too strong: it
+tests a within-cluster rotation against eigenweights outside the cluster even
+though matrix $A_2$ is already guaranteed by block comparability.
+
+\section{Verification, limitations, and novelty audit}
+
+The accompanying script checks positivity, the pointwise generalized
+eigenvalue bounds $D\le W\le2D$, strict ordering of the eigenvalues, and the
+growth of the explicit weighted-BMO lower bound for several $a$ and $N$.
+These computations are sanity checks; the displayed argument is the proof.
+
+Eight focused upgrade attempts were recorded in the accompanying attempt
+note.  They removed repeated eigenvalues, upgraded the construction to global
+analyticity, produced a separate local Hölder example, generalized the
+mechanism to arbitrary comparable blocks, and tested possible repaired
+necessity statements.  The broad classification problem for arbitrary $U$
+remains open.
+
+A bounded search on 11 August 2026 covered the run indexes; Bloom's 1985 and
+1989 papers; Nielsen--Šikić's 2021 extension \cite{NielsenSikic2021}; work on
+matrix power weights; the authors' 2025 general-bases paper; and searches by
+the exact triplet formula, source id, title, authors, and comparable-eigenvalue
+phrases.  No exact construction was located.  However, the March 2026 paper
+\cite{NielsenSikic2026} explicitly concerns diagonalisation, weighted BMO, and
+structural differences between compact and noncompact domains.  Its primary
+full text could not be checked because the publisher route presented a
+CAPTCHA.  Exact overlap is therefore unresolved and this packet makes no
+novelty or priority claim.
+
+\paragraph{Human-review recommendation.}
+Verify Lemma \ref{lem:compare} and the one-period calculation in Theorem
+\ref{thm:main}.  If they pass, the counterexample is mathematically complete.
+Before assigning novelty, compare the exact construction and Theorem
+\ref{thm:block} with every theorem and example in \cite{NielsenSikic2026}.
+
+\begin{thebibliography}{9}
+\bibitem{Bloom1985}
+S. Bloom, \emph{A commutator theorem and weighted BMO}, Trans. Amer. Math.
+Soc. 292(1), 103--122 (1985).
+
+\bibitem{Bloom1989}
+S. Bloom, \emph{Applications of commutator theory to weighted BMO and matrix
+analogs of $A_2$}, Illinois J. Math. 33(3), 464--487 (1989).
+
+\bibitem{Hytonen}
+T. P. Hytönen, \emph{Some remarks on convex body domination}, arXiv:2301.00617
+(2023), Remark 7.11.
+
+\bibitem{NielsenSikic2021}
+M. Nielsen and H. Šikić, \emph{Muckenhoupt Matrix Weights}, J. Geom. Anal. 31,
+8850--8865 (2021), doi:10.1007/s12220-020-00440-z.
+
+\bibitem{NielsenSikic2026}
+M. Nielsen and H. Šikić, \emph{Matrix weights on compact and non-compact
+domains}, J. Math. Anal. Appl. 555(2), 130069 (2026),
+doi:10.1016/j.jmaa.2025.130069.
+\end{thebibliography}
+
+\end{document}

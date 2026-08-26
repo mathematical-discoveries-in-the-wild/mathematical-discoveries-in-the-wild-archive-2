@@ -1,0 +1,266 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue]{hyperref}
+\emergencystretch=2em
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\Dc}{\mathcal D_c^+}
+\newcommand{\Delp}{\Delta^+}
+\newcommand{\Lmax}{M^*}
+\newcommand{\tens}{\mathbin{\otimes}}
+
+\title{Continuity of the t-Norm Is Necessary\\
+in Two Broad t-Conorm Regimes}
+\author{Math discovery candidate partial result}
+\date{August 17, 2026}
+
+\begin{document}
+\maketitle
+
+\section{Status and source question}
+
+Lai and Luo prove that if a t-norm \(T\) is continuous and a
+right-continuous t-conorm \(L\) satisfies their strictness condition
+\((LS)\), then the tensor product \(L\tens T\) preserves the continuous
+distance distribution functions \(\Dc\).  Remark 4.7 asks whether continuity
+of \(T\) is necessary \cite{source}.  The question appears on printed page 15:
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+This packet proves necessity exactly for the maximum t-conorm.  It also
+excludes every left-continuous t-norm having a nilpotent-minimum ordinal-sum
+component when \(L\) is addition, or more generally has an additive
+generator.  The arbitrary-\(L\) question remains open.
+
+\section{Definitions and proof intuition}
+
+A distance distribution function (d.d.f.) is an increasing, left-continuous
+map \(f:[0,\infty]\to[0,1]\) with \(f(0)=0\) and \(f(\infty)=1\).
+Write \(\Dc\) for the continuous d.d.f.s.  For finite \(x\),
+\[
+ (L\tens T)(f,g)(x)
+   =\sup_{L(r,s)<x}T(f(r),g(s)).                              \tag{1}
+\]
+
+For \(L=\Lmax\), where \(\Lmax(r,s)=\max\{r,s\}\), the source observes
+that (1) collapses to the pointwise composition
+\(T(f(x),g(x))\).  Continuous d.d.f.s can pass through any prescribed point
+of the unit square, so preservation of continuity tests all northeast limits
+of \(T\).  Left continuity already controls southwest limits; monotonicity
+then squeezes every other approach.
+
+For addition, a nilpotent-minimum component has a threshold: below it the
+t-norm stays at the component floor, but immediately above it the value
+jumps to the midpoint.  A piecewise-linear d.d.f. turns that algebraic
+threshold into a literal spatial discontinuity of (1).
+
+\section{The exact maximum-t-conorm subcase}
+
+\begin{theorem}[Maximum t-conorm]
+\label{thm:max}
+Let \(T\) be a left-continuous t-norm.  Then
+\[
+       (\Dc,\Lmax\tens T)\text{ is closed under }\Lmax\tens T
+       \quad\Longleftrightarrow\quad
+       T\text{ is continuous on }[0,1]^2.
+\]
+\end{theorem}
+
+\begin{proof}
+The source paper computes, for every finite \(x\),
+\[
+ (\Lmax\tens T)(f,g)(x)
+ =\sup_{r,s<x}T(f(r),g(s))=T(f(x),g(x)).                     \tag{2}
+\]
+If \(T\) is continuous, (2) is continuous on the finite half-line for every
+\(f,g\in\Dc\).  At infinity, \(f(x),g(x)\to1\), so the limit is
+\(T(1,1)=1\); hence the output lies in \(\Dc\).
+
+Conversely, assume the stated closure.  Fix \(p,q\in(0,1)\), and define
+continuous d.d.f.s
+\[
+ f_p(x)=
+ \begin{cases}
+   px,&0\le x\le1,\\
+   p+(1-p)(x-1),&1\le x\le2,\\
+   1,&x\ge2,
+ \end{cases}
+ \qquad
+ g_q(x)=
+ \begin{cases}
+   qx,&0\le x\le1,\\
+   q+(1-q)(x-1),&1\le x\le2,\\
+   1,&x\ge2.
+ \end{cases}                                                   \tag{3}
+\]
+By closure and (2), \(x\mapsto T(f_p(x),g_q(x))\) is continuous at \(1\).
+Therefore
+\[
+ \lim_{t\downarrow0}T\bigl(p+(1-p)t,q+(1-q)t\bigr)=T(p,q).    \tag{4}
+\]
+Because \(T\) is increasing in each coordinate, any path approaching
+\((p,q)\) strictly from the northeast is squeezed between two
+reparameterizations of the path in (4).  Thus (4) is the full northeast
+limit of \(T\) at \((p,q)\).  The assumed left continuity gives
+\[
+ \lim_{t\downarrow0}T(p-t,q-t)=T(p,q),                         \tag{5}
+\]
+with truncated coordinates near the boundary.
+
+Now let \((u_n,v_n)\to(p,q)\).  For every sufficiently small
+\(\delta>0\), eventually
+\[
+ T(p-\delta,q-\delta)
+ \le T(u_n,v_n)
+ \le T(p+\delta,q+\delta),                                    \tag{6}
+\]
+again truncating at \(0\) and \(1\).  Equations (4)--(5), followed by
+\(\delta\downarrow0\), squeeze \(T(u_n,v_n)\) to \(T(p,q)\).
+If \(p=0\) or \(q=0\), continuity follows directly from
+\(0\le T(u,v)\le\min\{u,v\}\).  If \(p=1\) or \(q=1\), use the
+left-continuity squeeze in that coordinate and \(T(1,v)=v\) in the other.
+Thus \(T\) is continuous everywhere.
+\end{proof}
+
+\section{An explicit ordinal-sum obstruction}
+
+Let the nilpotent-minimum t-norm be
+\[
+ N(u,v)=
+ \begin{cases}
+  0,&u+v\le1,\\
+  \min\{u,v\},&u+v>1.
+ \end{cases}                                                    \tag{7}
+\]
+We say that a t-norm \(T\) has a nilpotent-minimum ordinal-sum component
+on \([a,b]\), \(0\le a<b\le1\), if on that square it is
+\[
+ T(u,v)=a+(b-a)N\left(\frac{u-a}{b-a},\frac{v-a}{b-a}\right),   \tag{8}
+\]
+and the usual ordinal-sum rule applies outside a common component (so the
+value is the minimum).
+
+\begin{theorem}[Addition]
+\label{thm:add}
+If a left-continuous t-norm \(T\) has a nilpotent-minimum ordinal-sum
+component, then \(\Dc\) is not closed under \(+\tens T\).
+\end{theorem}
+
+\begin{proof}
+For the component \([a,b]\), define the continuous d.d.f.
+\[
+ F(x)=
+ \begin{cases}
+   ax,&0\le x\le1,\\
+   a+(b-a)(x-1),&1\le x\le2,\\
+   b+(1-b)(x-2),&2\le x\le3,\\
+   1,&x\ge3.
+ \end{cases}                                                    \tag{9}
+\]
+Set \(H=(+\tens T)(F,F)\).  We claim \(H(3)=a\).  Indeed, if
+\(r+s<3\) and both \(r,s\in[1,2]\), their normalized coordinates in (8)
+sum to less than \(1\), so \(T(F(r),F(s))=a\).  If one spatial coordinate
+is below \(1\), one t-norm input is at most \(a\).  If one is above \(2\),
+the other must be below \(1\), and the ordinal-sum rule again gives a value
+at most \(a\).  Hence the supremum in (1) is at most \(a\), while pairs in
+\([1,2]^2\) with sum below \(3\) show that it is exactly \(a\).
+
+For every \(x>3\), choose \(\varepsilon>0\) with
+\(2(3/2+\varepsilon)<x\).  Both spatial coordinates then lie in the
+component, their normalized sum is greater than \(1\), and
+\[
+ H(x)\ge
+ T\bigl(F(3/2+\varepsilon),F(3/2+\varepsilon)\bigr)
+ =a+(b-a)(1/2+\varepsilon).                                   \tag{10}
+\]
+Consequently
+\(\liminf_{x\downarrow3}H(x)\ge a+(b-a)/2>a=H(3)\).
+Thus \(H\notin\Dc\).
+\end{proof}
+
+For \(a=0,b=1\), (9) can be shortened to \(F(x)=\min\{x,1\}\); then
+\((+\tens N)(F,F)(1)=0\), while its right limit is at least \(1/2\).
+
+\begin{corollary}[Additive-generator t-conorms]
+\label{cor:generator}
+Suppose a t-conorm on the extended half-line has the form
+\[
+ L(r,s)=\phi^{-1}\bigl(\phi(r)+\phi(s)\bigr),                  \tag{11}
+\]
+where \(\phi:[0,\infty]\to[0,\infty]\) is an increasing homeomorphism.
+If \(T\) has a nilpotent-minimum ordinal-sum component, then \(\Dc\) is not
+closed under \(L\tens T\).
+\end{corollary}
+
+\begin{proof}
+Let \(F\) be (9) and put \(f=F\circ\phi\).  This is a continuous d.d.f.
+For \(X<\infty\), the inequality
+\(L(r,s)<\phi^{-1}(X)\) is equivalent to
+\(\phi(r)+\phi(s)<X\).  Therefore
+\[
+ (L\tens T)(f,f)(\phi^{-1}(X))=(+\tens T)(F,F)(X).
+\]
+The jump at \(X=3\) from Theorem~\ref{thm:add} is transported to
+\(\phi^{-1}(3)\).
+\end{proof}
+
+\section{What remains open}
+
+Theorem~\ref{thm:max} completely answers Remark 4.7 for one noncancellative
+t-conorm satisfying \((LS)\).  Theorem~\ref{thm:add} and
+Corollary~\ref{cor:generator} rule out a canonical, broad discontinuous
+family for all cancellative t-conorms with additive generators.  They do not
+cover every discontinuous left-continuous t-norm or every right-continuous
+t-conorm satisfying \((LS)\).
+
+The source's quasi-inverse formula suggests the missing general step.  A
+discontinuity changes a strict superlevel set of \(T\), but one would need to
+prove that this change is detected by
+\[
+ \inf_{T(p,q)>y}L(u(p),v(q))                                   \tag{12}
+\]
+for some strictly increasing, infimum-preserving \(u,v\).  For a general
+\(L\), other points of the superlevel set may keep the infimum in (12)
+unchanged.  Eight focused upgrade attempts did not remove this
+order-separation obstruction.
+
+\section{Verification and novelty status}
+
+The maximum proof was audited at interior and boundary points.  The ordinal
+witness was checked over all spatial cases \(r+s<3\), and the generator
+corollary is an exact change of variables.  The accompanying verification
+report records those checks.
+
+Bounded searches through August 17, 2026 by arXiv id, exact title, exact
+remark wording, and the relevant t-norm/t-conorm phrases found the final
+journal publication but no later answer to Remark 4.7.  The source already
+contains identity (2); the exact continuity equivalence and the explicit
+ordinal-sum obstruction were not located.  This is therefore a candidate
+new partial result, not a certified novelty claim.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+H. Lai and Q. Luo,
+\emph{Triangle functions generated by tensor products of quantales},
+arXiv:2411.11876 (2024); Fuzzy Sets and Systems 508 (2026), 109655.
+
+\bibitem{tnorms}
+E. P. Klement, R. Mesiar, and E. Pap,
+\emph{Triangular Norms}, Kluwer Academic Publishers, 2000.
+
+\bibitem{pm}
+B. Schweizer and A. Sklar,
+\emph{Probabilistic Metric Spaces}, Dover, 2005.
+\end{thebibliography}
+
+\end{document}

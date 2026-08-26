@@ -1,0 +1,207 @@
+\documentclass[10pt]{article}
+\usepackage[margin=0.72in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.45em}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\mcp}{\mu[A_1,\ldots,A_m]}
+\definecolor{navy}{RGB}{25,55,92}
+\definecolor{soft}{RGB}{241,246,251}
+\newcommand{\resultbox}[1]{%
+  \begin{center}\colorbox{soft}{\parbox{0.94\linewidth}{#1}}\end{center}}
+
+\begin{document}
+
+{\color{navy}\Large\bfseries Low-dimensional Laguerre extremality for mixed
+characteristic polynomials}\par
+\vspace{0.2em}
+{\large A global theorem in dimensions two and three, plus balanced local
+stability in every dimension}\par
+\vspace{0.35em}
+\textbf{Status.} Candidate partial result; human review requested.\hfill
+\textbf{Run.} \texttt{fa\_banach\_001}, lane 15
+
+\textbf{Source target.} Marcus--Srivastava, \emph{The Solution of the
+Kadison--Singer Problem}, arXiv:1712.08874.  The lecture notes leave an
+associated-Laguerre extremality assertion unproved:
+
+\begin{center}
+\includegraphics[width=0.94\linewidth]{figures/lecture_extremality_crop.png}
+\end{center}
+
+The precise conjecture appears in Marcus--Spielman--Srivastava,
+\emph{Interlacing Families II}.  For positive semidefinite \(d\times d\)
+matrices satisfying
+\[
+  \sum_{i=1}^m A_i=I_d,\qquad \tr A_i\leq\varepsilon,
+\]
+it proposes that the largest zero of
+\[
+ \mcp(x)=
+ \left.\prod_{i=1}^m(1-\partial_{z_i})
+ \det\!\left(xI_d+\sum_{i=1}^m z_iA_i\right)\right|_{z=0}
+\]
+is maximized by the \emph{capped scalar packing}: as many matrices as possible
+equal \((\varepsilon/d)I_d\), one residual scalar matrix, and the rest zero.
+
+\resultbox{\textbf{Results.} The conjecture is globally true for \(d=2\) and
+\(d=3\), for every feasible \(m,\varepsilon\).  Moreover, in every dimension,
+when \(m\ge d\) and \(\varepsilon=d/m\), the balanced scalar tuple
+\(A_i=I_d/m\) is a strict local maximizer along every nonzero affine feasible
+direction.}
+
+\begin{theorem}[Global low-dimensional extremality]\label{thm:global}
+For \(d\in\{2,3\}\), the capped scalar packing maximizes the largest zero of
+\(\mcp\) among all feasible positive semidefinite tuples.
+\end{theorem}
+
+\textbf{Trace packing.}
+Put \(t_i=\tr A_i\).  The vector
+\[
+ p=(\underbrace{\varepsilon,\ldots,\varepsilon}_{q\text{ entries}},r,0,\ldots,0),
+ \qquad q=\lfloor d/\varepsilon\rfloor,\quad r=d-q\varepsilon,
+\]
+majorizes every vector with \(0\le t_i\le\varepsilon\) and
+\(\sum_i t_i=d\).  Hence it simultaneously maximizes every convex power sum
+\(\sum_i t_i^s\), \(s\ge1\).
+
+\textbf{Dimension two.}
+The determinant expansion and \(\sum_iA_i=I_2\) give
+\[
+ \mcp(x)=x^2-2x+1-\sum_i\det A_i.
+\]
+Its largest zero is \(1+\sqrt{\sum_i\det A_i}\).  If \(A\succeq0\) has trace
+\(t\), then
+\[
+ \det A\leq t^2/4,
+\]
+with equality precisely at \(A=(t/2)I_2\).  The trace-packing observation now
+proves the claim.
+
+\textbf{Dimension three.}
+Let \(e_k(A)\) be the \(k\)-th elementary symmetric function of the eigenvalues
+and set
+\[
+ S_2=\sum_i e_2(A_i),\qquad S_3=\sum_i\det A_i.
+\]
+The quadratic coefficient is \(3-S_2\).  To find the constant coefficient,
+expand \(\det(\sum_iA_i)=1\).  For each fixed \(i\), the terms with label \(i\)
+twice and another label once sum to
+\[
+ \tr\!\bigl(\operatorname{adj}(A_i)(I-A_i)\bigr)
+ =e_2(A_i)-3\det A_i.
+\]
+Together with the all-\(i\) term \(\det A_i\), all repeated-label terms sum to
+\(S_2-2S_3\).  Thus the distinct-label mixed discriminant is
+\(1-S_2+2S_3\), and the exact shifted identity is
+\begin{equation}\label{eq:cubic}
+ \mcp(1+y)=y^3-S_2y-2S_3.
+\end{equation}
+
+For \(A\succeq0\) of trace \(t\), Maclaurin's inequalities give
+\[
+ e_2(A)\leq t^2/3,\qquad \det A\leq t^3/27,
+\]
+with simultaneous equality exactly at \(A=(t/3)I_3\).  The capped trace
+packing therefore simultaneously maximizes \(S_2\) and \(S_3\).  Finally, if
+\(a,b\ge0\) increase in \(y^3-ay-2b\), evaluating the new polynomial at the
+old nonnegative largest zero gives a nonpositive value.  Its new largest zero
+cannot be smaller.  This proves Theorem~\ref{thm:global}.
+
+\begin{theorem}[Balanced local stability]\label{thm:local}
+Let \(m\ge d\ge2\), \(c=1/m\), and
+\[
+ A_i(t)=cI_d+tH_i,\qquad H_i=H_i^*,\quad \tr H_i=0,\quad \sum_iH_i=0.
+\]
+For sufficiently small \(t\), let \(\lambda(t)\) be the largest zero of the
+corresponding mixed characteristic polynomial.  If some \(H_i\ne0\), then
+\[
+ \lambda(t)=\lambda(0)-c_Ht^2+O(t^3),\qquad c_H>0.
+\]
+\end{theorem}
+
+\begin{proof}
+Write
+\[
+ P_{a,b}(x)=(1-c\,\partial_x)^b x^a.
+\]
+For the source's normalized mixed discriminants \(D\), multilinearity and
+\[
+ D(H,K)=\tr H\,\tr K-\tr(HK)
+\]
+show that every linear perturbation term vanishes.  In the coefficient indexed
+by a \(k\)-element subset, the quadratic terms equal
+\[
+ c^{k-2}(d-2)_{k-2}\sum_{i<j}-\tr(H_iH_j).
+\]
+Each pair occurs in \(\binom{m-2}{k-2}\) subsets, while
+\[
+ \sum_{i<j}\tr(H_iH_j)=-\frac12\sum_i\tr(H_i^2).
+\]
+Consequently, coefficient by coefficient,
+\begin{equation}\label{eq:variation}
+ \mu_t(x)=P_{d,m}(x)+\frac{t^2}{2}
+ \left(\sum_i\tr(H_i^2)\right)P_{d-2,m-2}(x)+O(t^3).
+\end{equation}
+
+The two \(P\)'s are monic scaled associated Laguerre polynomials of degrees
+\(d\) and \(d-2\), with the same parameter \(m-d\ge0\).  Their zeros strictly
+interlace.  If \(\lambda_0\) is the largest zero of \(P_{d,m}\), then
+\[
+ P'_{d,m}(\lambda_0)>0,
+ \qquad P_{d-2,m-2}(\lambda_0)>0.
+\]
+The largest zero is simple, so the implicit-function theorem and
+\eqref{eq:variation} yield
+\[
+ c_H=
+ \frac{\bigl(\sum_i\tr(H_i^2)\bigr)P_{d-2,m-2}(\lambda_0)}
+ {2P'_{d,m}(\lambda_0)}>0.
+\]
+\end{proof}
+
+\textbf{Why this does not yet prove the conjecture in \(d=4\).}
+In dimension four, the same shift has the form
+\[
+ \mcp(1+y)=y^4-S_2y^2-2S_3y+C,
+\]
+where \(C\) contains both \(-3\sum_i\det A_i\) and positive \((2,2)\)
+mixed-discriminant terms coupling distinct matrices.  The capped scalar tuple
+maximizes \(S_2,S_3\), but it need not minimize \(C\): the verifier exhibits
+negative scalar-comparison gaps for this coefficient.  Thus the global cubic
+argument cannot be extended coefficientwise.  A proof in \(d\ge4\) needs a
+new coupled inequality evaluated at the candidate Laguerre root.
+
+\textbf{Upgrade audit.}
+Five focused routes were completed: exact source/duplicate triage; a direct
+determinant evaluator and low-dimensional counterexample search; the global
+\(d=2,3\) invariant proof; the failed but diagnostic \(d=4\) coefficient
+comparison; and the all-dimensional balanced second variation.  The strongest
+reproducible run checked 2,700 normalized commuting, rank-one, and full-rank
+tuples in dimensions three and four with no root violation.  This computation
+is corroborative only.
+
+\textbf{Scope.}
+The global conjecture remains open in dimension four and higher.  Bounded run
+index and external exact-phrase/keyword searches found the 2015 conjecture and
+adjacent work, but no source stating the two low-dimensional cases or the
+balanced Hessian formula.  Novelty is plausible but requires specialist
+review because the \(d\le3\) proof becomes elementary after the correct shift.
+
+\begin{center}
+\includegraphics[width=0.82\linewidth]{figures/precise_conjecture_crop.png}
+\end{center}
+
+\textbf{Primary sources.}
+A. Marcus and N. Srivastava, \emph{The Solution of the Kadison--Singer
+Problem}, arXiv:1712.08874.  A. Marcus, D. Spielman, and N. Srivastava,
+\emph{Interlacing Families II: Mixed Characteristic Polynomials and the
+Kadison--Singer Problem}, Ann. of Math. 182 (2015), 327--350.
+
+\end{document}

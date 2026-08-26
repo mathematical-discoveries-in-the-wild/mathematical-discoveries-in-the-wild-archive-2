@@ -1,0 +1,196 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\cl}{\operatorname{cl}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.6em}
+\title{Closed Cones Are Exactly the Conic Fitzpatrick Fixed Points}
+\author{Run \texttt{fa\_banach\_001} --- lane 5}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\textbf{Status: partial result, likely valid.}
+
+\section{Source problem and scope}
+Garc\'ia Ramos, Mart\'inez-Legaz, and Simons ask for a characterization of
+the sets $A$ satisfying $G_{\Phi_A}=A$ in a symmetrically self-dual (SSD)
+space, explicitly presenting this as a generalized version of Fitzpatrick's
+open monotone-operator problem \cite{GRMS,Fitzpatrick}. Their exact formulation
+appears in Section 3.1 on PDF page 5:
+
+\begin{center}
+\includegraphics[width=0.93\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+This packet solves the problem completely for the subclass of cones in the
+positive-definite Hilbert SSD model. It does not solve the general problem in
+an indefinite SSD space or the classical monotone-operator problem on
+$X\times X^*$.
+
+\section{Definitions}
+Let $H$ be a real Hilbert space, paired with itself by its inner product, and
+put
+\[
+ q(x)=\frac12\|x\|^2.
+\]
+For a nonempty set $A\subset H$, write $d_A(x)=\inf_{a\in A}\|x-a\|$ and
+define
+\[
+ \Phi_A(x)=q(x)-\inf_{a\in A}q(x-a)
+           =\sup_{a\in A}\bigl\{\langle x,a\rangle-q(a)\bigr\}.
+\]
+For a proper convex function $f$, its intrinsic conjugate is the ordinary
+Fenchel conjugate
+\[
+ f^*(y)=\sup_{z\in H}\{\langle z,y\rangle-f(z)\}.
+\]
+The $q$-subdifferential and its diagonal fixed-point set are
+\[
+ \partial_q f(x)=\{y:f(x)+f^*(y)=\langle x,y\rangle\},
+ \qquad G_f=\{x:x\in\partial_q f(x)\}.
+\]
+A cone means a nonempty set $A$ such that $tA\subset A$ for every $t\geq0$;
+no convexity is assumed.
+
+\section{Idea of the proof}
+The fixed-point condition has an exact metric form involving the squared
+distance to $A$. A cone makes this distance homogeneous along every ray.
+At a point $x\notin A$, moving a little farther out on the same ray changes
+$d_A^2$ to first order, while the penalty $\|b-x\|^2$ changes only to second
+order. Consequently the metric equality required for $x\in G_{\Phi_A}$
+fails. Closedness is exactly what makes $d_A(x)>0$ outside $A$. Conversely,
+every point in $\cl A$ automatically satisfies the fixed-point equality, so
+a conic fixed point cannot be nonclosed.
+
+\section{Metric fixed-point criterion}
+\begin{lemma}\label{lem:criterion}
+For every nonempty $A\subset H$ and $x\in H$,
+\[
+ x\in G_{\Phi_A}
+ \quad\Longleftrightarrow\quad
+ \sup_{b\in H}\{d_A(b)^2-\|b-x\|^2\}=d_A(x)^2.
+\]
+\end{lemma}
+
+\begin{proof}
+Completing the square gives
+\[
+ \Phi_A(x)=\frac12\|x\|^2-\frac12d_A(x)^2.
+\]
+Therefore
+\begin{align*}
+ \Phi_A^*(x)
+ &=\sup_{b\in H}
+   \left\{\langle b,x\rangle-\frac12\|b\|^2+\frac12d_A(b)^2\right\}\\
+ &=\frac12\|x\|^2+\frac12
+   \sup_{b\in H}\{d_A(b)^2-\|b-x\|^2\}.
+\end{align*}
+By definition, $x\in G_{\Phi_A}$ exactly when
+$\Phi_A(x)+\Phi_A^*(x)=\|x\|^2$. Substitution yields the stated equality.
+Notice that the supremum is always at least $d_A(x)^2$, by taking $b=x$.
+\end{proof}
+
+\section{Closed-cone classification}
+\begin{theorem}\label{thm:main}
+Let $A$ be a nonempty cone in a real Hilbert space $H$. Then
+\[
+ A=G_{\Phi_A}\quad\Longleftrightarrow\quad A\text{ is norm closed}.
+\]
+In particular, every nonempty closed cone, whether convex or not, is a
+generalized Fitzpatrick fixed point.
+\end{theorem}
+
+\begin{proof}
+First suppose $A=G_{\Phi_A}$. Let $x\in\cl A$. Then $d_A(x)=0$, and for
+every $b\in H$,
+\[
+ d_A(b)=d_{\cl A}(b)\leq\|b-x\|.
+\]
+Thus the supremum in Lemma~\ref{lem:criterion} is at most zero; taking
+$b=x$ shows that it equals zero. Hence $x\in G_{\Phi_A}=A$. We have
+$\cl A\subset A$, so $A$ is closed. This direction in fact does not use the
+cone assumption.
+
+Conversely, suppose $A$ is closed. Since $A$ is a nonempty cone, $0\in A$.
+If $x\in A$, then $d_A(x)=0$ and
+$d_A(b)\leq\|b-x\|$ for every $b$, so Lemma~\ref{lem:criterion} gives
+$x\in G_{\Phi_A}$.
+
+Now let $x\notin A$ and set $\delta=d_A(x)>0$. For every $\lambda>0$,
+the cone identity $\lambda A=A$ implies
+\[
+ d_A(\lambda x)=\lambda d_A(x)=\lambda\delta.
+\]
+Choose $\lambda>1$ sufficiently close to $1$ that
+\[
+ (\lambda+1)\delta^2>(\lambda-1)\|x\|^2;
+\]
+such a choice exists because the left side tends to $2\delta^2>0$ and the
+right side tends to zero. Evaluating the supremum in
+Lemma~\ref{lem:criterion} at $b=\lambda x$ gives
+\begin{align*}
+ \sup_{b\in H}\{d_A(b)^2-\|b-x\|^2\}
+ &\geq \lambda^2\delta^2-(\lambda-1)^2\|x\|^2\\
+ &=\delta^2+(\lambda-1)
+   \bigl((\lambda+1)\delta^2-(\lambda-1)\|x\|^2\bigr)\\
+ &>\delta^2=d_A(x)^2.
+\end{align*}
+The criterion therefore gives $x\notin G_{\Phi_A}$. We have proved
+$G_{\Phi_A}=A$.
+\end{proof}
+
+\section{Consequences and relation to the source}
+The source proves that every closed convex set is a fixed point, and then
+checks directly that
+\[
+ \{(x_1,x_2)\in\mathbb R^2:x_1x_2=0\}
+\]
+is a nonconvex fixed point. That set is a closed cone, so
+Theorem~\ref{thm:main} both recovers the example and extends it to arbitrary
+closed cones in arbitrary real Hilbert spaces. It also supplies the converse
+within the conic class: no nonclosed cone can be a fixed point.
+
+The theorem does not characterize arbitrary closed nonconic sets, and the
+general Fitzpatrick problem remains open outside the stated subclass.
+
+\section{Verification and novelty check}
+The proof uses only the displayed definitions, completion of the square,
+distance homogeneity for cones, and the elementary fact that a point outside
+a closed set has positive distance. Edge cases $A=\{0\}$ and $A=H$ are
+included. No finite-dimensionality, convexity, or projection theorem is used.
+
+A bounded search through 9 August 2026 checked the run's registry, solution,
+attempt, and proof-gap indexes; the exact source title and citations; and
+combinations of ``closed cone'', ``$G_{\Phi_A}$'', ``Fitzpatrick function'',
+``fixed point'', and ``$q$-positive'' on arXiv, publisher pages, and author
+preprint pages. No prior statement of Theorem~\ref{thm:main} was found. The
+source contains the metric criterion and the coordinate-axes example but does
+not state the conic generalization. Novelty confidence is moderate because the
+argument is short and close to that example.
+
+\textbf{Human-review recommendation.} Verify the conjugate calculation,
+the use of $\lambda A=A$ for $\lambda>0$, and the literature search before
+making a novelty claim.
+
+\begin{thebibliography}{9}
+\bibitem{GRMS}
+Y. Garc\'ia Ramos, J. E. Mart\'inez-Legaz, and S. Simons,
+\emph{New results on $q$-positivity}, Positivity 16 (2012), 543--563,
+\href{https://doi.org/10.1007/s11117-012-0191-7}{doi:10.1007/s11117-012-0191-7};
+\href{https://arxiv.org/abs/1111.6094}{arXiv:1111.6094}.
+
+\bibitem{Fitzpatrick}
+S. Fitzpatrick,
+\emph{Representing monotone operators by convex functions},
+Workshop/Miniconference on Functional Analysis and Optimization,
+Proc. Centre Math. Anal. Austral. Nat. Univ. 20 (1988), 59--65.
+\end{thebibliography}
+
+\end{document}

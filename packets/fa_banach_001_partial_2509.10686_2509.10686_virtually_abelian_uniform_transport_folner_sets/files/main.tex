@@ -1,0 +1,276 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx,xcolor,microtype,hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\G}{\Gamma}
+\newcommand{\AEn}{\mathsf{AE}}
+\newcommand{\W}{\mathsf W_1}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\title{\vspace{-2em}Uniform Transport F{\o}lner Sets\\for Virtually Abelian Groups}
+\author{Partial solution packet for arXiv:2509.10686}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+\begin{center}
+\fcolorbox{orange!75!black}{orange!4}{\parbox{0.91\textwidth}{
+\textbf{Status: candidate substantial partial theorem, likely valid.}
+Problem~10.8 has an affirmative answer for every finitely generated virtually
+abelian group satisfying the source's no-real-characters hypothesis.  Explicit
+lattice-box sets have transport defect $O(1/N)$.  The general amenable-group
+problem remains open.
+}}
+\end{center}
+
+\section{Source problem and new result}
+
+For a finite nonempty $F\subseteq\G$, write
+\[
+                       u_F=\frac1{|F|}\sum_{x\in F}\delta_x .
+\]
+On a finitely generated group with a left-invariant word metric, the
+Wasserstein distance between finitely supported probabilities equals the
+Arens--Eells norm of their difference:
+\[
+                         \W(\mu,\nu)=\norm{\mu-\nu}_{\AEn}.
+\]
+Rosendal proves that if $\G$ is amenable and has no nonzero homomorphism to
+$\R$, then, for every finite $E\subseteq\G$ and $\varepsilon>0$, there is a
+finitely supported probability $\beta$ with
+\[
+             \max_{g,f\in E}\W(\beta g,\beta f)<\varepsilon
+             \tag{1}
+\]
+\cite[Theorem~10.4]{R}.  Rational approximation makes $\beta$ a uniform
+average of a finite \emph{multiset}.  Problem~10.8 asks whether repetitions
+can always be removed, so that $\beta=u_F$ for a genuine finite set $F$.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.94\textwidth]{figures/open_problem_crop.png}
+\caption{The motivation and Problem~10.8 on source page~32.  The page was
+reconstructed from the run's ingested official arXiv source.}
+\end{figure}
+
+We prove this for the full virtually abelian class.
+
+\subsection*{Idea of the proof}
+Use every coset of a finite-index lattice subgroup at once.  Right
+translation shifts the lattice box in each coset by a bounded displacement.
+The sum of those displacements is a homomorphism from $\G$ to the lattice, so
+the no-real-characters hypothesis forces its value to vanish.  After moving
+the small boundary defects into one coset layer, the resulting signed lattice
+kernel has zero mass and zero first moment.  Algebraically it is therefore a
+sum of second differences.  A second difference of a normalized box has
+Arens--Eells norm $O(1/N)$, which is the required transportation estimate.
+The argument does not provide such sets for general amenable groups.
+
+\begin{theorem}\label{thm:main}
+Let $\G$ be a finitely generated virtually abelian group with no nonzero
+homomorphism $\G\to\R$, and equip it with any left-invariant word metric.
+There are finite nonempty sets $F_N\subseteq\G$ such that, for every
+$g\in\G$,
+\[
+                            \W(u_{F_N}g,u_{F_N})=O_g(N^{-1}).
+                            \tag{2}\label{eq:rate}
+\]
+Consequently, for every finite $E\subseteq\G$ and every $\varepsilon>0$, some
+$F_N$ satisfies
+\[
+                    \max_{g,f\in E}\W(u_{F_N}g,u_{F_N}f)<\varepsilon.
+\]
+\end{theorem}
+
+The infinite dihedral example in the source is the rank-one case.  The proof
+below identifies its opposite-drift cancellation as a general transfer
+identity.
+
+\section{Coset displacement has zero total drift}
+
+If $\G$ is finite, take $F_N=\G$.  Otherwise choose a normal finite-index
+torsion-free abelian subgroup $A\cong\Z^d$.  Such an $A$ exists after taking
+the normal core of a torsion-free finite-index abelian subgroup.  Fix a set
+$T$ of representatives, so every $x\in\G$ is written uniquely as
+\[
+                               x=a t,\qquad a\in A,\quad t\in T.
+\]
+Write $A$ additively and put $m=|T|$.
+
+For $g\in\G$ and $t\in T$, there are unique
+$c_t(g)\in A$ and $\sigma_g(t)\in T$ such that
+\begin{equation}\label{eq:cocycle}
+                         t g=c_t(g)\,\sigma_g(t).
+\end{equation}
+Here $\sigma_g$ is the permutation of the coset space induced by right
+multiplication.
+
+\begin{lemma}[Transfer cancellation]\label{lem:transfer}
+For every $g\in\G$,
+\[
+                              \sum_{t\in T}c_t(g)=0\quad\text{in }A.
+\]
+\end{lemma}
+
+\begin{proof}
+From \eqref{eq:cocycle},
+\[
+ c_t(gh)=c_t(g)+c_{\sigma_g(t)}(h).
+\]
+Since $\sigma_g$ permutes $T$, the map
+\[
+                         S(g)=\sum_{t\in T}c_t(g)
+\]
+is a group homomorphism $\G\to A$.  If $S(g)\neq0$ for some $g$, a real
+linear functional on $A\otimes_{\Z}\R$ nonzero at $S(g)$ would make a
+nonzero homomorphism $\G\to\R$.  This contradicts the hypothesis, so $S=0$.
+\end{proof}
+
+\section{Box estimates and layer collapse}
+
+Fix a basis $e_1,\ldots,e_d$ of $A$ and put
+\[
+ B_N=\left\{\sum_{i=1}^d n_ie_i:0\leq n_i<N\right\},
+ \qquad b_N=\frac1{|B_N|}\sum_{a\in B_N}\delta_a,
+ \qquad F_N=B_NT.
+\]
+For $v\in A$, let $\tau_v$ denote translation by $v$.  A coordinatewise
+boundary count gives
+\begin{equation}\label{eq:tvbox}
+ \norm{\tau_vb_N-b_N}_1\leq \frac{2\sum_i|v_i|}{N}
+ \qquad (v=\textstyle\sum_i v_ie_i),
+\end{equation}
+with the harmless convention that the right side may exceed $2$.
+
+For $s\in T$, write $\iota_s\eta$ for a finitely supported signed measure
+on the layer $As$ obtained from a signed measure $\eta$ on $A$.  Fix
+$t_0\in T$.  If $\eta(A)=0$, then
+\begin{equation}\label{eq:collapse}
+ \norm{\iota_s\eta-\iota_{t_0}\eta}_{\AEn}
+ \leq d(s,t_0)\norm{\eta}_1.
+\end{equation}
+Indeed, the left side is represented by
+$\sum_a\eta(a)(\delta_{as}-\delta_{at_0})$, and left invariance gives
+$d(as,at_0)=d(s,t_0)$.
+
+For fixed $g\in\G$, set
+$d_s=c_{\sigma_g^{-1}(s)}(g)$.  Right translating $F_N$ and then relabelling
+the coset layers gives the exact identity
+\begin{equation}\label{eq:defect}
+ u_{F_N}g-u_{F_N}
+ =\frac1m\sum_{s\in T}
+   \iota_s\bigl(\tau_{d_s}b_N-b_N\bigr).
+\end{equation}
+Each summand has mass zero.  Thus \eqref{eq:tvbox} and
+\eqref{eq:collapse} show that replacing every layer $s$ in
+\eqref{eq:defect} by the fixed layer $t_0$ changes the Arens--Eells norm by
+$O_g(N^{-1})$.
+
+\section{The zero-drift kernel is a second difference}
+
+Define the finitely supported signed measure
+\[
+ \kappa_g=\frac1m\sum_{s\in T}(\delta_{d_s}-\delta_0)
+ \quad\text{on }A.
+\]
+It has total mass zero.  Lemma~\ref{lem:transfer} also gives zero first
+moment:
+\[
+ \sum_{a\in A}a\,\kappa_g(a)=\frac1m\sum_{s\in T}d_s=0.
+\]
+
+\begin{lemma}[Second-difference decomposition]\label{lem:square}
+If a finitely supported $\kappa\in\R[A]$, $A\cong\Z^d$, has zero mass and
+zero first moment, then there are finitely many
+$\alpha_r\in\R$ and $v_r,w_r\in A$ such that
+\[
+ \kappa=\sum_r\alpha_r
+ (\delta_{v_r}-\delta_0)*(\delta_{w_r}-\delta_0).
+\]
+\end{lemma}
+
+\begin{proof}
+Let $I$ be the augmentation ideal of the Laurent group algebra $\R[A]$.
+The zero-mass condition says $\kappa\in I$.  Modulo $I^2$ one has
+\[
+ \delta_v-\delta_0\equiv
+ \sum_{i=1}^d v_i(\delta_{e_i}-\delta_0)
+ \qquad(v=\textstyle\sum_i v_ie_i),
+\]
+also for negative coordinates, by the Laurent identities.  Hence the class
+of $\kappa$ in $I/I^2$ is exactly its first-moment vector.  That vector is
+zero, so $\kappa\in I^2$.  Since $I$ is generated by the elements
+$\delta_v-\delta_0$, membership in $I^2$ gives the asserted finite
+decomposition.
+\end{proof}
+
+For fixed $v,w\in A$, let $\nu_N=\tau_wb_N-b_N$.  Pairing each coefficient
+of $\nu_N$ with its translate by $v$ inside the layer $At_0$ gives
+\begin{equation}\label{eq:second}
+ \norm{\iota_{t_0}(\tau_v\nu_N-\nu_N)}_{\AEn}
+ \leq d(vt_0,t_0)\norm{\nu_N}_1
+ =O_w(N^{-1}),
+\end{equation}
+where the distance is a fixed constant depending only on $v,t_0$ and the
+chosen word metric.  Applying Lemma~\ref{lem:square} to $\kappa_g$ and
+summing \eqref{eq:second} yields
+\begin{equation}\label{eq:collapsed}
+ \norm{\iota_{t_0}(b_N*\kappa_g)}_{\AEn}=O_g(N^{-1}).
+\end{equation}
+
+\section{Proof of the theorem}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+The layer-collapsed form of \eqref{eq:defect} is exactly
+$\iota_{t_0}(b_N*\kappa_g)$.  The collapse error is $O_g(N^{-1})$ and
+\eqref{eq:collapsed} has the same bound.  Therefore
+$\W(u_{F_N}g,u_{F_N})=O_g(N^{-1})$.
+
+For finite $E$, the triangle inequality gives
+\[
+ \W(u_{F_N}g,u_{F_N}f)
+ \leq \W(u_{F_N}g,u_{F_N})+
+       \W(u_{F_N},u_{F_N}f),
+\]
+which tends to zero uniformly over the finitely many pairs $g,f\in E$.
+Choosing $N$ sufficiently large completes the proof.
+\end{proof}
+
+\section{Verification, scope, and novelty}
+
+The proof was independently reconstructed from the source problem.  The
+three points most vulnerable to hidden assumptions were checked explicitly:
+the cocycle sum is a genuine homomorphism because $A$ is abelian; moving a
+zero-mass signed boundary measure between coset layers costs its
+$\ell_1$-mass times a fixed layer distance; and the augmentation-ideal
+quotient $I/I^2\cong A\otimes\R$ identifies the remaining obstruction with
+the first moment.
+
+No computation is used as proof.  The crop script was rerun from the local
+source rendering.  A bounded novelty search on 21 August 2026 covered the
+run indexes, exact title and arXiv-id searches, exact phrases from
+Problem~10.8, and primary searches combining uniform finite subsets with the
+Wasserstein/Arens--Eells formulation.  No later resolution or statement of
+this virtually abelian theorem was located.
+
+The result is only partial: it settles the full virtually abelian class under
+the source hypothesis, but the general finitely generated amenable case and
+even a virtually nilpotent extension are not proved here.
+
+\paragraph{Human review recommendation.}
+Check identities \eqref{eq:defect} and \eqref{eq:collapse}, the identification
+of the first moment with the class in $I/I^2$, and the second-difference
+transport bound \eqref{eq:second}.
+
+\begin{thebibliography}{9}
+\bibitem{R}
+C. Rosendal,
+\emph{Amenability, Optimal Transport and Abstract Ergodic Theorems},
+arXiv:2509.10686v1 (2025).
+\end{thebibliography}
+
+\end{document}

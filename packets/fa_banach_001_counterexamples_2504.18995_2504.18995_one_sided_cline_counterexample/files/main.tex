@@ -1,0 +1,213 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\Hc}{\mathcal H}
+\newcommand{\B}{\mathcal B}
+\newcommand{\Ran}{\operatorname{Ran}}
+
+\title{Cline's formula fails for one-sided Drazin inverses}
+\author{Run \texttt{fa\_banach\_001}, agent lane 10}
+\date{2026-08-12}
+
+\begin{document}
+\maketitle
+
+\section*{Source and answer}
+
+Yan \cite{yan} proves that the nonzero parts of the one-sided Drazin spectra
+of $ac$ and $ca$ agree, and asks in Question 3.10 whether the missing zero
+point also agrees---equivalently, whether Cline's formula holds for
+one-sided Drazin inverses in rings and one-sided generalized Drazin inverses
+in Banach algebras.
+
+\begin{center}
+\includegraphics[width=0.96\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+The answer is no, simultaneously for the left and right versions and for
+both Drazin and generalized Drazin invertibility.  The counterexamples lie
+in the unital Banach algebra $\B(\ell^2)$, so they also answer the ring
+version.
+
+\section*{Definitions}
+
+An element $T$ of a unital Banach algebra is \emph{left generalized Drazin
+invertible} if some $X$ satisfies
+\[
+ TXT=XT^2,\qquad X^2T=X,\qquad TXT-T\ \hbox{is quasinilpotent}.
+\]
+Replacing ``quasinilpotent'' by ``nilpotent'' gives left Drazin
+invertibility.  The right definitions reverse the displayed identities.
+Every left invertible element is left Drazin invertible (of index zero), and
+similarly on the right.
+
+For $T\in\B(\Hc)$, write
+\[
+ H_0(T)=\left\{x\in\Hc:
+   \lim_{m\to\infty}\|T^m x\|^{1/m}=0\right\}.
+\]
+
+\section*{Proof intuition}
+
+Split the coordinates of $\ell^2$ into even and odd positions.  Let $D$
+embed the whole space isometrically into the even coordinates.  Let $C$ be
+the identity on those coordinates but shrink the $n$th odd coordinate by
+$1/n$.  In the order $CD$, the shrinking part is never seen, so $CD=D$ is
+left invertible.  In the reverse order $DC$, every vector first experiences
+$C$ and is then pushed repeatedly through isometric even-coordinate
+embeddings.  Thus no nonzero vector decays quasinilpotently, although the
+odd basis vectors are sent to vectors of norm $1/n$.  A short idempotent
+argument shows that a left generalized Drazin inverse would then have to be
+an actual left inverse, which is impossible.
+
+\section*{An algebraic obstruction}
+
+\begin{lemma}\label{lem:obstruction}
+If $T\in\B(\Hc)$ is left generalized Drazin invertible and $H_0(T)=\{0\}$,
+then $T$ is left invertible.
+\end{lemma}
+
+\begin{proof}
+Let $X$ be a left generalized Drazin inverse and put $Q=XT$.  The defining
+identities give
+\[
+ Q^2=XTXT=X^2T^2=XT=Q,
+ \qquad TQ=TXT=XT^2=QT.
+\]
+Moreover, $T-TQ=T(1-Q)$ is quasinilpotent.  Since $T$ commutes with $Q$,
+for every $z\in\Ran(1-Q)$ and every $m\ge1$,
+\[
+ T^m z=[T(1-Q)]^m z.
+\]
+The spectral-radius formula therefore implies
+$\Ran(1-Q)\subseteq H_0(T)=\{0\}$.  Hence $Q=1$, so $XT=1$ and $T$ is left
+invertible.
+\end{proof}
+
+\section*{The counterexample}
+
+\begin{theorem}\label{thm:main}
+There exist $a,c\in\B(\ell^2(\mathbb N))$ such that $ac$ is left Drazin
+invertible but $ca$ is not left generalized Drazin invertible.  There also
+exist such a pair with ``left'' replaced everywhere by ``right''.
+Consequently, Cline's formula fails for every one-sided class asked about in
+Question 3.10.
+\end{theorem}
+
+\begin{proof}
+Let $(e_n)_{n\ge1}$ be the standard basis of $\Hc=\ell^2(\mathbb N)$ and
+define $D,C\in\B(\Hc)$ by
+\[
+ De_n=e_{2n},\qquad
+ Ce_{2n}=e_{2n},\qquad
+ Ce_{2n-1}=\frac1n e_{2n-1}\quad(n\ge1).
+\]
+The operator $D$ is an isometry, $D^*D=1$, and $C$ acts as the identity on
+$\Ran D$.  Thus
+\[
+ CD=D.
+\]
+In particular, $CD$ is left invertible, with left inverse $D^*$, and hence
+is left Drazin invertible.
+
+Set $T=DC$.  From $CD=D$, induction gives
+\[
+ T^m=(DC)^m=D^mC\qquad(m\ge1).
+\]
+Because every $D^m$ is an isometry,
+\[
+ \|T^m x\|=\|Cx\|\qquad(x\in\Hc,\ m\ge1).
+\]
+The diagonal operator $C$ is injective.  Hence for $x\ne0$,
+\[
+ \lim_{m\to\infty}\|T^m x\|^{1/m}
+ =\lim_{m\to\infty}\|Cx\|^{1/m}=1,
+\]
+and therefore $H_0(T)=\{0\}$.
+
+On the other hand,
+\[
+ \|Te_{2n-1}\|=\frac1n\longrightarrow0.
+\]
+Thus $T$ is not bounded below.  It cannot have a bounded left inverse,
+because $XT=1$ would imply
+$\|x\|\le\|X\|\,\|Tx\|$ for every $x$.  Lemma \ref{lem:obstruction} now
+shows that $T=DC$ is not left generalized Drazin invertible.  Taking
+$a=C$ and $c=D$ proves the left assertion, and also disproves the weaker
+left-Drazin closure.
+
+For the right assertion, take $a=D^*$ and $c=C=C^*$.  Then
+\[
+ ac=D^*C=(CD)^*=D^*,
+ \qquad ca=CD^*=(DC)^*.
+\]
+The coisometry $D^*$ is right invertible, with right inverse $D$.  If
+$(DC)^*$ were right generalized Drazin invertible, taking adjoints in its
+three defining identities would make $DC$ left generalized Drazin
+invertible; adjoints preserve quasinilpotence in $\B(\Hc)$.  This
+contradicts the first half of the proof.  Hence the right versions fail as
+well.
+\end{proof}
+
+\section*{Later-literature audit and scope}
+
+A later paper of Kolund\v{z}ija and Mosi\'c \cite{km}, published online on
+21 October 2025, studies conditional Cline formulas for the same one-sided
+generalized inverses.  Its Example 3.1 is intended to show that a commutation
+condition cannot be omitted and asserts a left generalized-Drazin failure.
+That particular example does not establish the assertion.  In its notation,
+the reversed shift satisfies
+\[
+ BAe_1=0,\qquad BAe_n=e_{n+1}\quad(n\ge2).
+\]
+Thus the reducing decomposition
+\[
+ \ell^2=\operatorname{span}\{e_1\}
+ \oplus \overline{\operatorname{span}}\{e_n:n\ge2\}
+\]
+writes $BA$ as $0\oplus S$, where $S$ is a unilateral isometry.  Hence
+$BA$ is left Drazin invertible.  The other diagonal block in their displayed
+operator is quasinilpotent, hence left generalized Drazin invertible with
+inverse zero; their whole reversed product is therefore left generalized
+Drazin invertible.  A separate proof-gap record accompanies this packet.
+
+The construction in Theorem \ref{thm:main} repairs that obstruction and is
+self-contained.  Searches through 2026-08-12 of the four run indexes, the
+exact question and title, citations, and targeted one-sided Cline-formula
+literature found no other valid unconditional counterexample.  This is a
+bounded novelty check, not an exhaustive survey of all non-indexed
+literature.
+
+The theorem resolves the existence/equivalence part of Question 3.10 in the
+negative for both orientations and both notions.  It does not characterize
+the additional hypotheses under which a one-sided Cline formula is valid.
+
+\section*{Human review recommendation}
+
+\enlargethispage{4\baselineskip}
+Review as a likely-valid full counterexample.  The decisive checks are the
+identity $(DC)^m=D^mC$, the conclusion $H_0(DC)=\{0\}$, and Lemma
+\ref{lem:obstruction}.  The later-paper proof-gap note should be reviewed
+independently from the validity of the new construction.
+
+\begin{thebibliography}{9}
+\bibitem{yan}
+Kai Yan,
+\emph{On the spectral identities and fundamental properties of one-sided
+Drazin inverses in Banach algebras}, arXiv:2504.18995 (2025), Question 3.10.
+
+\bibitem{km}
+Milica Z. Kolund\v{z}ija and Dijana Mosi\'c,
+\emph{Properties of one-sided generalized Drazin inverses in Banach
+algebras}, Advances in Operator Theory \textbf{11}, Article 2 (2026),
+published online 21 October 2025,
+\href{https://doi.org/10.1007/s43036-025-00479-1}{doi:10.1007/s43036-025-00479-1}.
+\end{thebibliography}
+
+\end{document}

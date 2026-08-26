@@ -1,0 +1,473 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\cL}{\mathcal L}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\HS}{\operatorname{HS}}
+
+\title{No Logarithmic-Moment Criterion for Arbitrary\\
+$C_0$-Semigroup L\'evy Convolutions}
+\author{Automatic mathematics run \texttt{fa\_banach\_001}}
+\date{17 August 2026}
+
+\begin{document}
+\setlength{\emergencystretch}{3em}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{
+\textbf{Status.} Candidate counterexample, likely valid, for human review.
+The logarithmic moment condition is neither necessary nor sufficient for
+general strongly stable $C_0$-semigroups.  Necessity fails even for a
+nilpotent exponentially stable contraction, and sufficiency fails even for
+deterministic L\'evy drift and a bounded strongly stable contraction
+generator.  Exact drift and Gaussian tests, an iid-block reduction, and the
+sharp two-sided exponential regime are also proved.
+}}
+\end{center}
+
+\section{Source question}
+
+The source is Zbigniew J.~Jurek,
+\emph{On Relations Between Urbanik and Mehler Semigroups},
+arXiv:0811.2989 (2008) \cite{Jurek}.  On printed page 12 it asks whether,
+for a $C_0$-semigroup $(T_t)_{t\geq0}$ on a separable Banach space and an
+$E$-valued c\`adl\`ag L\'evy process $Y$, there is an analogue of the
+bounded-generator criterion
+\[
+ \int_{(0,t]}e^{sV}\,dY(s)\ \text{converges as }t\to\infty
+ \quad\Longleftrightarrow\quad
+ \E\log(1+\|Y(1)\|)<\infty,
+\]
+or, more generally, how convergence depends on the infinitesimal generator
+and on $Y(1)$.  The exact source passage is reproduced below.
+
+\begin{center}
+\includegraphics[width=0.97\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The paper defines ``operator topology'' to mean the strong operator topology.
+That convention matters: one of the examples below also shows that the
+bounded-generator assertion immediately preceding the open question cannot
+be correct with merely strong convergence.  A later review states the
+classical iff with convergence in \emph{operator norm} \cite[Section
+6.1]{Applebaum}.
+
+\section{Answer and proof idea}
+
+There are two independent obstructions.
+
+\begin{itemize}[leftmargin=2em]
+\item A $C_0$-semigroup may erase all old noise in finite time.  Then no tail
+moment of the jumps is necessary.
+\item Strong stability may be arbitrarily slow in different directions.  A
+driver with the best possible moment behaviour can then accumulate in
+infinitely many slowly decaying coordinates.
+\end{itemize}
+
+The first phenomenon is realized by the nilpotent translation semigroup on
+$L^2(0,1)$ and heavy-tailed compound-Poisson noise.  The second is already
+realized without randomness: on $\ell^2$, let
+$T_te_n=e^{-t/n}e_n$ and drive the convolution by the deterministic L\'evy
+process $Y(t)=t(1/n)_n$.
+
+The correct structural replacement is a block series.  Writing the
+convolution over successive unit intervals produces iid variables $\xi_n$
+and the exact identity
+\[
+ \int_{(0,N]}T_s\,dY(s)=\sum_{n=0}^{N-1}T_n\xi_{n+1}.
+\]
+Thus the generator contributes its discrete orbit $(T_n)$, while the law of
+$Y(1)$ contributes the one-block infinitely divisible law.  This reduction
+gives closed criteria for deterministic drift and Gaussian noise.  It also
+shows exactly when a logarithmic test returns: an exponential upper estimate
+gives sufficiency, and an exponential lower estimate gives necessity.
+
+\section{The logarithmic condition fails in both directions}
+
+\begin{theorem}[Two-sided failure]\label{thm:two-sided}
+There are separable Hilbert spaces, strongly stable contraction
+$C_0$-semigroups, and c\`adl\`ag L\'evy processes for which each of the
+following holds.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item The improper convolution converges almost surely although
+$\E\log(1+\|Y(1)\|)=\infty$.  The semigroup may be chosen nilpotent and hence
+exponentially stable.
+\item $Y(1)$ is deterministic (hence has every finite moment), but the
+convolution norm tends to infinity.  The generator may be chosen bounded and
+the semigroup strongly stable and contractive.
+\end{enumerate}
+Consequently no logarithmic-moment iff criterion extends to arbitrary
+strongly stable $C_0$-semigroups.  Under the source paper's explicit strong
+operator convention, part \textup{(ii)} also corrects its preceding
+bounded-generator formulation.
+\end{theorem}
+
+\begin{proof}
+For \textup{(i)}, take $E=L^2(0,1)$ and extend every $f\in E$ by zero outside
+$(0,1)$.  Set
+\[
+ (T_tf)(r)=f(r+t),\qquad 0<r<1.
+\]
+Translations on the zero extension show strong continuity; $(T_t)$ is a
+contraction semigroup and $T_t=0$ for $t\geq1$.
+
+Fix a unit vector $v\in E$.  Let $Y$ be a rate-one compound-Poisson process
+whose jumps are $R_kv$, where the positive iid amplitudes satisfy
+\[
+ \Pp\{R=e^m\}=\frac{6}{\pi^2m^2},\qquad m\geq1.
+\]
+If $N_1$ is the number of jumps by time one, then on $\{N_1=1\}$ one has
+$Y(1)=Rv$.  Therefore
+\begin{align*}
+ \E\log(1+\|Y(1)\|)
+ &\geq \Pp(N_1=1)\E\log(1+R)\\
+ &\geq e^{-1}\frac{6}{\pi^2}\sum_{m\geq1}\frac{m}{m^2}
+ =\infty.
+\end{align*}
+On the other hand, if $S_k$ are the jump times, then
+\[
+ \int_{(0,t]}T_s\,dY(s)
+ =\sum_{S_k\leq \min\{t,1\}}T_{S_k}(R_kv).
+\]
+This is a finite sum and is constant for $t\geq1$, so it converges almost
+surely.
+
+For \textup{(ii)}, take $E=\ell^2$ with standard basis $(e_n)$.  Define
+\[
+ Ve_n=-\frac1n e_n,\qquad T_t=e^{tV},\qquad
+ T_te_n=e^{-t/n}e_n.
+\]
+The operator $V$ is bounded and $(T_t)$ is a contraction semigroup.  For each
+$x=(x_n)\in\ell^2$, dominated convergence gives
+\[
+ \|T_tx\|^2=\sum_{n\geq1}e^{-2t/n}|x_n|^2\longrightarrow0,
+\]
+so $T_t\to0$ strongly.  It does not converge in operator norm, since
+$\|T_t\|=\sup_n e^{-t/n}=1$.
+
+Let $y=(1/n)_{n\geq1}\in\ell^2$ and let $Y(t)=ty$.  This is a deterministic
+L\'evy process and $\E\log(1+\|Y(1)\|)<\infty$.  Its convolution is the
+Bochner integral
+\[
+ X_t=\int_0^tT_sy\,ds
+     =\bigl(1-e^{-t/n}\bigr)_{n\geq1}.
+\]
+For every fixed $t$, this vector belongs to $\ell^2$ because
+$1-e^{-t/n}\leq t/n$.  But monotone convergence yields
+\[
+ \|X_t\|^2=\sum_{n\geq1}(1-e^{-t/n})^2\longrightarrow
+ \sum_{n\geq1}1=\infty.
+\]
+Thus the deterministic laws $\delta_{X_t}$ are not tight, and there is no
+convergence in distribution, in probability, or almost surely.
+\end{proof}
+
+\begin{remark}[Why exponential stability only repairs sufficiency]
+The nilpotent example satisfies $\|T_t\|=0$ for $t\geq1$, so even exponential
+stability cannot make logarithmic integrability necessary.  The diagonal
+example has only strong stability; this is exactly why the usual exponential
+upper-bound proof of sufficiency is unavailable.
+\end{remark}
+
+\section{Exact generator criterion for deterministic drift}
+
+The deterministic witness is not an isolated trick; it is the complete drift
+case.
+
+\begin{theorem}[Range criterion]\label{thm:range}
+Let $(T_t)$ be a strongly stable $C_0$-semigroup on a Banach space $E$, with
+generator $A$, and let $Y(t)=ty$.  Then
+\[
+ \int_0^tT_s\,dY(s)=\int_0^tT_sy\,ds
+\]
+converges in norm as $t\to\infty$ if and only if
+\[
+ y\in\Ran(-A).
+\]
+If $y=-Ax$, the limit is $x$, and this $x\in D(A)$ is unique.
+\end{theorem}
+
+\begin{proof}
+If $y=-Ax$ with $x\in D(A)$, the fundamental semigroup identity gives
+\[
+ \int_0^tT_sy\,ds=x-T_tx\longrightarrow x.
+\]
+Conversely, suppose
+$x_t:=\int_0^tT_sy\,ds\to x$ in norm.  The integrated-semigroup identity
+says
+\[
+ x_t\in D(A),\qquad Ax_t=T_ty-y.
+\]
+Strong stability makes the right side converge to $-y$.  Since $A$ is
+closed, $x\in D(A)$ and $Ax=-y$.  Finally, if $Az=0$, then $T_tz=z$ for all
+$t$, while strong stability gives $T_tz\to0$; hence $z=0$.
+\end{proof}
+
+For the diagonal generator in Theorem~\ref{thm:two-sided},
+$(-A)x=(x_n/n)_n$.  The chosen $y=(1/n)_n$ would require
+$x=(1,1,\ldots)\notin\ell^2$, so $y\notin\Ran(-A)$, exactly as the theorem
+predicts.
+
+\section{Exact iid-block reduction}
+
+Assume throughout this section that the finite-horizon stochastic integrals
+exist in $E$.  Put
+\[
+ X_t:=\int_{(0,t]}T_s\,dY(s).
+\]
+
+\begin{theorem}[Block-series criterion]\label{thm:block}
+For $n\geq0$, define
+\[
+ \xi_{n+1}:=\int_{(n,n+1]}T_{s-n}\,dY(s).
+\]
+Then $(\xi_n)_{n\geq1}$ is iid, with common law
+\[
+ \cL(\xi)=\cL\left(\int_{(0,1]}T_s\,dY(s)\right),
+\]
+and, pathwise for every integer $N\geq1$,
+\[
+ X_N=\sum_{n=0}^{N-1}T_n\xi_{n+1}.                 \tag{4.1}
+\]
+If $\Psi$ is the characteristic exponent of $Y(1)$, then the one-block law
+is determined by
+\[
+ \log\E e^{i\langle x^*,\xi\rangle}
+   =\int_0^1\Psi(T_s^*x^*)\,ds,
+ \qquad x^*\in E^*.                                \tag{4.2}
+\]
+
+Suppose in addition that $T_n\to0$ strongly and that the one-block
+convolution process has uniformly tight marginals on $[0,1]$.  Then
+convergence of $X_t$ in probability as $t\to\infty$ is equivalent to
+convergence in probability of the series in \textup{(4.1)}.
+\end{theorem}
+
+\begin{proof}
+The processes
+$u\mapsto Y(n+u)-Y(n)$ on disjoint unit intervals are independent and have
+the same law, which proves the iid assertion.  Bounded deterministic
+operators commute with the stochastic integral, and the semigroup law gives
+\[
+ T_n\xi_{n+1}
+ =\int_{(n,n+1]}T_nT_{s-n}\,dY(s)
+ =\int_{(n,n+1]}T_s\,dY(s).
+\]
+Summing proves (4.1).  Formula (4.2) follows first for step-function
+integrands from independent increments and then for the defining
+finite-horizon integral by approximation.
+
+For the last assertion write $t=N+r$, $0\leq r<1$.  Then
+\[
+ X_t-X_N=T_N\xi_{N+1}(r),
+ \quad
+ \xi_{N+1}(r):=\int_{(N,N+r]}T_{s-N}\,dY(s).
+\]
+The family $\{\xi_{N+1}(r_N):N\geq1\}$ is tight for every deterministic
+choice $r_N\in[0,1]$.  Strong convergence $T_N\to0$ is uniform on compact
+subsets of $E$: this follows from the uniform boundedness principle and a
+finite-net argument.  Hence $T_N\xi_{N+1}(r_N)\to0$ in probability.  Apply
+this to arbitrary real-time sequences and use the integer subsequence for
+the converse.
+\end{proof}
+
+This is an exact general answer at the structural level.  A $C_0$-generator
+determines $(T_t)$ uniquely, while $Y(1)$ determines the entire L\'evy
+process law; equation (4.2) displays their interaction rather than reducing
+it to one radial moment.
+
+\section{The sharp exponential regime for a logarithmic test}
+
+\begin{theorem}[Two-sided exponential criterion]\label{thm:log}
+Let $(\xi_n)$ be iid $E$-valued random variables.  Suppose that for constants
+$c,C,\omega,\Omega>0$,
+\[
+ c e^{-\Omega n}\|x\|\leq\|T_nx\|
+ \leq C e^{-\omega n}\|x\|,
+ \qquad n\geq0,\ x\in E.                            \tag{5.1}
+\]
+Then
+\[
+ \sum_{n\geq0}T_n\xi_{n+1}\ \text{converges almost surely}
+ \quad\Longleftrightarrow\quad
+ \E\log(1+\|\xi_1\|)<\infty.                      \tag{5.2}
+\]
+Only the upper estimate in (5.1) is needed for the forward implication from
+the logarithmic moment to convergence; only the lower estimate is needed for
+the reverse implication.
+\end{theorem}
+
+\begin{proof}
+Let $Z=\log(1+\|\xi_1\|)$.  If $\E Z<\infty$, then for every
+$\varepsilon>0$,
+\[
+ \sum_{n\geq1}\Pp\{Z>\varepsilon n\}<\infty
+\]
+by comparison with the tail integral for $\E Z$.  Borel--Cantelli gives
+$\|\xi_n\|\leq e^{\varepsilon n}$ eventually.  Choose
+$0<\varepsilon<\omega$; the upper bound in (5.1) then makes the series
+absolutely convergent almost surely.
+
+Conversely, almost-sure convergence forces
+$\|T_n\xi_{n+1}\|\to0$.  The lower bound implies, eventually,
+\[
+ \|\xi_{n+1}\|\leq c^{-1}e^{\Omega n}.
+\]
+If $\E Z=\infty$, comparison with the tail integral instead gives
+\[
+ \sum_{n\geq1}
+ \Pp\{\|\xi_{n+1}\|>c^{-1}e^{\Omega n}\}=\infty.
+\]
+These events are independent, so the second Borel--Cantelli lemma says they
+occur infinitely often, a contradiction.
+\end{proof}
+
+The two estimates isolate the counterexamples precisely.  The nilpotent
+shift has no exponential lower bound; the diagonal semigroup has no uniform
+decay upper bound.  If $A$ is bounded, then $T_t=e^{tA}$ extends to a group and
+\[
+ \|T_nx\|\geq\|e^{-nA}\|^{-1}\|x\|
+ \geq e^{-n\|A\|}\|x\|.                             \tag{5.3}
+\]
+Thus a bounded generator automatically supplies the missing lower bound.  If
+in addition $\|T_t\|\to0$, the semigroup law upgrades this to an exponential
+upper bound.
+
+For the block variable in Theorem~\ref{thm:block}, boundedness of $A$ also
+makes $T_s$ and $T_s^{-1}$ uniformly bounded for $0\leq s\leq1$.  Its L\'evy
+measure is
+\[
+ \nu_\xi(B)=\int_0^1\nu\bigl(T_s^{-1}B\bigr)\,ds.
+\]
+The standard logarithmic-moment criterion for infinitely divisible laws
+therefore shows
+\[
+ \E\log(1+\|\xi\|)<\infty
+ \quad\Longleftrightarrow\quad
+ \E\log(1+\|Y(1)\|)<\infty.                         \tag{5.4}
+\]
+Equations (5.1)--(5.4) recover the classical bounded-generator criterion at
+integer times; the standard one-block maximal estimate gives its all-time
+form.  In particular, they show why \emph{operator-norm} stability and the
+bounded-generator lower estimate are the two decisive features missing from
+the general $C_0$ question.
+
+\section{Gaussian noise: an exact covariance test}
+
+For completeness, the other principal noise component has its own exact
+criterion.  This is a standard Hilbert-space fact, included to make clear why
+a radial moment cannot encode the answer.
+
+\begin{proposition}[Gaussian energy criterion]\label{prop:gauss}
+Let $H$ be a separable Hilbert space and let $Y=W_Q$ be a $Q$-Wiener process,
+where $Q$ is positive and trace class.  Then
+\[
+ \int_0^tT_s\,dW_Q(s)
+\]
+converges in $L^2(\Omega;H)$ as $t\to\infty$ if and only if
+\[
+ \int_0^\infty\|T_sQ^{1/2}\|_{\HS}^2\,ds<\infty.   \tag{6.1}
+\]
+\end{proposition}
+
+\begin{proof}
+For $0\leq u<t$, the It\^o isometry gives
+\[
+ \E\left\|\int_u^tT_s\,dW_Q(s)\right\|^2
+ =\int_u^t\|T_sQ^{1/2}\|_{\HS}^2\,ds.
+\]
+Thus the convolutions are Cauchy in $L^2(\Omega;H)$ exactly when (6.1)
+holds.
+\end{proof}
+
+In the diagonal semigroup above, take
+$W_Q(t)=\sum_{n\geq1}n^{-1}\beta_n(t)e_n$.  Then $W_Q(1)$ is Gaussian and
+has every finite moment, but
+\[
+ \int_0^\infty\|T_sQ^{1/2}\|_{\HS}^2ds
+ =\frac12\sum_{n\geq1}\frac1n=\infty.
+\]
+More strongly, the convolution coordinates have variances
+\[
+ \sigma_n^2(t)=\frac{1-e^{-2t/n}}{2n}.
+\]
+Writing $M_t=\sum_n\sigma_n^2(t)$, one has $M_t\to\infty$ and
+\[
+ \operatorname{Var}(\|X_t\|^2)
+ =2\sum_n\sigma_n^4(t)
+ \leq\frac12\sum_n\frac1{n^2}.
+\]
+Chebyshev's inequality yields $\|X_t\|\to\infty$ in probability.  Hence even
+Gaussian noise with all moments can fail to have a limiting convolution under
+mere strong stability.
+
+\section{Literature boundary, limitations, and review recommendation}
+
+Applebaum's review \cite[Theorem 6.3 and Section 6.1]{Applebaum} records the
+known Hilbert-space L\'evy-triplet characterization, attributed to
+Chojnowska--Michalik: Gaussian trace energy, integrated L\'evy-measure mass,
+and a compensated-drift limit.  It also records logarithmic integrability as
+sufficient under exponential stability, and the iff result for a contraction
+semigroup with bounded generator converging in operator norm.  Those known
+results are consistent with every statement above.
+
+The run's registry and attempts indexes were searched for arXiv:0811.2989 and
+for the central phrases.  A bounded arXiv/web search through 17 August 2026
+used the exact title, the exact question, ``$C_0$ semigroup stochastic
+convolution logarithmic moment'', ``bounded generator'', and
+``Chojnowska--Michalik''.  It found the source and Applebaum's review, but no
+later paper explicitly claiming to answer Jurek's general Banach-space
+question.  Novelty is therefore plausible, not certified.
+
+The packet does \emph{not} claim a new arbitrary-Banach L\'evy-triplet
+classification, nor does it claim the Hilbert triplet theorem as new.  Its
+complete claim is the negative answer to a universal logarithmic analogue,
+the correction of the source's strong-topology formulation, and the exact
+replacement statements proved here.
+
+Human review should focus on three short points: the topology convention in
+the source, the block-law logarithmic equivalence (5.4), and the stated
+finite-horizon tightness condition in Theorem~\ref{thm:block}.  The two
+counterexamples and Theorem~\ref{thm:range} are elementary and independent of
+those auxiliary points.
+
+\begin{thebibliography}{9}
+
+\bibitem{Jurek}
+Z.~J. Jurek,
+\emph{On Relations Between Urbanik and Mehler Semigroups},
+arXiv:0811.2989, 2008.
+\url{https://arxiv.org/abs/0811.2989}.
+
+\bibitem{Applebaum}
+D.~Applebaum,
+\emph{Infinite Dimensional Ornstein--Uhlenbeck Processes Driven by L\'evy
+Processes},
+arXiv:1411.2752, 2014.
+\url{https://arxiv.org/abs/1411.2752}.
+
+\bibitem{CM}
+A.~Chojnowska--Michalik,
+\emph{On processes of Ornstein--Uhlenbeck type in Hilbert space},
+Stochastics 21 (1987), 251--286.
+
+\end{thebibliography}
+
+\end{document}

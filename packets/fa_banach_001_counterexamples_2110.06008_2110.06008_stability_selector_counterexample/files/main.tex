@@ -1,0 +1,241 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,graphicx,booktabs}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\D}{D_+}
+\newcommand{\tht}{\theta}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.62em}
+
+\title{A Counterexample to the Proposed Stability Conditions for Gaussian Lattice Sums}
+\author{Run \texttt{fa\_banach\_001}, lane 18}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\textbf{Status.} Candidate full counterexample to the Appendix~C conjectured
+sufficient conditions in arXiv:2110.06008, likely valid, for human review.
+
+\section{Source conjecture}
+
+For $\tau=x+iy$ in
+\[
+ \D=\{(x,y):0\leq x\leq\tfrac12,\ x^2+y^2\geq1,\ y>0\},
+\]
+B\'etermin, Faulhuber, and Steinerberger parametrize a unit-area lattice and
+define
+\begin{equation}\label{eq:theta}
+ \tht_{x,y}(z;\alpha)=
+ \sum_{k,l\in\Z}\exp\!\left[-\frac{\pi\alpha}{y}
+ \left((k+z_1)^2+2x(k+z_1)(l+z_2)
+ +(x^2+y^2)(l+z_2)^2\right)\right].
+\end{equation}
+The hexagonal lattice has $(x,y)=(1/2,\sqrt3/2)$ and deep hole
+$z^-=(1/3,1/3)$.  Appendix~C proposes that
+\begin{equation}\label{eq:conj}
+ \tht_{1/2,\sqrt3/2}(z^-;\alpha)
+ \geq \tht_{x,y}(\widetilde z(x,y);\alpha)
+ \qquad(\alpha>0)
+\end{equation}
+at least when the selector obeys
+\begin{equation}\label{eq:conditions}
+ \widetilde z_1+x\widetilde z_2=\tfrac12,\qquad
+ \partial_x\widetilde z_2\leq0,\qquad
+ \widetilde z(\tfrac12,y)=a(\tfrac12,y),\qquad
+ \widetilde z(0,y)\in[\tfrac14,\tfrac12],
+\end{equation}
+and tends to $z^-$ with the lattice \cite[Appendix~C]{BFS}.
+
+\begin{center}
+\includegraphics[width=0.94\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The last membership in \eqref{eq:conditions} is dimensionally ambiguous for a
+vector-valued selector; the construction below has
+$\widetilde z(0,y)=(1/2,1/2)$, so it satisfies both the natural reading as a
+condition on $\widetilde z_2$ and the coordinatewise reading.
+
+\section{Claimed counterexample}
+
+\begin{theorem}\label{thm:main}
+Define on all of $\D$
+\begin{equation}\label{eq:selector}
+ \widetilde z_2(x,y)=\frac12-\frac{[4x(1-x)]^{100}}{8y^2},
+ \qquad
+ \widetilde z_1(x,y)=\frac12-x\widetilde z_2(x,y).
+\end{equation}
+This selector satisfies every condition in \eqref{eq:conditions}, tends to
+$(1/3,1/3)$ at the hexagonal lattice, and also satisfies the stronger boundary
+condition
+\[
+ \partial_x\widetilde z_2(\tfrac12,y)=0.
+\]
+Nevertheless, at
+\begin{equation}\label{eq:test}
+ x=\frac9{20},\qquad y=\frac{\sqrt{319}}{20},\qquad \alpha=1,
+\end{equation}
+one has the strict reverse inequality
+\[
+ \tht_{x,y}(\widetilde z(x,y);1)
+ >\tht_{1/2,\sqrt3/2}((1/3,1/3);1).
+\]
+Hence the proposed sufficient conditions do not imply \eqref{eq:conj}, even
+after adding the boundary-criticality property discussed immediately after
+the conjecture.
+\end{theorem}
+
+\section{Idea of the proof}
+
+The endpoint constraints control how far the selector can move but do not
+control how rapidly it moves as $x$ leaves the hexagonal boundary.  The factor
+$[4x(1-x)]^{100}$ equals one at $x=1/2$, has zero derivative there, yet drops
+quickly just inside the domain.  Thus \eqref{eq:selector} remains perfectly
+smooth and monotone while moving much closer to $(1/2,1/2)$ than the canonical
+selectors considered in the source paper.  That displacement raises the theta
+value enough to cross the hexagonal benchmark.
+
+To make the crossing rigorous, no infinite numerical sum is trusted.  We keep
+only a $5\times5$ square of positive terms for the candidate, giving a lower
+bound.  For the hexagonal sum, its quadratic form dominates a separable one;
+the omitted complement is then bounded by two elementary one-dimensional
+Gaussian geometric tails.  Directed interval arithmetic leaves a gap above
+$0.003847$.
+
+\section{Proof}
+
+Put $G(x)=4x(1-x)$.  On $0\leq x\leq1/2$ one has $0\leq G\leq1$ and
+$G'(x)=4(1-2x)\geq0$.  The line condition in \eqref{eq:conditions} is built
+into \eqref{eq:selector}, while
+\[
+ \partial_x\widetilde z_2
+ =-\frac{100}{8y^2}G(x)^{99}G'(x)\leq0.
+\]
+At $x=0$, $G=0$ and $\widetilde z=(1/2,1/2)$.  At $x=1/2$, $G=1$ and
+\[
+ \widetilde z_2=\frac12-\frac1{8y^2},\qquad
+ \widetilde z_1=\frac14+\frac1{16y^2},
+\]
+which are exactly the source paper's circumcenter coordinates
+$a(1/2,y)$.  Moreover $G'(1/2)=0$, proving boundary criticality.  Continuity
+at $(1/2,\sqrt3/2)$ gives $\widetilde z\to(1/3,1/3)$.  Thus all selector
+claims are proved.
+
+For the test point \eqref{eq:test}, $x^2+y^2=1$, so it lies in $\D$, and
+\begin{equation}\label{eq:exactz}
+ G(x)=\frac{99}{100},\qquad
+ \widetilde z_2=\frac12-\frac{50}{319}
+       \left(\frac{99}{100}\right)^{100},\qquad
+ \widetilde z_1=\frac12-\frac9{20}\widetilde z_2.
+\end{equation}
+Let $C_2$ be the sum in \eqref{eq:theta} at \eqref{eq:test} and
+\eqref{eq:exactz}, restricted to $-2\leq k,l\leq2$.  Positivity gives
+\begin{equation}\label{eq:clower}
+ \tht_{x,y}(\widetilde z;1)\geq C_2.
+\end{equation}
+
+It remains to give a rigorous upper bound for the hexagonal benchmark.  Write
+$u=k+1/3$ and $v=l+1/3$.  Its exponent uses
+\[
+ q_H(u,v)=\frac{2}{\sqrt3}(u^2+uv+v^2)
+ \geq\frac{u^2+v^2}{\sqrt3}.
+\]
+Set $c=\pi/\sqrt3$ and, for $N\geq0$,
+\begin{align*}
+ A_N&=\sum_{|n|\leq N}e^{-c(n+1/3)^2},\\
+ T_N&=\frac{2e^{-c(N+2/3)^2}}
+ {1-e^{-c(2N+7/3)}}.
+\end{align*}
+
+\begin{lemma}\label{lem:tail}
+The complement of the square $|k|,|l|\leq N$ in the hexagonal theta sum is
+at most $2(A_N+T_N)T_N$.
+\end{lemma}
+
+\begin{proof}
+The one-dimensional tail satisfies
+\[
+ \sum_{|n|>N}e^{-c(n+1/3)^2}
+ \leq2\sum_{n=N+1}^{\infty}e^{-c(n-1/3)^2}\leq T_N.
+\]
+Indeed, the first dominating term is $e^{-c(N+2/3)^2}$, and the ratio of
+successive terms is at most $e^{-c(2N+7/3)}$.  The full one-dimensional sum
+is consequently at most $A_N+T_N$.  By $q_H\geq(u^2+v^2)/\sqrt3$ and a union
+bound over the two coordinate tails, the two-dimensional complement is at
+most $2(A_N+T_N)T_N$.
+\end{proof}
+
+Let $H_2$ be the $5\times5$ hexagonal square.  The directed 60-decimal
+interval calculation in the accompanying checker (file
+\path{code/check_counterexample.py}) gives
+\begin{align*}
+ C_2&>0.9242317405007238239445,\\
+ H_2&<0.9203713649781851694427,\\
+ 2(A_2+T_2)T_2&<0.000013118172843186372.
+\end{align*}
+Every quantity is a finite composition of rational arithmetic, square roots,
+$\pi$, and exponentials, evaluated with outward rounding.  Therefore
+\begin{align*}
+ \tht_{x,y}(\widetilde z;1)
+ -\tht_{1/2,\sqrt3/2}((1/3,1/3);1)
+ &\geq C_2-H_2-2(A_2+T_2)T_2\\
+ &>0.00384725734969546>0.
+\end{align*}
+Together with \eqref{eq:clower} and Lemma~\ref{lem:tail}, this proves the
+strict reversal and completes the proof of Theorem~\ref{thm:main}.
+
+\begin{corollary}
+For the selector \eqref{eq:selector}, the conjectured inequality fails on an
+open neighborhood of the parameter triple in \eqref{eq:test}.
+\end{corollary}
+\begin{proof}
+The theta series converges locally uniformly in $(x,y,z,\alpha)$ for $y>0$.
+The strict gap just proved therefore persists by continuity.
+\end{proof}
+
+\section{Verification, scope, and novelty}
+
+The interval checker is deterministic and asserts positivity of the lower
+endpoint of the certified gap.  The separate \texttt{verification.md} audits
+the selector conditions, tail estimate, and possible interpretations of the
+source's final boundary condition.
+
+This counterexample refutes only the proposed sufficient conditions in
+Appendix~C.  It does not affect the paper's proved variational theorem, the
+Strohmer--Beaver application, or the fact that the hexagonal deep hole is a
+universal cold spot.  A corrected stability statement would need a quantitative
+modulus controlling how fast $\widetilde z$ may leave the circumcenter as the
+lattice leaves the hexagonal boundary.
+
+A bounded novelty search on 11 August 2026 covered the run's registry,
+solution, attempt, and proof-gap indexes; exact-title and arXiv-id searches;
+and web searches combining ``stability conjecture'', ``widetilde z'', and
+``counterexample''.  Later work on stable cold spots cites the source theorem
+and emphasizes that exact cold spots are difficult to determine
+\cite{BDV}, but the search found no resolution of this Appendix selector
+conjecture.  This supports, but cannot certify, novelty.
+
+\textbf{Human-review recommendation.}  Review as a full counterexample.  The
+only computational component is the explicit finite interval inequality; its
+analytic tail enclosure is included above and can be independently reproduced
+in under a second.
+
+\begin{thebibliography}{9}
+\bibitem{BFS}
+L. B\'etermin, M. Faulhuber, and S. Steinerberger,
+\emph{A variational principle for Gaussian lattice sums},
+arXiv:2110.06008 (2021), Appendix~C,
+\url{https://arxiv.org/abs/2110.06008}.
+
+\bibitem{BDV}
+E. Bannai, L. B\'etermin, and F. Vallentin,
+\emph{Polarization of lattices: Stable cold spots and spherical designs},
+Forum of Mathematics, Sigma (2026).
+\end{thebibliography}
+
+\end{document}

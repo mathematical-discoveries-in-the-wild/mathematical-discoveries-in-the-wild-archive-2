@@ -1,0 +1,196 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Om}{\Omega_R}
+\newcommand{\Dap}{\Delta_{\alpha,p}}
+
+\title{Exterior balls are subcritical for every distance weight\\
+\large A full negative answer to Open Problem (3) of arXiv:2303.03527}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 14}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+Candidate full counterexample, likely valid; human review recommended.
+The proof settles the source's endpoint question negatively and, on exterior
+balls, proves the stronger result for every real weight exponent.  Novelty
+confidence is moderate because the source archive contains a discarded planar
+seed after the final document; this is disclosed precisely below.
+
+\section{Source question}
+
+The source is U.~Das, Y.~Pinchover, and B.~Devyver,
+\emph{On existence of minimizers for weighted $L^p$-Hardy inequalities on
+$C^{1,\gamma}$-domains with compact boundary}, arXiv:2303.03527, published in
+\emph{Journal of Spectral Theory} 15 (2025), 1089--1138\cite{source}.
+Open Problem (3), on printed page 32, asks:
+\begin{quote}
+Let $\Omega$ be a $C^{1,\gamma}$-exterior domain and
+$\alpha+p\in\{1,N\}$. Is $-\Delta_{\alpha,p}$ critical in $\Omega$?
+\end{quote}
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\linewidth]{figures/open_problem_crop.png}
+  \caption{Real full-width crop of printed page 32 of the source paper.}
+\end{figure}
+
+\section{Definitions and proof intuition}
+
+For $N\ge2$, $1<p<\infty$, and a domain $\Omega$, let
+$\delta_\Omega(x)=\operatorname{dist}(x,\partial\Omega)$ and
+\[
+ -\Delta_{\alpha,p}u
+ :=-\operatorname{div}\!\left(
+ \delta_\Omega^{-\alpha}|\nabla u|^{p-2}\nabla u\right).
+\]
+The source calls the associated nonnegative functional \emph{critical} when
+no nonzero compactly supported nonnegative potential can be subtracted while
+preserving nonnegativity; otherwise it is \emph{subcritical}.  It recalls the
+equivalent criterion that a nonnegative operator is critical exactly when its
+equation has, up to multiplication by a positive constant, a unique positive
+supersolution (then a solution)\cite[Section 2]{source}.
+
+\paragraph{Proof intuition.}
+An exterior ball is radial, and a radial weighted $p$-harmonic function is
+governed by conservation of flux.  Prescribing unit flux determines its
+derivative explicitly.  One can integrate that derivative from whichever end
+is integrable: from the boundary when $\alpha>1-p$, and from infinity when
+$\alpha\le1-p$.  This always yields a positive nonconstant solution.  Since
+the constant function is another positive solution, the uniqueness required
+for criticality fails.  The endpoint cases in the question are merely the two
+borderline logarithmic instances of this all-weight construction.
+
+\section{The all-weight counterexample}
+
+\begin{theorem}\label{thm:main}
+Let $N\ge2$, $1<p<\infty$, $R>0$, and
+\[
+ \Om:=\R^N\setminus\overline{B_R(0)},
+ \qquad \delta_{\Om}(x)=|x|-R.
+\]
+For every $\alpha\in\R$, the operator $-\Delta_{\alpha,p}$ is subcritical in
+$\Om$.  In particular, for every such $N,p,R$ it is subcritical at both
+$\alpha+p=1$ and $\alpha+p=N$.
+\end{theorem}
+
+\begin{proof}
+Write $r=|x|$ and define, for $r>R$,
+\[
+ b_\alpha(r):=(r-R)^{\alpha/(p-1)}
+                   r^{-(N-1)/(p-1)}.
+\]
+We construct a finite positive radial function by choosing the integrable end:
+\[
+ U_\alpha(r):=
+ \begin{cases}
+ \displaystyle\int_R^r b_\alpha(s)\,ds,
+       &\alpha>1-p,\\[2.2ex]
+ \displaystyle\int_r^\infty b_\alpha(s)\,ds,
+       &\alpha\le 1-p.
+ \end{cases}\tag{1}
+\]
+In the first branch, the integrand is asymptotic to a positive constant times
+$(s-R)^{\alpha/(p-1)}$ near $R$, and the exponent is greater than $-1$;
+therefore the integral is finite.  In the second branch,
+\[
+ b_\alpha(s)\asymp
+ s^{(\alpha-N+1)/(p-1)}\qquad(s\to\infty).
+\]
+Here $\alpha\le1-p<N-p$, so the exponent is strictly less than $-1$ and the
+tail integral is finite.  Thus $U_\alpha$ is finite and strictly positive on
+$(R,\infty)$.  It is smooth locally in that interval and
+\[
+ U_\alpha'(r)=\sigma b_\alpha(r),
+ \qquad
+ \sigma:=
+ \begin{cases}1,&\alpha>1-p,\\-1,&\alpha\le1-p.\end{cases}
+\]
+
+For a radial function, the weighted radial flux is
+\[
+ (r-R)^{-\alpha}r^{N-1}
+ |U_\alpha'(r)|^{p-2}U_\alpha'(r).
+\]
+Since $b_\alpha(r)^{p-1}=(r-R)^\alpha r^{-(N-1)}$,
+this flux is the constant $\sigma$.  Consequently,
+\[
+ \operatorname{div}\!\left(
+ (r-R)^{-\alpha}|\nabla U_\alpha|^{p-2}
+ \nabla U_\alpha\right)
+ =\frac1{r^{N-1}}\frac{d}{dr}(\sigma)=0
+ \quad\text{in }\Om.\tag{2}
+\]
+The function $U_\alpha$ belongs to $W^{1,p}_{\mathrm{loc}}(\Om)$, is positive,
+and is nonconstant because its radial derivative never vanishes.
+
+The constant function $1$ is also a positive solution.  In particular, the
+Agmon--Allegretto--Piepenbrink criterion quoted in the source makes the
+functional nonnegative.  If $-\Delta_{\alpha,p}$ were critical, the source's
+criticality criterion would force all positive solutions (indeed all positive
+supersolutions) to be proportional.  The functions $1$ and $U_\alpha$ are not
+proportional, a contradiction.  Hence the operator is subcritical.
+\end{proof}
+
+\subsection*{The two requested endpoints}
+
+At $\alpha+p=N$, formula (1) uses the boundary end and gives
+\[
+ U_N(r)=\int_R^r
+ (s-R)^{(N-p)/(p-1)}s^{-(N-1)/(p-1)}\,ds;
+\]
+its integrand is asymptotic to $s^{-1}$ at infinity, so $U_N$ has logarithmic
+growth.  At $\alpha+p=1$, formula (1) uses the infinite end and gives
+\[
+ U_1(r)=\int_r^\infty
+ (s-R)^{-1}s^{-(N-1)/(p-1)}\,ds;
+\]
+it has logarithmic blow-up only as $r\downarrow R$.  Both are nevertheless
+positive local weak solutions in the open exterior domain, exactly as required
+by the source definitions.
+
+\section{Verification, scope, and novelty}
+
+The accompanying script checks the constant-flux identity and both convergence
+branches at 675 representative parameter/radius tuples, including $p<2$ and
+both endpoint families.  It passes.  This is a regression check, not part of
+the proof.
+
+The result is a full negative answer if the source question asks whether
+criticality holds in general for all $C^{1,\gamma}$ exterior domains: every
+exterior ball is a counterexample.  It does not classify which nonradial
+exterior domains might be critical if the question was intended as a
+domain-by-domain classification.
+
+A bounded search of the four run indexes and exact/near-exact web and arXiv
+phrases found no later paper explicitly answering Open Problem (3), nor the
+all-$\alpha$ exterior-ball theorem.  However, the downloaded arXiv source is
+unusual: after the current document's first \verb|\end{document}|, a discarded
+older document records the special case $(N,p,\alpha)=(2,2,0)$ with solutions
+$1$ and $\log r$, and says a similar argument should work generally.  That
+passage is absent from the final PDF and gives neither the two full endpoint
+families nor the all-weight proof above, but it establishes prior author
+awareness of the planar seed.  Mathematical confidence is therefore high and
+novelty confidence moderate.  Human review should chiefly assess this
+provenance caveat and the intended quantifier in the source question.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+U.~Das, Y.~Pinchover, and B.~Devyver,
+\emph{On existence of minimizers for weighted $L^p$-Hardy inequalities on
+$C^{1,\gamma}$-domains with compact boundary},
+J. Spectr. Theory \textbf{15} (2025), 1089--1138;
+arXiv:2303.03527.
+\end{thebibliography}
+
+\end{document}
+

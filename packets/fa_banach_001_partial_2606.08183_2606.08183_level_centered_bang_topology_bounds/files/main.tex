@@ -1,0 +1,249 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.92in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx,microtype,xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+\emergencystretch=1em
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\comp}{\operatorname{comp}}
+\newcommand{\diam}{\operatorname{diam}}
+
+\title{Global Bang Degree Does Not Control Sublevel Topology:\\A Level-Centered Repair}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 7}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{\textbf{Status.} Substantial partial result and
+sharp obstruction, likely valid and pending human review.  A fixed global Bang
+degree cannot bound the affine-section component constants of quasianalytic
+sublevel sets, even in a fixed analytic class on a fixed rectangle.  Bang
+degrees of the shifted level functions $f-t$ and $f+t$ do give an explicit
+line-section bound.}}
+\end{center}
+
+\section{Source prompt}
+
+For a sublevel set
+\[
+ K_t=\{x\in K:|f(x)|\le t\},
+\]
+Rainer proves a metric-entropy estimate containing a constant
+\[
+ C_{K_t}=C(n)\max_{1\le j\le n-1}\omega_j B_{n-j}(K_t),
+\]
+where $B_{n-j}(K_t)$ bounds the number of connected components of
+$P\cap K_t$ over affine $(n-j)$-planes $P$.  Definability gives finiteness, and
+the source asks for explicit bounds ``via the Bang degree depending on the
+Denjoy--Carleman complexity of $K_t$''
+\cite[after Corollary~1.18]{Rainer}.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.94\textwidth]{figures/open_problem_crop.png}
+\caption{The metric-entropy corollary and the prompt on source PDF page 9.}
+\end{figure}
+
+The source does not define a numerical Denjoy--Carleman complexity or format
+for a definable presentation of $K_t$.  The results below isolate a necessary
+scale that any such complexity must retain.
+
+\section{Proof intuition}
+
+Derivative bounds permit very high frequency when its amplitude is
+exponentially small.  Adding that oscillation to a nonzero constant leaves the
+global size of the function, and therefore its global Bang degree, essentially
+unchanged.  But taking a sublevel exactly at the constant term removes the
+large offset and exposes every oscillation topologically.
+
+This also identifies the repair.  On an interval, the boundary of
+$\{|f|\le t\}$ consists of zeros of the two shifted functions $f-t$ and
+$f+t$.  The source's quasianalytic zero theorem applies to those shifts, so the
+relevant degrees must be centered at the boundary levels.  Their norms detect
+the tiny oscillatory amplitude that the global degree misses.
+
+\section{Notation from the source}
+
+For an admissible weight $\mu=(\mu_j)_{j\ge1}$, base derivative bound $M>0$,
+length scale $a>0$, and lower norm bound $b>0$, write
+\[
+ \mathcal N(\mu,M,a,b)
+ :=2D_{a\mu}(b/M)
+\]
+for the associated degree of the source, whenever the quadruple is admissible.
+For quasianalytic $\mu$ it is always finite.  Proposition~10.1 of the source
+states that a $(\mu,M)$-smooth function on an interval of length $a$ whose
+supremum norm is at least $b$ has at most
+$\mathcal N(\mu,M,a,b)$ zeros, counted with multiplicity
+\cite[Proposition~10.1]{Rainer}.
+
+\section{A fixed-class obstruction}
+
+\begin{theorem}[global degree cannot control topology]\label{thm:negative}
+Let
+\[
+ K=[0,2\pi]\times[0,1],\qquad \mu_j=j,\qquad M_0=2.
+\]
+For every integer $N\ge1$, there is a restricted analytic
+$(\mu,M_0)$-smooth function $f_N:K\to\R$ such that the associated global
+degree with lower bound $b_0=1$ is independent of $N$, while
+\[
+ B_1(\{x\in K:|f_N(x)|\le1\})\ge N+1.
+\]
+In particular, no bound depending only on the global Bang degree, the fixed
+weight and derivative majorant, the dimension, and the fixed geometry of $K$
+can control the component constants in the source prompt.
+\end{theorem}
+
+\begin{proof}
+Set
+\[
+                  f_N(x,y)=1+e^{-N}\sin(Nx).
+\]
+For $j\ge1$, only the pure $x$-derivative contributes to the source's
+multivariate derivative seminorm, and
+\begin{equation}\label{eq:derivative}
+                  \|f_N\|_{j,K}=e^{-N}N^j\le j!\le2j!.
+\end{equation}
+Indeed, $j!\ge(j/e)^j$, and with $u=j/N$ the desired first inequality follows
+from
+\[
+ \left(\frac{j}{eN}\right)^j\ge e^{-N}
+ \quad\Longleftrightarrow\quad
+ N(u\log u-u+1)\ge0.
+\]
+Also $\|f_N\|_K=1+e^{-N}<2$.  Since the weight $\mu_j=j$ gives
+$M_j=2j!$, equation \eqref{eq:derivative} proves
+$(\mu,2)$-smoothness for every $N$.  The fixed lower bound
+$\|f_N\|_K\ge1$ therefore uses the same associated degree
+\[
+                  \mathcal N(\mu,2,\diam K,1)
+\]
+for the whole family.  The degree obtained by inserting the actual norm
+$\|f_N\|_K$ is no larger, by monotonicity in the lower bound.
+
+Because $1-e^{-N}>0$, the level-one sublevel condition is
+\[
+ |f_N(x,y)|\le1\quad\Longleftrightarrow\quad\sin(Nx)\le0.
+\]
+On $[0,2\pi]$ this set is the isolated point $\{0\}$ together with the $N$
+disjoint intervals
+\[
+ \left[\frac{(2k+1)\pi}{N},\frac{(2k+2)\pi}{N}\right],
+ \qquad k=0,\ldots,N-1.
+\]
+Their products with $[0,1]$ are $N+1$ connected components.  Intersecting
+with any horizontal line gives the same $N+1$ components, proving the asserted
+lower bound for $B_1$.
+\end{proof}
+
+\section{The level-centered repair}
+
+\begin{theorem}[explicit line-section bound]\label{thm:positive}
+Let $I\subset\R$ be a nondegenerate compact interval, let $\mu$ be a
+quasianalytic admissible weight, and let $g:I\to\R$ be
+$(\mu,M_0)$-smooth.  Fix $t>0$ and put
+\[
+ \widehat M_0=2(M_0+t),\qquad
+ b_\sigma=\|g-\sigma t\|_I\quad(\sigma\in\{-1,1\}).
+\]
+If $g$ is not identically $t$ or $-t$, then
+\begin{equation}\label{eq:component-bound}
+ \comp\{s\in I:|g(s)|\le t\}
+ \le1+\sum_{\sigma\in\{-1,1\}}
+ \mathcal N(\mu,\widehat M_0,|I|,b_\sigma).
+\end{equation}
+If $g\equiv t$ or $g\equiv-t$, the sublevel set is $I$ and has one component.
+\end{theorem}
+
+\begin{proof}
+Assume $g$ is not identically either boundary level.  The boundary in $I$ of
+$S=\{|g|\le t\}$ is contained in
+\[
+                  \{g-t=0\}\cup\{g+t=0\}.
+\]
+Consequently, if $Z_I(h)$ denotes the number of distinct zeros of $h$ in $I$,
+\begin{equation}\label{eq:topological}
+                       \comp(S)\le Z_I(g-t)+Z_I(g+t)+1.
+\end{equation}
+Both shifted functions are $(\mu,\widehat M_0)$-smooth: their zeroth norms
+are at most $M_0+t<\widehat M_0$, and all positive-order derivatives are
+those of $g$.  Moreover $b_\sigma>0$.  The source's zero theorem bounds
+$Z_I(g-\sigma t)$ by
+$\mathcal N(\mu,\widehat M_0,|I|,b_\sigma)$.  Substitution in
+\eqref{eq:topological} proves \eqref{eq:component-bound}.
+\end{proof}
+
+\begin{corollary}[uniform planar entropy constant]\label{cor:plane}
+Let $K\subset\R^2$ be a convex body and let $f$ be
+$(\mu,M_0)$-smooth on a convex neighborhood of $K$.  Fix $t>0$.  Suppose
+there is $b_*>0$ such that for every affine line $P$, every nondegenerate
+interval $I=P\cap K$, and both $\sigma\in\{-1,1\}$, either
+$f|_I\equiv\sigma t$ or
+\[
+                         \|f|_I-\sigma t\|_I\ge b_*.
+\]
+Then, with
+\[
+ \mathcal N_*=
+ \mathcal N(\mu,2(M_0+t),\diam K,b_*),
+\]
+one has
+\[
+                 B_1(K_t)\le2\mathcal N_*+1.
+\]
+Thus the component term in the constant of Corollary~1.18 of the source may
+be taken at most $C(2)\omega_1(2\mathcal N_*+1)$.
+\end{corollary}
+
+\begin{proof}
+Every nonempty line section of a convex body is an interval.  Parameterizing
+it by arclength preserves the derivative majorant.  Apply
+Theorem~\ref{thm:positive}; use $|I|\le\diam K$, the assumed lower bound, and
+monotonicity of $\mathcal N$ in its length and lower-bound arguments.  A
+restriction identically equal to a boundary level contributes one component
+and obeys the same final bound.
+\end{proof}
+
+\section{Scope, verification, and novelty audit}
+
+The construction and estimates are exact and have no computational
+dependency.  The elementary inequality in \eqref{eq:derivative} is uniform in
+both $j$ and $N$.  The isolated endpoint component at $x=0$ is included, so
+the count is $N+1$, not merely $N$.  In the same family,
+$\|f_N-1\|_K=e^{-N}$; hence the level-centered associated degree is at least
+twice its starting index, which grows linearly with $N$.  It therefore records
+exactly the scale erased by the constant offset.
+
+This does not solve the source's full higher-dimensional request.  The phrase
+``Denjoy--Carleman complexity'' is not assigned a format or numerical value in
+the paper, and scalar line restrictions do not bound the number of components
+of higher-dimensional affine sections.  Such a result would require effective
+control of multivariate critical systems or an effective stratification
+theorem for a specified Denjoy--Carleman presentation.
+
+A bounded novelty audit checked the run's result, attempt, and proof-gap
+indexes, arXiv:2606.08183, the exact metric-entropy prompt, and the zero-count
+result cited in the source.  No prior packet or later resolution was found.
+The source is very recent and a final external-source refresh was unavailable,
+so novelty remains pending specialist review.
+
+Recommended human-review focus is: (1) whether the intended notion of
+Denjoy--Carleman format was meant to include a separate frequency-sensitive
+presentation parameter; (2) the fixed-weight derivative estimate; and (3)
+the passage from the two shifted zero counts to the planar uniform constant.
+
+\begin{thebibliography}{9}
+\bibitem{Rainer}
+A.~Rainer,
+\emph{Effective quasianalytic Remez inequalities on tame sets},
+arXiv:2606.08183 (2026).
+\end{thebibliography}
+
+\end{document}

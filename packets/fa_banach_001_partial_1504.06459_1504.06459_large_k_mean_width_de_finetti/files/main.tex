@@ -1,0 +1,192 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+\newcommand{\C}{\mathbb C}
+\newcommand{\D}{\mathcal D}
+\newcommand{\Eset}{\mathcal E}
+\newcommand{\Sep}{\mathcal S}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\E}{\mathbb E}
+
+\title{A de Finetti endpoint for the growing-$k$ mean-width question}
+\author{Automated mathematics run \texttt{fa\_banach\_001}\\Lane 14, candidate partial result}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.} Candidate substantial partial result, likely valid pending expert review.  For ordinary permutation-invariant $k$-extensions on $\C^d\otimes\C^d$, the packet proves
+\[
+ 0\leq w(\Eset_k)-w(\Sep_d)\leq C\min\{d^{-1},d/k\}.
+\]
+Thus $w(\Eset_{k(d)})/w(\Sep_d)\to1$ whenever $k(d)\gg d^{5/2}$.  The source's general growing-$k$ question, notably the intermediate window $d\lesssim k\lesssim d^{5/2}$, remains open.}}
+\end{center}
+
+\section{Source question}
+
+The source is C\'ecilia Lancien, \emph{$k$-extendibility of high-dimensional bipartite quantum states}, arXiv:1504.06459 \cite{Lancien}.  In Section~9.1, PDF pages~17--18, it asks what can be said about the $k$-extendibility criterion on $\C^d\otimes\C^d$ when $k=k(d)$ grows with $d$.  The exact prompt appears in Figure~\ref{fig:question}.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.98\textwidth]{figures/open_problem_crop.png}
+  \caption{Section~9.1 of the source PDF: the growing-$k$ question and the all-$k$ lower bound.}
+  \label{fig:question}
+\end{figure}
+
+Write $\Sep_d$ for the separable states on $\C^d\otimes\C^d$ and $\Eset_k(d)$ for the states admitting an extension to $\C^d\otimes(\C^d)^{\otimes k}$ that is invariant under permutations of the last $k$ factors.  This is the source's ordinary permutation-invariant notion; the extension is not required to be supported on the Bose-symmetric subspace.
+
+For a compact set $K\subset\mathcal H(\C^n)$, let
+\[
+ h_K(G)=\sup_{\rho\in K}\Tr(G\rho),\qquad
+ w(K)=\frac{1}{\gamma(n)}\E_{G\sim\mathrm{GUE}(n)}h_K(G),
+ \qquad \gamma(n)=\E\norm{G}_2.
+\]
+Lancien proves, uniformly for every $k=k(d)$,
+\begin{equation}\label{eq:source-lower}
+ w(\Eset_k(d))\geq c_d\frac{2}{\sqrt{k}\,d},\qquad c_d\longrightarrow1,
+\end{equation}
+and obtains a matching upper bound only in a slowly growing range.  The known separable scale is
+\begin{equation}\label{eq:sep-width}
+ c\,d^{-3/2}\leq w(\Sep_d)\leq C\,d^{-3/2},
+\end{equation}
+by Aubrun and Szarek \cite{AS}.
+
+\section{Proof intuition}
+
+The hierarchy converges to separability in trace norm by finite quantum de Finetti.  Mean width is an average of support functions, and support functions are Lipschitz for trace norm with Lipschitz constant $\norm{G}_\infty$ in direction $G$.  Therefore a uniform trace-distance approximation of every $k$-extendible state by a separable state immediately becomes an additive mean-width estimate after averaging over $G$.
+
+There are two dimension conversions.  Finite de Finetti contributes $d^2/k$.  A $d^2$-dimensional GUE matrix has expected operator norm of order $d$, whereas the Gaussian normalization $\gamma(d^2)$ is of order $d^2$.  Their ratio contributes $1/d$.  The resulting additive error is $d/k$.  Dividing by the separable width $d^{-3/2}$ produces the relative error $d^{5/2}/k$.
+
+The argument is robust but not expected to be sharp: it uses worst-case trace distance before averaging.  It nevertheless supplies a complete far-large-$k$ regime that is complementary to the source's small-$k$ analysis.
+
+\section{Endpoint theorem}
+
+\begin{theorem}[Uniform de Finetti endpoint]\label{thm:endpoint}
+There is a universal constant $C>0$ such that, for every $d\geq2$ and $k\geq1$,
+\begin{equation}\label{eq:additive}
+ 0\leq w(\Eset_k(d))-w(\Sep_d)
+ \leq C\min\left\{\frac1d,\frac d k\right\}.
+\end{equation}
+Consequently,
+\begin{equation}\label{eq:relative}
+ 1\leq \frac{w(\Eset_k(d))}{w(\Sep_d)}
+ \leq 1+C\frac{d^{5/2}}{k}.
+\end{equation}
+In particular, for every integer-valued sequence $k=k(d)$ satisfying
+$k(d)/d^{5/2}\to\infty$,
+\[
+ \frac{w(\Eset_{k(d)}(d))}{w(\Sep_d)}\longrightarrow1.
+\]
+\end{theorem}
+
+\begin{proof}
+Separable states have tensor-power extensions, hence
+$\Sep_d\subset\Eset_k(d)$.  Monotonicity of support functions proves the left inequality in \eqref{eq:additive}.
+
+The quantitative finite quantum de Finetti theorem of Christandl, K\"onig, Mitchison, and Renner \cite{CKMR}, in the relative-system form used for symmetric extensions, gives a universal $C_0$ such that for every $\rho\in\Eset_k(d)$ there is $\sigma_\rho\in\Sep_d$ with
+\begin{equation}\label{eq:defin}
+ \norm{\rho-\sigma_\rho}_1\leq C_0\frac{d^2}{k}.
+\end{equation}
+The source records the constant $2$ in its unhalved Schatten-$1$ convention \cite[Section~1]{Lancien}.  Since the trace-norm diameter of the state space is $2$, constants may be chosen so that
+\begin{equation}\label{eq:defin-cap}
+ \norm{\rho-\sigma_\rho}_1\leq C_1\min\left\{1,\frac{d^2}{k}\right\}.
+\end{equation}
+
+Fix a Hermitian $G$ on $\C^d\otimes\C^d$.  Schatten H\"older duality and \eqref{eq:defin-cap} give, for every $\rho\in\Eset_k(d)$,
+\[
+ \Tr(G\rho)
+ \leq \Tr(G\sigma_\rho)+\norm G_\infty\norm{\rho-\sigma_\rho}_1
+ \leq h_{\Sep_d}(G)+C_1\min\left\{1,\frac{d^2}{k}\right\}\norm G_\infty.
+\]
+Taking the supremum over $\rho$ yields
+\begin{equation}\label{eq:support}
+ 0\leq h_{\Eset_k(d)}(G)-h_{\Sep_d}(G)
+ \leq C_1\min\left\{1,\frac{d^2}{k}\right\}\norm G_\infty.
+\end{equation}
+For $G\sim\mathrm{GUE}(d^2)$, the standard Gaussian matrix estimates in the normalization used by Lancien give
+\begin{equation}\label{eq:gue-ratio}
+ \frac{\E\norm G_\infty}{\gamma(d^2)}\leq\frac{C_2}{d}.
+\end{equation}
+Indeed, the numerator is of order $d$ and $\gamma(d^2)=\E\norm G_2$ is of order $d^2$.  Averaging \eqref{eq:support}, dividing by $\gamma(d^2)$, and using \eqref{eq:gue-ratio} proves \eqref{eq:additive}.
+
+Finally, divide the $Cd/k$ term in \eqref{eq:additive} by the lower bound $c d^{-3/2}$ in \eqref{eq:sep-width}.  This gives \eqref{eq:relative} after changing the universal constant, and the asserted limit follows.
+\end{proof}
+
+\begin{corollary}[Two rigorous phase endpoints]\label{cor:endpoints}
+For integer-valued $k=k(d)$:
+\begin{enumerate}[label=\textup{(\roman*)}]
+ \item if $k(d)=o(d)$, then
+ $w(\Eset_{k(d)}(d))/w(\Sep_d)\to\infty$;
+ \item if $k(d)\gg d^{5/2}$, then
+ $w(\Eset_{k(d)}(d))/w(\Sep_d)\to1$.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+Part (i) follows by dividing the source lower bound \eqref{eq:source-lower} by the upper bound in \eqref{eq:sep-width}:
+\[
+ \frac{w(\Eset_{k(d)}(d))}{w(\Sep_d)}
+ \geq c'\sqrt{\frac d{k(d)}}\longrightarrow\infty.
+\]
+Part (ii) is Theorem~\ref{thm:endpoint}.
+\end{proof}
+
+\section{Upgrade audit and limitations}
+
+Eight focused routes were checked before promotion.
+
+\begin{enumerate}[leftmargin=*,label=\arabic*.,itemsep=0.4em]
+ \item The source's exact Wick-moment formula was re-audited.  Its defect-counting constraints reproduce the small-$k$ barrier, and the missing uniform connection-coefficient estimate remains essential.
+ \item Monotonicity extends the source upper estimate to a plateau of order $(\log d)^{5/14}d^{-8/7}$, but this does not reach $d^{-3/2}$.
+ \item Trace-norm de Finetti plus Gaussian duality gives Theorem~\ref{thm:endpoint}.
+ \item The ambient state-space width supplies the cap $C/d$ in \eqref{eq:additive}, without improving the endpoint exponent.
+ \item One-way-LOCC de Finetti estimates do not control general GUE support directions.
+ \item The stronger noisy-separability theorem of Navascu\'es--Owari--Plenio applies to Bose-symmetric extensions, not to the ordinary permutation-invariant extensions defining $\Eset_k(d)$ here.
+ \item No Hilbert--Schmidt/reference-system theorem or legitimate Gaussian-cancellation argument with a better rate was found; the optimizer depends on $G$.
+ \item The August 2026 optimal argmax-rounding theorem was checked directly.  Its ordinary two-sided bound at extension levels $(1,k)$ gives trace error $O(d/\sqrt{k})$ and hence width error $O(k^{-1/2})$.  This improves $d/k$ only where it is still above the separable scale, and does not improve the endpoint.
+\end{enumerate}
+
+Thus the broad window
+\[
+ d\lesssim k\lesssim d^{5/2}
+\]
+remains unresolved.  Closing it appears to require either a de Finetti estimate tailored to average global Gaussian witnesses or a substantially more uniform analysis of Lancien's correlated Gaussian operator norm.
+
+\paragraph{Novelty check.}
+The cheap run indexes and bounded searches through 11 August 2026 used the exact question wording, arXiv id, title, author, and combinations of \emph{growing $k$}, \emph{mean width}, \emph{$k$-extendible}, and \emph{finite de Finetti}.  No explicit statement of \eqref{eq:additive} or of the $k\gg d^{5/2}$ sufficient regime was found.  Novelty confidence is modest because the proof is a short, apparently unstated corollary of known estimates.
+
+\section*{Human-review recommendation}
+
+Treat Theorem~\ref{thm:endpoint} as a likely valid substantial partial.  The highest-value checks are: (i) the relative-system scope and trace-distance convention in \eqref{eq:defin}; (ii) the $d^2$-dimensional GUE normalization in \eqref{eq:gue-ratio}; and (iii) whether provenance policy should describe the theorem as a new partial result or an unstated literature-implied corollary.  The exponent and endpoint conclusion are insensitive to trace-distance factors of two.
+
+\begin{thebibliography}{9}
+\bibitem{Lancien}
+C.~Lancien,
+\emph{$k$-extendibility of high-dimensional bipartite quantum states},
+arXiv:1504.06459; published version dated 2016.
+
+\bibitem{CKMR}
+M.~Christandl, R.~K\"onig, G.~Mitchison, and R.~Renner,
+\emph{One-and-a-half quantum de Finetti theorems},
+Commun. Math. Phys. 273 (2007), 473--498;
+arXiv:quant-ph/0602130.
+
+\bibitem{AS}
+G.~Aubrun and S.~J.~Szarek,
+\emph{Tensor products of convex sets and the volume of separable states on $N$ qudits},
+Phys. Rev. A 73 (2006), 022109;
+arXiv:quant-ph/0503221.
+\end{thebibliography}
+
+\end{document}

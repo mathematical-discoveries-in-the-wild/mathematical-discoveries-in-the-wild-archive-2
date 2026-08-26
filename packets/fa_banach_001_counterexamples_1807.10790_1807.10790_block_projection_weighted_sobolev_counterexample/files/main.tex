@@ -1,0 +1,384 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\Waux}{\mathcal W}
+\newcommand{\Lip}{\operatorname{Lip}}
+\newcommand{\mean}{\mathop{\rlap{\raisebox{0.08ex}{\scriptsize--}}\!\int}}
+
+\title{A block-projection counterexample for\\complex interpolation of weighted Sobolev spaces}
+\author{Autonomous proof attempt for run \texttt{fa\_banach\_001}}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{black}{gray!8}{\parbox{0.89\textwidth}{
+\textbf{Status.} Candidate full affirmative answer to the first question in
+Section~8.3 of Cwikel--Einav, together with a stronger counterexample to the
+unrestricted Stein--Weiss-type identity.  The proof is analytic and is
+submitted for human review.
+}}
+\end{center}
+
+\begin{abstract}
+We construct positive compact-bounded weights $w_0,w_1$ on $\R$ for which
+$r=w_0/w_1$ is locally Lipschitz and, at $p=2$ and $\theta=1/2$,
+\[
+ \Waux^2(\R,1/2,r)
+ \subsetneq [W^{1,2}(\R,w_0),W^{1,2}(\R,w_1)]_{1/2}
+ \subsetneq W^{1,2}(\R,\sqrt{w_0w_1}).
+\]
+The first strict inclusion answers the exact open question.  The second gives
+a counterexample to the unrestricted weighted-Sobolev analogue of the
+Stein--Weiss formula.  The mechanism is a common complemented block subspace:
+its endpoint norm is equivalent to unweighted $\ell^2$, while its
+geometric-mean norm is exponentially smaller.
+\end{abstract}
+
+\section{Source question}
+
+The source is M.~Cwikel and A.~Einav, \emph{Interpolation of weighted Sobolev
+spaces}, arXiv:1807.10790, later published in the \emph{Journal of Functional
+Analysis} 277 (2019), 2381--2441 \cite{CE}.  On PDF page~47, at the start of
+Section~8.3, the authors ask:
+\begin{quote}
+Can one find an open set $U$ and weights $w_0,w_1$ on it for which
+\[
+ \Waux^p(U,\theta,r_w)
+ \underset{\neq}{\subset}
+ [W^{1,p}(U,w_0),W^{1,p}(U,w_1)]_\theta ?
+\]
+\end{quote}
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{The question as rendered from PDF page~47 of arXiv:1807.10790.}
+\end{figure}
+
+For positive weights satisfying the source paper's compact boundedness
+condition, write
+\[
+ X_j=W^{1,2}(\R,w_j),\qquad
+ r=\frac{w_0}{w_1},\qquad w_{1/2}=\sqrt{w_0w_1}.
+\]
+The auxiliary space in the question is
+\[
+ \Waux^2(\R,1/2,r)
+ =\left\{u\in W^{1,2}(\R,w_{1/2}):
+       u\,| (\log r)'|\in L^2(\R,w_{1/2})\right\}.
+\]
+Theorem~1.21 of \cite{CE} says that on $U=\R$, if $w_0,w_1$ are
+compact-bounded and $r$ is locally Lipschitz, then
+\begin{equation}\label{eq:source-inclusion}
+ \Waux^2(\R,1/2,r)\subset [X_0,X_1]_{1/2}
+ \subset W^{1,2}(\R,w_{1/2}).
+\end{equation}
+
+\section{Idea of the proof}
+
+In the $n$th unit cell we place a very short core of length $M_n^{-1}$.
+Across that core the two weights exchange the values $M_n$ and $1$ in a
+reflection-symmetric way.  A block function is constant on the core and
+tapers to zero through two fixed-width collars.  Both weights are multiplied
+by the tiny common factor $M_n^{-4}$ on the collars.  This common factor makes
+the taper cheap but cancels from $r=w_0/w_1$.
+
+The short core has two consequences.  First, the endpoint norm of one block
+stays comparable to one.  Second, averaging over the core is uniformly
+bounded on both endpoint Sobolev spaces: a function cannot change its core
+average cheaply because the core is short.  These averages define a single
+bounded projection on both endpoints.  Reflection makes the projected ranges
+identical Hilbert sequence spaces.
+
+For the first strict inclusion, coefficients $1/n$ put a block sum in both
+endpoints, hence in the interpolation space.  The rapid exchange of the
+weights forces $|(\log r)'|\asymp M_n\log M_n$ on the core, so the auxiliary
+norm diverges.  For the stronger strict inclusion, coefficients $n^{-1/2}$
+are square summable for the exponentially small geometric-mean block norm,
+but not for the projected endpoint norm.  The common projection then rules
+out membership even in $X_0+X_1$.
+
+\section{Construction}
+
+For $n\geq1$ set
+\[
+ C_n=(n,n+1),\quad z_n=n+\tfrac12,\quad
+ M_n=16^n,\quad L_n=M_n^{-1},\quad h=\tfrac18,
+\]
+and let
+\[
+ a_n=z_n-\tfrac{L_n}{2},\qquad b_n=z_n+\tfrac{L_n}{2},
+ \qquad I_n=(a_n,b_n).
+\]
+Define a continuous piecewise affine profile $s_n:C_n\to[0,1]$ by
+\begin{equation}\label{eq:profile}
+s_n(x)=
+\begin{cases}
+\frac12,&x\notin(a_n-h,b_n+h),\\
+\frac12+\dfrac{x-(a_n-h)}{2h},&a_n-h<x<a_n,\\
+1,&a_n\leq x\leq a_n+L_n/3,\\
+2-3\dfrac{x-a_n}{L_n},&a_n+L_n/3<x<a_n+2L_n/3,\\
+0,&a_n+2L_n/3\leq x\leq b_n,\\
+\dfrac{x-b_n}{2h},&b_n<x<b_n+h.
+\end{cases}
+\end{equation}
+Let the common factor be
+\[
+ q_n(x)=
+ \begin{cases}1,&x\in I_n,\\ M_n^{-4},&x\in C_n\setminus I_n,
+ \end{cases}
+\]
+and, for $x\in C_n$, put
+\begin{equation}\label{eq:weights}
+ w_0(x)=q_n(x)M_n^{s_n(x)},\qquad
+ w_1(x)=q_n(x)M_n^{1-s_n(x)}.
+\end{equation}
+At points outside the union of the open cells, set $w_0=w_1=1$.
+
+The $n$th block is the symmetric tent
+\begin{equation}\label{eq:block}
+\beta_n(x)=
+\begin{cases}
+0,&x\notin(a_n-h,b_n+h),\\
+\dfrac{x-(a_n-h)}h,&a_n-h<x<a_n,\\
+1,&a_n\leq x\leq b_n,\\
+\dfrac{b_n+h-x}h,&b_n<x<b_n+h.
+\end{cases}
+\end{equation}
+The supports of the $\beta_n$ are pairwise disjoint.
+
+\begin{lemma}[admissibility]\label{lem:admissible}
+The functions $w_0,w_1$ are strictly positive measurable weights satisfying
+the compact boundedness condition.  Their quotient $r=w_0/w_1$ is locally
+Lipschitz, and on $C_n$
+\[
+ r=M_n^{2s_n-1},\qquad w_{1/2}=\sqrt{w_0w_1}=q_nM_n^{1/2}.
+\]
+\end{lemma}
+
+\begin{proof}
+Every compact subset of $\R$ meets only finitely many cells.  On each of those
+cells each weight assumes only finite positive values bounded above and away
+from zero, so compact boundedness follows.  The common factor cancels from
+the quotient.  Since $s_n=1/2$ near both endpoints of $C_n$, the cellwise
+quotient joins the constant value $1$ across cell boundaries.  It is
+piecewise Lipschitz in each cell; on a compact set only finitely many pieces
+occur.  This proves local Lipschitz continuity.  The formula for $w_{1/2}$ is
+immediate from \eqref{eq:weights}.
+\end{proof}
+
+Let $R_nx=2z_n-x$.  Directly from the construction,
+\begin{equation}\label{eq:reflection}
+ s_n(R_nx)=1-s_n(x),\qquad q_n(R_nx)=q_n(x),\qquad
+ \beta_n(R_nx)=\beta_n(x).
+\end{equation}
+
+\section{The common complemented block subspace}
+
+Define
+\[
+ B_{j,n}=\|\beta_n\|_{X_j}^2
+ =\int_{C_n}w_j\bigl(|\beta_n|^2+|\beta_n'|^2\bigr),
+ \qquad j=0,1.
+\]
+
+\begin{lemma}[block estimates]\label{lem:block-estimates}
+For every $n$,
+\begin{equation}\label{eq:B-bounds}
+ B_{0,n}=B_{1,n}=:B_n,qquad
+ \frac13\leq B_n\leq1+\frac{65}{4}M_n^{-3}<1.005.
+\end{equation}
+Moreover, if
+\[
+ D_n=\|\beta_n\|_{W^{1,2}(\R,w_{1/2})}^2,
+\]
+then
+\begin{equation}\label{eq:D-bound}
+ D_n\leq M_n^{-1/2}+\frac{65}{4}M_n^{-7/2}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Equation~\eqref{eq:reflection} exchanges $w_0$ and $w_1$ and fixes
+$|\beta_n|^2+|\beta_n'|^2$, so $B_{0,n}=B_{1,n}$.  On the core,
+$\beta_n=1$, $\beta_n'=0$, and an exact calculation gives
+\begin{align*}
+ \int_{I_n}w_0
+ &=L_n\left(\frac{M_n}{3}
+      +\frac{M_n-1}{3\log M_n}+\frac13\right)\\
+ &=\frac13+\frac{M_n-1}{3M_n\log M_n}+\frac1{3M_n}.
+\end{align*}
+This lies between $1/3$ and $1$.  The same holds for $w_1$ by reflection.
+On the two collars, $w_j\leq M_n^{-3}$, $|\beta_n|\leq1$, and
+$|\beta_n'|=h^{-1}=8$.  Their total contribution is at most
+\[
+ 2h(1+h^{-2})M_n^{-3}=\frac{65}{4}M_n^{-3},
+\]
+which proves \eqref{eq:B-bounds}.  For $w_{1/2}$, the core contribution is
+$L_nM_n^{1/2}=M_n^{-1/2}$ and the collar weight is $M_n^{-7/2}$; the same
+calculation gives \eqref{eq:D-bound}.
+\end{proof}
+
+For a locally Sobolev function $f$, let
+\[
+ m_n(f)=\frac1{L_n}\int_{I_n}f(x)\,dx,
+ \qquad Pf=\sum_{n\geq1}m_n(f)\beta_n.
+\]
+
+\begin{lemma}[common projection]\label{lem:projection}
+The same formula $P$ defines a bounded projection on both $X_0$ and $X_1$.
+Its range in either endpoint is
+\begin{equation}\label{eq:range}
+ \mathcal R=\left\{\sum_{n\geq1}c_n\beta_n:
+             \sum_{n\geq1}B_n|c_n|^2<\infty\right\}.
+\end{equation}
+In particular, the two endpoint range spaces coincide isometrically.
+\end{lemma}
+
+\begin{proof}
+Fix $j\in\{0,1\}$.  Let $H_{j,n}$ be the third of $I_n$ on which $w_j=M_n$:
+the left third for $j=0$ and the right third for $j=1$.  Weighted Sobolev
+functions are absolutely continuous on the compact core.  Comparing the two
+averages and using the fundamental theorem of calculus gives
+\[
+ |m_n(f)|\leq\left|\frac3{L_n}\int_{H_{j,n}}f\right|
+              +\int_{I_n}|f'|.
+\]
+Cauchy--Schwarz, $M_nL_n=1$, and $w_j\geq1$ on $I_n$ yield
+\begin{align*}
+ |m_n(f)|^2
+ &\leq \frac6{M_nL_n}\int_{H_{j,n}}w_j|f|^2
+       +2L_n\int_{I_n}w_j|f'|^2\\
+ &\leq6\int_{I_n}w_j(|f|^2+|f'|^2).
+\end{align*}
+The supports of the blocks are disjoint, so Lemma~\ref{lem:block-estimates}
+implies
+\[
+ \|Pf\|_{X_j}^2
+ =\sum_nB_n|m_n(f)|^2\leq 6\sup_nB_n\,\|f\|_{X_j}^2.
+\]
+Since $m_n(\beta_k)=\delta_{nk}$, $P^2=P$.  Disjointness and
+$B_{0,n}=B_{1,n}=B_n$ now give exactly \eqref{eq:range} at both endpoints.
+\end{proof}
+
+\section{Both strict inclusions}
+
+\begin{theorem}\label{thm:main}
+For the weights \eqref{eq:weights},
+\[
+ \Waux^2(\R,1/2,r)
+ \subsetneq [X_0,X_1]_{1/2}
+ \subsetneq W^{1,2}(\R,w_{1/2}).
+\]
+Consequently, the answer to the first question in Section~8.3 of
+\cite{CE} is affirmative, and the unrestricted identity
+\[
+ [W^{1,2}(\R,w_0),W^{1,2}(\R,w_1)]_{1/2}
+ =W^{1,2}(\R,\sqrt{w_0w_1})
+\]
+is false even when both weights are compact-bounded and their quotient is
+locally Lipschitz.
+\end{theorem}
+
+\begin{proof}
+For the first strictness, set
+\[
+ g=\sum_{n\geq1}\frac1n\beta_n.
+\]
+By \eqref{eq:B-bounds},
+$\|g\|_{X_j}^2=\sum_nB_n/n^2<\infty$ for $j=0,1$.  Hence
+$g\in X_0\cap X_1\subset[X_0,X_1]_{1/2}$.
+
+On the middle third of $I_n$, $\beta_n=1$ and
+\[
+ |(\log r)'|=\frac{6\log M_n}{L_n},\qquad
+ w_{1/2}=M_n^{1/2}.
+\]
+Therefore that third alone contributes
+\begin{equation}\label{eq:aux-divergence}
+ \frac1{n^2}\frac{36(\log M_n)^2}{L_n^2},
+ M_n^{1/2}\frac{L_n}{3}
+ =\frac{12}{n^2}(\log M_n)^2M_n^{3/2}
+\end{equation}
+to
+$\int |g|^2|(\log r)'|^2w_{1/2}$.  These terms do not even tend to zero, so
+$g\notin\Waux^2(\R,1/2,r)$.  Lemma~\ref{lem:admissible} permits us to apply
+the source inclusion \eqref{eq:source-inclusion}; hence the first inclusion is
+strict.
+
+For the second strictness, define
+\[
+ f=\sum_{n\geq1}\frac1{\sqrt n}\beta_n.
+\]
+By \eqref{eq:D-bound},
+\[
+ \|f\|_{W^{1,2}(w_{1/2})}^2
+ \leq\sum_{n\geq1}\frac1n
+ \left(M_n^{-1/2}+\frac{65}{4}M_n^{-7/2}\right)<\infty.
+\]
+Thus $f\in W^{1,2}(\R,w_{1/2})$.
+
+Suppose, toward a contradiction, that $f\in X_0+X_1$.  The common formula
+for $P$, bounded on each endpoint, defines a bounded map from the algebraic
+sum into $\mathcal R+\mathcal R=\mathcal R$.  But $Pf=f$, because every block
+is identically one on its own averaging core.  Hence \eqref{eq:range} would
+give
+\[
+ \sum_{n\geq1}\frac{B_n}{n}<\infty,
+\]
+contradicting $B_n\geq1/3$.  Therefore $f\notin X_0+X_1$.  Every complex
+interpolation space is an intermediate space contained in the endpoint sum,
+so $f\notin[X_0,X_1]_{1/2}$.  The second inclusion in
+\eqref{eq:source-inclusion} is strict.
+\end{proof}
+
+\section{Verification, limitations, and review focus}
+
+The companion script \texttt{code/verify\_blocks.py} checks the reflection
+identities on 12,006 sample points, the exact core-mass formula, the uniform
+endpoint and projection bounds, the geometric-mean decay, and finite partial
+sums for both witnesses.  It is a sanity check; the proof above uses the
+displayed analytic inequalities.
+
+A bounded novelty search through 13 August 2026 used the run's four cheap
+indexes, local arXiv full-text sources and citation traces, and exact web/arXiv
+queries for the source question and close variants.  Later related work
+included arXiv:2204.11583 on density and power weights on the half-line and
+arXiv:2503.14636 on complex interpolation of power-weighted Sobolev spaces
+with boundary conditions.  Neither contained this block construction, an
+answer to the strict-inclusion question, or a general counterexample of this
+form.  This is evidence only, not a claim of exhaustive novelty.
+
+The construction deliberately uses measurable weights with jumps in the
+common factor $q_n$; this is allowed by the source's compact boundedness
+hypothesis.  The quotient $w_0/w_1$, which is the quantity required to be
+locally Lipschitz, is continuous and locally Lipschitz.  Human review should
+focus on the boundedness and common-range assertions for $P$, and on the
+application of Theorem~1.21 of \cite{CE} to pass from the full auxiliary space
+to the interpolation space on $\R$.
+
+\begin{thebibliography}{9}
+\bibitem{CE}
+M.~Cwikel and A.~Einav,
+\emph{Interpolation of weighted Sobolev spaces},
+J. Funct. Anal. 277 (2019), no.~7, 2381--2441;
+\href{https://arxiv.org/abs/1807.10790}{arXiv:1807.10790}.
+\end{thebibliography}
+
+\end{document}

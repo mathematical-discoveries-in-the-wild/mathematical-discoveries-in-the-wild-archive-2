@@ -1,0 +1,259 @@
+\documentclass[10pt]{article}
+\usepackage[margin=0.78in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+\setlist{nosep,leftmargin=*}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\T}{\mathbb T}
+\newcommand{\C}{\mathbb C}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\A}{\mathcal A}
+\newcommand{\ran}{\operatorname{ran}}
+\newcommand{\diag}{\operatorname{diag}}
+
+\title{The Complex Almost-Injectivity Threshold Is Exactly \(2d\)\\
+\large A degree obstruction for every critical rank-one frame}
+\author{Automated proof attempt for arXiv:1403.1458\\
+\texttt{agent\_lane\_03} \quad model: GPT5.6}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{blue!45!black}{blue!4}{\parbox{0.92\linewidth}{
+\textbf{Status: full result, pending human verification.}
+For every standard complex measurement system with \(N\le 2d-1\), almost
+every signal has a nontrivial intensity twin.  Combining this universal
+necessity with the known generic sufficiency at \(N\ge 2d\) proves Conjecture
+2 of the source paper.}}
+\end{center}
+
+\section*{Source question}
+
+Mixon defines almost injectivity as uniqueness modulo global phase on an open
+dense set and asks for a phase transition at \(N=2M\).  The excerpt is from
+printed pages 22--23, Section 3.2 of the source paper.
+
+\begin{center}
+\includegraphics[width=0.93\linewidth]{question_crop.png}
+\end{center}
+
+\section*{Result}
+
+For \(\Phi=(\varphi_j)_{j=1}^N\subset\C^d\), write
+\[
+ \A_\Phi(x)=\bigl(|\langle x,\varphi_j\rangle|^2\bigr)_{j=1}^N,
+ \qquad x\sim y\iff y=\omega x\quad(\omega\in\T).
+\]
+
+\begin{theorem}[Universal failure at and below the critical count]
+\label{thm:main}
+Let \(d\ge2\) and \(N\le2d-1\).  For every
+\(\Phi\subset\C^d\), there is an open dense conull set
+\(G\subset\C^d\) such that every \(x\in G\) has a \(y\not\sim x\) with
+\(\A_\Phi(y)=\A_\Phi(x)\).  Consequently \(\A_\Phi\) is neither almost
+injective in the source's open-dense sense nor phase retrievable almost
+everywhere.
+\end{theorem}
+
+This is stronger than merely producing one bad signal: at the proposed lower
+threshold, ambiguity is the generic and almost-everywhere behavior for
+\emph{every} frame.
+
+\section*{Proof intuition}
+
+Normalize a spanning frame to a Parseval frame.  Its analysis map identifies
+signals with a \(d\)-plane \(L\subset\C^{2d-1}\), and the measurements become
+the coordinate magnitudes of points of \(L\).  Fix a point \(z\in L\).
+Changing its coordinate phases traces a torus of real dimension \(2d-2\).
+Membership back in \(L\) imposes \(d-1\) complex equations, also \(2d-2\)
+real equations.  Thus the critical ambiguity problem is the zero set of a
+square map
+\[
+ \T^{2d-2}\longrightarrow\C^{d-1}\cong\mathbb R^{2d-2}.
+\]
+The original point is always a zero.  If that zero is nondegenerate, it cannot
+be the only one: a map from a closed manifold into Euclidean space has degree
+zero, while one regular preimage would have mod-2 degree one.  If the zero is
+not generically nondegenerate, the normalized intensity map has deficient
+maximal rank, and the constant-rank theorem gives positive-dimensional
+fibers.  Either way, generic uniqueness is impossible.
+
+\section*{Proof}
+
+\subsection*{1. Parseval and projective reductions}
+
+If the measurement vectors do not span \(\C^d\), a nonzero common-kernel
+vector may be added to every signal outside a proper subspace without changing
+any measurement.  Hence assume they span.  Let
+\(S=\sum_j\varphi_j\varphi_j^*\), put
+\(g_j=S^{-1/2}\varphi_j\), and replace \(x\) by \(S^{1/2}x\).  Then
+\[
+ |\langle S^{1/2}x,g_j\rangle|=|\langle x,\varphi_j\rangle|,
+ \qquad \sum_j g_jg_j^*=I_d.
+\]
+Thus no fiber changes under an invertible signal coordinate change.  The
+analysis operator
+\[
+ V:\C^d\to\C^N,\qquad Vu=(\langle u,g_j\rangle)_j
+\]
+is an isometry.  Set \(L=\ran V\).
+
+On complex projective space define the normalized coordinate-intensity map
+\[
+ q:\PP(L)\longrightarrow\Delta^{N-1},\qquad
+ q([z])=\frac{(|z_1|^2,\ldots,|z_N|^2)}{\|z\|^2},
+\]
+where \(\Delta^{N-1}=\{a\in\mathbb R^N:a_j\ge0,\ \sum a_j=1\}\).
+It is real analytic, and \(\dim_{\mathbb R}\PP(L)=m:=2d-2\).
+
+Let \(r\) be the maximum rank of \(dq\).  Its maximal-rank locus is open,
+dense, and conull: the rank-drop locus is the zero set of the nonzero
+real-analytic section \(\bigwedge^r dq\) (with the constant-map case
+immediate).  If \(r<m\), then near every maximal-rank point the constant-rank
+theorem gives a local fiber of dimension \(m-r>0\).  This proves the theorem
+whenever \(N-1<m\), hence whenever \(N<2d-1\), and also handles the singular
+alternative at \(N=2d-1\).
+
+It remains to treat \(N=2d-1\) and \(r=m=N-1\).
+
+\subsection*{2. The square phase map}
+
+The full-rank locus of \(q\) is open dense and conull.  No coordinate
+functional can vanish identically on \(L\), since then \(q\) would land in a
+face of dimension \(N-2<m\).  Hence the projective points whose coordinates
+are all nonzero also form an open dense conull set.  Fix a unit representative
+\(z\) in the intersection of these two sets.
+
+Choose an isometry \(K:\C^{d-1}\to\C^N\) with
+\(\ran K=L^\perp\).  Fixing the first coordinate phase removes global phase,
+and define
+\[
+ \Psi_z:\T^{N-1}\longrightarrow\C^{d-1},\qquad
+ \Psi_z(\lambda_2,\ldots,\lambda_N)
+ =K^*\diag(1,\lambda_2,\ldots,\lambda_N)z.
+\]
+The identity \({\bf1}\) is a zero because \(z\in L=\ker K^*\).  Any other
+zero yields another vector of \(L\) with exactly the same coordinate
+magnitudes.
+
+\begin{lemma}[Transversality equivalence]
+\label{lem:transverse}
+The differential \(dq_{[z]}\) is nonsingular if and only if the zero
+\({\bf1}\) of \(\Psi_z\) is nondegenerate.
+\end{lemma}
+
+\begin{proof}
+Represent a tangent class at \([z]\) by \(\delta\in L\) orthogonal to \(z\).
+Then
+\[
+ (dq_{[z]}\delta)_j=2\operatorname{Re}(\overline z_j\delta_j).
+\]
+Since every \(z_j\ne0\), a kernel vector has the form
+\(\delta_j=i h_jz_j\) with \(h_j\in\mathbb R\).  Subtracting the global
+infinitesimal phase \(ih_1z\) gives the same projective tangent class and
+sets \(h_1=0\).  The remaining condition \(\delta\in L\) is exactly
+\[
+ K^*i\diag(0,h_2,\ldots,h_N)z=0,
+\]
+which is the kernel equation for \(D\Psi_z({\bf1})\).  Conversely, a vector
+in this latter kernel gives a zero tangent class for \(dq\); because
+\(h_1=0\) and every coordinate of \(z\) is nonzero, the class is trivial only
+when all \(h_j=0\).  Both real vector spaces have dimension \(N-1=2d-2\),
+so injectivity is equivalent to nonsingularity.
+\end{proof}
+
+\subsection*{3. A Euclidean-target degree obstruction}
+
+\begin{lemma}[One regular zero is impossible]
+\label{lem:degree}
+Let \(n>0\) and let \(F:\T^n\to\mathbb R^n\) be smooth.  A nondegenerate
+zero of \(F\) cannot be its unique zero.
+\end{lemma}
+
+\begin{proof}
+Suppose \(x_0\) were the unique zero and \(DF(x_0)\) were invertible.  Compose
+\(F\) with the one-point compactification
+\(\mathbb R^n\hookrightarrow S^n\).  The resulting map misses infinity and
+is therefore null-homotopic, so its mod-2 degree is zero.  But zero is a
+regular value with the single preimage \(x_0\), so its mod-2 degree is one, a
+contradiction.
+\end{proof}
+
+At our chosen \([z]\), Lemma~\ref{lem:transverse} makes \({\bf1}\) a
+nondegenerate zero of \(\Psi_z\).  Lemma~\ref{lem:degree} supplies a second
+zero \(\lambda\).  Put
+\(w=\diag(1,\lambda_2,\ldots,\lambda_N)z\).  Then
+\(K^*w=0\), so \(w\in L\), and \(|w_j|=|z_j|\) for all \(j\).  If
+\(w=\omega z\), the first nonzero coordinate forces \(\omega=1\), and the
+remaining nonzero coordinates force \(\lambda={\bf1}\), contrary to the
+choice of the second zero.  Thus \([w]\ne[z]\).
+
+We have proved ambiguity throughout an open dense conull subset of
+\(\PP(L)\).  Lifting projective points through radius and global phase, then
+undoing the invertible Parseval coordinate change, gives the asserted open
+dense conull set in \(\C^d\).  This proves Theorem~\ref{thm:main}. \qed
+
+\section*{The phase transition}
+
+\begin{corollary}[Conjecture 2 of arXiv:1403.1458]
+Standard complex almost injectivity exhibits a phase transition at
+\(N=2d\).
+\end{corollary}
+
+\begin{proof}
+Theorem~\ref{thm:main} proves part (a): no system below \(2d\) is almost
+injective.  Balan--Casazza--Edidin prove that for every \(N\ge2d\), a generic
+complex frame has a dense open set of uniquely recoverable rays
+\cite[Theorem 3.4]{BCE}.  This is the part (b) already cited as known in the
+source paper \cite[pp.~22--23]{Mixon}.
+\end{proof}
+
+\section*{Checks, scope, and literature status}
+
+The proof is topological and does not depend on computation.  The included
+script \path{code/verify_torus_obstruction.py} deterministically builds
+random critical Parseval frames in dimensions \(2,3,4\), checks both
+Jacobian ranks in Lemma~\ref{lem:transverse}, and numerically finds multiple
+phase zeros.  It is a stress test only.
+
+The rank-one hypothesis is essential.  Huang--Rong--Wang--Xu construct
+\(2d-1\) \emph{general} Hermitian quadratic measurements with PR-ae, while
+explicitly recording the exceptional \(2d-1\) standard rank-one problem as
+open and proving only generic failure \cite[Section 5, Theorem 5.3]{HRWX}.
+Their construction does not have the plane--coordinate-torus structure used
+above.
+
+For novelty triage, exact-phrase and citation searches were run through
+11 August 2026 for ``\(2d-1\)'', ``PR-ae'', ``standard phase retrieval'', and
+``almost injective'', including the citing literature of \cite{HRWX}.  No
+later resolution of the exceptional rank-one case was found.  This bounded
+search supports human review; it is not an exhaustive priority claim.
+
+\begin{thebibliography}{9}
+\bibitem{Mixon}
+D. G. Mixon, \emph{Phase Transitions in Phase Retrieval}, arXiv:1403.1458
+(2014), especially Section 3.2 and Conjecture 2.  Included as
+\texttt{source\_paper.pdf}.
+
+\bibitem{BCE}
+R. Balan, P. Casazza, and D. Edidin, \emph{On signal reconstruction without
+phase}, Appl. Comput. Harmon. Anal. 20 (2006), 345--356; arXiv:math/0412411.
+Included under \texttt{references/}.
+
+\bibitem{HRWX}
+M. Huang, Y. Rong, Y. Wang, and Z. Xu, \emph{Almost Everywhere Generalized
+Phase Retrieval}, Appl. Comput. Harmon. Anal. 50 (2021), 16--33;
+arXiv:1909.08874.  Included under \texttt{references/}.
+\end{thebibliography}
+
+\end{document}

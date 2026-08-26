@@ -1,0 +1,278 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.85in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,graphicx,hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\id}{\operatorname{id}}
+
+\title{A Krawtchouk characterization of PPT\\fermionic radial channels}
+\author{Candidate full-solution packet}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.} Candidate full solution of the PPT-characterization
+subproblem; likely valid; human review recommended.
+
+\section{Source question}
+
+Arhancet studies radial quantum channels on even-dimensional fermion algebras
+and computes their entanglement-assisted classical capacity.  Section~8 of
+the final arXiv version asks for the missing PPT and entanglement-breaking
+characterizations~\cite{Arhancet} (PDF page 36):
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+This packet completely answers the PPT part.  It also gives the full
+partial-transpose spectrum, the exact negativity, and the exact PPT time of
+the fermionic Ornstein--Uhlenbeck semigroup.  Entanglement breaking and the
+unassisted capacities remain open in general.
+
+\section{Definitions and proof intuition}
+
+Let $n=2k$, $N=2^k$, and let $s_1,\ldots,s_n$ be self-adjoint unitaries
+generating $M_N$ and satisfying $s_i s_j=-s_j s_i$ for $i\ne j$.  For
+$A=\{i_1<\cdots<i_r\}$ put $s_A=s_{i_1}\cdots s_{i_r}$.  A radial
+multiplier has the form
+\[
+ R_\phi(s_A)=\phi(|A|)s_A,\qquad \phi:\{0,\ldots,n\}\longrightarrow\C.
+\]
+We assume that $R_\phi$ is a quantum channel.  The source proves that this is
+equivalent to $\phi(0)=1$ and positivity of the associated hypercube density
+\cite[Section~5]{Arhancet}.
+
+For $0\le r,c\le n$, write
+\[
+ K_r(c)=\sum_j(-1)^j\binom cj\binom{n-c}{r-j};
+ \qquad
+ \sum_{r=0}^n K_r(c)z^r=(1-z)^c(1+z)^{n-c}.
+\]
+These are the binary Krawtchouk polynomials.
+
+\paragraph{Proof intuition.}
+Correcting each Clifford monomial by a simple power of $i$ gives a Hermitian
+Pauli basis.  The normalized Choi state is diagonal in the associated Bell
+basis.  Partial transpose removes one quadratic Clifford sign, while the
+Bell eigenvalue contributes the same quadratic sign together with the
+commutation character.  On summing over all subsets of a fixed size, that
+character sum is exactly a Krawtchouk polynomial.  Radiality therefore
+collapses an $N^2$-dimensional eigenvalue problem to $n+1$ scalar inequalities.
+
+\section{Complete PPT characterization}
+
+\begin{theorem}[signed Krawtchouk spectrum]\label{thm:main}
+Let $n=2k$ and suppose that $R_\phi:M_N\to M_N$, $N=2^k$, is a fermionic
+radial quantum channel.  Define
+\begin{equation}\label{eq:mu}
+ \mu_c=2^{-n}\sum_{r=0}^n
+ \phi(r)(-1)^{\binom r2+rc}K_r(c),
+ \qquad 0\le c\le n.
+\end{equation}
+Then the partial transpose of the normalized Choi state of $R_\phi$ has
+eigenvalue $\mu_c$ with multiplicity $\binom nc$.  Consequently,
+\[
+ R_\phi\text{ is PPT}
+ \quad\Longleftrightarrow\quad
+ \mu_c\ge0\quad(0\le c\le n).
+\]
+Moreover, its negativity and logarithmic negativity are respectively
+\[
+ \mathcal N(R_\phi)=\frac12\left(
+ \sum_{c=0}^n\binom nc|\mu_c|-1\right),
+ \qquad
+ E_{\mathcal N}(R_\phi)=
+ \log_2\left(\sum_{c=0}^n\binom nc|\mu_c|\right).
+\]
+\end{theorem}
+
+\begin{proof}
+For $A\subset[n]$, put $q(A)=\binom{|A|}{2}$ and
+\[
+ u_A=i^{q(A)}s_A.
+\]
+The reversal of the $|A|$ Clifford generators shows that $u_A$ is a
+self-adjoint unitary.  The $u_A$ form a Hilbert--Schmidt orthogonal basis of
+$M_N$, with $\Tr(u_Au_B)=N\delta_{A,B}$.
+
+Let $\Theta$ be the complex-linear $*$-antiautomorphism that fixes every
+$s_i$ and reverses products.  Every $*$-antiautomorphism of $M_N$ is a
+unitary conjugate of ordinary matrix transpose.  Thus the
+$\Theta$-adapted Choi construction below differs from the standard one only
+by a local unitary and has the same PPT spectrum.  Reversing $s_A$ gives
+\begin{equation}\label{eq:theta}
+ \Theta(u_A)=(-1)^{q(A)}u_A.
+\end{equation}
+
+Let $P_\Theta$ be the $\Theta$-adapted normalized maximally entangled
+projector.  Its Pauli-basis expansion is
+\[
+ P_\Theta
+ =N^{-2}\sum_{A\subset[n]}\Theta(u_A)\otimes u_A.
+\]
+Indeed, if $\Theta=\operatorname{Ad}_W\circ(\cdot)^T$, then
+$P_\Theta=(W\otimes I)|\Omega\rangle\langle\Omega|(W^*\otimes I)$ for the
+standard maximally entangled vector $\Omega$.  Thus the corresponding Choi
+state is locally unitarily equivalent to the standard one.  Applying
+$\Theta$ on its first leg is exactly the standard partial-transpose test in
+these adapted coordinates: $\Theta^2=\id$ implies that $W\overline W$ is
+scalar, and a direct calculation gives
+$(\Theta\otimes\id)((W\otimes I)X(W^*\otimes I))=X^\Gamma$.
+The normalized Choi state and this partial
+transpose are therefore
+\begin{align*}
+ \rho_\phi
+ &=N^{-2}\sum_A(-1)^{q(A)}\phi(|A|)u_A\otimes u_A,\\
+ \rho_\phi^\Gamma
+ &=N^{-2}\sum_A\phi(|A|)u_A\otimes u_A.
+\end{align*}
+
+The operators $u_A\otimes u_A$ commute.  Choose a unit vector
+$\Omega_\Theta$ spanning the range of $P_\Theta$ and, for $C\subset[n]$,
+define the adapted Bell vector
+$\Omega_C=(I\otimes u_C)\Omega_\Theta$.  These $N^2=2^n$ vectors are
+orthonormal.  The adapted maximally entangled vector satisfies
+$(x\otimes I)\Omega_\Theta=(I\otimes\Theta(x))\Omega_\Theta$.
+Using this identity and then commuting $u_A$ through $u_C$ shows that
+\begin{equation}\label{eq:eigenchar}
+ (u_A\otimes u_A)\Omega_C
+ =(-1)^{q(A)+\omega(A,C)}\Omega_C,
+ \qquad
+ \omega(A,C)=|A||C|-|A\cap C|\pmod 2.
+\end{equation}
+Therefore the eigenvalue indexed by $C$ is
+\[
+ 2^{-n}\sum_A\phi(|A|)(-1)^{q(A)+\omega(A,C)}.
+\]
+If $r=|A|$ and $c=|C|$, then
+\[
+ \sum_{|A|=r}(-1)^{|A\cap C|}=K_r(c).
+\]
+Together with \eqref{eq:eigenchar}, this is precisely \eqref{eq:mu}; it
+depends only on $c$, and there are $\binom nc$ choices of $C$.  Positivity of
+$\rho_\phi^\Gamma$ is now equivalent to the displayed inequalities.  The two
+negativity formulas follow by summing the absolute eigenvalues.
+\end{proof}
+
+For completeness, the source's complete-positivity test also becomes a
+Krawtchouk list.  The hypercube density takes the value
+\[
+ h_c=\sum_{r=0}^n\phi(r)K_r(c)
+\]
+at any sign vector with $c$ negative coordinates.  Hence a symbol defines a
+radial quantum channel exactly when $\phi(0)=1$ and $h_c\ge0$ for every $c$;
+among those channels, Theorem~\ref{thm:main} adds the $n+1$ inequalities
+$\mu_c\ge0$ and gives a complete finite characterization of PPT.
+
+\section{Exact Ornstein--Uhlenbeck threshold}
+
+\begin{corollary}\label{cor:ou}
+For $0\le t\le1$, let $T_t$ be the fermionic Ornstein--Uhlenbeck channel
+with symbol $\phi(r)=t^r$.  Then
+\begin{equation}\label{eq:ou-spectrum}
+ \mu_c=2^{-n}(1+t^2)^{n/2}
+ \left[\cos((n-2c)\theta)+(-1)^c\sin((n-2c)\theta)\right],
+ \qquad \theta=\arctan t.
+\end{equation}
+In particular,
+\[
+ T_t\text{ is PPT}
+ \quad\Longleftrightarrow\quad
+ t\le\tan\frac{\pi}{4n}.
+\]
+In semigroup time $t=e^{-s}$, the exact PPT time is
+$s_{\rm PPT}=\log\cot(\pi/(4n))$.
+\end{corollary}
+
+\begin{proof}
+The periodic sign satisfies
+\[
+ (-1)^{\binom r2}=\Re\big((1-i)i^r\big).
+\]
+Insert this identity into \eqref{eq:mu} and use the Krawtchouk generating
+function at $z=i(-1)^ct$.  Writing $1+it=(1+t^2)^{1/2}e^{i\theta}$ gives
+\eqref{eq:ou-spectrum}.
+
+If $\theta\le\pi/(4n)$, then
+$|(n-2c)\theta|\le\pi/4$ for every $c$, so the bracket in
+\eqref{eq:ou-spectrum} is nonnegative.  Conversely, the $c=n$ eigenvalue is
+negative immediately after $\theta=\pi/(4n)$.  There can be no later re-entry:
+$T_aT_b=T_{ab}$, and local completely positive postcomposition preserves PPT.
+Indeed, if some $T_t$ with $t>\tan(\pi/(4n))$ were PPT, choose $t'<t$ just
+above the displayed threshold.  Then $T_{t'}=T_{t'/t}T_t$ would be PPT,
+contradicting the negative $c=n$ eigenvalue of $T_{t'}$.
+\end{proof}
+
+\section{A rigorous entanglement-breaking region}
+
+The exact entanglement-breaking characterization remains open, but the same
+expansion gives a useful dimension-explicit interval.
+
+\begin{proposition}
+The Ornstein--Uhlenbeck channel $T_t$ is entanglement breaking whenever
+\[
+ t\le 2^{1/n}-1.
+\]
+Consequently, if $t_{\rm EB}$ denotes the endpoint of its
+entanglement-breaking interval, then
+\[
+ 2^{1/n}-1\le t_{\rm EB}\le\tan\frac{\pi}{4n}.
+\]
+\end{proposition}
+
+\begin{proof}
+For every traceless Hermitian unitary $u$, the normalized states proportional
+to $I\otimes I\pm u\otimes u$ are separable: expand them using the two spectral
+projections of $u$.  Hence a Clifford-diagonal Choi state is separable whenever
+the sum of the absolute values of its nonidentity correlation coefficients is
+at most one.  For $T_t$ this sum is
+\[
+ \sum_{r=1}^n\binom nr t^r=(1+t)^n-1.
+\]
+This proves the lower bound.  Every entanglement-breaking channel is PPT, so
+Corollary~\ref{cor:ou} gives the upper bound.
+\end{proof}
+
+\section{Verification, novelty, and scope}
+
+An independent matrix script constructs the Jordan--Wigner representation for
+$n=2,4,6$ and matches the entire partial-transpose spectrum against
+\eqref{eq:mu} to floating-point precision.  It separately checks
+\eqref{eq:ou-spectrum}.  These computations audit signs and normalization but
+are not part of the proof.
+
+A bounded novelty search on 11 August 2026 used the exact title, the source's
+PPT sentence, and combinations of ``fermionic radial multiplier'', ``PPT'',
+``Krawtchouk'', ``Clifford diagonal channel'', and ``fermionic
+Ornstein--Uhlenbeck entanglement breaking time''.  It found the source and
+general Bell-diagonal literature, but no later solution of this exact
+characterization or the signed transform above.  Novelty confidence is
+moderate.
+
+The theorem resolves only the PPT part of the final source question.  It does
+not characterize all entanglement-breaking radial channels and does not
+compute their unassisted classical, quantum, or private capacities.  Numerical
+evidence for a sharper Ornstein--Uhlenbeck entanglement-breaking threshold is
+kept outside the theorem.
+
+\paragraph{Human-review recommendation.}
+Audit the use of the reversal antiautomorphism as transpose, the sign in
+\eqref{eq:eigenchar}, and the $N^{-2}=2^{-n}$ Choi normalization.  Then verify
+the semigroup no-re-entry step in Corollary~\ref{cor:ou}.  These are the only
+places where convention changes can alter the formulas.
+
+\begin{thebibliography}{9}
+\bibitem{Arhancet}
+C.~Arhancet,
+\emph{Entanglement-assisted classical capacities of some channels acting as
+radial multipliers on fermion algebras}, arXiv:2402.15440v6 (2024).
+\end{thebibliography}
+
+\end{document}

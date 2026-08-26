@@ -1,0 +1,263 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[margin=0.94in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[hypertexnames=false,colorlinks=true,linkcolor=blue!55!black,urlcolor=blue!65!black,citecolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\E}{\mathbb E}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\cS}{\mathcal S}
+\newcommand{\cA}{\mathcal A}
+\newcommand{\ellTwo}{\ell^2}
+
+\title{Dominated convergence fails for infinite-rank\\
+linear conditional expectation}
+\author{Candidate full counterexample to the open problem in arXiv:2008.12070}
+\date{12 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent
+\fbox{\begin{minipage}{0.94\textwidth}
+\textbf{Status: candidate full counterexample, likely valid.}
+There exist a probability space, a centered random variable
+\(V\in L^2(\Omega;\ellTwo)\) whose covariance has infinite rank, scalar
+\(U_k\in L^2(\Omega)\), and \(Y\in L^2(\Omega)\) such that
+\[
+ U_k\longrightarrow0\quad\text{almost surely},
+ \qquad |U_k|\le Y\quad(k\ge1),
+\]
+but
+\[
+ \mathbb E^{\cA}[U_k\mid V]\not\longrightarrow0
+ \quad\text{almost surely}.
+\]
+Thus the infinite-rank extension asked for in Remark 4.6 of Klebanov,
+Sprungk, and Sullivan is false. The construction realizes a graph-subspace
+orthogonal projection as an LCE and feeds it the tails of a classical
+Menshov orthogonal series that converges in \(L^2\) but diverges pointwise.
+\end{minipage}}
+
+\section{The exact open problem}
+
+For scalar \(U\in L^2(\Omega)\) and Hilbert-valued
+\(V\in L^2(\Omega;\mathcal H)\), the linear conditional expectation (LCE)
+is the \(L^2\)-orthogonal projection
+\[
+ \E^{\cA}[U\mid V]
+ =P_{\overline{\{b+\langle h,V\rangle:b\in\R,\ h\in\mathcal H\}}}U.
+ \tag{1}
+\]
+The source proves an \(L^2\)-dominated convergence theorem when the
+covariance \(C_V\) has finite rank. It asks whether the result remains true
+at infinite rank under the stronger hypothesis
+\[
+ U_k\to U\ \text{a.s.},\qquad |U_k|\le Y\ \text{for one }Y\in L^2.
+ \tag{2}
+\]
+The complete source page containing the question is reproduced below
+\cite{KSS}.
+
+\begin{center}
+ \includegraphics[height=0.72\textheight]{figures/source_page9.png}
+\end{center}
+
+\section{The only external ingredient}
+
+The pointwise pathology needed below is classical.
+
+\begin{lemma}[Menshov]\label{lem:menshov}
+There are a real orthonormal system \((\varphi_n)_{n\ge1}\) in
+\(L^2([0,1])\) and real numbers \((c_n)_{n\ge1}\) such that
+\[
+ \sum_{n=1}^\infty c_n^2<\infty,
+ \qquad
+ \sum_{n=1}^N c_n\varphi_n(x)
+ \quad\text{fails to converge as }N\to\infty
+\]
+for every \(x\in[0,1]\), after changes on a null set if necessary.
+\end{lemma}
+
+\begin{proof}
+Menshov proved that for every positive
+\(W(n)=o((\log n)^2)\), there are an orthonormal system and coefficients
+whose orthogonal series diverges everywhere although
+\(\sum_n c_n^2W(n)<\infty\) \cite{Menshov}. Take \(W\equiv1\).
+\end{proof}
+
+We will also need mean-zero functions. Let
+\[
+ X_1=[0,1]\times\{-1,1\},
+ \qquad m_1=\lambda\otimes\tfrac12(\delta_{-1}+\delta_1),
+\]
+and set
+\[
+ \psi_n(x,\varepsilon)=\varepsilon\varphi_n(x).
+ \tag{3}
+\]
+Then \((\psi_n)\) is orthonormal in \(L^2(X_1,m_1)\), every \(\psi_n\)
+has mean zero, and the series \(\sum c_n\psi_n\) diverges at every point
+where the Menshov series does.
+
+Nevertheless, Riesz--Fischer gives an \(L^2\) sum \(F\) of this series. If
+\[
+ r_k=F-\sum_{n<k}c_n\psi_n,
+ \tag{4}
+\]
+then \(r_k\) is the \(L^2\) tail, but \(r_k\not\to0\) almost everywhere;
+otherwise the finite partial sums would converge pointwise to \(F\).
+
+\section{A graph projection that destroys dominated convergence}
+
+Let \(X_0=[0,1]\) with Lebesgue measure. Choose pairwise disjoint intervals
+\(I_n\subset X_0\), split each into equal halves
+\(I_n=I_n^+\mathbin{\dot\cup}I_n^-\), and define
+\[
+ \delta_n=|I_n|^{-1/2}
+ \bigl(\mathbf1_{I_n^+}-\mathbf1_{I_n^-}\bigr).
+ \tag{5}
+\]
+The functions \(\delta_n\) are orthonormal, mean zero, and have disjoint
+supports. Define the isometry
+\[
+ T:\overline{\operatorname{span}}\{\delta_n\}
+ \longrightarrow
+ \overline{\operatorname{span}}\{\psi_n\},
+ \qquad T\delta_n=\psi_n.
+ \tag{6}
+\]
+
+Form the disjoint-union probability space
+\[
+ (\Omega,\mathbb P)=\tfrac12(X_0,m_0)\ \dot\cup\
+                    \tfrac12(X_1,m_1).
+\]
+Thus \(L^2(\Omega)\) is the half-weighted direct sum
+\(L^2(X_0)\oplus L^2(X_1)\). Put
+\[
+ s_n=(\delta_n,\psi_n),
+ \qquad
+ \cS=\overline{\operatorname{span}}\{s_n:n\ge1\}.
+ \tag{7}
+\]
+Because of the half weights, \((s_n)\) is an orthonormal system. The
+subspace \(\cS\) is the graph of \(T\) with this normalization, and direct
+minimization gives
+\begin{equation}
+ P_{\cS}(f,0)=\tfrac12(f,Tf)
+ \quad\text{for }f\in\overline{\operatorname{span}}\{\delta_n\}.
+ \tag{8}
+\end{equation}
+Indeed, if \(f=\sum a_n\delta_n\), then
+\(\langle(f,0),s_n\rangle_{L^2(\Omega)}=a_n/2\), which proves (8).
+
+Now define the disjoint-support tails
+\[
+ f_k=\sum_{n\ge k}c_n\delta_n,
+ \qquad U_k=(f_k,0).
+ \tag{9}
+\]
+These are genuine pointwise sums: at each \(x\in X_0\), at most one term is
+nonzero. In particular, \(f_k(x)\to0\) for every \(x\) outside the interval
+endpoints. Moreover,
+\[
+ Y=\left(\sum_{n\ge1}|c_n|\,|\delta_n|,0\right)
+ \tag{10}
+\]
+dominates every \(U_k\), and disjointness gives
+\[
+ \|Y\|_{L^2(\Omega)}^2
+ =\tfrac12\sum_{n\ge1}c_n^2<\infty.
+ \tag{11}
+\]
+Thus \(U_k\to0\) almost surely under one square-integrable dominator.
+
+On the other hand, \(Tf_k=r_k\) as \(L^2\) equivalence classes: both are the
+tail of the same orthogonal series. Hence (8) and (4) give
+\[
+ P_{\cS}U_k=\tfrac12(f_k,r_k),
+ \tag{12}
+\]
+which does not converge to zero almost surely on the second component of
+\(\Omega\).
+
+\section{Realizing the graph projection as an infinite-rank LCE}
+
+It remains to realize \(\mathbb R\mathbf1\oplus\cS\) as the affine
+coordinate space of one Hilbert-valued random variable. Let
+\((e_n)\) be the standard basis of \(\ellTwo\), choose
+\(\tau_n=2^{-n}\), and define
+\begin{equation}
+ V(\omega)=\sum_{n=1}^\infty \tau_ns_n(\omega)e_n.
+ \tag{13}
+\end{equation}
+Tonelli's theorem and orthonormality show that
+\[
+ \E\|V\|_{\ellTwo}^2=\sum_n\tau_n^2<\infty,
+\]
+so (13) defines an \(\ellTwo\)-valued square-integrable random variable
+almost surely. Since both \(\delta_n\) and \(\psi_n\) have mean zero,
+\(\E V=0\). Also
+\[
+ \langle C_Ve_m,e_n\rangle
+ =\E[\tau_ms_m\tau_ns_n]
+ =\tau_n^2\mathbf1_{m=n}.
+ \tag{14}
+\]
+Thus \(C_V=\operatorname{diag}(4^{-n})\) has infinite rank.
+
+For \(h=(h_n)\in\ellTwo\), a bounded scalar linear functional of \(V\) is
+\[
+ \langle h,V\rangle=\sum_nh_n\tau_ns_n.
+\]
+Every finite linear combination of the \(s_n\) occurs in this way because
+all \(\tau_n\) are nonzero. Consequently,
+\[
+ \overline{\{b+\langle h,V\rangle:b\in\R, h\in\ellTwo\}}
+ =\mathbb R\mathbf1\oplus\cS.
+ \tag{15}
+\]
+The sum is orthogonal because every \(s_n\) has mean zero. Each \(U_k\) also
+has mean zero, so (1), (12), and (15) imply
+\[
+ \E^{\cA}[U_k\mid V]=P_{\cS}U_k
+ =\tfrac12(f_k,r_k)\not\longrightarrow0\quad\text{a.s.}
+\]
+This proves the announced counterexample.
+
+\section{Conclusion and scope}
+
+The source's finite-rank hypothesis cannot be removed from its
+\(L^2\)-dominated convergence theorem, even when the predicted variables are
+real-valued and the conditioning variable is centered and separable. The
+mechanism is not the unbounded covariance pseudoinverse: it is the fact that,
+at infinite rank, the LCE subspace can encode an arbitrary separable
+orthogonal projection, including one that transports harmless disjoint tails
+to the pointwise-divergent tails of an orthogonal series.
+
+The finite-dimensional graph projection and covariance algebra were checked
+by the accompanying script. The only nonconstructive input is the classical,
+sharp Menshov divergence theorem; all probabilistic and LCE steps are explicit.
+
+\begin{thebibliography}{9}
+\bibitem{KSS}
+I. Klebanov, B. Sprungk, and T. J. Sullivan,
+\emph{The linear conditional expectation in Hilbert space},
+arXiv:2008.12070, Remark 4.6.
+
+\bibitem{Menshov}
+D. Menchoff,
+\emph{Sur les s\'eries de fonctions orthogonales},
+Fundamenta Mathematicae \textbf{4} (1923), 82--105,
+\href{https://doi.org/10.4064/fm-4-1-82-105}{doi:10.4064/fm-4-1-82-105}.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,179 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+
+\title{Every positive finite Ermakoff limit occurs}
+\author{A full answer to the footnote question in arXiv:2305.12873}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+Candidate full proof, likely valid, pending human review.  For every prescribed
+$a\in(0,\infty)$ we construct a continuous strictly increasing function
+$g:[1,\infty)\to[1,\infty)$ with $g(1)=1$ such that
+\[
+ \frac{t g(t)}{g(e^t)}=a
+\]
+for all sufficiently large $t$.  Thus the set of positive finite Ermakoff
+limits is the whole interval $(0,\infty)$.
+
+\section{Source question}
+
+Footnote~3 on source PDF page~5 recalls Ermakoff's test for a continuous
+positive increasing function $g:[1,\infty)\to[1,\infty)$ with $g(1)=1$ and
+asks for an example in which
+\[
+ \lim_{t\to\infty}\frac{t g(t)}{g(e^t)}
+\]
+exists but is different from $0$, $1$, and $\infty$~\cite{MMP}.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/source_question_crop.png}
+\end{center}
+
+\section{Proof intuition}
+
+Two logarithmic changes of variables turn the requested asymptotic ratio
+into an additive functional equation.  Write
+\[
+ h(x)=\log g(e^x),\qquad c=\log a.
+\]
+For $t=e^x$ the identity $t g(t)/g(e^t)=a$ is equivalent to
+\begin{equation}\label{eq:abel}
+ h(e^x)=h(x)+x-c.
+\end{equation}
+This equation can be solved one iterated-exponential interval at a time.
+Choose a short increasing seed that has exactly the endpoint jump required
+by \eqref{eq:abel}; thereafter the recurrence itself propagates continuity
+and strict monotonicity forever.
+
+\section{Construction and proof}
+
+\begin{theorem}\label{thm:main}
+For every $a>0$ there is a continuous strictly increasing
+$g:[1,\infty)\to[1,\infty)$ with $g(1)=1$ for which
+\begin{equation}\label{eq:ratio}
+ \frac{t g(t)}{g(e^t)}=a
+\end{equation}
+for every sufficiently large $t$.
+\end{theorem}
+
+\begin{proof}
+Fix $a>0$, put $c=\log a$, and choose
+\[
+ A>\max\{0,c\},\qquad E_0=e^A,
+ \qquad m=\frac{A-c}{e^A-A}>0.
+\]
+Begin with the linear seed
+\begin{equation}\label{eq:seed}
+ h(x)=mx,\qquad 0\le x\le E_0.
+\end{equation}
+Set $E_{n+1}=e^{E_n}$.  Successively on each interval
+$[E_n,E_{n+1}]$, $n\ge0$, define
+\begin{equation}\label{eq:recurrence}
+ h(y)=h(\log y)+\log y-c.
+\end{equation}
+This is a genuine recursive definition: when $y\in[E_n,E_{n+1}]$,
+the argument $\log y$ lies in the part of the half-line on which $h$ has
+already been defined.  Equivalently, one may iterate logarithms until the
+argument first enters $[0,E_0]$ and then apply \eqref{eq:seed}.
+
+We verify the three properties needed below.  At the first junction,
+\[
+ h(A)+A-c=mA+A-c=mA+m(e^A-A)=mE_0=h(E_0),
+\]
+so \eqref{eq:recurrence} agrees with the seed.  At every later junction the
+two neighboring definitions use the same continuous expression in the
+already defined value $h(\log y)$.  Induction therefore proves that $h$ is
+continuous on $[0,\infty)$.
+
+The seed is strictly increasing.  If $h$ is increasing on the previously
+constructed part and $y_1<y_2$ lie in the next interval, then
+\[
+ h(y_2)-h(y_1)
+ =h(\log y_2)-h(\log y_1)+\log y_2-\log y_1>0.
+\]
+Continuity at the junctions now proves by induction that $h$ is strictly
+increasing everywhere.  Finally, $h\ge0$ on the seed interval, and each
+recursive step adds $\log y-c\ge A-c>0$; hence $h$ takes values in
+$[0,\infty)$.
+
+For every $x\ge A$, the point $e^x$ lies beyond $E_0$, so the defining
+recurrence gives the exact identity
+\begin{equation}\label{eq:exact}
+ h(e^x)=h(x)+x-c.
+\end{equation}
+Define
+\begin{equation}\label{eq:g}
+ g(t)=\exp(h(\log t)),\qquad t\ge1.
+\end{equation}
+The properties just proved show that $g$ is continuous, strictly increasing,
+takes values in $[1,\infty)$, and satisfies $g(1)=1$.  If $t=e^x\ge e^A$,
+then \eqref{eq:exact} yields
+\[
+ \frac{t g(t)}{g(e^t)}
+ =\exp\!\bigl(x+h(x)-h(e^x)\bigr)
+ =\exp(c)=a.
+\]
+This proves \eqref{eq:ratio}, in fact as an eventual exact identity rather
+than merely a limiting relation.
+\end{proof}
+
+\begin{corollary}\label{cor:two}
+There is a continuous strictly increasing $g:[1,\infty)\to[1,\infty)$,
+$g(1)=1$, for which the Ermakoff limit equals $2$.
+\end{corollary}
+
+\begin{proof}
+In Theorem~\ref{thm:main}, take $a=2$ and $A=1$.  Then
+\[
+ m=\frac{1-\log2}{e-1},\qquad
+ h(x)=mx\quad(0\le x\le e),
+\]
+and extend by $h(y)=h(\log y)+\log y-\log2$ for $y\ge e$.
+The resulting $g$ from \eqref{eq:g} has
+$t g(t)/g(e^t)=2$ for every $t\ge e$.
+\end{proof}
+
+\section{Checks, upgrade, novelty, and scope}
+
+The first construction used the explicit value $a=2$, which already answers
+the source question.  The deep upgrade in Theorem~\ref{thm:main} shows that
+the same mechanism realizes every prescribed $a\in(0,\infty)$.  The choice
+of a flexible threshold $A>\max\{0,\log a\}$ is what keeps the seed slope and
+every recursive increment positive, even when $a$ is very large.
+
+The script \texttt{code/verify\_construction.py} evaluates the iterated-log
+formula, checks the functional equation and eventual ratios for several
+values of $a$, checks monotonicity on logarithmic grids, and probes both sides
+of the first iterated-exponential junctions.  These numerical checks are not
+used in the proof.
+
+A bounded primary-source search used the exact footnote wording,
+``Ermakoff's condition'', $t g(t)/g(e^t)$, and the conjugated functional
+equation \eqref{eq:abel}.  It found the source question but no primary paper
+giving a nontrivial finite example or the arbitrary-$a$ construction.
+Novelty confidence is moderate to high; correctness confidence is high.
+
+The theorem answers only the footnote's existence question.  It does not
+alter the paper's Poincar\'e inequality theorem, whose hypothesis specifically
+requires Ermakoff limit zero.
+
+\begin{thebibliography}{1}
+\bibitem{MMP}
+J.~Mart\'in and W.~A. Ortiz,
+\emph{A note on rearrangement Poincar\'e inequalities and the doubling
+condition}, arXiv:2305.12873.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,202 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\emergencystretch=3em
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newcommand{\F}{\mathbb F}
+\newcommand{\ran}{\operatorname{ran}}
+\newcommand{\PPT}{\operatorname{PPT}}
+\newcommand{\ppt}{\operatorname{ppt}}
+
+\title{The Complete Block-System Solution and a\\
+Compatibility Correction for the Principal Pivot Transform}
+\author{A full correction of Problem 7 and Proposition 8 in arXiv:2302.04293}
+\date{August 11, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We solve the block linear system posed as Problem 7 of Beard--Welters for an
+arbitrary real or complex block matrix.  The claimed solution in their
+Proposition 8 omits a necessary range-compatibility condition and is false
+even for the zero matrix.  We give the complete affine solution, repair the
+proposition sharply, and identify the projected system actually encoded by
+the generalized principal pivot transform when compatibility fails.
+\end{abstract}
+
+\section{Source problem and the missing condition}
+
+Let
+\[
+ A=\begin{bmatrix}A_{11}&A_{12}\\A_{21}&A_{22}\end{bmatrix},
+ \qquad
+ A_{ij}\in M_{n_i\times n_j}(\F),\qquad \F\in\{\mathbb R,\mathbb C\}.
+\]
+Problem 7 of Beard--Welters asks, for prescribed $(x_1,y_2)$, to find every
+$(y_1,x_2)$ such that
+\begin{equation}\label{eq:system}
+ A\begin{bmatrix}x_1\\x_2\end{bmatrix}
+ =\begin{bmatrix}y_1\\y_2\end{bmatrix}.
+\end{equation}
+Their Proposition 8 claims a solution under
+$\ran A_{21}\subseteq\ran A_{22}$ and
+$\ker A_{22}\subseteq\ker A_{12}$, for every prescribed $(x_1,y_2)$.
+
+\begin{center}
+\includegraphics[width=.95\linewidth]{figures/problem_and_claimed_solution_crop.png}
+\end{center}
+
+The omitted issue is that the second block equation need not be consistent.
+Applying $A_{22}^{+}$ to it does not retain the component perpendicular to
+$\ran A_{22}$.
+
+\section{Idea of Proof}
+
+Put $b=y_2-A_{21}x_1$.  The second block row of \eqref{eq:system} is exactly
+$A_{22}x_2=b$.  If $P=A_{22}A_{22}^{+}$, then $P$ is the orthogonal
+projection onto $\ran A_{22}$, so this equation is solvable precisely when
+$(I-P)b=0$.  In that event all solutions are
+$x_2=A_{22}^{+}b+z$ with $z\in\ker A_{22}$.  Substitution in the first block
+row gives all and only the corresponding $y_1$.
+
+\section{Complete solution for arbitrary blocks}
+
+\begin{theorem}[Complete solution of Problem 7]\label{thm:complete}
+For arbitrary $A$ and prescribed $(x_1,y_2)$, set
+\[
+ b=y_2-A_{21}x_1,\qquad P=A_{22}A_{22}^{+}.
+\]
+There exists a pair $(y_1,x_2)$ satisfying \eqref{eq:system} if and only if
+any, hence all, of the equivalent conditions hold:
+\[
+ b\in\ran A_{22},\qquad Pb=b,
+ \qquad (I-P)(y_2-A_{21}x_1)=0.
+\]
+When they hold, the complete solution set is
+\begin{equation}\label{eq:allsolutions}
+ \left\{
+ \left(
+ \begin{aligned}
+ y_1&=A_{11}x_1+A_{12}A_{22}^{+}b+A_{12}z,\\
+ x_2&=A_{22}^{+}b+z
+ \end{aligned}
+ \right):z\in\ker A_{22}
+ \right\}.
+\end{equation}
+Equivalently, with $A/A_{22}=A_{11}-A_{12}A_{22}^{+}A_{21}$,
+\[
+ y_1=(A/A_{22})x_1+A_{12}A_{22}^{+}y_2+A_{12}z.
+\]
+\end{theorem}
+
+\begin{proof}
+The second block row is $A_{22}x_2=b$.  The Moore--Penrose identities imply
+that $P=A_{22}A_{22}^{+}$ is the orthogonal projection onto
+$\ran A_{22}$.  Thus solvability is equivalent to $Pb=b$.  If this holds,
+$A_{22}(A_{22}^{+}b)=b$, and adding any $z\in\ker A_{22}$ preserves the
+equation.  Conversely, if $A_{22}x_2=b$, then
+$x_2-A_{22}^{+}b$ lies in $\ker A_{22}$.  This proves the asserted complete
+formula for $x_2$.  The first block row uniquely sets
+$y_1=A_{11}x_1+A_{12}x_2$; substituting the formula for $x_2$ gives
+\eqref{eq:allsolutions} and its Schur-complement form.
+\end{proof}
+
+\section{Counterexample and sharp repair of Proposition 8}
+
+\begin{proposition}[Minimal counterexample]\label{prop:counterexample}
+Proposition 8 of the source is false as stated.
+\end{proposition}
+
+\begin{proof}
+Take $n_1=n_2=1$, $A=0$, $x_1=0$, and $y_2=1$.  Then
+$\ran A_{21}=\ran A_{22}=\{0\}$ and
+$\ker A_{22}=\ker A_{12}=\F$, so both hypotheses of the proposition hold.
+Its right-hand side (22) says $x_2\in\F$ and $y_1=0$, hence predicts many
+solutions.  But
+\[
+ A\begin{bmatrix}0\\x_2\end{bmatrix}
+ =\begin{bmatrix}0\\0\end{bmatrix}
+ \ne\begin{bmatrix}0\\1\end{bmatrix}
+\]
+for every $x_2$.  Equivalently, the missing condition is
+$1\in\ran A_{22}=\{0\}$, which fails.
+\end{proof}
+
+\begin{corollary}[Corrected Proposition 8]\label{cor:repair}
+Assume the source hypotheses
+\[
+ \ran A_{21}\subseteq\ran A_{22},
+ \qquad \ker A_{22}\subseteq\ker A_{12}.
+\]
+For prescribed $(x_1,y_2)$, a solution exists if and only if
+$y_2\in\ran A_{22}$.  When it exists, every solution is
+\begin{align*}
+ x_2&\in\{-A_{22}^{+}A_{21}x_1+A_{22}^{+}y_2\}
+       +\ker A_{22},\\
+ y_1&=(A/A_{22})x_1+A_{12}A_{22}^{+}y_2.
+\end{align*}
+Thus the source formula becomes correct after adding exactly the condition
+$y_2\in\ran A_{22}$.
+\end{corollary}
+
+\begin{proof}
+Since $\ran A_{21}\subseteq\ran A_{22}$, the vector $A_{21}x_1$ already
+lies in $\ran A_{22}$; hence
+$y_2-A_{21}x_1\in\ran A_{22}$ iff $y_2\in\ran A_{22}$.  Theorem
+\ref{thm:complete} gives the stated affine formula.  Finally
+$\ker A_{22}\subseteq\ker A_{12}$ makes $A_{12}z=0$, so $y_1$ is
+independent of the kernel parameter.
+\end{proof}
+
+\section{What the principal pivot transform always encodes}
+
+For arbitrary $A$ and data define
+\[
+ x_2^0=A_{22}^{+}(y_2-A_{21}x_1),\qquad
+ y_1^0=A_{11}x_1+A_{12}x_2^0.
+\]
+Direct multiplication, with no range hypotheses, gives the valid identity
+\[
+ J\ppt(A)\begin{bmatrix}x_1\\y_2\end{bmatrix}
+ =\begin{bmatrix}y_1^0\\-x_2^0\end{bmatrix}.
+\]
+However, the associated block system is
+\begin{equation}\label{eq:projected}
+ A\begin{bmatrix}x_1\\x_2^0\end{bmatrix}
+ =\begin{bmatrix}
+ y_1^0\\A_{21}x_1+P(y_2-A_{21}x_1)
+ \end{bmatrix},
+\end{equation}
+not necessarily \eqref{eq:system}.  Under
+$\ran A_{21}\subseteq\ran A_{22}$ the lower entry in
+\eqref{eq:projected} is simply $Py_2$.  Hence the source's transform always
+solves the projected-data system and solves the originally prescribed system
+exactly when the compatibility condition holds.
+
+This correction concerns the claimed linear-system interpretation.  The
+source's later variational formula already contains the projection
+$A_{22}A_{22}^{+}$ explicitly, so no broader invalidity is asserted here.
+
+\section{Verification and novelty scope}
+
+The accompanying script checks compatible and incompatible random singular
+block systems, the complete affine formula, the minimal counterexample, and
+the projected-data identity.  A bounded search found the current arXiv v2
+source but no erratum or later correction adding the missing compatibility
+condition.  The novelty claim is limited to this correction and complete
+solution of the displayed Problem 7.
+
+\begin{thebibliography}{9}
+\bibitem{BW}
+K. Beard and A. Welters,
+\emph{Matrix monotonicity and concavity of the principal pivot transform},
+arXiv:2302.04293v2 (2023), Problem 7 and Proposition 8.
+\end{thebibliography}
+
+\end{document}

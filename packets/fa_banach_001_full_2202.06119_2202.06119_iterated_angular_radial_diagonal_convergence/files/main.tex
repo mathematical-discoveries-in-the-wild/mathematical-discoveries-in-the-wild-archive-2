@@ -1,0 +1,332 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\D}{\mathbb D}
+\newcommand{\T}{\mathbb T}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Lp}{L^p}
+
+\title{Iterated angular--radial limits settle the\\literal Bessel--Fourier convergence conjecture}
+\author{Candidate full affirmative answer to Conjecture 1 in arXiv:2202.06119}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{black}{gray!8}{\parbox{0.91\linewidth}{\raggedright
+\textbf{Status: candidate full affirmative result under the printed
+quantifiers; semantic review important.}
+For every $4/3<p<4$ and every $f\in L^p(\D)$, there are cofinal rectangular
+cutoffs $(N_k,M_k)$ for which the Bessel--Fourier partial sums converge to
+$f$ in $L^p(\D)$.  In fact, the angular cutoffs $M_k\to\infty$ may be fixed
+in advance and the radial cutoffs may be required to exceed any prescribed
+lower bounds.  The proof does \emph{not} produce one path that works for all
+$f$ simultaneously; that stronger quantifier order is not stated in the
+conjecture and remains open.}}
+\end{center}
+
+\section{Source conjecture and quantifier scope}
+
+Let $\D=[0,1]\times\T$ in polar coordinates with measure
+$r\,dr\,d\theta$.  Acosta Babb~\cite{source} writes the Bessel--Fourier
+rectangular sums as
+\begin{equation}\label{eq:rect}
+ S_{N,M}f(r,\theta)
+ =\sum_{m=-M}^{M}\sum_{n=1}^{N}
+ a_{m,n}(f)J_{|m|}(j_n^{|m|}r)e^{2\pi i m\theta}.
+\end{equation}
+Conjecture~1, on arXiv PDF page~6, asks whether, for every
+$4/3<p<4$ and $f\in L^p(\D)$,
+\[
+ \|S_{N_k,M_k}f-f\|_{L^p(\D)}\longrightarrow0
+\]
+``for some appropriate choice'' of $N_k,M_k\in\N$.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{Conjecture~1 in arXiv:2202.06119, PDF page~6.  The image contains
+  the complete printed statement.}
+\end{figure}
+
+The order of quantifiers printed in the article (and repeated unchanged in
+the author's 2024 thesis) is
+\begin{equation}\label{eq:literal}
+ \forall f\in L^p(\D)\quad\exists (N_k,M_k)_{k\ge1}.
+\end{equation}
+The discussion immediately after the conjecture emphasizes the difficulty of
+uniform operator bounds, which may indicate that the stronger order
+\begin{equation}\label{eq:stronger}
+ \exists (N_k,M_k)_{k\ge1}\quad\forall f\in L^p(\D)
+\end{equation}
+was informally intended.  The theorem below proves \eqref{eq:literal}, with
+two useful strengthenings, but deliberately does not claim
+\eqref{eq:stronger}.
+
+\section{Main theorem}
+
+Let $A>0$ denote the absolute constant appearing in the Balodis--C\'ordoba
+cutoff geometry quoted in the source.  It is included below to show that the
+diagonal path can also obey $N_k\ge AM_k+1$; the proof itself does not need
+this relation.
+
+\begin{theorem}[Literal conjecture, with arbitrary lower bounds]\label{thm:main}
+Let $4/3<p<4$, let $f\in L^p(\D)$, and let $(M_k)$ be any sequence of
+positive integers with $M_k\to\infty$.  Given any positive integers $L_k$,
+there are strictly increasing integers $N_k$ such that
+\begin{equation}\label{eq:lower}
+ N_k\ge\max\{L_k,AM_k+1\}
+\end{equation}
+and
+\begin{equation}\label{eq:conv}
+ \|S_{N_k,M_k}f-f\|_{L^p(\D)}\longrightarrow0.
+\end{equation}
+In particular, the affirmative assertion of Conjecture~1 holds exactly as
+printed.
+\end{theorem}
+
+\begin{theorem}[Uniformity on compact sets]\label{thm:compact}
+Under the hypotheses of Theorem~\ref{thm:main}, if
+$K\subset L^p(\D)$ is norm compact, the cutoffs $N_k$ can be chosen so that
+\[
+ \sup_{f\in K}\|S_{N_k,M_k}f-f\|_{L^p(\D)}\longrightarrow0
+\]
+while still satisfying \eqref{eq:lower} and strict increase.
+\end{theorem}
+
+\begin{corollary}[One path for any countable family]\label{cor:countable}
+For every countable set $\{f_1,f_2,\ldots\}\subset L^p(\D)$ and every
+$M_k\to\infty$, one can choose a single cofinal sequence $(N_k,M_k)$ along
+which $S_{N_k,M_k}f_j\to f_j$ for every $j$.
+\end{corollary}
+
+\section{Proof intuition}
+
+A rectangle has two independent directions.  Freeze the angular width first.
+Angular Fourier partial sums converge in $L^p$, so retaining the modes
+$|m|\le M$ approximates $f$ when $M$ is large.  For a fixed $M$, only
+finitely many radial functions $f_m$ remain.  The classical one-dimensional
+Fourier--Bessel theorem says that, for each fixed order $|m|$, its radial
+partial sums converge in exactly the range $4/3<p<4$.  One common radial
+cutoff works for this finite list.  Choosing that cutoff after the angular
+width is chosen gives an iterated limit; a diagonal selection turns it into
+the requested sequence of rectangles.
+
+This mechanism needs no operator bound uniform in both indices.  That is why
+it proves the function-dependent quantifiers \eqref{eq:literal} while leaving
+the whole-space uniform-path formulation \eqref{eq:stronger} untouched.
+
+\section{The two one-parameter limits}
+
+For $f\in L^p(\D)$, define its angular coefficients
+\[
+ f_m(r)=\int_{\T} f(r,\theta)e^{-2\pi i m\theta}\,d\theta
+ \qquad(m\in\Z).
+\]
+H\"older's inequality on the probability space $\T$ gives
+\begin{equation}\label{eq:coeffcontract}
+ \|f_m\|_{L^p((0,1),r\,dr)}\le \|f\|_{L^p(\D)}.
+\end{equation}
+Let
+\begin{equation}\label{eq:angular}
+ P_Mf(r,\theta)=\sum_{|m|\le M}f_m(r)e^{2\pi i m\theta}.
+\end{equation}
+
+\begin{lemma}[Angular limit]\label{lem:angular}
+For $1<p<\infty$,
+\[
+ \|P_Mf-f\|_{L^p(\D)}\longrightarrow0.
+\]
+Moreover, $\sup_M\|P_M\|_{L^p(\D)\to L^p(\D)}<\infty$.
+\end{lemma}
+
+\begin{proof}
+The M.~Riesz theorem gives the uniform $L^p(\T)$ bound for ordinary Fourier
+partial sums.  Apply it to $f(r,\cdot)$ and integrate the $p$th power against
+$r\,dr$.  Convergence follows first for finite angular trigonometric
+polynomials with radial $L^p$ coefficients and then for all $f$ by density
+and the uniform bound.
+\end{proof}
+
+For a nonnegative integer $\nu$, write $B_N^{\nu}$ for the first $N$ terms
+of the one-dimensional Fourier--Bessel expansion of order $\nu$ on
+$L^p((0,1),r\,dr)$.  The classical mean-convergence theorem of
+Wing and Benedek--Panzone~\cite{wing,benedek} says that, for each fixed
+$\nu$,
+\begin{equation}\label{eq:radialclassical}
+ B_N^{\nu}g\longrightarrow g
+ \quad\hbox{in }L^p((0,1),r\,dr),
+ \qquad \frac43<p<4.
+\end{equation}
+This is precisely the fixed-order result invoked in the source article.
+
+\begin{lemma}[Fixed angular window]\label{lem:fixedM}
+If $4/3<p<4$ and $M$ is fixed, then
+\[
+ \|S_{N,M}f-P_Mf\|_{L^p(\D)}\longrightarrow0
+ \qquad(N\to\infty).
+\]
+For this fixed $M$, the operators $S_{N,M}-P_M$ are uniformly bounded in
+$N$ on $L^p(\D)$.
+\end{lemma}
+
+\begin{proof}
+The definitions give the exact separation
+\begin{equation}\label{eq:separate}
+ S_{N,M}f-P_Mf
+ =\sum_{|m|\le M}
+   \bigl(B_N^{|m|}f_m-f_m\bigr)e^{2\pi i m\theta}.
+\end{equation}
+Since multiplication by $e^{2\pi i m\theta}$ embeds
+$L^p((0,1),r\,dr)$ isometrically into $L^p(\D)$, the triangle inequality
+and \eqref{eq:radialclassical} give
+\begin{equation}\label{eq:finitesum}
+ \|S_{N,M}f-P_Mf\|_{L^p(\D)}
+ \le \sum_{|m|\le M}
+ \|B_N^{|m|}f_m-f_m\|_{L^p((0,1),r\,dr)}\longrightarrow0.
+\end{equation}
+For every fixed order, pointwise strong convergence in
+\eqref{eq:radialclassical} and Banach--Steinhaus imply
+\[
+ \sup_N\|B_N^{|m|}\|<\infty.
+\]
+Combine these finitely many bounds with
+\eqref{eq:coeffcontract} and \eqref{eq:separate}.
+\end{proof}
+
+\section{Proofs of the main results}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+For every $k$, Lemma~\ref{lem:fixedM} permits us to choose $N_k$ so large
+that it is strictly larger than $N_{k-1}$, satisfies \eqref{eq:lower}, and
+\begin{equation}\label{eq:diagerror}
+ \|S_{N_k,M_k}f-P_{M_k}f\|_{L^p(\D)}<2^{-k}.
+\end{equation}
+Then
+\[
+ \|S_{N_k,M_k}f-f\|_p
+ \le 2^{-k}+\|P_{M_k}f-f\|_p\longrightarrow0
+\]
+by Lemma~\ref{lem:angular}.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:compact}]
+We use twice the standard fact that uniformly bounded operators converging
+strongly converge uniformly on every norm-compact set.  Lemma~\ref{lem:angular}
+therefore gives
+\[
+ \sup_{f\in K}\|P_{M_k}f-f\|_p\longrightarrow0.
+\]
+For each fixed $k$, Lemma~\ref{lem:fixedM} and its uniform boundedness
+statement give
+\[
+ \sup_{f\in K}\|S_{N,M_k}f-P_{M_k}f\|_p\longrightarrow0
+ \qquad(N\to\infty).
+\]
+Choose $N_k$ successively to make the latter supremum smaller than $2^{-k}$
+and to meet the lower bounds.  The triangle inequality finishes the proof.
+\end{proof}
+
+\begin{proof}[Proof of Corollary~\ref{cor:countable}]
+At stage $k$, apply the finite-set version of Theorem~\ref{thm:compact} to
+$\{f_1,\ldots,f_k\}$ and choose $N_k$ so the radial error is below $2^{-k}$
+for all these functions.  For each fixed $j$, the angular error tends to zero
+as $k\to\infty$, and the radial bound applies whenever $k\ge j$.
+\end{proof}
+
+\section{Quantifier caveat and the negative clause}
+
+The proof selects $N_k$ after seeing $f$ (or a compact/countable family).
+It therefore does not show
+\[
+ \sup_k\|S_{N_k,M_k}\|_{L^p(\D)\to L^p(\D)}<\infty,
+\]
+which by Banach--Steinhaus is the natural requirement for one fixed path to
+converge for every $f$.  The source's comment about the difficulty of uniform
+bounds concerns exactly this stronger issue.
+
+The sentence ``for $p$ outside this range, convergence fails in general'' is
+also sensitive to the same semantics.  Classical mean-convergence results
+show failure of the full fixed-order partial-sum sequence outside the open
+range (including endpoint failure in the standard uniform-boundedness
+sense).  They do not automatically exclude every $f$-dependent sparse
+subsequence.  This packet proves the affirmative clause exactly as printed;
+it does not make a new claim about that adaptive-subsequence interpretation
+of the negative clause.
+
+\section{Focused proof and upgrade audits}
+
+Eight focused checks were made before promotion:
+\begin{enumerate}
+\item The arXiv source, 2023 published version, and 2024 author thesis were
+checked; all retain the quantifier ``for every $f$, for some choice.''
+\item The angular coefficient map was checked directly in
+\eqref{eq:coeffcontract}, so no unjustified pointwise $L^p$ trace is used.
+\item The angular limit was reduced to the scalar M.~Riesz theorem and product
+density, avoiding any false Plancherel step for $p\ne2$.
+\item The fixed-order radial theorem was checked against the classical
+Fourier--Bessel literature and the source's own stated range.
+\item The exact separation \eqref{eq:separate} was checked against the
+normalization and order convention $J_m=J_{|m|}$ in the source.
+\item The finite-mode triangle estimate \eqref{eq:finitesum} avoids any
+constant uniform in the angular order; finiteness is enough.
+\item The diagonal choice was strengthened to arbitrary prescribed $M_k$,
+arbitrary radial lower bounds, compact families, and countable families.
+\item A universal whole-space path was considered.  The argument stops
+precisely at the missing uniform bound in both indices, so that stronger
+problem is explicitly not claimed.
+\end{enumerate}
+
+\section{Novelty check, limitations, and review recommendation}
+
+A bounded search on 13 August 2026 covered the exact title and conjecture
+wording, ``iterated limit,'' ``diagonal,'' and ``fixed angular''
+Bessel--Fourier searches, the 2023 publication, the author's 2024 thesis, the
+citing triangular-domain paper, arXiv records through 2026, and the author's
+2026 coefficient-decay paper.  The thesis still labels the problem open, and
+no later solution or this diagonal argument was found.  Novelty is plausible,
+not certified, and priority is not claimed.
+
+The mathematical proof has no computational dependency.  Its limitation is
+semantic rather than technical: it settles the literal
+$\forall f\,\exists\text{ path}$ assertion, not the stronger
+$\exists\text{ path}\,\forall f$ assertion that the surrounding discussion
+may have intended.  Human review should first decide the intended quantifier
+order.  Under the printed order, check only the fixed-window identity
+\eqref{eq:separate} and the applicability of fixed-order mean convergence;
+the rest is a finite-sum diagonal argument.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+R.~L. Acosta Babb,
+\emph{Remarks on the $L^p$ convergence of Bessel--Fourier series on the disc},
+Comptes Rendus Math\'ematique \textbf{361} (2023), 1075--1080;
+arXiv:2202.06119, doi:10.5802/crmath.464.
+
+\bibitem{wing}
+G.~M. Wing,
+\emph{The mean convergence of orthogonal series},
+Amer. J. Math. \textbf{72} (1950), 792--808.
+
+\bibitem{benedek}
+A.~Benedek and R.~Panzone,
+\emph{Mean convergence of series of Bessel functions},
+Rev. Uni\'on Mat. Argentina \textbf{26} (1972/73), 42--61.
+\end{thebibliography}
+
+\end{document}

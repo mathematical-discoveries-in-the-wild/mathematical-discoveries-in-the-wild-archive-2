@@ -1,0 +1,219 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{remark}{Remark}
+
+\newcommand{\Hspace}{\mathcal H}
+\newcommand{\Amap}{\mathcal A}
+\newcommand{\Ddisc}{\mathcal D}
+\newcommand{\Jfun}{\mathcal E}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\setlength{\emergencystretch}{3em}
+
+\title{Strong Stability of Indirect LDDMM Minimizers:\\
+the Sharp Positive/Zero Regularization Dichotomy}
+\author{Automated Math Discovery Candidate Proof}
+\date{August 11, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{\textbf{Status.}
+Candidate full answer to Remark~7.6 of the source paper, likely valid pending
+expert review.  Strong subsequential stability always holds for the
+regularized problem $\gamma>0$.  It fails at $\gamma=0$, which the printed
+stability theorem includes even though its proof divides by $\gamma$.}}
+\end{center}
+
+\section*{Source and Open Question}
+
+This packet concerns Remark~7.6 on page~15 of Chen and
+\"Oktem~\cite{ChenOktem}, arXiv:1706.04048v2.  In the Hilbert space
+\[
+                \Hspace=L^2([0,1],V),
+\]
+the source minimizes
+\begin{equation}\label{eq:objective}
+ \Jfun_{g,\gamma}(\nu)
+ =\gamma\norm{\nu}_{\Hspace}^{2}
+  +\Ddisc\bigl(\Amap(\nu),g\bigr),
+ \qquad
+ \Amap(\nu):=T\bigl(\mathcal V(\nu,I)\bigr).
+\end{equation}
+Here $\mathcal V(\nu,I)$ is the deformed template, $T$ is the forward
+operator, and $\Ddisc$ is the data discrepancy.  Theorem~7.5 proves that for
+$g_k\to g$, a sequence of minimizers of $\Jfun_{g_k,\gamma}$ has a weakly
+convergent subsequence whose limit minimizes $\Jfun_{g,\gamma}$.  Remark~7.6
+asks whether a strongly convergent subsequence always exists.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The proof of Theorem~7.5 uses the convergence
+\begin{equation}\label{eq:resconv}
+ \Ddisc(\Amap(\nu_k),g_k)
+ \longrightarrow \Ddisc(\Amap(\widehat\nu),g)
+ \quad\text{whenever }\nu_k\rightharpoonup\widehat\nu, g_k\to g.
+\end{equation}
+This follows from Corollary~7.3 and continuity of $T$ when the discrepancy is
+jointly continuous.  We retain precisely this proof-effective continuity
+hypothesis below.
+
+\section*{Proof Intuition}
+
+The source proof already contains almost all of the strong-convergence
+argument.  Weak convergence gives the lower bound
+$\norm{\widehat\nu}\leq\liminf\norm{\nu_k}$.  To obtain the missing upper
+bound, use the weak limit itself as a fixed competitor in the minimizing
+inequality.  The discrepancy on both sides converges to the same number by
+\eqref{eq:resconv}, so it cancels in the limit and leaves
+\(\limsup\norm{\nu_k}^2\leq\norm{\widehat\nu}^2\), provided $\gamma>0$.
+Weak convergence plus convergence of norms is strong convergence in a Hilbert
+space.
+
+This mechanism necessarily disappears at $\gamma=0$.  A zero template and
+zero forward data make the discrepancy independent of the velocity, so every
+velocity is a minimizer.  An orthonormal sequence then gives weak convergence
+without any strongly convergent subsequence.
+
+\section*{Sharp Resolution}
+
+\begin{theorem}[Strong stability for positive regularization]\label{thm:positive}
+Assume the hypotheses and the discrepancy convergence used in the proof of
+Theorem~7.5 of the source paper.  Let $\gamma>0$, let $g_k\to g$, and choose
+\[
+                  \nu_k\in\operatorname*{argmin}_{\nu\in\Hspace}
+                  \Jfun_{g_k,\gamma}(\nu).
+\]
+Then some subsequence converges strongly in $\Hspace$ to a minimizer of
+$\Jfun_{g,\gamma}$.
+
+More precisely, every subsequence satisfying
+$\nu_k\rightharpoonup\widehat\nu$ and \eqref{eq:resconv} satisfies
+$\nu_k\to\widehat\nu$ strongly.
+\end{theorem}
+
+\begin{proof}
+Because $\gamma>0$, the coercive estimate in the source proof is valid and
+shows that $(\nu_k)$ is bounded.  Passing to a subsequence, Theorem~7.5 gives
+\[
+                  \nu_k\rightharpoonup\widehat\nu
+                  \quad\text{in }\Hspace,
+\]
+where $\widehat\nu$ minimizes $\Jfun_{g,\gamma}$.  Put
+\[
+ r_k:=\Ddisc(\Amap(\nu_k),g_k),
+ \qquad r:=\Ddisc(\Amap(\widehat\nu),g).
+\]
+By \eqref{eq:resconv}, $r_k\to r$.  Continuity in the data variable also gives
+\[
+ \Ddisc(\Amap(\widehat\nu),g_k)\longrightarrow r.
+\]
+
+Use $\widehat\nu$ as a competitor for the $g_k$ problem.  Minimality gives
+\[
+ \gamma\norm{\nu_k}_{\Hspace}^{2}+r_k
+ \leq
+ \gamma\norm{\widehat\nu}_{\Hspace}^{2}
+ +\Ddisc(\Amap(\widehat\nu),g_k).
+\]
+Taking the upper limit and cancelling the common discrepancy limit yields
+\[
+ \limsup_{k\to\infty}\norm{\nu_k}_{\Hspace}^{2}
+ \leq\norm{\widehat\nu}_{\Hspace}^{2}.
+\]
+Weak lower semicontinuity gives the reverse inequality
+\[
+ \norm{\widehat\nu}_{\Hspace}^{2}
+ \leq\liminf_{k\to\infty}\norm{\nu_k}_{\Hspace}^{2}.
+\]
+Thus $\norm{\nu_k}_{\Hspace}\to\norm{\widehat\nu}_{\Hspace}$.  The Radon--Riesz
+property of Hilbert spaces now implies
+$\nu_k\to\widehat\nu$ strongly.
+\end{proof}
+
+\begin{proposition}[Failure at zero regularization]\label{prop:zero}
+The strong conclusion in Remark~7.6 is false for $\gamma=0$ under the printed
+hypotheses.  In fact, the weak compactness conclusion of Theorem~7.5 can also
+fail at $\gamma=0$.
+\end{proposition}
+
+\begin{proof}
+Choose any nonzero admissible Hilbert space $V$ of vector fields and set
+$\Hspace=L^2([0,1],V)$.  Take the template $I\equiv0$.  Both the geometric and
+mass-preserving LDDMM actions keep this template equal to zero under every
+velocity.  Let the data space be $Y=\mathbb R$, let $T\equiv0$, take
+$g_k=g=0$, and use the standard squared discrepancy
+\[
+                         \Ddisc(y,g)=|y-g|^2.
+\]
+All continuity and regularity hypotheses in Theorem~7.5 are satisfied.  At
+$\gamma=0$, however, \eqref{eq:objective} is identically zero, so every
+$\nu\in\Hspace$ is a minimizer.
+
+Fix a unit vector field $z\in V$ and let
+\[
+                 \nu_k(t)=\sqrt2\sin(2\pi kt)z.
+\]
+The sequence $(\nu_k)$ is orthonormal in $\Hspace$.  Hence
+$\nu_k\rightharpoonup0$, and $0$ is a minimizer, but no subsequence converges
+strongly because
+$\norm{\nu_j-\nu_k}_{\Hspace}=\sqrt2$ for $j\neq k$.  This disproves the
+strong statement at $\gamma=0$.
+
+Moreover, since every velocity is a minimizer, the sequence $k\nu_1$ is an
+unbounded sequence of minimizers and has no weakly convergent subsequence.
+Thus Theorem~7.5 itself requires $\gamma>0$ (or a separate bounded-selection
+hypothesis); its displayed coercive estimate contains $1/\gamma$ and is not
+valid at zero.
+\end{proof}
+
+\begin{remark}[Exact answer]
+For the regularization regime actually supported by the source proof,
+$\gamma>0$, Remark~7.6 has an affirmative answer without uniqueness or
+convexity.  For the additional value $\gamma=0$ allowed by the printed theorem,
+the answer is negative.  This dichotomy is sharp.
+\end{remark}
+
+\section*{Verification, Scope, and Novelty}
+
+The positive proof was checked line by line against page~15 of the source.
+It uses only the weak subsequence and discrepancy convergence established
+there, minimality with one fixed competitor, and the Hilbert-space
+weak-plus-norm criterion.  The counterexample uses the source's own LDDMM
+state space and the standard squared discrepancy; it is not an abstract
+pathology.
+
+There are two statement-level points for human review.  First, the source
+prints $\gamma\geq0$ but divides by $\gamma$ in its first stability estimate.
+Second, its theorem states continuity with the limiting datum fixed, while its
+proof uses continuity along $(\Amap(\nu_k),g_k)$.  Theorem~\ref{thm:positive}
+assumes exactly the latter convergence, as the source proof does; joint
+continuity of $\Ddisc$ is a standard sufficient condition.
+
+A bounded novelty check on August 11, 2026 searched the run indexes, exact
+title and exact-question phrases, and the 32 citing works indexed by OpenAlex.
+No later paper was found that states this positive/zero dichotomy or closes
+Remark~7.6.  A targeted inspection of the related arXiv:1810.08596 found a
+weak stability proposition, not the norm-convergence upgrade.  Novelty
+confidence is moderate pending specialist review.
+
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{ChenOktem}
+C.~Chen and O.~\"Oktem,
+\emph{Indirect Image Registration with Large Diffeomorphic Deformations},
+SIAM J. Imaging Sci. 11 (2018), no.~1, 575--617;
+arXiv:1706.04048v2,
+DOI: \href{https://doi.org/10.1137/17M1134627}{10.1137/17M1134627}.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,196 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,margin=0.88in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\AM}{\operatorname{AM}_{ZA}}
+\newcommand{\ass}{\operatorname{ass}}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.52em}
+
+\title{Exact SmallGroups Frontiers for Three Questions\\
+on Central Fourier Amenability Constants}
+\author{Run \texttt{fa\_banach\_001} --- lane 16}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{
+\textbf{Status: candidate computational partial result, likely valid.}
+An exact exhaustive GAP computation proves affirmative answers to
+Questions~6.2--6.4 of arXiv:2210.16262 for every finite group of order at
+most $383$.  This is a finite theorem, not a structural solution of any of
+the three unrestricted questions.  It depends on the correctness of GAP's
+character-table and SmallGroups data and should receive independent human
+reproduction.
+}}
+\end{center}
+
+\section{Source questions}
+
+John Sawatzky, \emph{Amenability constants of central Fourier algebras of
+finite groups}, arXiv:2210.16262v1 (2022), asks on PDF page~16
+\cite{Sawatzky}:
+\begin{itemize}
+\item[6.2.] Does $\AM(G/N)\leq \AM(G)$ when $N$ is a normal Hall subgroup?
+\item[6.3.] If $\AM(G)=7/4$, is it necessary that $G$ be nilpotent?
+\item[6.4.] Is $\AM(G')\leq \AM(G)$, where $G'$ is the derived subgroup?
+\end{itemize}
+The source notes that all groups of order below $192$ respect every quotient,
+then exhibits a non-Hall quotient counterexample at order $192$.
+
+\begin{center}
+\includegraphics[width=0.94\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section{Result}
+
+\begin{theorem}[Exact finite frontier]
+\label{th:frontier}
+For every finite group $G$ with $|G|\leq383$:
+\begin{enumerate}
+\item if $N\triangleleft G$ is a Hall subgroup, then
+      $\AM(G/N)\leq\AM(G)$;
+\item if $\AM(G)=7/4$, then $G$ is nilpotent;
+\item $\AM(G')\leq\AM(G)$.
+\end{enumerate}
+\end{theorem}
+
+All comparisons in this theorem were performed with exact algebraic values,
+not floating-point approximations.
+
+\section{Proof intuition}
+
+The source expresses $\AM(G)$ directly in terms of the irreducible character
+table and conjugacy-class sizes.  This makes the three bounded problems finite
+and exact: enumerate every SmallGroups identifier, construct only the subgroup
+or quotient in question, and compare the resulting cyclotomic expressions.
+
+Two safe filters greatly reduce the expensive cases.  An abelian subgroup or
+quotient has amenability constant $1$, so it cannot violate either monotonicity
+inequality.  For the $7/4$ question, the diagonal part of the character sum is
+the exact lower bound $\ass(G)\leq\AM(G)$; only groups with
+$\ass(G)\leq7/4$ need the full calculation.
+
+\section{Exact formula and exhaustive algorithm}
+
+Write $\operatorname{Irr}(G)$ for the irreducible characters, $d_\chi=\chi(1)$,
+and $\operatorname{Conj}(G)$ for the conjugacy classes.  The formula used is
+\begin{equation}
+\label{eq:amza}
+ \AM(G)=\frac1{|G|^2}
+ \sum_{\chi,\psi\in\operatorname{Irr}(G)}d_\chi d_\psi
+ \left|\sum_{C\in\operatorname{Conj}(G)}
+ |C|^2\chi(C)\overline{\psi(C)}\right|.
+\end{equation}
+The diagonal minorant is
+\begin{equation}
+\label{eq:ass}
+ \ass(G)=\frac1{|G|^2}\sum_{\chi}d_\chi^2
+ \sum_C |C|^2|\chi(C)|^2\leq\AM(G).
+\end{equation}
+
+The supplied GAP program implements \eqref{eq:amza} with exact character
+values.  Each absolute value is evaluated as
+\texttt{Sqrt(s*ComplexConjugate(s))}; no decimal conversion occurs before a
+comparison.  It then performs these exhaustive scans.
+
+\begin{enumerate}
+\item For Question~6.2, every proper nontrivial prime subset is considered.
+For solvable $G$, Hall's conjugacy theorem \cite{Hall} shows that one Hall
+subgroup for that subset suffices: if a normal Hall subgroup exists, every
+conjugate is the same subgroup.  For nonsolvable $G$, the code enumerates all
+normal subgroups and tests the Hall condition.  Abelian quotients are omitted.
+\item For Question~6.3, every nonnilpotent $G$ is tested first against
+\eqref{eq:ass}; the exact full value is computed for every survivor.
+\item For Question~6.4, $G'$ is constructed for every $G$; only cases with
+nonabelian $G'$ require a full comparison.
+\end{enumerate}
+
+The SmallGroups library is complete for every order in the tested interval.
+Thus every finite group of order at most $383$ occurs, up to isomorphism, and
+the preceding loops prove Theorem~\ref{th:frontier}, subject only to the stated
+software/data trust boundary.
+
+\section{Counts and validation}
+
+The computation used GAP 4.15.1 and SmallGrp 1.5.4 \cite{GAP,SmallGrp}.
+
+\begin{center}
+\begin{tabular}{@{}lrrl@{}}
+\toprule
+scan & cases before filter & exact full comparisons & violations \\
+\midrule
+normal Hall quotients & 7,747 relevant quotients & 7,747 & 0 \\
+$\AM(G)=7/4$, nonnilpotent $G$ & 6,892 groups & 186 & 0 \\
+derived subgroup & all groups $|G|\leq383$ & 976 & 0 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Here ``relevant'' means that the quotient or derived subgroup is nonabelian.
+The largest single family was order $256$: all 56,092 groups were enumerated,
+and 410 required the derived-subgroup comparison.
+
+As an implementation gate, the program reproduced six known/source values:
+\[
+\begin{array}{c|cccccc}
+(|G|,\mathrm{id})&(6,1)&(8,3)&(24,12)&(32,43)&(96,204)&(192,1022)\\
+\hline
+\AM(G)&7/3&7/4&511/72&83/32&497/32&1727/128.
+\end{array}
+\]
+In particular, the last two are exactly $15.53125$ and $13.4921875$, matching
+the quotient counterexample in the source.
+
+The full program is \texttt{code/2210\_16262\_amza\_scan.g}; the chunked
+commands and terminal summaries are in
+\texttt{code/verification\_output.txt}.
+
+\section{Limitations and upgrade attempts}
+
+This packet does not claim any unrestricted question is solved.  Four focused
+attempts were made: exact formula validation, the Hall scan, the derived scan,
+and a separate $7/4$ scan using the source minorant.  Clifford-theoretic
+reorganization for a normal Hall semidirect product did not yield termwise
+domination in \eqref{eq:amza}; restriction to $G'$ similarly introduces both
+character multiplicities and conjugacy-class splitting.  Equality in the
+off-diagonal sum also lacks a structural characterization.  These are the
+current barriers to promoting the finite result to a proof for all groups.
+
+Bounded searches of the run indexes, the source arXiv id and title, and exact
+phrases from Questions~6.2--6.4 found the source paper but no later claimed
+answer.  This is not a comprehensive literature review.  Novelty confidence
+is moderate, and the recommended next step is independent reproduction plus
+expert review of the completeness/filter arguments.
+
+\begin{thebibliography}{9}
+\bibitem{Sawatzky}
+J. Sawatzky, \emph{Amenability constants of central Fourier algebras of finite
+groups}, arXiv:2210.16262v1, 2022.
+
+\bibitem{Hall}
+P. Hall, \emph{A note on soluble groups}, J. London Math. Soc. 3 (1928),
+98--105.
+
+\bibitem{GAP}
+The GAP Group, \emph{GAP -- Groups, Algorithms, and Programming},
+Version 4.15.1.
+
+\bibitem{SmallGrp}
+H. U. Besche, B. Eick, and E. A. O'Brien, \emph{The SmallGroups Library},
+GAP package SmallGrp, Version 1.5.4.
+\end{thebibliography}
+
+\end{document}
+

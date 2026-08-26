@@ -1,0 +1,308 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{remark}{Remark}
+\newcommand{\F}{\mathbb F}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+
+\title{Polynomial Basis Constants from the John Ellipsoid}
+\author{Candidate answer to the exponential-improvement problem in
+arXiv:2303.03210}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\linewidth}{\textbf{Status.} Candidate full answer to the
+source's exponential-improvement question, likely valid, subject to human
+review.  The result gives a complete polynomial upper bound, uniformly over
+the source's angle parameter, and an exact ellipsoidal subcase.  It does not
+determine the exact worst-case constants in dimensions above two.}}
+\end{center}
+
+\section{Source problem}
+
+The target is Section 6 (PDF pp.~17--18) of Gerdjikov--Nikolov,
+\emph{Some inequalities for norms in $\R^n$ and $\C^n$},
+arXiv:2303.03210 \cite{source}.  Their greedy minimal and maximal bases give
+the sharp-for-that-strategy constant $2^n-1$.  They ask how this exponential
+constant can be improved, define the optimal orthonormal-basis constant
+$c_n^\perp$, the unrestricted unit-basis constant $c_n^\angle$, and the
+interpolating constants $c_n^\rho$ under
+$|\langle b_i,b_j\rangle|\le\rho$.
+
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=0.96\textwidth]{figures/open_problem_page17.png}
+  \caption{The open problems in the source paper, PDF p.~17.}
+\end{figure}
+
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=0.96\textwidth]{figures/open_problem_page18.png}
+  \caption{The unified definition of $c_n^\rho$, continued on PDF p.~18.}
+\end{figure}
+\clearpage
+
+We answer the growth question by replacing $2^n-1$ with $n$.  The basis is
+explicit once a classical finite-dimensional convex optimization---the John
+ellipsoid---has been performed.
+
+\section{Definitions}
+
+Let $V=\F^n$, where $\F=\R$ or $\C$, with its fixed Euclidean or Hermitian
+inner product.  For a norm $f$ and $0\le\rho\le1$, let $C_\rho(f)$ be the
+infimum of all $C$ for which there is a Euclidean-unit basis
+$(b_1,\ldots,b_n)$ satisfying
+\[
+ |\langle b_i,b_j\rangle|\le\rho\quad(i\ne j)
+\]
+and
+\[
+ \sum_{i=1}^n |a_i|f(b_i)
+ \le C f\!\left(\sum_{i=1}^n a_i b_i\right)
+ \quad(a_1,\ldots,a_n\in\F).
+\]
+Then the source's constant is
+$c_n^\rho(\F^n)=\sup_f C_\rho(f)$,
+$c_n^0=c_n^\perp$, and $c_n^1=c_n^\angle$.
+
+The unit ball of $f$ is denoted by $K$.  An ellipsoid $E$ has a quadratic
+gauge
+\[
+ q(x)=\inf\{t>0:x\in tE\}=\|Tx\|_2
+\]
+for a positive definite self-adjoint operator $T$.
+
+\subsection*{Proof intuition}
+
+The exponential loss in the source comes from recursively projecting away
+one direction and paying a factor close to two at each step.  Instead, put
+the entire norm ball into its best ellipsoidal position at once.  John's
+theorem supplies
+\(E\subset K\subset\sqrt n E\).  Diagonalizing $E$ uses an orthonormal
+basis in the original inner product.  Along that basis the numerator is a
+weighted $\ell_1$ norm and the ellipsoid is the corresponding weighted
+$\ell_2$ norm.  Cauchy--Schwarz costs $\sqrt n$, and the John sandwich costs
+another $\sqrt n$, producing $n$ rather than $2^n-1$.  The Euclidean norm
+forces at least $\sqrt n$ by averaging over signs.  When the original norm is
+already ellipsoidal, the sandwich has no distortion and the exact constant is
+$\sqrt n$.
+
+\section{The John sandwich over both scalar fields}
+
+\begin{lemma}[Real and complex symmetric John sandwich]\label{lem:john}
+Let $K$ be the unit ball of a norm on $\F^n$.  There is an ellipsoid $E$,
+defined by a positive definite self-adjoint $\F$-linear operator, such that
+\[
+ E\subset K\subset\sqrt n\,E.
+\]
+For $\F=\C$, the ellipsoid can be taken Hermitian relative to the fixed
+complex structure.
+\end{lemma}
+
+\begin{proof}
+For $\F=\R$, this is the centrally symmetric form of John's theorem
+\cite{john}.  We recall the contact-point argument because it also resolves
+the scalar-field issue.  After a linear change of coordinates puts the John
+ellipsoid in the form $E=B_2^n$, there are contact points
+$u_j\in\partial K\cap S^{n-1}$ and weights $d_j>0$ with
+\[
+ I=\sum_j d_j u_j\otimes u_j,
+ \qquad \sum_jd_j=\operatorname{tr}I=n.
+\]
+At a contact point, the supporting functional of $K$ is the Euclidean
+functional represented by $u_j$; central symmetry gives
+$|\langle x,u_j\rangle|\le1$ for $x\in K$.  Hence
+\[
+ \|x\|_2^2=\sum_jd_j|\langle x,u_j\rangle|^2
+ \le\sum_jd_j=n,
+\]
+which is $K\subset\sqrt n B_2^n$.
+
+Now let $\F=\C$ and regard $K$ as a centrally symmetric body in
+$\R^{2n}$.  Its real John ellipsoid is unique.  Since $K$ is invariant under
+every scalar phase $R_t:x\mapsto e^{it}x$, uniqueness gives $R_tE=E$.
+Thus the positive operator defining $E$ commutes with the complex structure,
+so $E$ is Hermitian.  Normalize again to $E=B_2^n$ and use the real John
+decomposition
+\[
+ I_{\R^{2n}}=\sum_jd_j u_j\otimes_{\R}u_j,
+ \qquad \sum_jd_j=2n.
+\]
+Every $R_tu_j$ is again a contact point.  The supporting-functional argument
+and phase invariance of $K$ imply
+\[
+ |\langle x,u_j\rangle_{\C}|\le1\qquad(x\in K).
+\]
+Average the real quadratic decomposition over $t\in[0,2\pi]$.  For every
+$x\in\C^n$,
+\[
+ \|x\|_2^2
+ =\frac12\sum_jd_j|\langle x,u_j\rangle_{\C}|^2
+ \le\frac12\sum_jd_j=n.
+\]
+Thus $K\subset\sqrt nB_2^n$ also in the complex case.  Undoing the
+complex-linear normalization proves the claim.
+\end{proof}
+
+\section{Polynomial upper bounds and matching lower bound}
+
+\begin{theorem}[Uniform polynomial bound]\label{thm:main}
+For $\F\in\{\R,\C\}$, $n\ge1$, and every $0\le\rho\le1$,
+\[
+ \boxed{\qquad \sqrt n\ \le\ c_n^\rho(\F^n)\ \le\ n.\qquad}
+\]
+More explicitly, for every norm $f$ there is an orthonormal basis
+$(b_1,\ldots,b_n)$ such that
+\[
+ \sum_{i=1}^n|a_i|f(b_i)
+ \le n f\!\left(\sum_{i=1}^n a_i b_i\right)
+ \quad(a_i\in\F).
+\]
+One may take an eigenbasis of the positive operator defining the John
+ellipsoid of the $f$-unit ball.
+\end{theorem}
+
+\begin{proof}
+Take $E$ from Lemma~\ref{lem:john} and write its gauge as
+$q(x)=\|Tx\|_2$.  The inclusions are equivalent to
+\[
+ \frac1{\sqrt n}q(x)\le f(x)\le q(x)\qquad(x\in V).
+\]
+Choose an orthonormal eigenbasis $b_i$ of $T$, say $Tb_i=\lambda_i b_i$
+with $\lambda_i>0$.  Then $f(b_i)\le\lambda_i$.  If
+$x=\sum_i a_i b_i$, Cauchy--Schwarz gives
+\begin{align*}
+ \sum_i|a_i|f(b_i)
+ &\le\sum_i|a_i|\lambda_i\\
+ &\le\sqrt n\left(\sum_i|a_i|^2\lambda_i^2\right)^{1/2}
+ =\sqrt n\,q(x)
+ \le n f(x).
+\end{align*}
+The basis is orthonormal, hence it is admissible for every $\rho\ge0$.
+
+For the lower bound, use the Euclidean norm $f=\|\cdot\|_2$.  Let
+$(b_i)$ be any admissible unit-vector basis.  For independent Rademacher
+signs $\varepsilon_i$,
+\[
+ \mathbb E\left\|\sum_i\varepsilon_i b_i\right\|_2^2
+ =\sum_i\|b_i\|_2^2=n.
+\]
+Therefore some sign choice has norm at most $\sqrt n$, whereas
+$\sum_i|\varepsilon_i|f(b_i)=n$.  The constant for that basis is at least
+$\sqrt n$.  This holds for every admissible basis and every $\rho$.
+\end{proof}
+
+In particular,
+\[
+ \sqrt n\le c_n^\perp(\F^n)\le n,
+ \qquad
+ \sqrt n\le c_n^\angle(\F^n)\le n.
+\]
+For the orthonormal problem this replaces the source's exponential
+$2^n-1$ by $n$.  The cited planar identity
+$c_2^\perp(\R^2)=2$ shows that the new upper bound is exact when $n=2$.
+
+\section{Exact solution for ellipsoidal norms}
+
+\begin{proposition}\label{prop:ellipsoid}
+If $f(x)=\|Ax\|_2$ for a positive definite self-adjoint operator $A$, then
+\[
+ C_\rho(f)=\sqrt n\qquad(0\le\rho\le1)
+\]
+over both scalar fields.
+\end{proposition}
+
+\begin{proof}
+Let $(b_i)$ be a Euclidean orthonormal eigenbasis,
+$Ab_i=\lambda_i b_i$.  It is admissible for every $\rho$, and
+\[
+ \sup_{a\ne0}
+ \frac{\sum_i|a_i|f(b_i)}{f(\sum_i a_i b_i)}
+ =\sup_{a\ne0}
+ \frac{\sum_i|a_i|\lambda_i}
+ {(\sum_i|a_i|^2\lambda_i^2)^{1/2}}
+ =\sqrt n.
+\]
+Equality is attained by $|a_i|=1/\lambda_i$.
+
+Conversely, take any unit-vector basis $(v_i)$ and put
+$x_i=v_i/f(v_i)$, so $f(x_i)=1$.  Independent signs satisfy
+\[
+ \mathbb E f\!\left(\sum_i\varepsilon_i x_i\right)^2
+ =\mathbb E\left\|\sum_i\varepsilon_i Ax_i\right\|_2^2
+ =\sum_i\|Ax_i\|_2^2=n.
+\]
+This rescaling leaves the coefficient ratio unchanged: choose
+$a_i=\varepsilon_i/f(v_i)$ in the original basis.
+For some sign choice the denominator is at most $\sqrt n$, while the
+weighted coefficient numerator is $n$.  Thus no basis has constant below
+$\sqrt n$.
+\end{proof}
+
+\section{Verification, novelty, and limitations}
+
+The script \texttt{code/check\_bounds.py} checks the exact ellipsoidal
+witness, exhausts all signs for random real and complex bases through
+dimension eight, and reports $28{,}032$ deterministic or seeded-random sign,
+ellipsoid, and coefficient checks, including synthetic norms satisfying the
+John sandwich.  Run from the
+packet directory with
+\begin{center}
+\texttt{conda run --no-capture-output -n sandbox python code/check\_bounds.py}.
+\end{center}
+These computations are sanity checks only; the proof is the preceding
+ellipsoid argument.
+
+\paragraph{Novelty search.}
+On 17 August 2026, bounded searches covered the run's registry, solution,
+attempt, and proof-gap indexes; the exact title and arXiv id; the symbols and
+phrases for $c_n^\perp$, $c_n^\angle$, and $c_n^\rho$; and arXiv searches
+combining John ellipsoids, orthonormal bases, weighted coefficient
+inequalities, and crosspolytope containment.  No later paper explicitly
+answering the source problem was located.  The result is an elementary
+corollary of classical John theory, so novelty confidence is moderate rather
+than high.
+
+\paragraph{Limitations.}
+The theorem fully answers the source's request to improve the exponential
+constant by giving a uniform linear bound and a concrete basis-selection
+principle.  It does not determine the exact values of $c_n^\rho$ in general
+for $n>2$, nor does it prove that the upper bound $n$ is asymptotically sharp.
+John ellipsoid computation is a standard convex optimization, but the packet
+does not analyze its numerical complexity or give a closed formula for an
+arbitrary input norm.
+
+\paragraph{Human-review recommendation.}
+Verify the complex part of Lemma~\ref{lem:john}, especially phase averaging
+of the real contact decomposition, and the gauge direction in
+$E\subset K\subset\sqrt nE$.  Then assess whether the durable result should
+be described as a full answer to the exponential-growth question or as a
+substantial partial answer to the broader exact-constant problem.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+S. Gerdjikov and N. Nikolov,
+\emph{Some inequalities for norms in $\R^n$ and $\C^n$},
+arXiv:2303.03210v1 (2023), Section 6.
+
+\bibitem{john}
+F. John,
+\emph{Extremum problems with inequalities as subsidiary conditions},
+in \emph{Studies and Essays Presented to R. Courant on His 60th Birthday},
+Interscience, 1948, pp.~187--204.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,219 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\e}{\mathfrak e}
+
+\title{Sharp Extremal Gap Counts at Fixed Essential Period\\
+\large A partial answer to Section 5.1 of arXiv:2112.15055}
+\author{Autonomous proof packet for \texttt{fa\_banach\_001}}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+Candidate partial result, likely valid, pending human review.  This packet
+proves a sharp extremal theorem for the source's gap-versus-period question;
+it does not classify every intermediate gap pattern.
+
+\section{Source question}
+
+Kumar and Kumar ask for a relationship between the number of spectral gaps
+and the essential period of a self-adjoint periodic Jacobi operator and write
+that the number of gaps may be expected to be ``on the order of'' the period
+\cite[Section 5.1, PDF p.~21]{KK}.
+
+\begin{center}
+\includegraphics[width=0.98\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+For a two-sided self-adjoint Jacobi operator
+\[
+ (Ju)_n=a_{n-1}u_{n-1}+b_nu_n+a_nu_{n+1},
+ \qquad a_n>0,\quad b_n\in\R,
+\]
+the \emph{essential period} is the least positive period of both coefficient
+sequences.  An open spectral gap is a bounded component of the complement of
+the spectrum between two adjacent spectral bands.
+
+\section{Idea of the proof}
+
+The period is encoded not by the number of bands, but by their equilibrium
+(harmonic) masses.  A two-band set can have one band of mass exactly $1/p$.
+Finite-gap inverse spectral theory then produces a periodic Jacobi matrix with
+that set as spectrum, and the reduced denominator $p$ of the harmonic mass
+forces its least period to be exactly $p$.  Thus one open gap survives at
+arbitrarily large periods.  B\"org's theorem rules out zero gaps when the
+least period exceeds one, so one is the sharp minimum.  Standard Floquet
+theory gives at most $p-1$ gaps and the source exhibits an example attaining
+that bound, giving the sharp maximum.
+
+\section{Finite-gap input}
+
+Let
+\[
+ \e=[\alpha_1,\beta_1]\cup\cdots\cup
+ [\alpha_{\ell+1},\beta_{\ell+1}]
+\]
+be a finite-gap compact set, and let $\rho_{\e}$ be its logarithmic
+equilibrium measure.  The quantities
+$\rho_{\e}([\alpha_j,\beta_j])$ are its band harmonic measures.
+
+We use the following standard consequence of the isospectral-torus
+construction of Christiansen, Simon, and Zinchenko \cite[Corollaries 4.5 and
+6.4]{CSZ}.
+
+\begin{lemma}[finite-gap period criterion]\label{lem:fg}
+For every finite-gap set $\e$ there are two-sided self-adjoint Jacobi matrices
+in its isospectral torus with spectrum $\e$.  The coefficient sequences of
+every member of the torus are periodic with period $q$ if and only if all band
+harmonic measures belong to $q^{-1}\mathbb Z$.  Consequently their least
+period is the least common denominator of those masses.
+\end{lemma}
+
+The last sentence follows directly from the ``if and only if'' assertion:
+period $q$ is possible precisely when multiplication by $q$ makes every mass
+integral.
+
+\section{One gap at every least period}
+
+\begin{lemma}\label{lem:mass}
+For every integer $p\geq2$, there is a union $\e_p$ of two disjoint compact
+intervals whose band equilibrium masses are $1/p$ and $(p-1)/p$.
+\end{lemma}
+
+\begin{proof}
+For $p=2$, take any symmetric two-band set
+\[
+ [-1,-a]\cup[a,1],\qquad 0<a<1.
+\]
+Reflection symmetry and uniqueness of the equilibrium measure give mass
+$1/2$ to each band.
+
+Now let $p>2$ and, for $0<s<1$, put
+\[
+ E_s=[-1,0]\cup[s,1],\qquad
+ h(s)=\rho_{E_s}([s,1]).
+\]
+The equilibrium measures vary weakly continuously when these interval
+endpoints vary.  One quick justification is the standard energy-minimization
+argument: along a monotone sequence of endpoints, logarithmic capacity is
+continuous and every weak limit of the equilibrium measures has the minimal
+energy of the limiting compact set; uniqueness identifies that limit.  An
+arbitrary convergent sequence has monotone subsequences, giving full
+continuity.  Since the two bands remain separated near an interior parameter,
+their masses are continuous as well.
+
+As $s\downarrow0$, the compact sets tend to $[-1,1]$ and
+\[
+ h(s)\longrightarrow \rho_{[-1,1]}([0,1])=\frac12
+\]
+by reflection symmetry.  As $s\uparrow1$, the right interval collapses to the
+polar singleton $\{1\}$; the limiting equilibrium measure is that of
+$[-1,0]$ and gives this singleton mass zero.  Hence $h(s)\to0$.  The
+intermediate value theorem supplies $s_p\in(0,1)$ with $h(s_p)=1/p$.
+Taking $\e_p=E_{s_p}$ proves the claim.
+\end{proof}
+
+\begin{theorem}[one-gap realization]\label{thm:onegap}
+For every integer $p\geq2$, there is a self-adjoint Jacobi operator of least
+period exactly $p$ whose spectrum has exactly one open gap.
+\end{theorem}
+
+\begin{proof}
+Apply Lemma~\ref{lem:fg} to the two-band set $\e_p$ from
+Lemma~\ref{lem:mass}.  Its band masses lie in $p^{-1}\mathbb Z$, so the
+isospectral torus gives a $p$-periodic Jacobi matrix $J_p$ with
+$\sigma(J_p)=\e_p$.
+
+Its least period cannot be a positive integer $q<p$.  Indeed, period $q$
+would force $1/p=k/q$ for an integer $k$, by Lemma~\ref{lem:fg}; equivalently
+$q=kp$, impossible for $0<q<p$.  Thus the least period is $p$.  Since
+$\e_p$ consists of exactly two disjoint bands, it has exactly one open gap.
+\end{proof}
+
+\section{Sharp extremal theorem}
+
+For $p\geq2$, let $g_{\min}(p)$ and $g_{\max}(p)$ denote respectively the
+minimum and maximum number of open gaps among self-adjoint Jacobi operators
+of least period $p$.
+
+\begin{theorem}\label{thm:extremal}
+For every integer $p\geq2$,
+\[
+ \boxed{\quad g_{\min}(p)=1,\qquad g_{\max}(p)=p-1.\quad}
+\]
+\end{theorem}
+
+\begin{proof}
+B\"org's theorem for periodic Jacobi matrices says that all gaps are closed
+only when the coefficient sequences are constant \cite{KK}.  A matrix of
+least period $p>1$ therefore has at least one open gap.  Theorem
+\ref{thm:onegap} attains one, proving $g_{\min}(p)=1$.
+
+Floquet theory represents the spectrum of a $p$-periodic Jacobi matrix as at
+most $p$ compact bands, so there are at most $p-1$ open gaps.  The explicit
+matrix-valued symbol $f_0(\theta)$ in Section 5.1 of the source has least
+period $p$ and exactly $p-1$ gaps \cite[p.~21]{KK}.  Hence the upper bound is
+attained and $g_{\max}(p)=p-1$.
+\end{proof}
+
+\begin{corollary}
+No estimate of the form
+\[
+ \#\{\text{open gaps of }J\}\geq F(p)
+\]
+can hold for all self-adjoint Jacobi matrices of least period $p$ if
+$F(p)>1$ for any $p\geq2$.  In particular, no positive linear lower bound in
+$p$ is possible.
+\end{corollary}
+
+\section{Verification, scope, and novelty}
+
+The proof is analytic and uses no numerical computation.  The decisive checks
+for a reviewer are (i) weak continuity and the endpoint limits of $h(s)$ in
+Lemma~\ref{lem:mass}, and (ii) the exact-period inference from Corollaries 4.5
+and 6.4 of \cite{CSZ}.  The source PDF and the decisive supporting PDF are
+included locally.
+
+The result determines the sharp minimum and maximum number of gaps at each
+least period.  It does not classify all intermediate counts or band
+geometries, and it does not address the source's separate non-normal
+pseudospectral inequalities.
+
+A bounded run-index and arXiv/web search on 17 August 2026 used the exact and
+near-exact phrases ``one gap $p$-periodic Jacobi'', ``exactly one gap periodic
+Jacobi'', ``minimal period one gap Jacobi matrix'', and ``arbitrary period
+finite gap Jacobi''.  No exact statement of Theorem~\ref{thm:extremal} was
+found.  The argument is an agent-identified synthesis of established
+finite-gap theory, so novelty confidence is moderate.
+
+\section*{Human-review recommendation}
+
+Review is recommended.  If the equilibrium-measure continuity lemma and the
+least-denominator reading of the finite-gap period criterion are confirmed,
+the packet is a complete sharp extremal answer to the quantitative
+gap-versus-period interpretation of the source question.
+
+\begin{thebibliography}{9}
+\bibitem{KK}
+Krishna Kumar G. and V. B. Kiran Kumar,
+\emph{Stability in Non-Normal Periodic Jacobi Operators: Advancing B\"org's
+Theorem}, arXiv:2112.15055, revised 2024.
+
+\bibitem{CSZ}
+Jacob S. Christiansen, Barry Simon, and Maxim Zinchenko,
+\emph{Finite Gap Jacobi Matrices, I. The Isospectral Torus},
+arXiv:0810.3273, 2008.
+\end{thebibliography}
+
+\end{document}

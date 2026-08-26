@@ -1,0 +1,373 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\newcommand{\1}{\mathbf 1}
+\newcommand{\esssup}{\operatorname*{ess\,sup}}
+\newcommand{\essinf}{\operatorname*{ess\,inf}}
+\newcommand{\supp}{\operatorname{supp}}
+
+\title{Every amenable action admits a one-approximating sequence\\
+\large Candidate full solution to the conjecture after Definition 1.3 of arXiv:1611.08486}
+\author{Autonomous proof packet --- agent\_lane\_09}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{
+\textbf{Status.} Candidate full solution, likely valid, pending expert review.
+The proof covers locally compact Hausdorff groups in the net convention used by
+the source paper.  No unimodularity assumption is made.
+}}
+\end{center}
+
+\section{Source question}
+
+The source is A. M. Gonz\'alez-P\'erez, \emph{Crossed-Product Extensions of
+$L_p$-Bounds for Amenable Actions}, arXiv:1611.08486, published in
+\emph{J. Functional Analysis} 274 (2018), 2846--2883
+\cite{GonzalezPerez}.  On page 9, after Definition 1.3, it asks whether every
+amenable action has a $C$-approximating sequence with $C=1$.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{Definition 1.3 and the conjecture on source-paper page 9.}
+\end{figure}
+
+Write the centre of the semifinite von Neumann algebra as
+$\mathcal Z(\mathcal M)=L_\infty(X)$.  For a measurable
+$F\subset X\times G$, put
+\[
+  F_x=\{h\in G:(x,h)\in F\}.
+\]
+The case $C=1$ means that $\mu(F_x)$ is independent of $x$ (up to null sets),
+and the normalized indicators
+\[
+  z_F(x,h)=\mu(F_x)^{-1/2}\1_{F_x}(h)
+\]
+must be asymptotically equivariant.  When all fibres have measure $L$, the
+squared fibrewise $L_2$ defect is exactly
+\begin{equation}\label{eq:defect-identity}
+ \int_G\left|z_F(g^{-1}x,g^{-1}h)-z_F(x,h)\right|^2\,d\mu(h)
+ =\frac{\mu\bigl(gF_{g^{-1}x}\triangle F_x\bigr)}{L}.
+\end{equation}
+
+\section{Proof intuition}
+
+Amenability supplies positive compactly supported fibre functions $u_x$ of
+$L_2$ norm one.  Their squares $p_x=u_x^2$ are probability densities with
+small $L_1$ equivariance defect.  The subgraph of $p_x$ would be an
+equal-volume set, but it lives in $G\times\mathbb R_+$ rather than in $G$.
+We replace the vertical coordinate by finitely many \emph{right-translation
+slots}: quantized level sets of $p_x$ are placed in mutually disjoint sets
+$A_j(x)r_j\subset G$.  Left translation commutes with these right slots, so
+the layer-cake estimate controls their symmetric-difference defect.
+
+The finite layer sum misses its target volume by a bounded amount depending on
+$x$.  One extra slot supplies exactly that missing measure.  This correction
+can behave arbitrarily under the action: its measure is uniformly bounded,
+whereas the total fibre measure tends to infinity, so its relative defect
+tends to zero.
+
+Right translation need not preserve left Haar measure.  This is overcome by
+placing every slot in $H=\ker\Delta_G$.  If $G$ is nonamenable, then $H$ is
+noncompact: otherwise $H$ would be amenable and the abelian quotient $G/H$
+would make $G$ an amenable extension.  Thus $H$ supplies arbitrarily many
+disjoint Haar-preserving slots.  If $G$ itself is amenable, ordinary F\o lner
+sets already solve the problem for every action.
+
+\section{Statement}
+
+We use the source paper's characterization of amenability: there is a net of
+positive $u_\alpha\in C_c(G;\mathcal Z(\mathcal M))$ such that
+\begin{align}
+ \int_G u_\alpha(x,h)^2\,d\mu(h)&=1,\label{eq:norm-one}\\
+ \esssup_x\int_G
+ \left|u_\alpha(g^{-1}x,g^{-1}h)-u_\alpha(x,h)\right|^2d\mu(h)&\longrightarrow0
+ \quad(g\in G).\label{eq:l2-amen}
+\end{align}
+As in the source, ``sequence'' permits a net; under the usual countability
+hypotheses one may diagonalize to a literal sequence.
+
+\begin{theorem}\label{thm:main}
+Let $G$ be a locally compact Hausdorff group with left Haar measure $\mu$, and
+let $\theta:G\to\operatorname{Aut}(\mathcal M)$ be an amenable action in the
+sense of \eqref{eq:norm-one}--\eqref{eq:l2-amen}.  Then there is a net of
+measurable sets $F_\beta\subset X\times G$ such that, for every $\beta$,
+\[
+  1\leq \esssup_x\mu((F_\beta)_x)
+   =\essinf_x\mu((F_\beta)_x)<\infty,
+\]
+and the normalized indicators satisfy \eqref{eq:l2-amen}.  Hence every
+amenable action admits a $1$-approximating sequence in the sense of Definition
+1.3 of \cite{GonzalezPerez}.
+\end{theorem}
+
+\section{Two elementary lemmas}
+
+Let $\Delta_G:G\to(0,\infty)$ be the modular homomorphism and put
+$H=\ker\Delta_G$.  Right translation by any element of $H$ preserves $\mu$.
+
+\begin{lemma}[Haar-preserving slots]\label{lem:slots}
+If $H$ is noncompact, then for every compact $D\subset G$ and every
+$n\in\mathbb N$ there are $r_0,\ldots,r_n\in H$ such that the sets
+$Dr_0,\ldots,Dr_n$ are pairwise disjoint.
+\end{lemma}
+
+\begin{proof}
+Suppose $r_0,\ldots,r_{k-1}$ have been selected.  The intersection
+\[
+ H\cap\bigcup_{i<k}D^{-1}Dr_i
+\]
+is compact.  Choose $r_k$ outside it, which is possible because $H$ is
+noncompact.  If $Dr_k$ met $Dr_i$, then
+$r_k\in D^{-1}Dr_i$, a contradiction.
+\end{proof}
+
+\begin{lemma}[Equal-volume layer encoding]\label{lem:encoding}
+Assume $H$ is noncompact.  Let $Q\subset G$ be finite and let
+$p:X\times G\to[0,\infty)$ be measurable, supported in a common compact set
+$S\subset G$, with
+\[
+ \int_Gp(x,h)\,d\mu(h)=1,\qquad 0\leq p(x,h)\leq M.
+\]
+For every sufficiently large $N$ there is a measurable
+$F\subset X\times G$ whose fibres all have one finite measure $L\geq1$ and,
+for every $g\in Q$,
+\begin{equation}\label{eq:encoding-bound}
+ \esssup_x\frac{\mu(gF_{g^{-1}x}\triangle F_x)}{L}
+ \leq \esssup_x\|g p_{g^{-1}x}-p_x\|_1+C_{S}\frac{M}{N},
+\end{equation}
+where $C_S<\infty$ is independent of $N$, $x$, and $g\in Q$.
+Here $(g p_{g^{-1}x})(h)=p(g^{-1}x,g^{-1}h)$.
+\end{lemma}
+
+\begin{proof}
+Set $\delta=M/N$ and
+\[
+ A_j(x)=\{h:p(x,h)\geq j\delta\},\qquad 1\leq j\leq N,
+ \qquad V(x)=\sum_{j=1}^N\mu(A_j(x)).
+\]
+The functions $x\mapsto\mu(A_j(x))$ are measurable.  Pointwise quantization
+gives
+\begin{equation}\label{eq:volume-deficit}
+ 0\leq 1-\delta V(x)<\delta\mu(S).
+\end{equation}
+
+First suppose $G$ is nondiscrete.  Haar measure is nonatomic.  Take
+$L=\delta^{-1}$ and $d(x)=L-V(x)$.  By \eqref{eq:volume-deficit},
+$0\leq d(x)<\mu(S)$.  In a fixed compact measurable set $R$ of measure at
+least $\mu(S)$, choose a nested measurable family $(R_t)_{0\leq t\leq\mu(S)}$
+with $\mu(R_t)=t$.  Such a family follows, for example, by recursive bisection
+of the nonatomic finite measure space.  Put $C_x=R_{d(x)}$.
+
+If $G$ is discrete, normalize Haar measure to counting measure.  Put
+$L=\lceil\delta^{-1}\rceil$.  Since $V(x)$ is integral,
+$d(x)=L-V(x)$ is an integer and \eqref{eq:volume-deficit} implies
+\[
+ 0\leq d(x)\leq |S|+1.
+\]
+Choose a fixed finite ordered set $R$ with at least $|S|+1$ points and let
+$C_x$ consist of its first $d(x)$ points.  This also makes $(x,h)\mapsto
+\1_{C_x}(h)$ measurable.
+
+Let $c_S=\mu(S)$ in the nondiscrete case and $c_S=|S|+1$ in the discrete
+case.  Choose a compact set $D$ containing
+\[
+ \bigcup_{g\in Q\cup\{e\}}g(S\cup R).
+\]
+By Lemma \ref{lem:slots}, choose $r_0,\ldots,r_N\in H$ for which the
+$Dr_j$ are disjoint, and define
+\begin{equation}\label{eq:F-construction}
+ F_x= C_xr_0\ \cup\ \bigcup_{j=1}^N A_j(x)r_j.
+\end{equation}
+All right translations in \eqref{eq:F-construction} preserve Haar measure,
+the pieces are disjoint, and therefore
+\[
+ \mu(F_x)=\mu(C_x)+V(x)=d(x)+V(x)=L
+\]
+for every $x$.
+
+Fix $g\in Q$.  The enlarged translated pieces occurring in
+$gF_{g^{-1}x}$ and $F_x$ still lie in the mutually disjoint $Dr_j$ slots.
+Consequently
+\begin{align}
+ \mu(gF_{g^{-1}x}\triangle F_x)
+ &=\sum_{j=1}^N\mu(gA_j(g^{-1}x)\triangle A_j(x))
+   +\mu(gC_{g^{-1}x}\triangle C_x).\label{eq:split}
+\end{align}
+For $a,b\in[0,M]$,
+\begin{equation}\label{eq:scalar-quantization}
+ \delta\sum_{j=1}^N
+ \left|\1_{\{a\geq j\delta\}}-\1_{\{b\geq j\delta\}}\right|
+ \leq |a-b|+\delta.
+\end{equation}
+Apply this at
+$a=p(g^{-1}x,g^{-1}h)$ and $b=p(x,h)$ and integrate.  Since the integrand
+vanishes off $gS\cup S$,
+\begin{equation}\label{eq:main-layers}
+ \delta\sum_{j=1}^N\mu(gA_j(g^{-1}x)\triangle A_j(x))
+ \leq\|g p_{g^{-1}x}-p_x\|_1+\delta\mu(gS\cup S).
+\end{equation}
+The correction term in \eqref{eq:split} is at most $2c_S$.  In both cases
+$L\geq\delta^{-1}$, hence $L^{-1}\leq\delta$.  Divide
+\eqref{eq:split} by $L$ and use \eqref{eq:main-layers} to obtain
+\[
+ \frac{\mu(gF_{g^{-1}x}\triangle F_x)}{L}
+ \leq\|g p_{g^{-1}x}-p_x\|_1
+   +\delta\bigl(\mu(gS\cup S)+2c_S\bigr).
+\]
+Left invariance gives $\mu(gS\cup S)\leq2\mu(S)$, proving
+\eqref{eq:encoding-bound} with
+$C_S=2\mu(S)+2c_S$.
+\end{proof}
+
+\section{Proof of the theorem}
+
+\begin{proof}[Proof of Theorem \ref{thm:main}]
+We divide into two cases.
+
+\smallskip
+\noindent\textbf{Case 1: $G$ is amenable.}
+The F\o lner--Reiter criterion gives, for every finite $Q\subset G$ and
+$\varepsilon>0$, a relatively compact measurable set $A$ of positive finite
+measure such that
+\[
+ \frac{\mu(gA\triangle A)}{\mu(A)}<\varepsilon\qquad(g\in Q).
+\]
+For completeness, this follows by choosing
+$f\in C_c(G)_+$ with $\int f=1$ and
+$\sum_{g\in Q}\|gf-f\|_1<\varepsilon$, applying layer cake to
+$A_t=\{f>t\}$, and selecting one level at which the ratio of the summed
+boundaries to $\mu(A_t)$ is small.  In a noncompact group, $A$ can be replaced
+by a right translate or a disjoint union of right translates so that its
+measure is at least one without changing these ratios.  Indeed, if
+$\ker\Delta_G$ is noncompact, use finitely many disjoint right translates from
+that kernel.  If $\ker\Delta_G$ is compact, then noncompactness of $G$ forces
+the right-Haar scaling factors to be unbounded, and one right translate
+suffices.  In a compact group take $A=G$ with the standard probability
+normalization of Haar measure.  Put $F_x=A$ for every $x$.  Then
+\eqref{eq:defect-identity} tends to zero, independently of the action, and all
+fibres have the same measure.
+
+\smallskip
+\noindent\textbf{Case 2: $G$ is nonamenable.}
+The quotient $G/H$ is abelian, hence amenable.  Amenability is
+stable under extensions \cite[Chapter 2]{Paterson}; thus $H$ cannot be
+amenable.  In particular $H$ is noncompact.
+
+Fix a finite $Q\subset G$ and $\varepsilon>0$.  By amenability of the action,
+choose one positive compactly supported approximant $u$ satisfying
+\eqref{eq:norm-one} and
+\begin{equation}\label{eq:u-small}
+ \esssup_x\|g u_{g^{-1}x}-u_x\|_2<\varepsilon/4
+ \qquad(g\in Q).
+\end{equation}
+Put $p_x=u_x^2$.  It has integral one, a common compact support $S$, and a
+finite uniform bound $M$.  Cauchy--Schwarz and \eqref{eq:norm-one} give
+\begin{align}
+ \|g p_{g^{-1}x}-p_x\|_1
+ &=\int_G |(g u_{g^{-1}x})^2-u_x^2|\,d\mu\notag\\
+ &\leq\|g u_{g^{-1}x}-u_x\|_2
+       \|g u_{g^{-1}x}+u_x\|_2
+ \leq2\|g u_{g^{-1}x}-u_x\|_2.\label{eq:square-bound}
+\end{align}
+Choose $N$ so large that the second term on the right of
+\eqref{eq:encoding-bound} is less than $\varepsilon/2$ and that the resulting
+common fibre measure is at least one.  Lemma \ref{lem:encoding},
+\eqref{eq:u-small}, and \eqref{eq:square-bound} now yield
+\[
+ \esssup_x\frac{\mu(gF_{g^{-1}x}\triangle F_x)}{L}<\varepsilon
+ \qquad(g\in Q).
+\]
+By \eqref{eq:defect-identity}, the normalized indicators have squared
+$L_2$ defect less than $\varepsilon$ on $Q$.  Direct the construction by the
+pairs $(Q,\varepsilon)$, ordered by increasing $Q$ and decreasing
+$\varepsilon$.  This produces the required $1$-approximating net.
+\end{proof}
+
+\section{Verification report}
+
+The proof was audited through the following independent checkpoints.
+
+\begin{enumerate}[leftmargin=*]
+\item \textbf{Modular dichotomy.}  If $G$ is nonamenable, then
+$\ker\Delta_G$ is nonamenable and hence noncompact, because the quotient is
+abelian and amenability is extension-stable.
+\item \textbf{Slot separation.}  At the $k$th choice only the compact set
+$H\cap\bigcup_{i<k}D^{-1}Dr_i$ is forbidden.  This cannot exhaust noncompact
+$H$.
+\item \textbf{Exact volume.}  The level sum has deficit at most $\mu(S)$
+(or at most $|S|+1$ in the discrete case).  The correction layer fills that
+deficit exactly, and every slot preserves Haar measure.
+\item \textbf{Defect estimate.}  Equation \eqref{eq:scalar-quantization}
+is the floor-function bound
+$\delta|\lfloor a/\delta\rfloor-\lfloor b/\delta\rfloor|
+\leq |a-b|+\delta$.  The arbitrary correction costs at most $2c_S/L$.
+\item \textbf{Measurability.}  Tonelli gives measurability of all level
+volumes.  A nonatomic finite measure space admits a nested family of every
+intermediate measure; composing that family with the measurable deficit gives
+a measurable correction field.  The discrete selection is finite-valued.
+\item \textbf{Finite regression check.}  Running
+\texttt{python code/verify\_quantized\_layers.py} tests 50,000 random scalar
+floor inequalities and 5,000 random discrete volume corrections.  It prints
+\texttt{PASS}.  This check is not used as proof.
+\end{enumerate}
+
+\section{Scope, limitations, and novelty search}
+
+The result settles the $C=1$ conjecture as stated in the source paper, using
+the source paper's own approximating-net characterization of an amenable
+action.  It does not address the distinct conjecture later in that paper about
+whether an intertwining complete isometry characterizes amenability.
+
+The numerical lower bound ``$1\leq\mu(F_x)$'' depends on the arbitrary scalar
+normalization of Haar measure.  The construction makes $L$ arbitrarily large
+in the nonamenable case; the standard F\o lner amplification does the same for
+noncompact amenable groups, while compact Haar measure is conventionally
+normalized to one.
+
+A bounded novelty check was performed on 12--13 August 2026.  It searched the
+run's registry, solution, attempt, and proof-gap indexes; exact arXiv id and
+paper-title queries; and the phrases ``every amenable action admits a
+1-approximating sequence'', ``$C$-approximating sequences'', and
+``accretivity constant'' together with amenable action/crossed product.  The
+search also inspected the citation neighborhood containing arXiv:2009.03019
+and later multiplier-transference work.  No paper claiming this conjecture was
+found.  A 2026 thesis by the source author still records examples with
+$C=1$ rather than a general theorem.  This is not an exhaustive
+MathSciNet/zbMATH citation review, so mathematical confidence is high but
+novelty confidence is moderate pending expert bibliographic review.
+
+\section{Human-review recommendation}
+
+Review as a candidate full solution.  The most valuable checks are: (i) the
+measurable nested correction family in the exact measure-theoretic framework
+intended by Definition 1.3; (ii) the harmless net/sequence convention; and
+(iii) the standard extension theorem used to force noncompactness of
+$\ker\Delta_G$.  No computational or unproved mathematical dependency remains.
+
+\begin{thebibliography}{9}
+\bibitem{GonzalezPerez}
+A. M. Gonz\'alez-P\'erez,
+\emph{Crossed-Product Extensions of $L_p$-Bounds for Amenable Actions},
+J. Funct. Anal. 274 (2018), no. 10, 2846--2883;
+\href{https://arxiv.org/abs/1611.08486}{arXiv:1611.08486}.
+
+\bibitem{Paterson}
+A. L. T. Paterson,
+\emph{Amenability}, Mathematical Surveys and Monographs 29,
+American Mathematical Society, 1988.
+\end{thebibliography}
+
+\end{document}

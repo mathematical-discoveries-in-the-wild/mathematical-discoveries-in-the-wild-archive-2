@@ -1,0 +1,287 @@
+\documentclass[10pt]{article}
+\usepackage[margin=0.76in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4.5pt}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\F}{\mathcal F}
+\newcommand{\C}{\mathcal C}
+\newcommand{\relu}{\operatorname{ReLU}}
+\newcommand{\step}{\operatorname{STEP}}
+
+\title{Depth of the Minimal-Width Coding Memorizer\\
+\large An exponential barrier, a precision-uniform optimality theorem, and a high-dimensional speedup for arXiv:2411.08735}
+\author{Automated proof attempt\\
+\texttt{agent\_lane\_03} \quad model: GPT5.6}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{blue!45!black}{blue!4}{\parbox{0.93\linewidth}{
+\textbf{Status: substantial partial result, likely valid, pending human verification.}
+For all finite-parameter piecewise-affine LReLU and stepped-LReLU classes in
+the source, worst-case fixed-width depth is necessarily exponential in the
+input coding parameter $K$.  If the depth cap is required to be independent
+of output precision $M$, the source's $O(2^{d_xK})$ memorizer depth is
+optimal up to width constants.  Conversely, a post-source ReLU memorization
+theorem gives depth about the square root of that bound at the source's exact
+minimal width whenever that width is at least $40$.  Low minimal widths and
+networks allowed to exploit FLOOR remain open.}}
+\end{center}
+
+\section*{Source question}
+
+The exact excerpt is Remark 79 and Table 3 on printed page 52 of the current
+source paper (the following image is a direct crop of that page).
+
+\begin{center}
+\includegraphics[width=0.97\linewidth]{question_crop.png}
+\end{center}
+
+The source uses
+\(C_n=\{j2^{-n}:0\le j<2^n\}\).  Its encoder bijects the
+grid \(\C_K^{d_x}\) onto \(Z_K:=\C_{d_xK}\), so
+\[
+ N:=|Z_K|=2^{d_xK}.
+\]
+For a continuous target \(f:[0,1]^{d_x}\to[0,1]^{d_y}\), its memorizer
+maps the corresponding point of \(Z_K\) to the encoded $M$-bit
+quantization of $f$ at the grid point.  The source realizes this scalar
+interpolation with depth $O(N)$, independently of $M$.
+
+Call an activation family \emph{tame piecewise affine} if its graph is a
+semialgebraic family with a bounded number of affine pieces and at most two
+real activation parameters per unit.  This includes all of the source's
+families
+\[
+ \F_+,\ \F_\pm,\ \F_{+,\mathfrak s},\ \F_{\pm,\mathfrak s},
+ \ \F_{\alpha,\mathfrak s},\ \F_{\pm\alpha,\mathfrak s},
+ \ \F^*_{+,1},\ \F^*_{\pm,1},
+\]
+and all their fixed-slope subfamilies.  It does not include FLOOR.
+
+\begin{theorem}[Worst-case depth trichotomy]
+\label{thm:main}
+Fix scalar network width $w\ge1$, $d_x,d_y,K\ge1$, and a tame
+piecewise-affine source activation family.  Let $N=2^{d_xK}$.
+
+\begin{enumerate}
+\item[(a)] If depth at most $L$ suffices to realize the exact coding
+memorizer for every continuous target already at one output bit
+($M=1$), then
+\[
+       L\ \ge\ c\,\frac{\sqrt N}{(w+1)^{3/2}}
+       =c\,\frac{2^{d_xK/2}}{(w+1)^{3/2}},
+\]
+where $c>0$ is universal.  The same conclusion holds if exact matching is
+replaced by uniform error strictly below $1/4$ on the coding grid.
+
+\item[(b)] Suppose one depth cap $L=L(K)$, independent of $M$, realizes
+the exact memorizer for every $M\ge1$ and every continuous target.  Then
+\[
+             L\ge \frac{N}{w(w+3)}.
+\]
+Thus the source's precision-uniform $O(N)$ memorizer is order-optimal for
+fixed $w$.
+
+\item[(c)] There is also a complementary upper bound.  For any fixed
+\(\alpha\in(0,1)\), arbitrary coding data admit an exact
+\(\sigma_\alpha\)-LReLU memorizer of width at most $40$ and depth
+\[
+ O\!\left(\sqrt{N B}+B\right),
+ \qquad B:=1+d_xK+d_yM.
+\]
+Consequently, whenever the minimal width in the source is at least $40$,
+this is an implementation \emph{at that minimal width}.  For
+\(d_xK+d_yM=O(d_xK)\), parts (a) and (c) match in their exponential order
+\(2^{d_xK/2}\), up to polynomial factors in $K$.
+\end{enumerate}
+\end{theorem}
+
+\section*{Proof Intuition}
+
+The target function is arbitrary, so its values on the finite input grid can
+carry arbitrary labels.  Exact coding at one bit therefore forces the network
+class to shatter all $N$ encoded grid points.  A width-$w$, depth-$L$
+piecewise-affine network has only $O(w^2L)$ weights and $O(wL)$ nonlinear
+units, so the sharp general VC upper bound is $O(w^3L^2)$.  This gives the
+square-root exponential barrier.
+
+Requiring the same depth bound for every $M$ is much stronger: dyadic label
+vectors of all precisions are dense in the full $N$-cube.  The set of
+evaluation vectors of bounded-depth tame networks is semialgebraic and has
+dimension at most its $O(w^2L)$ real parameters.  Density forces dimension
+$N$, hence a linear-in-$N$ depth bound.
+
+The upper bound uses a March 2026 width--depth memorization theorem, then
+converts every ReLU layer exactly into a fixed-LReLU layer at twice the width.
+
+\section*{Proof}
+
+Enumerate the input grid as $G_K=\{x_1,\ldots,x_N\}=\C_K^{d_x}$, and
+write $z_j=\mathfrak e_K(x_j)\in Z_K$.  The $z_j$'s are distinct.
+We first record why the target class really supplies arbitrary grid data.
+
+\begin{lemma}[Arbitrary finite coding data]
+\label{lem:data}
+For every $M\ge1$ and every vector
+\((a_1,\ldots,a_N)\in\C_M^N\), there is a continuous
+\(f:[0,1]^{d_x}\to[0,1]^{d_y}\) whose coding memorizer satisfies
+\[
+       \mathfrak m_{K,M,f}(z_j)=a_j\qquad(1\le j\le N).
+\]
+\end{lemma}
+
+\begin{proof}
+Choose pairwise disjoint neighborhoods of the finitely many $x_j$'s and
+continuous functions $0\le\eta_j\le1$, supported in those neighborhoods,
+with \(\eta_j(x_j)=1\).  Set
+\[
+ f(x)=\left(\sum_{j=1}^N a_j\eta_j(x),0,\ldots,0\right).
+\]
+Disjointness of the supports keeps the first coordinate in $[0,1]$.
+At $x_j$, its $M$-bit quantization is exactly $a_j$, and encoding a
+vector whose only nonzero entry is its first entry leaves that entry
+unchanged.  This is the asserted identity.
+\end{proof}
+
+For part (a), apply Lemma~\ref{lem:data} with labels
+\(a_j\in\{0,1/2\}\subset\C_1\).  Thresholding the scalar network output at
+$1/4$ realizes every binary labeling of $Z_K$, so $Z_K$ is shattered.
+
+To count capacity, first eliminate the variable activation parameters.  For
+all real \(\beta\),
+\[
+ \sigma_\beta(t)=\relu(t)-\beta\relu(-t),
+ \qquad
+ \rho_{\beta,s}(t)=\relu(t)-\beta\relu(-t)+s\step(t).
+\]
+Thus each source unit can be simulated by at most three units with fixed
+piecewise-polynomial activations, with the affine layer after it performing
+the displayed linear combination.  A width-$w$, depth-$L$ source network
+is consequently contained in a fixed-activation network class with at most
+\[
+       W_*\le C_1(w+1)^2L \quad\hbox{parameters},\qquad
+       U_*\le C_2wL \quad\hbox{nonlinear units}.
+\]
+Bartlett--Harvey--Liaw--Mehrabian's general piecewise-polynomial bound
+\cite[Theorem 8]{BHLM} gives
+\[
+ \operatorname{VCdim}\le C_3W_*U_*\le C_4(w+1)^3L^2.
+\]
+Since the VC dimension is at least $N$, rearranging proves (a).  If the
+grid error is less than $1/4$, thresholding still recovers the binary
+labels, so the same proof applies.
+
+For part (b), let $E_{w,L}\subset\R^N$ be the set of all evaluation vectors
+\((\phi(z_1),\ldots,\phi(z_N))\) from widths at most $w$ and depths at
+most $L$.  For each fixed depth and width profile, the graph of evaluation
+in the affine weights, biases, and activation parameters is semialgebraic.
+Tarski--Seidenberg therefore makes $E_{w,L}$ a finite union of
+semialgebraic sets.  A depth-$n$ network has at most
+\[
+ n w(w+1)+2w(n-1)\le n w(w+3)
+\]
+real parameters.  Dimension cannot increase under a semialgebraic map, and
+semialgebraic closure preserves dimension; hence
+\[
+       \dim\overline{E_{w,L}}\le Lw(w+3).
+\]
+The hypothesis and Lemma~\ref{lem:data} give
+\(\C_M^N\subset E_{w,L}\) for every $M$.  The union of these dyadic grids
+is dense in $[0,1]^N$, so
+\([0,1]^N\subset\overline{E_{w,L}}\).  Its dimension is $N$, proving
+\(N\le Lw(w+3)\) and part (b).
+
+For part (c), apply Yang--Yang's Theorem 2.1 \cite{YY} to the $N$ scalar
+inputs $z_j\in[0,1]$, whose separation is $1/N$, and to the
+\(2^{d_yM}\) possible coded labels (rescale their integer indices at the
+output).  In their explicit formula choose the bit-block parameter at least
+both \(\log R\) and \(\log(2^{d_yM})\), where here
+\(R=10N^3\sqrt\pi\), and choose the sample-block size as the ceiling of
+the square-root balancing value.  Their displayed width is then at most
+$20$, while their depth is
+\[
+       O\!\left(\sqrt{N(1+\log N+d_yM)}+1+\log N+d_yM\right).
+\]
+Since \(\log N=d_xK\log2\), this is the asserted bound with $B$.
+
+Finally, a width-$r$ ReLU layer has an exact width-$2r$ realization using
+one fixed positive LReLU, because
+\[
+       \relu(t)=\frac{\sigma_\alpha(t)+
+       \alpha\sigma_\alpha(-t)}{1-\alpha^2}.
+\]
+At each layer the affine map produces $z$ and $-z$ in parallel, and the
+next affine map performs the displayed combination.  This doubles width,
+does not increase depth, and yields width $40$.  The activation
+\(\sigma_\alpha\) belongs to every relevant variable positive/stepped
+source family (take step size zero), completing (c). \qed
+
+\section*{What is closed, and what remains open}
+
+For tame LReLU families, part (a) gives a definitive qualitative answer to
+the source's final suggestion that exponential scaling ``may be
+unavoidable'': no worst-case implementation with depth subexponential in
+$K$ exists at any fixed width.  Part (b) is sharp for the source's stronger,
+implicit precision-uniform memorizer specification.  Part (c) shows that the
+linear-in-$N$ construction can nevertheless be improved at fixed precision,
+and at exact minimal width in dimensions where that width is at least $40$.
+
+Three boundaries prevent classification as a full answer.  First, the exact
+fixed-precision complexity at minimal widths below $40$, especially scalar
+width one or two, is not settled.  Second, FLOOR is not semialgebraic with a
+bounded number of pieces, so neither capacity proof applies to classes that
+may use it.  This is substantive: with FLOOR and identity, a width-two,
+constant-depth network can extract the $i$-th bit of a real parameter on
+geometrically spaced inputs, giving infinite VC dimension.  Third, the
+decoder's exponential dependence on $M$ is not closed here.
+
+The durable attempt note records eight focused upgrade attempts, including
+the failed width-one serialization and FLOOR-grid bit-extraction routes.
+
+\section*{Reproducibility and literature boundary}
+
+The script \path{code/verify_depth_bounds.py} checks the exact
+ReLU-to-LReLU identity over rational test data, the parameter-count inequality,
+and the constant-depth FLOOR bit-extraction obstruction.  These checks do not
+replace the VC-dimension or semialgebraic-dimension proofs.
+
+The source was revised in December 2025.  Yang--Yang was submitted in March
+2026 and therefore postdates the source; its theorem is used only for part
+(c).  Bartlett et al. supplies the pre-existing capacity theorem used in
+part (a).  The precision-uniform closure argument and the application to this
+specific coding question are proved above.  No duplicate packet or ledger
+entry was found in the run indexes.  This is a bounded novelty check, not an
+exhaustive priority claim.
+
+\begin{thebibliography}{9}
+\bibitem{RCG}
+D. Rochau, R. Chan, and H. Gottschalk,
+\emph{New advances in universal approximation with neural networks of
+minimal width}, arXiv:2411.08735, current version December 2025.
+Included as \texttt{source\_paper.pdf}; the exact two-page source excerpt is
+also included as \texttt{source\_excerpt.pdf}.
+
+\bibitem{BHLM}
+P. L. Bartlett, N. Harvey, C. Liaw, and A. Mehrabian,
+\emph{Nearly-tight VC-dimension and pseudodimension bounds for piecewise
+linear neural networks}, JMLR 20 (2019), no. 63, 1--17;
+arXiv:1703.02930.  Included under \texttt{references/}.
+
+\bibitem{YY}
+X. Yang and Y. Yang,
+\emph{Memorization capacity of deep ReLU neural networks characterized by
+width and depth}, arXiv:2603.09589 (10 March 2026).
+Included under \texttt{references/}.
+\end{thebibliography}
+
+\end{document}

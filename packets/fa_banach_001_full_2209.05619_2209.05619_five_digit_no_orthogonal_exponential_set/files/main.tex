@@ -1,0 +1,345 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\M}{M_{\mathcal D}}
+
+\title{The five-digit irrational-mask example is never spectral}
+\author{Candidate full negative answer to Example 5.2 of arXiv:2209.05619}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\linewidth}{\textbf{Status.}
+Candidate full proof, likely valid, pending independent expert review.
+In fact, the proof rules out even an infinite orthogonal family of
+exponentials for every contraction ratio.}}
+\end{center}
+
+\section{Source problem}
+
+An, He, and Lai end \emph{Classification of spectral self-similar measures
+with four-digit elements} (arXiv:2209.05619) with the first genuinely
+irrational five-digit test case \cite[Example 5.2]{AHL}.  For
+\[
+ \mathcal D=\{0,1,3,5,6\},\qquad 0<\rho<1,
+\]
+let $\mu_{\rho,\mathcal D}$ be the equal-weight self-similar measure for
+the maps $x\mapsto\rho(x+d)$, $d\in\mathcal D$.  The source records that
+all real zeros of the mask are irrational and states:
+
+\begin{quote}
+``We believe that none of such $\mu_{\rho,\mathcal D}$ can be a spectral
+measure, but a more intensive study will be needed in this case.''
+\end{quote}
+
+\begin{center}
+\includegraphics[width=0.97\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+We prove this belief for every $0<\rho<1$.  The argument also gives a
+general obstruction whenever an integral mask has no rational zero phase.
+
+\section{Proof intuition}
+
+The Fourier transform is an infinite mask product.  Hence every difference
+of two orthogonal frequencies has the form
+\[
+ q^k(\theta+n),\qquad q=\rho^{-1}>1,quad k\geq1,quad n\in\Z,
+\]
+where $\theta$ is one of finitely many mask-zero phases.  Infinite Ramsey
+theory gives an infinite subfamily for which the same $\theta$ works for
+every pair.
+
+The phases in the source example are not merely irrational: their
+exponentials are algebraic, so Gelfond--Schneider makes the phases
+transcendental.  If $q$ is algebraic, coefficient comparison then forces
+pairwise differences of infinitely many powers of $q$ to be powers of $q$,
+which is impossible by lacunarity.
+
+If $q$ is transcendental, one difference relation writes
+$\theta=R(q)$ for a nonconstant rational function $R\in\Q(X)$.  Every other
+numerical difference identity then lifts, by transcendence of $q$, to an
+identity in $\Q(X)$.  A degree-at-infinity lemma shows that the set
+$\{X^k(R+n)\}$ cannot contain an infinite one-sided difference clique.
+This eliminates the remaining case.
+
+\section{Preliminaries}
+
+For a finite integral digit set $\mathcal D$, write
+\[
+ M_{\mathcal D}(\xi)=\frac1{\#\mathcal D}
+   \sum_{d\in\mathcal D}e^{-2\pi i d\xi},
+ \qquad
+ \Theta=\mathcal Z(M_{\mathcal D})\cap[0,1).
+\]
+The Fourier transform of the associated equal-weight self-similar measure is
+\begin{equation}\label{eq:product}
+ \widehat\mu_{\rho,\mathcal D}(\xi)
+   =\prod_{j=1}^{\infty}M_{\mathcal D}(\rho^j\xi).
+\end{equation}
+For fixed $\xi$, the product is nonzero if none of its factors is zero,
+because $M_{\mathcal D}(t)=1+O(t)$ at the origin and
+$\sum_j|\rho^j\xi|<\infty$.  Therefore, with $q=\rho^{-1}$,
+\begin{equation}\label{eq:zeros}
+ \mathcal Z(\widehat\mu_{\rho,\mathcal D})
+   =\bigcup_{\theta\in\Theta}\bigcup_{k\geq1}
+       q^k(\theta+\Z).
+\end{equation}
+
+If $E(\Lambda)=\{e^{2\pi i\lambda x}:\lambda\in\Lambda\}$ is
+orthogonal in $L^2(\mu)$, then
+\begin{equation}\label{eq:bizero}
+ (\Lambda-\Lambda)\setminus\{0\}
+    \subseteq\mathcal Z(\widehat\mu).
+\end{equation}
+
+\begin{lemma}[Transcendence of irrational integral-mask phases]
+\label{lem:phase-trans}
+Let $\mathcal D\subset\Z$ be finite.  If
+$\theta\in\mathcal Z(M_{\mathcal D})$ is irrational, then $\theta$ is
+transcendental.
+\end{lemma}
+
+\begin{proof}
+The number $z=e^{-2\pi i\theta}$ is a zero of the integral polynomial
+$\sum_{d\in\mathcal D}z^d$ (after multiplying by a power of $z$ if
+necessary), so $z$ is algebraic.  If $\theta$ were algebraic irrational,
+then Gelfond--Schneider, applied to the algebraic base $-1$ and algebraic
+irrational exponent $-2\theta$, would say that every value of
+$(-1)^{-2\theta}$ is transcendental.  Taking $\log(-1)=\pi i$ gives the
+value $e^{-2\pi i\theta}=z$, a contradiction.
+\end{proof}
+
+The next lemma is the formal obstruction needed only when $q$ is
+transcendental.  For a nonzero rational function $F$, let
+$\deg_\infty F$ be numerator degree minus denominator degree in reduced form.
+
+\begin{lemma}[Rational-function difference-clique obstruction]
+\label{lem:formal}
+Let $R\in\Q(X)\setminus\Q$ and
+\[
+ \mathcal S_R=\{X^k(R+n):k\geq1,\ n\in\Z\}\subset\Q(X).
+\]
+There is no infinite sequence of distinct elements
+ $f_0,f_1,\ldots\in\mathcal S_R$ such that
+\begin{equation}\label{eq:formalclique}
+ f_j-f_i\in\mathcal S_R\qquad(0\leq i<j).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+We use only the behavior at $X=\infty$.
+
+First suppose $R$ has a pole there, of order $d>0$.  Every
+$X^k(R+n)$ has degree $k+d$.  An infinite fixed-$k$ subfamily is
+impossible: the difference of two members is $(n'-n)X^k$, while equality
+with $X^c(R+\ell)$ forces $c=k-d$ and
+$R+\ell=(n'-n)X^d$; three distinct $n$'s would force two different
+coefficients for the same $R$.  Thus, after passing to a subsequence, its
+levels $k_j$ tend to infinity.  Fix $f_0$.  For all large $j$ the degree of
+$f_j-f_0$ is $k_j+d$, so \eqref{eq:formalclique} has level $k_j$ and
+\[
+ X^{k_j}(R+n_j)-f_0=X^{k_j}(R+\ell_j).
+\]
+Hence $f_0=(n_j-\ell_j)X^{k_j}$, which cannot hold for two distinct
+unbounded $k_j$.
+
+Now suppose $L=R(\infty)\in\Q$.  Put $H=R-L$.  A level $(k,n)$ is
+\emph{normal} if $L+n\ne0$; it then has degree $k$.  If $-L\in\Z$, there
+is also one exceptional choice $n_*=-L$, for which
+$X^k(R+n_*)=X^kH$.  Write $\deg_\infty H=-d<0$.
+
+Assume first that infinitely many $f_j$ are normal.  As in the preceding
+paragraph, an infinite fixed-level subfamily is impossible (differences are
+integer multiples of a monomial, while a possible exceptional
+representation fixes that multiple).  Pass to normal levels $k_j\to\infty$
+and fix $f_0$.  If $f_j-f_0=X^{c_j}(R+\ell_j)$ is normal, degrees give
+$c_j=k_j$ and then $f_0=(n_j-\ell_j)X^{k_j}$, again impossible twice.  If it
+is exceptional, then $c_j=k_j+d$ and
+\begin{equation}\label{eq:Fm}
+ f_0=X^{k_j}\bigl[(L+n_j)+H-X^dH\bigr].
+\end{equation}
+As $n$ varies, the bracketed rational functions differ only by integer
+constants.  All but at most one have degree zero; the remaining one has a
+single fixed finite degree.  Their degrees therefore cannot equal
+$\deg_\infty f_0-k_j\to-\infty$, contradicting \eqref{eq:Fm}.
+
+It remains to consider infinitely many exceptional terms $X^{k_j}H$;
+their levels are necessarily distinct and unbounded.  Fix $k_0$.  If
+\[
+ H(X^{k_j}-X^{k_0})=X^c(R+\ell)
+\]
+has an exceptional right side, cancellation of $H$ would give
+$X^{k_j}-X^{k_0}=X^c$, an impossible Laurent-polynomial identity.  For a
+normal right side, degrees give $c=k_j-d$, and rearrangement yields
+\begin{equation}\label{eq:constant}
+ H\bigl(X^d-1-X^{k_0-k_j+d}\bigr)=L+\ell\in\Q.
+\end{equation}
+Three distinct values of $k_j$ in \eqref{eq:constant}, after subtracting
+pairs, would make the ratio of two distinct binomials
+\[
+ \frac{X^a-X^b}{X^a-X^c}
+\]
+a rational constant, which it is not.  Thus this case is finite as well.
+All possibilities contradict infinitude.
+\end{proof}
+
+\section{The general obstruction}
+
+\begin{theorem}\label{thm:general}
+Let $\mathcal D\subset\Z$ be finite with at least two elements, and suppose
+every phase in $\Theta=\mathcal Z(M_{\mathcal D})\cap[0,1)$ is irrational.
+Then, for every $0<\rho<1$, the space
+$L^2(\mu_{\rho,\mathcal D})$ contains no infinite orthogonal family of
+exponentials.  In particular, $\mu_{\rho,\mathcal D}$ is not spectral.
+\end{theorem}
+
+\begin{proof}
+Suppose $\Lambda$ is an infinite orthogonal set.  Color each unordered pair
+of distinct elements of $\Lambda$ by one phase $\theta\in\Theta$ occurring
+in a representation \eqref{eq:zeros} of the absolute difference (choose one
+deterministically if there is more than one).  The set of colors is finite.
+By the infinite Ramsey theorem, there is an infinite monochromatic subset.
+It has an infinite strictly monotone subsequence; reverse its sign if needed
+and write it as
+\[
+ \gamma_0<\gamma_1<\gamma_2<\cdots.
+\]
+For one fixed $\theta\in\Theta$, every positive difference is therefore
+\begin{equation}\label{eq:monochrome}
+ \gamma_j-\gamma_i=q^{k_{ij}}(\theta+n_{ij}),
+ \qquad i<j,quad k_{ij}\geq1,quad n_{ij}\in\Z.
+\end{equation}
+By Lemma \ref{lem:phase-trans}, $\theta$ is transcendental.
+
+Translate by $\gamma_0$ and set
+\[
+ d_i=\gamma_i-\gamma_0=q^{k_i}(\theta+n_i)\qquad(i\geq1).
+\]
+
+If $q$ is algebraic, compare $d_j-d_i$ with
+\eqref{eq:monochrome}.  Since $\theta$ is transcendental over the algebraic
+numbers, its coefficient must vanish:
+\begin{equation}\label{eq:powerdifference}
+ q^{k_j}-q^{k_i}=q^{k_{ij}}\qquad(i<j).
+\end{equation}
+Thus $k_j>k_i$.  Fix $i=1$ and let $j\to\infty$.  Dividing
+\eqref{eq:powerdifference} by $q^{k_j}$ gives
+\[
+ 1-q^{k_1-k_j}=q^{k_{1j}-k_j}.
+\]
+The right side is a power of $q$ strictly below $1$, hence at most $q^{-1}$,
+whereas the left side tends to $1$ from below.  This is impossible.
+
+It remains that $q$ is transcendental.  Use $d_2-d_1$ once.  On collecting
+the coefficient of $\theta$, we obtain
+\[
+ \bigl(q^{k_2}-q^{k_1}-q^{k_{12}}\bigr)\theta=B(q)
+\]
+for a Laurent polynomial $B\in\Z[X,X^{-1}]$.  The coefficient polynomial is
+not identically zero (its value at $X=1$ is $-1$), and it cannot vanish at
+the transcendental number $q$.  Hence
+\[
+ \theta=R(q)
+\]
+for some $R\in\Q(X)$.  This $R$ is nonconstant because $\theta$ is
+irrational.
+
+Replace $q$ formally by $X$ and define
+\[
+ f_i=X^{k_i}(R+n_i)\in\mathcal S_R.
+\]
+Every equality \eqref{eq:monochrome}, after substituting
+$\theta=R(q)$, is an equality of rational functions evaluated at the
+transcendental number $q$.  A nonzero rational function over $\Q$ cannot
+vanish at $q$, so each equality lifts identically to $\Q(X)$.  Consequently
+$f_j-f_i\in\mathcal S_R$ for all $i<j$, contradicting Lemma
+\ref{lem:formal}.
+
+Thus no infinite orthogonal exponential set exists.  The self-similar
+attractor is infinite when $\#\mathcal D\geq2$, so $L^2(\mu)$ is
+infinite-dimensional; a finite orthogonal family cannot be an orthonormal
+basis.  Hence the measure is not spectral.
+\end{proof}
+
+\begin{corollary}[The source's five-digit example]\label{cor:source}
+For $\mathcal D=\{0,1,3,5,6\}$ and every $0<\rho<1$, the measure
+$\mu_{\rho,\mathcal D}$ is not spectral.  More strongly, it admits no
+infinite orthogonal set of exponentials.
+\end{corollary}
+
+\begin{proof}
+The source paper records
+$\mathcal Z(M_{\mathcal D})=\Theta+\Z$ with
+$\Theta\subset\R\setminus\Q$.  Apply Theorem \ref{thm:general}.
+\end{proof}
+
+\section{Verification, scope, and novelty}
+
+\paragraph{Proof stress tests.}
+The Fourier-product zero equality uses absolute convergence near the origin,
+so it introduces no spurious zeros.  Ramsey colors only by the finite phase,
+not by the unbounded scale.  The algebraic-$q$ argument covers all algebraic
+contractions, not merely reciprocal integers.  In the transcendental case,
+evaluation at $q$ is injective on $\Q(X)$; the rational-function lemma treats
+separately poles at infinity, ordinary finite limits, and the sole possible
+exceptional integer translate.  Zero mask phases and repeated
+representations cause no issue because the source phases are irrational and
+the coloring chooses one representation.
+
+\paragraph{Scope.}
+Corollary \ref{cor:source} completely proves the explicit belief in Example
+5.2, for all contraction ratios.  Theorem \ref{thm:general} also covers every
+finite integral digit set whose mask has no rational zero phase.  It does not
+settle the full modified {\L}aba--Wang conjecture when rational and irrational
+mask phases coexist.
+
+\paragraph{Bounded novelty check.}
+On 11 August 2026 we searched the run's cheap registry/problem indexes, the
+exact digit set, the exact source sentence, the source title and citations,
+and close phrases involving irrational mask zeros and infinite orthogonal
+exponentials.  We found the source paper and later works citing its four-digit
+classification, but no later resolution of Example 5.2 or statement matching
+Theorem \ref{thm:general}.  The ingredients (infinite Ramsey and
+Gelfond--Schneider) are classical; their combination with the
+rational-function difference-clique lemma appears new.  Novelty confidence is
+moderate, while proof confidence is high.
+
+\paragraph{Human-review recommendation.}
+Verify the degree-at-infinity case split in Lemma \ref{lem:formal}, especially
+the exceptional translate $n=-R(\infty)$; then check the lifting of numerical
+identities to $\Q(X)$ when $q$ is transcendental.  The included symbolic
+script is only a sanity check and is not used as proof.
+
+\begin{thebibliography}{9}
+\bibitem{AHL}
+L.-X. An, X. He, and C.-K. Lai,
+\emph{Classification of spectral self-similar measures with four-digit
+elements}, Asian J. Math. 27 (2023), 467--492; arXiv:2209.05619.
+
+\bibitem{Baker}
+A. Baker,
+\emph{Transcendental Number Theory},
+Cambridge University Press, 1975.
+
+\bibitem{Ramsey}
+F. P. Ramsey,
+\emph{On a problem of formal logic},
+Proc. London Math. Soc. (2) 30 (1930), 264--286.
+\end{thebibliography}
+
+\end{document}

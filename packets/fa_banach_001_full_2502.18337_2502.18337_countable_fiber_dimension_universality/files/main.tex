@@ -1,0 +1,465 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newcommand{\ldim}{\underline{\operatorname{dim}}_{\rm loc}}
+\newcommand{\udim}{\overline{\operatorname{dim}}_{\rm loc}}
+\newcommand{\supp}{\operatorname{supp}}
+
+\title{Complete Local-Dimension Universality at Countable\
+Convolution Fibres}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 1}
+\date{August 9, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.9\textwidth}{\textbf{Status.}
+Candidate full result, likely valid, pending expert review.
+For every $0<\lambda\leq1$ and every prescribed finite $\beta\geq0$, there
+are compactly supported probability measures $\mu,\nu$ on $\mathbb R$ such
+that $\ldim\mu\geq\lambda$ everywhere, the representation fibre over zero is
+exactly countably infinite, every fibre point has product lower local
+dimension at least $\lambda$, and
+$\dim_{\rm loc}(\mu*\nu)(0)=\beta$.
+Thus countability imposes no numerical restriction at all.  A genuinely
+weaker scale-averaged replacement for the source paper's uniform hypothesis
+is also proved.}}
+\end{center}
+
+\section{Source questions and resolution}
+
+For a finite Borel measure $\eta$ on a metric space and
+$x\in\supp\eta$, write
+\[
+ \ldim\eta(x)=\liminf_{r\downarrow0}
+ \frac{\log\eta(B(x,r))}{\log r},
+ \qquad
+ \udim\eta(x)=\limsup_{r\downarrow0}
+ \frac{\log\eta(B(x,r))}{\log r}.
+\]
+When they agree, their common value is $\dim_{\rm loc}\eta(x)$.
+
+Hare and Prandi~\cite{HP} prove lower-local-dimension inheritance for
+convolution under a common-scale almost-everywhere hypothesis.  In Section~5,
+PDF page 12, they ask:
+\begin{quote}
+``Is there a weaker or different condition for Theorem 2.7. If we know
+$\ldim\mu(x)\geq\lambda$, under what conditions is it true that
+$\ldim(\mu*\nu)(z)\geq\lambda$.''
+\end{quote}
+They then distinguish finite representation fibres from fibres containing an
+open family and ask:
+\begin{quote}
+``What happens if there are countably many $x\in\supp\mu$ and
+$y\in\supp\nu$ such that $x+y=z$?''
+\end{quote}
+
+Theorem~\ref{thm:universal} gives a complete negative resolution of the
+countable-fibre question in the lower-local-dimension setting: every finite
+nonnegative value is possible, even under the pointwise hypothesis and a
+pairwise product-dimension lower bound.  Proposition~\ref{prop:rescue} answers
+the first question constructively by replacing the common-scale condition
+with decay of the mass of bad centres; Proposition~\ref{prop:strict} proves
+the replacement is strictly weaker.
+
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{The two source questions in Section~5 of Hare--Prandi~\cite{HP},
+  PDF page 12.}
+\end{figure}
+\clearpage
+
+\section{Proof intuition}
+
+Countability does not provide quantitative uniformity.  A countable fibre can
+be assembled from tiny packets at geometrically separated centres.  The
+packet weights determine the mass delivered to the target, while the packet
+widths determine the scale at which it arrives.  These two parameters can be
+tuned independently without changing the eventual pointwise dimension at
+any fixed packet.
+
+For target dimensions $0\leq\beta\leq1$, one measure consists of symmetric
+uniform packets and the other of aligned atoms.  The $n$th aligned
+contribution has mass $p_n^2$ and width $\ell_n$.  Choosing
+$p_n^2\asymp\ell_n^\beta$ makes the aligned convolution mass scale like
+$r^\beta$.  A different super-exponential choice of widths yields dimension
+zero at every sufficiently small scale, not merely along a subsequence.
+
+For $\beta>1$, atoms would force a linear contribution, so both factors are
+made one-sided near each representation pair.  Power-law endpoint densities
+with exponents $a$ and $b$ convolve to order $r^{a+b}$; setting
+$a+b=\beta$ gives the target.  Geometric separation forces every
+off-diagonal interaction into a small tail.  Choosing the tail exponent
+$D>\beta/2$ makes its total mass $O(r^{2D})=o(r^\beta)$.
+
+The positive criterion uses a complementary idea.  At each scale, centres
+where the desired Frostman estimate fails are allowed, but their $\nu$-mass
+must decay with the same power as the target ball mass.  Splitting the
+convolution integral into good and bad centres then gives the desired bound.
+
+\section{A common separation estimate}
+
+The following elementary observation will control every unintended
+interaction.  All constants below may depend on the fixed construction
+parameters, never on $r$.
+
+\begin{lemma}[Off-diagonal tail bound]\label{lem:tail}
+Let $x_{n+1}\leq x_n/4$ and let $J_n$ be an interval contained in
+$[x_n-x_n/16,x_n+x_n/16]$.  Give $J_n$ mass $p_n$, where the $p_n$ form a
+geometric sequence.  Pair these packets with packets or atoms lying within
+$x_n/16$ of $-x_n$ and also having mass $p_n$.
+
+If an off-diagonal pair of indices $k\neq n$ contributes to a ball
+$B(0,r)$ under addition, then
+\[
+ x_{\min\{k,n\}}\leq2r.
+\]
+Consequently its total contribution is at most
+\[
+ \left(\sum_{x_j\leq2r}p_j\right)^2.
+\]
+If $p_j=x_j^D$, up to a fixed normalization, this is $O(r^{2D})$.
+\end{lemma}
+
+\begin{proof}
+Put $j=\min\{k,n\}$, so $x_j$ is the larger centre.  The centre separation is
+at least $3x_j/4$.  The relevant packet radii have sum at most $x_j/8$.
+Thus meeting $B(0,r)$ forces $r\geq x_j/2$.  Both indices therefore belong
+to the displayed tail.  Summing all products $p_kp_n$ over that tail gives
+the square bound.  For geometric $p_j$ the tail is comparable to its first
+term; if $p_j\asymp x_j^D$, it is $O(r^D)$.
+\end{proof}
+
+\section{Complete universality}
+
+\begin{theorem}[Countable-fibre universality]\label{thm:universal}
+Fix $0<\lambda\leq1$ and a finite $\beta\geq0$.  There are compactly
+supported Borel probability measures $\mu,\nu$ on $\mathbb R$ such that:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\ldim\mu(x)\geq\lambda$ for every $x\in\supp\mu$;
+\item the representation fibre at zero is exactly
+\[
+ \mathcal F_0=
+ \{(x,y)\in\supp\mu\times\supp\nu:x+y=0\}
+ =\{(0,0)\}\cup\{(x_n,-x_n):n\geq1\};
+\]
+\item every point of $\mathcal F_0$ has product-measure lower local dimension
+at least $\lambda$, for any standard product metric;
+\item the local dimension of the convolution exists and satisfies
+\[
+ \dim_{\rm loc}(\mu*\nu)(0)=\beta.
+\]
+\end{enumerate}
+\end{theorem}
+
+\subsection{The range \texorpdfstring{$0<\beta\leq1$}{0 < beta <= 1}}
+
+Choose $0<q<1/16$ and let
+\[
+ p_n=(1-q)q^{n-1},\qquad x_n=p_n \qquad(n\geq1).
+\]
+Thus $\sum p_n=1$.  Choose $\tau>0$ small and set
+\[
+ \ell_n=\tau p_n^{2/\beta},\qquad
+ I_n=[x_n-\ell_n,x_n+\ell_n],
+\]
+with $\ell_n\leq x_n/16$.  Define
+\begin{equation}\label{eq:symmetric}
+ \mu=\sum_{n=1}^\infty
+ \frac{p_n}{2\ell_n}\mathbf1_{I_n}\,dx,
+ \qquad
+ \nu=\sum_{n=1}^\infty p_n\delta_{-x_n}.
+\end{equation}
+
+The intervals are disjoint and accumulate only at zero.  The measure $\mu$
+has local dimension one at every point of every interval, including its
+endpoints.  Since packet locations and their masses are both comparable to
+$p_n$, geometric-tail comparison gives
+\[
+ \mu(B(0,r))\asymp r,
+ \qquad
+ \nu(B(0,r))\asymp r.
+\]
+Hence both measures have local dimension one at zero.  Their supports show
+that the fibre is exactly the set in (ii).  Its nonzero points have product
+dimension $1+0=1$, and $(0,0)$ has product dimension two.  Thus (i)--(iii)
+hold for every $0<\lambda\leq1$.
+
+Write $\eta=\mu*\nu$.  The aligned pairs contribute exactly
+\begin{equation}\label{eq:aligned}
+ A(r)=\sum_{n=1}^\infty p_n^2
+ \min\left\{1,\frac r{\ell_n}\right\}.
+\end{equation}
+Indeed, translating the $n$th uniform packet by $-x_n$ centres it at zero.
+Since
+\[
+ p_n^2=\tau^{-\beta}\ell_n^\beta
+\]
+and the $\ell_n$ form a geometric sequence, choose $N=N(r)$ so that
+$\ell_N\leq r<\ell_{N-1}$.  The full aligned tail gives
+\[
+ A(r)\geq\sum_{n\geq N}p_n^2\geq c r^\beta.
+\]
+For $0<\beta<1$, the partial-packet geometric sum and the full tail give
+\[
+ A(r)\leq C r^\beta.
+\]
+For $\beta=1$, each of the first $N-1$ partial packets contributes a fixed
+multiple of $r$, and hence
+\[
+ A(r)\leq C N(r)r,
+ \qquad N(r)=O(|\log r|).
+\]
+
+By Lemma~\ref{lem:tail}, all off-diagonal pairs contribute $O(r^2)$.  It
+follows that, for $0<\beta<1$,
+\[
+ c r^\beta\leq\eta(B(0,r))\leq C r^\beta,
+\]
+while for $\beta=1$,
+\[
+ c r\leq\eta(B(0,r))\leq C(1+|\log r|)r.
+\]
+In both cases, division by $\log r$ proves
+$\dim_{\rm loc}\eta(0)=\beta$.
+
+\subsection{The value \texorpdfstring{$\beta=0$}{beta = 0}}
+
+Keep $p_n,x_n$ and the measures in \eqref{eq:symmetric}, but now choose
+\[
+ \ell_n=\tau e^{-n^2},
+\]
+with $\tau$ small enough that the packets remain disjoint and
+$\ell_n\leq x_n/16$.  If
+$\ell_N\leq r<\ell_{N-1}$, the fully captured aligned tail gives
+\[
+ \eta(B(0,r))\geq\sum_{n\geq N}p_n^2\geq c q^{2N}.
+\]
+At the same time $|\log r|\asymp N^2$.  Since every small-scale exponent is
+nonnegative,
+\[
+ 0\leq\frac{\log\eta(B(0,r))}{\log r}
+ \leq\frac{O(N)}{N^2+O(1)}\longrightarrow0.
+\]
+Thus the local dimension exists and equals zero.  The support and factor
+local-dimension arguments above are unchanged.
+
+\subsection{The range \texorpdfstring{$\beta>1$}{beta > 1}}
+
+Choose
+\[
+ D>\max\{\lambda,\beta/2\},
+ \qquad a=\lambda,
+ \qquad b=\beta-\lambda>0.
+\]
+Take $q>0$ so small that $q^{1/D}<1/16$, set
+\[
+ p_n=(1-q)q^{n-1},
+ \qquad x_n=p_n^{1/D},
+ \qquad \ell_n=\tau p_n^{2/\beta},
+\]
+and choose $\tau>0$ so that $\ell_n\leq x_n/16$ for all $n$.  This is
+possible because $2/\beta-1/D>0$.
+
+The $n$th component of $\mu$ is supported on
+$[x_n,x_n+\ell_n]$, has total mass $p_n$, and in the coordinate
+$s=x-x_n$ has normalized density
+\[
+ \frac{a s^{a-1}}{\ell_n^a}\mathbf1_{(0,\ell_n)}(s).
+\]
+The $n$th component of $\nu$ is supported on
+$[-x_n,-x_n+\ell_n]$, has total mass $p_n$, and in the coordinate
+$t=y+x_n$ has normalized density
+\[
+ \frac{b t^{b-1}}{\ell_n^b}\mathbf1_{(0,\ell_n)}(t).
+\]
+
+At the left endpoint $x_n$, the local dimension of $\mu$ is $a=\lambda$;
+at every other point of its $n$th packet it is one.  Geometric-tail comparison
+at zero gives
+\[
+ \dim_{\rm loc}\mu(0)=D.
+\]
+Thus (i) holds.  The analogous dimension of $\nu$ at zero is also $D$.
+
+For equal indices, a sum has the form $s+t\geq0$ and equals zero only when
+$s=t=0$.  For unequal indices, the centre gap is larger than the sum of the
+packet lengths, so zero is not represented.  This proves (ii).  The product
+dimension at $(x_n,-x_n)$ is
+\[
+ a+b=\beta\geq\lambda,
+\]
+and the product dimension at $(0,0)$ is $2D>\beta$, proving (iii).
+
+For an aligned pair and $0<r\leq\ell_n$, direct integration gives
+\begin{align*}
+ &p_n^2\int_0^r\frac{a s^{a-1}}{\ell_n^a}
+ \left(\int_0^{r-s}\frac{b t^{b-1}}{\ell_n^b}\,dt\right)ds\\
+ &\hspace{2cm}=
+ p_n^2 a\,\mathrm B(a,b+1)
+ \left(\frac r{\ell_n}\right)^{a+b}.
+\end{align*}
+For all $r>0$, the same contribution is bounded above by
+\[
+ C p_n^2\min\left\{1,(r/\ell_n)^\beta\right\}.
+\]
+Since $p_n^2=\tau^{-\beta}\ell_n^\beta$ and the lengths form a geometric
+sequence, the total aligned contribution satisfies
+\[
+ c r^\beta\leq A(r)\leq C(1+|\log r|)r^\beta.
+\]
+Lemma~\ref{lem:tail} bounds the off-diagonal contribution by
+\[
+ C\left(\sum_{x_n\leq2r}p_n\right)^2
+ \leq C r^{2D}=o(r^\beta).
+\]
+Therefore
+\[
+ c r^\beta\leq(\mu*\nu)(B(0,r))
+ \leq C(1+|\log r|)r^\beta,
+\]
+and $\dim_{\rm loc}(\mu*\nu)(0)=\beta$.  This completes the proof of
+Theorem~\ref{thm:universal}.
+
+\begin{corollary}\label{cor:none}
+For $0<\lambda\leq1$, neither the countability of the representation fibre,
+the pointwise bound $\ldim\mu\geq\lambda$, nor even the conjunction of these
+facts with product-dimension lower bounds on every fibre point imposes any
+nontrivial numerical restriction on $\dim_{\rm loc}(\mu*\nu)(z)$.
+\end{corollary}
+
+\section{A weaker averaged condition that restores inheritance}
+
+\begin{proposition}[Bad-centre decay criterion]\label{prop:rescue}
+Let $\mu,\nu$ be compactly supported probability measures on $\mathbb R$, fix
+$z\in\supp(\mu*\nu)$, and let $\alpha>0$.  For
+$0<\varepsilon<\alpha$ put
+\[
+ E_\varepsilon(r)=
+ \{y\in\supp\nu:\mu(B(z-y,r))>r^{\alpha-\varepsilon}\}.
+\]
+Suppose that for every $\varepsilon\in(0,\alpha)$ there are
+$C_\varepsilon<\infty$ and $r_\varepsilon>0$ such that
+\begin{equation}\label{eq:baddecay}
+ \nu(E_\varepsilon(r))
+ \leq C_\varepsilon r^{\alpha-\varepsilon}
+ \qquad(0<r<r_\varepsilon).
+\end{equation}
+Then $\ldim(\mu*\nu)(z)\geq\alpha$.
+\end{proposition}
+
+\begin{proof}
+Split the convolution integral into good and bad centres.  Since both
+measures are probabilities,
+\begin{align*}
+ (\mu*\nu)(B(z,r))
+ &=\int\mu(B(z-y,r))\,d\nu(y)\\
+ &\leq r^{\alpha-\varepsilon}
+      \nu(\mathbb R\setminus E_\varepsilon(r))
+      +\nu(E_\varepsilon(r))\\
+ &\leq(1+C_\varepsilon)r^{\alpha-\varepsilon}.
+\end{align*}
+Taking logarithms and dividing by the negative number $\log r$ gives
+$\ldim(\mu*\nu)(z)\geq\alpha-\varepsilon$.  Let
+$\varepsilon\downarrow0$.
+\end{proof}
+
+The source hypothesis makes $\nu(E_\varepsilon(r))=0$ below a common scale,
+so it implies \eqref{eq:baddecay}.  The converse fails.
+
+\begin{proposition}\label{prop:strict}
+There are compactly supported probability measures $\mu,\widehat\nu$ for
+which Proposition~\ref{prop:rescue} applies at $z=0$ and $\alpha=1$, but the
+source paper's common-scale almost-everywhere condition fails.
+\end{proposition}
+
+\begin{proof}
+For $n\geq2$, set
+\[
+ x_n=2^{-n},\quad \ell_n=2^{-n^3},\quad
+ I_n=[x_n-\ell_n,x_n+\ell_n],\quad m_n=12\,2^{-2n},
+\]
+and let
+\[
+ \mu=\sum_{n=2}^\infty
+ \frac{m_n}{2\ell_n}\mathbf1_{I_n}\,dx,
+ \qquad
+ \widehat\nu=Z^{-1}\sum_{n=2}^\infty2^{-n^4}\delta_{-x_n}.
+\]
+Write $r=2^{-L}$.  If $n^3\leq\varepsilon L/2$ and $L$ is sufficiently
+large, then
+\[
+ \mu(B(x_n,r))\leq12\,2^{\varepsilon L/2}r
+ \leq r^{1-\varepsilon}.
+\]
+Thus every bad atom has
+$n>(\varepsilon L/2)^{1/3}$, and its total mass is at most
+\[
+ C\sum_{n>(\varepsilon L/2)^{1/3}}2^{-n^4}
+ \leq C'2^{-c_\varepsilon L^{4/3}}
+ \leq C'r^{1-\varepsilon}.
+\]
+The averaged criterion applies.
+
+At the packet scale $r=\ell_n$, however,
+\[
+ \frac{\log\mu(B(x_n,\ell_n))}{\log\ell_n}
+ =\frac{2n\log2-\log12}{n^3\log2}\longrightarrow0.
+\]
+Every proposed common cutoff therefore leaves a positive-mass atom that
+violates the exponent-$1/2$ estimate.  The source condition fails.
+\end{proof}
+
+\section{Verification, scope, and novelty}
+
+The proof is exact.  The accompanying checker evaluates truncated versions
+of both packet models, confirms the fibre-separation inequalities, and
+recovers the target logarithmic slopes for representative values
+$\beta=0,1/3,1,3/2,2,4$.  These numerical checks are sanity tests only; the
+geometric-series and beta-integral estimates above are the proof.
+
+Theorem~\ref{thm:universal} is full for the source's countable-fibre question
+in the lower-local-dimension setting: every finite nonnegative value occurs,
+so no finer answer can follow from the stated numerical data and countability
+alone.  It does not classify upper local dimensions on arbitrary groups or
+settle the source's separate higher-dimensional boundary question.
+
+The run indexes were searched for arXiv:2502.18337, countable representation
+fibres, lower local dimension under convolution, and scale-wise bad-centre
+conditions.  Bounded web searches on August 9, 2026 used the exact source
+sentence, title, arXiv id, and combinations of ``local dimension,''
+``convolution,'' ``countable fibre,'' and ``universality.''  They found the
+source and Prandi's 2026 thesis~\cite{Prandi}, but no later resolution or
+matching construction.  The thesis's subsequent ``addition of measures''
+chapter concerns the ordinary sum $\mu+\nu$; its convolution chapter retains
+the source theorem and does not answer the countable-fibre question.  Novelty
+confidence is positive but remains subject to expert bibliographic review.
+
+Human review should focus on the off-diagonal tail lemma, the every-scale
+lower bound in the $\beta=0$ construction, and the endpoint beta-integral for
+$\beta>1$.  The recommended verdict is \emph{candidate full, likely valid}.
+
+\begin{thebibliography}{9}
+\bibitem{HP}
+K. G. Hare and J. G. Prandi,
+\emph{Bounding the Local Dimension of the Convolution of Measures},
+arXiv:2502.18337 (2025); accepted in Real Analysis Exchange.
+
+\bibitem{Prandi}
+J. G. Prandi,
+\emph{Iterated Function Systems and the Local Dimension of Measures},
+Ph.D. thesis, University of Waterloo (2026), Chapter~4.
+\end{thebibliography}
+
+\end{document}

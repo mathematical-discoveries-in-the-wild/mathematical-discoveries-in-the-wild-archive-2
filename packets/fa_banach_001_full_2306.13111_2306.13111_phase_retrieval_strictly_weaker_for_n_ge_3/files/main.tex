@@ -1,0 +1,348 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Sn}{S_n}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\down}{\mathord{\downarrow}}
+
+\title{Phase retrieval is strictly weaker than universal sorting once there are three rows}
+\author{Candidate full implication-level answer to the open question in arXiv:2306.13111}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\fbox{\parbox{0.94\linewidth}{\textbf{Status: candidate full result,
+likely valid.}  For every number of rows \(n\ge2\), an injective sorting
+encoder \(\beta_A\) forces the phase-retrieval map \(\alpha_A\) to be
+injective, and the same implication holds with unchanged admissible
+bi-Lipschitz constants.  The converse is an equivalence for \(n=2\), as proved
+in the source, but is strict for every \(n\ge3\) and \(d\ge2\).  More sharply,
+every minimally redundant real phase-retrieval frame, with \(D=2d-1\)
+measurements, fails to be a universal sorting key for every \(n\ge3\).
+Consequently a universal key for \(n\ge3\) requires \(D\ge2d\).}}
+
+\section{\texorpdfstring{\hspace{0.35em}}{}The source question}
+
+Let \(A=[a_1|\cdots|a_D]\in\R^{d\times D}\).  The source compares
+\[
+ \alpha_A(x)=\bigl(|\langle x,a_j\rangle|\bigr)_{j=1}^D
+\]
+on \(\R^d/\{\pm1\}\) with the columnwise sorting encoder
+\[
+ \beta_A(X)=\down(XA),\qquad X\in\R^{n\times d},
+\]
+on \(\R^{n\times d}/\Sn\).  The matrix \(A\) is called a
+\emph{universal key} when \(\beta_A\) separates row-permutation orbits.
+Theorem~1 of the source proves that, for \(n=2\), \(A\) is a universal key if
+and only if it is a real phase-retrieval frame.  The conclusion asks for the
+relationship between \(\alpha_A\) and \(\beta_A\) when \(n>2\)
+\cite[Conclusion]{BT}.
+
+The result below completely determines the implication relation between the
+two injectivity properties.  It also gives a quantitative one-way relation
+and a new template-count obstruction.
+
+\section{\texorpdfstring{\hspace{0.35em}}{}Idea of the proof}
+
+There are two simple but complementary ideas.
+
+First, insert a signal \(x\) into the \(n\)-row point cloud
+\[
+ X_x=(x,-x,0,\ldots,0)^T.
+\]
+Its permutation-orbit distance is exactly \(\sqrt2\) times the sign-orbit
+distance of \(x\), while sorting each projected column merely places
+\(-|\langle x,a_j\rangle|\) and \(+|\langle x,a_j\rangle|\) around zeros.
+Thus phase retrieval sits as a scaled isometric slice of the sorting problem.
+
+Second, let \(A\) be a full-spark frame with the minimal \(2d-1\) columns.
+Partition the columns into blocks of sizes \(d-1,d-1,1\).  Normals to the
+first two blocks can be scaled so that their sum is orthogonal to the last
+column.  This produces three nonzero vectors \(r_1,r_2,r_3\) with sum zero
+such that every measurement vector is orthogonal to at least one \(r_i\).
+Along such a measurement, the three projections of
+\(\{r_1,r_2,r_3\}\) have the form \(\{0,t,-t\}\), so they are unchanged after
+negating the entire point cloud.  The two clouds are nevertheless not row
+permutations.  This is a three-point switching component tailored to every
+minimal phase-retrieval frame.
+
+\section{\texorpdfstring{\hspace{0.35em}}{}The phase-retrieval slice}
+
+Write
+\[
+ d_{\pm}(x,y)=\min\{\|x-y\|,\|x+y\|\}
+\]
+and
+\[
+ d_{\Sn}(X,Y)=\min_{P\in\Sn}\|X-PY\|_F.
+\]
+For \(n\ge2\), let \(X_x\in\R^{n\times d}\) have first two rows \(x,-x\)
+and all remaining rows zero.
+
+\begin{lemma}\label{lem:slice}
+For all \(x,y\in\R^d\),
+\[
+ d_{\Sn}(X_x,X_y)=\sqrt2\,d_{\pm}(x,y)
+\]
+and
+\[
+ \|\beta_A(X_x)-\beta_A(X_y)\|_F
+ =\sqrt2\,\|\alpha_A(x)-\alpha_A(y)\|_2.
+\]
+\end{lemma}
+
+\begin{proof}
+The squared matching cost between the row multisets
+\(\{x,-x,0,\ldots,0\}\) and \(\{y,-y,0,\ldots,0\}\) equals
+\[
+ 2\|x\|^2+2\|y\|^2
+ -2\max_{P\in\Sn}\sum_{i=1}^n\langle (X_x)_i,(PX_y)_i\rangle.
+\]
+The maximum inner-product sum is \(2|\langle x,y\rangle|\), achieved by
+matching the two nonzero antipodal pairs with the favorable sign.  This gives
+\[
+ d_{\Sn}(X_x,X_y)^2
+ =2\bigl(\|x\|^2+\|y\|^2-2|\langle x,y\rangle|\bigr)
+ =2d_{\pm}(x,y)^2.
+\]
+
+For the \(j\)-th column, putting \(s=\langle x,a_j\rangle\) gives
+\[
+ \down(X_xa_j)=(-|s|,0,\ldots,0,|s|)^T
+\]
+when sorting is increasing; decreasing order only reverses the vector.
+The squared difference of the \(j\)-th sorted columns for \(x\) and \(y\) is
+twice the squared difference of the corresponding magnitudes.  Summing over
+\(j\) proves the second identity.
+\end{proof}
+
+\begin{proposition}\label{prop:oneway}
+Let \(n\ge2\).  If \(\beta_A\) is injective on
+\(\R^{n\times d}/\Sn\), then \(\alpha_A\) is injective on
+\(\R^d/\{\pm1\}\).
+
+More quantitatively, if
+\[
+ c\,d_{\Sn}(X,Y)\le
+ \|\beta_A(X)-\beta_A(Y)\|_F
+ \le C\,d_{\Sn}(X,Y)
+\]
+for all \(X,Y\), then
+\[
+ c\,d_{\pm}(x,y)\le
+ \|\alpha_A(x)-\alpha_A(y)\|_2
+ \le C\,d_{\pm}(x,y)
+\]
+for all \(x,y\).  Hence the optimal lower constant of \(\alpha_A\) is at
+least that of \(\beta_A\), and its optimal upper constant is at most that of
+\(\beta_A\).
+\end{proposition}
+
+\begin{proof}
+Restrict \(\beta_A\) to the point clouds \(X_x\) and apply
+Lemma~\ref{lem:slice}.  If \(\alpha_A(x)=\alpha_A(y)\), then
+\(\beta_A(X_x)=\beta_A(X_y)\); injectivity makes the row multisets equal,
+which forces \(y=\pm x\).
+\end{proof}
+
+\section{Strictness for every \texorpdfstring{\(n\ge3\)}{n at least 3}}
+
+We use the standard real complement-property characterization: a real frame
+does phase retrieval if and only if every partition of its columns has a
+spanning side \cite{BCE}.  With exactly \(2d-1\) columns, this is equivalent
+to full spark.  Indeed, full spark makes the side with at least \(d\) columns
+span; conversely, a dependent \(d\)-set and its \((d-1)\)-element complement
+violate the complement property.
+
+\begin{theorem}\label{thm:strict}
+Let \(d\ge2\), \(n\ge3\), and
+\(A=[a_1|\cdots|a_{2d-1}]\in\R^{d\times(2d-1)}\) be full spark.  Then
+\(\beta_A\) is not injective on \(\R^{n\times d}/\Sn\).
+
+Consequently every minimally redundant real phase-retrieval frame fails to
+be a universal key as soon as \(n\ge3\).
+\end{theorem}
+
+\begin{proof}
+Partition the column indices into disjoint sets
+\[
+ I\mathbin{\dot\cup}J\mathbin{\dot\cup}\{k\}
+ =[2d-1],\qquad |I|=|J|=d-1.
+\]
+Full spark implies that the columns in each of \(I\) and \(J\) span a
+hyperplane.  Choose nonzero normals
+\[
+ u\perp\operatorname{span}\{a_i:i\in I\},\qquad
+ v\perp\operatorname{span}\{a_j:j\in J\}.
+\]
+Both \(\langle a_k,u\rangle\) and \(\langle a_k,v\rangle\) are nonzero;
+otherwise \(a_k\) together with one of the \((d-1)\)-blocks would be a
+dependent \(d\)-set.  Define
+\[
+ r_1=\langle a_k,v\rangle u,\qquad
+ r_2=-\langle a_k,u\rangle v,\qquad
+ r_3=-(r_1+r_2).
+\]
+Then
+\[
+ r_1+r_2+r_3=0,\qquad
+ a_i\perp r_1\ (i\in I),\qquad
+ a_j\perp r_2\ (j\in J),\qquad
+ a_k\perp r_3.
+\]
+The vectors \(r_1,r_2\) are nonzero.  They are not collinear: otherwise the
+two block hyperplanes would coincide and would contain the \(2d-2\) columns
+indexed by \(I\cup J\), contradicting full spark.  Hence \(r_3\ne0\) as well.
+
+Let \(X,Y\in\R^{n\times d}\) have row multisets
+\[
+ \{r_1,r_2,r_3,0,\ldots,0\},\qquad
+ \{-r_1,-r_2,-r_3,0,\ldots,0\},
+\]
+respectively.  Fix a measurement column \(a_\ell\).  It is orthogonal to at
+least one \(r_q\).  Since the three scalar projections sum to zero, their
+multiset is
+\[
+ \{\langle r_1,a_\ell\rangle,
+   \langle r_2,a_\ell\rangle,
+   \langle r_3,a_\ell\rangle\}
+ =\{0,t,-t\}
+\]
+for some \(t\).  Negating the three vectors leaves this multiset unchanged.
+The additional zero rows agree, so every sorted column agrees and
+\(\beta_A(X)=\beta_A(Y)\).
+
+Yet \(X\) and \(Y\) are not row permutations.  If the three-element
+multiset \(\{r_1,r_2,r_3\}\) equaled its negative, then an odd-cardinality
+sign-invariant multiset would have to contain zero: all nonzero elements pair
+as \(r,-r\) with equal multiplicities.  None of the \(r_i\) is zero, a
+contradiction.
+\end{proof}
+
+\begin{corollary}\label{cor:count}
+Let \(d\ge2\) and \(n\ge3\).  Every universal key
+\(A\in\R^{d\times D}\) has
+\[
+ D\ge2d.
+\]
+\end{corollary}
+
+\begin{proof}
+Proposition~\ref{prop:oneway} makes \(A\) a phase-retrieval frame, so the
+real complement property gives \(D\ge2d-1\).  Equality would make \(A\)
+full spark and contradict Theorem~\ref{thm:strict}.
+\end{proof}
+
+\begin{corollary}\label{cor:classification}
+At the level of injectivity, the relationship is:
+\[
+\begin{array}{c|c}
+\text{regime}&\text{relationship}\\ \hline
+n=2&\beta_A\text{ injective}\Longleftrightarrow
+      \alpha_A\text{ injective}\quad\text{(source theorem)},\\
+d=1&\beta_A\text{ injective}\Longleftrightarrow
+      \alpha_A\text{ injective}\quad\text{for every }n,\\
+n\ge3,\ d\ge2&\beta_A\text{ injective}\Longrightarrow
+      \alpha_A\text{ injective, and the converse is false.}
+\end{array}
+\]
+\end{corollary}
+
+\begin{proof}
+Only the one-dimensional statement remains.  A frame in \(\R\) does phase
+retrieval exactly when some \(a_j\ne0\).  Sorting the corresponding nonzero
+scalar multiple of the rows recovers their unordered multiset, so the same
+condition makes \(\beta_A\) injective for every \(n\).
+
+For \(n\ge3,d\ge2\), full-spark frames with \(2d-1\) columns exist, for
+example Vandermonde frames.  They phase retrieve but fail universality by
+Theorem~\ref{thm:strict}.
+\end{proof}
+
+\section{\texorpdfstring{\hspace{0.35em}}{}Current bounds and a sharp small case}
+
+The 2026 follow-up by Dym, Wellershoff, Tsoukanis, Levy, and Balan proves that
+every full-spark \(A\) is universal when
+\[
+ D\ge n(d-1)+1
+\]
+and gives a different logarithmic lower bound \cite[Theorems 4 and 5]{DWTLB}.
+Its numerical section reports failure to find separating keys in the cases
+\[
+ (n,d,D)=(3,2,3),(3,3,5),(3,4,7),
+\]
+exactly the pattern \(n=3,D=2d-1\), but states this only as numerical
+evidence \cite[Sec.~IV]{DWTLB}.  Theorem~\ref{thm:strict} proves that failure
+for every \(d\ge2\), for every full-spark choice of the columns, and indeed
+for every \(n\ge3\).
+
+Combining Corollary~\ref{cor:count} with the follow-up's full-spark upper
+bound gives the exact small case
+\[
+ D_{\min}(n=3,d=2)=4.
+\]
+More generally, the present result improves the universal lower bound to
+\(D\ge2d\) throughout the regime \(n\ge3,d\ge2\); depending on \(n,d\), the
+follow-up's logarithmic obstruction may be stronger.
+
+\section{Proof audit, scope, and novelty}
+
+The argument uses no genericity and no numerical inference.  The only
+external structural input is the standard real complement-property theorem;
+the equivalence between minimal phase retrieval and full spark is reproved
+above.  The construction is homogeneous and works with repeated zero rows,
+so the passage from three rows to arbitrary \(n\ge3\) is exact.
+
+This is a full answer to the source's implication-level injectivity question,
+plus a quantitative one-way result.  It does not solve the separate neural
+network implementation problem mentioned in the same conclusion, nor does it
+determine the optimal number of templates for every \(n,d\).
+
+Searches through 11 August 2026 covered the source title and exact concluding
+sentence, ``phase retrieval'', ``universal key'', ``sorting-based
+permutation-invariant embedding'', and the later literature.  The closest
+paper is arXiv:2510.22186v2, which proves broader upper and lower bounds and
+records the \(n=3,D=2d-1\) failures only numerically.  The three-point
+switching idea is related to classical discrete tomography
+\cite{MPS}, especially in the planar case, but no source located states the
+frame-uniform theorem above, the \(D\ge2d\) corollary, or the exact scaled
+phase-retrieval slice.  Novelty confidence is therefore moderate.
+
+\begin{thebibliography}{9}
+
+\bibitem{BT}
+R.~Balan and E.~Tsoukanis,
+\emph{Relationships between the Phase Retrieval Problem and Permutation
+Invariant Embeddings},
+arXiv:2306.13111v2 (2023),
+\url{https://arxiv.org/abs/2306.13111}.
+
+\bibitem{BCE}
+R.~Balan, P.~G. Casazza, and D.~Edidin,
+\emph{On signal reconstruction without phase},
+Applied and Computational Harmonic Analysis 20 (2006), 345--356.
+
+\bibitem{DWTLB}
+N.~Dym, M.~Wellershoff, E.~Tsoukanis, D.~Levy, and R.~Balan,
+\emph{Quantitative Bounds for Sorting-Based Permutation-Invariant Embeddings},
+arXiv:2510.22186v2 (2026),
+\url{https://arxiv.org/abs/2510.22186}.
+
+\bibitem{MPS}
+J.~Matou\v{s}ek, A.~P\v{r}\'{\i}v\v{e}tiv\'y, and P.~\v{S}kovro\v{n},
+\emph{How many points can be reconstructed from \(k\) projections?},
+SIAM Journal on Discrete Mathematics 22 (2008), 1605--1623.
+
+\end{thebibliography}
+
+\end{document}

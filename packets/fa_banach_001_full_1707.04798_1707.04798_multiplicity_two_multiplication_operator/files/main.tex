@@ -1,0 +1,305 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{booktabs}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\Lp}{L^p[0,1]}
+\newcommand{\Dcal}{\mathcal D}
+\newcommand{\Ecal}{\mathbb E}
+\newcommand{\one}{\mathbf 1}
+
+\title{A Haar-Rearrangement Solution of the Multiplicity-Two Problem\\
+for Multiplication on $L^p[0,1]$}
+\author{Candidate solution packet for arXiv:1707.04798, Problem 1}
+\date{August 9, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{black}{gray!10}{\parbox{0.91\textwidth}{
+\textbf{Status.} Candidate full solution; verdict \textbf{likely valid}, pending
+independent human review. The proof gives an affirmative answer for every
+$1<p<\infty$, including $p=2$.
+}}
+\end{center}
+
+\section{Source question}
+
+Let $M$ be multiplication by the coordinate on $\Lp$,
+\[
+  (Mf)(t)=t f(t).
+\]
+Problem 1 in Section 4 of Boedihardjo's paper \cite{Boedihardjo} asks, for
+$1<p<\infty$ and $p\ne2$, whether there is a compact operator $K$ on $\Lp$
+such that $M\oplus M$ is similar to $M+K$.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{Problem 1 on PDF page 9 of the source paper.}
+\end{figure}
+
+The source notes on the following page that the answer is known to be
+affirmative when $p=2$.
+
+\section{Proof intuition}
+
+The coordinate multiplier is compactly close to a diagonal operator on the
+standard Haar basis: attach to the Haar function on a dyadic interval $I$ the
+center $c_I$ of that interval. To fit two copies of this diagonal into one
+copy, send the Haar coordinate indexed by $I$ in the first copy to the
+coordinate indexed by the left child $I0$, and send the corresponding
+coordinate in the second copy to the right child $I1$.
+
+There are two points to prove. First, each fixed-child rearrangement is an
+isomorphism onto its Haar-coordinate range. The upper estimate follows
+pointwise from Haar square functions; the lower estimate follows from Stein's
+vector-valued conditional-expectation inequality. Second, after the
+rearrangement, the value $c_I$ is placed on $I0$ and $I1$, whereas the original
+diagonal places $c_{I0}$ and $c_{I1}$ there. The errors have magnitude
+$|I|/4$, hence tend uniformly to zero by Haar level and define a compact
+diagonal operator.
+
+\section{Dyadic preliminaries}
+
+Let $\Dcal$ be the dyadic intervals in $[0,1]$. For $I\in\Dcal$, let $I0$
+and $I1$ denote its left and right children, let $c_I$ be its center, and use
+the $L^p$-normalized Haar function
+\[
+  h_I=|I|^{-1/p}(\one_{I0}-\one_{I1}).
+\]
+Together with $e=\one_{[0,1]}$, the family
+$\{e\}\cup\{h_I:I\in\Dcal\}$ is an unconditional Schauder basis of $\Lp$.
+
+For a finite Haar expansion $x=\sum_I a_Ih_I$, set
+\[
+  Sx(t)=\left(\sum_I |a_I|^2 |I|^{-2/p}\one_I(t)\right)^{1/2}.
+\]
+The martingale square-function theorem \cite{Stein} gives constants depending only on $p$
+such that
+\begin{equation}\label{eq:square}
+  A_p\|x\|_p\le \|Sx\|_p\le B_p\|x\|_p.
+\end{equation}
+We also use Stein's vector-valued inequality for dyadic conditional
+expectations \cite{Stein}: if $\Ecal_n$ is conditional expectation onto the
+dyadic sigma-algebra at level $n$, then
+\begin{equation}\label{eq:stein}
+ \left\|\left(\sum_n|\Ecal_n f_n|^2\right)^{1/2}\right\|_p
+ \le C_p
+ \left\|\left(\sum_n|f_n|^2\right)^{1/2}\right\|_p.
+\end{equation}
+
+\section{The child rearrangements}
+
+Let $H$ be the closed span of the Haar functions $h_I$.
+
+\begin{lemma}\label{lem:child}
+For $\varepsilon\in\{0,1\}$, the rule
+\[
+  T_\varepsilon h_I=h_{I\varepsilon}
+\]
+extends to an isomorphism from $H$ onto the closed Haar-coordinate subspace
+\[
+  Y_\varepsilon=\overline{\operatorname{span}}
+  \{h_{I\varepsilon}:I\in\Dcal\}.
+\]
+\end{lemma}
+
+\begin{proof}
+We prove the claim first on finite Haar sums. If
+$x=\sum_I a_Ih_I$, then
+\[
+ S(T_\varepsilon x)(t)^2
+ =2^{2/p}\sum_I|a_I|^2|I|^{-2/p}\one_{I\varepsilon}(t)
+ \le 2^{2/p}Sx(t)^2.
+\]
+Together with \eqref{eq:square}, this proves the upper bound for
+$T_\varepsilon$.
+
+For the reverse bound, for every level $n$ define
+\[
+ f_n=\sum_{\substack{I\in\Dcal\\ |I|=2^{-n}}}
+ a_I|I|^{-1/p}\one_{I\varepsilon}.
+\]
+The intervals at a fixed level are disjoint, and
+\[
+ \Ecal_n f_n=\frac12
+ \sum_{|I|=2^{-n}}a_I|I|^{-1/p}\one_I.
+\]
+Consequently,
+\[
+ Sx=2\left(\sum_n|\Ecal_n f_n|^2\right)^{1/2},
+ \qquad
+ \left(\sum_n|f_n|^2\right)^{1/2}
+ =2^{-1/p}S(T_\varepsilon x).
+\]
+Applying \eqref{eq:stein}, followed by \eqref{eq:square} twice, gives
+\[
+ \|x\|_p\le C'_p\|T_\varepsilon x\|_p.
+\]
+Thus $T_\varepsilon$ is bounded and bounded below. Its range is therefore
+closed and is exactly $Y_\varepsilon$.
+\end{proof}
+
+Define $U:(\Lp\oplus\Lp)_p\to\Lp$ by
+\begin{equation}\label{eq:U}
+ U(ae+x,be+y)=ae+b h_{[0,1]}+T_0x+T_1y,
+ \qquad x,y\in H.
+\end{equation}
+The four coordinate families in \eqref{eq:U} are disjoint, and together they
+exhaust the target Haar basis: the constant $e$, the root Haar function
+$h_{[0,1]}$, all left-child Haar functions, and all right-child Haar
+functions. Since the Haar basis is unconditional, the coordinate projections
+onto these four families are bounded. Lemma \ref{lem:child} therefore shows
+that $U$ is bounded, onto, and has a bounded inverse.
+
+\section{A compact Haar diagonalization}
+
+Define a diagonal operator $D$ on the Haar basis by
+\begin{equation}\label{eq:D}
+  De=\frac12e,
+  \qquad
+  Dh_I=c_Ih_I \quad(I\in\Dcal).
+\end{equation}
+
+\begin{lemma}\label{lem:compactdiag}
+$C=M-D$ is compact on $\Lp$.
+\end{lemma}
+
+\begin{proof}
+Let $P_n$ be the Haar-coordinate projection onto the functions $h_I$ with
+$|I|=2^{-n}$. These projections are uniformly bounded by unconditionality.
+If $x=\sum_{|I|=2^{-n}}a_Ih_I$, the supports of the summands are disjoint and
+$|t-c_I|\le |I|/2$ on $I$. Hence
+\[
+ \|(M-D)x\|_p\le 2^{-n-1}\|x\|_p.
+\]
+Let $Q_N$ be the coordinate projection onto the constant and the Haar levels
+at most $N$. It follows that
+\[
+ \left\|(M-D)(I-Q_N)\right\|
+ \le C_p\sum_{n>N}2^{-n-1}\longrightarrow0.
+\]
+Since $(M-D)Q_N$ has finite rank, $M-D$ is the operator-norm limit of
+finite-rank operators and is compact.
+\end{proof}
+
+\section{Full solution}
+
+\begin{theorem}\label{thm:main}
+Let $1<p<\infty$ and let $M$ be multiplication by $t$ on $L^p[0,1]$. There
+are an isomorphism
+\[
+ U:(L^p[0,1]\oplus L^p[0,1])_p\longrightarrow L^p[0,1]
+\]
+and a compact operator $K$ on $L^p[0,1]$ such that
+\[
+  U(M\oplus M)U^{-1}=M+K.
+\]
+In particular, Problem 1 of \cite{Boedihardjo} has an affirmative answer.
+\end{theorem}
+
+\begin{proof}
+Use the isomorphism $U$ from \eqref{eq:U} and the diagonal $D$ from
+\eqref{eq:D}. Put
+\[
+  A=U(D\oplus D)U^{-1}.
+\]
+This is diagonal in the target Haar basis. The two constant coordinates give
+\[
+  Ae=\tfrac12e,
+  \qquad Ah_{[0,1]}=\tfrac12h_{[0,1]},
+\]
+and for every dyadic $I$ and $\varepsilon\in\{0,1\}$,
+\[
+  Ah_{I\varepsilon}=c_Ih_{I\varepsilon}.
+\]
+On the other hand, $Dh_{I\varepsilon}=c_{I\varepsilon}h_{I\varepsilon}$, and
+\[
+ |c_I-c_{I\varepsilon}|=\frac{|I|}{4}.
+\]
+Thus $E=A-D$ is diagonal on an unconditional basis and its diagonal
+coefficients tend to zero. Its truncations converge in operator norm, so $E$
+is compact.
+
+By Lemma \ref{lem:compactdiag}, $M=D+C$ for a compact $C$. Therefore
+\begin{align*}
+ U(M\oplus M)U^{-1}
+ &=U(D\oplus D)U^{-1}+U(C\oplus C)U^{-1}\\
+ &=D+E+U(C\oplus C)U^{-1}\\
+ &=M+\bigl(E+U(C\oplus C)U^{-1}-C\bigr).
+\end{align*}
+The operator in parentheses is compact. Taking it to be $K$ proves the
+claim.
+\end{proof}
+
+\section{Verification notes}
+
+The main possible failure modes were checked as follows.
+\begin{enumerate}[leftmargin=*]
+\item The proof does not infer compactness merely from small errors on basis
+vectors. Lemma \ref{lem:compactdiag} gives a summable operator-norm tail, and
+$E$ is a null diagonal on an unconditional basis.
+\item The map $I\mapsto I\varepsilon$ does alter nesting, so arbitrary-basis
+permutability cannot be invoked. Lemma \ref{lem:child} proves the two required
+rearrangements directly.
+\item The two image subspaces need not be an isometric $\ell^p$ sum. Bounded
+coordinate projections give the needed topological direct sum, and finite
+product norms are equivalent.
+\item The finite coordinates match: the first constant maps to the target
+constant, the second constant to the root Haar function, and all remaining
+target Haar functions are uniquely a left or right child.
+\end{enumerate}
+
+The script \texttt{code/verify\_dyadic\_absorption.py} checks finite dyadic
+truncations, exact coordinate coverage, parent-child center errors, and random
+$L^p$ norm ratios. These computations are sanity checks and are not used as
+proof. With 500 fixed-seed samples at every depth through 8, the exact checks
+passed and the randomized ratios, over $p\in\{1.2,1.5,3,5\}$, lay between
+$0.644458$ and $1.687973$.
+
+\section{Novelty and limitations}
+
+The lightweight run indexes were searched using arXiv:1707.04798, the exact
+problem language, multiplicity-two terminology, compact perturbation, and
+Haar-rearrangement phrases. A bounded external search used the exact question,
+the paper title and author, the arXiv id, and close variants. It found the
+source arXiv and journal records but no later work claiming this resolution.
+The search was bounded rather than exhaustive, so the mathematical novelty
+claim has moderate confidence.
+
+The theorem resolves Problem 1 and supplies an explicit Haar-coordinate
+similarity. It does not address Problem 2 in the source paper, which asks for a
+1-summing perturbation for a multiplication operator on a square in the
+complex plane.
+
+\section{Human-review recommendation}
+
+The packet should be reviewed as a candidate full solution. The highest-value
+checks are the normalization and applicability of Stein's inequality in
+Lemma \ref{lem:child}, followed by the finite-coordinate bookkeeping in
+\eqref{eq:U}. The compactness and conjugation steps are then routine.
+
+\begin{thebibliography}{9}
+
+\bibitem{Boedihardjo}
+M.~T. Boedihardjo,
+\emph{Multiplication operators on $L^p$},
+Studia Math. 244 (2019), 309--319;
+\href{https://arxiv.org/abs/1707.04798}{arXiv:1707.04798}.
+
+\bibitem{Stein}
+E.~M. Stein,
+\emph{Topics in Harmonic Analysis Related to the Littlewood--Paley Theory},
+Annals of Mathematics Studies 63, Princeton University Press, 1970.
+
+\end{thebibliography}
+
+\end{document}

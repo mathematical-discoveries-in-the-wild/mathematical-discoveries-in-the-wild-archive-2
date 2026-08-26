@@ -1,0 +1,315 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{mathrsfs}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\Pcal}{\mathscr P}
+\newcommand{\Prob}{\mathcal P}
+\newcommand{\crit}{\operatorname{crit}_{\Pcal}}
+\newcommand{\Mdim}{\overline{\dim}_{\mathrm M}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Wp}{W_p}
+
+\title{Upper Minkowski dimension need not lower-bound the\\
+power-exponential size of a Wasserstein space}
+\author{Candidate counterexample to the strongest conjecture in arXiv:1304.5219}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\fbox{\parbox{0.94\linewidth}{\textbf{Status: candidate full
+counterexample, likely valid.}  For every prescribed finite $D>0$ there is
+a compact ultrametric space $X$ such that
+\[
+       \Mdim X=D
+       \qquad\text{but}\qquad
+       \crit(\Prob(X),\Wp)=0
+       \quad\text{for every }p\in[1,\infty).
+\]
+Thus even among compact ultrametric spaces, upper Minkowski dimension does
+not in general lower-bound the power-exponential critical parameter of the
+Wasserstein space.  In particular, the strongest conjecture in the source
+paper is false.}}
+
+\section{The source question}
+
+Kloeckner proves for every compact metric space $X$ that
+\[
+ \dim_{\mathrm H}X\leq \crit(\Prob(X),\Wp)\leq \Mdim X.
+\]
+At the end of the paper he asks whether, at least for ultrametric $X$, the
+critical parameter might also be bounded below by the lower or upper
+Minkowski dimension, and records as the strongest conjecture
+\[
+                 \crit(\Prob(X),\Wp)=\Mdim X
+                 \quad\text{for every compact metric }X
+\tag{Q}\label{eq:question}
+\]
+\cite[p.~21, final paragraph]{Kloeckner}.  Here is the source passage.
+
+\begin{center}
+\includegraphics[width=\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+We disprove the upper-Minkowski lower bound, already in the ultrametric
+class.  Our example has lower Minkowski dimension zero, so it does not decide
+the weaker possible lower-Minkowski bound.
+
+\section{Definitions and a covering criterion}
+
+For a compact metric space $Y$, let $N_Y(r)$ denote the least number of
+radius-$r$ balls that cover $Y$.  We use
+\[
+  \Mdim Y=\limsup_{r\downarrow0}\frac{\log N_Y(r)}{\log(1/r)}.
+\]
+For $s>0$, put $\psi_s(r)=\exp(-r^{-s})$.  The
+power-exponential critical parameter is the critical value of the Hausdorff
+scale $(\psi_s)_{s>0}$.  We need only the following direct consequence of
+the definition.
+
+\begin{lemma}[Cheap subsequential covers]\label{lem:gauge}
+Suppose $Y$ has, for a sequence $r_k\downarrow0$, a cover by $Q_k$ balls of
+radius $r_k$ such that
+\[
+       \log Q_k-(2r_k)^{-s}\longrightarrow-\infty.
+\]
+Then the $\psi_s$-Hausdorff measure of $Y$ is zero.  If this holds for every
+$s>0$, then $\operatorname{crit}_{\Pcal}Y=0$.
+\end{lemma}
+
+\begin{proof}
+The covering balls have diameter at most $2r_k$, and the sum of their
+$\psi_s$-costs is at most
+\[
+ Q_k\psi_s(2r_k)
+ =\exp\!\left(\log Q_k-(2r_k)^{-s}\right)\longrightarrow0.
+\]
+Since their diameters tend to zero, the Hausdorff outer measure is zero.
+The final assertion follows by letting $s>0$ be arbitrary.
+\end{proof}
+
+We also use an elementary finite-simplex estimate.
+
+\begin{lemma}[A net for finitely supported measures]\label{lem:simplex}
+Let $Z$ be an $n$-point metric space of diameter at most $1$.  For every
+$p\geq1$ and $0<r<1$, $(\Prob(Z),\Wp)$ has an $r/2$-net of cardinality at
+most
+\[
+                  \bigl(1+2^p n r^{-p}\bigr)^n.
+\tag{1}\label{eq:simplexnet}
+\]
+\end{lemma}
+
+\begin{proof}
+Enumerate $Z=\{z_1,\ldots,z_n\}$ and set
+$\delta=(r/2)^p/n$.  Given a probability vector $(a_i)$, round each of
+$a_1,\ldots,a_{n-1}$ down to a multiple of $\delta$ and put the remaining
+mass at $z_n$.  The original and rounded vectors have total variation
+distance at most $n\delta=(r/2)^p$.  A maximal coupling moves only this
+amount of mass, by distance at most $1$, so its $p$-cost is at most
+$(r/2)^p$.  There are at most $(1+\delta^{-1})^{n-1}$ rounded vectors,
+which is bounded by \eqref{eq:simplexnet}.
+\end{proof}
+
+\section{Proof intuition}
+
+Upper Minkowski dimension is a limsup.  We exploit this by placing a huge
+finite equilateral block at a radius $R_k$, large enough that the covering
+number near $R_k$ looks $D$-dimensional, and then leaving a vastly larger
+gap before the next radius $R_{k+1}$.  These isolated bursts force
+$\Mdim X=D$.
+
+The Wasserstein space still contains a large finite simplex at every burst,
+but a finite simplex becomes inexpensive to cover if one is allowed to go
+far enough below its diameter.  At a radius chosen deep in the gap
+$(R_{k+1},R_k)$, all later mass can be collapsed to the accumulation point at
+negligible transport cost, while the first $k$ blocks form only one finite
+simplex.  Its logarithmic covering cost grows merely as its dimension times
+the logarithm of the requested accuracy.  The power-exponential gauge at
+the same accuracy is double-exponentially smaller.  A sequence of such cheap
+covers makes every positive power-exponential Hausdorff measure vanish.
+
+\section{The ultrametric counterexample}
+
+\begin{theorem}\label{thm:main}
+For every $D\in(0,\infty)$ there is a compact countable ultrametric space
+$X_D$ satisfying
+\[
+       \Mdim X_D=D,
+       \qquad
+       \operatorname{crit}_{\Pcal}(\Prob(X_D),W_p)=0
+       \quad\text{for every }p\in[1,\infty).
+\]
+The same space $X_D$ works simultaneously for all $p$.
+\end{theorem}
+
+\begin{proof}
+Fix $D>0$.  Define
+\[
+ A_1=1,
+ \qquad
+ A_{k+1}=\exp\bigl(4(D+1)A_k\bigr),
+ \qquad
+ R_k=e^{-A_k},
+ \qquad
+ M_k=\left\lceil e^{DA_k}\right\rceil.
+\tag{2}\label{eq:sequences}
+\]
+Let $C_k$ be a set of $M_k$ points, take all the $C_k$ disjoint, and set
+\[
+                    X_D=\{\infty\}\sqcup\bigsqcup_{k\geq1}C_k.
+\]
+Give a point of $C_k$ radius $R_k$ and define, for distinct finite points,
+\[
+ d(x,\infty)=R_k\quad(x\in C_k),
+ \qquad
+ d(x,y)=\max\{d(x,\infty),d(y,\infty)\}.
+\tag{3}\label{eq:metric}
+\]
+For any three distinct points the two largest pairwise distances coincide,
+so $d$ is an ultrametric.  Since $R_k\downarrow0$, every tail
+$\{\infty\}\cup\bigcup_{i>k}C_i$ lies in the radius-$R_{k+1}$ ball about
+$\infty$; hence $X_D$ is compact.
+
+Put $S_k=\sum_{i\leq k}M_i$.  Super-exponential growth in
+\eqref{eq:sequences} gives
+\[
+                     \log(S_k+1)=DA_k+o(A_k).
+\tag{4}\label{eq:Sk}
+\]
+If $R_{k+1}\leq r<R_k$, each point in $C_1\cup\cdots\cup C_k$ needs its
+own $r$-ball, while the remaining tail needs one, and therefore
+\[
+                         N_{X_D}(r)=S_k+1.
+\tag{5}\label{eq:coverX}
+\]
+Equations \eqref{eq:Sk}--\eqref{eq:coverX} give the upper bound
+$\Mdim X_D\leq D$.  Taking $r=R_k/2$ gives the reverse inequality, since
+$R_{k+1}<R_k/2$ for all large $k$.  Thus
+\[
+                              \Mdim X_D=D.
+\tag{6}\label{eq:Mdim}
+\]
+
+It remains to estimate the Wasserstein space.  Fix $p\geq1$; the
+construction of $X_D$ does not depend on this choice.  Let
+\[
+ Z_k=\{\infty\}\cup\bigcup_{i\leq k}C_i,
+ \qquad n_k=|Z_k|=S_k+1,
+ \qquad \rho_k=\exp(-\sqrt{A_{k+1}}).
+\tag{7}\label{eq:rhok}
+\]
+Collapse $X_D\setminus Z_k$ to $\infty$ and denote this retraction by
+$\pi_k$.  Coupling every point with its image shows, for every
+$\mu\in\Prob(X_D)$,
+\[
+ W_p\bigl(\mu,(\pi_k)_\#\mu\bigr)^p
+ \leq\int d(x,\pi_kx)^p\,d\mu(x)
+ \leq R_{k+1}^p.
+\tag{8}\label{eq:tail}
+\]
+For large $k$, $R_{k+1}\leq\rho_k/2$.  Since $\operatorname{diam}X_D<1$,
+Lemma~\ref{lem:simplex} supplies a $\rho_k/2$-net of $\Prob(Z_k)$ with at
+most
+\[
+              Q_k:=\bigl(1+2^p n_k\rho_k^{-p}\bigr)^{n_k}
+\tag{9}\label{eq:Qk}
+\]
+points.  Combining this net with \eqref{eq:tail} shows that the same centers
+form a $\rho_k$-net of $\Prob(X_D)$ in $W_p$.
+
+Now \eqref{eq:Sk} and \eqref{eq:rhok} imply
+\[
+ \begin{aligned}
+ \log Q_k
+ &\leq n_k\bigl(O_p(1)+\log n_k+p\log(1/\rho_k)\bigr)\\
+ &=O_p\!\left(
+       e^{DA_k}\sqrt{A_{k+1}}
+     \right)
+ =O_p\!\left(e^{(3D+2)A_k}\right),
+ \end{aligned}
+\tag{10}\label{eq:logQ}
+\]
+because $\sqrt{A_{k+1}}=e^{2(D+1)A_k}$.  On the other hand, for every
+fixed $s>0$,
+\[
+ (2\rho_k)^{-s}
+ =2^{-s}\exp\!\left(s\sqrt{A_{k+1}}\right)
+ =2^{-s}\exp\!\left(s e^{2(D+1)A_k}\right).
+\tag{11}\label{eq:gaugegrowth}
+\]
+The quantity in \eqref{eq:gaugegrowth} dominates \eqref{eq:logQ}, so
+\[
+                       \log Q_k-(2\rho_k)^{-s}\longrightarrow-\infty.
+\]
+Lemma~\ref{lem:gauge} gives zero $\psi_s$-Hausdorff measure for
+$(\Prob(X_D),W_p)$.  This holds for every $s>0$, hence its
+power-exponential critical parameter is zero.  Since $p\geq1$ was arbitrary,
+the conclusion holds for all $p$ on the same $X_D$.
+\end{proof}
+
+\section{Consequences, checks, and scope}
+
+Taking any $D>0$ in Theorem~\ref{thm:main} yields
+\[
+       \operatorname{crit}_{\Pcal}(\Prob(X_D),W_p)=0
+       <D=\Mdim X_D,
+\]
+which directly refutes the upper-Minkowski lower bound for compact
+ultrametrics and therefore refutes \eqref{eq:question}.
+
+The proof uses no unproved regularity or selection lemma.  The two estimates
+that carry the argument are independently auditable: tail collapse costs at
+most $R_{k+1}$ by the explicit coupling \eqref{eq:tail}, and rounding a finite
+probability vector gives the net \eqref{eq:simplexnet}.  Constants such as
+$2$ are immaterial but have been retained so that the Hausdorff-gauge cover
+is literal rather than asymptotic.
+
+The example deliberately has
+\[
+                        \underline{\dim}_{\mathrm M}X_D=0.
+\]
+Indeed, at the intermediate radii
+$r_k=\exp(-\sqrt{A_kA_{k+1}})$, equation \eqref{eq:coverX} gives
+\[
+ \frac{\log N_{X_D}(r_k)}{\log(1/r_k)}
+ =\frac{DA_k+o(A_k)}{\sqrt{A_kA_{k+1}}}\longrightarrow0.
+\]
+Thus this packet does not disprove a lower bound by
+\emph{lower} Minkowski dimension, nor does it address an ultrametric skeleton
+theorem formulated with that invariant.
+
+\paragraph{Novelty check.}
+Before promotion, bounded searches were run through 11 August 2026 for the
+exact title and conjectural formula, for combinations of ``Wasserstein'',
+``power-exponential critical parameter'', ``upper Minkowski dimension'', and
+``ultrametric'', and for later work citing the source question.  No paper
+explicitly answering this conjecture was located.  The July 2026 arXiv paper
+\emph{Regular ultrametric skeletons} was also checked at the abstract/search
+level; its stated result concerns measure-controlled regular skeletons and
+did not reveal this Wasserstein counterexample.  Novelty confidence is
+moderate because the search was bounded rather than exhaustive.
+
+\paragraph{Human-review recommendation.}
+Check the convention relating covering balls to Hausdorff diameters in
+Lemma~\ref{lem:gauge}, the exact covering count \eqref{eq:coverX}, the rounding
+and maximal-coupling bound in Lemma~\ref{lem:simplex}, and the separation of
+single- versus double-exponential growth in \eqref{eq:logQ}--\eqref{eq:gaugegrowth}.
+
+\begin{thebibliography}{9}
+\bibitem{Kloeckner}
+B.~R. Kloeckner,
+\emph{A geometric study of Wasserstein spaces: ultrametrics},
+Mathematika 61 (2015), no.~1, 162--178;
+arXiv:1304.5219,
+\url{https://arxiv.org/abs/1304.5219}.
+\end{thebibliography}
+
+\end{document}

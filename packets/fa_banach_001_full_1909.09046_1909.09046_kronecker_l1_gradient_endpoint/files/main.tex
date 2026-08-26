@@ -1,0 +1,279 @@
+\documentclass[11pt]{amsart}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\T}{\mathbb T}
+\newcommand{\muN}{\mu_N}
+
+\begin{document}
+
+\title{The $L^1$-Gradient Endpoint for Badly Approximable Kronecker Sequences}
+\author{Run fa\_banach\_001}
+\date{August 11, 2026}
+\maketitle
+\pagestyle{plain}
+
+\section*{Status}
+
+This is a candidate full answer, subject to human review, to both questions
+following Theorem 7 of Brown and Steinerberger \cite{BS}: the regular-grid
+$L^1$-gradient estimate does hold uniformly for every badly approximable
+Kronecker sequence, so such an infinite sequence exists.
+
+\section*{Source Question}
+
+For $d\geq2$ and a badly approximable vector
+$\alpha\in\mathbb R^d$, put $x_j=j\alpha\pmod1$ in $\T^d$.  The source
+proves, uniformly in $N$, that
+\[
+ \left|\int_{\T^d}f-\frac1N\sum_{j=1}^N f(x_j)\right|
+ \lesssim_{\alpha,d}N^{-1/d}
+ \|\nabla f\|_\infty^{(d-1)/d}\|\nabla f\|_2^{1/d}.
+\]
+For a regular grid it proves the stronger endpoint with
+$\|\nabla f\|_1$ in place of $\|\nabla f\|_2$, and asks whether the
+same is true for the Kronecker sequence.  More generally, it asks whether
+any single infinite sequence attains that endpoint uniformly in $N$.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Proof Intuition}
+
+The source splits the empirical measure into a short heat-flow part and a
+smoothed part.  It bounds the first only by transportation distance, forcing
+an $L^\infty$ gradient, and bounds the second in $\dot H^{-1}$, forcing an
+$L^2$ gradient.  Keep the same split, but represent both pieces as
+divergences of vector fields.
+
+The low-frequency field has $L^2$ norm $O(N^{-1/d})$ by the source's own
+Fourier estimate.  The high-frequency field is a sum of truncated Coulomb
+kernels.  Bad approximability separates the first $N$ orbit points at scale
+$N^{-1/d}$; a packing argument then puts this sum in the critical weak space
+$L^{d/(d-1),\infty}$ with the same norm.  Lorentz H\"older duality against
+$L^{d,1}$, followed by the elementary interpolation
+\[
+ \|g\|_{L^{d,1}}
+ \lesssim_d \|g\|_\infty^{(d-1)/d}\|g\|_1^{1/d},
+\]
+gives exactly the missing endpoint.
+
+\section*{Critical Heat-Flow Field}
+
+Write $h=N^{-1/d}$ and
+\[
+ \muN=\frac1N\sum_{j=1}^N\delta_{x_j}.
+\]
+Let $P_t=e^{t\Delta}$ be heat flow on $\T^d$, with kernel $p_t$, and
+take $t=h^2$.  We use Lorentz spaces with respect to normalized Lebesgue
+measure.
+
+\begin{lemma}[Separated heat atoms]\label{lem:high}
+Suppose $x_1,\ldots,x_N\in\T^d$ satisfy
+\[
+ \min_{i\ne j}d(x_i,x_j)\geq a h.
+\]
+There is a vector field $F_{\rm hi}$ such that
+\[
+ \operatorname{div}F_{\rm hi}=\muN-P_t\muN
+ \quad\text{and}\quad
+ \|F_{\rm hi}\|_{L^{d/(d-1),\infty}}
+ \leq C_{a,d}h.
+\]
+\end{lemma}
+
+\begin{proof}
+In distributions, set
+\[
+ F_{\rm hi}(x)
+ =-\frac1N\sum_{j=1}^N K_t(x-x_j),
+ \qquad
+ K_t(z)=\int_0^t\nabla p_s(z)\,ds.
+\]
+Since $\partial_sp_s=\Delta p_s$, taking the divergence gives the asserted
+identity.  The standard Gaussian gradient estimate for the torus heat kernel
+implies, with $r=d(z,0)$,
+\begin{equation}\label{eq:kernel}
+ |K_t(z)|\leq C_d r^{1-d}
+ \exp\!\left(-\frac{r^2}{C_dt}\right).
+\end{equation}
+
+Let $r(x)=\min_jd(x,x_j)$.  Divide the points into annuli of width $h$
+around $x$.  Separation gives $O_{a,d}(m^{d-1})$ points in the $m$th
+annulus.  Summing \eqref{eq:kernel}, and treating the nearest point
+separately, yields
+\begin{equation}\label{eq:pointwise}
+ |F_{\rm hi}(x)|
+ \leq C_{a,d}\bigl(h+h^d r(x)^{1-d}\bigr).
+\end{equation}
+
+Put $q=d/(d-1)$.  If $\lambda>2C_{a,d}h$, then
+\eqref{eq:pointwise} shows that
+\[
+ \{|F_{\rm hi}|>\lambda\}
+ \subseteq\bigcup_{j=1}^N B(x_j,R_\lambda),
+ \qquad
+ R_\lambda=C_{a,d}
+ \left(\frac{h^d}{\lambda}\right)^{1/(d-1)}.
+\]
+Consequently
+\[
+ |\{|F_{\rm hi}|>\lambda\}|
+ \leq C_d N R_\lambda^d
+ \leq C_{a,d}\left(\frac h\lambda\right)^q.
+\]
+For $\lambda\leq2C_{a,d}h$ the trivial measure bound gives the same
+weak-norm conclusion.  Hence
+$\sup_{\lambda>0}\lambda
+|\{|F_{\rm hi}|>\lambda\}|^{1/q}\lesssim_{a,d}h$.
+\end{proof}
+
+\begin{lemma}[The smoothed Kronecker field]\label{lem:low}
+If $x_j=j\alpha\pmod1$ and $\alpha$ is badly approximable, there is a
+vector field $F_{\rm lo}$ such that
+\[
+ \operatorname{div}F_{\rm lo}=P_t\muN-1
+ \quad\text{and}\quad
+ \|F_{\rm lo}\|_2\leq C_{\alpha,d}h.
+\]
+In particular,
+$\|F_{\rm lo}\|_{L^{d/(d-1),\infty}}\leq C_{\alpha,d}h$.
+\end{lemma}
+
+\begin{proof}
+Take $F_{\rm lo}=\nabla u$, where
+$\Delta u=P_t\muN-1$ and $u$ has mean zero.  Thus
+\[
+ \|F_{\rm lo}\|_2
+ =\|P_t\muN-1\|_{\dot H^{-1}}.
+\]
+The dyadic Fourier estimate proved in \cite[proofs of Theorems 5 and 6]{BS}
+is
+\[
+ \|P_t\muN-1\|_{\dot H^{-1}}
+ \leq \frac{C_{\alpha,d}}{N t^{(d-1)/2}}.
+\]
+At $t=h^2=N^{-2/d}$ the right side is $C_{\alpha,d}h$.
+Finally $d/(d-1)\leq2$, so on the probability space $\T^d$ the $L^2$
+bound implies the asserted weak-Lorentz bound.
+\end{proof}
+
+For completeness, the other input needed by Lemma \ref{lem:high} follows
+directly from the source definition of bad approximability.  If
+$1\leq i<j\leq N$, then
+\[
+ d(x_i,x_j)
+ \geq\max_{1\leq\ell\leq d}
+ \|(j-i)\alpha_\ell\|_{\mathbb R/\mathbb Z}
+ \geq c_\alpha(j-i)^{-1/d}
+ \geq c_\alpha h.
+\]
+
+\section*{Full Answer}
+
+\begin{theorem}\label{thm:answer}
+Let $d\geq2$ and let $\alpha\in\mathbb R^d$ be badly approximable.  For
+$x_j=j\alpha\pmod1$ and every differentiable
+$f:\T^d\to\mathbb R$,
+\[
+ \left|\int_{\T^d}f(x)\,dx-\frac1N\sum_{j=1}^Nf(x_j)\right|
+ \leq C_{\alpha,d}N^{-1/d}
+ \|\nabla f\|_\infty^{(d-1)/d}
+ \|\nabla f\|_1^{1/d}.
+\]
+The constant is independent of $N$.  Hence both questions following
+Theorem 7 of \cite{BS} have positive answers.
+\end{theorem}
+
+\begin{proof}
+Let $F=F_{\rm hi}+F_{\rm lo}$ be supplied by Lemmas
+\ref{lem:high} and \ref{lem:low}.  Then
+\[
+ \operatorname{div}F=\muN-1,
+ \qquad
+ \|F\|_{L^{d/(d-1),\infty}}\leq C_{\alpha,d}h.
+\]
+Distributional integration by parts and O'Neil's Lorentz H\"older inequality
+\cite{ONeil} give
+\begin{align*}
+ \left|\int f\,d(\muN-dx)\right|
+ &\leq C_d
+ \|F\|_{L^{d/(d-1),\infty}}
+ \|\nabla f\|_{L^{d,1}}\\
+ &\leq C_{\alpha,d}h\|\nabla f\|_{L^{d,1}}.
+\end{align*}
+If $M=\|\nabla f\|_\infty$ and $L=\|\nabla f\|_1$, the layer-cake
+formula and H\"older's inequality give
+\begin{align*}
+ \|\nabla f\|_{L^{d,1}}
+ &=d\int_0^M
+   |\{|\nabla f|>\lambda\}|^{1/d}\,d\lambda\\
+ &\leq dM^{(d-1)/d}
+ \left(\int_0^M|\{|\nabla f|>\lambda\}|\,d\lambda\right)^{1/d}\\
+ &=dM^{(d-1)/d}L^{1/d}.
+\end{align*}
+Since $h=N^{-1/d}$, this proves the claim.
+\end{proof}
+
+\section*{Verification Notes}
+
+The proof does not infer an $L^1$ endpoint from the source's $W_2$ estimate;
+that would be invalid.  It retains the divergence fields before applying
+duality.  The two pieces live in the same critical weak space for different
+reasons: $L^2\subset L^{d/(d-1),\infty}$ for the smoothed part, while
+separation controls the Coulomb singularities of the unsmoothed part.
+
+The powers can be checked from the distribution calculation.  A single
+weighted Coulomb singularity has size $N^{-1}r^{1-d}=h^dr^{1-d}$; $N$
+such singularities produce distribution
+$O((h/\lambda)^{d/(d-1)})$, whose weak norm is exactly $O(h)$.
+
+Smooth functions suffice for the distributional computation.  Standard
+mollification extends the estimate to differentiable/Lipschitz functions
+with gradient in $L^1\cap L^\infty$, which is the source's class.
+
+\section*{Novelty Check and Scope}
+
+A bounded local and web search on August 11, 2026 used the arXiv identifier,
+the exact endpoint sentence, and combinations of ``Kronecker sequence'',
+``$L^1$ gradient'', ``Lorentz'', ``numerical integration'', and ``badly
+approximable''.  It found the source and its journal version, later papers
+on Wasserstein equidistribution, and 2024--2026 work on quasi-uniformity of
+badly approximable Kronecker sequences.  It found no paper claiming this
+endpoint or using the critical heat-field argument.  Novelty is plausible,
+not certified.
+
+The theorem answers the explicit $L^1$ question for the same
+badly approximable vectors and dimensions $d\geq2$ treated by the source.
+It does not characterize all sequences satisfying the endpoint, nor decide
+whether bad approximability is necessary.
+
+\section*{Human Review Recommendation}
+
+Check the annular-packing estimate \eqref{eq:pointwise} and the sign in the
+heat-flow divergence split.  Then compare Lemma \ref{lem:low} directly with
+the Fourier sum in the source's proofs of Theorems 5 and 6.  If those pass,
+Theorem \ref{thm:answer} solves both stated questions.
+
+\begin{thebibliography}{9}
+
+\bibitem{BS}
+L. Brown and S. Steinerberger,
+\emph{On the Wasserstein distance between classical sequences and the
+Lebesgue measure},
+Trans. Amer. Math. Soc. \textbf{373} (2020), 8943--8962;
+arXiv:1909.09046.
+
+\bibitem{ONeil}
+R. O'Neil,
+\emph{Convolution operators and $L(p,q)$ spaces},
+Duke Math. J. \textbf{30} (1963), 129--142.
+
+\end{thebibliography}
+
+\end{document}

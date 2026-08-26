@@ -1,0 +1,110 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.95in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[hidelinks]{hyperref}
+\newtheorem*{claim}{Claim}
+\newcommand{\C}{\mathbb C}
+
+\begin{document}
+\begin{center}
+{\Large Literature-implied negative answer for arXiv:1407.1065}\\[4pt]
+{\large The untrimmed Wirtinger Flow initializer cannot use $m=O(n)$ samples}
+\end{center}
+
+\paragraph{Status.}
+\textbf{literature\_implied\_answer (full negative answer to the stated
+linear-sampling question).}  This is not a new run counterexample.  A later
+paper identifies the extreme-measurement obstruction; the short argument
+below makes its implication for the source's $1/8$ basin explicit.
+
+\paragraph{Source question.}
+In Cand\`es, Li, and Soltanolkotabi, \emph{Phase Retrieval via Wirtinger Flow:
+Theory and Algorithms}, arXiv:1407.1065, PDF page 6, Theorem 3.3 proves the
+Gaussian-model guarantee with $m\geq c_0n\log n$.  Immediately afterward the
+authors observe that injectivity needs only linearly many samples and ask
+whether Theorem 3.3 holds when $m$ is merely proportional to $n$.
+
+The theorem uses the leading eigenvector of
+\[
+ Y=\frac1m\sum_{r=1}^m y_ra_ra_r^*,\qquad
+ y_r=|\langle a_r,x\rangle|^2,                                      \tag{1}
+\]
+scaled to have norm asymptotic to $\|x\|$, and requires
+$\operatorname{dist}(z_0,x)\leq\|x\|/8$.
+
+\paragraph{Supporting literature.}
+Chi, Lu, and Chen, \emph{Nonconvex Optimization Meets Low-Rank Matrix
+Factorization: An Overview}, arXiv:1809.09573, Section 8.3.1 (PDF page 40),
+cites the standard phase-retrieval spectral construction and proves
+\[
+ \|Y\|\geq \frac{(\max_r y_r)\|a_{r_*}\|^2}{m}
+       \asymp \frac{n\log m}{m}.                                    \tag{2}
+\]
+They conclude that this is incompatible with linear sample complexity and
+that the standard recipe must be modified by truncating the large
+measurements.  Their Theorem 27 records the resulting $m=O(n)$ guarantee for
+the \emph{truncated} spectral estimator, not the source initializer.
+
+\paragraph{Identification and rigorous bridge.}
+Normalize $\|x\|=1$ and take $m/n\to\alpha\in(0,\infty)$.  Formula (2) tends
+to infinity in probability (for complex Gaussian vectors, $y_r$ is
+exponential; the same maximum argument applies).  On the other hand,
+\[
+ x^*Yx=\frac1m\sum_{r=1}^m y_r^2\longrightarrow \mathbb E y_1^2=2,    \tag{3}
+\]
+and either normalization in the source makes $\|z_0\|^2\to1$.
+
+Let $\Lambda=\|Y\|$ and let $z_0$ be a scaled leading eigenvector.  If, after
+a phase rotation, $z_0=x+h$ with $\|h\|\leq1/8$, positivity of $Y$ and
+$|u+v|^2\leq2|u|^2+2|v|^2$ give
+\[
+ \|z_0\|^2\Lambda=z_0^*Yz_0
+ \leq2x^*Yx+2h^*Yh
+ \leq2x^*Yx+\frac1{32}\Lambda.                                    \tag{4}
+\]
+With probability tending to one, $\|z_0\|^2\geq1/2$ and $x^*Yx\leq3$,
+so (4) would force $\Lambda\leq 64/5$.  This contradicts (2).  Thus
+\[
+ \Pr\{\operatorname{dist}(z_0,x)\leq1/8\}\longrightarrow0.          \tag{5}
+\]
+
+\begin{claim}
+For every fixed sampling ratio $\alpha>0$, the untrimmed spectral initializer
+in arXiv:1407.1065 fails the initialization conclusion of Theorem 3.3 with
+probability tending to one when $m/n\to\alpha$.  Consequently Theorem 3.3
+cannot hold in the proposed linear-sampling regime with that initializer.
+\end{claim}
+
+For completeness, (2) itself follows by choosing an index with
+$y_r\geq\tfrac12\log n$ (such an index exists with probability tending to
+one) and using $\|a_r\|^2\geq n/2$.  The probability of the first event is at
+least $1-\exp(-\Theta(\sqrt n))$ and the second fails with exponentially small
+probability.  Hence $\Lambda\geq c_\alpha\log n$.
+
+\paragraph{Scope.}
+This does not rule out linear-sample phase retrieval or modified Wirtinger
+Flow.  Truncated Wirtinger Flow and other preprocessed spectral methods do
+achieve $m=O(n)$.  It rules out exactly the source theorem in the proposed
+regime with its original untrimmed spectral initialization.
+
+\paragraph{Search evidence.}
+The run indexes contained no prior packet for arXiv:1407.1065.  Exact-question,
+initializer, truncation, and extreme-measurement searches located
+arXiv:1809.09573.  Later phase-transition papers analyze bounded preprocessing
+and likewise motivate truncation; no evidence was found that the raw
+initializer was subsequently rescued at fixed aspect ratio.
+
+\begin{thebibliography}{9}
+\bibitem{CLS}
+E. J. Cand\`es, X. Li, and M. Soltanolkotabi,
+\emph{Phase Retrieval via Wirtinger Flow: Theory and Algorithms},
+IEEE Trans. Inform. Theory 61 (2015), 1985--2007; arXiv:1407.1065.
+\bibitem{CLC}
+Y. Chi, Y. M. Lu, and Y. Chen,
+\emph{Nonconvex Optimization Meets Low-Rank Matrix Factorization: An Overview},
+IEEE Trans. Signal Process. 67 (2019), 5239--5269; arXiv:1809.09573.
+\end{thebibliography}
+\end{document}
+

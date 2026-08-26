@@ -1,0 +1,163 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=27mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,urlcolor=blue!55!black,citecolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newcommand{\N}{\mathbb N}
+\newcommand{\I}{\mathcal I}
+
+\title{No subset need simultaneously frame\\an unconditional Schauder frame and its coefficient vectors}
+\author{Candidate full counterexample to a question in arXiv:2602.21616}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{blue!55!black}{blue!5}{\parbox{0.91\textwidth}{
+\textbf{Status: candidate full counterexample; likely valid; human review needed.}
+There is a normalized unconditional Schauder frame $(x_n,y_n)$, with every
+$y_n\ne0$, for which no subset $J$ makes both
+$\{x_n/\lVert x_n\rVert\}_{n\in J}$ and
+$\{\lVert x_n\rVert y_n\}_{n\in J}$ frames.}}
+\end{center}
+
+\section*{Source question}
+Yu considers an unconditional Schauder frame $\{x_n\}$ with associated
+coefficient vectors $\{y_n\}$, so that
+\[
+ z=\sum_n\langle z,y_n\rangle x_n
+\]
+unconditionally for every $z$ in the Hilbert space.  Remark~3.4(b) asks
+whether there must be a subset $J$ for which both the normalized primal
+sequence and the correspondingly rescaled coefficient sequence are frames
+\cite[p.~12]{Yu}.  The exact source text follows.
+
+\begin{center}
+\includegraphics[width=0.97\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Counterexample and proof intuition}
+\begin{theorem}\label{thm:main}
+Let $H=\ell_2(\N)$.  There are sequences $(x_n)$ and $(y_n)$ in $H$ such
+that:
+\begin{enumerate}
+ \item $\lVert x_n\rVert=1$ and $y_n\ne0$ for every $n$;
+ \item $z=\sum_n\langle z,y_n\rangle x_n$ unconditionally for every $z\in H$;
+ \item no subset $J\subseteq\N$ makes both
+ \[
+   \left\{\frac{x_n}{\lVert x_n\rVert}\right\}_{n\in J}
+   \quad\text{and}\quad
+   \{\lVert x_n\rVert y_n\}_{n\in J}
+ \]
+ frames for $H$.
+\end{enumerate}
+Consequently the question in Remark~3.4(b) has a negative answer.
+\end{theorem}
+
+\paragraph{Proof intuition.}
+Split the reconstruction of the $k$th coordinate equally among $k$ identical
+copies.  The primal sequence then has $k$ copies of the unit vector $e_k$,
+while every corresponding coefficient vector has size $1/k$.  If a subset
+selects $r_k$ copies from the $k$th block, an upper frame bound for the primal
+sequence forces $r_k$ to remain bounded.  A lower frame bound for the
+coefficient sequence would instead require $r_k/k^2$ to stay bounded away
+from zero.  These two requirements are incompatible as $k\to\infty$.
+
+\section*{Proof}
+Let $(e_k)_{k\ge1}$ be the standard orthonormal basis of $H$, and use the
+countable index set
+\[
+ \I=\{(k,j): k\ge1,\ 1\le j\le k\}.
+\]
+(Fixing any bijection $\I\to\N$ converts the construction into ordinary
+sequence notation.)  For $(k,j)\in\I$, set
+\begin{equation}\label{eq:def}
+ x_{k,j}=e_k,
+ \qquad
+ y_{k,j}=\frac1k e_k.
+\end{equation}
+Thus all primal vectors have norm one and all coefficient vectors are
+nonzero.
+
+If $z=\sum_{k\ge1}z_ke_k$, then the complete $k$th block contributes
+\[
+ \sum_{j=1}^k\langle z,y_{k,j}\rangle x_{k,j}
+ =\sum_{j=1}^k\frac{z_k}{k}e_k=z_ke_k.
+\]
+This reconstruction is unconditional, not merely conditionally convergent.
+Indeed, for a finite $F\subset\I$ put
+\[
+ r_k(F)=\#\{j:(k,j)\in F\},
+ \qquad 0\le r_k(F)\le k.
+\]
+The corresponding partial sum is the diagonal contraction
+\begin{equation}\label{eq:partial}
+ S_Fz=\sum_{(k,j)\in F}\langle z,y_{k,j}\rangle x_{k,j}
+     =\sum_{k\ge1}\frac{r_k(F)}k z_ke_k.
+\end{equation}
+Given $\varepsilon>0$, choose $K$ so that
+$\sum_{k>K}|z_k|^2<\varepsilon^2$, and let $F_0$ contain every index in the
+first $K$ blocks.  For every finite $F\supseteq F_0$, equation
+\eqref{eq:partial} gives
+\[
+ \lVert z-S_Fz\rVert^2
+ =\sum_{k>K}\left|1-\frac{r_k(F)}k\right|^2|z_k|^2
+ \le \sum_{k>K}|z_k|^2<\varepsilon^2.
+\]
+Hence the net of finite partial sums converges to $z$, which is the
+unconditional convergence criterion.  Therefore \eqref{eq:def} is a
+normalized unconditional Schauder frame with the displayed associated
+coefficient vectors.
+
+Now let $J\subseteq\I$ be arbitrary and define its selected multiplicities
+\[
+ r_k=\#\{j:(k,j)\in J\},\qquad 0\le r_k\le k.
+\]
+Since $\lVert x_{k,j}\rVert=1$, the two frame quadratic forms in the source
+question are, exactly,
+\begin{align}
+ \sum_{(k,j)\in J}
+  \left|\left\langle z,\frac{x_{k,j}}{\lVert x_{k,j}\rVert}\right\rangle\right|^2
+ &=\sum_{k\ge1}r_k|z_k|^2,\label{eq:primal}\\
+ \sum_{(k,j)\in J}
+  |\langle z,\lVert x_{k,j}\rVert y_{k,j}\rangle|^2
+ &=\sum_{k\ge1}\frac{r_k}{k^2}|z_k|^2.\label{eq:dual}
+\end{align}
+Suppose first that the sequence in \eqref{eq:primal} is a frame, and let
+$B<\infty$ be an upper frame bound.  Testing on $z=e_k$ yields
+\begin{equation}\label{eq:boundedmultiplicity}
+ r_k\le B\qquad(k\ge1).
+\end{equation}
+If the sequence in \eqref{eq:dual} also had a positive lower frame bound
+$A'$, testing again on $e_k$ would give
+\[
+ A'\le \frac{r_k}{k^2}\le\frac{B}{k^2}\qquad(k\ge1),
+\]
+which is impossible as $k\to\infty$.  Thus no $J$ has the two required frame
+properties, proving the theorem. \qed
+
+\section*{Scope and novelty note}
+The counterexample answers only the simultaneous-subset question in
+Remark~3.4(b); it does not contradict the paper's theorem that the normalized
+primal sequence contains a frame subsequence.  In fact, choosing one copy of
+each $e_k$ gives such a primal orthonormal basis, while its paired coefficient
+vectors are $e_k/k$ and have no lower frame bound.
+
+The run's four cheap indexes and bounded searches through 11 August 2026 for
+the exact remark and its central terms found the source paper but no later
+resolution.  Because the source is recent, novelty remains provisional
+pending expert literature review.
+
+\begin{thebibliography}{9}
+\bibitem{Yu}
+P.-T.~Yu,
+\emph{Every semi-normalized unconditional Schauder frame in Hilbert spaces
+contains a frame}, arXiv:2602.21616v3 (2026).
+\end{thebibliography}
+
+\end{document}

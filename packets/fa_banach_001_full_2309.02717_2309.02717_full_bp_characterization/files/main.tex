@@ -1,0 +1,402 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.92in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\D}{\mathbb D}
+\newcommand{\Cma}{\mathcal C_{\mu,\alpha}}
+\newcommand{\Hp}{H^p}
+\newcommand{\Bp}{B_p}
+
+\title{A full Besov-space characterization for generalized Ces\`aro-like operators}
+\author{Run \texttt{fa\_banach\_001}, lane 4}
+\date{2026-08-09}
+
+\begin{document}
+\maketitle
+
+\paragraph{Status.}
+\textbf{Claimed full solution, likely valid, subject to human review.}
+This packet answers the open problem in arXiv:2309.02717 for every
+\(1<p<\infty\) and every \(\alpha>0\).  The proof replaces the Hilbert-space
+coefficient argument of the earlier partial packet by a dyadic analytic
+Besov decomposition.
+
+\section{Source question and answer}
+
+Let \(\mu\) be a finite positive Borel measure on \([0,1)\), let
+\(\mu_n=\int_0^1t^n\,d\mu(t)\), and put
+\[
+ c_r^{(\alpha)}=\frac{\Gamma(r+\alpha)}{\Gamma(\alpha)r!}.
+\]
+For \(f(z)=\sum_{k\geq0}a_kz^k\), define
+\[
+ \Cma f(z)=\sum_{n\geq0}\mu_n
+ \left(\sum_{k=0}^n c_{n-k}^{(\alpha)}a_k\right)z^n.
+\]
+Tang \cite{Tang} asks for a characterization of boundedness and compactness
+of \(\Cma:B_p\to B_p\), \(p>1\), where
+\[
+ \|f\|_{B_p}=|f(0)|+
+ \left(\int_{\D}|f'(z)|^p(1-|z|)^{p-2}\,dA(z)\right)^{1/p}.
+\]
+
+For \(N\geq2\), define the tail quantity
+\begin{equation}\label{eq:Phi}
+ \Phi_N(\mu;p,\alpha)=
+ (\log(eN))^{p-1}
+ \sum_{n=N}^{\infty}(n+1)^{p\alpha-1}\mu_n^p.
+\end{equation}
+
+\begin{theorem}[Full characterization]\label{thm:main}
+Let \(1<p<\infty\) and \(\alpha>0\).  Then:
+\begin{enumerate}
+\item \(\Cma\) is bounded on \(B_p\) if and only if
+\[
+ \sup_{N\geq2}\Phi_N(\mu;p,\alpha)<\infty.
+\]
+\item \(\Cma\) is compact on \(B_p\) if and only if
+\[
+ \Phi_N(\mu;p,\alpha)\longrightarrow0
+ \qquad(N\to\infty).
+\]
+\end{enumerate}
+\end{theorem}
+
+At \(p=2\), this is the previously obtained Dirichlet criterion because
+\(\log(eN)\asymp H_N\).  At \(p=2,\alpha=1\), it agrees with the later
+ordinary-kernel result of Bao--Guo--Sun--Wang \cite{BGSW}.
+
+\begin{corollary}[Sharp boundary example]\label{cor:example}
+For every \(1<p<\infty\) and \(\alpha>0\), the measure
+\[
+ d\mu_\alpha(t)=
+ \frac{(1-t)^{\alpha-1}}{\log(e/(1-t))}\,dt
+\]
+induces a bounded, noncompact operator
+\(\mathcal C_{\mu_\alpha,\alpha}:B_p\to B_p\).
+\end{corollary}
+
+\section{Idea of the proof}
+
+The coefficient formula factors as
+\[
+ \Cma=M_\mu\,K_\alpha,
+ \qquad K_\alpha f=(1-z)^{-\alpha}f,
+ \qquad
+ M_\mu\!\left(\sum d_nz^n\right)=\sum\mu_nd_nz^n.
+\]
+On a dyadic frequency block of size \(2^j\), the analytic Besov norm is
+\(2^{j/p}\) times the Hardy norm.  The \(j\)-th block of
+\((1-z)^{-\alpha}\) has Hardy norm of order
+\(2^{j(\alpha-1/p)}\), while \(M_\mu\) contributes \(\mu_{2^{j-1}}\).
+Thus the output block sizes are dominated by
+\[
+ 2^{j\alpha}\mu_{2^{j-1}}
+ \sum_{\ell\leq j}x_\ell,
+\]
+where \((x_\ell)\in\ell^p\) are the input Besov block sizes.  This is exactly
+a weighted discrete Hardy operator.  Its criterion is
+\(\sup_m m^{p-1}\sum_{j\geq m}(2^{j\alpha}\mu_{2^j})^p<\infty\),
+which is equivalent to \eqref{eq:Phi}.
+
+For necessity, normalized logarithmic polynomials have one unit of Besov
+mass on each of their first \(m\) dyadic blocks.  Positivity makes all their
+output coefficients align on a short boundary arc, recovering the entire
+Hardy tail.  These polynomials converge weakly to zero, so the same test also
+detects compactness.
+
+\section{Dyadic lemmas}
+
+For \(j\geq1\), set
+\(I_j=\{2^{j-1},\ldots,2^j-1\}\), let \(I_0=\{0\}\), and write
+\[
+ \Delta_jf(z)=\sum_{n\in I_j}\widehat f(n)z^n.
+\]
+
+\begin{lemma}[Analytic Besov blocks]\label{lem:besov}
+For \(1<p<\infty\),
+\begin{equation}\label{eq:dyadicnorm}
+ \|f\|_{B_p}^p\asymp_p
+ |\widehat f(0)|^p+
+ \sum_{j\geq1}2^j\|\Delta_jf\|_{H^p}^p.
+\end{equation}
+Moreover, the sharp interval projections \(\Delta_j\) are uniformly bounded
+on \(H^p\), and a polynomial with frequencies in an interval of length
+\(L\) satisfies
+\begin{equation}\label{eq:nikolskii}
+ \|P\|_\infty\lesssim_p L^{1/p}\|P\|_{H^p}.
+\end{equation}
+\end{lemma}
+
+These are the standard dyadic description of analytic Besov spaces and the
+analytic Nikolskii inequality; they follow from the weighted Bergman norm of
+\(f'\), uniform boundedness of interval projections for \(1<p<\infty\),
+and Bernstein's inequality.  See, for example, the analytic Besov theory in
+\cite{Zhu}.
+
+Let \(K_\alpha(z)=(1-z)^{-\alpha}=\sum_{r\geq0}c_r^{(\alpha)}z^r\).
+
+\begin{lemma}[Kernel and moment blocks]\label{lem:blocks}
+For every \(\alpha>0\), \(1<p<\infty\), and \(j\geq1\),
+\begin{align}
+ \|\Delta_jK_\alpha\|_{H^p}
+ &\lesssim_{p,\alpha}2^{j(\alpha-1/p)},\label{eq:kblock}\\
+ \left\|\sum_{0\leq r<2^j}c_r^{(\alpha)}z^r\right\|_\infty
+ &\lesssim_\alpha2^{j\alpha}.\label{eq:ksup}
+\end{align}
+If \(P\) has no frequencies below \(L\), then
+\begin{equation}\label{eq:momentblock}
+ \|M_\mu P\|_{H^p}\leq\mu_L\|P\|_{H^p}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Stirling's formula gives
+\[
+ c_r^{(\alpha)}\asymp_\alpha(r+1)^{\alpha-1}.
+\]
+On \(I_j\), Abel summation and
+\[
+ \left\|\sum_{k=0}^{L}z^k\right\|_{H^p}
+ \asymp_p L^{1-1/p}
+\]
+give \eqref{eq:kblock}.  Summing the positive coefficients gives
+\eqref{eq:ksup}.
+
+For \eqref{eq:momentblock}, write \(P(z)=z^LQ(z)\).  Since radial dilation
+is contractive on \(H^p\),
+\[
+ \|P(t\,\cdot)\|_{H^p}
+ =t^L\|Q(t\,\cdot)\|_{H^p}
+ \leq t^L\|P\|_{H^p}.
+\]
+Now use
+\(M_\mu P(z)=\int_0^1P(tz)\,d\mu(t)\) and Minkowski's inequality.
+\end{proof}
+
+We also use the classical discrete two-weight Hardy criterion
+\cite{Muckenhoupt}.
+
+\begin{lemma}[Discrete Hardy criterion]\label{lem:hardy}
+Let \(1<p<\infty\) and \(a_j\geq0\).  The map
+\[
+ (Tx)_j=a_j\sum_{\ell=0}^{j}x_\ell
+\]
+is bounded on \(\ell^p\) if and only if
+\begin{equation}\label{eq:hardy}
+ \sup_{m\geq1}m^{p-1}\sum_{j\geq m}a_j^p<\infty.
+\end{equation}
+It is compact if and only if the products in \eqref{eq:hardy} tend to zero.
+\end{lemma}
+
+The compactness statement follows by applying the same boundedness criterion
+after deleting the first \(J\) output coordinates.  The resulting norm is
+controlled by
+\[
+ \sup_{m\geq1}m^{p-1}
+ \sum_{j\geq\max\{m,J\}}a_j^p,
+\]
+which tends to zero exactly in the stated case.
+
+\section{Proof of the characterization}
+
+\begin{proof}[Sufficiency in Theorem~\ref{thm:main}]
+First take \(f\) to be a polynomial.  Put
+\[
+ x_0=|\widehat f(0)|,
+ \qquad x_\ell=2^{\ell/p}\|\Delta_\ell f\|_{H^p}
+ \quad(\ell\geq1).
+\]
+By Lemma~\ref{lem:besov}, \(\|x\|_{\ell^p}\asymp\|f\|_{B_p}\).
+
+Fix \(j\geq2\).  If \(\ell\leq j-2\), only the kernel frequencies
+comparable to \(2^j\) can contribute to
+\(\Delta_j(K_\alpha\Delta_\ell f)\).  The boundedness of the output
+projection, \eqref{eq:kblock}, and \eqref{eq:nikolskii} give
+\[
+ \|\Delta_j(K_\alpha\Delta_\ell f)\|_{H^p}
+ \lesssim
+ 2^{j(\alpha-1/p)}
+ 2^{\ell/p}\|\Delta_\ell f\|_{H^p}
+ =2^{j(\alpha-1/p)}x_\ell.
+\]
+For \(\ell=j-1,j\), use \eqref{eq:ksup}; since \(\ell\asymp j\), the same
+bound results.  Inputs with \(\ell>j\) cannot contribute because all kernel
+frequencies are nonnegative.  Therefore
+\begin{equation}\label{eq:productupper}
+ \|\Delta_j(K_\alpha f)\|_{H^p}
+ \lesssim_{p,\alpha}
+ 2^{j(\alpha-1/p)}\sum_{\ell=0}^{j}x_\ell.
+\end{equation}
+
+The operators \(M_\mu\) and \(\Delta_j\) commute.  Since the frequencies in
+\(I_j\) are at least \(2^{j-1}\), Lemma~\ref{lem:blocks} yields
+\[
+ 2^{j/p}\|\Delta_j(\Cma f)\|_{H^p}
+ \lesssim
+ A_j\sum_{\ell=0}^{j}x_\ell,
+ \qquad
+ A_j=2^{j\alpha}\mu_{2^{j-1}}.
+\]
+Lemma~\ref{lem:hardy} now proves boundedness provided
+\begin{equation}\label{eq:dyadiccriterion}
+ \sup_{m\geq1}m^{p-1}sum_{j\geq m}A_j^p<\infty.
+\end{equation}
+
+Because \((\mu_n)\) is decreasing, dyadic grouping gives
+\begin{equation}\label{eq:tails}
+ \sum_{j\geq m}(2^{j\alpha}\mu_{2^j})^p
+ \asymp_{p,\alpha}
+ \sum_{n\geq2^m}(n+1)^{p\alpha-1}\mu_n^p,
+\end{equation}
+up to a fixed shift of \(m\).  Since \(m\asymp\log(2^m)\), the hypothesis
+\(\sup_N\Phi_N<\infty\) is equivalent to \eqref{eq:dyadiccriterion}.
+Polynomials are dense in \(B_p\), so the estimate extends \(\Cma\) to all of
+\(B_p\).
+\end{proof}
+
+\begin{proof}[Necessity in Theorem~\ref{thm:main}]
+Let \(q=p/(p-1)\).  For \(m\geq4\), define
+\[
+ F_m(z)=m^{-1/p}\sum_{k=1}^{2^{m-2}}\frac{z^k}{k}.
+\]
+Abel summation and the Dirichlet-kernel \(H^p\) estimate show that each
+nonzero dyadic block satisfies
+\[
+ \|\Delta_\ell F_m\|_{H^p}
+ \lesssim m^{-1/p}2^{-\ell/p}.
+\]
+Hence \eqref{eq:dyadicnorm} gives
+\(\sup_m\|F_m\|_{B_p}<\infty\).
+
+Let \(b_n=[z^n](\Cma F_m)\).  If \(j\geq m\), \(n\in I_j\), and
+\(1\leq k\leq2^{m-2}\), then \(n-k+1\asymp n+1\).  Positivity and the
+gamma-ratio estimate therefore give
+\begin{equation}\label{eq:coefflower}
+ b_n\gtrsim_{\alpha}
+ m^{-1/p}\mu_n(n+1)^{\alpha-1}
+ \sum_{k=1}^{2^{m-2}}\frac1k
+ \gtrsim m^{1/q}\mu_n(n+1)^{\alpha-1}.
+\end{equation}
+On an arc \(|\theta|\leq c2^{-j}\), the numbers
+\(e^{in\theta}\), \(n\in I_j\), lie in a fixed acute sector.  Thus their
+positive coefficients cannot cancel.  Using monotonicity of \(\mu_n\) and
+\eqref{eq:coefflower},
+\[
+ \|\Delta_j(\Cma F_m)\|_{H^p}^p
+ \gtrsim
+ 2^{-j}m^{p-1}
+ \bigl(2^{j\alpha}\mu_{2^j}\bigr)^p.
+\]
+After multiplying by the Besov block weight \(2^j\) and summing over
+\(j\geq m\), boundedness of \(\Cma\) forces
+\[
+ \sup_{m\geq4}m^{p-1}
+ \sum_{j\geq m}(2^{j\alpha}\mu_{2^j})^p<\infty.
+\]
+By \eqref{eq:tails}, this is precisely the condition
+\(\sup_N\Phi_N<\infty\).
+\end{proof}
+
+\begin{proof}[Compactness in Theorem~\ref{thm:main}]
+Suppose first that \(\Phi_N\to0\).  Let \(Q_J\) delete the first \(J-1\)
+dyadic output blocks.  The upper estimate and the tail form of
+Lemma~\ref{lem:hardy} give
+\[
+ \|Q_J\Cma\|_{B_p\to B_p}^p
+ \lesssim
+ \sup_{m\geq1}m^{p-1}
+ \sum_{j\geq\max\{m,J\}}A_j^p.
+\]
+For \(m<J\), this is at most
+\(J^{p-1}\sum_{j\geq J}A_j^p\); for \(m\geq J\), it is the tail supremum
+of the vanishing Hardy products.  Hence \(\|Q_J\Cma\|\to0\).  The
+complementary output has finite dimension, so \(\Cma\) is compact.
+
+Conversely, the bounded polynomials \(F_m\) tend to zero uniformly on compact
+subsets of \(\D\), and hence weakly in the reflexive space \(B_p\) (use
+\(B_p^*\cong B_q\) and density of polynomials).  If \(\Cma\) is compact,
+then \(\|\Cma F_m\|_{B_p}\to0\).  The lower estimate from the necessity
+proof gives
+\[
+ m^{p-1}\sum_{j\geq m}(2^{j\alpha}\mu_{2^j})^p\longrightarrow0.
+\]
+Equation \eqref{eq:tails} is equivalent to \(\Phi_N\to0\).
+\end{proof}
+
+\section{Boundary example and checks}
+
+\begin{proof}[Proof of Corollary~\ref{cor:example}]
+With \(u=1-t\), a standard Laplace estimate gives
+\[
+ \mu_{\alpha,n}
+ =\int_0^1\frac{(1-u)^nu^{\alpha-1}}{\log(e/u)}\,du
+ \asymp_\alpha\frac{1}{(n+1)^\alpha\log(n+2)}.
+\]
+Consequently,
+\[
+ \Phi_N(\mu_\alpha;p,\alpha)
+ \asymp
+ (\log N)^{p-1}
+ \sum_{n\geq N}\frac{1}{(n+1)\log^p(n+2)}
+ \asymp_p1.
+\]
+Theorem~\ref{thm:main} gives boundedness and failure of compactness.
+\end{proof}
+
+As another consistency check, for Lebesgue measure and \(\alpha=1\),
+\(\mu_n=(n+1)^{-1}\), so the series in \eqref{eq:Phi} diverges.  Thus the
+classical Ces\`aro operator is unbounded on every \(B_p\), consistent with
+the previously known Dirichlet obstruction.
+
+\paragraph{Computational check.}
+The included script evaluates the moments of \(\mu_\alpha\) and truncated
+versions of \(\Phi_N\) for several \((p,\alpha)\).  It confirms the predicted
+\(n^{-\alpha}/\log n\) scale and nonzero boundary products.  This check is a
+sanity test, not part of the proof.
+
+\paragraph{Novelty check.}
+On 2026-08-09 we searched the run indexes, the local arXiv source corpus, the
+source paper and its cited predecessor arXiv:2305.02717, and current web
+results using the exact operator formula, source title and arXiv id, the
+phrases ``from \(B_p\) to \(B_p\)'', and the proposed moment-tail weight.
+The search found the \(p=2,\alpha=1\) theorem \cite{BGSW}, range-space
+results, and later work on Dirichlet-type and Bloch-type spaces, but no
+self-map characterization for all \(p\) and \(\alpha\).  Novelty confidence
+is bounded, not exhaustive.
+
+\paragraph{Human-review recommendation.}
+Verify Lemma~\ref{lem:besov} with the exact normalization used here and the
+two frequency-separated cases in \eqref{eq:productupper}.  Those are the
+only non-scalar analytic inputs.  The Hardy reduction, positive-arc lower
+bound, moment-tail equivalence and compactness argument are explicit.
+
+\begin{thebibliography}{9}
+\bibitem{Tang}
+P. Tang,
+\emph{Generalized Ces\`aro-like operator from a class of analytic function
+spaces to analytic Besov spaces}, arXiv:2309.02717; Canadian Math. Bull. 68
+(2025), doi:10.4153/S0008439525000402.
+
+\bibitem{BGSW}
+G. Bao, K. Guo, F. Sun, and Z. Wang,
+\emph{Hankel matrices acting on the Dirichlet space},
+arXiv:2401.09188; J. Fourier Anal. Appl. 30 (2024), Paper 53.
+
+\bibitem{Muckenhoupt}
+B. Muckenhoupt,
+\emph{Hardy's inequality with weights},
+Studia Math. 44 (1972), 31--38.
+
+\bibitem{Zhu}
+K. Zhu,
+\emph{Operator Theory in Function Spaces}, second edition,
+Math. Surveys Monogr. 138, American Mathematical Society, 2007.
+\end{thebibliography}
+
+\end{document}

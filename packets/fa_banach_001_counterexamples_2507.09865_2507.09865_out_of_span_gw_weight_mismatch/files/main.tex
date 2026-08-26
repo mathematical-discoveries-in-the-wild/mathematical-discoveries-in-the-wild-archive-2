@@ -1,0 +1,240 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.92in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\emergencystretch=3em
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\GW}{\operatorname{GW}}
+\newcommand{\one}{\mathbf 1}
+
+\title{Both GW analysis weights can miss the true out-of-span projection}
+\author{Candidate counterexample for arXiv:2507.09865}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Candidate counterexample, likely valid. For two explicit uniform four-point
+metric spaces, both analysis algorithms in the source uniquely return the
+weight $(1/2,1/2)$ for an out-of-span target, while the true GW projection is
+uniquely minimized at $(1/10,9/10)$.}}
+\end{center}
+
+\section{The source question}
+
+For fixed templates $\mathbb X^1,\ldots,\mathbb X^S$, the source writes
+$\mathbb Y_\lambda$ for a GW barycenter and, for an arbitrary target
+$\mathbb Y$, considers
+\[
+  \mathbf J(\lambda)=\GW^2(\mathbb Y_\lambda,\mathbb Y).
+\]
+Supplement~E asks whether, when $\mathbb Y$ is outside the GW barycenter
+span, the weights produced by its fixed-point and blow-up analysis algorithms
+coincide with, or at least lie near, a minimizer of $\mathbf J$.
+
+\begin{center}
+\includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The construction below gives a negative answer to the exact coincidence
+question, even for genuine finite metric-measure spaces and exact global GW
+couplings. It also exhibits a GW Karcher mean which is not a true barycenter.
+
+\section{Idea of the counterexample}
+
+The four-point metrics have a single nontrivial symmetry, the transposition
+of the first two points. Near a symmetric anchor, this symmetry acts on two
+perturbation coordinates by $(u,v)\mapsto(-u,-v)$. The true geodesic between
+the templates uses the identity alignment. The target is instead the
+midpoint obtained by aligning the second template with the transposition.
+Consequently, each source algorithm sees an exact zero-residual midpoint and
+returns equal weights. But this midpoint lies on the wrong alignment branch.
+Projecting it onto the true barycenter geodesic gives a different weight.
+
+Conditional negative definiteness of all metrics makes the GW coupling
+objective concave on the coupling polytope. Thus the full continuum of
+couplings reduces rigorously to the $24$ permutations; no integrality
+assumption or numerical GW solver is used.
+
+\section{A four-point metric family}
+
+Give $\{1,2,3,4\}$ the uniform probability vector
+$q=(1/4,1/4,1/4,1/4)$ and, for $|u|,|v|\leq1/5$, put
+\begin{equation}\label{eq:D}
+D(u,v)=
+\begin{pmatrix}
+0&10&11+u&12+v\\
+10&0&11-u&12-v\\
+11+u&11-u&0&13\\
+12+v&12-v&13&0
+\end{pmatrix}.
+\end{equation}
+All off-diagonal entries lie between $49/5$ and $66/5$, so every triangle
+inequality is strict.
+
+\begin{lemma}\label{lem:permutations}
+For any two matrices in \eqref{eq:D}, their squared GW distance is the
+minimum, over permutations $P$ of four letters, of
+\[
+  \frac1{16}\|D(u,v)-P D(u',v')P^T\|_F^2.
+\]
+\end{lemma}
+
+\begin{proof}
+Write $D(u,v)=10(J-I)+E(u,v)$. The maximum absolute row sum of the symmetric
+matrix $E(u,v)$ is at most $7$. Hence, for $x\perp\one$,
+\[
+ x^TD(u,v)x\leq -10\|x\|^2+7\|x\|^2=-3\|x\|^2.
+\]
+Thus every $D(u,v)$ is strictly conditionally negative definite.
+
+For a coupling $\pi$ with uniform marginals, the terms in the GW objective
+other than
+$-2\operatorname{tr}(D(u,v)\pi D(u',v')\pi^T)$ are constant. If $H$ has
+zero row and column sums, conditional negative definiteness gives
+\[
+ \operatorname{tr}(D(u,v)H D(u',v')H^T)\geq0.
+\]
+The GW objective is therefore concave on the coupling polytope. A concave
+function on this scaled Birkhoff polytope has a minimum at an extreme point,
+and those points are $P/4$. Substitution gives the formula.
+\end{proof}
+
+Let $S$ transpose points $1$ and $2$. The anchor $D(0,0)$ has automorphism
+group exactly $\{I,S\}$: its unique edges of lengths $10$ and $13$ force the
+pairs $\{1,2\}$ and $\{3,4\}$, and the lengths $11$ and $12$ distinguish
+points $3$ and $4$. Hence a permutation outside $\{I,S\}$ changes some
+anchor edge by at least $1$. The perturbations change an edge by at most
+$1/5$ on either side, so for such a permutation
+\begin{equation}\label{eq:outside-gap}
+ \|D(u,v)-P D(u',v')P^T\|_F^2\geq2(1-2/5)^2=18/25.
+\end{equation}
+For the remaining two permutations,
+\begin{align}
+ \|D(u,v)-D(u',v')\|_F^2
+   &=4\big((u-u')^2+(v-v')^2\big),\label{eq:id-cost}\\
+ \|D(u,v)-S D(u',v')S^T\|_F^2
+   &=4\big((u+u')^2+(v+v')^2\big).\label{eq:swap-cost}
+\end{align}
+
+\section{The templates and the false zero residual}
+
+Set
+\[
+ a_1=(1/5,0),\qquad a_2=(1/10,1/5),\qquad
+ y=\frac{a_1-a_2}{2}=(1/20,-1/10),
+\]
+and let $\mathbb X_1,\mathbb X_2,\mathbb Y$ be the uniform metric spaces with
+matrices $D(a_1),D(a_2),D(y)$, respectively. Equations
+\eqref{eq:outside-gap}--\eqref{eq:swap-cost} give the following exact data.
+\[
+\begin{array}{c|c|c|c}
+\text{pair}&\text{unique optimal permutation}&\text{squared Frobenius cost}
+ &\GW^2\\ \hline
+(\mathbb X_1,\mathbb X_2)&I&1/5&1/80\\
+(\mathbb X_1,\mathbb Y)&I&13/100&13/1600\\
+(\mathbb X_2,\mathbb Y)&S&13/100&13/1600
+\end{array}
+\]
+
+For a deterministic uniform coupling, the source's matrix
+$F(\mathbb Y,s)$ is just the optimally relabeled template. The blow-up
+representatives in its second method are the same matrices. Therefore both
+analysis quadratic programs use
+\[
+ D(a_1),\qquad S D(a_2)S^T=D(-a_2),\qquad D(y),
+\]
+and
+\[
+ D(y)=\frac12D(a_1)+\frac12D(-a_2).
+\]
+Both objectives have the unique zero at
+\begin{equation}\label{eq:alg-weight}
+ \lambda_{\rm alg}=(1/2,1/2).
+\end{equation}
+Thus both methods certify exact representability in their surrogate
+Karcher/fixed-alignment span.
+
+The target is nevertheless outside the true GW barycenter span. Indeed, for
+weights $(1-t,t)$ its synthesis cost is always
+\[
+ (1-t)\GW^2(\mathbb X_1,\mathbb Y)
+ +t\GW^2(\mathbb X_2,\mathbb Y)=13/1600.
+\]
+The unique optimal endpoint alignment is the identity. Its geodesic point
+\begin{equation}\label{eq:B}
+ \mathbb B_t:=D(a(t)),\qquad
+ a(t)=(1-t)a_1+ta_2=(1/5-t/10,t/5),
+\end{equation}
+has synthesis cost $t(1-t)/80\leq1/320=5/1600$. Hence $\mathbb Y$ is not a
+true barycenter for any weight.
+
+For completeness, $\mathbb B_t$ is the unique barycenter class. Glue optimal
+couplings from any candidate $\mathbb Z$ to the two templates. The elementary
+identity
+\[
+ (1-t)|r-z|^2+t|s-z|^2
+ =t(1-t)|r-s|^2+|z-((1-t)r+ts)|^2
+\]
+shows that equality in the two-point barycenter lower bound requires the
+induced template coupling to be endpoint-optimal and the candidate edge
+weights to equal the displayed convex combination almost everywhere. Since
+the endpoint coupling is uniquely the identity, this makes $\mathbb Z$
+weakly isomorphic to \eqref{eq:B}.
+
+\section{The true projection weight}
+
+It remains to minimize
+$\mathbf J(t)=\GW^2(\mathbb B_t,\mathbb Y)$. The two permutations $I,S$
+have squared parameter costs
+\begin{align*}
+ f_I(t)&=\|y-a(t)\|^2
+       =\frac{13}{400}+\frac{t}{100}+\frac{t^2}{20},\\
+ f_S(t)&=\|y+a(t)\|^2
+       =\frac{29}{400}-\frac{9t}{100}+\frac{t^2}{20}.
+\end{align*}
+Both corresponding squared Frobenius costs are below the non-symmetry bound
+\eqref{eq:outside-gap}; Lemma~\ref{lem:permutations} therefore gives
+\[
+ \mathbf J(t)=\frac14\min\{f_I(t),f_S(t)\}.
+\]
+The branches meet at $t=2/5$. The first is increasing on $[0,1]$, while the
+second has its unique minimum at $t=9/10$. Direct evaluation yields
+\begin{equation}\label{eq:gap}
+ \min_{0\leq t\leq1}\mathbf J(t)=\mathbf J(9/10)=1/125,
+ \qquad
+ \mathbf J(1/2)=1/100.
+\end{equation}
+Consequently the true projection weight and the output of both analysis
+methods are
+\[
+ \lambda_{\rm proj}=(1/10,9/10)\neq(1/2,1/2)=\lambda_{\rm alg}.
+\]
+The weight error is $2/5$ in either coordinate, and the algorithmic squared
+projection cost is $5/4$ times optimal. Multiplying every metric by a common
+constant preserves both weights and makes the additive gap in
+\eqref{eq:gap} arbitrarily large.
+
+\section{Scope}
+
+This completely answers the source supplement's exact coincidence question
+in the negative and shows that an unconditional Karcher-mean/GW-barycenter
+equivalence is false. It does not preclude guarantees under additional
+alignment-consistency, curvature, separation, or uniqueness hypotheses, and
+it does not supply a full characterization of such hypotheses.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+R. D\'iaz Mart\'in, I. V. Medri, and J. M. Murphy,
+\emph{Gromov--Wasserstein Barycenters: The Analysis Problem},
+arXiv:2507.09865, 2025--2026 version.
+\end{thebibliography}
+
+\end{document}

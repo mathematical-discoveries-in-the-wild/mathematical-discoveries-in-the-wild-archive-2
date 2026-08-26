@@ -1,0 +1,273 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=0.78in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx,microtype,enumitem,xcolor,hyperref}
+\hypersetup{colorlinks=true,hypertexnames=false,linkcolor=blue!45!black,urlcolor=blue!55!black,citecolor=blue!45!black}
+\setlist{nosep,leftmargin=1.6em}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Sph}{\mathbb S^{n-1}}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\conv}{\operatorname{conv}}
+\definecolor{answer}{RGB}{36,105,94}
+
+\title{A quadratic random-polytope upper bound\\
+\large A substantial answer to Remark 4.5 of arXiv:2009.12929}
+\author{Automated mathematical discovery run \texttt{fa\_banach\_001}, lane 9}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{answer}{answer!6}{\parbox{0.91\linewidth}{
+\textbf{Candidate substantial partial result.}
+Let \(K_N=\conv\{\pm x_1,\ldots,\pm x_N\}\), where the \(x_i\) are
+independent uniform points of \(\mathbb S^{n-1}\), and let \(X_N\) have unit
+ball \(K_N\).  For every fixed \(n\geq3\) and \(A>0\), with probability at
+least \(1-N^{-A}\), every hyperplane \(Y\subset X_N\) has projection
+constant at most
+\[
+ 1+C_{n,A}\left(\frac{\log N}{N}\right)^{2/(n-1)}.
+\]
+This improves the source's simultaneous upper bound
+\(1+2N^{-1/(2(n-1))}\).  The key is a quadratic, rather than linear,
+conversion from spherical covering radius to Euclidean inradius.
+}}
+\end{center}
+
+\section*{Source question and transcription}
+The source studies lower bounds for norms of hyperplane projections in
+spaces whose unit balls are random symmetric spherical polytopes.  Its
+Remark 4.5 also asks for good upper bounds on the hyperplane projection
+constants.  It obtains, with probability tending to one,
+\[
+ \lambda(Y,X_N)\leq 1+2N^{-1/(2(n-1))}
+\]
+simultaneously for every hyperplane \(Y\), then states that it does not know
+how close the resulting range is to optimal and expects significant
+improvement.
+
+\section*{Original source image}
+\begin{center}
+\includegraphics[width=0.97\textwidth]{assets/source_question_crop.png}
+\end{center}
+\noindent\footnotesize Source: T. Kobos, arXiv:2009.12929v3, PDF p.~12,
+Remark 4.5.  This is a direct crop from \texttt{source\_paper.pdf}.
+\normalsize
+
+\section*{Definitions}
+For a hyperplane \(Y\) in a normed space \(X\), its relative projection
+constant is
+\[
+ \lambda(Y,X)=\inf\{\norm{P}_{X\to X}:P^2=P,\ \operatorname{ran}P=Y\}.
+\]
+For a finite set \(F\subset\Sph\), its Euclidean covering radius is
+\[
+ R(F)=\sup_{u\in\Sph}\min_{x\in F}\norm{u-x}_2.
+\]
+Surface area measure on \(\Sph\), normalized to have mass one, is denoted
+by \(\sigma\).
+
+\section*{Idea / proof intuition}
+The source converts an \(\varepsilon\)-net into the rough inclusion
+\((1-\varepsilon)B_2^n\subset K_N\).  But all vertices lie on the sphere.
+If \(\norm{u-x}_2\leq\varepsilon\), then exactly
+\[
+ \langle u,x\rangle=1-\frac12\norm{u-x}_2^2
+ \geq1-\frac{\varepsilon^2}{2}.
+\]
+Thus the correct inradius loss is quadratic:
+\((1-\varepsilon^2/2)B_2^n\subset K_N\).
+
+The random covering radius is at most a constant times
+\((\log N/N)^{1/(n-1)}\) with arbitrarily high polynomial probability.  A
+short cap-measure and union-bound argument proves precisely what is needed.
+Squaring this radius gives the displayed projection-constant rate.
+
+\section*{Deterministic quadratic conversion}
+\begin{lemma}[Covering radius to simultaneous projection bounds]
+Let \(F\subset\Sph\), let
+\(K=\conv(F\cup-F)\), and assume \(R(F)\leq\varepsilon<\sqrt2\).  If \(X\)
+is the normed space with unit ball \(K\), then every hyperplane
+\(Y\subset\R^n\) satisfies
+\[
+ \lambda(Y,X)\leq\frac1{1-\varepsilon^2/2}.
+ \tag{1}
+\]
+In particular, if \(\varepsilon\leq1\), then
+\(\lambda(Y,X)\leq1+\varepsilon^2\).
+\end{lemma}
+
+\begin{proof}
+For every \(u\in\Sph\), choose \(x\in F\) with
+\(\norm{u-x}_2\leq\varepsilon\).  The identity above gives
+\[
+ h_K(u)=\max_{z\in F}|\langle u,z\rangle|
+ \geq \langle u,x\rangle\geq1-\varepsilon^2/2.
+\]
+Domination of support functions is equivalent to containment of convex
+bodies, so
+\[
+ (1-\varepsilon^2/2)B_2^n\subset K\subset B_2^n.       \tag{2}
+\]
+Write \(r=1-\varepsilon^2/2\).  The corresponding norms obey
+\[
+ \norm{v}_2\leq\norm{v}_X\leq r^{-1}\norm{v}_2.
+\]
+For a hyperplane \(Y\), let \(Q_Y\) be Euclidean orthogonal projection onto
+\(Y\).  Then
+\[
+ \norm{Q_Yv}_X\leq r^{-1}\norm{Q_Yv}_2
+ \leq r^{-1}\norm{v}_2\leq r^{-1}\norm{v}_X.
+\]
+Since \(Q_Y\) is an admissible projection, this proves (1).  Finally,
+\((1-s)^{-1}\leq1+2s\) for \(0\leq s\leq1/2\), with
+\(s=\varepsilon^2/2\).
+\end{proof}
+
+\section*{A self-contained random covering estimate}
+Put \(d=n-1\).  There is a constant \(\kappa_n>0\) such that every
+Euclidean spherical cap
+\[
+ C(z,t)=\{u\in\Sph:\norm{u-z}_2\leq t\},\qquad 0<t\leq1,
+\]
+satisfies
+\begin{equation}
+ \sigma(C(z,t))\geq\kappa_n t^d.                       \tag{3}
+\end{equation}
+For example one may take
+\[
+ \kappa_n=\frac{2^{n-2}}{(n-1)\pi^{n-1}}.
+\]
+Indeed, the angular radius is \(2\arcsin(t/2)\geq t\), and integrating
+\(\sin^{n-2}\theta\geq(2\theta/\pi)^{n-2}\) for
+\(\theta\leq\pi/2\) proves (3).
+
+\begin{lemma}[Polynomial-tail covering bound]
+Let \(x_1,\ldots,x_N\) be independent and uniform on \(\Sph\), and set
+\(F_N=\{x_1,\ldots,x_N\}\).  For \(0<t\leq1\),
+\[
+ \mathbb P\{R(F_N)>t\}
+ \leq \kappa_n^{-1}\left(\frac4t\right)^d
+       \exp\left(-\kappa_n N(t/2)^d\right).             \tag{4}
+\]
+\end{lemma}
+
+\begin{proof}
+Take a maximal \(t/2\)-separated set \(Z\subset\Sph\).  It is a
+\(t/2\)-net, while the caps \(C(z,t/4)\), \(z\in Z\), are disjoint.
+By (3),
+\[
+ |Z|\leq\kappa_n^{-1}(4/t)^d.                          \tag{5}
+\]
+If every cap \(C(z,t/2)\) contains one sample point, then \(F_N\) is a
+\(t\)-net by the triangle inequality.  Each such cap is empty with
+probability at most
+\[
+ (1-\kappa_n(t/2)^d)^N
+ \leq\exp(-\kappa_n N(t/2)^d).
+\]
+The union bound and (5) give (4).
+\end{proof}
+
+\section*{Main result}
+\begin{theorem}[Improved random upper bound]
+Fix \(n\geq3\) and \(A>0\).  There are \(C_{n,A},N_{n,A}>0\) such that, for
+every \(N\geq N_{n,A}\), the random space
+\[
+ B_{X_N}=K_N=\conv\{\pm x_1,\ldots,\pm x_N\}
+\]
+satisfies, with probability at least \(1-N^{-A}\),
+\[
+ \sup_{\substack{Y\subset X_N\\ \dim Y=n-1}}
+ \lambda(Y,X_N)
+ \leq1+C_{n,A}\left(\frac{\log N}{N}\right)^{2/(n-1)}. \tag{6}
+\]
+\end{theorem}
+
+\begin{proof}
+In (4), take
+\[
+ t_N=
+ \left(\frac{2^d(A+2)}{\kappa_n}\frac{\log N}{N}\right)^{1/d}.
+\]
+For all sufficiently large \(N\), \(t_N\leq1\), and substitution into (4)
+gives
+\[
+ \mathbb P\{R(F_N)>t_N\}
+ \leq\frac{2^d}{(A+2)\log N}N^{-(A+1)}
+ \leq N^{-A}.
+\]
+On the complementary event, the deterministic lemma applies simultaneously
+to every hyperplane and yields
+\[
+ \lambda(Y,X_N)\leq1+t_N^2.
+\]
+This is (6), with
+\[
+ C_{n,A}=
+ \left(\frac{2^{n-1}(A+2)}{\kappa_n}\right)^{2/(n-1)}.
+\]
+\end{proof}
+
+\section*{Comparison, verification, and scope}
+The source upper excess is \(2N^{-1/(2(n-1))}\).  The new excess is
+\[
+ C_{n,A}(\log N/N)^{2/(n-1)}.
+\]
+For fixed \(n\), their ratio is
+\(O(N^{-3/(2(n-1))}(\log N)^{2/(n-1)})\).  The theorem also quantifies
+probability tending to one by an arbitrary polynomial tail.
+
+\begin{itemize}
+\item The spherical identity, support-function containment, and norm
+comparison in (2) are exact.
+\item The random estimate uses only a deterministic net, a cap-volume lower
+bound, independence, and a union bound.
+\item The same random points, on the same event, work for all hyperplanes;
+there is no union bound over the uncountable Grassmannian.
+\item Symmetrization causes no loss: a net made by the \(x_i\) alone is
+already sufficient for \(K_N=\conv\{\pm x_i\}\).
+\end{itemize}
+
+\paragraph{Upgrade attempt and obstruction.}
+The logarithm can be removed from estimates at a fixed direction, but a
+simultaneous inradius argument must control the largest empty spherical cap;
+random covering radii naturally live at the
+\((\log N/N)^{1/(n-1)}\) scale.  A log-free simultaneous projection bound
+would therefore need information about projection constants not mediated by
+global Euclidean inradius.  No matching lower bound for the random
+projection excess was obtained; the source's lower bound remains much
+smaller.
+
+\paragraph{Novelty audit.}
+Cheap run indexes and bounded primary-source/arXiv searches through
+17 August 2026 found the source paper and general random-sphere covering
+work, including arXiv:1512.07470, but no later statement combining the
+quadratic support-function conversion with simultaneous hyperplane
+projection constants.  Novelty confidence is moderate, not definitive.
+
+\paragraph{Limitations.}
+This substantially improves the upper endpoint of the source's interval but
+does not determine its optimal order and does not improve the source's lower
+endpoint.  Constants are explicit but deliberately crude.  Dimension is
+fixed while \(N\to\infty\), as in the source remark.
+
+\paragraph{Human review.}
+Pending.  Priority checks are the cap-measure normalization in (3), the
+support-function implication in (2), and whether an equivalent projection
+bound has appeared outside the arXiv searches.
+
+\section*{References}
+\begin{enumerate}[label={[\arabic*]},itemsep=3pt,topsep=3pt]
+\item T. Kobos, \emph{A uniform lower bound on the norms of hyperplane
+projections of spherical polytopes}, arXiv:2009.12929v3, especially
+Lemma 2.1 and Remark 4.5.
+\item J. S. Brauchart, A. B. Reznikov, E. B. Saff, I. H. Sloan,
+Y. G. Wang, and R. S. Womersley, \emph{Random point sets on the
+sphere---hole radii, covering, and separation}, arXiv:1512.07470.
+\end{enumerate}
+
+\end{document}

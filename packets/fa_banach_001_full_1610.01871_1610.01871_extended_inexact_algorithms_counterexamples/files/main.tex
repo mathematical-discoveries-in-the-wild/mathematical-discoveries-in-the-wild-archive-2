@@ -1,0 +1,292 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\ip}[2]{\langle #1,#2\rangle}
+
+\title{Sharp scalar counterexamples for three extended\\
+inexact proximal algorithms}
+\author{Run \texttt{fa\_banach\_001}, lane 18
+  (\texttt{agent\_lane\_18})}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Reem and Reich prove that three inexact proximal algorithms remain well
+defined beyond the parameter regimes of the original convergence theorems,
+and ask whether the generated sequences still converge to a zero.  All three
+answers are negative already on the real line for the maximally monotone
+identity operator.  At the boundary relative-error value one, explicit
+admissible choices give
+\[
+ a_n=1-\frac1{(n+2)^2},\qquad
+ x_n=\prod_{j=0}^{n-1}a_j=\frac{n+2}{2(n+1)}\longrightarrow\frac12,
+\]
+although the unique zero is $0$.  Beyond the boundary, constant choices give
+geometric divergence.  The examples cover Algorithms 9.1, 10.1, and 11.1 of
+the source, including parameters satisfying its formula (10.1).
+\end{abstract}
+
+\section{The three source questions}
+
+Reem and Reich study inexact resolvent inclusions in a reflexive Banach space
+and prove well-definedness of many implicit algorithmic schemes \cite{RR}.
+Three of their extensions are followed by explicit convergence questions.
+
+For the Solodov--Svaiter scheme, the source says:
+\begin{center}
+\includegraphics[width=.92\textwidth]{figures/open_problem_solodov_svaiter.png}
+\end{center}
+Thus Question~A is whether Algorithm 9.1 converges when $\sigma\ge1$.
+
+For Iusem--Pennanen--Svaiter, the exact source text is:
+\begin{center}
+\includegraphics[width=.92\textwidth]{figures/open_problem_iusem_pennanen_svaiter.png}
+\end{center}
+Question~B asks about arbitrary $\nu$, and also about $\nu$ defined by formula
+(10.1) when $\sigma\ge1$.
+
+Finally, for the variable-metric Parente--Lotito--Solodov scheme:
+\begin{center}
+\includegraphics[width=.92\textwidth]{figures/open_problem_parente_lotito_solodov.png}
+\end{center}
+Question~C asks whether Algorithm 11.1 converges under the extended
+well-definedness hypotheses of Theorem 11.2.  We answer all three questions
+negatively.
+
+\section{A common scalar model}
+
+Let $X=\R$ with its usual Hilbert norm and let
+\[
+ A(t)=t\qquad(t\in\R).
+\]
+This $A$ is maximally monotone and has the unique zero $0$.  Put
+\begin{equation}\label{an}
+ a_n=1-\frac1{(n+2)^2}\quad(n\ge0),
+ \qquad x_0=1.
+\end{equation}
+The elementary telescoping identity
+\begin{equation}\label{product}
+ \prod_{j=0}^{n-1}a_j
+ =\prod_{k=2}^{n+1}\frac{(k-1)(k+1)}{k^2}
+ =\frac{n+2}{2(n+1)}
+\end{equation}
+will force every boundary example to converge to $1/2$ rather than to the
+zero of $A$.
+
+\section{Solodov--Svaiter: failure at and above one}
+
+In the notation of Algorithm 9.1, one step must satisfy
+\begin{align}
+ \xi_n&\in A(y_n),\label{ss1}\\
+ 0&=\xi_n+\mu_n(y_n-x_n)+\eta_n,\label{ss2}\\
+ |\eta_n|&\le \sigma\max\{|\xi_n|,\mu_n|y_n-x_n|\},\label{ss3}
+\end{align}
+and, unless $\xi_n=0$ or $y_n=x_n$, the update is
+\begin{equation}\label{ssupdate}
+ x_{n+1}=x_n-\frac{\xi_n(x_n-y_n)}{\xi_n^2}\xi_n.
+\end{equation}
+
+\begin{theorem}\label{ss-theorem}
+Question~A has a negative answer.
+\begin{enumerate}
+\item At $\sigma=1$ there is an infinite admissible sequence converging to
+$1/2\ne0$.
+\item For every $\sigma>1$ there is an admissible sequence with
+$|x_n|\to\infty$ geometrically.
+\item At $\sigma=1$ the algorithm may even satisfy its stopping test at an
+arbitrary nonzero point.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Set $\mu_n=1$ and, for the first assertion, define
+\begin{equation}\label{sschoice}
+ y_n=\xi_n=a_nx_n,\qquad \eta_n=(1-2a_n)x_n.
+\end{equation}
+Relations \eqref{ss1} and \eqref{ss2} are identities.  Since
+$1/2<a_n<1$ and $x_n>0$,
+\[
+ |\eta_n|=(2a_n-1)x_n
+ \le a_nx_n
+ =\max\{|\xi_n|,|y_n-x_n|\}.
+\]
+Thus \eqref{ss3} holds with $\sigma=1$.  Neither stopping condition occurs,
+and \eqref{ssupdate} gives $x_{n+1}=y_n=a_nx_n$.  Formula
+\eqref{product} proves $x_n\to1/2$.
+
+Now fix $\sigma>1$.  Choose a constant $a>1$ such that
+\begin{equation}\label{supercritical-condition}
+ 2a-1\le\sigma a.
+\end{equation}
+If $1<\sigma<2$, any $1<a\le(2-\sigma)^{-1}$ works; if $\sigma\ge2$,
+every $a>1$ works.  Replacing $a_n$ by $a$ in \eqref{sschoice} satisfies
+all three conditions, and \eqref{ssupdate} gives $x_n=a^nx_0$.
+
+Finally, at a prescribed $x\ne0$, take $y=x$, $\xi=x$, and $\eta=-x$.
+Then \eqref{ss1}--\eqref{ss3} hold at $\sigma=1$, but the rule stops because
+$y=x$, although $0\notin A(x)$.
+\end{proof}
+
+\section{Iusem--Pennanen--Svaiter}
+
+With $\lambda_n=1$ and $Z=\R$, Algorithm 10.1 requires
+\begin{equation}\label{ipsconditions}
+ \eta_n\in A(y_n)+y_n-x_n,\qquad
+ |\eta_n|\le\nu|y_n-x_n|,\qquad
+ x_{n+1}=y_n-\eta_n.
+\end{equation}
+
+\begin{theorem}\label{ips-theorem}
+Question~B has a negative answer.  At $\nu=1$ there is an admissible sequence
+converging to $1/2\ne0$, and for every $\nu>1$ there is an admissible
+geometrically divergent sequence.  Moreover, $\nu=1$ arises from source
+formula (10.1) with $\widehat\lambda=1$, $\rho=1/6$, and $\sigma=3$.
+\end{theorem}
+
+\begin{proof}
+At the boundary define
+\begin{equation}\label{ipschoice}
+ y_n=(1-a_n)x_n,\qquad \eta_n=(1-2a_n)x_n.
+\end{equation}
+Because $A(y_n)=y_n$, the inclusion in \eqref{ipsconditions} is equality.
+Furthermore,
+\[
+ |\eta_n|=(2a_n-1)x_n\le a_nx_n=|y_n-x_n|,
+ \qquad y_n-\eta_n=a_nx_n.
+\]
+Equations \eqref{product} and \eqref{ipsconditions} give the claimed nonzero
+limit.  For $\nu>1$, choose a constant $a>1$ satisfying
+$2a-1\le\nu a$ as in \eqref{supercritical-condition}, and use
+\eqref{ipschoice} with $a_n=a$.  Then $x_{n+1}=ax_n$.
+
+It remains to match the formula branch of the source question.  Formula
+(10.1) is
+\[
+ \nu=\frac{
+ \sqrt{\sigma+(1-\sigma)(2\rho/\widehat\lambda)^2}
+ -2\rho/\widehat\lambda}
+ {1+2\rho/\widehat\lambda}.
+\]
+For $(\widehat\lambda,\rho,\sigma)=(1,1/6,3)$, the square root is $5/3$,
+and hence $\nu=(5/3-1/3)/(1+1/3)=1$ exactly.
+\end{proof}
+
+\section{Parente--Lotito--Solodov}
+
+Specialize Algorithm 11.1 to $c_n=1$, $M_n=I$, $\epsilon_n=0$, and
+$\tau_n=1$ (allowed, for example, with $\theta=1/2$).  Its step conditions
+and update become
+\begin{align}
+ \xi_n&\in A(y_n),\label{pls1}\\
+ \eta_n&=\xi_n+y_n-x_n,\label{pls2}\\
+ \eta_n^2&\le\sigma_n^2\bigl(\xi_n^2+(y_n-x_n)^2\bigr),\label{pls3}\\
+ x_{n+1}&=x_n-\frac{\xi_n(x_n-y_n)}{\xi_n^2}\xi_n.
+ \label{plsupdate}
+\end{align}
+
+\begin{theorem}\label{pls-theorem}
+Question~C has a negative answer.
+\begin{enumerate}
+\item With global parameter $\sigma=1$, one can have every
+$0<\sigma_n<1$ and $\sup_n\sigma_n=1$, while $x_n\to1/2\ne0$.
+\item For every global $\sigma>1$, admissible constant parameters can make
+$|x_n|\to\infty$ geometrically.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+For the first assertion set
+\begin{equation}\label{plschoice}
+ y_n=\xi_n=a_nx_n,\qquad \eta_n=(2a_n-1)x_n,\qquad
+ \sigma_n=\frac{2a_n-1}{\sqrt{a_n^2+(1-a_n)^2}}.
+\end{equation}
+Equations \eqref{pls1}--\eqref{pls3} hold, the last with equality.  Since
+$1/2<a_n<1$,
+\[
+ (2a_n-1)^2<a_n^2+(1-a_n)^2,
+\]
+so $0<\sigma_n<1$.  As $a_n\to1$, also $\sigma_n\to1$, and therefore the
+global choice $\sigma=1$ has $\sigma_n\in[0,\sigma)$ as required by the
+extended theorem.  The update \eqref{plsupdate} is $x_{n+1}=a_nx_n$,
+and \eqref{product} applies.
+
+For $a>1$, put
+\[
+ q(a)=\frac{2a-1}{\sqrt{a^2+(a-1)^2}}.
+\]
+We have $q(1)=1$ and $q$ is continuous.  Given global $\sigma>1$, choose
+$s$ with $1<s<\min\{\sigma,\sqrt2\}$ and then choose $a>1$ sufficiently
+close to one that $q(a)<s$.  Use \eqref{plschoice} with constant $a$ and
+constant $\sigma_n=s$.  All extended conditions hold and
+$x_n=a^nx_0$.
+\end{proof}
+
+\section{Interpretation and verification}
+
+The three examples share one mechanism.  Classical convergence assumes a
+uniform relative-error gap below one.  At the boundary, each scalar update may
+still be a strict contraction, but the deficits $1-a_n$ can be summable; then
+the infinite product is positive.  Above the boundary, expansion factors are
+admissible.  Thus the strict uniform gap is not a cosmetic proof artifact.
+
+The accompanying script \texttt{verify\_counterexamples.py} checks the first
+100 iterations in exact rational arithmetic, including every inclusion,
+relative-error inequality, update identity, the closed form
+\eqref{product}, and the formula-(10.1) parameter calculation.  Since all
+spaces are one-dimensional, weak and norm convergence coincide.
+
+Targeted searches of the exact source phrases, the original three algorithm
+papers, the run registry, and current proximal-method literature found
+convergence results under strict relative-error conditions, but no prior
+statement of these boundary examples.  The counterexamples are elementary;
+literature novelty and the transcription of the three algorithms nevertheless
+deserve specialist review.
+
+\paragraph{Limitations.}
+These examples answer the universal extended-convergence questions
+negatively.  They do not classify every individual extended parameter choice,
+nor do they contradict the original convergence theorems, all of which impose
+the strict conditions that the examples deliberately violate.
+
+\paragraph{Human review recommendation.}
+Verify equations \eqref{ss1}--\eqref{ssupdate}, \eqref{ipsconditions}, and
+\eqref{pls1}--\eqref{plsupdate} directly against Algorithms 9.1, 10.1, and
+11.1 of the source.  If confirmed, notify the authors: the three questions
+have sharp, one-dimensional negative answers.
+
+\begin{thebibliography}{9}
+\bibitem{RR}
+D.~Reem and S.~Reich,
+\emph{Solutions to inexact resolvent inclusion problems with applications to
+nonlinear analysis and optimization}, Rend. Circ. Mat. Palermo (2) 67 (2018),
+337--371; arXiv:1610.01871.
+
+\bibitem{SS}
+M.~V. Solodov and B.~F. Svaiter,
+\emph{A hybrid approximate extragradient--proximal point algorithm using the
+enlargement of a maximal monotone operator}, Set-Valued Anal. 7 (1999),
+323--345.
+
+\bibitem{IPS}
+A.~N. Iusem, T.~Pennanen, and B.~F. Svaiter,
+\emph{Inexact variants of the proximal point algorithm without monotonicity},
+SIAM J. Optim. 13 (2003), 1080--1097.
+
+\bibitem{PLS}
+L.~A. Parente, P.~A. Lotito, and M.~V. Solodov,
+\emph{A class of inexact variable metric proximal point algorithms},
+SIAM J. Optim. 19 (2008), 240--260.
+\end{thebibliography}
+
+\end{document}

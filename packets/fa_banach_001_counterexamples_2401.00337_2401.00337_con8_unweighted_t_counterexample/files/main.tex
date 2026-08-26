@@ -1,0 +1,170 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!55!black,urlcolor=blue!55!black,citecolor=blue!55!black}
+\newtheorem{theorem}{Theorem}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\gm}{\mathbin{\sharp}}
+\newcommand{\gmt}{\mathbin{\sharp_t}}
+\title{The printed geometric-mean conjecture already fails for scalars\\in arXiv:2401.00337}
+\author{Candidate counterexample packet}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\linewidth}{\textbf{Status:} candidate counterexample likely valid. This is a full negative answer to Conjecture 3.7 exactly as printed. It is also a semantic warning: the likely intended $t=\tfrac12$ or $\sharp_t$ formulation is not settled here.}}
+\end{center}
+
+\section{Source conjecture}
+
+The source defines the weighted geometric mean
+\[
+ A\gmt B=A^{1/2}(A^{-1/2}BA^{-1/2})^tA^{1/2},\qquad 0\leq t\leq1,
+\]
+and writes $A\gm B$ for the unweighted case $t=\tfrac12$.  Its final
+Conjecture 3.7 asks, for $1\leq s\leq2$, whether
+\begin{equation}\label{eq:printed}
+ \left\|\sum_{i=1}^m (A_i^s\gm B_i^s)^r\right\|
+ \leq
+ \left\|\left[
+ \left(\sum_iA_i\right)^{(1-t)srp/2}
+ \left(\sum_iB_i\right)^{tsrp}
+ \left(\sum_iA_i\right)^{(1-t)srp/2}
+ \right]^{1/p}\right\|
+\end{equation}
+for $p>0$, $r\geq1$, $rp\geq1$, and every unitarily invariant norm~\cite{FH}.
+The parameter $t$ appears on the right but is neither introduced nor
+quantified in the conjecture; the left side contains $\gm$, not $\gmt$.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/conjecture_crop.png}
+
+\smallskip
+\emph{The complete conjecture and open-case sentence in the source PDF, page 12.}
+\end{center}
+
+\section{Proof Intuition}
+
+The displayed inequality is required for matrices of every size, so it must
+survive the one-dimensional case.  There all noncommutativity disappears and
+the unweighted mean on the left contributes equal powers of $A$ and $B$.
+The right side instead contributes the unequal powers $1-t$ and $t$.  Their
+ratio is a single power of $A/B$, which can be made larger than one unless
+$t=\tfrac12$.  The counterexample therefore targets the exact mismatch in the
+printed display; it does not rely on delicate matrix behavior.
+
+\section{Counterexample and exact scalar obstruction}
+
+\begin{theorem}\label{thm:counterexample}
+Under the natural reading that $t\in[0,1]$ is inherited from the preceding
+weighted-mean statements, \eqref{eq:printed} is false for every $s>0$ as
+soon as $t\neq\tfrac12$.  In particular it is false in the stated open range
+$1<s<2$.
+\end{theorem}
+
+\begin{proof}
+Take $n=m=1$, so positive definite matrices are positive scalars and every
+unitarily invariant norm is a positive multiple of the absolute value.  Put
+$A_1=A>0$ and $B_1=B>0$.  Because
+\[
+ A^s\gm B^s=(A^sB^s)^{1/2}=(AB)^{s/2},
+\]
+the two sides of \eqref{eq:printed} reduce, after cancelling the norm's
+constant factor, to
+\[
+ L=(AB)^{sr/2},\qquad R=A^{(1-t)sr}B^{tsr}.
+\]
+Consequently
+\[
+ \frac{L}{R}=\left(\frac AB\right)^{sr(t-1/2)}.
+\]
+If $t>\tfrac12$, choose $A>B$; if $t<\tfrac12$, choose $A<B$.  In either
+case $L/R>1$.  Hence scalar validity for all positive $A,B$ forces
+$t=\tfrac12$.
+
+For a concrete counterexample in the open range, choose
+\[
+ A=4,\quad B=1,\quad s=\frac32,\quad r=p=1,\quad t=1.
+\]
+All printed hypotheses are satisfied, while
+\[
+ L=(4\cdot1)^{3/4}=2\sqrt2>1=4^0 1^{3/2}=R.
+\]
+\end{proof}
+
+The same computation shows that the printed endpoint assertions cannot hold
+for arbitrary $t$: the defect is independent of $s$.  This internal
+inconsistency is further evidence that the final display lost either a
+subscript $t$ on the left or the specialization $t=\tfrac12$ on the right.
+
+\section{What remains open after repairing the statement}
+
+There are two coherent repairs:
+\begin{enumerate}
+ \item replace $A_i^s\gm B_i^s$ by $A_i^s\gmt B_i^s$ while retaining
+ $t\in[0,1]$ on the right; or
+ \item fix $t=\tfrac12$ on the right and retain the unweighted geometric mean
+ on the left.
+\end{enumerate}
+For scalars, both repairs give equality.  The source's Theorem 3.6 is an
+unweighted result for $s\geq2$, so the second repair is especially consistent
+with the sentence immediately preceding the conjecture.  This packet makes
+no claim about either noncommutative repaired problem.
+
+As a guard against mistaking a typographical counterexample for a substantive
+one, we ran a focused numerical upgrade search on the second repair.  Random
+positive-definite $2\times2$ and $3\times3$ matrices (up to four summands),
+several values of $s\in(1,2)$, $r$, $p$, Schatten norms, and Ky Fan norms
+gave 280,000 matrix configurations and 700,000 Ky Fan tests, with no
+violation; the largest ratio was
+$0.9999999999798115$.  A differential-evolution maximization over four
+noncommuting real $2\times2$ positive-definite matrices, across 50 parameter
+regimes, likewise produced no ratio above $1$ (the largest was
+$0.9999994503007108$ among nontrivial reported runs).  These computations are
+not a proof, but they support keeping the repaired conjecture open rather than
+claiming more than the scalar diagnosis establishes.
+
+\section{Verification and novelty scope}
+
+The accompanying SymPy script evaluates the displayed scalar example exactly
+and verifies $L-R=2\sqrt2-1>0$.  No floating-point arithmetic is used in that
+verification.  The two additional scripts reproduce the random and optimized
+checks via
+\begin{verbatim}
+conda run --no-capture-output -n sandbox python \
+  code/search_repaired_conjecture.py
+conda run --no-capture-output -n sandbox python \
+  code/optimize_repaired_conjecture.py
+\end{verbatim}
+
+A bounded search through 11 August 2026 covered the run's registry, solution,
+attempt, and proof-gap indexes; the exact conjecture text; the arXiv identifier
+and title with \emph{Conjecture 3.7}, \emph{counterexample}, and
+\emph{$t$-geometric mean}; and later papers surfaced by those searches.  It
+found no later source explicitly correcting or resolving Conjecture 3.7.
+Novelty confidence is moderate pending specialist review.  The literal scalar
+calculation is independent of novelty.
+
+\section{Conclusion}
+
+Conjecture 3.7 is false exactly as displayed: scalar validity already forces
+$t=\tfrac12$, whereas its right side retains a free $t$ and its left side is
+unweighted.  The example $A=4$, $B=1$, $s=3/2$, $r=p=t=1$ is a full explicit
+counterexample.  Human review should treat this as a semantic warning and
+decide which repaired noncommutative conjecture was intended.
+
+\begin{thebibliography}{9}
+\bibitem{FH}
+S. Freewan and M. Hayajneh,
+\emph{Norm inequalities involving geometric means},
+arXiv:2401.00337 (2024).
+\url{https://arxiv.org/abs/2401.00337}.
+\end{thebibliography}
+
+\end{document}

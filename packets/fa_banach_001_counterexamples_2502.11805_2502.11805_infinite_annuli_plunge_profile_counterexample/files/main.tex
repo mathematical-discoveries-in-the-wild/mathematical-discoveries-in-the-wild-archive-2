@@ -1,0 +1,356 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\erfc}{\operatorname{erfc}}
+\newcommand{\interior}{\operatorname{int}}
+\newcommand{\cH}{\mathcal H}
+
+\title{Infinite ultrathin annuli refute the universal\\
+complementary-error-function plunge profile}
+\author{Automated mathematics run \texttt{fa\_banach\_001}\\
+Lane 10 --- candidate counterexample for expert review}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{
+\textbf{Status.} Candidate full counterexample to Conjecture 2.6 of
+Halvdansson.  There is a compact regular-closed radial set with finite boundary
+length for which the asserted uniform $O(R^{-1})$ eigenvalue profile fails.
+The proof is complete subject to verification of the source's standard
+uniform-in-$k$ interpretation of the displayed profile.
+}}
+\end{center}
+
+\section{Source conjecture}
+
+For the standard Gaussian window
+$g_0(t)=2^{1/4}e^{-\pi t^2}$, let $A_{\Omega}^{g_0}$ be the time-frequency
+localization operator with symbol $\Omega\subset\R^2$, and write
+$\lambda_k^{\Omega}$ for its decreasingly ordered eigenvalues.  Conjecture
+2.6 of Halvdansson \cite{Halvdansson} states that, for every compact,
+regular-closed $\Omega$ of finite boundary length,
+\begin{equation}\label{eq:source-conj}
+ \sup_k\left|\lambda_k^{R\Omega}
+ -\frac12\erfc\!\left(
+ \sqrt{2\pi}\frac{k-R^2|\Omega|}{R|\partial\Omega|}
+ \right)\right|=O(R^{-1}).
+\end{equation}
+The supremum records the uniform-in-$k$ reading used throughout the source's
+plunge-profile results and numerical $L^\infty$ comparisons.  Without this
+uniformity, the formula does not describe the moving plunge region
+$k-R^2|\Omega|=O(R)$.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.97\textwidth]{figures/open_problem_crop.png}
+  \caption{Conjecture 2.6 and its eigenvalue-counting interpretation on
+  printed page 13 of the source paper.}
+\end{figure}
+
+\section{Proof intuition}
+
+For a radial symbol, all localization operators are diagonal in the Hermite
+basis.  After the change of variables $s=\pi|z|^2$, the eigenvalue attached to
+the $k$th Hermite function is exactly the integral of the Gamma density
+$e^{-s}s^k/k!$ over the radial symbol.  Thus a radial annulus is a short
+interval sampled by a probability density of width comparable to the square
+root of its location.
+
+We use infinitely many concentric annuli.  Their radii decrease geometrically,
+so the sum of the lengths of all boundary circles is finite, but their radial
+widths decrease inductively much faster.  At a selected scale $R_m$, the
+$m$th annulus has scaled boundary length tending to infinity, whereas its
+entire Gamma-density bump has height $o(1)$.  Later annuli have negligible
+total symbol area at that scale.  Earlier annuli form a finite radial union,
+so the source's proved finite-component profile applies to them.
+
+At any fixed threshold $0<\theta<1/2$, the full operator therefore has almost
+the same number of eigenvalues above $\theta$ as the finite prefix.  The
+conjectured formula instead charges the invisible tail for all of its boundary
+circles, creating an unbounded discrepancy.  A uniform $O(R^{-1})$
+eigenvalue error could create only an $O(1)$ counting discrepancy, which is
+the contradiction.
+
+\section{Radial diagonalization and two lemmas}
+
+Put
+\[
+ p_k(s):=e^{-s}\frac{s^k}{k!}\qquad(k=0,1,\ldots).
+\]
+If $E\subset[0,\infty)$ and
+\[
+ \Omega_E:=\{z\in\R^2:\pi|z|^2\in E\},
+\]
+then the Hermite functions diagonalize $A_{R\Omega_E}^{g_0}$, and its
+unordered eigenvalues are
+\begin{equation}\label{eq:gamma-eigs}
+ \mu_k(R,E)=\int_{R^2E}p_k(s)\,ds.
+\end{equation}
+Indeed,
+$|V_{g_0}h_k(z)|^2=e^{-\pi|z|^2}(\pi|z|^2)^k/k!$, and
+$s=\pi|z|^2$ transforms planar radial measure into $ds$.  This is the same
+radial formula used in the disk and annulus calculations of the source
+\cite[Section 2]{Halvdansson}.
+
+\begin{lemma}[A thin annulus has a small spectral bump]\label{lem:bump}
+There is an absolute constant $C_0$ such that, whenever $a>0$, $\ell>0$,
+$R^2a\geq1$, and $I=[a,a+\ell]$,
+\[
+ \sup_{k\geq0}\int_{R^2I}p_k(s)\,ds
+ \leq C_0\frac{R\ell}{\sqrt a}.
+\]
+\end{lemma}
+
+\begin{proof}
+For fixed $s$, $p_k(s)$ is the probability that a Poisson random variable of
+mean $s$ equals $k$.  Unimodality in $k$ and Stirling's lower bound for
+$\lfloor s\rfloor!$ give the standard maximal-atom estimate
+\[
+ \sup_{k\geq0}p_k(s)\leq C_0s^{-1/2}\qquad(s\geq1).
+\]
+The interval $R^2I$ has length $R^2\ell$ and lies to the right of $R^2a$.
+Integrating the displayed estimate gives
+$C_0R^2\ell/(R\sqrt a)$.
+\end{proof}
+
+For $A,P>0$, define the model profile
+\[
+ F_{R,A,P}(x):=\frac12\erfc\!\left(
+ \sqrt{2\pi}\frac{x-R^2A}{RP}\right),
+ \qquad
+ b_\theta:=\frac{\erfc^{-1}(2\theta)}{\sqrt{2\pi}}.
+\]
+Thus $b_\theta>0$ for $0<\theta<1/2$.
+
+\begin{lemma}[Uniform profile implies bounded counting error]
+\label{lem:counting}
+Let $(\lambda_k(R))$ be decreasing.  If
+\[
+ \sup_k|\lambda_k(R)-F_{R,A,P}(k)|\leq C/R,
+\]
+then, for each fixed $\theta\in(0,1)$,
+\begin{equation}\label{eq:counting-law}
+ \#\{k:\lambda_k(R)>\theta\}
+ =R^2A+RPb_\theta+O(1).
+\end{equation}
+The $O(1)$ constant may depend on $C,P,$ and $\theta$, but not on $R$.
+\end{lemma}
+
+\begin{proof}
+The count is sandwiched between the numbers of integers $k$ for which
+$F_{R,A,P}(k)>\theta+C/R$ and
+$F_{R,A,P}(k)>\theta-C/R$.  Solving these two inequalities for $k$ gives
+\[
+ k<R^2A+RP\frac{\erfc^{-1}(2\theta+O(R^{-1}))}{\sqrt{2\pi}}.
+\]
+The inverse complementary error function is continuously differentiable near
+$2\theta$.  Its perturbation is $O(R^{-1})$, which changes the cutoff by
+$O(1)$.  Integer rounding contributes another $O(1)$.
+\end{proof}
+
+\section{The infinite-annulus symbol}
+
+Set
+\[
+ a_m:=4^{-m},\qquad c_m:=a_m\qquad(m\geq1).
+\]
+We choose positive lengths $\ell_m<a_m/10$ inductively.  Put
+\begin{equation}\label{eq:Rm}
+ R_m:=\frac{c_m\sqrt{a_m}}{\ell_m}.
+\end{equation}
+The lengths can be chosen to have all of the following properties:
+\begin{align}
+ R_m&\longrightarrow\infty,
+ &R_m\sqrt{a_m}&\longrightarrow\infty, \label{eq:growth}\\
+ R_i^2\sum_{j>i}\ell_j&\leq c_i
+ &&(i\geq1), \label{eq:tail-area}
+\end{align}
+and the finite-prefix counting constants introduced below are
+$o(R_m\sqrt{a_m})$.
+
+Here is the elementary induction.  After $\ell_1,\ldots,\ell_{m-1}$ have
+been chosen, the union of the first $m-1$ annuli is fixed.  Proposition 2.5
+of the source gives its uniform $O(R^{-1})$ profile, and Lemma
+\ref{lem:counting} gives a finite counting constant, uniformly for thresholds
+in a compact subinterval of $(0,1)$.  Choose $\ell_m$ small enough that the
+two quantities in \eqref{eq:growth} exceed any prescribed bounds and that this
+fixed finite-prefix constant is at most
+$2^{-m}R_m\sqrt{a_m}$.  Also impose
+\[
+ \ell_m\leq2^{-m}\min_{i<m}\frac{c_i}{R_i^2}.
+\]
+For each fixed $i$, summing this last condition over future $m$ yields
+\eqref{eq:tail-area}.  All requirements are compatible because $\ell_m$ may
+be arbitrarily small.
+
+Define
+\begin{equation}\label{eq:E-Omega}
+ E:=\{0\}\cup\bigcup_{m\geq1}[a_m,a_m+\ell_m],
+ \qquad \Omega:=\Omega_E.
+\end{equation}
+The intervals are disjoint and accumulate only at $0$.  Hence $E$ and
+$\Omega$ are compact.  The interior of $\Omega$ is the union of the open
+annuli, and its closure is exactly $\Omega$; thus $\Omega$ is regular closed.
+Its area and boundary length are
+\begin{equation}\label{eq:geometry}
+ |\Omega|=\sum_m\ell_m<\infty,
+ \qquad
+ |\partial\Omega|
+ =2\sqrt\pi\sum_m\bigl(\sqrt{a_m}+\sqrt{a_m+\ell_m}\bigr)<\infty.
+\end{equation}
+The accumulation point at the origin has zero $\cH^1$ measure.  In
+particular, \eqref{eq:E-Omega} satisfies every geometric hypothesis stated in
+Conjecture 2.6.
+
+\section{Failure of the conjectured counting law}
+
+Fix $\theta\in(0,1/2)$, for example $\theta=1/4$.  Let
+$E_{<m}:=\bigcup_{j<m}[a_j,a_j+\ell_j]$, and write $A_{<m}$ and $P_{<m}$
+for the area and boundary length of $\Omega_{E_{<m}}$.  This is a finite
+union of annuli.  Proposition 2.5 of the source and Lemma
+\ref{lem:counting} give, at $R=R_m$ and uniformly for
+$u\in[\theta/2,\theta]$,
+\begin{equation}\label{eq:prefix-count}
+ N_{<m}(u)
+ =R_m^2A_{<m}+R_mP_{<m}b_u+O_m(1),
+\end{equation}
+where the construction makes $O_m(1)=o(R_m\sqrt{a_m})$.
+
+Let $\tau_{m,k}$ be the contribution in \eqref{eq:gamma-eigs} of the annuli
+with indices $j\geq m$.  Since
+$R_m\ell_m/\sqrt{a_m}=c_m$ and $R_m^2a_m\geq1$ for large $m$, Lemma
+\ref{lem:bump} bounds the $m$th contribution by $C_0c_m$.  For the later
+annuli we use only $p_k\leq1$ and \eqref{eq:tail-area}:
+\[
+ \sup_k\sum_{j>m}\int_{R_m^2[a_j,a_j+\ell_j]}p_k(s)\,ds
+ \leq R_m^2\sum_{j>m}\ell_j\leq c_m.
+\]
+Consequently
+\begin{equation}\label{eq:tail-norm}
+ 0\leq\tau_{m,k}\leq\delta_m:=(C_0+1)c_m
+ \qquad\text{for every }k.
+\end{equation}
+
+Because all pieces are diagonal in the same Hermite basis,
+\eqref{eq:tail-norm} immediately gives
+\begin{equation}\label{eq:sandwich}
+ N_{<m}(\theta)\leq N_{\Omega,R_m}(\theta)
+ \leq N_{<m}(\theta-\delta_m)
+\end{equation}
+for all large $m$.  Since $b_u$ is Lipschitz near $\theta$,
+\eqref{eq:prefix-count} and \eqref{eq:sandwich} imply
+\begin{equation}\label{eq:actual-upper}
+ N_{\Omega,R_m}(\theta)
+ \leq R_m^2A_{<m}+R_mP_{<m}b_\theta
+ +C_1R_mP_{<m}c_m+o(R_m\sqrt{a_m}).
+\end{equation}
+
+On the other hand, the count forced by the conjectured profile is
+\[
+ Q_m:=R_m^2|\Omega|+R_m|\partial\Omega|b_\theta.
+\]
+The $m$th annulus alone has boundary length
+\[
+ 2\sqrt\pi\bigl(\sqrt{a_m}+\sqrt{a_m+\ell_m}\bigr)
+ \geq4\sqrt{\pi a_m}.
+\]
+Subtracting \eqref{eq:actual-upper} from $Q_m$, discarding the nonnegative
+tail-area term, and using $P_{<m}\leq|\partial\Omega|$ gives
+\begin{align*}
+ Q_m-N_{\Omega,R_m}(\theta)
+ &\geq4\sqrt\pi\,b_\theta R_m\sqrt{a_m}
+ -C_1|\partial\Omega|R_mc_m
+ -o(R_m\sqrt{a_m})\\
+ &=R_m\sqrt{a_m}\left(4\sqrt\pi\,b_\theta
+ -C_1|\partial\Omega|\frac{c_m}{\sqrt{a_m}}-o(1)\right).
+\end{align*}
+But $c_m/\sqrt{a_m}=\sqrt{a_m}\to0$, while
+$R_m\sqrt{a_m}\to\infty$.  Therefore
+\begin{equation}\label{eq:unbounded-count-gap}
+ Q_m-N_{\Omega,R_m}(\theta)\longrightarrow+\infty.
+\end{equation}
+
+\begin{theorem}\label{thm:counterexample}
+For the compact regular-closed radial set $\Omega$ in
+\eqref{eq:E-Omega}, whose boundary has finite length,
+\[
+ \limsup_{R\to\infty}R\sup_k\left|\lambda_k^{R\Omega}
+ -\frac12\erfc\!\left(
+ \sqrt{2\pi}\frac{k-R^2|\Omega|}{R|\partial\Omega|}
+ \right)\right|=+\infty.
+\]
+In particular, Conjecture 2.6 is false as stated.
+\end{theorem}
+
+\begin{proof}
+If the displayed limsup were finite, the conjectured uniform $O(R^{-1})$
+profile would hold.  Lemma \ref{lem:counting}, applied to the fixed set
+$\Omega$, would then give
+$N_{\Omega,R_m}(\theta)=Q_m+O(1)$.  This contradicts the unbounded gap
+\eqref{eq:unbounded-count-gap}.
+\end{proof}
+
+\section{Scope, verification, and novelty bounds}
+
+The example exploits infinitely many boundary components at vanishing scales.
+It does not contradict the source's Proposition 2.5 for finitely many radial
+components.  Nor does it rule out a corrected universality theorem for smooth,
+uniformly Ahlfors-regular, or finitely-component boundaries.  The source itself
+notes immediately after Conjecture 2.6 that stronger boundary regularity may
+be necessary.
+
+The phrase ``have finite boundary'' is read as finite boundary length,
+consistent with the quantity $|\partial\Omega|$ in the formula.  This reading
+is also distinguished in the source from the explicit ``finite number of
+connected components'' hypothesis in Proposition 2.5.  If the conjecture was
+intended to assume finitely many boundary components, the present example is a
+statement correction rather than a counterexample to that stronger version.
+
+The proof is non-computational.  The checks isolated in the argument are:
+\begin{enumerate}[leftmargin=2em]
+\item the radial Hermite eigenvalue formula \eqref{eq:gamma-eigs};
+\item the Poisson maximal-atom estimate in Lemma \ref{lem:bump};
+\item compactness, regular closedness, and the finite perimeter sum
+      \eqref{eq:geometry};
+\item feasibility of the diagonal induction defining $\ell_m$;
+\item the threshold sandwich \eqref{eq:sandwich}; and
+\item the profile-to-counting implication in Lemma \ref{lem:counting}.
+\end{enumerate}
+
+A bounded novelty search on 9 August 2026 covered the run's registry,
+solution, attempt, and proof-gap indexes; arXiv:2502.11805 and the exact paper
+title; searches combining ``boundary universality,'' ``localization
+operator,'' ``erfc,'' and the displayed scaling; and the author's 2025 thesis.
+The thesis still presents the formula as a conjecture.  No later explicit
+resolution or infinite-annulus counterexample was found.  This is not an
+exhaustive MathSciNet or zbMATH priority search.
+
+\textbf{Human-review recommendation.} High priority.  Verify the uniformity
+in the source's finite-annulus Proposition 2.5, the inductive domination of
+its prefix constants, and the convention that finite boundary means finite
+$\cH^1$ length.  The remaining estimates are elementary and exact.
+
+\sloppy
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{Halvdansson}
+S. Halvdansson,
+\emph{Empirical plunge profiles of time-frequency localization operators},
+arXiv:2502.11805 (2025), Conjecture 2.6 and Proposition 2.5.
+\url{https://arxiv.org/abs/2502.11805}.
+\end{thebibliography}
+
+\end{document}

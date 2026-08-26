@@ -1,0 +1,215 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1.03in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+
+\setlist{nosep}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\newcommand{\Ba}{\operatorname{Ba}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\norm}[1]{\lVert #1\rVert}
+
+\title{A Dense-Set Counterexample for Weak-Baire Measurability of the Norm}
+\author{Independent research note}
+\date{August 13, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Question~(B) of Avil\'es--Plebanek--Rodr\'iguez asks whether relative
+weak-Baire measurability of a Banach-space norm on a norm-dense set forces
+weak-Baire measurability on the whole space.  The answer is no in ZFC.
+For every nonseparable real Hilbert space \(X\), we construct a norm-dense
+subset \(A\subseteq X\) such that the restricted norm is the trace of a
+weak-Baire function depending on one linear coordinate, although the norm on
+\(X\) is not weak-Baire measurable.  The parenthetical variant in which
+\(A\) must be a dense linear subspace is not resolved here.
+\end{abstract}
+
+\section*{Packet status}
+
+\begin{description}[leftmargin=3.0cm,style=nextline]
+\item[Run] \texttt{fa\_banach\_001}, lane 13.
+\item[Source] A.~Avil\'es, G.~Plebanek, and J.~Rodr\'iguez,
+\emph{A weak\(^{*}\) separable \(C(K)^{*}\) space whose unit ball is not
+weak\(^{*}\) separable}, arXiv:1112.5710, Section~3.3, Question~(B),
+PDF page~22 \cite{APR}.
+\item[Classification] Candidate counterexample, likely valid subject to
+human mathematical review.
+\item[Scope] Full negative answer to the norm-dense-set formulation; no
+claim for the dense-linear-subspace parenthetical.
+\end{description}
+
+The source question is reproduced here:
+
+\begin{center}
+\includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+In transcription: if \(A\subseteq X\) is norm dense and the norm is
+relatively \(\Ba(X,w)\)-measurable on \(A\), must the norm be
+\(\Ba(X,w)\)-measurable on \(X\)?  The paper also asks the stronger-looking
+parenthetical variant where \(A\) is a linear subspace.
+
+\section{Proof intuition}
+
+Two elementary ideas fit together.  First, every real function measurable
+for \(\Ba(X,w)=\sigma(X^*)\) depends on only countably many dual
+coordinates.  Countably many vectors cannot norm a nonseparable Hilbert
+space: a nonzero vector orthogonal to all of them is indistinguishable from
+zero.  Hence the global Hilbert norm is not weak-Baire measurable.
+
+Second, a dense subset need not retain any linear geometry.  Split a Hilbert
+space as \(\R\oplus_2 Z\).  Choose a Borel function
+\(\psi:\R\to[0,\infty)\) with dense graph and retain from each vertical
+fiber only the sphere \(\norm{z}=\psi(t)\).  The resulting set is dense, while
+its norm is \(\sqrt{t^2+\psi(t)^2}\), a Borel function of the one weak
+coordinate \(t\).  Thus the restriction is measurable even though the
+global norm is not.
+
+\section{The counterexample}
+
+We first record the countable-dependence fact in the needed form.
+
+\begin{lemma}[Countable-coordinate dependence]\label{lem:countable}
+Let \(\mathcal F\) be any family of maps from a set \(\Omega\) to \(\R\).
+If \(u:\Omega\to\R\) is measurable for \(\sigma(\mathcal F)\), then there is
+a countable subfamily \(\mathcal F_0\subseteq\mathcal F\) such that
+\[
+ f(x)=f(y)\quad(f\in\mathcal F_0)
+ \qquad\Longrightarrow\qquad u(x)=u(y).
+\]
+\end{lemma}
+
+\begin{proof}
+Call a subset of \(\Omega\) countably determined if it belongs to
+\(\sigma(\mathcal F_0)\) for some countable
+\(\mathcal F_0\subseteq\mathcal F\).  The countably determined sets form a
+sigma-algebra: for a countable union, take the union of the countably many
+subfamilies involved.  This sigma-algebra contains every generator, so it is
+all of \(\sigma(\mathcal F)\).
+
+For each \(r\in\Q\), choose a countable subfamily determining
+\(u^{-1}((-\infty,r))\), and take their union \(\mathcal F_0\).  Points having
+the same \(\mathcal F_0\)-coordinates belong to exactly the same rational
+sublevel sets of \(u\), and therefore have the same \(u\)-value.
+\end{proof}
+
+\begin{theorem}\label{thm:main}
+Let \(X\) be any nonseparable real Hilbert space.  There exists a norm-dense
+set \(A\subseteq X\) such that \(\norm{\cdot}|_A\) is measurable for the
+trace of \(\Ba(X,w)\) on \(A\), while \(\norm{\cdot}:X\to\R\) is not
+\(\Ba(X,w)\)-measurable.
+\end{theorem}
+
+\begin{proof}
+Choose a one-dimensional summand and write
+\[
+ X=\R\oplus_2 Z,
+ \qquad \norm{(t,z)}=\sqrt{t^2+\norm{z}^2},
+\]
+where \(Z\) is nonseparable.  Let \((q_n)_{n\ge1}\) enumerate
+\(\Q\cap[0,\infty)\), put
+\[
+ D_n=n\sqrt2+\Q\quad(n\ge1),
+ \qquad
+ D_0=\R\setminus\bigcup_{n\ge1}D_n,
+\]
+and define
+\[
+ \psi(t)=
+ \begin{cases}
+ q_n,&t\in D_n,\ n\ge1,\\
+ 0,&t\in D_0.
+ \end{cases}
+\]
+The sets \(D_n\) are pairwise disjoint, countable, dense, and Borel; their
+complement \(D_0\) is also Borel.  Thus \(\psi\) is Borel.  Its graph is
+dense in \(\R\times[0,\infty)\): every open rectangle contains
+\((t,q_n)\) after first choosing a rational \(q_n\) in its vertical interval
+and then \(t\in D_n\) in its horizontal interval.
+
+Define
+\[
+ A=\{(t,z)\in\R\oplus_2 Z:\norm{z}=\psi(t)\}.
+\]
+To see that \(A\) is norm dense, fix \((t,z)\in X\) and
+\(\varepsilon>0\).  Choose \(q_n\) with
+\(\lvert q_n-\norm z\rvert<\varepsilon/2\), and choose
+\(s\in D_n\) with \(\lvert s-t\rvert<\varepsilon/2\).  If \(z\ne0\), set
+\(z'=q_nz/\norm z\); if \(z=0\), choose \(z'\in Z\) with
+\(\norm{z'}=q_n\).  Then \((s,z')\in A\) and
+\[
+ \norm{(s,z')-(t,z)}
+ =\sqrt{\lvert s-t\rvert^2+\lvert q_n-\norm z\rvert^2}<\varepsilon.
+\]
+
+Let \(\pi:X\to\R\) be the first-coordinate functional and put
+\(\phi(t)=\sqrt{t^2+\psi(t)^2}\).  The function \(\phi\) is Borel, hence
+\(\phi\circ\pi\) is \(\Ba(X,w)\)-measurable.  For every \((t,z)\in A\),
+\[
+ (\phi\circ\pi)(t,z)=\sqrt{t^2+\psi(t)^2}
+ =\sqrt{t^2+\norm z^2}=\norm{(t,z)}.
+\]
+Therefore the restricted norm on \(A\) is measurable for the trace of
+\(\Ba(X,w)\).
+
+It remains to show that the global norm is not weak-Baire measurable.  For a
+Banach space, \(\Ba(X,w)=\sigma(X^*)\).  If the norm were measurable,
+Lemma~\ref{lem:countable} would give \(x_n^*\in X^*\), \(n\ge1\), on whose
+joint coordinates it depends.  By the Riesz representation theorem, the
+\(x_n^*\)'s are represented by a countable family of Hilbert vectors.  Their
+closed linear span is separable and hence proper in nonseparable \(X\).
+Choose \(0\ne v\) orthogonal to it.  Then \(x_n^*(v)=x_n^*(0)\) for every
+\(n\), so countable dependence gives \(\norm v=\norm0=0\), a contradiction.
+\end{proof}
+
+\section{Scope, verification, and novelty}
+
+The construction is ZFC and already works in
+\(X=\R\oplus_2\ell_2(\omega_1)\).  It answers the source implication
+negatively when \(A\) is an arbitrary norm-dense set.  It deliberately does
+not make \(A\) linear.  Requiring linearity turns the construction into the
+dense graph of a discontinuous operator over a countably coordinatized
+quotient; no valid construction or impossibility proof for that variant was
+found in the upgrade audit.
+
+The proof was checked at four pressure points: the cosets \(n\sqrt2+\Q\) are
+pairwise disjoint; the graph of \(\psi\) is dense; radial rescaling gives the
+displayed exact distance formula; and Lemma~\ref{lem:countable} applies to
+the rational sublevel sets of the norm.  No computational assumption or
+set-theoretic hypothesis beyond ZFC is used.
+
+A bounded search on August 13, 2026 covered the run indexes, arXiv:1112.5710,
+the exact text of Question~(B), the phrases \emph{relatively
+\(\Ba(X,w)\)-measurable}, \emph{norm dense set}, and \emph{weak Baire norm},
+plus the title and authors.  It found the source and nearby work on Baire
+structures in \(C(K)\), but no later explicit answer and no matching shell
+construction.  Novelty confidence is moderate because the proof is
+elementary and may be folklore.  Human review should focus on literature
+novelty and on the intended parsing of the source's parenthetical
+\emph{(or linear subspace)}; the mathematical counterexample itself is
+self-contained.
+
+\begin{thebibliography}{9}
+\bibitem{APR}
+A.~Avil\'es, G.~Plebanek, and J.~Rodr\'iguez,
+\emph{A weak\(^{*}\) separable \(C(K)^{*}\) space whose unit ball is not
+weak\(^{*}\) separable}, arXiv:1112.5710 (2011).
+\end{thebibliography}
+
+\end{document}
+

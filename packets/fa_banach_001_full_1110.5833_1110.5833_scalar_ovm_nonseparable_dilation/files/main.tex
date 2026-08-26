@@ -1,0 +1,223 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\C}{\mathbb C}
+\newcommand{\1}{\mathbf 1}
+
+\title{A scalar operator-valued measure with no separable dilation\\
+\large Full negative answer to Problem B of arXiv:1110.5833}
+\author{Automated mathematics run \texttt{fa\_banach\_001}\\
+Lane 5, agent \texttt{agent\_lane\_05}}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Candidate full solution, likely valid, pending human review.  The construction
+answers both parts of the source problem negatively.}}
+\end{center}
+
+\section{Source question}
+
+Han, Larson, Liu, and Liu develop Banach-space dilations of
+operator-valued measures in \cite{HLLL}.  Their Problem B appears in Section
+2.4, printed page 37 (PDF page 41), after they prove separability for the
+discrete framing case and before Proposition 2.38.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{Problem B in the source paper, rendered from
+  \texttt{source\_paper.pdf}, PDF page 41.}
+\end{figure}
+
+The problem asks:
+\begin{quote}
+Assume that $(\Omega,\Sigma,E,B(X))$ is an operator-valued measure
+system such that $X$ is a separable Banach space. Is the dilation space
+$\alpha$ equipped with the minimal dilation norm always separable? If not,
+does there exist a dilation space which is separable?
+\end{quote}
+
+We answer both questions negatively, already for the one-dimensional Banach
+space $X=\C$ and a positive scalar multiple of the identity.
+
+\section{Definitions}
+
+For an operator-valued measure $E:\Sigma\to B(X)$, the source's algebraic
+elementary dilation space is spanned by the set functions
+\[
+   E_{B,x}(A)=E(A\cap B)x
+   \qquad (A,B\in\Sigma,\ x\in X).
+\]
+Its minimal dilation norm is
+\begin{equation}\label{eq:minimal-norm}
+ \left\|\sum_{k=1}^n c_k E_{B_k,x_k}\right\|_\alpha
+   =\sup_{A\in\Sigma}
+     \left\|\sum_{k=1}^n c_k E(A\cap B_k)x_k\right\|_X.
+\end{equation}
+The minimal dilation space is the completion in this norm.
+
+A dilation of $E$ consists of a Banach space $Z$, bounded maps
+$T:X\to Z$ and $S:Z\to X$, and a countably additive projection-valued
+measure $F:\Sigma\to B(Z)$ such that
+\begin{equation}\label{eq:dilation}
+                 E(B)=S F(B)T \qquad(B\in\Sigma).
+\end{equation}
+Projection-valued measures in the source are spectral:
+$F(A)F(B)=F(A\cap B)$.
+
+\section{Proof intuition}
+
+The obstruction is not the dimension of $X$ but the density of the underlying
+measure algebra.  An uncountable Bernoulli product has uncountably many
+coordinate events separated by a fixed amount of measure.  In the minimal
+model, their elementary vectors inherit this separation directly from
+\eqref{eq:minimal-norm}.
+
+Changing the dilation cannot compress the obstruction into a separable space.
+Indeed, every coordinate event produces a vector $F(B_i)T1$.  If two such
+vectors were close, applying the spectral projection of the one-sided
+difference $B_i\setminus B_j$ would isolate a vector whose scalar coefficient
+is exactly $\mu(B_i\setminus B_j)=1/4$.  Uniform boundedness of the spectral
+projections turns this into a fixed norm separation.
+
+\section{Full negative solution}
+
+\begin{theorem}\label{thm:main}
+There exist a measurable space $(\Omega,\Sigma)$, a separable Banach space
+$X$, and an operator-valued probability measure $E:\Sigma\to B(X)$ such that
+
+\begin{enumerate}
+\item the minimal dilation space of $E$ is nonseparable; and
+\item every projection-valued dilation space of $E$ is nonseparable.
+\end{enumerate}
+
+Consequently both questions in Problem B of \cite{HLLL} have negative
+answers.
+\end{theorem}
+
+\begin{proof}
+Let $I$ be an uncountable set and take the fair Bernoulli product probability
+space
+\[
+  (\Omega,\Sigma,\mu)
+    =\bigl(\{0,1\}^{I},\ \text{product }\sigma\text{-algebra},\
+                    (\tfrac12\delta_0+\tfrac12\delta_1)^I\bigr).
+\]
+Let $X=\C$ and define
+\[
+                    E(B)=\mu(B)I_\C \qquad(B\in\Sigma).
+\]
+This is a strongly countably additive $B(\C)$-valued probability measure, and
+$X$ is separable.
+
+For $i\in I$, put
+\[
+             B_i=\{\omega\in\Omega:\omega_i=1\},
+             \qquad u_i=E_{B_i,1}.
+\]
+If $i\ne j$, independence of the two coordinates gives
+\begin{equation}\label{eq:quarter}
+             \mu(B_i\setminus B_j)=\frac14.
+\end{equation}
+Using $A=B_i\setminus B_j$ in \eqref{eq:minimal-norm}, we obtain
+\[
+\begin{split}
+ \|u_i-u_j\|_\alpha
+ &\geq
+ \bigl|E(A\cap B_i)1-E(A\cap B_j)1\bigr|  \\
+ &=\mu(B_i\setminus B_j)=\frac14.
+\end{split}
+\]
+Thus the algebraic minimal dilation space already contains the uncountable
+$1/4$-separated family $(u_i)_{i\in I}$.  Its completion is nonseparable.
+
+It remains to show that no other dilation can be separable.  Let
+$(Z,F,S,T)$ be an arbitrary dilation as in \eqref{eq:dilation}.  Since
+$X=\C$, write $z=T1\in Z$ and regard $S$ as a functional in $Z^*$.  Then
+\begin{equation}\label{eq:coefficient}
+                    S(F(B)z)=\mu(B) \qquad(B\in\Sigma).
+\end{equation}
+The family of projections is uniformly bounded:
+\begin{equation}\label{eq:M}
+                       M:=\sup_{B\in\Sigma}\|F(B)\|<\infty.
+\end{equation}
+Indeed, for each $y\in Z$, the map $B\mapsto F(B)y$ is a countably additive
+$Z$-valued measure, hence has bounded range; the uniform boundedness principle
+then gives \eqref{eq:M}.
+
+Set $w_i=F(B_i)z$.  Fix distinct $i,j$ and let
+$D=B_i\setminus B_j$.  Spectrality gives
+\[
+ F(D)(w_i-w_j)
+   =F(D\cap B_i)z-F(D\cap B_j)z
+   =F(D)z.
+\]
+Together with \eqref{eq:coefficient}, \eqref{eq:quarter}, and
+\eqref{eq:M}, this yields
+\[
+ \|w_i-w_j\|
+ \geq \frac{\|F(D)z\|}{M}
+ \geq \frac{|S(F(D)z)|}{M\|S\|}
+ =\frac{1}{4M\|S\|}.
+\]
+Here $S\ne0$ because $S(F(\Omega)z)=\mu(\Omega)=1$.
+Therefore $(w_i)_{i\in I}$ is an uncountable uniformly separated family in
+$Z$, so $Z$ cannot be separable.  This proves both assertions.
+\end{proof}
+
+\section{Verification and scope}
+
+The proof has no numerical or unproved dependency.  Its checkable points are:
+\begin{enumerate}
+\item $X=\C$ satisfies the separability hypothesis and $E(\Omega)=I_\C$;
+\item distinct fair Bernoulli coordinates satisfy
+      $\mu(B_i\setminus B_j)=1/4$;
+\item the displayed minimal norm is exactly the source's definition;
+\item strong countable additivity of $F$ implies pointwise boundedness of
+      $\{F(B):B\in\Sigma\}$, and Banach--Steinhaus makes it uniformly bounded;
+\item spectrality isolates $F(B_i\setminus B_j)z$ from $w_i-w_j$.
+\end{enumerate}
+
+The construction uses a non-countably-generated measure algebra.  It therefore
+does not contradict Proposition 2.38 of the source, which obtains separability
+from a countable Borel basis together with total strong countable additivity.
+Rather, the example shows that some restriction of this kind is essential if
+one wants a general separability theorem.
+
+\section{Bounded novelty check}
+
+On 9 August 2026 we searched the run's registry, solution, attempt, and
+proof-gap indexes; the local arXiv corpus; exact phrases from Problem B; and
+web searches combining ``minimal dilation space'', ``operator-valued
+measure'', and ``separable dilation''.  The search found the source and the
+authors' later exposition arXiv:1411.4559, but no claimed solution of Problem
+B.  The later exposition repeats several other memoir problems while omitting
+this one.  This is evidence, not a proof of novelty; the result should receive
+expert literature review.
+
+\section{Human-review recommendation}
+
+Review as a candidate full negative answer.  The main verifier focus should be
+the intended generality of Problem B (arbitrary measurable spaces) and the
+standard bounded-range/uniform-boundedness step for $F$.  If both are accepted,
+the argument closes the entire stated problem rather than merely a subcase.
+
+\begin{thebibliography}{1}
+\bibitem{HLLL}
+D. Han, D. R. Larson, B. Liu, and R. Liu,
+\emph{Operator-Valued Measures, Dilations, and the Theory of Frames},
+arXiv:1110.5833 (2011); Memoirs of the American Mathematical Society
+\textbf{229}, no. 1075.
+\end{thebibliography}
+
+\end{document}

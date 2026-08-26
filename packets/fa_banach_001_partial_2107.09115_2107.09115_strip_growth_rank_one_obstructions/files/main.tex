@@ -1,0 +1,322 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.82in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,graphicx,microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage[T1]{fontenc}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\D}{\mathbb D}
+\newcommand{\T}{\mathbb T}
+\newcommand{\dist}{\operatorname{dist}}
+
+\title{Strip-growth obstructions for rank-one truncated Toeplitz symbols\\
+\large A partial answer to Conjectures 3.1--3.2 of arXiv:2107.09115}
+\author{Automated mathematical-discovery run \texttt{fa\_banach\_001}}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.} Partial result, likely valid, subject to human
+review.
+
+\section{Source conjecture and scope}
+
+For an inner function $I$, put $K_I^2=H^2\ominus I H^2$.  If $I$ has an
+angular derivative at $\zeta\in\T$, then evaluation at $\zeta$ is bounded on
+$K_I^2$, with reproducing kernel
+\[
+ k_\zeta^I(z)=\frac{1-\overline{I(\zeta)}I(z)}{1-\bar\zeta z}.
+\]
+The rank-one map $k_\zeta^I\otimes k_\zeta^I$ is a bounded truncated
+Toeplitz operator.
+
+On page 10, O'Loughlin asks the following equivalent conjectures
+\cite{Source}:
+\begin{quote}
+Every bounded truncated Toeplitz operator on $K_I^2$ has a bounded symbol if
+and only if $I$ is one-component.
+
+Every compact truncated Toeplitz operator on $K_I^2$ has a symbol in
+$I C(\T)$ if and only if $I$ is one-component.
+\end{quote}
+
+\begin{center}
+\includegraphics[width=0.91\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The forward implication for one-component functions is known
+\cite{BBK}.  The converse remains open.  The result below proves a new
+endpoint obstruction and applies it to two explicit non-one-component inner
+functions.  It does not settle the universal converse.
+
+\section{Proof intuition}
+
+Sarason's criterion for the boundary rank-one operator says that a bounded
+symbol would allow one to correct $k_\zeta^I$ by a function $Ih$, $h\in H^2$,
+so that the resulting analytic function has bounded real part.  Such a
+function maps the disk into a vertical strip and can grow only logarithmically
+toward the boundary.
+
+Now approach $\zeta$ very tangentially through points $z_n$ at which
+$I(z_n)$ is tiny.  The correction $I(z_n)h(z_n)$ is negligible by the $H^2$
+point-evaluation estimate, whereas the kernel is essentially
+$(1-\bar\zeta z_n)^{-1}$.  If that reciprocal grows faster than the permitted
+logarithm, no bounded symbol can exist.  Zeros make the correction vanish
+exactly; tiny values near atoms of a singular measure give a zero-free
+version of the same mechanism.
+
+\section{The strip obstruction}
+
+\begin{lemma}[Logarithmic growth in a vertical strip]
+\label{lem:strip}
+If $F\in H^2$ and $\operatorname{Re}F\in L^\infty(\T)$, then a constant
+$C_F<\infty$ exists such that
+\[
+ |F(z)|\le C_F\log\frac{e}{1-|z|},\qquad z\in\D.
+\]
+\end{lemma}
+
+\begin{proof}
+Let $M=\|\operatorname{Re}F\|_\infty$.  The Poisson representation gives
+$|\operatorname{Re}F(z)|\le M$ in $\D$.  If $M=0$, then $F$ is a purely
+imaginary constant.  Otherwise put
+\[
+ G=\frac{F-i\operatorname{Im}F(0)}{M}.
+\]
+Then $|\operatorname{Re}G|\le1$ and $\operatorname{Im}G(0)=0$.
+Carath\'eodory's inequality, applied to either $1+G$ or $1-G$, gives
+\[
+ |G'(z)|\le \frac{4}{1-|z|^2}.
+\]
+Integrating on the radius from $0$ to $z=re^{it}$ yields
+\[
+ |G(z)-G(0)|\le 2\log\frac{1+r}{1-r}.
+\]
+Since $|G(0)|\le1$, the stated estimate follows after absorbing
+$M$ and $|\operatorname{Im}F(0)|$ into $C_F$.
+\end{proof}
+
+We use the following individual rank-one criterion of Sarason
+\cite[Section 5]{Sarason}; see also \cite[Remark 5.4]{BCFMT}.  If $I$ has an
+angular derivative at $\zeta$, then $k_\zeta^I\otimes k_\zeta^I$ has a
+bounded symbol only if there is $h\in H^2$ such that
+\begin{equation}
+ \operatorname{Re}\bigl(k_\zeta^I+Ih\bigr)\in L^\infty(\T).
+ \label{eq:sarason}
+\end{equation}
+
+\begin{theorem}[Tangential small-value obstruction]
+\label{thm:obstruction}
+Let $I$ be inner and suppose that $I$ has an angular derivative at
+$\zeta\in\T$.  Assume that points $z_n\in\D$ satisfy, with
+$d_n=|1-\bar\zeta z_n|$,
+\begin{align}
+ &z_n\longrightarrow\zeta,\qquad I(z_n)\longrightarrow0,
+ \label{eq:small1}\\
+ &\frac{|I(z_n)|}{\sqrt{1-|z_n|^2}}=o(d_n^{-1}),
+ \label{eq:small2}\\
+ &d_n\log\frac{e}{1-|z_n|}\longrightarrow0.
+ \label{eq:tangent}
+\end{align}
+Then the bounded rank-one truncated Toeplitz operator
+$k_\zeta^I\otimes k_\zeta^I$ has no bounded symbol.  Consequently it has no
+symbol in $I C(\T)$.
+\end{theorem}
+
+\begin{proof}
+Suppose a bounded symbol exists.  By \eqref{eq:sarason}, choose $h\in H^2$
+and set $F=k_\zeta^I+Ih$ with bounded real part.  Lemma \ref{lem:strip}
+gives
+\begin{equation}
+ |F(z_n)|\le C_F\log\frac{e}{1-|z_n|}.
+ \label{eq:upper}
+\end{equation}
+Since $I(z_n)\to0$,
+\[
+ |k_\zeta^I(z_n)|
+ =\frac{|1-\overline{I(\zeta)}I(z_n)|}{d_n}
+ \ge \frac{1}{2d_n}
+\]
+for all large $n$.  The Hardy-space point-evaluation bound and
+\eqref{eq:small2} give
+\[
+ |I(z_n)h(z_n)|
+ \le \frac{\|h\|_2|I(z_n)|}{\sqrt{1-|z_n|^2}}
+ =o(d_n^{-1}).
+\]
+Thus $|F(z_n)|\ge(3d_n)^{-1}$ eventually.  This contradicts
+\eqref{eq:upper} and \eqref{eq:tangent}.
+\end{proof}
+
+\section{A Blaschke example beyond every finite Hardy-power test}
+
+\begin{theorem}[All finite Hardy powers, but no bounded symbol]
+\label{thm:blaschke}
+For $n\ge2$, let
+\[
+ \varepsilon_n=e^{-\sqrt n},\qquad
+ a_n=(1-\varepsilon_n)e^{i/n},
+\]
+and let $B$ be the Blaschke product with zeros $(a_n)$.  Then $B$ has an
+angular derivative at $1$ and
+\[
+ k_1^B\in H^p\qquad\text{for every finite }p>1,
+\]
+but $k_1^B\otimes k_1^B$ has no bounded symbol.
+\end{theorem}
+
+\begin{proof}
+The series $\sum_n\varepsilon_n$ converges, so $B$ is well defined.  Since
+$\varepsilon_n=o(n^{-1})$,
+\[
+ |1-a_n|\asymp n^{-1},\qquad 1-|a_n|^2\asymp\varepsilon_n.
+\]
+Hence, for every fixed finite $p>1$,
+\begin{equation}
+ \sum_{n\ge2}\frac{1-|a_n|^2}{|1-a_n|^p}
+ \asymp \sum_{n\ge2} e^{-\sqrt n}n^p<\infty.
+ \label{eq:HpB}
+\end{equation}
+The case $p=2$ is the Ahern--Clark angular-derivative condition, while the
+general case and the boundary-kernel criterion give $k_1^B\in H^p$
+\cite{AhernClark,Cohn}; see also \cite[Section 2.2]{BCFMT}.
+
+Use $z_n=a_n$ in Theorem \ref{thm:obstruction}.  The first two small-value
+conditions are immediate because $B(a_n)=0$, and
+\[
+ |1-a_n|\log\frac{e}{1-|a_n|}
+ \asymp \frac{1+\sqrt n}{n}\longrightarrow0.
+\]
+The theorem proves the assertion.
+\end{proof}
+
+The known fixed-power obstruction says that failure of
+$k_\zeta^I\in H^p$ for one $p>2$ rules out a bounded symbol
+\cite[Theorem 5.3]{BCFMT}.  Estimate \eqref{eq:HpB} shows that this test is
+silent for every finite $p$ in Theorem \ref{thm:blaschke}.
+
+\section{A zero-free atomic singular example}
+
+For a finite positive singular measure $\mu$ on $\T$, write
+\[
+ S_\mu(z)=\exp\left(-\int_\T\frac{\xi+z}{\xi-z}\,d\mu(\xi)\right).
+\]
+
+\begin{theorem}[Zero-free version]
+\label{thm:singular}
+Let
+\[
+ \xi_n=e^{i/n},\qquad c_n=e^{-\sqrt n},\qquad
+ \mu=\sum_{n\ge2}c_n\delta_{\xi_n},
+\]
+and put $S=S_\mu$.  Then $S$ is zero-free, has an angular derivative at
+$1$, and $k_1^S\in H^p$ for every finite $p>1$.  Nevertheless,
+$k_1^S\otimes k_1^S$ has no bounded symbol.
+\end{theorem}
+
+\begin{proof}
+The measure is finite.  For every finite $p>1$,
+\[
+ \int_\T\frac{d\mu(\xi)}{|1-\xi|^p}
+ =\sum_{n\ge2}\frac{c_n}{|1-\xi_n|^p}
+ \asymp\sum_{n\ge2}e^{-\sqrt n}n^p<\infty.
+\]
+As above, the case $p=2$ gives the angular derivative and the general
+Ahern--Clark/Cohn criterion gives $k_1^S\in H^p$.
+
+Set $r_n=1-c_n^2$ and $z_n=r_n\xi_n$.  Because $c_n^2=o(n^{-1})$,
+\[
+ d_n:=|1-z_n|\asymp n^{-1},\qquad
+ \log\frac{e}{1-|z_n|}=1+2\sqrt n.
+\]
+Thus \eqref{eq:tangent} holds.  The atom at $\xi_n$ gives
+\begin{align*}
+ |S(z_n)|
+ &=\exp\left(-\int_\T
+       \frac{1-|z_n|^2}{|\xi-z_n|^2}\,d\mu(\xi)\right)\\
+ &\le \exp\left(-c_n\frac{1+r_n}{1-r_n}\right)
+ \le \exp(-c_n^{-1}).
+\end{align*}
+In particular $S(z_n)\to0$, and
+\[
+ \frac{|S(z_n)|}{\sqrt{1-|z_n|^2}}
+ \lesssim \frac{e^{-1/c_n}}{c_n}=o(n)=o(d_n^{-1}).
+\]
+Theorem \ref{thm:obstruction} completes the proof.
+\end{proof}
+
+\section{Limitations, upgrade attempts, and novelty bounds}
+
+Theorems \ref{thm:blaschke} and \ref{thm:singular} provide explicit compact
+rank-one witnesses with no $I C(\T)$ symbol and bounded rank-one witnesses
+with no bounded symbol.  They therefore verify the conjectured negative
+direction for two non-one-component functions.  They do not show that every
+non-one-component inner function has the tangential sequence required by
+Theorem \ref{thm:obstruction}.
+
+Five focused routes were pursued.  First, the exact Carleson-class condition
+$\mathcal C_1(I^2)=\mathcal C_2(I^2)$ was compared with Aleksandrov's
+characterization by equality of all embedding classes; no valid exponent
+bootstrap was found.  Second, point-mass and Clark-measure tests were used to
+seek the boundary derivative criterion, but the basic estimates reduce to
+the Clark isometry.  Third, Sarason's rank-one criterion yielded Theorem
+\ref{thm:obstruction}.  Fourth, the result was upgraded first to the Blaschke
+example and then to the zero-free singular example, both beyond every finite
+$H^p$ test.  Fifth, product and model-space direct-sum constructions were
+tested as a route to a counterexample to the full conjecture; the needed
+$H^1$ endpoint decomposition was not obtained.
+
+A bounded search through 13 August 2026 used arXiv, exact-title and
+exact-conjecture searches, the source citations, the phrases ``bounded symbol
+one-component'', ``rank-one truncated Toeplitz'', ``weak factorization model
+space'', and the later survey/lecture literature.  Recent sources still state
+the universal converse as open.  The 2010 paper \cite{BCFMT} proves the
+fixed-$p$ necessary condition, but no located source states the strip-growth
+criterion or either all-finite-$H^p$ example above.  Novelty is plausible but
+provisional pending expert review.
+
+\section{Verification notes}
+
+The only non-elementary inputs are Sarason's individual rank-one criterion
+and the Ahern--Clark/Cohn boundary-kernel criterion.  Lemma
+\ref{lem:strip} is a direct Carath\'eodory estimate.  In both examples the
+series estimates dominate every polynomial because $e^{-\sqrt n}$ does.
+The singular estimate uses only the contribution of one positive atom, so
+there is no cancellation.  No numerical evidence is used.
+
+\begin{thebibliography}{9}
+\bibitem{Source}
+R. O'Loughlin,
+\emph{Symbols of compact truncated Toeplitz operators},
+J. Math. Anal. Appl. 507 (2022), 125819; arXiv:2107.09115.
+
+\bibitem{Sarason}
+D. Sarason,
+\emph{Algebraic properties of truncated Toeplitz operators},
+Oper. Matrices 1 (2007), 491--526.
+
+\bibitem{BCFMT}
+A. Baranov, I. Chalendar, E. Fricain, J. Mashreghi, and D. Timotin,
+\emph{Bounded symbols and reproducing kernel thesis for truncated Toeplitz
+operators}, J. Funct. Anal. 259 (2010), 2673--2701; arXiv:0909.0131.
+
+\bibitem{BBK}
+A. Baranov, R. Bessonov, and V. Kapustin,
+\emph{Symbols of truncated Toeplitz operators},
+J. Funct. Anal. 261 (2011), 3437--3456; arXiv:1009.5123.
+
+\bibitem{AhernClark}
+P. Ahern and D. Clark,
+\emph{Radial limits and invariant subspaces},
+Amer. J. Math. 92 (1970), 332--342.
+
+\bibitem{Cohn}
+W. Cohn,
+\emph{Radial limits and star invariant subspaces of bounded mean
+oscillation}, Amer. J. Math. 108 (1986), 719--749.
+\end{thebibliography}
+
+\end{document}

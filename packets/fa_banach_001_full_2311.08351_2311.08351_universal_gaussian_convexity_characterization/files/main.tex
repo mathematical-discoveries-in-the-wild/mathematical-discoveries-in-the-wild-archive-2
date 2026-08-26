@@ -1,0 +1,226 @@
+\documentclass[10pt]{article}
+\usepackage[margin=0.78in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,microtype,graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\DeclareMathOperator{\Var}{Var}
+\newcommand{\R}{\mathbb R}
+\newcommand{\E}{\mathbb E}
+
+\title{Gaussian laws are exactly the universal carriers of\\normalized log-mgf convexity}
+\author{Candidate full classification for the question in arXiv:2311.08351}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.93\textwidth}{\textbf{Result.}
+Let $X$ be an $\R^n$-valued random vector whose linear functionals have
+finite exponential moments of every real order.  The normalized log-moment
+generating function
+\[
+ \lambda\longmapsto \frac1\lambda\log\E e^{\lambda F(X)},
+ \qquad \text{with value $\E F(X)$ at $\lambda=0$},
+\]
+is convex on $\R$ for every convex $F$ for which all positive exponential
+moments are finite if and only if $X$ is a possibly shifted, singular, or
+deterministic multivariate Gaussian.  In fact, necessity already follows by
+testing affine functions.}}
+\end{center}
+
+\section{Source question and precise interpretation}
+
+Chen \cite{Chen} proves that if $g$ is a finite-dimensional Gaussian vector
+and $F$ is convex, then
+\[
+                 \Lambda_{F(g)}(\lambda)
+       :=\frac1\lambda\log\E e^{\lambda F(g)}
+\]
+is convex in $\lambda\in\R$, with the continuous value $\E F(g)$ at zero.
+After the theorem the source asks whether the conclusions hold for
+\emph{more general random vectors}.  The relevant discussion on source PDF
+page 7 is reproduced below.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.91\textwidth]{figures/open_problem_crop.png}
+\caption{The extension question in arXiv:2311.08351, source PDF page 7.}
+\end{figure}
+
+There are two different extensions one might seek.  A fixed non-Gaussian
+scalar random variable can enjoy convexity of its own normalized log-mgf.
+The direct vector-valued analogue of Chen's theorem, however, asks for a
+\emph{carrier law}: a law of $X$ for which the conclusion holds after every
+convex observation $F$.  The theorem below completely classifies those
+laws.
+
+Assume throughout that
+\[
+             \E e^{\langle u,X\rangle}<\infty
+             \qquad(u\in\R^n).
+\tag{1}\label{eq:linear-exp}
+\]
+This is the natural condition making every affine test admissible.  For a
+finite convex $F:\R^n\to\R$, define
+\[
+ \Lambda_{F,X}(\lambda)=
+ \begin{cases}
+  \lambda^{-1}\log\E e^{\lambda F(X)},&\lambda\ne0,\\
+  \E F(X),&\lambda=0.
+ \end{cases}
+\tag{2}\label{eq:normalized}
+\]
+We quantify only over $F$ such that the positive exponential moments in
+\eqref{eq:normalized} are finite.  Negative moments are then automatic:
+every finite convex function has an affine lower support, and
+\eqref{eq:linear-exp} applies.
+
+\section{Proof intuition}
+
+Linear functions are convex with both signs.  For a direction $v$, reflection
+turns its normalized log-mgf into the negative reflection of the original
+function.  Convexity for $v$ and $-v$ therefore makes one function both convex
+and concave, hence affine.  Multiplying by $\lambda$ shows that every projected
+cumulant generating function is quadratic, which is precisely Gaussianity.
+The converse is Chen's theorem after representing a possibly singular
+Gaussian vector as an affine image of a standard one.
+
+\section{The classification}
+
+For $v\in\R^n$, let
+\[
+ K_v(\lambda)=\log\E e^{\lambda\langle v,X\rangle},
+ \qquad
+ \psi_v(\lambda)=
+ \begin{cases}K_v(\lambda)/\lambda,&\lambda\ne0,\\
+ \E\langle v,X\rangle,&\lambda=0.
+ \end{cases}
+\]
+
+\begin{lemma}[The sign-pair rigidity mechanism]\label{lem:sign}
+If both $\psi_v$ and $\psi_{-v}$ are convex on $\R$, then $\psi_v$ is
+affine and $\langle v,X\rangle$ is Gaussian, allowing zero variance.
+\end{lemma}
+
+\begin{proof}
+The cumulant generating functions satisfy
+\[
+ K_{-v}(\lambda)=K_v(-\lambda),
+ \qquad
+ \psi_{-v}(\lambda)=-\psi_v(-\lambda).
+\tag{3}\label{eq:reflection}
+\]
+Convexity of $\psi_v$ makes $\lambda\mapsto\psi_v(-\lambda)$ convex.
+Convexity of the negative of this function, supplied by $\psi_{-v}$, makes
+it concave.  Hence $\psi_v$ is simultaneously convex and concave and is
+therefore affine, say $\psi_v(\lambda)=a_v+b_v\lambda$.  Consequently
+\[
+                     K_v(\lambda)=a_v\lambda+b_v\lambda^2.
+\]
+Differentiating at zero gives
+$a_v=\E\langle v,X\rangle$ and
+$2b_v=\Var(\langle v,X\rangle)\ge0$.  This is exactly the cumulant
+generating function of $N(a_v,2b_v)$; uniqueness of moment generating
+functions proves the assertion.
+\end{proof}
+
+\begin{theorem}[Universal Gaussian convexity characterizes Gaussian
+laws]\label{thm:main}
+Under \eqref{eq:linear-exp}, the following are equivalent.
+\begin{enumerate}
+\item For every finite convex $F:\R^n\to\R$ with
+      $\E e^{\lambda F(X)}<\infty$ for every $\lambda>0$, the function
+      $\Lambda_{F,X}$ is convex on $\R$.
+\item The same assertion holds when $F$ is restricted to affine functions.
+\item $X$ is multivariate Gaussian, with arbitrary mean and positive
+      semidefinite covariance; singular and deterministic laws are allowed.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+The implication (1)$\Rightarrow$(2) is immediate.  Assume (2).  For every
+$v\in\R^n$, apply it to the two linear convex functions
+$x\mapsto\langle v,x\rangle$ and $x\mapsto-\langle v,x\rangle$.
+Lemma \ref{lem:sign} shows that every one-dimensional projection
+$\langle v,X\rangle$ is Gaussian.  By the standard projection
+characterization (equivalently, by evaluating the characteristic function
+on every $v$), $X$ is a multivariate Gaussian.  This proves (2)$\Rightarrow$(3).
+
+Conversely, write a general Gaussian vector as $X=m+Ag$, where $g$ is a
+standard Gaussian vector of some finite dimension and $A$ may be singular.
+For convex $F$, the composition $z\mapsto F(m+Az)$ is convex.  Chen's theorem
+applied to this composition gives convexity of $\Lambda_{F,X}$, proving
+(3)$\Rightarrow$(1).  The deterministic case corresponds to $A=0$ and is
+included.
+\end{proof}
+
+\begin{corollary}[Minimal test class]
+Among laws satisfying \eqref{eq:linear-exp}, it is enough to verify the
+convexity for the $2n$ coordinate tests $F(x)=x_j$ and $F(x)=-x_j$ together
+with their analogues after every linear change of coordinates.  Equivalently,
+the paired tests $F(x)=\pm\langle v,x\rangle$ for all $v$ are complete.
+\end{corollary}
+
+\section{An explicit obstruction and sharpness of the scope}
+
+Let $X$ be a symmetric Rademacher random variable.  The identity test is
+convex, but its normalized log-mgf is
+\[
+             \Lambda_X(\lambda)=\frac{\log\cosh\lambda}{\lambda},
+             \qquad \Lambda_X(0)=0.
+\]
+It is not convex on $\R$.  Indeed,
+\[
+ \Lambda_X(\lambda)=\frac\lambda2-\frac{\lambda^3}{12}
+                     +\frac{\lambda^5}{45}+O(\lambda^7),
+\]
+and directly $\Lambda_X''(1)\approx-0.235652<0$ (while its value at $-1$
+has the opposite sign).  Thus even the simplest bounded non-Gaussian law
+does not support a blanket extension.
+
+The quantifier over \emph{all} convex observations is essential to the
+classification.  Fern\'andez-Unzueta, Melbourne, and Palafox-Castillo
+\cite{FMP} subsequently studied scalar variables whose own normalized
+log-mgf is convex and proved strict convexity for a broad Ehrhard-like class.
+That phenomenon does not contradict Theorem \ref{thm:main}: a non-Gaussian
+variable may pass one observation, while the paired affine family forces a
+universal carrier law to be Gaussian.
+
+\section{Verification, novelty, and verdict}
+
+The included symbolic script checks the Gaussian affine formula, the
+Rademacher series, and the signs of its second derivative at $\pm1$.  These
+checks are ancillary; the classification proof is the two-line reflection
+identity \eqref{eq:reflection} followed by the projection characterization.
+
+A bounded novelty search on 17 August 2026 covered the run's four cheap
+indexes and web searches for the source title, its extension phrase, and
+combinations of universal convex tests with Gaussian characterization.  The
+most relevant later paper was \cite{FMP}; it develops the scalar
+fixed-variable direction and a strictness theorem, but does not state the
+universal carrier classification above.  No prior statement of this exact
+iff result was found.  Novelty is plausible, not certified.
+
+This packet gives a full answer to the natural universal interpretation of
+the source's question.  It does not classify laws for which convexity holds
+for one prescribed nonlinear $F$, nor intermediate restricted families of
+tests.  Human review should audit the intended quantifier in the source
+question and the mild all-linear-exponential-moments hypothesis.  Subject to
+that interpretation, the proof is complete.
+
+\begin{thebibliography}{9}
+\bibitem{Chen}
+W.-K. Chen,
+\emph{A Gaussian Convexity for Logarithmic Moment Generating Functions with
+Applications in Spin Glasses}, arXiv:2311.08351v2, 2024.
+
+\bibitem{FMP}
+M. Fern\'andez-Unzueta, J. Melbourne, and G. Palafox-Castillo,
+\emph{On Convex Functions of Gaussian Variables}, arXiv:2510.06676, 2025.
+\end{thebibliography}
+
+\end{document}

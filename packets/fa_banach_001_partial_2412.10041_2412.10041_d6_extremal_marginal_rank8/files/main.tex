@@ -1,0 +1,226 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\C}{\mathbb C}
+\newcommand{\M}{\mathbb M}
+\newcommand{\MR}{\mathcal{MR}}
+\newcommand{\J}{\mathcal J}
+\newcommand{\rank}{\operatorname{rank}}
+
+\title{A sharp rank-eight extremal marginal state in dimension six}
+\author{Candidate partial solution packet for arXiv:2412.10041}
+\date{12 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Candidate substantial partial solution, computer-assisted but exact.
+We settle the first equal-dimension case omitted by the source:
+\(\MR(I_6/6,I_6/6)=8\).  The general construction problem remains open.}}
+\end{center}
+
+\section{Source question}
+
+For states \(\rho_1\in\M_{d_1}\) and \(\rho_2\in\M_{d_2}\), let
+\(\mathcal C(\rho_1,\rho_2)\) be the convex set of bipartite states with
+these two marginals.  Parthasarathy's bound says that every extreme
+\(\rho\in\mathcal C(\rho_1,\rho_2)\) satisfies
+\[
+ \rank\rho\le
+ \left\lfloor\sqrt{d_1^2+d_2^2-1}\right\rfloor .
+\]
+Devendra, Dey, and Dey ask for constructions attaining this bound.  Their
+paper handles \(d_1=d_2=3,4,5,9,12\) and certain multiples of five, but not
+\(d_1=d_2=6\).  In that case the bound is
+\[
+ \left\lfloor\sqrt{2\cdot6^2-1}\right\rfloor
+ =\lfloor\sqrt{71}\rfloor=8.
+\]
+
+\begin{figure}[ht]
+ \centering
+ \includegraphics[width=0.93\textwidth]{figures/source_open_problem_page.png}
+ \caption{The source's concluding construction problem, on PDF page 17.}
+\end{figure}
+
+\section{Proof intuition}
+
+Under the Choi--Jamio\l kowski correspondence, it is enough to construct a
+bistochastic completely positive map on \(\M_6\) with eight Kraus operators.
+The marginal constraints ask for
+\[
+ \sum_j U_j^*U_j=I_6=\sum_j U_jU_j^*.
+\]
+Extremality asks that the \(64\) ordered pairs
+\[
+ \bigl(U_i^*U_j,\;U_jU_i^*\bigr),\qquad 1\le i,j\le8,
+\]
+be linearly independent in \(\M_6\oplus\M_6\).
+
+The construction makes every \(U_j\) monomial.  Across every input column,
+and also across every output row, the eight nonzero moduli are exactly
+\(1,2,\ldots,8\).  Both marginal identities then follow from the same
+one-line sum of squares.  The remaining independence question is finite
+linear algebra over the Gaussian integers; one nonzero determinant modulo a
+prime is an exact certificate.
+
+\section{The construction}
+
+Let \(e_1,\ldots,e_6\) be the standard basis of \(\C^6\).  Define eight
+matrices by listing their columns:
+\small
+\begin{align*}
+W_1&=[-8e_3,-8ie_4,-8ie_5,6ie_2,e_1,4e_6],\\
+W_2&=[7e_1,-7e_5,-3e_2,-5e_6,-6e_4,-7ie_3],\\
+W_3&=[4e_3,2e_1,2e_6,-7e_2,7ie_4,2ie_5],\\
+W_4&=[-3e_4,3e_5,5ie_3,4e_1,-8ie_6,8ie_2],\\
+W_5&=[2e_4,6ie_6,4ie_2,-8ie_1,4ie_5,ie_3],\\
+W_6&=[6e_1,5e_4,6e_3,-e_6,5ie_5,5ie_2],\\
+W_7&=[5ie_1,-e_2,-ie_4,2ie_3,3ie_6,-6e_5],\\
+W_8&=[-e_5,-4ie_4,7e_6,-3e_1,-2e_2,3ie_3].
+\end{align*}
+\normalsize
+
+\begin{lemma}\label{lem:certificate}
+The matrices above satisfy
+\[
+ \sum_{j=1}^8W_j^*W_j=204I_6
+ \quad\text{and}\quad
+ \sum_{j=1}^8W_jW_j^*=204I_6.
+\]
+Moreover, the \(64\) pairs
+\[
+ \left\{\bigl(W_i^*W_j,W_jW_i^*\bigr):1\le i,j\le8\right\}
+\]
+are linearly independent over \(\C\).
+\end{lemma}
+
+\begin{proof}
+Every \(W_j\) is monomial.  Inspection of the displayed columns shows that,
+for each fixed input coordinate, the eight nonzero moduli form the multiset
+\(\{1,\ldots,8\}\).  After transporting each entry to its output row, the
+same is true for every fixed output coordinate.  Off-diagonal entries in
+both sums vanish, while each diagonal entry equals
+\[
+ 1^2+2^2+\cdots+8^2=204.
+\]
+
+For independence, form a \(72\times64\) Gaussian-integer matrix \(A\).
+Its columns are indexed lexicographically by \((i,j)\).  The first \(36\)
+rows are the entries of \(W_i^*W_j\), in row-major order, and the final
+\(36\) rows are the entries of \(W_jW_i^*\), again in row-major order.
+Let \(D\) be the leading \(64\times64\) minor of \(A\); thus \(D\) uses all
+first-product rows and the first \(28\) second-product rows.
+
+Reduce \(\mathbb Z[i]\) to \(\mathbb F_{101}\) by sending \(i\) to \(10\).
+This is a ring homomorphism because \(10^2\equiv-1\pmod{101}\).  Exact
+Gaussian elimination gives
+\[
+ \det D\equiv19\pmod{101}.
+\]
+Hence \(\det D\ne0\) in \(\mathbb Z[i]\), so \(A\) has column rank \(64\)
+over \(\C\).  The claimed pairs are therefore linearly independent.  The
+included verifier reconstructs all matrices and performs both normalization
+checks and this modular determinant computation using integer arithmetic
+only.
+\end{proof}
+
+\begin{theorem}\label{thm:main}
+There is an extreme point
+\[
+ \rho\in\mathcal C(I_6/6,I_6/6)
+\]
+of rank \(8\).  Consequently,
+\[
+ \boxed{\MR(I_6/6,I_6/6)=8.}
+\]
+\end{theorem}
+
+\begin{proof}
+Put \(U_j=W_j/\sqrt{204}\) and define
+\[
+ \Phi(X)=\sum_{j=1}^8U_j^*XU_j,\qquad X\in\M_6.
+\]
+The two identities in Lemma~\ref{lem:certificate} say that \(\Phi\) is
+unital and trace preserving.  The extremality criterion recalled as
+Theorem 2.12 in the source says that \(\Phi\) is extreme among such maps
+exactly when the pairs
+\((U_i^*U_j,U_jU_i^*)\) are linearly independent.  Lemma
+\ref{lem:certificate} gives this independence.
+
+It also forces the \(U_j\)'s themselves to be linearly independent.  Indeed,
+if \(\sum_jc_jU_j=0\), fixing a nonzero \(U_k\) yields simultaneous
+relations
+\[
+ \sum_jc_jU_k^*U_j=0,\qquad
+ \sum_jc_jU_jU_k^*=0,
+\]
+and pairwise independence gives every \(c_j=0\).  Thus the Kraus
+decomposition is minimal and the Choi rank of \(\Phi\) is \(8\).
+
+Now set \(\rho=\J(\Phi)/6\).  The Choi correspondence gives
+\(\rho\in\mathcal C(I_6/6,I_6/6)\), preserves extremality, and identifies
+\(\rank\rho\) with the Choi rank.  Hence \(\rho\) is extreme of rank \(8\).
+Parthasarathy's upper bound is also \(8\), proving equality.
+\end{proof}
+
+\section{Exact verification}
+
+Run
+\begin{verbatim}
+python verify_exact.py
+\end{verbatim}
+from the packet directory.  The script uses no numerical linear algebra or
+external package.  It verifies the two identities with \(204I_6\), builds
+the \(64\times64\) minor, and returns determinant \(19\) in
+\(\mathbb F_{101}\).  The certificate is deliberately stronger than a
+floating-point rank computation.
+
+\section{Upgrade attempts, limitations, and novelty}
+
+The first construction attempt used arbitrary Kraus matrices and operator
+scaling, but it would have left irrational numerical normalization without
+a compact certificate.  The successful upgrade replaced it by monomial
+Gaussian-integer matrices whose moduli form two simultaneous edge colourings;
+this makes both marginals exact before the rank test.
+
+A second upgrade generalized the search to other omitted dimensions.  Exact
+full-rank modular candidates appeared immediately in several cases, strongly
+suggesting a generic phenomenon.  They are not claimed here because a
+uniform proof that the relevant determinant polynomial is nonzero for every
+dimension is still missing.  A dimension-count/transversality argument alone
+is insufficient: the \(d=2\) bistochastic case is a genuine exception despite
+the naive count.  Likewise, tensor-product propagation gives only finite
+ranges because Choi ranks multiply while the sharp integer bound follows
+\(\lfloor\sqrt2\,d\rfloor\).
+
+Thus Theorem~\ref{thm:main} completely settles the first omitted dimension
+but not the source's general algorithmic question.
+
+A bounded primary-source search through 12 August 2026 used the exact source
+title and arXiv id, the phrase extremal marginal state dimension 6 rank 8,
+the phrase bistochastic channel Choi rank 8, and the Parthasarathy sharpness
+question.  It found the source's cases and older general extremality
+criteria, but no construction for \(d=6\) and no later general resolution.
+Novelty confidence is moderate; specialist review is recommended before any
+priority claim.
+
+\begin{thebibliography}{9}
+\bibitem{DDD}
+R.~Devendra, P.~Dey, and S.~Dey,
+\emph{On the rank of extremal marginal states},
+arXiv:2412.10041 (2024).
+\end{thebibliography}
+
+\end{document}

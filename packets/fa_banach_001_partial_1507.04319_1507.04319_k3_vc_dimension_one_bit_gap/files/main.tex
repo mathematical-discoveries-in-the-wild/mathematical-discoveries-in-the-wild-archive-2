@@ -1,0 +1,238 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[margin=0.76in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs,tabularx}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\F}{\mathbb F}
+\newcommand{\VC}{\operatorname{VCdim}}
+\newcommand{\sign}{\operatorname{sign}}
+\newcommand{\qbinom}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}_2}
+
+\title{The three-sparse Walsh threshold class:\\
+an exact count and a one-bit VC-dimension gap}
+\author{New partial result for Problem 8 of arXiv:1507.04319}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\paragraph{Status.}
+\textbf{New partial result; the arbitrary-sparsity problem remains open.}
+For one and two terms the VC dimension is exactly \(n+1\).  For three terms
+the classifiers admit a complete algebraic description and exact count.  This
+gives exact answers in dimensions \(n\le3\), and for every \(n\ge4\) it
+determines the VC dimension up to one.
+
+\section*{Source question}
+Mixon and Peterson [1] define \(C_{n,k}\) to be the functions
+\(g:\{\pm1\}^n\to\{\pm1\}\) of the form
+\[
+ g(x)=\sign\!\left(\sum_{i=1}^k a_i\prod_{j\in S_i}x_j\right)
+\]
+and ask in Problem 8: ``Determine the VC dimension of \(C_{n,k}\).''  They
+prove
+\(
+\max\{n,k\}\le \VC(C_{n,k})\le2nk-O(k\log k).
+\)
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+\noindent\emph{Source evidence: arXiv:1507.04319, p.~7, Problem 8.}
+
+We identify the cube with \(V=\F_2^n\), write
+\(\chi_a(x)=(-1)^{a\cdot x}\), and encode a sign function as
+\(g(x)=(-1)^{f(x)}\) with \(f:V\to\F_2\).  An affine Boolean form is a
+function \(\ell(x)=b+a\cdot x\).
+
+\section*{Proof intuition}
+Two Walsh characters are rigid: after factoring one character, the sign of
+\(a+b\chi\) is simply the sign of its larger coefficient, unless the
+expression vanishes.  Three characters are the first genuinely new case.
+After factoring one character they give a linear threshold function on a
+two-dimensional Boolean square.  The only non-affine possibilities have one
+exceptional vertex.  In algebraic normal form these are exactly
+\(\ell+L_1L_2\).
+
+The quadratic part of \(L_1L_2\) is the decomposable bivector
+\(u\wedge v\), so the nonzero quadratic parts are indexed by two-planes in
+\(\F_2^n\).  This gives the exact count and hence the upper bound.  For the
+lower bound, start with \(0,e_1,\ldots,e_n\), then add
+\(e_i+e_j\) for every edge of \(K_{2,n-2}\).  Affine terms fit arbitrary
+labels on the affine basis.  Each right vertex of \(K_{2,n-2}\) then stores
+its two remaining second differences as one vector in \(\F_2^2\), making all
+edge labels independent.  The source problem for larger \(k\), and one bit
+for \(k=3,n\ge4\), are not settled by this argument.
+
+\begin{lemma}[two-term rigidity]\label{lem:two}
+For every \(n\ge1\),
+\[
+ C_{n,2}=C_{n,1}=\{\pm\chi_a:a\in\F_2^n\},
+ \qquad
+ \VC(C_{n,1})=\VC(C_{n,2})=n+1.
+\]
+\end{lemma}
+
+\begin{proof}
+After combining repeated characters, a two-term expression with distinct
+characters factors as
+\[
+ a\chi_r+b\chi_s=\chi_r(a+b\chi_{r+s}).
+\]
+If its sign is defined everywhere, then \(|a|\ne|b|\).  If
+\(|a|>|b|\), its sign is \(\sign(a)\chi_r\); if \(|b|>|a|\), its sign is
+\(\sign(b)\chi_s\).  Thus two terms give no new classifiers.
+
+The \(2^{n+1}\) functions \(\pm\chi_a\) are precisely the phases of affine
+Boolean forms.  They shatter \(\{0,e_1,\ldots,e_n\}\), since an affine form
+can be prescribed arbitrarily on an affine basis.  The class-size bound gives
+the reverse inequality.
+\end{proof}
+
+\begin{proposition}[classification and exact count]\label{prop:class}
+The phases in \(C_{n,3}\) are exactly
+\begin{equation}\label{eq:quadratic-class}
+ (-1)^{\ell(x)+L_1(x)L_2(x)},
+\end{equation}
+where \(\ell,L_1,L_2:V\to\F_2\) are affine forms.  Consequently
+\begin{equation}\label{eq:count}
+ |C_{n,3}|=2^{n+1}\left(1+\qbinom{n}{2}\right)
+ =2^{n+1}\left(1+\frac{(2^n-1)(2^n-2)}6\right),
+\end{equation}
+where the Gaussian coefficient is understood as zero for \(n<2\).
+\end{proposition}
+
+\begin{proof}
+Consider three distinct characters and factor the first:
+\[
+ \sign(a\chi_r+b\chi_s+c\chi_t)
+ =\chi_r\,\sign(a+b\chi_{r+s}+c\chi_{r+t}).
+\]
+The nonzero vectors \(r+s\) and \(r+t\) are distinct and hence linearly
+independent over \(\F_2\).  The last sign is an affine real threshold
+dichotomy on the four points of \(\{\pm1\}^2\).  Of the sixteen
+dichotomies, parity and its complement are the only two that are not linearly
+separable.  The remaining fourteen are constants, signed coordinates, or
+dichotomies with exactly one exceptional vertex.  Constants and coordinates
+give affine Boolean phases.  An exceptional-vertex dichotomy has the form
+\((-1)^{L_1L_2}\), up to an affine phase.  Conversely,
+\[
+ (-1)^{pq}=\sign(1+(-1)^p+(-1)^q)
+ \qquad(p,q\in\F_2),
+\]
+so every phase in \eqref{eq:quadratic-class} is the sign of at most three
+characters.
+
+Write the linear parts of \(L_1,L_2\) as \(u\cdot x,v\cdot x\).  The
+quadratic part of \(L_1L_2\) is
+\[
+ \sum_{i<j}(u_iv_j+u_jv_i)x_ix_j,
+\]
+the bivector \(u\wedge v\).  It is zero when \(u,v\) are dependent.  If it
+is nonzero, it uniquely determines the plane \(\langle u,v\rangle\): over
+\(\F_2\), every ordered basis of that plane has determinant one and hence the
+same nonzero wedge.  Thus the possible quadratic parts are zero and one for
+each two-plane of \(V^*\).  For each quadratic part, the unique algebraic
+normal form allows exactly \(2^{n+1}\) affine perturbations.  The number of
+two-planes is \(\qbinom{n}{2}=(2^n-1)(2^n-2)/6\), proving
+\eqref{eq:count}.
+\end{proof}
+
+\begin{theorem}[one-bit determination for three terms]\label{thm:main}
+The three-sparse class satisfies
+\[
+ \VC(C_{1,3})=2,\qquad \VC(C_{2,3})=4,\qquad
+ \VC(C_{3,3})=7.
+\]
+For every \(n\ge4\),
+\begin{equation}\label{eq:one-bit}
+ 3n-3\le \VC(C_{n,3})\le3n-2.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+We first prove the lower bound for \(n\ge4\).  Let
+\[
+ S=\{0,e_1,\ldots,e_n\}
+ \cup\{e_i+e_j:i\in\{1,2\},\ 3\le j\le n\}.
+\]
+Thus \(|S|=n+1+2(n-2)=3n-3\).  Prescribe arbitrary labels
+\(y:S\to\F_2\).  For \(i\in\{1,2\}\), \(j\ge3\), set the requested second
+difference
+\[
+ d_{ij}=y(0)+y(e_i)+y(e_j)+y(e_i+e_j).
+\]
+Choose \(u,v\in\F_2^n\) by
+\[
+ (u_1,v_1)=(1,0),\qquad (u_2,v_2)=(0,1),\qquad
+ (u_j,v_j)=(d_{2j},d_{1j})\quad(j\ge3).
+\]
+For \(Q(x)=(u\cdot x)(v\cdot x)\), the coefficient of \(x_ix_j\) is
+\(u_iv_j+u_jv_i=d_{ij}\) on every displayed edge.  Choose the unique affine
+form \(\ell\) such that \(\ell+Q\) agrees with \(y\) on
+\(0,e_1,\ldots,e_n\).  The four-point affine cancellation identity then
+gives, for every added pair-sum point,
+\[
+ (\ell+Q)(0)+(\ell+Q)(e_i)+(\ell+Q)(e_j)
+ +(\ell+Q)(e_i+e_j)=d_{ij},
+\]
+so \(\ell+Q=y\) throughout \(S\).  Proposition~\ref{prop:class} shows that
+this is a member of \(C_{n,3}\).  Hence \(S\) is shattered.
+
+For \(n=3\), take \(S=\{x\in\F_2^3:|x|\le2\}\).  Every alternating
+quadratic form in three variables has rank at most two and is therefore
+decomposable.  The same affine-interpolation argument realizes all labels on
+these seven points.  Formula \eqref{eq:count} gives
+\(|C_{3,3}|=128\), so the VC dimension is seven.  For \(n=2\), every Boolean
+quadratic has decomposable quadratic part, so Proposition~\ref{prop:class}
+gives all \(16\) functions; for \(n=1\), it gives all four.
+
+Finally, for \(n\ge4\), \eqref{eq:count} implies
+\[
+ |C_{n,3}|
+ =2^{n+1}\left(1+\frac{(2^n-1)(2^n-2)}6\right)
+ <2^{3n-1}.
+\]
+A class shattering \(3n-1\) points would contain at least \(2^{3n-1}\)
+distinct functions.  Therefore \(\VC(C_{n,3})\le3n-2\), completing
+\eqref{eq:one-bit}.
+\end{proof}
+
+\small
+\section*{Verification, limitations, and upgrade audit}
+The proof is symbolic.  The bundled script independently checks
+\(C_{n,2}=C_{n,1}\) for \(1\le n\le5\), the exact count for
+\(1\le n\le5\), and every target labeling produced by the explicit
+shattering synthesis for \(3\le n\le6\).  It also exhaustively computes
+\(\VC(C_{n,3})=2,4,7,9\) for \(n=1,2,3,4\), consistent with the theorem.
+These finite checks are sanity checks, not substitutes for the proof.
+
+The remaining one-bit upgrade has a precise exterior-algebra formulation.
+After quotienting restrictions by affine functions, shattering \(3n-2\)
+points would require a \(2n-3\)-dimensional point-evaluation quotient of
+\(\bigwedge^2\F_2^n\) in which every vector has a decomposable representative.
+The construction above attains dimension \(2n-4\).  Direct quotient searches
+for \(n=5,6\) found no final-dimension example, but no proof excluding one was
+found; no exact claim is made for \(n\ge4\).
+
+Exact-title, exact-question, Walsh--Hadamard VC-dimension, sparse polynomial
+threshold, and threshold-density searches through 13 August 2026 found no
+later source settling this exact problem or the formulas above.  The search
+was bounded rather than a systematic bibliographic review.  Human review
+should focus on the two-variable threshold classification, uniqueness in the
+exact count, and the \(K_{2,n-2}\) second-difference synthesis.  The original
+problem for arbitrary \(k\) remains open.
+
+\subsection*{Reference}
+\noindent [1] D. G. Mixon and J. Peterson,
+\emph{Learning Boolean functions with concentrated spectra},
+arXiv:1507.04319 (2015), especially Sections 2 and 6, Problem 8.
+
+\end{document}

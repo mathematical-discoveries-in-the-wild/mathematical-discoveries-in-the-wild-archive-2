@@ -1,0 +1,146 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=0.72in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.42em}
+\setlength{\emergencystretch}{2em}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newcommand{\Lip}{\operatorname{Lip}}
+\newcommand{\R}{\mathbb R}
+
+\title{The pointed Lipschitz space need not be complete\\
+\large A negative answer to Remark 3.3 of arXiv:2410.10677}
+\author{Run \texttt{fa\_banach\_001} --- \texttt{agent\_lane\_03}}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\textbf{Status.} High-confidence candidate full counterexample, pending
+human review.  The proposed completeness fails already for maps
+$\R\to\R$.
+
+\section*{The source question}
+
+Let $M,N$ be metric spaces with distinguished point $0$.  Write
+$\Lip_0(M,N)$ for the Lipschitz maps $f:M\to N$ with $f(0)=0$, and
+\[
+ d_e(f,g)=\sup_{x\ne0}\frac{d(f(x),g(x))}{d(x,0)}.
+\]
+Karn and Mandal prove that the larger space $E(M,N)$ of extensively bounded
+maps is complete whenever $N$ is complete.  Their Remark 3.3 asks whether
+$\Lip_0(M,N)$ is also complete under the restricted metric $d_e$.
+
+\begin{center}
+\includegraphics[width=0.84\textwidth]{figures/open_problem_crop.png}
+\end{center}
+The exact source page is bundled as
+\texttt{source\_excerpt\_remark\_3\_3\_page\_11.pdf}.
+
+\begin{theorem}\label{thm:main}
+With the usual metric and distinguished point zero,
+$\Lip_0(\R,\R)$ is not complete under $d_e$.  More precisely, there are
+compactly supported Lipschitz functions $f_n:\R\to\R$ that are $d_e$-Cauchy
+and converge in $E(\R,\R)$ to a continuous extensively bounded function
+that is not Lipschitz.
+\end{theorem}
+
+\section*{Construction and proof}
+
+Put $a=\tfrac12$ and
+\[
+ \eta(x)=\bigl(1-4|x-a|\bigr)_+,
+ \qquad
+ r_n(x)=\bigl((x-a)^2+n^{-2}\bigr)^{1/4},
+ \qquad
+ r(x)=|x-a|^{1/2}.
+\]
+Define
+\[
+ f_n(x)=\eta(x)r_n(x),\qquad f(x)=\eta(x)r(x).
+\]
+The tent function $\eta$ is $4$-Lipschitz and is supported in
+$[\tfrac14,\tfrac34]$.  For each fixed $n$, $r_n$ is continuously
+differentiable and
+\[
+ |r_n'(x)|
+ =\frac{|x-a|}{2((x-a)^2+n^{-2})^{3/4}}
+ \le \frac{\sqrt n}{2}.
+\]
+Thus $f_n$ is a compactly supported Lipschitz function.  Since its support
+misses zero, $f_n(0)=0$, so $f_n\in\Lip_0(\R,\R)$.
+
+For $u,v\ge0$ and $0<\alpha<1$, subadditivity gives
+$(u+v)^\alpha\le u^\alpha+v^\alpha$.  Taking
+$u=(x-a)^2$, $v=n^{-2}$, and $\alpha=\tfrac14$ yields
+\[
+ 0\le r_n(x)-r(x)\le n^{-1/2}.
+\]
+Outside $[\tfrac14,\tfrac34]$ both $f_n$ and $f$ vanish, while on this
+interval $|x|\ge\tfrac14$.  Consequently
+\begin{equation}\label{conv}
+ d_e(f_n,f)
+ =\sup_{x\ne0}\frac{|f_n(x)-f(x)|}{|x|}
+ \le \frac4{\sqrt n}.                                  \tag{1}
+\end{equation}
+In particular,
+$d_e(f_n,f_m)\le4(n^{-1/2}+m^{-1/2})$, so $(f_n)$ is $d_e$-Cauchy.
+
+The limit $f$ is continuous, compactly supported, and extensively bounded:
+on its support $|x|\ge\tfrac14$ and $|f(x)|\le\tfrac12$, hence
+$|f(x)|/|x|\le2$.  It is not Lipschitz.  Indeed, for
+$0<h<\tfrac14$,
+\[
+ f(a)=0,\qquad f(a+h)=(1-4h)\sqrt h,\qquad
+ \frac{|f(a+h)-f(a)|}{h}=\frac{1-4h}{\sqrt h}\longrightarrow\infty.
+\]
+Therefore the $d_e$-limit in the complete metric space $E(\R,\R)$ does not
+belong to $\Lip_0(\R,\R)$.  Uniqueness of limits rules out any other
+$\Lip_0$ limit, proving Theorem~\ref{thm:main}. \qed
+
+\begin{corollary}
+For every nonzero Banach space $Y$, the space $\Lip_0(\R,Y)$ is incomplete
+under $d_e$.
+\end{corollary}
+\begin{proof}
+Fix $y\in Y$ with $\|y\|=1$ and replace $f_n,f$ by $f_ny,fy$.
+All estimates and the cusp obstruction are unchanged.
+\end{proof}
+
+\section*{Proof Intuition}
+
+The metric $d_e$ controls the size of a map only relative to the single
+distinguished point.  On a region bounded away from zero, it is merely a
+weighted uniform metric.  Uniform convergence preserves continuity but not
+a uniform Lipschitz constant.  We therefore regularize a square-root cusp
+inside such a region.  The Lipschitz constants of the approximants diverge,
+but $d_e$ sees only their uniformly vanishing vertical error.
+
+This also shows that the failure occurs inside the source paper's complete
+continuous subspace $E_c(\R,\R)$: continuity survives, while global
+Lipschitz regularity does not.
+
+\section*{Scope, novelty audit, and review recommendation}
+
+The theorem fully answers the universal question negatively, with both
+domain and codomain Banach spaces.  It does not characterize the pointed
+metric spaces for which completeness does hold.
+
+Exact-question, exact-title, author, arXiv-id, $\Lip_0(M,N)$, $d_e$, and
+``extensively bounded'' searches through 13 August 2026 found the source and
+a current index still listing the question as open, but no later explicit
+answer or equivalent counterexample.  This is a bounded novelty audit, not a
+priority claim.  Human review should check the definition match, estimate
+\eqref{conv}, and the cusp quotient; no external theorem is used.
+
+\section*{Reference}
+
+\textbf{[1]} A. K. Karn and A. Mandal,
+\emph{A generalization of Lipschitz mappings}, arXiv:2410.10677,
+Remark 3.3, PDF p.~11.
+
+\end{document}

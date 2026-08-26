@@ -1,0 +1,286 @@
+\documentclass[10pt]{article}
+\usepackage[margin=0.82in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\cL}{\mathcal L}
+\newcommand{\BL}{\mathrm{BL}}
+\newcommand{\disp}{\operatorname{disp}}
+\newcommand{\id}{\operatorname{id}}
+
+\title{A bi-Lipschitz class missed by every\\sublinear displacement class}
+\author{Solution packet for arXiv:2102.13046}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.} Claimed full classification of the source's
+intersection question; likely valid pending human review.
+
+\section{Source question}
+
+Dymond and Kaluža introduce $\phi$-displacement equivalence of separated
+nets in $\R^d$ \cite{DymondKaluza}.  If $h:X\to Y$ is a bijection, write
+\[
+ \disp_R(h)=\sup\{|h(x)-x|:x\in X,\ |x|\le R\}.
+\]
+The nets are $\phi$-displacement equivalent if some bijection has
+$\disp_R(h)=O(\phi(R))$.  After proving that the $\phi$-class of $\Z^d$
+meets uncountably many bi-Lipschitz (BL) classes for every unbounded,
+increasing, concave $\phi$, they ask:
+
+\begin{quote}
+Does every such $\phi$-displacement equivalence class intersect every BL
+equivalence class?
+\end{quote}
+
+\begin{center}
+\includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The answer is negative for every sublinear $\phi$, and positive exactly at
+linear scale.
+
+\section{Idea of the proof}
+
+Burago and Kleiner constructed a bounded positive density $\rho$ on a cube
+that is not the Jacobian density of any bi-Lipschitz map
+\cite{BuragoKleiner}.  We build a separated net $X$ whose normalized counting
+measures on rapidly growing cubes converge to $\rho\,dx$.
+
+Suppose a BL image $Y$ of $X$ could be matched to $\Z^d$ with sublinear
+displacement.  Blow up the BL map on those cubes.  Compactness produces a
+bi-Lipschitz limit $F$.  The sublinear matching disappears under rescaling,
+so the images of the sampled points become the full lattice inside $F(Q)$,
+up to a vanishing boundary layer.  Hence
+\[
+ F_\#(\rho\,dx)=dx|_{F(Q)},
+\]
+contradicting the defining property of $\rho$.  Importantly, the net $X$ is
+independent of $\phi$, so one BL class is missed simultaneously by all
+sublinear lattice-displacement classes.
+
+\section{A net with a prescribed blow-up density}
+
+A \emph{separated net} (or Delone set) is a subset of $\R^d$ with positive
+minimum separation and finite covering radius.
+
+Fix $d\ge2$ and $Q=[0,1]^d$.  By the Burago--Kleiner obstruction, in the form
+used in the proof of \cite[Theorem 6.1]{DymondKaluza}, there is a measurable
+$\rho:Q\to(0,\infty)$ with $\int_Q\rho\,dx=1$ and
+\begin{equation}\label{eq:rho-bounds}
+ 0<m\le\rho\le M<\infty
+\end{equation}
+such that no bi-Lipschitz $F:Q\to\R^d$ satisfies
+\begin{equation}\label{eq:forbidden}
+ F_\#(\rho\,dx)=dx|_{F(Q)}.
+\end{equation}
+The normalization is harmless: multiplying a density by a positive constant
+is compensated by a scalar dilation of the target, so realizability is
+unchanged.
+
+\begin{lemma}[Nested-shell sampling]\label{lem:sampling}
+There are a separated net $X\subset\R^d$ and integers $R_n\to\infty$ such
+that
+\begin{equation}\label{eq:measure-conv}
+ \mu_n:=\frac1{R_n^d}\sum_{x\in X\cap R_nQ}\delta_{x/R_n}
+ \ ightharpoonup\ \rho\,dx|_Q.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Choose $R_n$ so fast that $R_{n-1}/R_n\to0$.  The finite sampling lemma
+\cite[Lemma 6.4]{DymondKaluza} gives, for each $n$, a uniformly separated and
+uniformly relatively dense set $\Xi_n\subset R_nQ$ whose normalized counting
+measure, after the dilation $x\mapsto x/R_n$, tends weakly to $\rho\,dx$.
+The separation and covering constants depend only on the two bounds in
+\eqref{eq:rho-bounds}.
+
+On the shell $R_nQ\setminus R_{n-1}Q$, use $\Xi_n$.  Near every interface,
+delete points in a fixed-width strip and fill a slightly wider strip with a
+fixed translated lattice.  The widths can be chosen once, from the uniform
+separation and covering constants, so the union over all shells is a
+separated net $X$.
+
+At scale $R_n$, replacing $\Xi_n$ by $X$ changes the normalized measure only
+inside the old cube $R_{n-1}Q$ and fixed-width interface strips.  Uniform
+point-count bounds for Delone sets show that their masses are respectively
+\[
+ O\bigl((R_{n-1}/R_n)^d\bigr)\quad\text{and}\quad O(R_n^{-1}).
+\]
+Both tend to zero.  The weak limit is therefore unchanged, proving
+\eqref{eq:measure-conv}.
+\end{proof}
+
+\section{The blow-up obstruction}
+
+\begin{lemma}[Bi-Lipschitz blow-up and lattice filling]\label{lem:blowup}
+Let $X$ and $R_n$ satisfy \eqref{eq:measure-conv}.  Suppose that a separated
+net $Y$ admits an $L$-bi-Lipschitz bijection $f:X\to Y$ and that a bijection
+$h:Y\to\Z^d$ satisfies
+\begin{equation}\label{eq:sublinear}
+ \disp_R(h)=o(R).
+\end{equation}
+Then, after passing to a subsequence, there is an $L$-bi-Lipschitz map
+$F:Q\to\R^d$ satisfying \eqref{eq:forbidden}.
+\end{lemma}
+
+\begin{proof}
+Fix $x_0\in X$ and put $b=f(x_0)$.  On $R_n^{-1}X$ define
+\begin{equation}\label{eq:FnGn}
+ F_n(x/R_n)=\frac{f(x)-b}{R_n},\qquad
+ G_n(x/R_n)=\frac{h(f(x))-b}{R_n}.
+\end{equation}
+
+\paragraph{Compactness.}
+On every fixed cube $P$, the domains $R_n^{-1}X\cap P$ become dense and the
+$F_n$ are uniformly $L$-bi-Lipschitz.  Extend them to $P$ by Kirszbraun's
+theorem.  Arzelà--Ascoli and a diagonal subsequence give local uniform
+convergence to an $L$-Lipschitz map $F$ on $\R^d$ (a neighborhood of $Q$
+would suffice).  To pass the lower bound to the limit, approximate any two
+points of $P$ by points of $R_n^{-1}X$ and use the upper Lipschitz bound of
+the extensions.  Thus
+\begin{equation}\label{eq:bilimit}
+ L^{-1}|u-v|\le|F(u)-F(v)|\le L|u-v|,
+\end{equation}
+so $F$ is bi-Lipschitz.
+
+For $x/R_n$ in a fixed $P$, bi-Lipschitzness of $f$ gives $|f(x)|=O(R_n)$.
+Consequently \eqref{eq:sublinear} gives, uniformly on such points,
+\begin{equation}\label{eq:close}
+ |G_n(x/R_n)-F_n(x/R_n)|
+ =\frac{|h(f(x))-f(x)|}{R_n}\longrightarrow0.
+\end{equation}
+Pushing \eqref{eq:measure-conv} forward and using local uniform convergence
+therefore yields
+\begin{equation}\label{eq:first-limit}
+ \nu_n:=\frac1{R_n^d}\sum_{x\in X\cap R_nQ}
+ \delta_{(h(f(x))-b)/R_n}
+ \ \rightharpoonup\ F_\#(\rho\,dx|_Q).
+\end{equation}
+
+\paragraph{Lattice filling.}
+Every atom of $\nu_n$ lies in the shifted lattice
+\[
+ \cL_n:=R_n^{-1}(\Z^d-b),
+\]
+whose normalized counting measures converge to Lebesgue measure.  We show
+that the atom set of $\nu_n$ differs from $\cL_n\cap F(Q)$ only near
+$\partial F(Q)$.
+
+First, \eqref{eq:close} and uniform convergence imply that images of points
+in $R_nQ$ lie in an $o(1)$-neighborhood of $F(Q)$.
+
+Conversely, suppose $z_n\in\cL_n$ stays in a compact subset of
+$\operatorname{int}F(Q)$.  By bijectivity of $h\circ f$, its unscaled version
+has the unique form $h(f(x_n))-b$.  Since that point has norm $O(R_n)$,
+sublinearity forces
+\begin{equation}\label{eq:reverse-close}
+ |f(x_n)|=O(R_n),\qquad |h(f(x_n))-f(x_n)|=o(R_n).
+\end{equation}
+Indeed, if $|f(x_n)|/R_n\to\infty$, then
+$|h(f(x_n))-f(x_n)|=o(|f(x_n)|)$ would imply
+$|h(f(x_n))|\sim|f(x_n)|$, a contradiction.  The lower Lipschitz bound for
+$f$ now gives $|x_n|=O(R_n)$.
+
+After taking a subsequence, $x_n/R_n\to t$ in a fixed compact cube, and
+\eqref{eq:reverse-close} gives
+\[
+ F(t)=\lim z_n\in\operatorname{int}F(Q).
+\]
+Because $F$ is a homeomorphism on a neighborhood of $Q$, invariance of domain
+gives $F(\operatorname{int}Q)=\operatorname{int}F(Q)$.  Injectivity therefore
+forces $t\in\operatorname{int}Q$, and hence $x_n\in R_nQ$ eventually.  By
+compactness, this conclusion is uniform on every compact subset of
+$\operatorname{int}F(Q)$.
+
+It follows that the symmetric difference in question is contained in a
+shrinking neighborhood of $\partial F(Q)$.  Since
+$\partial F(Q)=F(\partial Q)$ and $F$ is Lipschitz, this boundary has
+Lebesgue $d$-measure zero.  Counting unit cubes around points of the shifted
+lattice shows that the normalized lattice mass of the shrinking boundary
+layer tends to zero.  Therefore
+\begin{equation}\label{eq:second-limit}
+ \nu_n\rightharpoonup dx|_{F(Q)}.
+\end{equation}
+Comparing \eqref{eq:first-limit} and \eqref{eq:second-limit} proves
+\eqref{eq:forbidden}.
+\end{proof}
+
+\section{Full classification}
+
+\begin{theorem}\label{thm:main}
+For every $d\ge2$ there is a separated net $X\subset\R^d$ such that no net
+BL-equivalent to $X$ admits a sublinear-displacement bijection to $\Z^d$.
+The same $X$ works for every sublinear displacement scale.
+\end{theorem}
+
+\begin{proof}
+Choose the non-realizable $\rho$ and the net $X$ from Lemma
+\ref{lem:sampling}.  If a BL-equivalent net $Y$ admitted a bijection
+$h:Y\to\Z^d$ satisfying \eqref{eq:sublinear}, Lemma \ref{lem:blowup} would
+produce a bi-Lipschitz solution of \eqref{eq:forbidden}, contrary to the
+choice of $\rho$.
+\end{proof}
+
+\begin{corollary}\label{cor:classification}
+Let $d\ge2$ and let $\phi:(0,\infty)\to(0,\infty)$ be increasing and
+concave.  Every $\phi$-displacement class intersects every BL class if and
+only if $\phi(R)\in\Omega(R)$.
+\end{corollary}
+
+\begin{proof}
+If $\phi=o(R)$, Theorem \ref{thm:main} says that the $\phi$-class of
+$\Z^d$ misses the BL class of $X$.  If $\phi\in\Omega(R)$, source
+Proposition 2.6 gives an $O(R)$-displacement bijection between any two
+separated nets, so $\phi$-equivalence is indiscrete.  These cases exhaust
+increasing concave $\phi$: their asymptotic slope exists.
+\end{proof}
+
+In dimension one every separated net is BL-equivalent to $\Z$, so the
+$d\ge2$ hypothesis is essential.
+
+\section{Verification, upgrades, and novelty}
+
+Eight focused attempts are recorded in the accompanying attempt note.  The
+main upgrades were from an ordinary density mismatch to a non-realizable
+density, from scale-dependent far-away blocks to one global nested-shell net,
+and from pointwise image containment to the two-sided boundary-filling
+argument in Lemma \ref{lem:blowup}.  No computational assertion is used.
+
+The published 2024 source still labels the question open.  A bounded search
+on 11 August 2026 used the exact question, title, DOI, author names, and
+displacement/BL-class terminology.  The later Dymond--Kaluža papers located
+concern bi-Lipschitz extension, not displacement-class intersections.  No
+later solution was found.  Novelty confidence is moderate pending a complete
+citation audit.
+
+\paragraph{Human-review recommendation.}
+Check Lemma \ref{lem:sampling}'s fixed-width shell gluing, the lower
+bi-Lipschitz limit in \eqref{eq:bilimit}, and especially the reverse inclusion
+in the lattice-filling paragraph.  If these pass, Corollary
+\ref{cor:classification} fully answers the stated question.
+
+\begin{thebibliography}{9}
+\bibitem{BuragoKleiner}
+D. Burago and B. Kleiner,
+\emph{Separated nets in Euclidean space and Jacobians of biLipschitz maps},
+Geom. Funct. Anal. 8, 273--282 (1998),
+doi:10.1007/s000390050056.
+
+\bibitem{DymondKaluza}
+M. Dymond and V. Kaluža,
+\emph{Divergence of separated nets with respect to displacement equivalence},
+Geom. Dedicata 218, article 15 (2024), arXiv:2102.13046,
+doi:10.1007/s10711-023-00862-3.
+\end{thebibliography}
+
+\end{document}

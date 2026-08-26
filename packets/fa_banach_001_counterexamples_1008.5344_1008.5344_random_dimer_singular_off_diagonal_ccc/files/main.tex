@@ -1,0 +1,289 @@
+\documentclass[10pt]{article}
+\usepackage[margin=0.84in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\E}{\mathbb E}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\one}{\mathbf 1}
+
+\title{Off-diagonal singularity of the current--current\\
+correlation measure: two explicit ergodic models}
+\author{Run \texttt{fa\_banach\_001} --- \texttt{agent\_lane\_11}}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.} Candidate full counterexample to the broad
+formulation; likely valid subject to human review. A second, completely
+localized model shows that localization plus a Wegner estimate is still
+insufficient. Neither result settles the narrower i.i.d.-per-physical-site
+Anderson subclass.
+
+\section{Source question}
+
+Combes, Germinet, and Hislop~\cite{cgh} define the positive current--current
+correlation (ccc) measure by
+\begin{equation}\label{eq:source-ccc}
+ M(\Delta_1,\Delta_2)
+ =\mathcal T\bigl(vE_H(\Delta_1)vE_H(\Delta_2)\bigr),
+ \qquad v=i[H,X],
+\end{equation}
+and ask on page~5 whether a density $m(E_1,E_2)$ exists when $E_1\ne E_2$.
+They note the positive theorem of Bellissard--Hislop under strong disorder and
+an analytic single-site density~\cite{bh}.
+
+\begin{center}
+\includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\noindent The unrestricted answer is negative for a scalar model with standard
+one-site covariance. A complementary unit-cell model retains complete
+localization, a bounded-density Wegner estimate, deterministic finite-range
+hopping, and a randomness-independent velocity.
+
+\section{Proof intuition}
+
+The first mechanism is Floquet-theoretic. A random choice between the two
+phases of a period-two potential is an ergodic family under ordinary lattice
+translations. Interband current transitions conserve quasi-momentum, so their
+two energy coordinates trace a curve, rather than filling the energy plane.
+
+The second mechanism shows why localization does not repair the issue. Put one
+random scalar $\omega_n$ on a two-level cell. It shifts both cell energies
+together, while a fixed hopping keeps their gap equal to $2t$. The velocity
+exchanges the two eigenvectors, so averaging spreads ccc mass along two lines.
+In both cases a square of side $\varepsilon$ captures order $\varepsilon$ mass
+rather than order $\varepsilon^2$ mass.
+
+\section{An exact scalar counterexample with standard translations}
+
+Let $a,t,s>0$ satisfy $2s>t^2/a$. On scalar $\ell^2(\Z)$ define, for
+$q\in\{0,1\}$,
+\begin{equation}\label{eq:periodic-model}
+ (K_q\psi)(j)=s\bigl(\psi(j+2)+\psi(j-2)\bigr)
+ +t\bigl(\psi(j+1)+\psi(j-1)\bigr)+a(-1)^{j+q}\psi(j).
+\end{equation}
+Give the two values of $q$ equal probability. Standard translation by one
+site sends $K_q$ to $K_{q+1\bmod2}$, so this two-point family is covariant.
+The flip action is transitive and hence ergodic. Since only the diagonal
+potential changes with $q$, $i[K_q,X]$ is independent of $q$.
+
+\begin{theorem}\label{thm:periodic}
+The ccc measure of \eqref{eq:periodic-model} is not absolutely continuous on
+the off-diagonal. More strongly, at a suitable off-diagonal point
+$(E_1^0,E_2^0)$,
+\[
+ \frac{M([E_1^0,E_1^0+\varepsilon],
+             [E_2^0,E_2^0+\varepsilon])}{\varepsilon^2}
+ \longrightarrow+\infty.
+\]
+Thus the unrestricted off-diagonal density assertion is false on scalar
+$\ell^2(\Z)$ with the standard translation representation.
+\end{theorem}
+
+\begin{proof}
+It is enough to use the phase $q=0$, since the two phases are translates. In a
+two-site Floquet decomposition, with $k\in[-\pi,\pi]$,
+\[
+ K(k)=2s\cos k\,I+d(k)\cdot\sigma,
+ \qquad d(k)=\bigl(t(1+\cos k),t\sin k,a\bigr).
+\]
+Put
+\[
+ R(k)=\sqrt{a^2+4t^2\cos^2(k/2)},\qquad
+ \lambda_\pm(k)=2s\cos k\pm R(k).
+\]
+In the same representation the velocity is
+\[
+ v(k)=-4s\sin k\,I+g(k)\cdot\sigma,
+ \qquad g(k)=\bigl(-t\sin k,-t(1-\cos k),0\bigr).
+\]
+The scalar part has zero interband matrix element. For a two-level matrix,
+the squared interband matrix element of $g\cdot\sigma$ is
+$|g|^2-(g\cdot d)^2/|d|^2$. Here
+$|g|^2=4t^2\sin^2(k/2)$ and $g\cdot d=-2t^2\sin k$, so direct simplification
+gives
+\begin{equation}\label{eq:floquet-weight}
+ w(k):=|\langle k,+|i[K,X]|k,-\rangle|^2
+ =\frac{4a^2t^2\sin^2(k/2)}{R(k)^2}>0
+ \quad(0<k<\pi).
+\end{equation}
+Consequently the off-diagonal part of the ccc measure is, up to the harmless
+positive trace normalization,
+\begin{equation}\label{eq:floquet-ccc}
+ \int_{-\pi}^{\pi}w(k)
+ \left[\delta_{(\lambda_+(k),\lambda_-(k))}
+       +\delta_{(\lambda_-(k),\lambda_+(k))}\right]\frac{dk}{2\pi}.
+\end{equation}
+It is already clear that this is positive measure on one-dimensional curves.
+
+To match the source's one-sided rectangle convention, observe that
+\begin{equation}\label{eq:band-derivatives}
+ \lambda_+'(k)=-\sin k\left(2s+\frac{t^2}{R(k)}\right),\qquad
+ \lambda_-'(k)=-\sin k\left(2s-\frac{t^2}{R(k)}\right).
+\end{equation}
+Both derivatives are negative on $(0,\pi)$ because $R(k)\ge a$ and
+$2s>t^2/a$. Fix $k_0=\pi/2$ and put
+$(E_1^0,E_2^0)=(\lambda_+(k_0),\lambda_-(k_0))$; this point is off the
+diagonal. By continuity and \eqref{eq:band-derivatives}, there are constants
+$c,C,\eta>0$ such that, for $0<h<\eta$ and both signs,
+\[
+ ch\le\lambda_\pm(k_0-h)-\lambda_\pm(k_0)\le Ch.
+\]
+Hence the upper-right $\varepsilon$-square based at
+$(E_1^0,E_2^0)$ contains the first curve in \eqref{eq:floquet-ccc} for every
+$k=k_0-h$ with $0\le h\le\varepsilon/C$. Equation
+\eqref{eq:floquet-weight} is bounded below there by a positive constant, so
+the square has mass at least $c_0\varepsilon$. Division by
+$\varepsilon^2$ proves the claim.
+\end{proof}
+
+\section{A completely localized Wegner example}
+
+Work on scalar $\ell^2(\Z)$ and partition it into cells
+$C_n=\{2n,2n+1\}$. Let $t>0$, let $(\omega_n)_{n\in\Z}$ be i.i.d. uniform on
+$[-1,1]$, and define
+\begin{align}
+ (H_\omega\psi)(2n)&=\omega_n\psi(2n)+t\psi(2n+1),\label{eq:model-a}\\
+ (H_\omega\psi)(2n+1)&=t\psi(2n)+\omega_n\psi(2n+1).\label{eq:model-b}
+\end{align}
+Thus $H_\omega$ is a bounded, self-adjoint, finite-range random Jacobi
+operator with deterministic hopping. Let $X\delta_j=j\delta_j$.
+
+Let $\tau_a$ shift the cell variables and let $U_a\delta_j=\delta_{j+2a}$.
+Then $a\mapsto U_a$ is a unitary representation of $\Z$ and
+$U_aH_\omega U_{-a}=H_{\tau_a\omega}$ (up to the harmless choice of shift
+sign). The Bernoulli shift is ergodic. This is exactly a two-site fundamental
+cell version of the abstract covariance setup in Section~2 of~\cite{cgh},
+which assumes an arbitrary unitary representation of $\Z^d$. We normalize
+trace per physical site by
+\begin{equation}\label{eq:trace}
+ \mathcal T(A)=\frac12\E\operatorname{Tr}(P_0A_\omega P_0),
+\end{equation}
+where $P_0$ projects onto $C_0$.
+
+\begin{theorem}\label{thm:main}
+For the ergodic family \eqref{eq:model-a}--\eqref{eq:model-b}:
+\begin{enumerate}
+\item every spectral energy is in the complete-localization regime;
+\item the Wegner estimate $\mathcal T(E_H(J))\le |J|/2$ holds for every Borel
+interval $J$;
+\item the ccc measure is
+\begin{equation}\label{eq:ccc-formula}
+ M(dE_1,dE_2)=\frac{t^2}{4}\int_{-1}^{1}
+ \left[\delta_{(u+t,u-t)}+\delta_{(u-t,u+t)}\right],du;
+\end{equation}
+in particular it is singular with respect to two-dimensional Lebesgue measure
+and has no finite density at any interior point of either off-diagonal support
+line.
+\end{enumerate}
+More explicitly, for $0<\varepsilon<\min\{1,2t\}$,
+\begin{equation}\label{eq:blowup}
+ \frac{M([t,t+\varepsilon],[-t,-t+\varepsilon])}{\varepsilon^2}
+ =\frac{t^2}{4\varepsilon}\longrightarrow+\infty.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+On $C_n$, the Hamiltonian and velocity are
+\[
+ H_{\omega,n}=\begin{pmatrix}\omega_n&t\\t&\omega_n\end{pmatrix},
+ \qquad
+ v_n=i[H_{\omega,n},X]
+   =\begin{pmatrix}0&it\\-it&0\end{pmatrix}.
+\]
+The velocity is independent of $\omega$. The normalized eigenvectors
+\[
+ |+\rangle=2^{-1/2}(1,1),\qquad
+ |-\rangle=2^{-1/2}(1,-1)
+\]
+have respective energies $\omega_n+t$ and $\omega_n-t$. Direct calculation
+gives
+\begin{equation}\label{eq:weights}
+ \langle+|v_n|+\rangle=\langle-|v_n|-\rangle=0,
+ \qquad
+ |\langle+|v_n|-\rangle|^2
+ =|\langle-|v_n|+\rangle|^2=t^2.
+\end{equation}
+Substitution of \eqref{eq:weights} into \eqref{eq:source-ccc}, followed by the
+cell expectation and the factor $1/2$ in \eqref{eq:trace}, gives
+\eqref{eq:ccc-formula}. Its support is contained in the two lines
+$E_1-E_2=\pm2t$, both disjoint from the diagonal.
+
+For the rectangle in \eqref{eq:blowup}, the first branch of
+\eqref{eq:ccc-formula} contributes precisely when $u\in[0,\varepsilon]$.
+The transposed branch contributes nothing when $\varepsilon<2t$. Hence its
+mass is $(t^2/4)\varepsilon$, proving \eqref{eq:blowup}. This also directly
+precludes a finite point density in the one-sided rectangle convention used
+by the source; the line support independently proves failure of absolute
+continuity.
+
+It remains to verify the two regularity properties. Every eigenfunction is
+supported in one cell. Consequently $f(H_\omega)$ is cell-block-diagonal for
+every bounded Borel $f$, and $P_n f(H_\omega)P_m=0$ for $n\ne m$. The
+strong-dynamical-localization estimate of the source therefore holds with
+finite constants at all energies (indeed, its left side vanishes between
+distinct cells).
+
+Finally, each cell has the two eigenvalues $\omega_n\pm t$. Thus, for every
+interval $J$,
+\[
+ \E\operatorname{Tr}\bigl(P_0E_H(J)P_0\bigr)
+ =\frac12|([-1,1]+t)\cap J|+\frac12|([-1,1]-t)\cap J|
+ \le |J|.
+\]
+Dividing by two as in \eqref{eq:trace} yields
+$\mathcal T(E_H(J))\le |J|/2$. This proves all assertions.
+\end{proof}
+
+\section{Verification, novelty, and limitations}
+
+The accompanying standard-library script checks the block eigenpairs,
+velocity weights, five-cell support, four rectangle scales, the uniform-law
+Wegner constant, and five Floquet momenta for the signs and weight in
+\eqref{eq:floquet-weight}--\eqref{eq:band-derivatives}. It reports
+\texttt{PASS}. These checks are not used as proof; all identities above are
+exact.
+
+A bounded arXiv/web search on 13 August 2026 used the exact source title and
+the phrases ``current--current correlation measure off-diagonal density,''
+``existence of a density current--current correlation off-diagonal,'' and
+``current--current correlation measure random dimer.'' It recovered the source
+and Bellissard--Hislop's analytic-density theorem~\cite{bh}, but no occurrence
+of this cell construction or a general negative answer. The novelty assessment
+is therefore \emph{apparently new within the bounded search}, not an exhaustive
+bibliographic guarantee.
+
+Theorem~\ref{thm:periodic} answers the question negatively at the breadth of
+the source's stated scalar ergodic framework, with literal one-site
+translations. Theorem~\ref{thm:main} additionally shows that complete
+localization plus Wegner control is insufficient in a standard unit-cell
+extension: a genuinely two-energy nondegeneracy assumption is needed. Neither
+theorem decides whether an off-diagonal density exists for the canonical
+Anderson Hamiltonian with independent randomness at each physical site and
+uniform nonzero hopping between all neighboring sites. Human review should
+focus on the Floquet current calculation and this scope distinction.
+
+\begin{thebibliography}{9}
+\bibitem{cgh}
+J.-M. Combes, F. Germinet, and P. D. Hislop,
+\emph{Conductivity and the current--current correlation measure},
+J. Phys. A: Math. Theor. \textbf{43} (2010), 474010;
+\href{https://arxiv.org/abs/1008.5344}{arXiv:1008.5344}.
+
+\bibitem{bh}
+J. V. Bellissard and P. D. Hislop,
+\emph{Smoothness of correlations in the Anderson model at strong disorder},
+Ann. Henri Poincar\'e \textbf{8} (2007), 1--26;
+\href{https://arxiv.org/abs/math-ph/0605042}{arXiv:math-ph/0605042}.
+\end{thebibliography}
+
+\end{document}

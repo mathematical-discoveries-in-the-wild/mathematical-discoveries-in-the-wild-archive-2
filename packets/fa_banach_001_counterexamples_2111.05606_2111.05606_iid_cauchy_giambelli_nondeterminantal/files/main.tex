@@ -1,0 +1,291 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Conf}{\operatorname{Conf}}
+
+\title{Centered Giambelli Compatibility Does Not\\
+Characterize Determinantal Point Processes}
+\author{Automatic mathematics run \texttt{fa\_banach\_001}}
+\date{11 August 2026}
+
+\begin{document}
+\setlength{\emergencystretch}{3em}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{
+\textbf{Status.} Candidate counterexample, likely valid, for expert review.
+For every $R>0$, the simple point process consisting of two independent
+Cauchy$(0,R)$ points satisfies every hypothesis of Conjecture~1 in
+Bufetov--Lazag but is not determinantal.  Thus the conjecture as stated has a
+full negative answer.
+}}
+\end{center}
+
+\section{Source conjecture}
+
+The source is A.~I. Bufetov and P. Lazag,
+\emph{A determinantal point process governed by an integrable projection
+kernel is Giambelli compatible}, arXiv:2111.05606 \cite{source}.
+For a point configuration $X\subset\R$ and $R>0$, its centered
+specialization is prescribed on the Newton power sums by
+\begin{equation}\label{eq:rho}
+ \rho^R(p_k)(X)=
+ \sum_{x\in X}\frac1{(x+iR)^k}
+ -\E_{\Pp}\sum_{x\in X}\frac1{(x+iR)^k},
+ \qquad k\ge1.
+\end{equation}
+On printed page 5, Conjecture~1 asks whether every point process for which
+$\rho^R$ is an $L^1$-specialization and $(\Pp,\rho^R)$ is Giambelli compatible
+must be determinantal.  The source statement is reproduced below.
+
+\begin{center}
+\includegraphics[width=0.98\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+Here Giambelli compatibility means that, for every partition
+$\lambda=(p_1,\ldots,p_d\mid q_1,\ldots,q_d)$ in Frobenius notation,
+\begin{equation}\label{eq:giambelli}
+ \E_{\Pp}[\rho^R(s_\lambda)]
+ =\det\bigl(\E_{\Pp}[\rho^R(s_{(p_i\mid q_j)})]\bigr)_{i,j=1}^d.
+\end{equation}
+
+\section{Proof intuition}
+
+The centering in \eqref{eq:rho} creates a degeneracy on harmonic measure.
+The M\"obius map $x\mapsto (x+iR)^{-1}$ sends Cauchy$(0,R)$ measure to
+uniform arclength on a circle.  Holomorphic mean value then replaces each
+random transformed point by the center of that circle.  With two independent
+points, centering subtracts exactly the power sums of those two center points.
+Consequently, the expectation of the entire centered symmetric-function
+specialization is evaluation at the zero alphabet.  Every nonempty Schur
+expectation vanishes, so all Giambelli identities hold for a reason unrelated
+to fermionic or determinantal structure.
+
+To rule out a hidden determinantal representation, use only the first four
+correlation functions.  A fixed-two iid process has correlation densities
+$2,2,0,0$.  Were these principal minors of a kernel, the two- and three-minor
+equations would force a normalized four-point kernel matrix into one of two
+tournament forms.  The only form allowed by the three-minors has determinant
+$-4$, whereas the four-point correlation requires determinant zero.
+
+\section{Counterexample}
+
+\begin{theorem}[Iid Cauchy counterexample]\label{thm:main}
+Fix $R>0$, and let $\nu_R$ be the Cauchy probability measure
+\begin{equation}\label{eq:cauchy}
+ d\nu_R(x)=\frac{R}{\pi(x^2+R^2)}\,dx
+ \qquad(x\in\R).
+\end{equation}
+Let $Y_1,Y_2$ be independent with law $\nu_R$, and let $\Pp$ be the law on
+$\Conf(\R)$ of the random set $X=\{Y_1,Y_2\}$.  Then:
+\begin{enumerate}
+ \item $X$ is a simple two-point configuration almost surely;
+ \item the specialization $\rho^R$ in \eqref{eq:rho} is an
+ $L^1(\Conf(\R),\Pp)$-specialization;
+ \item $(\Pp,\rho^R)$ is Giambelli compatible;
+ \item $\Pp$ is not a determinantal point process, even if complex-valued,
+ nonsymmetric measurable kernels and arbitrary dominating reference measures
+ are allowed.
+\end{enumerate}
+Hence Conjecture~1 of \cite{source} is false.
+\end{theorem}
+
+\section{Proof}
+
+Because $\nu_R$ is atomless, $Y_1\ne Y_2$ almost surely.  Thus the unordered
+set $X$ is indeed a simple point configuration with exactly two points.
+
+\subsection*{Cauchy measure becomes uniform circle measure}
+
+Put
+\begin{equation}\label{eq:transform}
+ T(x)=\frac1{x+iR},\qquad
+ c=-\frac{i}{2R},\qquad r=\frac1{2R}.
+\end{equation}
+If $\Theta$ is uniform on $(0,2\pi)$, then
+$R\cot(\Theta/2)$ has law $\nu_R$, and a direct calculation gives
+\begin{equation}\label{eq:circleparam}
+ T\bigl(R\cot(\Theta/2)\bigr)
+ =-\frac{i}{2R}+\frac{i e^{-i\Theta}}{2R}.
+\end{equation}
+Thus $T_\#\nu_R$ is uniform arclength on the circle
+$\{c+r\zeta:|\zeta|=1\}$.  In particular, the one-variable mean-value
+identity gives
+\begin{equation}\label{eq:moments}
+ \int_\R T(x)^k\,d\nu_R(x)=c^k,
+ \qquad k\ge1.
+\end{equation}
+
+Let $t_j=T(Y_j)$.  More generally, for every polynomial
+$F\in\C[z_1,z_2]$, independence and two applications of the mean-value
+identity give
+\begin{equation}\label{eq:twomean}
+ \E F(t_1,t_2)=F(c,c).
+\end{equation}
+
+\subsection*{$L^1$ specialization and Giambelli compatibility}
+
+Since $|t_j|\le R^{-1}$, \eqref{eq:moments} yields
+\begin{equation}\label{eq:centeredpk}
+ \rho^R(p_k)=t_1^k+t_2^k-2c^k,
+ \qquad k\ge1.
+\end{equation}
+The algebra $\Lambda$ of symmetric functions is the polynomial algebra
+$\C[p_1,p_2,\ldots]$.  The image under $\rho^R$ of any element of $\Lambda$
+is therefore a bounded random variable.  This proves the required
+$L^1$-specialization property.
+
+Let $f\in\Lambda$.  After substituting \eqref{eq:centeredpk}, the random
+variable $\rho^R(f)$ is an ordinary polynomial in $t_1,t_2$.  Applying
+\eqref{eq:twomean} evaluates that polynomial at $t_1=t_2=c$.  At this point
+every power sum in \eqref{eq:centeredpk} becomes zero, and hence
+\begin{equation}\label{eq:counit}
+ \E[\rho^R(f)]=f\big|_{p_1=p_2=\cdots=0}.
+\end{equation}
+For every nonempty partition $\lambda$, the Schur function $s_\lambda$ is
+homogeneous of positive degree, so
+\begin{equation}\label{eq:schurzero}
+ \E[\rho^R(s_\lambda)]=0.
+\end{equation}
+All hook partitions in \eqref{eq:giambelli} are also nonempty.  Both sides of
+\eqref{eq:giambelli} are consequently zero for every nonempty $\lambda$;
+the empty partition gives $1=1$.  This proves Giambelli compatibility.
+
+\subsection*{The iid two-point process is not determinantal}
+
+Relative to the reference probability measure $\nu_R$, the ordered factorial
+correlation densities of $X$ are
+\begin{equation}\label{eq:corr}
+ \rho_1(x)=2,\qquad \rho_2(x,y)=2\quad(x\ne y),
+ \qquad \rho_m=0\quad(m\ge3).
+\end{equation}
+Indeed, the two labels give two choices for one ordered point and two choices
+for an ordered pair, while no ordered tuple of three distinct points exists.
+
+It suffices to rule out a kernel relative to $\nu_R$.  To see that this also
+rules out every other reference measure, suppose that a kernel $K$ represents
+the correlation measures relative to a measure $\mu$.  Since
+$\rho_1=2\nu_R$, we have $\nu_R\ll\mu$; write $h=d\nu_R/d\mu$.  On the
+$\nu_R$-conull set where $h>0$, the rescaled kernel
+\begin{equation}\label{eq:rescale}
+ B(x,y)=\frac{K(x,y)}{\sqrt{h(x)h(y)}}
+\end{equation}
+represents the same correlations relative to $\nu_R$, because every
+$m\times m$ determinant is divided by $\prod_{j=1}^m h(x_j)$.
+
+Assume for contradiction that such a measurable $B$ exists.  By
+\eqref{eq:corr}, for almost every tuple of pairwise distinct points, its
+principal minors satisfy
+\begin{equation}\label{eq:minors}
+ \det B_{\{j\}}=2,\qquad
+ \det B_{\{j,k\}}=2,\qquad
+ \det B_I=0\quad (|I|=3,4).
+\end{equation}
+There is a quadruple $(x_0,x_1,x_2,x_3)$ for which all the finitely many
+relations in \eqref{eq:minors} hold simultaneously.  This follows by taking
+a point in the intersection of the corresponding conull subsets of
+$\R^4$; the atomlessness of $\nu_R$ removes the diagonals.  Write
+$b_{jk}=B(x_j,x_k)$.
+
+The one- and two-minor equations give
+\begin{equation}\label{eq:pairs}
+ b_{jj}=2,\qquad b_{jk}b_{kj}=2\quad(j\ne k).
+\end{equation}
+In particular every off-diagonal entry is nonzero.  Principal minors are
+unchanged by diagonal similarity.  Conjugating the four-by-four matrix by a
+diagonal matrix, we may therefore arrange
+\begin{equation}\label{eq:gauge}
+ b_{0j}=1,\qquad b_{j0}=2\quad(j=1,2,3).
+\end{equation}
+
+Fix distinct $j,k\in\{1,2,3\}$ and put $a=b_{jk}$.  Then
+$b_{kj}=2/a$, and the zero determinant of the principal submatrix on
+$\{0,j,k\}$ reads
+\begin{equation}\label{eq:quadratic}
+ 0=\det\begin{pmatrix}2&1&1\\2&2&a\\2&2/a&2\end{pmatrix}
+ =\frac{2(a^2-2a+2)}a.
+\end{equation}
+Hence $a\in\{1+i,1-i\}$.  Direct each edge $j\to k$ when
+$b_{jk}=1+i$; by \eqref{eq:pairs}, the reverse entry is then $1-i$.
+For the three vertices $1,2,3$, a directed three-cycle would give
+\begin{equation}\label{eq:cyclic}
+ \det\begin{pmatrix}
+ 2&1+i&1-i\\1-i&2&1+i\\1+i&1-i&2
+ \end{pmatrix}=-8,
+\end{equation}
+contrary to the three-minor equation.  The tournament is therefore
+transitive.  Relabeling $x_1,x_2,x_3$ if necessary, the full matrix is
+\begin{equation}\label{eq:normalmatrix}
+ M=\begin{pmatrix}
+ 2&1&1&1\\
+ 2&2&1+i&1+i\\
+ 2&1-i&2&1+i\\
+ 2&1-i&1-i&2
+ \end{pmatrix}.
+\end{equation}
+A direct determinant calculation gives
+\begin{equation}\label{eq:minusfour}
+ \det M=-4.
+\end{equation}
+This contradicts the zero four-point correlation in
+\eqref{eq:minors}.  No determinantal kernel exists, completing the proof of
+Theorem~\ref{thm:main}. \qed
+
+\section{Verification, scope, and novelty}
+
+The accompanying exact-arithmetic script
+\path{code/verify_counterexample.py} checks the determinant factorization in
+\eqref{eq:quadratic}, the transitive and cyclic three-by-three determinants,
+and $\det M=-4$.  It also constructs Schur functions from the Newton
+recurrence and verifies the vanishing in \eqref{eq:schurzero} for every
+partition through total degree eight.  The command used was
+\begin{verbatim}
+conda run --no-capture-output -n sandbox python \
+  code/verify_counterexample.py
+\end{verbatim}
+and all exact checks passed.  These checks are not substitutes for the
+all-degree mean-value proof or the matrix argument above.
+
+The counterexample uses the continuous alternative $E=\R$ allowed by the
+source.  It does not address whether a converse becomes true for a countable
+discrete $E$, for uncentered positive specializations, or under additional
+uniform-integrability or rigidity hypotheses.  Those strengthenings are
+separate questions.
+
+A bounded novelty search on 11 August 2026 checked the run indexes, the full
+source of arXiv:2111.05606, the cited Borodin--Olshanski--Strahov source
+arXiv:math-ph/0505021 \cite{bos}, and arXiv/web queries for the exact
+conjecture and close variants.  No later claimed resolution or this Cauchy
+counterexample was located.  The detailed search record is in
+\path{novelty_search.md}; novelty confidence is moderate, not exhaustive.
+
+\paragraph{Human-review recommendation.}
+Review the circle pushforward and mean-value step, then check the normalization
+under a change of reference measure and the four-point principal-minor
+obstruction.  These are the only substantive mechanisms; no numerical or
+unproved external input enters the counterexample.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+A.~I. Bufetov and P. Lazag,
+\emph{A determinantal point process governed by an integrable projection
+kernel is Giambelli compatible}, arXiv:2111.05606 (2021).
+
+\bibitem{bos}
+A. Borodin, G. Olshanski, and E. Strahov,
+\emph{Giambelli compatible point processes},
+Adv. Appl. Math. 37 (2006), 209--248; arXiv:math-ph/0505021.
+\end{thebibliography}
+
+\end{document}

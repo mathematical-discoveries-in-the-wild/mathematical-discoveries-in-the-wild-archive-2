@@ -1,0 +1,259 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\C}{\mathbb C}
+\newcommand{\E}{\mathcal E}
+\newcommand{\R}{\mathcal R}
+\newcommand{\A}{\mathcal A}
+
+\title{A nonzero fixed-product preserver that destroys invertibility}
+\author{Candidate counterexample for arXiv:2201.12912, Problem 3.5}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\linewidth}{\textbf{Status.} Candidate full
+counterexample, likely valid, requiring human review. The example is a
+separable commutative unital complex Banach algebra; the map is a bounded
+linear involution; and the prescribed elements satisfy $c=d\ne0$ and
+$c^2=c$.}}
+\end{center}
+
+\section{Source question}
+
+Julius asks the following in Problem 3.5 of
+\cite{Julius2023}, on PDF page 6:
+\begin{quote}
+If $\phi$ satisfies the hypotheses of Theorem 3.3, does $d\ne0$ imply that
+$\phi$ preserves invertibility?
+\end{quote}
+Here the hypotheses are that $\A$ is a unital Banach algebra with dense
+invertible group and that $\phi:\A\to\A$ is a bijective continuous linear map
+satisfying
+\[
+        ab=c\quad\Longrightarrow\quad \phi(a)\phi(b)=d
+\]
+for fixed $c,d\in\A$.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\linewidth]{figures/open_problem_crop.png}
+\caption{The context and exact statement of Problem 3.5 in
+\cite[p.~6]{Julius2023}. This image was rendered and cropped from the local
+source paper PDF.}
+\end{figure}
+
+\section{Proof intuition}
+
+The condition becomes very weak at a zero product in an integral domain:
+$ab=0$ then forces one factor to be zero, so any linear map automatically
+takes that pair to another zero product. A direct product supplies a separate
+coordinate in which the prescribed product is nonzero. Thus the two desired
+features can coexist: the first coordinate guarantees $d\ne0$, while the
+domain coordinate leaves enough linear freedom to send a unit to a nonunit.
+
+What remains is to produce a unital Banach integral domain with dense units.
+We do this explicitly. A rapidly decreasing convolution weight makes a
+nonunital weighted power-series domain radical. In its unitization, an element
+is invertible exactly when its scalar coordinate is nonzero, so the units are
+dense. Swapping the unit with the first power-series monomial is then a
+bounded linear involution that does not preserve invertibility.
+
+\section{A dense-unit Banach integral domain}
+
+Put $\rho_n=e^{-n^2}$ for $n\ge1$, and let
+\[
+ \R=\left\{a=(a_n)_{n\ge1}:\
+       \|a\|_\rho:=\sum_{n\ge1}|a_n|\rho_n<\infty\right\}.
+\]
+Give $\R$ the Cauchy convolution product
+\[
+ (a*b)_n=\sum_{j=1}^{n-1}a_jb_{n-j}.
+\]
+Let $z=(1,0,0,\ldots)$, so $z^n$ is the unit vector in coordinate $n$.
+
+\begin{lemma}\label{lem:R}
+$\R$ is a separable commutative radical Banach algebra and an integral
+domain.
+\end{lemma}
+
+\begin{proof}
+Since
+\[
+ \rho_{m+n}=e^{-(m+n)^2}\le e^{-m^2}e^{-n^2}=\rho_m\rho_n,
+\]
+Tonelli's theorem gives
+\[
+ \|a*b\|_\rho
+ \le \sum_{m,n\ge1}|a_m||b_n|\rho_m\rho_n
+ =\|a\|_\rho\|b\|_\rho.
+\]
+Completeness and separability follow from weighted $\ell_1$.
+
+If $a,b\ne0$, let $m$ and $n$ be their least nonzero indices. The
+coefficient of $a*b$ at $m+n$ is exactly $a_mb_n\ne0$. Hence $\R$ has no
+zero divisors.
+
+It remains to check radicality. The spectral-radius formula gives
+\[
+ r(z)=\lim_{k\to\infty}\|z^k\|_\rho^{1/k}
+     =\lim_{k\to\infty}e^{-k}=0.
+\]
+By spectral mapping, every polynomial $p(z)$ with $p(0)=0$ has spectral
+radius zero. Such polynomials (the finitely supported sequences) are dense
+in $\R$. Since $\R$ is commutative, the spectral radius is subadditive; thus,
+for any $a\in\R$ and any such polynomial $p$,
+\[
+        r(a)\le r(a-p)+r(p)\le\|a-p\|_\rho.
+\]
+Letting $p\to a$ yields $r(a)=0$. Every element is therefore
+quasinilpotent, which says precisely that the commutative Banach algebra
+$\R$ is radical. Standard spectral-radius facts used here may be found in
+\cite{Dales2000}.
+\end{proof}
+
+Let $\A=\R^{\#}=\C1\oplus\R$ be the unitization, with norm
+$\|\lambda1+r\|=|\lambda|+\|r\|_\rho$.
+
+\begin{lemma}\label{lem:A}
+$\A$ is a separable commutative unital Banach integral domain, and
+\[
+     \A^{-1}=\{\lambda1+r:\lambda\ne0\}.
+\]
+In particular, its invertible group is dense.
+\end{lemma}
+
+\begin{proof}
+If $\lambda\ne0$, radicality of $\R$ implies that
+$1+\lambda^{-1}r$ is invertible in the unitization, so $\lambda1+r$ is
+invertible. If $\lambda=0$, the quotient homomorphism
+$\A\to\A/\R\cong\C$ sends $r$ to zero, so $r$ cannot be invertible. This
+proves the displayed characterization and density follows by perturbing the
+scalar coordinate.
+
+For domainhood, suppose $xy=0$. If either factor has nonzero scalar
+coordinate, it is a unit and the other factor is zero. If both scalar
+coordinates vanish, then $x,y\in\R$, and Lemma~\ref{lem:R} gives $x=0$ or
+$y=0$.
+\end{proof}
+
+Let
+\[
+ \R_0=\{(a_n)\in\R:a_1=0\}.
+\]
+The first-coordinate functional is bounded, so
+$\A=\C1\oplus\C z\oplus\R_0$ is a topological direct sum. Define
+\begin{equation}\label{eq:L}
+ L(\lambda1+\mu z+r_0)=\mu1+\lambda z+r_0.
+\end{equation}
+Then $L$ is complex-linear, $L^2=I$, and it is bounded: indeed,
+\[
+ \|L(\lambda1+\mu z+r_0)\|
+ =|\mu|+e^{-1}|\lambda|+\|r_0\|_\rho
+ \le e\bigl(|\lambda|+e^{-1}|\mu|+\|r_0\|_\rho\bigr).
+\]
+In particular, $L$ is a Banach-space automorphism. But $L(1)=z$ is not
+invertible by Lemma~\ref{lem:A}.
+
+\section{The counterexample}
+
+\begin{theorem}\label{thm:counterexample}
+There exist a separable commutative unital complex Banach algebra $\E$ with
+dense invertible group, a bounded bijective complex-linear map
+$\Phi:\E\to\E$, and a nonzero idempotent $c=d\in\E$ such that
+\[
+        xy=c\quad\Longrightarrow\quad\Phi(x)\Phi(y)=d,
+\]
+while $\Phi$ does not preserve invertibility. Consequently Problem 3.5 of
+\cite{Julius2023} has a negative answer.
+\end{theorem}
+
+\begin{proof}
+Take the coordinatewise direct product
+\[
+       \E=\C\times\A,
+       \qquad \|(\alpha,a)\|=|\alpha|+\|a\|.
+\]
+By Lemma~\ref{lem:A}, $\E$ is separable and commutative, and its invertibles
+\[
+       \E^{-1}=\C^{\times}\times\A^{-1}
+\]
+are dense. Define
+\[
+       \Phi(\alpha,a)=(\alpha,L(a)),
+       \qquad c=d=(1,0_\A).
+\]
+The map $\Phi$ is a bounded linear involution, hence is continuous and
+bijective. Also $c=d$ is a nonzero idempotent.
+
+Suppose
+\[
+       (\alpha,a)(\beta,b)=c.
+\]
+Coordinatewise multiplication gives $\alpha\beta=1$ and $ab=0$. Since
+$\A$ is an integral domain, $a=0$ or $b=0$. In either case
+$L(a)L(b)=0$, and therefore
+\[
+ \Phi(\alpha,a)\Phi(\beta,b)
+ =\bigl(\alpha\beta,L(a)L(b)\bigr)
+ =(1,0_\A)=d.
+\]
+Thus the fixed-product hypothesis holds for every factorization of $c$.
+
+Finally, the identity of $\E$ is $u=(1,1_\A)$, whereas
+\[
+       \Phi(u)=(1,z).
+\]
+The first element is invertible, but the second is not because $z$ is not
+invertible in $\A$. Hence $\Phi$ does not preserve invertibility even though
+$d\ne0$.
+\end{proof}
+
+\section{Verification and scope}
+
+The proof is exact and does not use a finite computation. The points most
+worth checking are: (i) the spectral-radius passage proving radicality;
+(ii) that radicality makes precisely the nonzero-scalar elements of the
+unitization invertible; and (iii) that domainhood converts the condition
+$ab=0$ into the disjunction $a=0$ or $b=0$. These are recorded in detail in
+the accompanying \texttt{verification.md}.
+
+This counterexample answers only Problem 3.5. It does not address Problem
+3.4 concerning $\mathcal B(X)$.
+
+\paragraph{Bounded novelty check.}
+On 11 August 2026, the local run indexes were searched by arXiv id, title,
+and the core terms. External exact/close searches combined the wording of
+Problem 3.5 with ``fixed product preserving'', ``counterexample'', ``integral
+domain'', ``radical Banach algebra'', and ``dense invertibles''. The audit
+included the source and publisher pages and search-indexed portions of
+Julius's 2026 survey chapter on fixed-product preservers. No prior explicit
+answer or matching construction was found. The publisher lists seven citing
+works, not all of whose full texts were individually inspected. Novelty
+confidence is therefore moderate; a specialist citation review is
+recommended. This limitation does not affect the internal validity of the
+counterexample.
+
+\begin{thebibliography}{9}
+\bibitem{Julius2023}
+H. Julius,
+\emph{Fixed product preserving mappings on Banach algebras},
+J. Math. Anal. Appl. \textbf{517} (2023), 126615;
+\href{https://arxiv.org/abs/2201.12912}{arXiv:2201.12912}.
+
+\bibitem{Dales2000}
+H. G. Dales,
+\emph{Banach Algebras and Automatic Continuity},
+London Mathematical Society Monographs, New Series 24,
+Clarendon Press, Oxford, 2000.
+\end{thebibliography}
+
+\end{document}

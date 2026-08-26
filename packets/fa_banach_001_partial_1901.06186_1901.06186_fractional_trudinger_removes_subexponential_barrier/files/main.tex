@@ -1,0 +1,291 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.72in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Bphi}{\dot{\mathbf B}^{\phi}}
+\newcommand{\norm}[1]{\lVert#1\rVert}
+
+\title{A fractional Trudinger upgrade for Orlicz--Besov\\
+extension domains}
+\author{Candidate partial-result packet for arXiv:1901.06186}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\paragraph{Status.}
+Candidate substantial partial result, likely valid, pending human review.
+
+\paragraph{Source problem.}
+Liang and Zhou \cite{LiangZhou} prove that a homogeneous Orlicz--Besov
+extension domain is Ahlfors $n$-regular when its Young function is
+subexponential at infinity.  Remark~1.3 on source PDF page~3 conjectures that
+the subexponential hypothesis is unnecessary.
+
+\begin{center}
+\includegraphics[width=0.92\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Result and proof intuition}
+
+The source uses the embedding $\Bphi\hookrightarrow\mathrm{BMO}$ and
+John--Nirenberg, which gives only exponential-linear integrability.  If
+$\phi$ dominates a power $t^p$ with $p>n$, then $\Bphi$ instead controls the
+critical fractional space $W^{n/p,p}$.  Fractional Moser--Trudinger raises the
+exponential power from $1$ to $p'=p/(p-1)$.  In the source's density iteration,
+this replaces $\phi(C\log q)$ by
+$\phi(C(\log q)^{1/p'})$, allowing growth almost as fast as
+$\exp(t^{p'})$.
+
+For a Young function $\phi$, write
+\[
+ \norm{u}_{\Bphi(U)}
+ =\inf\left\{\lambda>0:
+ \int_U\!\int_U
+ \phi\left(\frac{|u(x)-u(y)|}{\lambda}\right)
+ \frac{dx\,dy}{|x-y|^{2n}}\leq1\right\}.
+\]
+
+\begin{theorem}\label{thm:main}
+Let $n\geq2$, and let $\phi$ satisfy the source's nontriviality condition
+\[
+ C_\phi=\sup_{t>0}\frac{t^n}{\phi(t)}
+ \int_0^t\frac{\phi(s)}{s^{n+1}}\,ds<\infty.
+\]
+Suppose that for some $p>n$ and $a>0$,
+\begin{equation}\label{eq:lowerpower}
+ \phi(t)\geq a t^p\quad(t\geq0),
+\end{equation}
+and, with $p'=p/(p-1)$,
+\begin{equation}\label{eq:growth}
+ \lim_{t\to\infty}\frac{\log(1+\phi(t))}{t^{p'}}=0.
+\end{equation}
+If a domain $\Omega\subset\R^n$ is a $\Bphi$-extension domain, then it is
+Ahlfors $n$-regular.
+\end{theorem}
+
+Condition \eqref{eq:growth} is strictly weaker at infinity than the source's
+$\log(1+\phi(t))=o(t)$, because $p'>1$.
+
+\section*{The stronger local embedding}
+
+For $s=n/p\in(0,1)$, use
+\[
+ [v]_{s,p}^p=\int_{\R^n}\!\int_{\R^n}
+ \frac{|v(x)-v(y)|^p}{|x-y|^{2n}}\,dx\,dy.
+\]
+
+\begin{lemma}[Localized fractional Trudinger]\label{lem:trudinger}
+There are $c,C>0$, depending only on $n,p$, such that for every ball
+$B\subset\R^n$ and every $v\in L^p_{\mathrm{loc}}(\R^n)$ with
+$[v]_{s,p}<\infty$, one can choose a
+constant $c_B(v)$ for which
+\begin{equation}\label{eq:localMT}
+ \frac1{|B|}\int_B\exp\left[c
+ \left(\frac{|v-c_B(v)|}{[v]_{s,p}}\right)^{p'}\right]dx\leq C.
+\end{equation}
+The assertion is interpreted trivially when $[v]_{s,p}=0$.
+\end{lemma}
+
+\begin{proof}
+Let $2B$ be the concentric doubled ball, put $c_B(v)=v_{2B}$, and choose a
+Lipschitz cutoff $\eta$ equal to $1$ on $B$ and supported in $2B$, with
+$|\nabla\eta|\lesssim r(B)^{-1}$.  For
+$w=\eta(v-v_{2B})$, split the seminorm integral into pairs in $2B\times2B$
+and pairs with exactly one point in $2B$.  The product decomposition on the
+first part, the tail-kernel bound on the second, and fractional Poincar\'e give
+\[
+ [w]_{s,p}^p\leq C[n,p]\bigl([v]_{s,p}^p+
+ r^{-n}\norm{v-v_{2B}}_{L^p(2B)}^p\bigr)
+ \leq C[n,p]\,[v]_{s,p}^p.
+\]
+Here the cutoff and tail terms are bounded using
+\[
+ \int_{\R^n}\frac{\min\{1,(|x-y|/r)^p\}}{|x-y|^{2n}}\,dx
+ \lesssim r^{-n}
+\]
+and
+$\norm{v-v_{2B}}_{L^p(2B)}^p\lesssim r^{sp}[v]_{s,p}^p
+=r^n[v]_{s,p}^p$.  Now $w\in\widetilde W^{s,p}_0(2B)$.  Proposition~3.1
+of Parini--Ruf \cite{PariniRuf}, followed by scaling, gives
+\[
+ \frac1{|2B|}\int_{2B}\exp\left[c_0
+ \left(\frac{|w|}{[w]_{s,p}}\right)^{p'}\right]dx\leq C_0.
+\]
+Since $w=v-v_{2B}$ on $B$, reducing $c_0$ proves
+\eqref{eq:localMT}.
+\end{proof}
+
+\begin{center}
+\includegraphics[width=0.90\textwidth]{figures/fractional_trudinger_crop.png}
+\end{center}
+
+Let $E:\Bphi(\Omega)\to\Bphi(\R^n)$ be an extension operator of norm $K$.
+By \eqref{eq:lowerpower} and the Luxemburg definition,
+\begin{equation}\label{eq:powercontrol}
+ [Eu]_{s,p}\leq a^{-1/p}\norm{Eu}_{\Bphi(\R^n)}
+ \leq a^{-1/p}K\norm{u}_{\Bphi(\Omega)}.
+\end{equation}
+Applying Lemma~\ref{lem:trudinger} to $Eu$ and restricting to $B\cap\Omega$
+therefore yields constants $A,C$ such that
+\begin{equation}\label{eq:domainMT}
+ \inf_{c\in\R}\int_{B\cap\Omega}
+ \exp\left[\left(
+ \frac{|u-c|}{A\norm{u}_{\Bphi(\Omega)}}
+ \right)^{p'}\right]dx\leq C|B|
+\end{equation}
+for every ball $B$ and nonconstant $u\in\Bphi(\Omega)$.
+
+\section*{Density iteration}
+
+Fix $x\in\Omega$ and a radius $r>0$, and set
+\[
+ v=|B(x,r)\cap\Omega|,\qquad \rho=\frac{v}{r^n}.
+\]
+First suppose $r<\operatorname{diam}(\Omega)/4$.  Choose decreasing
+$b_0=1>b_1>b_2>\cdots\to0$ so that
+\begin{equation}\label{eq:halving}
+ |B(x,b_jr)\cap\Omega|=2^{-j}v.
+\end{equation}
+For $j\geq1$, let $u_j$ be $1$ on $B(x,b_{j+1}r)\cap\Omega$, linear in the
+radial variable on the next annulus, and $0$ outside
+$B(x,b_jr)\cap\Omega$.  Source Lemma~5.1 gives
+\begin{equation}\label{eq:cutoffnorm}
+ \norm{u_j}_{\Bphi(\Omega)}
+ \leq \frac{C_0}{\phi^{-1}(A_j)},\qquad
+ A_j=\frac{2^j(b_j-b_{j+1})^n}{\rho}.
+\end{equation}
+
+Inside $B(x,b_{j-1}r)\cap\Omega$, the function is $1$ on a set of measure
+$2^{-j-1}v$ and $0$ on a disjoint set of at least that measure.  For every
+$c\in\R$, one of these two sets satisfies $|u_j-c|\geq1/2$.  Hence
+\eqref{eq:domainMT} and \eqref{eq:cutoffnorm} imply
+\[
+ 2^{-j-1}v\,
+ \exp\left[c_1\phi^{-1}(A_j)^{p'}\right]\leq Cr^n.
+\]
+After taking logarithms and applying $\phi$,
+\begin{equation}\label{eq:keyrecurrence}
+ A_j\leq
+ \phi\left(C_1[\log(C_2 2^j/\rho)]^{1/p'}\right).
+\end{equation}
+
+By \eqref{eq:growth}, choose the little-$o$ constant so that the right side
+of \eqref{eq:keyrecurrence} is at most
+$C(2^j/\rho)^{1/2}$ (enlarging $C$ handles bounded arguments).  Consequently
+\[
+ (b_j-b_{j+1})^n
+ =2^{-j}\rho A_j
+ \leq C\rho^{1/2}2^{-j/2}.
+\]
+Summing the $n$th roots gives
+\begin{equation}\label{eq:b1}
+ b_1\leq C\rho^{1/(2n)}.
+\end{equation}
+
+If $b_1\geq1/10$, formula \eqref{eq:b1} immediately gives $\rho\geq c>0$.
+If $b_1<1/10$, connectedness and $r<\operatorname{diam}(\Omega)/4$ provide
+$x'\in\Omega$ with
+$|x-x'|=b_1r+r/5$.  Put $R=2r/5$.  Then
+\[
+ B(x,b_1r)\subset B(x',R)\subset B(x,r),
+ \qquad B(x,b_1r)\cap B(x',R/2)=\varnothing.
+\]
+Since the first halving in \eqref{eq:halving} splits the volume of
+$B(x,r)\cap\Omega$ equally, one obtains
+\[
+ |B(x',R/2)\cap\Omega|\leq\tfrac12|B(x',R)\cap\Omega|.
+\]
+Thus the first halving radius for $(x',R)$ is at least $1/2$, so the previous
+case applied at $(x',R)$ gives
+$|B(x',R)\cap\Omega|\geq cR^n$.  Since $B(x',R)\subset B(x,r)$, this proves
+$v\geq c r^n$.
+
+Finally, if $\operatorname{diam}(\Omega)/4\leq r<2\operatorname{diam}(\Omega)$,
+apply the established small-radius estimate at the same center with radius
+$r_0=\operatorname{diam}(\Omega)/8$.  Since $r_0>r/16$ and
+$B(x,r_0)\subset B(x,r)$, the same lower density follows.  This completes the
+proof of Theorem~\ref{thm:main}.
+
+\section*{New exponential-growth cases}
+
+\begin{corollary}\label{cor:examples}
+The conclusion of Theorem~\ref{thm:main} holds in each of the following cases.
+\begin{enumerate}
+\item $\phi(t)=t^p e^{ct^\alpha}$, where $p>n$, $c>0$, and
+$1\leq\alpha<p/(p-1)$.
+\item
+\[
+ \phi_\gamma(t)=e^{t^\gamma}
+ -\sum_{j=0}^{\lfloor n/\gamma\rfloor}\frac{t^{\gamma j}}{j!},
+ \qquad 1\leq\gamma<1+\frac1n.
+\]
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+The first function dominates $t^p$, and
+$\log(1+\phi(t))=O(t^\alpha)=o(t^{p'})$.
+
+Both displayed functions satisfy the nontriviality condition.  Indeed, for
+the first one, monotonicity of the exponential factor gives
+\[
+ \frac{t^n}{\phi(t)}\int_0^t\frac{\phi(s)}{s^{n+1}}\,ds
+ \leq \frac1{p-n}.
+\]
+For the second, put $m=\lfloor n/\gamma\rfloor$ and
+$q=\gamma(m+1)>n$.  The power series gives
+$\phi_\gamma(t)\geq t^q/(m+1)!$, while
+$\log(1+\phi_\gamma(t))=O(t^\gamma)$.  Termwise integration of the same
+positive series shows that its $C_{\phi_\gamma}$ is at most $(q-n)^{-1}$.
+If $\gamma=1$, then $q=n+1$ and
+$1<q/(q-1)$.  If $1<\gamma<1+1/n$, then $m=n-1$, $q=n\gamma$, and
+\[
+ \gamma<\frac{q}{q-1}
+ \quad\Longleftrightarrow\quad
+ \gamma<1+\frac1n.
+\]
+Apply Theorem~\ref{thm:main} with exponent $q$.
+\end{proof}
+
+\section*{Limitations, novelty, and review recommendation}
+
+This is a partial answer.  The proof does not cover the borderline
+$\log\phi(t)\asymp t^{p'}$, faster growth, or Young functions without a global
+lower power $p>n$.  At the borderline, the exponent produced after
+\eqref{eq:keyrecurrence} contains the extension and localization constants;
+nothing forces it below the summability threshold.  Direct Orlicz--Poincar\'e
+and multilevel-cutoff attempts lead to the same obstruction.
+
+A bounded search on 17 August 2026 covered the run indexes, the exact source
+wording, and the arXiv identifier, title, and authors.  Close searches combined
+Orlicz--Besov extension, Ahlfors regularity, Trudinger, and $p/(p-1)$.  The
+2021 published source retains the subexponential hypothesis, and related 2025
+work assumes doubling.  No matching theorem was found.  Novelty confidence is
+moderate.
+
+Human review should focus on Lemma~\ref{lem:trudinger}, the inverse-$\phi$
+direction in \eqref{eq:cutoffnorm}--\eqref{eq:keyrecurrence}, and the explicit
+recentring constants.
+
+\begin{thebibliography}{9}
+\bibitem{LiangZhou}
+T. Liang and Y. Zhou,
+\emph{Orlicz--Besov extension and Ahlfors $n$-regular domains},
+Sci. Sin. Math. 51 (2021), 1993--2012; arXiv:1901.06186.
+
+\bibitem{PariniRuf}
+E. Parini and B. Ruf,
+\emph{On the Moser--Trudinger inequality in fractional
+Sobolev--Slobodeckij spaces},
+J. Anal. Math. 138 (2019), 281--300; arXiv:1607.07681.
+\end{thebibliography}
+
+\end{document}

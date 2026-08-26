@@ -1,0 +1,246 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\D}{\mathbb D}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Bspace}{\mathcal B}
+\newcommand{\atanh}{\operatorname{arctanh}}
+
+\title{Exact Bloch point evaluation on the unit polydisk}
+\author{Candidate full solution packet for arXiv:2208.02147}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\textbf{Status: candidate full solution, likely valid pending expert review.}
+\end{center}
+
+\begin{abstract}
+Allen asked for a closed form of the norm $\omega(z)$ of point evaluation at
+$z$ on the normalized Bloch space of the unit polydisk.  We prove
+\[
+ \omega_0(z)=\omega(z)=\rho(z,0)
+ =\left(\sum_{j=1}^n\atanh^2|z_j|\right)^{1/2}.
+\]
+Thus the previously known Poincare-distance upper bound is exact.  The lower
+bound is attained in the Bloch space by an explicit Euclidean-normalized sum
+of rotated one-variable hyperbolic arctangents.  Radial dilations of the same
+function belong to the star-little Bloch space and converge to the extremal
+value, giving the stronger $\omega_0$ identity.  Substitution yields an exact
+symbol formula for the norm of the weighted composition operators studied in
+the source.
+\end{abstract}
+
+\section{Source question}
+
+The source is R.~F.~Allen, \emph{Weighted composition operators from the
+Bloch space to weighted Banach spaces on bounded homogeneous domains},
+arXiv:2208.02147 \cite{Allen}.  Open Question 1 on PDF page 9 asks whether
+$\omega(z)$ has a closed form on $\D^n$, and whether there is a sharper upper
+bound than the Poincare distance $\rho(z,0)$.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_question_crop.png}
+  \caption{The source's open questions on page 9 of arXiv:2208.02147.}
+\end{figure}
+
+For $w\in\D^n$ and $f\in H(\D^n)$, the source uses the metric
+\[
+ H_w(u,\overline u)=\sum_{j=1}^n\frac{|u_j|^2}{(1-|w_j|^2)^2}
+\]
+and the Bloch seminorm $\beta_f=\sup_w Q_f(w)$, where $Q_f(w)$ is the dual
+norm of $df_w$.  Its normalized evaluation quantities are
+\begin{align*}
+ \omega(z)&=\sup\{|f(z)|:f\in\Bspace(\D^n),\ f(0)=0,\ \beta_f\leq1\},\\
+ \omega_0(z)&=\sup\{|f(z)|:f\in\Bspace_{0*}(\D^n),\ f(0)=0,\ \beta_f\leq1\}.
+\end{align*}
+The source proves
+\begin{equation}\label{eq:source-upper}
+ \omega_0(z)\leq\omega(z)\leq\rho(z,0).
+\end{equation}
+
+\section{Proof intuition}
+
+The product metric dictates an $\ell_2$ answer.  The hyperbolic distance in
+the $j$th disk is $t_j=\atanh|z_j|$, so the distance in the product is
+$R=(\sum_jt_j^2)^{1/2}$.  In one variable,
+$\atanh(\eta w)$ has Bloch seminorm one and takes the value $t_j$ at $z_j$
+when $\eta z_j=|z_j|$.  Weight these one-variable extremals by the Euclidean
+unit vector $(t_1/R,\ldots,t_n/R)$.  The dual metric makes the resulting
+Bloch seminorm at most one, while its value at $z$ is exactly $R$.
+
+For the star-little Bloch space, replace $\atanh(\eta w)$ by
+$\atanh(s\eta w)$ with $s<1$.  These dilates extend past the closed disk,
+remain in the same Bloch unit ball, and their target values tend to the same
+$R$ as $s\uparrow1$.
+
+\section{The metric and its extremal}
+
+\begin{lemma}\label{lem:distance}
+For $z=(z_1,\ldots,z_n)\in\D^n$,
+\[
+ \rho(z,0)=R(z):=\left(\sum_{j=1}^n\atanh^2|z_j|\right)^{1/2}.
+\]
+\end{lemma}
+
+\begin{proof}
+Let $\gamma:[0,1]\to\D^n$ be any piecewise $C^1$ path from $0$ to $z$, and
+put
+\[
+ v_j(t)=\frac{|\gamma_j'(t)|}{1-|\gamma_j(t)|^2}.
+\]
+Minkowski's integral inequality and the one-variable disk distance give
+\[
+ \operatorname{length}(\gamma)
+ =\int_0^1\left(\sum_jv_j(t)^2\right)^{1/2}dt
+ \geq\left(\sum_j\left(\int_0^1v_j(t)dt\right)^2\right)^{1/2}
+ \geq R(z).
+\]
+Write $z_j=e^{i\theta_j}\tanh t_j$, where $t_j=\atanh|z_j|$ (with an
+arbitrary phase when $z_j=0$).  The synchronized radial path
+\[
+ \gamma_j(t)=e^{i\theta_j}\tanh(tt_j)
+\]
+has constant metric speed $(\sum_jt_j^2)^{1/2}$.  Its length is $R(z)$, so
+the lower bound is attained.
+\end{proof}
+
+Direct duality for the displayed metric gives
+\begin{equation}\label{eq:Q}
+ Q_f(w)^2=\sum_{j=1}^n(1-|w_j|^2)^2
+ \left|\frac{\partial f}{\partial w_j}(w)\right|^2.
+\end{equation}
+
+\begin{theorem}\label{thm:main}
+For every $z\in\D^n$,
+\[
+ \boxed{\quad
+ \omega_0(z)=\omega(z)=\rho(z,0)
+ =\left(\sum_{j=1}^n\atanh^2|z_j|\right)^{1/2}.
+ \quad}
+\]
+In particular, the Poincare-distance upper bound in
+\eqref{eq:source-upper} is sharp at every point.
+\end{theorem}
+
+\begin{proof}
+The result is immediate for $z=0$, so assume $R=R(z)>0$.  Set
+\[
+ t_j=\atanh|z_j|,\qquad a_j=\frac{t_j}{R},
+\]
+and choose $\eta_j\in\mathbb T$ so that $\eta_jz_j=|z_j|$ whenever
+$z_j\neq0$; the choice is immaterial when $z_j=0$.  For $0<s\leq1$, define
+\begin{equation}\label{eq:Fs}
+ F_s(w)=\sum_{j=1}^n a_j\atanh(s\eta_jw_j),
+ \qquad w\in\D^n,
+\end{equation}
+where $\atanh\zeta=\frac12\log\frac{1+\zeta}{1-\zeta}$ is taken in its
+analytic disk branch.
+
+Using \eqref{eq:Q},
+\begin{align*}
+ Q_{F_s}(w)^2
+ &=\sum_{j=1}^na_j^2
+ \frac{s^2(1-|w_j|^2)^2}{|1-s^2\eta_j^2w_j^2|^2}\\
+ &\leq\sum_{j=1}^na_j^2=1.
+\end{align*}
+Indeed,
+\[
+ |1-s^2\eta_j^2w_j^2|
+ \geq1-s^2|w_j|^2
+ \geq s(1-|w_j|^2),
+\]
+the last difference being $(1-s)(1+s|w_j|^2)\geq0$.  Also $F_s(0)=0$.
+
+At $s=1$ we therefore have $F_1$ in the normalized Bloch unit ball, and
+\[
+ F_1(z)=\sum_ja_j\atanh|z_j|
+ =\frac1R\sum_jt_j^2=R.
+\]
+Thus $\omega(z)\geq R$.
+
+If $s<1$, then $F_s$ extends holomorphically to a neighborhood of the closed
+polydisk.  Its first derivatives are bounded there, so
+\eqref{eq:Q} implies $Q_{F_s}(w)\to0$ as $w$ approaches the distinguished
+boundary.  Hence $F_s\in\Bspace_{0*}(\D^n)$.  Since
+\[
+ F_s(z)=\sum_ja_j\atanh(s|z_j|)\longrightarrow R
+ \qquad(s\uparrow1),
+\]
+we obtain $\omega_0(z)\geq R$.  Combining these inequalities with
+\eqref{eq:source-upper} and Lemma~\ref{lem:distance} proves all equalities.
+\end{proof}
+
+\section{Operator-theoretic consequences}
+
+Let $\mu$ be a positive continuous weight, $\psi\in H(\D^n)$, and
+$\varphi=(\varphi_1,\ldots,\varphi_n)$ a holomorphic self-map of $\D^n$.
+Define
+\[
+ \mathcal R_\mu(\psi,\varphi)
+ =\sup_{z\in\D^n}\mu(z)|\psi(z)|
+ \left(\sum_{j=1}^n\atanh^2|\varphi_j(z)|\right)^{1/2}.
+\]
+
+\begin{corollary}\label{cor:norm}
+The weighted composition operator
+$W_{\psi,\varphi}f=\psi(f\circ\varphi)$ is bounded from
+$\Bspace(\D^n)$ to $H^\infty_\mu(\D^n)$ if and only if
+$\psi\in H^\infty_\mu(\D^n)$ and $\mathcal R_\mu(\psi,\varphi)<\infty$.
+In that event,
+\[
+ \|W_{\psi,\varphi}\|
+ =\max\{\|\psi\|_{H^\infty_\mu},\mathcal R_\mu(\psi,\varphi)\}.
+\]
+The identical statement holds with $\Bspace_{0*}(\D^n)$ as domain.
+\end{corollary}
+
+\begin{proof}
+Substitute Theorem~\ref{thm:main} into the two parts of
+\cite[Theorem 3.3]{Allen}, which express the exact norm using $\omega$ and
+$\omega_0$, respectively.
+\end{proof}
+
+The source's compactness condition on the polydisk uses
+$\sum_j\atanh|\varphi_j(z)|$.  Since for nonnegative vectors
+\[
+ \left(\sum_jt_j^2\right)^{1/2}\leq\sum_jt_j
+ \leq\sqrt n\left(\sum_jt_j^2\right)^{1/2},
+\]
+its little-oh condition is equivalently expressed with the exact quantity
+$R(\varphi(z))=\omega(\varphi(z))$.
+
+\section{Novelty check}
+
+The run's cheap indexes contained no packet for arXiv:2208.02147 or this
+point-evaluation extremal.  Bounded arXiv searches on 9 August 2026 used the
+exact source question, title, and identifier, together with ``Bloch
+polydisk'', ``point evaluation'', ``$\omega(z)$'', ``Poincare distance'', and
+``arctanh''.  They located the source and older generalized-Bloch composition
+papers, but no later answer to Open Question 1.  This supports possible
+novelty but is not an exhaustive bibliographic guarantee.
+
+\begin{thebibliography}{9}
+
+\bibitem{Allen}
+R.~F.~Allen,
+\emph{Weighted composition operators from the Bloch space to weighted Banach
+spaces on bounded homogeneous domains},
+arXiv:2208.02147 (2022).
+
+\end{thebibliography}
+
+\end{document}

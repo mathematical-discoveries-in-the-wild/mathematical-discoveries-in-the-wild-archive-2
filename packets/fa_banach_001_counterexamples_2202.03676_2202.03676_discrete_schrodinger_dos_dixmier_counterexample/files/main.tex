@@ -1,0 +1,303 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\spec}{\operatorname{spec}}
+\newcommand{\ip}[2]{\langle #1,#2\rangle}
+
+\title{A Dyadic-Block Discrete Schr\"odinger Counterexample\\
+to the Density-of-States Converse}
+\author{Candidate result produced in run \texttt{fa\_banach\_001}, lane 2}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{
+\textbf{Status.} Candidate full negative answer to the \emph{discrete}
+Schr\"odinger question in arXiv:2202.03676; likely valid, pending expert
+review.  The continuous Euclidean question is not addressed.
+}}
+\end{center}
+
+\section{Source question}
+
+Azamov, Hekkelman, McDonald, Sukochev, and Zanin construct a bounded
+self-adjoint diagonal operator with no density of states (DOS), although
+$f(H)M_w$ is Dixmier measurable for every $f\in C_c(\R)$.  They then ask
+whether this separation is still possible for Schr\"odinger operators
+\cite[p.~6]{AHMSZ}:
+
+\begin{quote}
+``However, the above example is not a Schr\"odinger operator. It is unknown
+whether these definitions of the DOS still differ when restricting to
+Schr\"odinger operators.''
+\end{quote}
+
+The source page is reproduced below.
+
+\begin{center}
+\includegraphics[width=0.98\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The result below answers this discrete question affirmatively: the two
+conditions still differ even for a nearest-neighbor half-line Schr\"odinger
+operator with a bounded $\{0,1\}$-valued potential.
+
+\section{Definitions and construction}
+
+Let $X=\N=\{1,2,\ldots\}$ have its usual metric and base point $x_0=1$,
+and let $(e_n)_{n\geq1}$ be the standard basis of $\ell_2(\N)$.  The
+Dirichlet discrete Laplacian is
+\[
+ (\Delta_D x)_n=2x_n-x_{n-1}-x_{n+1},\qquad x_0=0.
+\]
+It is a bounded positive operator with spectrum in $[0,4]$.
+
+Define $v:\N\to\{0,1\}$ by $v_1=1$ and, for $m\geq0$,
+\[
+ v_n=0\quad(2^{2m}<n\leq 2^{2m+1}),
+\]
+while, for $m\geq1$,
+\[
+ v_n=1\quad(2^{2m-1}<n\leq 2^{2m}).
+\]
+Thus $v$ is constant on successive dyadic blocks and alternates between zero
+and one.  Put
+\[
+ H=\Delta_D+M_v,
+ \qquad
+ W=M_w,\quad w_n=\frac1n.
+\]
+Then $H$ is a bounded discrete Schr\"odinger operator, $0\leq H\leq5$, and
+$W\in\mathcal L_{1,\infty}$.
+
+For $c\in\{0,1\}$, let $\Delta_{\mathbb Z}$ be the same Laplacian on
+$\ell_2(\mathbb Z)$ and define the bulk state
+\[
+ \tau_c(f)=\ip{\delta_0}{f(\Delta_{\mathbb Z}+cI)\delta_0},
+ \qquad f\in C([0,5]).
+\]
+
+\section{Proof intuition}
+
+The construction keeps the source paper's alternating dyadic potential but
+adds genuine nearest-neighbor hopping.  Ordinary volume averages see the
+\emph{lengths} of the blocks.  Since each new block is as long as everything
+before it, the fraction of sites with potential one oscillates between
+$1/3$ and $2/3$; already the test function equal to the identity on the
+spectrum prevents a DOS.
+
+Dixmier averages use the logarithmic weight $1/n$.  Every dyadic block then
+has asymptotic weight $\log 2$, so the zero and one blocks each receive half
+the mass.  Nearest-neighbor hopping does not spoil this balance.  For a
+polynomial $p$, the diagonal entry $\ip{e_n}{p(H)e_n}$ only sees a fixed
+neighborhood of $n$.  Away from the dyadic interfaces it is exactly the
+constant-potential bulk value $\tau_{v_n}(p)$; the total $1/n$-weight of all
+fixed-width interface neighborhoods is finite.  Uniform polynomial
+approximation extends the logarithmic limit to every continuous $f$.  The
+source's modulated-operator eigenvalue formula then converts the diagonal
+limit into Dixmier measurability of $f(H)W$.
+
+\section{The counterexample theorem}
+
+\begin{theorem}\label{thm:main}
+For the operator $H=\Delta_D+M_v$ above:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $H$ has no density of states with respect to the balls
+      $\{1,\ldots,N\}$;
+\item for every $f\in C_c(\R)$, the operator $f(H)W$ is Dixmier measurable.
+      More precisely, if $\lambda_k(f(H)W)$ is an eigenvalue sequence ordered
+      by nonincreasing modulus, then
+\[
+ \lim_{N\to\infty}\frac1{\log(2+N)}
+ \sum_{k=1}^N\lambda_k(f(H)W)
+ =\frac{\tau_0(f)+\tau_1(f)}2.
+\]
+\end{enumerate}
+Consequently, Dixmier measurability of $f(H)W$ for all $f\in C_c(\R)$ does
+not imply existence of the DOS, even within bounded one-dimensional discrete
+Schr\"odinger operators.
+\end{theorem}
+
+\subsection{Failure of the density of states}
+
+Let $P_N$ be the projection onto
+$\operatorname{span}\{e_1,\ldots,e_N\}$.  Direct summation of the dyadic
+blocks gives
+\[
+ \frac1{2^{2m}}\sum_{n=1}^{2^{2m}}v_n\longrightarrow\frac23,
+ \qquad
+ \frac1{2^{2m+1}}\sum_{n=1}^{2^{2m+1}}v_n\longrightarrow\frac13.
+\]
+Choose $g\in C_c(\R)$ with $g(t)=t$ on $[0,5]$.  Since
+$\spec(H)\subset[0,5]$, functional calculus gives $g(H)=H$.  Moreover,
+$\ip{e_n}{He_n}=2+v_n$, and therefore
+\[
+ \frac1N\Tr(P_Ng(H)P_N)=2+\frac1N\sum_{n=1}^Nv_n.
+\]
+This expression has two different subsequential limits.  The defining DOS
+limit fails for the single test function $g$, proving part~\textup{(i)}.
+
+\subsection{The logarithmic block balance}
+
+\begin{lemma}\label{lem:block}
+For $c\in\{0,1\}$,
+\[
+ A_c(N):=\sum_{\substack{1\leq n\leq N\\v_n=c}}\frac1n
+ =\frac12\log N+O(1).
+\]
+\end{lemma}
+
+\begin{proof}
+For $j\geq0$, the harmonic mass of the dyadic block
+$I_j=(2^j,2^{j+1}]\cap\N$ is
+\[
+ h_j=\sum_{n=2^j+1}^{2^{j+1}}\frac1n=\log2+O(2^{-j}).
+\]
+The potential is constant on $I_j$ and alternates with the parity of $j$.
+The alternating sum of the complete block masses is bounded: the constant
+$\log2$ terms cancel in pairs and the errors are summable.  A final partial
+block has mass at most $h_j=O(1)$.  Hence $A_1(N)-A_0(N)=O(1)$.  Since
+$A_1(N)+A_0(N)=\sum_{n\leq N}n^{-1}=\log N+O(1)$, the assertion follows.
+\end{proof}
+
+\subsection{Locality across the interfaces}
+
+\begin{lemma}\label{lem:poly}
+For every polynomial $p$,
+\[
+ \sum_{n=1}^N\frac{\ip{e_n}{p(H)e_n}}n
+ =\frac{\tau_0(p)+\tau_1(p)}2\log N+O_p(1).
+\]
+\end{lemma}
+
+\begin{proof}
+Let $r=\deg p$.  Because $H$ has propagation one, the diagonal coefficient
+$\ip{e_n}{p(H)e_n}$ depends only on the matrix of $H$ in the radius-$r$
+neighborhood of $n$.  If $n>r$ and that neighborhood meets no interface
+$\{2^j:j\geq0\}$, the potential is constant there.  The corresponding matrix
+coefficient is therefore exactly
+\[
+ \ip{e_n}{p(H)e_n}=\tau_{v_n}(p).
+\]
+
+Let $E_r$ consist of $\{1,\ldots,r\}$ together with the integers at distance
+at most $r$ from some $2^j$.  Its harmonic mass is finite.  Indeed, after
+discarding finitely many small $j$,
+\[
+ \sum_{\substack{n\in\N\\|n-2^j|\leq r}}\frac1n
+ \leq \frac{2(2r+1)}{2^j},
+\]
+and the right-hand side is summable in $j$.  Since both $H$ and the two bulk
+operators have spectrum in $[0,5]$, the discrepancy at a bad site is bounded
+by $2\|p\|_{C([0,5])}$.  Consequently,
+\[
+ \sum_{n=1}^N\frac{\ip{e_n}{p(H)e_n}}n
+ =\tau_0(p)A_0(N)+\tau_1(p)A_1(N)+O_p(1).
+\]
+Lemma~\ref{lem:block} finishes the proof.
+\end{proof}
+
+\begin{lemma}\label{lem:continuous}
+For every $f\in C([0,5])$,
+\[
+ \lim_{N\to\infty}\frac1{\log(2+N)}
+ \sum_{n=1}^N\frac{\ip{e_n}{f(H)e_n}}n
+ =\frac{\tau_0(f)+\tau_1(f)}2.
+\]
+\end{lemma}
+
+\begin{proof}
+Given $\varepsilon>0$, choose by polynomial approximation a polynomial $p$
+with $\|f-p\|_{C([0,5])}<\varepsilon$.  Functional calculus gives
+\[
+ \big|\ip{e_n}{(f(H)-p(H))e_n}\big|\leq\varepsilon,
+ \qquad
+ |\tau_c(f)-\tau_c(p)|\leq\varepsilon.
+\]
+The harmonic sum divided by $\log(2+N)$ is bounded and converges to one.
+Lemma~\ref{lem:poly}, followed by $\varepsilon\downarrow0$, yields the claimed
+limit.
+\end{proof}
+
+\subsection{From diagonal averages to Dixmier measurability}
+
+Fix $f\in C_c(\R)$ and restrict it to $[0,5]$.  The source paper records the
+$W$-modulated eigenvalue formula \cite[Theorem~4.5]{AHMSZ}: for every bounded
+operator $T$ and $W=M_{1/n}$,
+\[
+ \sum_{k=1}^N\lambda_k(TW)
+ =\sum_{n=1}^N\frac{\ip{e_n}{Te_n}}n+O_T(1).
+\]
+Apply it to $T=f(H)$.  Lemma~\ref{lem:continuous} shows that the normalized
+eigenvalue sums converge to
+$(\tau_0(f)+\tau_1(f))/2$.  By the standard eigenvalue criterion for Dixmier
+measurability \cite[Theorem~9.1.2(c)]{LSZ}, $f(H)W$ is Dixmier measurable.
+This proves part~\textup{(ii)} and Theorem~\ref{thm:main}.
+
+\section{Verification and novelty check}
+
+The proof has four separable obligations: the arithmetic block oscillation,
+finite harmonic mass of interface neighborhoods, polynomial locality, and the
+passage from diagonal to eigenvalue sums.  The first three are proved directly
+above; the fourth is exactly the source's modulated-operator theorem.  The
+included script \texttt{code/check\_dyadic\_schrodinger.py} checks the finite
+block averages and the logarithmic prediction for the cubic polynomial
+$1+t+t^2+t^3$.  It is a sanity check only, not part of the proof.
+
+Before promotion, the run indexes were searched for arXiv:2202.03676 and the
+phrases ``Dixmier measurable density of states Schr\"odinger'', ``discrete
+Schr\"odinger DOS converse'', and close variants.  No prior run packet was
+found.  A bounded web/arXiv search on 9 August 2026 used the exact source
+sentence, the paper title and authors, and the same close variants.  It found
+the source paper and general DOS/Dixmier-trace work but no later explicit
+answer.  Most notably, Hekkelman's 2025 thesis (arXiv:2506.21950) repeats the
+discrete Schr\"odinger case as unknown \cite[Sec.~5.1]{Hekkelman}.  This is
+strong status evidence but not an exhaustive novelty claim.
+
+\section{Limitations and human-review recommendation}
+
+The theorem resolves only the discrete half-line question.  It does not touch
+the source's continuous Euclidean conjecture for $-\Delta+M_V$ on
+$L_2(\R^d)$.  It also uses the particular admissible weight $w_n=1/n$ from
+the source example; no assertion is made for every radial weak-$\ell_1$
+weight.
+
+Expert review is recommended.  The decisive checks are:
+\begin{enumerate}
+\item that the source's phrase ``discrete Schr\"odinger type operator'' uses
+the standard class $\Delta_D+M_v$ (the example lies in that class);
+\item that Theorem~4.5 of the source applies to $f(H)W$ exactly as used; and
+\item that polynomial locality compares the half-line diagonal with the
+bi-infinite bulk diagonal outside the stated fixed-width exceptional set.
+\end{enumerate}
+
+\begin{thebibliography}{9}
+\bibitem{AHMSZ}
+N.~Azamov, E.~Hekkelman, E.~McDonald, F.~Sukochev, and D.~Zanin,
+\emph{An application of singular traces to crystals and percolation},
+arXiv:2202.03676 (2022).
+
+\bibitem{Hekkelman}
+E.-M.~Hekkelman,
+\emph{Trace Formulas in Noncommutative Geometry},
+Ph.D. thesis, arXiv:2506.21950 (2025).
+
+\bibitem{LSZ}
+S.~Lord, F.~Sukochev, and D.~Zanin,
+\emph{Singular Traces, Volume 1: Theory},
+De Gruyter, 2021.
+\end{thebibliography}
+
+\end{document}

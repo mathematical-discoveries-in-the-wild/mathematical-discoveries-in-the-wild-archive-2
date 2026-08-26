@@ -1,0 +1,223 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newcommand{\T}{\mathbb T}
+\newcommand{\N}{\mathbb N}
+\newcommand{\E}{\mathcal E}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\diag}{\operatorname{diag}}
+
+\title{Cowen-Set Membership Does Not Determine\\
+the Blaschke--Potapov Degree}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 7}
+\date{August 11, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.9\textwidth}{\textbf{Status.}
+Candidate full counterexample, likely valid, pending expert review.
+Problem~4.2 of Abhinand--Curto--Prasad has a negative answer, already for
+analytic diagonal monomial symbols.  For this family we also determine the
+exact set of determinant degrees occurring in the matrix Cowen set.}}
+\end{center}
+
+\section{Source question and answer}
+
+For $\Phi\in L^\infty(\T,M_n)$, the source defines
+\[
+ \E(\Phi)=\{K\in H^\infty(\T,M_n):\|K\|_\infty\leq1
+       \text{ and }\Phi-K\Phi^*\in H^\infty(\T,M_n)\}.
+\]
+Problem~4.2 asks whether, for a normal symbol $\Phi$, the presence of a finite
+Blaschke--Potapov product $B\in\E(\Phi)$ forces
+\[
+ \rank[T_\Phi^*,T_\Phi]=\deg(\det B).
+\]
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.98\textwidth]{figures/open_problem_crop.png}
+  \caption{Problem~4.2 on page 11 of arXiv:2605.02214.}
+  \label{fig:problem}
+\end{figure}
+
+The answer is no.  Indeed, for any $m,n\geq1$ and $k>m$, take
+\[
+ \Phi_m(z)=z^m I_n,\qquad B_k(z)=z^k I_n.
+\]
+Then $B_k\in\E(\Phi_m)$, but the two quantities in the proposed identity are
+$mn$ and $kn$.  Thus one may take the concrete block example
+$\Phi(z)=zI_2$, $B(z)=z^2I_2$, giving ranks/degrees $2$ and $4$.
+
+\subsection*{Proof intuition}
+
+The Cowen-set condition is stable under adding extra inner factors on the
+analytic side.  For a monomial symbol $z^mI_n$, every $z^kI_n$ with $k\geq m$
+still makes $\Phi-B\Phi^*$ analytic.  The Toeplitz commutator, however, only
+sees the fixed symbol and has rank $mn$.  The proposed equality therefore
+cannot hold for an arbitrary member $B$ of the Cowen set.  More sharply, for
+diagonal monomials, analyticity forces a minimal inner divisor; all additional
+inner degree is optional.
+
+\section{A full counterexample}
+
+Let $S$ denote the unilateral shift on $H^2(\T)$.  We use the convention
+$[A^*,A]=A^*A-AA^*$.
+
+\begin{theorem}[Monomial counterexample]\label{thm:counterexample}
+For every $m,n\geq1$ and every $k>m$, the pointwise normal symbol
+$\Phi_m(z)=z^mI_n$ and the finite Blaschke--Potapov product $B_k(z)=z^kI_n$
+satisfy
+\[
+ B_k\in\E(\Phi_m),\qquad
+ \rank[T_{\Phi_m}^*,T_{\Phi_m}]=mn,\qquad
+ \deg(\det B_k)=kn.
+\]
+Consequently Problem~4.2 is false, including when $n\geq2$.
+\end{theorem}
+
+\begin{proof}
+On $\T$ we have $\Phi_m^*(z)=z^{-m}I_n$, and hence
+\[
+ \Phi_m-B_k\Phi_m^*=(z^m-z^{k-m})I_n\in H^\infty(\T,M_n).
+\]
+The matrix $B_k$ is inner, so $\|B_k\|_\infty=1$; this proves
+$B_k\in\E(\Phi_m)$.  Pointwise, $\Phi_m$ is a scalar multiple of the identity
+and is therefore normal (in fact unitary on $\T$).
+
+Under $H^2(\T,\mathbb C^n)\cong H^2(\T)\otimes\mathbb C^n$,
+\[
+ T_{\Phi_m}=S^m\otimes I_n.
+\]
+Since $S^{*m}S^m=I$ and $I-S^mS^{*m}$ is the projection onto
+$\operatorname{span}\{1,z,\ldots,z^{m-1}\}$,
+\[
+ [T_{\Phi_m}^*,T_{\Phi_m}]
+   =(I-S^mS^{*m})\otimes I_n
+\]
+has rank $mn$.  Finally $\det B_k=z^{kn}$, whose degree is $kn$.  Because
+$k>m$, the proposed equality fails.
+\end{proof}
+
+\section{Exact degree spectrum for diagonal monomials}
+
+The same mechanism yields a sharp result, not merely one counterexample.
+
+\begin{theorem}[Minimum-degree theorem]\label{thm:spectrum}
+Let
+\[
+ D(z)=\diag(z^{m_1},\ldots,z^{m_n}),\qquad m_j\geq1,
+ \qquad r=\sum_{j=1}^n m_j.
+\]
+Then
+\[
+ \rank[T_D^*,T_D]=r
+\]
+and the finite Blaschke--Potapov products in $\E(D)$ have exactly the
+determinant degrees
+\[
+ \bigl\{\deg(\det B):B\text{ finite Blaschke--Potapov},\ B\in\E(D)\bigr\}
+   =\{r,r+1,r+2,\ldots\}.
+\]
+In particular, the commutator rank is the \emph{minimum}, not the common
+value, of the determinant degrees in the Cowen set.
+\end{theorem}
+
+\begin{proof}
+The Toeplitz operator is the orthogonal direct sum
+$T_D=\bigoplus_{j=1}^n S^{m_j}$.  The computation in
+Theorem~\ref{thm:counterexample} gives
+\[
+ [T_D^*,T_D]=\bigoplus_{j=1}^n (I-S^{m_j}S^{*m_j}),
+\]
+so its rank is $r$.
+
+Now let a finite Blaschke--Potapov product $B=(B_{ij})$ belong to $\E(D)$.
+The $(i,j)$ entry of $BD^*$ on $\T$ is $B_{ij}(z)z^{-m_j}$.  Since
+$D-BD^*$ has no negative Fourier coefficients, neither can this entry: the
+analytic entry $D_{ij}$ has none to cancel.  Thus every Taylor coefficient of
+$B_{ij}$ below order $m_j$ vanishes.  Equivalently, the $j$th column of $B$
+is divisible by $z^{m_j}$, and
+\[
+ B=CD
+\]
+for an analytic rational matrix function $C$.
+
+Both $B$ and $D$ are unitary almost everywhere on $\T$, so
+$C=BD^*$ is unitary there.  Hence $C$ is rational inner.  Taking
+determinants gives
+\[
+ \det B=(\det C)z^r.
+\]
+The scalar rational inner function $\det C$ has a nonnegative integer degree;
+therefore every such $B$ satisfies $\deg(\det B)\geq r$.
+
+Conversely, for each $d\geq0$ set
+\[
+ B_d(z)=\diag(z^{m_1+d},z^{m_2},\ldots,z^{m_n}).
+\]
+This is a finite Blaschke--Potapov product and
+\[
+ B_dD^*=\diag(z^d,1,\ldots,1),
+\]
+so $D-B_dD^*$ is analytic and $B_d\in\E(D)$.  Moreover
+$\deg(\det B_d)=r+d$.  This realizes every integer at least $r$.
+\end{proof}
+
+\section{Quantifier audit and sharp repair}
+
+Problem~4.2 names a particular product $B$ already known to lie in
+$\E(\Phi)$ and asks whether its degree must equal the rank.  Theorems
+\ref{thm:counterexample} and~\ref{thm:spectrum} refute exactly that literal
+statement.  There is no ambiguity from block size: the examples work for all
+$n$, and in particular for every $n\geq2$.
+
+The paper's central conjecture has a different, existential quantifier: under
+hyponormality and finite-rank hypotheses, it asks whether there \emph{exists}
+a finite Blaschke--Potapov product in $\E(\Phi)$ whose determinant degree is
+the commutator rank.  Our examples do not refute that conjecture.  For the
+diagonal symbols above, $B=D$ belongs to $\E(D)$ and has degree $r$, so it is
+exactly the desired witness.
+
+Thus the sharp repaired statement for this natural class is
+\[
+ \rank[T_D^*,T_D]
+ =\min\{\deg(\det B):B\text{ finite Blaschke--Potapov in }\E(D)\},
+\]
+whereas equality for every available $B$ is false.  Whether this
+minimum-degree formulation holds for broader normal symbols is not claimed.
+
+\section{Verification, scope, and novelty}
+
+The proof uses only Fourier coefficients and the standard Hardy basis.  The
+review-critical checks are: the sign of the self-commutator, the right-column
+exponents in $BD^*$, and the universal-versus-existential quantifier.  All
+three computations are displayed explicitly.
+
+This packet completely answers Problem~4.2 negatively and gives an exact
+classification for diagonal monomial symbols.  It does not settle the
+paper's central existential conjecture for arbitrary symbols.
+
+Local run indexes were searched by arXiv identifier, title, and the core
+Cowen-set/degree terminology.  Bounded primary-source searches through
+August~11, 2026 found the source paper but no later answer or correction.
+The argument is elementary and may be folklore; novelty is asserted only as
+an explicit answer to this 2026 problem and remains subject to expert review.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+M.~Abhinand, R.~E.~Curto, and T.~Prasad,
+\emph{Hyponormal block Toeplitz operators with finite rank self-commutators},
+arXiv:2605.02214 (2026), Problem~4.2, p.~11.
+\end{thebibliography}
+
+\end{document}

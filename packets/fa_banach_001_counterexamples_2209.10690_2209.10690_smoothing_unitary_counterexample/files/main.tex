@@ -1,0 +1,202 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,graphicx,microtype}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
+\newcommand{\Sone}{\mathbb S^1}
+\newcommand{\PsiDO}{\Psi}
+\title{A smoothing-unitary counterexample to a claimed\\spectral inequality for elliptic pseudodifferential operators}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 2}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.} Candidate counterexample, likely valid, awaiting
+human review.  The claim inspected is Theorem~1.4 of Cardona
+\cite{Cardona2209}, together with the principal-symbol interpretation of the
+second open problem on page~18.
+
+\section{Source problem and claimed theorem}
+
+The source asks in Section~3 (physical page~18) for which manifolds the
+restriction $\rho\geq 1-\delta$ can be removed, and conjectures that on a
+manifold with symmetries, under a suitable positivity condition on the symbol,
+the spectral inequality should hold throughout $0\leq\delta<\rho\leq1$.
+The same paper's Theorem~1.4 claims, in the standard range, that every positive
+elliptic $E\in\PsiDO^\nu_{\rho,\delta}(M)$ with positive symbol satisfies
+\[
+ \|v\|_{L^2(M)}\leq C_1e^{C_2\lambda}\|v\|_{L^2(\omega)}
+ \quad
+ \text{for }v\in\operatorname{span}\{\rho_j:\lambda_j\leq\lambda\}.
+\]
+In the proof, the relevant $E(x,\xi)$ is explicitly called the principal
+symbol.  The following construction contradicts this theorem already for
+$(\rho,\delta)=(1,0)$ and shows that principal-symbol positivity cannot be the
+``suitable positivity condition'' sought by the open problem.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{The two open problems in Section~3 of arXiv:2209.10690,
+  rendered from physical page~18.  The second bullet is the selected target.}
+\end{figure}
+
+\section{Proof intuition}
+
+Ellipticity and the principal symbol only control an operator modulo smoothing
+terms.  Smoothing terms can nevertheless rearrange individual smooth
+eigenfunctions completely.  Start with the standard positive elliptic operator
+$A=(I+L)^{\nu/2}$ on the circle, whose constant eigenfunction is everywhere
+visible.  A rank-one Householder reflection $U=I+R$, with $R$ smoothing, can
+send that constant to any prescribed smooth bump $f$ supported away from the
+sensor.  The conjugate $E=UAU^*$ is still positive elliptic and has exactly the
+same principal symbol as $A$, but $f$ is now an eigenfunction.  The proposed
+observability estimate then reads $1\leq0$.
+
+\section{Formal counterexample}
+
+\begin{theorem}\label{thm:counterexample}
+Let $\nu>0$.  There exist a nonempty open set $\omega\subset\Sone$ and a
+positive, self-adjoint, invertible elliptic pseudodifferential operator
+\[
+ E\in\PsiDO^\nu_{1,0}(\Sone)
+\]
+whose principal symbol is the positive symbol $|\xi|^\nu$ for $\xi\ne0$, but
+for which the spectral inequality of \cite[Theorem~1.4]{Cardona2209} fails.
+Indeed, $E$ has a normalized $C^\infty$ eigenfunction $f$ satisfying
+$f|_\omega=0$.
+\end{theorem}
+
+\begin{proof}
+Give $\Sone$ normalized Haar measure and let
+$L=-d^2/dx^2\geq0$.  Put
+\[
+ A=(I+L)^{\nu/2}.
+\]
+By the standard functional calculus, $A$ is positive, self-adjoint,
+invertible, belongs to $\PsiDO^\nu_{1,0}(\Sone)$, and has principal symbol
+$|\xi|^\nu$.  Its normalized constant function $h\equiv1$ satisfies $Ah=h$.
+
+Choose a proper open arc $\omega$ whose complement has nonempty interior.
+Choose a real $f\in C^\infty(\Sone)$ with
+\[
+ \operatorname{supp}f\subset\Sone\setminus\omega,
+ \qquad \|f\|_2=1.
+\]
+Work first on the real Hilbert space.  Since $f\ne h$, define
+\[
+ w=\frac{h-f}{\|h-f\|_2},\qquad
+ P_wu=\langle u,w\rangle w,\qquad U=I-2P_w.
+\]
+The operator $U$ is a self-adjoint unitary.  If
+$c=\langle h,f\rangle\in\mathbb R$ and
+$d=\|h-f\|_2$, then $d^2=2(1-c)$ and
+$\langle h,w\rangle=d/2$, $\langle f,w\rangle=-d/2$.  Consequently
+\[
+ Uh=h-dw=f,\qquad Uf=f+dw=h.
+\]
+Extend $U$ complex linearly to complex $L^2(\Sone)$.
+
+Now set
+\[
+ E=UAU.
+\]
+Unitary conjugation shows that $E$ is positive, self-adjoint, invertible, and
+unitarily equivalent to $A$.  It remains to check the microlocal assumptions.
+The rank-one projection $P_w$ has smooth Schwartz kernel
+$w(x)\overline{w(y)}$, hence $P_w\in\PsiDO^{-\infty}$.  Expanding gives
+\[
+ E-A=-2P_wA-2AP_w+4P_wAP_w.
+\]
+Every term on the right has a smooth finite-rank kernel: for example, the
+kernels of $AP_w$ and $P_wA$ are respectively
+$(Aw)(x)\overline{w(y)}$ and
+$w(x)\overline{(Aw)(y)}$.  Thus $E-A\in\PsiDO^{-\infty}$.
+It follows that $E\in\PsiDO^\nu_{1,0}$ is elliptic and has the same positive
+principal symbol as $A$.  Also $U=I+\PsiDO^{-\infty}$ preserves all Sobolev
+spaces, so the unbounded-operator domain causes no change of class.
+
+Finally,
+\[
+ Ef=UAUf=UAh=Uh=f.
+\]
+Thus $f$ is an eigenfunction of eigenvalue $1=1^\nu$ and belongs to the
+spectral subspace at threshold $\lambda=1$.  The asserted inequality would
+give
+\[
+ 1=\|f\|_{L^2(\Sone)}
+ \leq C_1e^{C_2}\|f\|_{L^2(\omega)}=0,
+\]
+a contradiction.
+\end{proof}
+
+\begin{remark}[Null controllability]
+The same invisible eigenmode also obstructs the claimed null controllability:
+the observation/control multiplier $1_\omega$ annihilates $f$, so the adjoint
+observability inequality fails on the one-dimensional invariant subspace
+spanned by $f$.
+\end{remark}
+
+\section{Verification and scope}
+
+The construction is exact and uses no computation.  The decisive checks are:
+(i) a smooth rank-one kernel is smoothing; (ii) smoothing perturbations preserve
+the principal symbol and ellipticity; (iii) unitary conjugation preserves
+positivity and spectrum; and (iv) the Householder identities swap $h$ and $f$.
+All four are displayed explicitly in the proof.
+
+This result does not solve the source's first, boundary/polyharmonic open
+problem.  It also does not refute the deliberately unspecified existential
+phrase ``under a suitable positivity condition.''  Rather, it proves sharply
+that the hypotheses of source Theorem~1.4---positive operator and positive
+principal symbol---are insufficient.  The later compact-Lie-group theorem of
+Cardona, Delgado and Ruzhansky \cite{CDR2209} assumes nonnegativity of the full
+global matrix-valued symbol.  Our construction is not claimed to satisfy that
+stronger, quantization-specific condition.
+
+\section{Attempt history and novelty check}
+
+An initial route observed that Navier powers of the Dirichlet Laplacian inherit
+the Laplacian spectral inequality, but that proper subcase does not reach the
+clamped boundary conditions in the first open problem.  The smoothing-unitary
+route upgrades the investigation to the complete counterexample above.
+
+The bounded search on 11 August 2026 used the exact source title and arXiv id
+with the terms \emph{correction}, \emph{erratum}, and \emph{counterexample},
+and searched close variants involving spectral inequalities, elliptic
+pseudodifferential operators, polyharmonic boundary conditions, and
+Lebeau--Robbiano estimates.  No correction or matching counterexample was
+found.  The close works arXiv:2209.12092 \cite{CDR2209} and arXiv:2309.02181
+were inspected.  Novelty confidence is moderate because finite-rank smoothing
+conjugation is standard folklore even though this exact application was not
+located.
+
+\section{Human review recommendation}
+
+A microlocal-analysis reviewer should focus on the source's interpretation of
+$E(x,\xi)>0$.  Its proof explicitly identifies this as the principal symbol;
+under that reading Theorem~\ref{thm:counterexample} is complete.  If a stronger
+complete-symbol condition was intended, it must be stated separately and the
+scope of the source theorem changes.
+
+\begin{thebibliography}{9}
+\bibitem{Cardona2209}
+D. Cardona,
+\emph{Spectral inequalities for elliptic pseudo-differential operators on closed manifolds},
+arXiv:2209.10690 (2022).
+
+\bibitem{CDR2209}
+D. Cardona, J. Delgado, and M. Ruzhansky,
+\emph{Estimates for sums of eigenfunctions of elliptic pseudo-differential operators on compact Lie groups},
+arXiv:2209.12092 (2022; revised 2022).
+
+\bibitem{Hormander}
+L. H\"ormander,
+\emph{The Analysis of Linear Partial Differential Operators III},
+Springer, 1985.
+\end{thebibliography}
+
+\end{document}
+

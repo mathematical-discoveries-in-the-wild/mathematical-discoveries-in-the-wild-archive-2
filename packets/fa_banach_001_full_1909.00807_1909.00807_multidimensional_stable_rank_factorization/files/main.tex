@@ -1,0 +1,266 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\St}{\mathrm{St}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\rank}{\operatorname{rank}}
+
+\title{Multidimensional continuous factorization\\at the stable-rank scale}
+\author{Autonomous solution packet for arXiv:1909.00807}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Dai--Hore--Jiao--Lan--Motakis ask whether their continuous factorization
+theorem for an interval extends to a matrix function on $\R^d$, and what
+dimension can be factored.  We give an affirmative answer.  If
+$A:\R^d\to M_N(\R)$ is continuous, $\|A(x)\|\leq1$, and every column has
+norm at least $\theta$, then one can continuously factor $I_n$ through
+$A(x)$, with norm product at most $2/\theta$, for every
+\[
+ n\leq \max\left\{1,
+ \left\lceil\frac{3N\theta^2}{4-\theta^2}\right\rceil-d\right\}.
+\]
+The proof combines a trace/singular-value count with a finite-dimensional
+selection lemma.  The $d$-loss is the obstruction-theoretic cost of choosing a
+frame over a $d$-dimensional base.
+\end{abstract}
+
+\section{The source question and the result}
+
+The source proves the interval case with a smaller bound.  Its second question
+asks explicitly for a version on $\R^d$:
+
+\begin{center}
+\includegraphics[page=13,width=.94\textwidth,trim=95 220 72 505,clip]{source_paper.pdf}
+\end{center}
+
+We use the source's stronger column formulation.  The diagonal formulation
+follows because $|a_{ii}(x)|\leq\|A(x)e_i\|$.
+
+\begin{theorem}[multidimensional factorization]\label{thm:main}
+Let $d,N\in\mathbb N$, let $A:\R^d\to M_N(\R)$ be continuous, and assume
+\[
+ \|A(x)\|\leq1,
+ \qquad \min_{1\leq i\leq N}\|A(x)e_i\|\geq\theta>0
+ \quad(x\in\R^d).
+\]
+Put
+\[
+ q=\left\lceil\frac{3N\theta^2}{4-\theta^2}\right\rceil,
+ \qquad m=\max\{1,q-d\}.
+\]
+For every $1\leq n\leq m$ there are continuous functions
+\[
+ R:\R^d\to M_{N\times n}(\R),\qquad
+ L:\R^d\to M_{n\times N}(\R)
+\]
+such that, for every $x\in\R^d$,
+\[
+ L(x)A(x)R(x)=I_n,
+ \qquad \|L(x)\|\,\|R(x)\|\leq\frac2\theta.
+\]
+\end{theorem}
+
+Thus the answer is linear at the stable-rank scale: for fixed $d$ and
+$N\theta^2\to\infty$, one may take $n\geq(3/4+o(1))N\theta^2-d$.
+No regularity or behavior at infinity is imposed on $A$.
+
+\section{The frame-selection lemma}
+
+We record the only topological input.  Here $\dim X$ is covering dimension and
+$\St(n,N)=\{Q\in M_{N\times n}(\R):Q^*Q=I_n\}$.
+
+\begin{lemma}[frames in a lower-semicontinuous field]\label{lem:lsc}
+Let $X$ be a paracompact metric space with $\dim X\leq d$.  Suppose that
+$x\mapsto E_x$ is a lower-semicontinuous field of linear subspaces of
+$\R^N$, in the sense that
+\[
+ \{x:E_x\cap U\ne\varnothing\}
+\]
+is open for every open $U\subset\R^N$.  If $\dim E_x\geq q$ for all $x$,
+then, whenever $1\leq n\leq q-d$, there are continuous orthonormal vectors
+$u_1(x),\ldots,u_n(x)\in E_x$.
+\end{lemma}
+
+\begin{proof}
+We use the global finite-dimensional corollary of Michael's selection
+theorem~\cite[Theorem 1.2]{Michael}.  In the form needed here it says that if
+$\dim X\leq d$ and $x\mapsto F_x$ is a lower-semicontinuous field of linear
+subspaces with $\dim F_x\geq d+1$, then the unit-sphere carrier
+$x\mapsto S(F_x)$ has a continuous selection.
+
+For clarity, all of its hypotheses are transparent in this special case.
+The values $S(F_x)$ are closed subsets of the complete metric space
+$S^{N-1}$ and are $(d-1)$-connected, because they are spheres of dimension
+at least $d$.  The family of unit spheres of Euclidean subspaces is
+equi-$LC^{d-1}$: sufficiently close points in any one of these spheres can
+be joined and contracted by normalized straight-line homotopies inside a
+uniformly slightly larger ball.  Finally the sphere carrier is lower
+semicontinuous.  Indeed, a nearby nonzero vector in $F_x$ can be normalized,
+and normalization is continuous away from zero.  These are exactly the
+hypotheses in Michael's finite-dimensional theorem.  Paracompactness, not
+compactness, is the base assumption, so the conclusion applies globally to
+the noncompact spaces used below.
+
+Apply this result first to $E_x$.  Since $q\geq n+d\geq d+1$, it gives a
+continuous unit vector $u_1(x)\in E_x$.  Inductively, after choosing
+$u_1,\ldots,u_j$, put
+\[
+ E_x^{(j)}=E_x\cap\operatorname{span}\{u_1(x),\ldots,u_j(x)\}^{\perp}.
+\]
+This is again a lower-semicontinuous field: locally choose a vector of $E_x$
+near a prescribed vector of $E_{x_0}^{(j)}$ and subtract its continuous
+orthogonal projection onto the already selected frame.  Moreover
+$\dim E_x^{(j)}\geq q-j$.  For $j<n$ this is at least
+$q-n+1\geq d+1$, so Michael's theorem selects $u_{j+1}$.  The induction ends
+with the asserted orthonormal $n$-frame.
+\end{proof}
+
+\begin{lemma}[spectral-frame selection]\label{lem:selection}
+Let $X$ and $d$ be as above, and let $B:X\to M_N(\R)$ be continuous and
+self-adjoint.  Fix $a\in\R$.  Suppose that $B(x)$ has at least $q$
+eigenvalues strictly larger than $a$ at every $x$.  If
+$1\leq n\leq q-d$, there is a continuous $Q:X\to\St(n,N)$ such that
+\[
+ Q(x)^*B(x)Q(x)>aI_n\qquad(x\in X).
+\]
+\end{lemma}
+
+\begin{proof}
+Let $E_x$ be the sum of the eigenspaces of $B(x)$ with eigenvalue $>a$.
+Then $\dim E_x\geq q$.  This spectral field is lower semicontinuous even
+though its dimension may jump.  To see this at $x_0$, take $v\in E_{x_0}$.
+Only finitely many eigenvalues occur in its spectral decomposition, so for
+some $\eta>0$ it belongs to the spectral subspace for $(a+\eta,\infty)$.
+Choose a continuous scalar function $f$ that is $1$ on
+$[a+\eta,\infty)$ and $0$ on $(-\infty,a+\eta/2]$.  Then
+\[
+ v(x)=f(B(x))v
+\]
+depends continuously on $x$, equals $v$ at $x_0$, and belongs to $E_x$ for
+nearby $x$.  This proves lower semicontinuity.  Lemma~\ref{lem:lsc} supplies
+an orthonormal frame $Q(x)$ in $E_x$.  Since every eigenvalue of
+$B(x)|_{E_x}$ is strictly larger than $a$, its compression to the range of
+$Q(x)$ is strictly larger than $aI_n$.
+\end{proof}
+
+\begin{remark}
+No spectral projection is asserted to be continuous.  The proof uses only
+lower semicontinuity of the high spectral field, which survives arbitrary
+eigenvalue crossings and rank jumps.
+\end{remark}
+
+\section{Stable-rank count and factorization}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Since every column of $A(x)$ has norm at most $\|A(x)\|$, necessarily
+$0<\theta\leq1$.  Put
+\[
+ B(x)=A(x)^*A(x),\qquad a=\frac{\theta^2}{4}.
+\]
+All eigenvalues of $B(x)$ lie in $[0,1]$, while
+\[
+ \tr B(x)=\sum_{i=1}^N\|A(x)e_i\|^2\geq N\theta^2.
+\]
+Let $r(x)$ be the number of eigenvalues strictly larger than $a$.  Bounding
+those $r(x)$ eigenvalues by $1$ and the rest by $a$ gives
+\[
+ N\theta^2\leq\tr B(x)
+ \leq r(x)+(N-r(x))a.
+\]
+Therefore
+\[
+ r(x)\geq
+ \left\lceil\frac{N(\theta^2-a)}{1-a}\right\rceil
+ =\left\lceil\frac{3N\theta^2}{4-\theta^2}\right\rceil=q.
+\]
+
+Suppose first that $1\leq n\leq q-d$.  Lemma~\ref{lem:selection}, applied
+to $X=\R^d$, gives a continuous orthonormal frame $R(x)$ such that
+\[
+ C(x):=R(x)^*A(x)^*A(x)R(x)>\frac{\theta^2}{4}I_n.
+\]
+Define
+\[
+ L(x)=C(x)^{-1}R(x)^*A(x)^*.
+\]
+Then $L$ is continuous and $LAR=I_n$.  Moreover $\|R(x)\|=1$, and $L(x)$
+is the canonical left inverse of $A(x)R(x)$.  Hence
+\[
+ \|L(x)\|=\frac1{s_{\min}(A(x)R(x))}<\frac2\theta.
+\]
+
+It remains only to cover the case in which $m=1$ because $q-d\leq0$.
+Take $R(x)=e_1$ and
+\[
+ L(x)=\frac{(A(x)e_1)^*}{\|A(x)e_1\|^2}.
+\]
+Then $LAR=1$, $\|R\|=1$, and $\|L\|\leq1/\theta$.  This proves every
+assertion.
+\end{proof}
+
+\begin{corollary}[the source's diagonal formulation]
+If the hypotheses instead say $|a_{ii}(x)|\geq\delta>0$, the conclusion of
+Theorem~\ref{thm:main} holds with $\theta=\delta$.
+\end{corollary}
+
+\section{Literature and novelty boundary}
+
+Question 1 of the source is no longer open.  Fan et al.~\cite{FanEtAl} prove
+the one-dimensional $\theta^2N$ estimate and the resulting factorization in
+their Theorem 3.10.  Their final section explicitly lists analogous results
+for a multidimensional domain as future work.  The theorem above addresses
+that surviving question; it uses unstructured spectral frames, corresponding
+to their first method rather than their coordinate-structured second method.
+
+The sole indexed citation to Fan et al. is Müller--Tomilov~\cite{MT}.  It
+studies continuous and smooth compressions of infinite-dimensional operator
+functions on $[0,1]$; it says that arbitrary compact metric domains are
+plausible but restricts its proofs to the interval.  It neither states nor
+implies the finite-dimensional bound above.  Bounded arXiv searches for the
+exact title, ``restricted invertibility'' with ``continuous matrix'', and
+continuous families/choices of subspaces returned Fan et al. alone through
+2026-08-11.
+
+The conservative status is therefore a candidate full affirmative answer,
+pending human verification of Lemma~\ref{lem:selection}.  No optimality in
+the additive $d$-loss or in the numerical constant is claimed.
+
+\begin{thebibliography}{9}
+\bibitem{Michael}
+E.~Michael,
+\emph{Continuous selections II},
+Ann. of Math. (2) 64 (1956), 562--580,
+doi:10.2307/1969603.
+
+\bibitem{Source}
+Y.~Dai, A.~Hore, S.~Jiao, T.~Lan, and P.~Motakis,
+\emph{Continuous factorization of the identity matrix},
+Involve 13 (2020), 149--162; arXiv:1909.00807v2.
+
+\bibitem{FanEtAl}
+A.~Fan, J.~Montemurro, P.~Motakis, N.~Praveen, A.~Rusonik,
+P.~Skoufranis, and N.~Tobin,
+\emph{Restricted invertibility of continuous matrix functions},
+Operators and Matrices 16 (2022), 1191--1217; arXiv:2201.04238v2.
+
+\bibitem{MT}
+V.~Müller and Y.~Tomilov,
+\emph{On regularity of compressions and diagonals of operator functions},
+J. London Math. Soc. (2026), doi:10.1112/jlms.70433;
+arXiv:2512.15467v1.
+\end{thebibliography}
+
+\end{document}

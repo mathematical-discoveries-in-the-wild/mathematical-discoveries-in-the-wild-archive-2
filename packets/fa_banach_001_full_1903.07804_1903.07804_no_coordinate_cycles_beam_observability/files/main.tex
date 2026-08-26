@@ -1,0 +1,231 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\makeatletter
+\renewcommand{\@seccntformat}[1]{\csname the#1\endcsname\hspace{0.65em}}
+\makeatother
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\R}{\mathbb R}
+
+\title{A telescoping obstruction to coordinate cycles in beam observability}
+\author{A candidate full answer to Open Question (iv) of arXiv:1903.07804}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{\textbf{Status: candidate full result, likely valid.}
+The two-segment inverse observability inequality holds for every pair of
+distinct non-integer rational velocities.  More strongly, it holds for every
+pair of distinct non-integer real velocities.}}
+\end{center}
+
+\section{Source problem}
+
+Jaming and Komornik study moving observations of the periodic beam equation
+\cite{JK}.  Their Open Question (iv), on PDF page 19, asks whether their
+inverse inequality (4.8) holds for any two distinct non-integer rationals
+$a_1,a_2$.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{Open Question (iv) and its context in \cite[p.~19]{JK}.}
+\end{figure}
+
+For reference, a solution has the Fourier representation
+\[
+ u(t,x)=c_0^++c_0^-t+
+ \sum_{k\in\Z\setminus\{0\}}
+ \left(c_k^+e^{i(k^2t+kx)}+c_k^-e^{i(-k^2t+kx)}\right).
+\]
+Given $T>0$, base points $(t_j,x_j)$, and velocities $a_j$, the requested
+inverse inequality is
+\begin{equation}\label{eq:obs}
+ \sum_{k\in\Z}\bigl(|c_k^+|^2+|c_k^-|^2\bigr)
+ \le C\sum_{j=1}^2\int_0^T
+ |u(t_j+t,x_j-a_jt)|^2\,dt.
+\end{equation}
+
+\section{Proof intuition}
+
+The only obstruction left by the source's nonharmonic Fourier estimates is a
+finite cycle of coincident frequencies.  Such coincidences are encoded by
+lattice points on the circles
+\[
+ S_a=\{(x,y)\in\R^2:x^2-ax+y^2+ay=0\}.
+\]
+In a cycle between two non-integral parameters $a\ne b$, the lattice points
+can be written alternately as $(x_i,y_i)\in S_a$ and
+$(x_{i+1},y_i)\in S_b$.  Subtracting the paired circle equations and summing
+once around the cycle makes all quadratic terms telescope.  This forces the
+sums of the two coordinates to agree.  Summing just the $S_a$ equations then
+forces a sum of squares to be zero, which is impossible because the origin is
+not a graph vertex.
+
+\section{The finite collision graph}
+
+Put
+\[
+ A_a=(S_a\cap\Z^2)\setminus\{(0,0)\},
+\]
+and let $A_a^+$ and $A_a^-$ be its first- and second-coordinate projections.
+The set $A_a$ is finite.  Moreover, it is empty if $a$ is irrational, because
+every $(x,y)\in A_a$ satisfies
+\begin{equation}\label{eq:parameter}
+ a=\frac{x^2+y^2}{x-y}\in\mathbb Q.
+\end{equation}
+
+For distinct parameters $a,b$, form a graph whose vertices are
+$A_a\cup A_b$, joining two vertices when they share a coordinate.  The
+source's estimate (4.9), with the harmless observation phases left explicit,
+has the form
+\begin{align}\label{eq:source-reduction}
+ \int_0^T|u(t_j+t,x_j-a_jt)|^2\,dt\asymp{}&
+ \sum_{k\notin A_{a_j}^+}|c_k^+|^2+
+ \sum_{m\notin A_{a_j}^-}|c_m^-|^2\\
+ &+\sum_{(k,m)\in A_{a_j}}
+ |\alpha_{j,k}c_k^++\beta_{j,m}c_m^-|^2,
+ \nonumber
+\end{align}
+where all $\alpha_{j,k},\beta_{j,m}$ are unimodular.  Thus the only
+finite-dimensional obstruction to \eqref{eq:obs} is a closed chain of
+collision relations.
+
+\begin{lemma}[coordinate injectivity]\label{lem:injectivity}
+If $a\notin\Z$, no two distinct points of $A_a$ share a first coordinate or
+share a second coordinate.
+\end{lemma}
+
+\begin{proof}
+If $(x,y),(x',y)\in A_a$ with $x\ne x'$, then $x,x'$ are the two roots of
+\[
+ X^2-aX+y^2+ay=0.
+\]
+Hence $a=x+x'\in\Z$, a contradiction.  If $(x,y),(x,y')\in A_a$ with
+$y\ne y'$, the corresponding quadratic in $Y$ gives
+$-a=y+y'\in\Z$.
+\end{proof}
+
+\begin{proposition}[the graph reduction]\label{prop:graph}
+Let $a,b$ be distinct non-integers.  If the coordinate-sharing graph on
+$A_a\cup A_b$ has no cycle, then \eqref{eq:obs} holds with
+$(a_1,a_2)=(a,b)$ for arbitrary base points and every $T>0$.
+\end{proposition}
+
+\begin{proof}
+If either lattice set is empty, the one-observation result
+\cite[Theorem~4.4(ii)]{JK} already proves the claim.  Otherwise,
+Lemma~\ref{lem:injectivity} and \eqref{eq:parameter} show that the graph is
+bipartite, has degree at most two, and hence is a disjoint union of paths when
+it has no cycle.
+
+Consider the sum of the two quadratic forms in
+\eqref{eq:source-reduction}.  If it vanishes, an unshared coordinate at an
+endpoint of any path is zero because it occurs in one of the first two sums.
+The endpoint collision relation then forces the next coordinate variable to
+vanish; induction propagates zero along the whole path.  Isolated vertices
+are handled in the same way.  All variables in the finite collision block
+therefore vanish, while the first two sums already control every variable
+outside that block.  The resulting finite-dimensional quadratic form is
+positive definite, hence coercive.  Together with
+\eqref{eq:source-reduction}, this is \eqref{eq:obs}.
+\end{proof}
+
+\section{No coordinate cycle can occur}
+
+\begin{lemma}[telescoping cycle obstruction]\label{lem:no-cycle}
+For distinct $a,b\in\R\setminus\Z$, the coordinate-sharing graph on
+$A_a\cup A_b$ has no cycle.
+\end{lemma}
+
+\begin{proof}
+Suppose a cycle exists.  A nonzero lattice point determines its parameter
+uniquely by \eqref{eq:parameter}, so $A_a\cap A_b=\varnothing$.
+Lemma~\ref{lem:injectivity} forces both the parameter labels and the
+horizontal/vertical directions to alternate around the cycle.  After choosing
+an orientation, its vertices may therefore be labeled cyclically as
+\[
+ P_i=(x_i,y_i)\in A_a,
+ \qquad Q_i=(x_{i+1},y_i)\in A_b,
+ \qquad i=1,\ldots,r,
+\]
+where $x_{r+1}=x_1$.  Their circle equations are
+\begin{align}
+ x_i^2-a x_i+y_i^2+a y_i&=0, \label{eq:a-circle}\\
+ x_{i+1}^2-b x_{i+1}+y_i^2+b y_i&=0. \label{eq:b-circle}
+\end{align}
+Subtract \eqref{eq:a-circle} from \eqref{eq:b-circle} and sum over $i$.
+The square terms telescope cyclically, leaving
+\[
+ (a-b)\left(\sum_{i=1}^r x_i-\sum_{i=1}^r y_i\right)=0.
+\]
+Since $a\ne b$,
+\begin{equation}\label{eq:sums}
+ \sum_{i=1}^r x_i=\sum_{i=1}^r y_i.
+\end{equation}
+Finally, sum \eqref{eq:a-circle} over $i$ and use \eqref{eq:sums}:
+\[
+ \sum_{i=1}^r(x_i^2+y_i^2)
+ =a\left(\sum_{i=1}^r x_i-\sum_{i=1}^r y_i\right)=0.
+\]
+Every $x_i$ and $y_i$ is zero.  This says every $P_i$ is the excluded origin,
+a contradiction.
+\end{proof}
+
+\begin{theorem}\label{thm:main}
+For every two distinct $a_1,a_2\in\R\setminus\Z$, every $T>0$, and arbitrary
+base points $(t_1,x_1),(t_2,x_2)\in\R^2$, the periodic beam solutions satisfy
+the inverse observability inequality \eqref{eq:obs}.  In particular, Open
+Question (iv) of \cite{JK} has an affirmative answer.
+\end{theorem}
+
+\begin{proof}
+Combine Proposition~\ref{prop:graph} with Lemma~\ref{lem:no-cycle}.
+\end{proof}
+
+\section{Checks, scope, and novelty}
+
+The proof uses rationality nowhere.  If a parameter is irrational, its lattice
+set is empty; otherwise \eqref{eq:parameter} makes it rational automatically.
+Thus the theorem strictly strengthens the source's rational question.  It
+does not address integer velocities, for which coordinate injectivity fails.
+
+The arXiv source prints ``integers'' in Lemma 4.7 and Theorem 4.8.  This is
+inconsistent with the lemma's proof, which derives integrality as a
+contradiction, with the subsequent non-integral rational example, and with
+Open Question (iv).  Proposition~\ref{prop:graph} states the intended
+non-integer reduction directly from the source's estimate (4.9), so the result
+does not rely on that printed word.
+
+As a non-proof regression check, the included script exhaustively found no
+cycle for all parameters of absolute value at most $120$ (21,178 parameter
+classes and 3,044 candidate pairs).  A bounded search on 13 August 2026 used
+the exact question, title, arXiv id, graph notation, and core cycle and
+observability phrases.  The current arXiv version still states the question as
+open, and no later explicit answer or matching telescoping argument was found.
+Novelty confidence is moderate.
+
+\medskip
+\noindent\textbf{Human-review recommendation.}
+Check the alternating labeling and the two telescoping sums, the endpoint
+propagation in the phase-weighted finite forest, and the editorial
+integer/non-integer issue in the source.
+
+\begin{thebibliography}{9}
+\bibitem{JK}
+P. Jaming and V. Komornik,
+\emph{Moving and oblique observations of beams and plates},
+Evolution Equations and Control Theory \textbf{9} (2020), no.~2, 447--468;
+arXiv:1903.07804.
+\end{thebibliography}
+
+\end{document}

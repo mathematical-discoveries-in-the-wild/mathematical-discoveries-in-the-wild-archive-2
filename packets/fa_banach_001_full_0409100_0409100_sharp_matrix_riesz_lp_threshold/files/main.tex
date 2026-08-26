@@ -1,0 +1,252 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.82in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\M}{\mathfrak M}
+\newcommand{\R}{\mathbb R}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\rank}{\operatorname{rank}}
+
+\title{The sharp a.e.-existence threshold for matrix Riesz potentials\\
+\large A full answer to the question in arXiv:math/0409100}
+\author{Automated mathematical-discovery candidate (lane 11)}
+\date{12 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\fcolorbox{black}{gray!8}{\parbox{0.94\linewidth}{
+\textbf{Status.} Candidate full proof; current verdict \textbf{likely valid}.
+In the nontrivial range of the source question, the sufficient exponent is
+improved to a strictly larger one and shown sharp by matching examples.}}
+
+\section{Source question and answer}
+
+Let $\M_{n,m}$ be the real $n\times m$ matrices, $n\ge m>1$, with
+$|y|_m=\det(y'y)^{1/2}$.  For the orders considered in the source,
+the matrix Riesz potential is
+\[
+ I^\alpha f(x)=\int_{\M_{n,m}}f(x-y)\,d\mu_\alpha(y).
+\]
+If $a=\operatorname{Re}\alpha>m-1$, absolute convergence is governed,
+up to a harmless constant, by
+$d\nu_a(y)=|y|_m^{a-n}\,dy$.  If $\alpha=k$ is one of the positive
+integral Wallach orders, $1\le k\le\min(m-1,n-m)$, $\mu_k$ is the
+positive rank-$k$ measure displayed in formula (2.15) of the source.
+
+Theorem 2.5 of \cite{OOR} proves a.e. absolute convergence for every
+$f\in L^p$ when
+\[
+ 1\le p<\frac{n}{a+m-1},
+\]
+and asks whether this restriction is necessary for $m>1$:
+
+\begin{center}
+ \includegraphics[width=0.94\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+It is not necessary.  Write
+\[
+ D=n+m-1,\qquad A=a+m-1,
+ \qquad p_c=\frac{D}{A}.
+\]
+The meaningful range of the question is $0<a<n-m+1$, so $1<p_c<\infty$.
+
+\begin{theorem}[Sharp threshold]\label{thm:main}
+Let $n\ge m>1$ and let $\alpha\ne0$ be either
+\begin{enumerate}
+ \item a positive integral Wallach order $k\le\min(m-1,n-m)$, with
+       $a=k$, or
+ \item an order with $m-1<a=\operatorname{Re}\alpha<n-m+1$ for which
+       the density representation above is defined.
+\end{enumerate}
+Then the following are sharp.
+\begin{enumerate}
+ \item If $1\le p<p_c=(n+m-1)/(a+m-1)$, then the defining integral for
+       $I^\alpha f$ converges absolutely for almost every $x$ for every
+       $f\in L^p(\M_{n,m})$.
+ \item If $p_c\le p\le\infty$, there is a nonnegative
+       $f\in L^p(\M_{n,m})$ for which the absolute potential is infinite
+       at every point of a fixed ball.
+\end{enumerate}
+For $\alpha=0$, of course, $I^0f=f$, so there is no restriction on $p$.
+\end{theorem}
+
+Since $m>1$,
+\[
+ \frac{n+m-1}{a+m-1}>\frac{n}{a+m-1}.
+\]
+Thus Theorem~\ref{thm:main} both answers the source question negatively and
+identifies the exact replacement.
+
+\section{The smoothed-kernel lemma}
+
+Let $s_1(x)\ge\cdots\ge s_m(x)$ be the singular values of $x$ and put
+$d=n-a$.  Let $g(x)=e^{-\tr(x'x)}$.  The analytic input is the following
+standard matrix-beta estimate, included with its reduction for auditability.
+
+\begin{lemma}[Gaussian smoothing]\label{lem:smooth}
+For every order in Theorem~\ref{thm:main}, with total variation used in the
+nonreal case,
+\[
+ (|\mu_\alpha|*g)(x)
+ \le C\prod_{j=1}^m(1+s_j(x)^2)^{-d/2}.
+ \tag{1}
+\]
+Consequently $|\mu_\alpha|*g\in L^q(\M_{n,m})$ whenever
+\[
+ dq>n+m-1. \tag{2}
+\]
+\end{lemma}
+
+\begin{proof}
+First suppose $m-1<a<n-m+1$.  The heat-kernel representation of the
+matrix Riesz measure (equivalently, formula (5.8) in \cite{Rubin}) and the
+change of variables $r=t^{-1}$ give, with $S=x'x/4$,
+\[
+ (\nu_a*g)(x)=C\!\int_{0<r<I_m}
+ e^{-\tr(Sr)}|r|^{d/2-(m+1)/2}
+ |I_m-r|^{a/2-(m+1)/2}\,dr. \tag{3}
+\]
+Both beta parameters exceed $(m-1)/2$.  Diagonalize $S$ and successively
+use Schur-complement coordinates in the matrix beta integral.  At each
+stage the only unbounded eigenvalue-dependent factor is the scalar beta
+Laplace integral
+\[
+ \int_0^1e^{-\lambda u}u^{d/2-1}(1-u)^b\,du
+ \le C_b(1+\lambda)^{-d/2},\qquad b>-1.
+\]
+The remaining Schur-complement beta integral has the same form in one lower
+dimension.  Induction on $m$ therefore yields
+\[
+ \int_{0<r<I_m}e^{-\tr(Sr)}\,d\beta_{d/2,a/2}(r)
+ \le C\prod_{j=1}^m(1+\lambda_j(S))^{-d/2},
+\]
+which is (1).
+
+For an integral order $a=k$, insert the rank-$k$ representation (2.15) of
+\cite{OOR} and first perform the Gaussian integral over
+$\M_{k,m}$.  This gives
+\[
+ (\mu_k*g)(x)=C\int_{V_{n,k}}
+ \exp\{-\tr[x'(I-vv')x]\}\,dv. \tag{4}
+\]
+The same Schur-complement induction, now on the Stiefel chart, gives (1)
+with $d=n-k$.  Concretely, when one singular direction of $x$ has size
+$s$, the set of $k$-frames within angle $O(s^{-1})$ of that direction has
+codimension $n-k$ and contributes $O(s^{-(n-k)})$; conditioning on it
+leaves the identical estimate for the orthogonal complement.  Iteration
+over the singular directions gives the product in (1).  This also covers
+the boundary (singular-beta) cases of (3).
+
+It remains to check integrability.  Polar decomposition on $\M_{n,m}$
+reduces the $q$th power of the right side of (1) to
+\[
+ C\int_{r>0}|r|^{n/2-(m+1)/2}
+ |I_m+r|^{-dq/2}\,dr. \tag{5}
+\]
+The matrix beta integral (5) is finite exactly when
+$dq>n+m-1$.  The necessity can already be seen by letting only its largest
+eigenvalue tend to infinity.  This proves (2).
+\end{proof}
+
+\section{Sufficiency up to the sharp exponent}
+
+It is enough to consider $f\ge0$.  Tonelli's theorem and translation
+invariance give
+\[
+ \int_{\M_{n,m}}g(x)(|\mu_\alpha|*f)(x)\,dx
+ =\int_{\M_{n,m}}f(z)(|\mu_\alpha|*g)(z)\,dz. \tag{6}
+\]
+For $p=1$, Lemma~\ref{lem:smooth} makes the right side at most
+$C\|f\|_1$.  For $1<p<p_c$, the inequality $p<p_c$ is equivalent to
+\[
+ d p'>n+m-1.
+\]
+Lemma~\ref{lem:smooth} and H\"older's inequality again make (6) finite.
+Since $g$ is strictly positive everywhere, the absolute potential is finite
+for almost every $x$.  This proves Theorem~\ref{thm:main}(1).
+
+\section{Sharp counterexamples}
+
+Set
+\[
+ E_R=\{y\in\M_{n,m}:R<s_1(y)<2R,\ s_2(y)<2\},\qquad R\ge10.
+\]
+A tubular parametrization of the rank-one stratum gives
+\[
+ cR^D\le |E_R|\le CR^D,\qquad D=n+m-1. \tag{7}
+\]
+Indeed a nonzero rank-one matrix has $D$ parameters (including radius),
+and the remaining normal directions are confined to a fixed-size tube.
+
+Take $R_j=4^j$, so the $E_{R_j}$ are disjoint, and put
+$f=\sum_ja_j\mathbf1_{E_{R_j}}$.  Fix a sufficiently small ball $B$.
+If $x\in B$ and $y\in E_R$, Weyl's singular-value inequality gives
+$s_1(x-y)\le3R$ and $s_i(x-y)\le3$ for $i\ge2$.  In the density case,
+therefore,
+\[
+ |x-y|_m^{a-n}\ge cR^{-d}.
+\]
+Together with (7), the $j$th block contributes at least
+\[
+ c a_jR_j^{D-d}=c a_jR_j^{a+m-1}=c a_jR_j^A \tag{8}
+\]
+to the absolute potential at every $x\in B$.
+
+For an integral order $a=k$, use formula (2.15) of \cite{OOR}.  Restrict
+the inner $\M_{k,m}$ integral to matrices with largest singular value in
+$[6R/5,9R/5]$ and second singular value below $1$.  Their measure is
+comparable to $R^{k+m-1}=R^A$, uniformly in the orthogonal parameter, and
+adding $x\in B$ places them in $E_R$.  Hence (8) holds in the integral-order
+case as well.
+
+If $p=p_c$, choose $a_j=R_j^{-A}/j$.  Then
+\[
+ \|f\|_p^p\asymp\sum_j a_j^pR_j^D=\sum_jj^{-p}<\infty,
+ \qquad
+ (|\mu_\alpha|*f)(x)\ge c\sum_jj^{-1}=\infty
+\]
+for $x\in B$.  If $p>p_c$, take
+$a_j=R_j^{-D/p}j^{-2/p}$; the $L^p$ sum is finite while the terms in
+(8) grow exponentially.  For $p=\infty$, take $a_j=1$.
+This proves Theorem~\ref{thm:main}(2).
+
+\section{Scope and novelty check}
+
+The proof concerns absolute convergence of the defining convolution, exactly
+the meaning used around Theorem 2.5 of the source.  It handles both the
+ordinary density range relevant to the displayed question and every positive
+integral Wallach order.  The zero order is the explicit identity exception.
+
+A bounded search on 12 August 2026 covered the exact title and arXiv id,
+the displayed exponent, ``Riesz potentials on matrix spaces'', and the two
+candidate thresholds.  It found the source, Rubin's expanded 2006 treatment,
+and later book material still repeating the old sufficient condition, but no
+paper proving the sharp criterion above.  Novelty is plausible, not certified.
+Human review should focus on the Schur-complement induction in
+Lemma~\ref{lem:smooth}, particularly its singular-beta/Stiefel boundary case.
+
+\begin{thebibliography}{9}
+\bibitem{OOR}
+G. \"Olafsson, E. Ournycheva, and B. Rubin,
+\emph{Multiscaled wavelet transforms, ridgelet transforms, and Radon
+transforms on the space of matrices}, arXiv:math/0409100, especially
+Theorem 2.5 and formulas (2.14)--(2.16).
+
+\bibitem{Rubin}
+B. Rubin,
+\emph{Zeta integrals and integral geometry in the space of rectangular
+matrices}, arXiv:math/0406289; published as
+\emph{Riesz potentials and integral geometry in the space of rectangular
+matrices}, Adv. Math. 205 (2006), 549--598, especially the heat-kernel
+representation and Section 5.3.
+\end{thebibliography}
+
+\end{document}

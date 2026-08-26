@@ -1,0 +1,213 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\W}{\mathsf W}
+\newcommand{\I}{\mathcal I}
+\newcommand{\Pp}{\mathcal P_p}
+\newcommand{\R}{\mathbb R}
+\newcommand{\rhoSp}{\rho}
+
+\title{Multiblock CAVI Contracts by a Gauss--Seidel Interaction Matrix}
+\author{Run fa\_banach\_001, agent\_lane\_01}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status and source question}
+
+This is a \texttt{candidate\_full\_likely\_valid} answer to the multiblock
+extension left for future work by Rocco Caprio, Adrien Corenflos, and Sam
+Power, \emph{Wasserstein Contraction of Coordinate Ascent Variational
+Inference}, arXiv:2605.30253 \cite{CCP}.  After their two-block contraction
+theorem, the authors ask for the dynamics when the number of blocks is
+$m>2$ (source PDF page~5).
+
+\begin{center}
+\includegraphics[width=0.98\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+The theorem below gives the systematic-scan multiblock extension under the
+natural matrix-valued version of the source's Fisher-smoothness hypothesis.
+It also identifies the convergence rate with the spectral radius of a
+Gauss--Seidel comparison matrix.
+
+\section*{Setting and proof intuition}
+
+Let $m\ge2$, let $\mathcal X_i$ be smooth complete Riemannian manifolds, and
+let $T_i$ be the $i$th CAVI optimality map: $T_i[\mu_{-i}]$ is the minimizing
+$i$th marginal when all other marginals are fixed.  Fix a product fixed
+point $\mu^*=(\mu_1^*,\ldots,\mu_m^*)$, so
+$\mu_i^*=T_i[\mu_{-i}^*]$.
+
+Write $\W_i$ for the Wasserstein-$p$ distance on $\Pp(\mathcal X_i)$ and
+$\I_i$ for relative Fisher information.  Suppose $\mu_i^*$ satisfies
+\begin{equation}\label{eq:TI}
+ \lambda_i\W_i(\eta_i,\mu_i^*)
+ \le \I_i(\eta_i\Vert\mu_i^*)^{1/2}.
+\end{equation}
+The multiblock Fisher-smoothness matrix $(L_{ij})$, with $L_{ii}=0$, means
+that throughout a product neighborhood $\mathcal N$ of $\mu^*$,
+\begin{equation}\label{eq:smooth}
+ \I_i\bigl(T_i[\eta_{-i}]\Vert T_i[\mu_{-i}^*]\bigr)^{1/2}
+ \le \sum_{j\ne i}L_{ij}\W_j(\eta_j,\mu_j^*).
+\end{equation}
+For $m=2$, this is exactly the source's Fisher-smoothness condition.  A
+stronger all-pairs version of \eqref{eq:smooth} may of course be used.
+
+The intuition is finite-dimensional.  Combining \eqref{eq:TI} and
+\eqref{eq:smooth} makes each new Wasserstein error at most a weighted sum of
+the other errors.  In a sequential sweep, already-updated blocks occur on
+the left and not-yet-updated blocks on the right.  Solving this triangular
+inequality produces the usual Gauss--Seidel matrix.  Perron--Frobenius
+weighting then converts spectral radius below one into a contracting norm.
+
+\section*{Main result}
+
+Put $a_{ij}=L_{ij}/\lambda_i$ for $i\ne j$ and $a_{ii}=0$, and let
+$A=(a_{ij})$.  Write $A_-$ and $A_+$ for the strict lower and strict upper
+triangular parts of $A$, and define
+\begin{equation}\label{eq:G}
+ G=(I-A_-)^{-1}A_+.
+\end{equation}
+The inverse exists because $A_-$ is nilpotent, and it is entrywise
+nonnegative.
+
+\begin{theorem}[systematic-scan multiblock contraction]\label{thm:main}
+Assume \eqref{eq:TI} and \eqref{eq:smooth}.  If
+\begin{equation}\label{eq:spectral}
+ \rhoSp(G)<1,
+\end{equation}
+then for every $q\in(\rhoSp(G),1)$ there is a vector $w\in(0,\infty)^m$
+such that one full systematic CAVI sweep satisfies
+\begin{equation}\label{eq:contract}
+ \max_i\frac{\W_i(\mu_i^{k+1},\mu_i^*)}{w_i}
+ \le q\max_i\frac{\W_i(\mu_i^k,\mu_i^*)}{w_i}.
+\end{equation}
+
+For a local statement, suppose
+$\mathcal N=\prod_i\{\eta_i:\W_i(\eta_i,\mu_i^*)<\varepsilon_i\}$.
+Then \eqref{eq:contract} and invariance of $\mathcal N$ hold whenever
+\[
+ \max_i\frac{\W_i(\mu_i^0,\mu_i^*)}{w_i}<R,
+ \qquad R<\min_i\frac{\varepsilon_i}{w_i}.
+\]
+If the assumptions are global, the conclusion holds for every initialization.
+\end{theorem}
+
+\begin{proof}
+One systematic sweep updates blocks in the order $1,\ldots,m$:
+\[
+ \mu_i^{k+1}=T_i[\mu_1^{k+1},\ldots,\mu_{i-1}^{k+1},
+                    \mu_{i+1}^{k},\ldots,\mu_m^k].
+\]
+Set $e_i^k=\W_i(\mu_i^k,\mu_i^*)$.  Since
+$T_i[\mu_{-i}^*]=\mu_i^*$, first \eqref{eq:TI} and then
+\eqref{eq:smooth} give
+\begin{equation}\label{eq:row}
+ e_i^{k+1}\le
+ \sum_{j<i}a_{ij}e_j^{k+1}+\sum_{j>i}a_{ij}e_j^k.
+\end{equation}
+In vector form,
+\[
+ e^{k+1}\le A_-e^{k+1}+A_+e^k.
+\]
+Because $(I-A_-)^{-1}=I+A_-+\cdots+A_-^{m-1}$ is nonnegative,
+\begin{equation}\label{eq:comparison}
+ e^{k+1}\le Ge^k
+\end{equation}
+componentwise.
+
+Fix $q\in(\rhoSp(G),1)$ and let $\mathbf1=(1,\ldots,1)^\mathsf T$.  The
+Neumann series
+\[
+ w=(I-G/q)^{-1}\mathbf1
+   =\sum_{n=0}^{\infty}(G/q)^n\mathbf1
+\]
+is finite and strictly positive.  It satisfies
+$Gw=q(w-\mathbf1)\le qw$.  If
+$r=\max_i e_i^k/w_i$, then $e^k\le rw$, and \eqref{eq:comparison} yields
+$e^{k+1}\le rGw\le qrw$.  This is \eqref{eq:contract}.
+
+For the local assertion, the assumed initial bound places every old block in
+$\mathcal N$.  During the first sweep, apply \eqref{eq:row} successively.
+The already-updated errors are bounded by the corresponding components of
+$Ge^0\le qRw$, while the remaining old errors are bounded by $Rw$; hence all
+hybrid inputs stay in $\mathcal N$.  The same argument closes the induction
+over sweeps and proves local invariance.
+\end{proof}
+
+\begin{corollary}[parallel/Jacobi update]\label{cor:jacobi}
+If all blocks are updated from the previous iterate in parallel, then
+$e^{k+1}\le Ae^k$.  Consequently $\rhoSp(A)<1$ gives the analogue of
+\eqref{eq:contract}, with any $q\in(\rhoSp(A),1)$.
+\end{corollary}
+
+\begin{proof}
+There are no already-updated errors in \eqref{eq:row}, so the comparison
+matrix is $A$.  Repeat the Neumann-series weighting argument.
+\end{proof}
+
+\begin{corollary}[recovery of the source theorem]
+For $m=2$,
+\[
+ G=\begin{pmatrix}0&a_{12}\\0&a_{21}a_{12}\end{pmatrix},
+ \qquad \rhoSp(G)=a_{12}a_{21}
+ =\frac{L_{12}L_{21}}{\lambda_1\lambda_2}.
+\]
+Thus \eqref{eq:spectral} is precisely the source's small-interaction
+condition and its one-sweep rate.
+\end{corollary}
+
+\section*{Verification, scope, and novelty status}
+
+The included script tests 25,000 random nonnegative interaction matrices,
+100,000 error vectors, and 20,000 two-block reductions.  It verifies the
+triangular recursion, the Neumann weight inequality, weighted contraction,
+and the exact two-block product formula.  This is a regression check, not a
+substitute for the proof.
+
+Eight focused proof passes are recorded in the accompanying attempt note.
+They replace an insufficient cycle-product guess by the full comparison
+matrix, distinguish systematic and parallel scans, establish local
+invariance, recover the two-block theorem exactly, and audit the spectral
+criterion against linear comparison dynamics.
+
+The theorem assumes smooth blocks and a combined multiblock
+Fisher-smoothness bound of the form \eqref{eq:smooth}.  It does not prove that
+arbitrary pairwise Fisher-information estimates tensorize into that bound,
+nor does it cover random-scan CAVI or the source's one-nonsmooth-block
+data-augmentation refinement.  These are separate extensions.
+
+Cheap run indexes and bounded web/arXiv searches on 17 August 2026 used
+arXiv:2605.30253 and the phrases \emph{multiblock Fisher-smoothness CAVI},
+\emph{transport-information multi-block variational inference}, and
+\emph{Wasserstein contraction Gauss--Seidel CAVI}.  They found the source and
+known multiblock results under strong log-concavity and block smoothness, but
+no extension based on a matrix of Fisher-smoothness constants and
+transport-information inequalities that gives direct Wasserstein contraction.
+Novelty confidence is moderate-high pending expert review, especially because
+the source is recent.
+
+\paragraph{Human-review recommendation.}
+Check that the intended application supplies the combined bound
+\eqref{eq:smooth}; conditional on it, the transport-information and matrix
+argument is self-contained.  Also verify the desired scan convention before
+using $G$ rather than $A$.
+
+\begin{thebibliography}{9}
+\bibitem{CCP}
+R.~Caprio, A.~Corenflos, and S.~Power,
+\emph{Wasserstein Contraction of Coordinate Ascent Variational Inference},
+arXiv:2605.30253 (2026).
+\end{thebibliography}
+
+\end{document}

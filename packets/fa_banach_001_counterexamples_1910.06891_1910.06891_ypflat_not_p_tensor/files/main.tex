@@ -1,0 +1,242 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{array}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue]{hyperref}
+\emergencystretch=2em
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\linf}{\ell^\infty}
+\newcommand{\Sp}{\boldsymbol S_p}
+\newcommand{\Yq}{\mathcal Y_q}
+\newcommand{\tp}{\linf\otimes_p\linf}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+
+\title{Pisier's Endpoint Class Need Not Be a \(p\)-Tensor:\\
+A Counterexample for Every \(0<p<1\)}
+\author{Math discovery candidate full counterexample}
+\date{August 17, 2026}
+
+\begin{document}
+\maketitle
+
+\section{Status and source question}
+
+For \(0<p<1\), Aleksandrov and Peller put
+\[
+ p_\flat=\frac{2p}{2-p},\qquad
+ \mathcal Y_{p_\flat}
+ =\ell^{p_\flat}(\linf)
+   +\bigl(\ell^{p_\flat}(\linf)\bigr)^{\mathrm t}.
+\]
+They ask whether this sufficient class of Schur multipliers is contained in
+their \(p\)-tensor product \(\tp\) \cite{source}. The question appears in
+Remark 1 on page 20:
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The answer is no for every \(0<p<1\). In fact, the counterexample belongs to
+the smaller one-sided class \(\ell^{p_\flat}(\linf)\).
+
+\section{Proof intuition}
+
+A flat \(n\)-by-\(n\) unitary has \(n\) equal singular values but entries of
+size \(n^{-1/2}\). After multiplying it by \(n^{-1/p_\sharp}\), where
+\(p_\sharp=p/(1-p)\), the row-envelope cost is governed by
+\[
+ \frac1{p_\flat}=\frac1{p_\sharp}+\frac12.                 \tag{1}
+\]
+Thus a block with an additional scalar weight \(c\) costs \(c^{p_\flat}\)
+in the row class. On the other hand, its equal singular values force any
+\(p\)-tensor representation to spend essentially \(c^p\) coefficient mass
+in a window whose location is proportional to the block dimension.
+
+Choose weights for which \(\sum c_j^{p_\flat}<\infty\) but
+\(\sum c_j^p=\infty\), and separate the dimensions so rapidly that these
+mandatory coefficient windows are disjoint. Sharing rank-one terms between
+blocks then cannot reduce the total cost.
+
+\section{The coefficient-window lemma}
+
+Recall that \(A\in\tp\) means that
+\[
+ A=\sum_{k\ge1}x_k y_k^{\mathrm t},\qquad
+ \sum_{k\ge1}\norm{x_k}_\infty^p\norm{y_k}_\infty^p<\infty. \tag{2}
+\]
+Since \(\ell^p\subset\ell^1\) for \(p<1\), such a series converges uniformly
+entrywise.
+
+\begin{lemma}[Scaled-unitary coefficient window]
+\label{lem:window}
+Let \(0<p<1\), put \(r=p_\sharp=p/(1-p)\), and let \(U\) be an
+\(n\)-by-\(n\) unitary. Suppose \(c>0\) and
+\[
+ c n^{-1/r}U=\sum_{k\ge1}\lambda_k u_kv_k^{\mathrm t},       \tag{3}
+\]
+where \(\norm{u_k}_\infty,\norm{v_k}_\infty\le1\) and
+\(\lambda_1\ge\lambda_2\ge\cdots\ge0\) belongs to \(\ell^p\).
+For \(0<a<1<b\),
+\[
+ \sum_{an<k\le bn}\lambda_k^p
+ \ge c^p(1-a)-b^{p-1}\norm{\lambda}_{\ell^p}^p.              \tag{4}
+\]
+\end{lemma}
+
+\begin{proof}
+Let \(R=\sum_{k>an}\lambda_k u_kv_k^{\mathrm t}\). What was removed from
+(3) has rank at most \(an\). All \(n\) singular values of the left side are
+\(c n^{-1/r}\), so the singular-value approximation inequality gives
+\[
+ \norm R_{\Sp}^p
+ \ge (1-a)n(cn^{-1/r})^p
+ =c^p(1-a)n^p,                                                \tag{5}
+\]
+because \(p/r=1-p\).
+
+For \(T=\sum_{k>bn}\lambda_k u_kv_k^{\mathrm t}\), the comparison of
+Schatten norms in dimension \(n\), the rank-one trace norm estimate, and
+monotonicity of \(\lambda\) give
+\begin{align*}
+ \norm T_{\Sp}
+ &\le n^{1/p-1}\norm T_{\boldsymbol S_1}
+ \le n^{1/p}\sum_{k>bn}\lambda_k \\
+ &\le n^{1/p}(bn)^{-(1-p)/p}\norm\lambda_{\ell^p}
+ =b^{-1/r}n\norm\lambda_{\ell^p}.                            \tag{6}
+\end{align*}
+Here the middle bound follows from
+\(\sum_{k>bn}\lambda_k\le
+ \lambda_{\lfloor bn\rfloor+1}^{\,1-p}\sum_{k>bn}\lambda_k^p\).
+
+Put \(M=\sum_{an<k\le bn}\lambda_k u_kv_k^{\mathrm t}\), so \(R=M+T\).
+The Schatten \(p\)-triangle inequality and (5)--(6) imply
+\[
+ \norm M_{\Sp}^p
+ \ge c^p(1-a)n^p-b^{p-1}n^p\norm\lambda_{\ell^p}^p.         \tag{7}
+\]
+Each \(u_kv_k^{\mathrm t}\) has Schatten \(p\)-norm at most \(n\), hence
+\(\norm M_{\Sp}^p\le n^p\sum_{an<k\le bn}\lambda_k^p\).
+Dividing (7) by \(n^p\) proves (4).
+\end{proof}
+
+This is the source paper's identity-block window argument with the identity
+replaced by an arbitrary unitary; the proof shows that only the constant
+singular-value list matters.
+
+\section{Counterexample}
+
+\begin{theorem}
+\label{thm:main}
+For every \(0<p<1\), with \(q=p_\flat=2p/(2-p)\),
+\[
+ \ell^q(\linf)\not\subset\tp.
+\]
+Consequently \(\mathcal Y_{p_\flat}\not\subset\tp\).
+\end{theorem}
+
+\begin{proof}
+Put \(r=p_\sharp=p/(1-p)\) and define
+\[
+ c_j=(j+1)^{-1/p},\qquad
+ b_j=c_j^{-2p/(1-p)}=(j+1)^{2/(1-p)},\qquad j\ge1.           \tag{8}
+\]
+Choose positive integers \(n_j\) recursively so that
+\[
+ n_{j+1}\ge4b_jn_j.                                         \tag{9}
+\]
+Let \(U_j\) be the normalized Fourier unitary of order \(n_j\); every entry
+of \(U_j\) has modulus \(n_j^{-1/2}\). Partition \(\mathbb N\) into
+successive sets \(E_j\) with \(|E_j|=n_j\), and define the block diagonal
+matrix
+\[
+ W\big|_{E_j\times E_j}=c_jn_j^{-1/r}U_j,\qquad
+ W\big|_{E_j\times E_k}=0\quad(j\ne k).                    \tag{10}
+\]
+
+By (1), the supremum of the absolute values in every row belonging to
+\(E_j\) is \(c_jn_j^{-1/q}\). If \(\alpha\) is the sequence of row suprema,
+then
+\[
+ \sum_i\alpha_i^q
+ =\sum_{j\ge1}n_j(c_jn_j^{-1/q})^q
+ =\sum_{j\ge1}c_j^q
+ =\sum_{j\ge1}(j+1)^{-q/p}<\infty,                           \tag{11}
+\]
+since \(q/p=2/(2-p)>1\). Thus
+\(W\in\ell^q(\linf)\subset\mathcal Y_q\).
+
+Suppose, toward a contradiction, that \(W\in\tp\). Normalize and reorder a
+representation (2) to obtain
+\[
+ W=\sum_{k\ge1}\lambda_k u_kv_k^{\mathrm t},\qquad
+ \norm{u_k}_\infty,\norm{v_k}_\infty\le1,\quad
+ \lambda_1\ge\lambda_2\ge\cdots\ge0,\quad
+ L:=\norm\lambda_{\ell^p}<\infty.                           \tag{12}
+\]
+Compressing (12) to \(E_j\times E_j\) does not increase either
+\(\ell^\infty\)-norm. Lemma~\ref{lem:window}, with \(a=1/4\) and \(b=b_j\),
+therefore gives
+\begin{align*}
+ \sum_{n_j/4<k\le b_jn_j}\lambda_k^p
+ &\ge\frac34c_j^p-b_j^{p-1}L^p\\
+ &=\frac34c_j^p-L^pc_j^{2p}.                                \tag{13}
+\end{align*}
+For all sufficiently large \(j\), the last expression is at least
+\(\tfrac12c_j^p\). By (9), the intervals
+\((n_j/4,b_jn_j]\) are pairwise disjoint. Hence
+\[
+ \sum_{k\ge1}\lambda_k^p
+ \ge\frac12\sum_{j\ge j_0}c_j^p
+ =\frac12\sum_{j\ge j_0}\frac1{j+1}=\infty,               \tag{14}
+\]
+contrary to (12). Thus \(W\notin\tp\).
+\end{proof}
+
+\section{Checks, scope, and novelty}
+
+The construction is genuinely endpoint: one flat block has unit-scale cost
+in both estimates, and the separation appears only after assembling infinitely
+many blocks with \(\ell^q\setminus\ell^p\) weights. The error term in (13) is
+\(L^pc_j^{2p}=o(c_j^p)\); its exponent is the reason for the particular choice
+of \(b_j\). A bundled verification script checks (1), all exponent conversions,
+and the flat-unitary singular values for finite Fourier matrices.
+
+The theorem answers only the inclusion asked in Remark 1. It does not settle
+automatic complete boundedness for \(1<p<\infty\), the spectral-measure
+extension problem, the diagonal Lorentz conjecture, or equality between the
+\(p\)-tensor product and its bounded pointwise closure.
+
+Bounded exact-title, exact-phrase, arXiv-id, citation, and tensor-keyword
+searches through August 17, 2026 found no later answer. Later related works
+located concern triangular projections, Haagerup tensor products, smooth
+Schur multipliers, or analytic Schur multipliers. Novelty is a candidate claim
+pending specialist and database review.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+A. B. Aleksandrov and V. V. Peller,
+\emph{Schur multipliers of Schatten--von Neumann classes
+\(\boldsymbol S_p\)},
+Journal of Functional Analysis 279 (2020), no. 8, 108683;
+arXiv:1910.06891.
+
+\bibitem{pietsch}
+A. Pietsch,
+\emph{Operator Ideals},
+North-Holland Mathematical Library 20, 1980.
+
+\bibitem{pisier}
+G. Pisier,
+\emph{Remarks on the non-commutative Khintchine inequalities for
+\(0<p<2\)},
+Journal of Functional Analysis 256 (2009), 4128--4161.
+\end{thebibliography}
+
+\end{document}

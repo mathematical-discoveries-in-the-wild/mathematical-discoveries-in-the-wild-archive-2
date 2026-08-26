@@ -1,0 +1,296 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=25mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Om}{\Omega}
+\newcommand{\Hs}{\mathcal H}
+\newcommand{\Wdot}{\dot W}
+
+\title{Outward cusps refute fixed-exponent Sobolev self-improvement}
+\author{Autonomous proof-discovery packet for arXiv:2604.23598}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.} Candidate full counterexample, likely valid; urgent
+human review recommended. Model: GPT5.6.
+
+\section{Source theorem and question}
+
+Mishra and Mohanta define a bounded domain $\Om\subset\R^n$ to be a
+$(1,s,p)$-extension domain if there is a bounded extension
+\[
+  \Wdot^{1,p}(\Om)\longrightarrow \Wdot^{s,p}(\R^n).
+\]
+Their Theorem~1.6 claims that, when $p>1$ and $1/p<s<1$, such a domain is a
+$(1,p)$-extension domain provided
+\[
+ \Hs^{,n-1+(sp-1)/p}(\partial\Om)=0.
+\]
+They then ask to what extent this Hausdorff-null hypothesis can be relaxed
+\cite{MM}. The exact passage from source PDF page~3 is reproduced below.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The result below is stronger than a sharpness answer: outward power cusps
+satisfy the displayed Hausdorff-null condition and still contradict the
+conclusion for every admissible parameter triple.
+
+\section{Proof intuition}
+
+First-order extension with a loss of integrability can be converted into
+fractional extension without that loss. More precisely, if
+\[
+ W^{1,p}(\Om)\longrightarrow W^{1,q}(\R^n),
+ \qquad
+ q>\frac{np}{n+(1-s)p},
+\]
+then the strict Sobolev embedding $W^{1,q}(\R^n)\subset W^{s,p}(\R^n)$
+finishes the conversion. Mild outward cusps admit the first operator for $q$
+arbitrarily close to $p$, but they fail the measure-density condition required
+of a first-order $p$-extension domain.
+
+The source's boundary hypothesis does not exclude these cusps. Their boundary
+has finite $(n-1)$-dimensional measure, so it has zero measure in the strictly
+larger dimension $n-1+s-1/p$. Thus the known integrability-loss extension
+theory supplies counterexamples inside, rather than just beyond, the claimed
+geometric regime.
+
+\section{A strict first-order-to-fractional embedding}
+
+We record the elementary version needed below.
+
+\begin{lemma}\label{lem:embedding}
+Let $1<q<p<\infty$, $0<s<1$, $q\ne n$, and
+\[
+  \theta:=1-\frac nq+\frac np>s.
+\]
+Then
+\[
+ [v]_{W^{s,p}(\R^n)}\le C\|v\|_{W^{1,q}(\R^n)}
+ \qquad(v\in W^{1,q}(\R^n)).
+\]
+\end{lemma}
+
+\begin{proof}
+Write $\Delta_hv=v(\cdot+h)-v$. If $q<n$, put
+$q^*=nq/(n-q)$. The inequality $\theta>0$ says $q<p<q^*$.
+The translation estimate and Sobolev inequality give
+\[
+ \|\Delta_hv\|_q\le |h|\|\nabla v\|_q,
+ \qquad
+ \|\Delta_hv\|_{q^*}\le 2\|v\|_{q^*}
+ \le C\|\nabla v\|_q.
+\]
+Interpolating to $L^p$ gives
+\[
+ \|\Delta_hv\|_p\le C|h|^\theta\|\nabla v\|_q
+ \qquad (|h|\le1),
+\]
+because $1/p=\theta/q+(1-\theta)/q^*$. Also
+$\|v\|_p\le C\|v\|_{W^{1,q}}$ by interpolation between $L^q$ and
+$L^{q^*}$.
+
+If $q>n$, Morrey's inequality and the $L^q$ translation estimate give
+\[
+ \|\Delta_hv\|_\infty
+ \le C|h|^{1-n/q}\|\nabla v\|_q,
+ \qquad
+ \|\Delta_hv\|_q\le |h|\|\nabla v\|_q.
+\]
+Interpolation between $L^q$ and $L^\infty$ again yields the same
+$|h|^\theta$ estimate, and $W^{1,q}\subset L^p$ follows similarly.
+
+Finally use the difference representation
+\[
+ [v]_{W^{s,p}}^p
+ =\int_{\R^n}\frac{\|\Delta_hv\|_p^p}{|h|^{n+sp}}\,dh.
+\]
+For $|h|\le1$, the radial integral is a constant multiple of
+$\int_0^1 r^{(\theta-s)p-1}\,dr$, which is finite because $\theta>s$.
+For $|h|>1$, use $\|\Delta_hv\|_p\le2\|v\|_p$.
+\end{proof}
+
+\section{Counterexamples for every admissible parameter}
+
+\begin{theorem}\label{thm:main}
+Let $n\ge2$, $1<p<\infty$, and $1/p<s<1$. There is a bounded domain
+$\Om\subset\R^n$ such that
+\begin{enumerate}
+ \item $\Om$ is a $(1,s,p)$-extension domain;
+ \item $\Hs^{,n-1+(sp-1)/p}(\partial\Om)=0$;
+ \item $\Om$ is not a $(1,p)$-extension domain.
+\end{enumerate}
+Consequently Theorem~1.6 of \cite{MM}, as stated in arXiv:2604.23598v1,
+is false, and its following relaxation question has no positive answer without
+changing some other hypothesis.
+\end{theorem}
+
+\begin{proof}
+Choose $\tau>1$ sufficiently close to one that
+\begin{equation}\label{eq:tau}
+ 1+(n-1)\tau<\min\{np,\ n+(1-s)p\}.
+\end{equation}
+Then choose $1<\beta<\tau$ and choose $q\ne n$ in the nonempty interval
+\begin{equation}\label{eq:q}
+ \frac{np}{n+(1-s)p}<q<\frac{np}{1+(n-1)\tau}.
+\end{equation}
+The left endpoint in \eqref{eq:q} is bigger than one because $sp>1$ and
+$p>1$, while the right endpoint is less than $p$. Hence $1<q<p$.
+
+Let $\psi(t)=t^\beta$ and take the capped outward cusp
+\[
+ \Om=\{(t,x)\in(0,1]\times\R^{n-1}:|x|<t^\beta\}
+ \cup
+ \{(t,x)\in[1,2)\times\R^{n-1}:|x|<1\}.
+\]
+Koskela and Zhu's cusp-extension theorem \cite[Theorem~1.2]{KZ}, reproduced
+in part in the supporting crop below, applies with its auxiliary exponent
+$\tau$: indeed $\psi(t)/t=t^{\beta-1}$ is nondecreasing and tends to zero,
+and
+\[
+ \int_0^1\left(\frac{t^\tau}{\psi(t)}\right)^{n/(\tau-1)}\frac{dt}{t}
+ =\int_0^1 t^{\,n(\tau-\beta)/(\tau-1)-1}\,dt<\infty.
+\]
+Moreover \eqref{eq:tau} gives
+$[1+(n-1)\tau]/n<p$, and \eqref{eq:q} gives
+$q<np/[1+(n-1)\tau]$. Thus there is a bounded linear extension
+\begin{equation}\label{eq:pqextension}
+ E:W^{1,p}(\Om)\longrightarrow W^{1,q}(\R^n).
+\end{equation}
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/cusp_extension_theorem_crop.png}
+\end{center}
+
+Every outward cusp is a $p$-Poincar\'e domain; moreover, on such a cusp the
+nonhomogeneous $(W^{1,p},W^{1,q})$ extension property is equivalent to the
+homogeneous $(L^{1,p},L^{1,q})$ property
+\cite[Theorem~1.2]{KMZ}. Concretely, for $u\in\Wdot^{1,p}(\Om)$ one may
+normalize by its average and set
+\[
+ Tu:=E(u-u_\Om)+u_\Om.
+\]
+The Poincar\'e inequality and \eqref{eq:pqextension} give
+\[
+ \|E(u-u_\Om)\|_{W^{1,q}(\R^n)}
+ \le C\|u-u_\Om\|_{W^{1,p}(\Om)}
+ \le C\|\nabla u\|_{L^p(\Om)}.
+\]
+
+For $v=E(u-u_\Om)$, condition \eqref{eq:q} is exactly
+\[
+ 1-\frac nq+\frac np>s.
+\]
+Lemma~\ref{lem:embedding} therefore gives
+\[
+ [Tu]_{W^{s,p}(\R^n)}=[v]_{W^{s,p}(\R^n)}
+ \le C\|\nabla u\|_{L^p(\Om)}.
+\]
+Since $Tu=u$ on $\Om$, this proves that $\Om$ is a $(1,s,p)$-extension
+domain.
+
+The lateral boundary has finite $(n-1)$-dimensional measure: its area is
+bounded by a constant times
+\[
+ \int_0^1 t^{\beta(n-2)}
+ \sqrt{1+\beta^2t^{2\beta-2}}\,dt<\infty,
+\]
+and the capped part is Lipschitz. Hence
+$\Hs^{n-1}(\partial\Om)<\infty$. Since
+$(sp-1)/p=s-1/p>0$, this implies
+\[
+ \Hs^{,n-1+(sp-1)/p}(\partial\Om)=0.
+\]
+
+It remains to exclude first-order $p$ extension. For small $r>0$, the point
+$z_r=(r,0)$ belongs to $\Om$, and
+\[
+ |B(z_r,r)\cap\Om|
+ \le C\int_0^{2r}t^{\beta(n-1)}\,dt
+ \le C r^{1+\beta(n-1)}=o(r^n),
+\]
+because $\beta>1$. Thus $\Om$ fails the measure-density condition. Every
+bounded $(1,p)$-extension domain satisfies that condition
+\cite[Theorem~6]{HKT}; hence $\Om$ is not a $(1,p)$-extension domain.
+\end{proof}
+
+\section{A fully numerical planar instance}
+
+Take
+\[
+ n=p=2,\qquad s=\frac34,\qquad
+ \tau=\frac54,\qquad \beta=\frac65,\qquad q=\frac53.
+\]
+Then
+\[
+ \int_0^1
+ \left(\frac{t^{5/4}}{t^{6/5}}\right)^{2/(5/4-1)}\frac{dt}{t}
+ =\int_0^1t^{-3/5}\,dt=\frac52,
+\]
+and
+\[
+ \frac{1+\tau}{2}=\frac98<2,
+ \qquad
+ q=\frac53<\frac{4}{1+\tau}=\frac{16}{9}.
+\]
+Thus $W^{1,2}(\Om)\to W^{1,5/3}(\R^2)$. The translation exponent in
+Lemma~\ref{lem:embedding} is
+\[
+ 1-\frac{2}{5/3}+\frac22=\frac45>\frac34,
+\]
+so $\Om$ is a $(1,3/4,2)$-extension domain. Its boundary has finite length,
+and therefore $\Hs^{5/4}(\partial\Om)=0$, but its density at the cusp tip
+decays like $r^{11/5}/r^2=r^{1/5}$.
+
+\section{Scope, novelty, and review recommendation}
+
+This packet challenges a theorem in a very recent preprint, so the novelty
+claim is necessarily provisional. The four run indexes and packet/attempt
+trees were searched for arXiv:2604.23598, fixed-exponent fractional extension,
+and outward cusps. Bounded arXiv/web searches through 13 August 2026 used the
+exact source id and title, ``Theorem 1.6'', ``correction'', ``error'',
+``counterexample'', ``$(1,s,p)$-extension'', and ``outward cusp''. They found
+the source and the background papers used here, but no correction or prior
+statement of this counterexample.
+
+No numerical computation is used. Expert review should first check the exact
+parameter substitution into \cite[Theorem~1.2]{KZ}, the homogeneous
+normalization justified by \cite[Theorem~1.2]{KMZ}, and the translation proof
+of Lemma~\ref{lem:embedding}. If these pass, the source's proof of Theorem~1.6
+must contain a substantive failure; locating that failure is logically
+separate from the counterexample.
+
+\begin{thebibliography}{9}
+\bibitem{MM}
+R.~Mishra and K.~Mohanta,
+\emph{How to Recognise Extension domains}, arXiv:2604.23598v1, 2026.
+
+\bibitem{KZ}
+P.~Koskela and Z.~Zhu,
+\emph{The extension property for domains with one singular point},
+arXiv:2110.07565v1, 2021.
+
+\bibitem{KMZ}
+P.~Koskela, R.~Mishra, and Z.~Zhu,
+\emph{Sobolev versus homogeneous Sobolev extension II},
+arXiv:2507.07072v2, 2025.
+
+\bibitem{HKT}
+P.~Haj\l asz, P.~Koskela, and H.~Tuominen,
+\emph{Measure density and extendability of Sobolev functions},
+Rev. Mat. Iberoam. \textbf{24} (2008), 645--669.
+\end{thebibliography}
+
+\end{document}

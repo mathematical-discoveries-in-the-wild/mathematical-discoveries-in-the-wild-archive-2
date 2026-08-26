@@ -1,0 +1,269 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=0.88in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,urlcolor=blue!55!black,citecolor=blue!55!black]{hyperref}
+\usepackage{enumitem}
+\hypersetup{
+  pdftitle={Banach-space well-separating common complements},
+  pdfauthor={fa banach 001, agent lane 00, model GPT5.6}
+}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\dist}{\operatorname{dist}}
+
+\title{A gliding affine-slab argument for\\
+Banach-space well-separating common complements}
+\author{Autonomous mathematical discovery run \texttt{fa\_banach\_001}\\
+\texttt{agent\_lane\_00} --- model GPT5.6}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Noethen asked whether every sequence of closed subspaces of the same finite
+codimension in a real Banach space has a well-separating common complement,
+and whether the tuples spanning such complements are prevalent.  We prove
+both conjectures.  The missing codimension-one assertion follows from a
+translated finite-dimensional slab estimate and a summable gliding
+construction.  Quantitatively, for every sequence $(\varphi_j)$ of norm-one
+functionals on an arbitrary Banach space there is a unit vector $x$ such that
+$|\varphi_j(x)|\geq \exp[-O((\log(j+1))^2)]$ for every $j$.
+\end{abstract}
+
+\paragraph{Status.}
+This is a candidate new full proof of Conjectures 3.4 and 3.15 in
+\cite{Noethen}.  A bounded search found no later resolution; no priority claim
+is made.
+
+\section{The source questions}
+
+Let $X$ be a real Banach space.  For closed subspaces
+$V_j\subset X$ of common finite codimension $k$, a $k$-dimensional common
+complement $C$ is \emph{well-separating} when there are $\delta_j>0$ such
+that
+\[
+ \inf_{x\in C,\ \|x\|=1}\dist(x,V_j)\geq\delta_j,
+ \qquad
+ \lim_{j\to\infty}\frac{1}{j}\log\delta_j=0.
+\]
+Conjecture 3.4 of \cite{Noethen} asserts existence for every Banach space;
+Conjecture 3.15 asserts prevalence of the tuples spanning such complements.
+The source explicitly reduces existence to the Banach-space version of its
+Lemma 3.6, concerning a sequence of norm-one functionals.  We prove a
+quantitative strengthening of that lemma.
+
+\section{A translated finite-batch estimate}
+
+Write $B_2^n$ for the Euclidean unit ball and $\omega_n$ for its volume.
+
+\begin{lemma}[affine-slab avoidance]\label{lem:finite}
+Let $X$ be a real Banach space, let
+$\varphi_1,\dots,\varphi_N\in X^*$ have norm one, and let $z\in X$ and
+$r>0$.  There is $h\in X$ such that
+\[
+ \|h\|<r,
+ \qquad
+ |\varphi_j(z+h)|\geq \frac{r}{8N^2}
+ \quad(1\leq j\leq N).
+\]
+\end{lemma}
+
+\begin{proof}
+Put $K=\bigcap_{j=1}^N\ker\varphi_j$ and let $q:X\to Y:=X/K$ be the
+quotient map.  Then $n:=\dim Y\leq N$, and each $\varphi_j$ induces a
+functional $\psi_j\in Y^*$ of norm one.  Indeed, this is the standard
+isometric identification of $K^\perp$ with $(X/K)^*$.
+
+By John's ellipsoid theorem, choose a linear isomorphism
+$S:\R^n\to Y$ for which
+\[
+ S(B_2^n)\subset B_Y\subset \sqrt n\,S(B_2^n).
+\]
+Let $\ell_j=\psi_j\circ S$ and $a_j=\|\ell_j\|_2$.  Since
+$\|\psi_j\|=1$ and $B_Y\subset\sqrt n\,S(B_2^n)$,
+\begin{equation}\label{eq:aj}
+ a_j\geq n^{-1/2}.
+\end{equation}
+
+Set $R=r/2$ and choose $U$ uniformly from $RB_2^n$.  For any real $b$,
+an orthogonal change of coordinates and slicing perpendicular to $\ell_j$
+give
+\begin{equation}\label{eq:slab}
+ \mathbb P\bigl(|\ell_j(U)+b|<\eta\bigr)
+ \leq \frac{2\eta}{a_jR}\frac{\omega_{n-1}}{\omega_n}.
+\end{equation}
+The estimate is uniform in the translate $b$: the relevant interval has
+length at most $2\eta/a_j$, and every ball section has volume at most
+$\omega_{n-1}R^{n-1}$.  Also
+$\omega_{n-1}/\omega_n\leq\sqrt n$.  For $n\geq2$, this follows by slicing
+the unit ball and integrating over $|t|\leq n^{-1/2}$, since
+$2(1-1/n)^{(n-1)/2}\geq1$; the case $n=1$ is immediate.
+Together with \eqref{eq:aj}, \eqref{eq:slab} becomes
+\[
+ \mathbb P\bigl(|\ell_j(U)+b|<\eta\bigr)
+ \leq \frac{4\eta n}{r}.
+\]
+
+Take $b=\varphi_j(z)$ and $\eta=r/(8N^2)$.  A union bound shows that the
+probability that at least one of the $N$ inequalities fails is at most
+\[
+ N\frac{4\eta n}{r}=\frac{n}{2N}\leq\frac12.
+\]
+Hence some $u\in RB_2^n$ satisfies
+$|\psi_j(qz+Su)|\geq\eta$ for all $j$.  The quotient vector $y=Su$ has
+$\|y\|_Y\leq r/2$.  By the definition of the quotient norm it has a lift
+$h\in X$ with $q(h)=y$ and
+$\|h\|<\|y\|_Y+r/2\leq r$.  This lift has all the required properties.
+\end{proof}
+
+\section{One vector for the whole sequence}
+
+\begin{theorem}[Banach version of Noethen's Lemma 3.6]\label{thm:sequence}
+Let $X$ be an arbitrary real Banach space and let
+$(\varphi_j)_{j\geq1}\subset X^*$ be norm-one functionals.  There are a unit
+vector $u\in X$ and positive numbers $\delta_j$ such that
+\[
+ |\varphi_j(u)|\geq\delta_j\quad(j\geq1),
+ \qquad
+ \lim_{j\to\infty}\frac1j\log\delta_j=0.
+\]
+More precisely, one may take
+\[
+ \delta_j=\frac34,2^{-(m(j)^2+7m(j)-1)},
+ \qquad
+ m(j)=\max\{1,\lceil\log_2 j\rceil\}.
+\]
+\end{theorem}
+
+\begin{proof}
+Let $M_m=2^m$ and $\rho_1=1/4$.  Recursively set
+\[
+ \alpha_m=\frac{\rho_m}{8M_m^2},
+ \qquad
+ \rho_{m+1}=\frac{\alpha_m}{8}.
+\]
+Starting with $x_0=0$, apply Lemma~\ref{lem:finite} at stage $m$ to the
+base point $x_{m-1}$, the first $M_m$ functionals, and radius $\rho_m$.
+It supplies $h_m$ with $\|h_m\|<\rho_m$ such that, for
+$x_m=x_{m-1}+h_m$,
+\begin{equation}\label{eq:stage}
+ |\varphi_j(x_m)|\geq\alpha_m
+ \qquad(1\leq j\leq M_m).
+\end{equation}
+
+Since
+\[
+ \frac{\rho_{m+1}}{\rho_m}=\frac{1}{64M_m^2}\leq\frac1{256},
+\]
+the series $x=\sum_{m\geq1}h_m$ converges and
+\[
+ \|x\|<\sum_{m\geq1}\rho_m
+ \leq \frac{1/4}{1-1/256}=\frac{64}{255}<1.
+\]
+Moreover, the tail after stage $m$ satisfies
+\begin{equation}\label{eq:tail}
+ \sum_{k>m}\rho_k
+ \leq \frac{\rho_{m+1}}{1-1/256}
+ =\frac{32}{255}\alpha_m
+ <\frac14\alpha_m.
+\end{equation}
+Thus \eqref{eq:stage} and \eqref{eq:tail} imply
+\begin{equation}\label{eq:limitbound}
+ |\varphi_j(x)|>\frac34\alpha_m
+ \qquad(1\leq j\leq M_m).
+\end{equation}
+
+The recurrence is explicit:
+\[
+ \alpha_1=2^{-7},
+ \qquad
+ \alpha_{m+1}=\alpha_m2^{-(2m+8)},
+ \qquad
+ \alpha_m=2^{-(m^2+7m-1)}.
+\]
+For $m=m(j)$, inequality \eqref{eq:limitbound} gives the stated $\delta_j$.
+If $2^{m-1}<j\leq2^m$, then
+$-\log\delta_j=O(m^2)=O((\log j)^2)$, so
+$j^{-1}\log\delta_j\to0$.
+
+Finally, \eqref{eq:limitbound} for $j=1$ shows that $x\neq0$.  Put
+$u=x/\|x\|$.  Since $\|x\|<1$, normalization only increases all the
+absolute functional values.
+\end{proof}
+
+\begin{remark}
+No separability of $X$ is used: each correction lives over a
+finite-dimensional quotient, and the corrections converge in $X$ itself.
+For a complex Banach space, applying the theorem to the real norm-one
+functionals $\operatorname{Re}\varphi_j$ also gives
+$|\varphi_j(u)|\geq|\operatorname{Re}\varphi_j(u)|$, so the same conclusion
+holds.
+\end{remark}
+
+\section{Resolution of both conjectures}
+
+\begin{corollary}\label{cor:conjectures}
+Conjectures 3.4 and 3.15 of \cite{Noethen} are true.  Namely, every sequence
+of closed subspaces of a real Banach space having the same finite codimension
+has a well-separating common complement, and the tuples spanning such
+complements form a prevalent subset of the corresponding finite Cartesian
+power of the space.
+\end{corollary}
+
+\begin{proof}
+First suppose the subspaces $V_j$ are hyperplanes.  Choose
+$\varphi_j\in X^*$ with $\|\varphi_j\|=1$ and
+$V_j=\ker\varphi_j$.  For the unit vector $u$ from
+Theorem~\ref{thm:sequence},
+\[
+ \dist(u,V_j)=|\varphi_j(u)|\geq\delta_j.
+\]
+Consequently $\operatorname{span}(u)$ is a well-separating common
+complement.
+
+For completeness, the arbitrary-codimension propagation in \cite{Noethen}
+is purely Banach-space theoretic.  Inductively, for subspaces of codimension
+$k+1$, enlarge each $V_j$ to a codimension-$k$ subspace and obtain a
+well-separating $k$-dimensional complement $C_1$.  Then
+$V_j\oplus C_1$ is a hyperplane, so the codimension-one result supplies a
+common complementary line $C_2$.  Lemma 3.8 of the source, applied in
+$X/V_j$, shows that $C_1\oplus C_2$ has a transversality lower bound
+\[
+ \frac{1}{2\sqrt5}\,\delta_j^{(1)}\delta_j^{(2)}.
+\]
+The product of two subexponentially decaying positive sequences is again
+subexponential.  This proves Conjecture 3.4 for every finite codimension.
+
+Finally, Proposition 3.20 of \cite{Noethen} proves in an arbitrary Banach
+space that the existence of one well-separating common complement makes the
+set of all spanning tuples prevalent.  Applying it to the complement just
+constructed proves Conjecture 3.15.
+\end{proof}
+
+\section*{Verification notes}
+
+The proof uses only John's ellipsoid theorem (already recorded as Theorem 2.5
+in the source), elementary Euclidean slicing, quotient norms, and the two
+Banach-space propagation results proved in the source.  The decisive feature
+of Lemma~\ref{lem:finite} is uniformity in the affine translate $z$; this lets
+successive finite-batch solutions be added without losing earlier margins.
+The source conjecture pages and a separate constant-and-tail audit accompany
+this packet.
+
+\begin{thebibliography}{9}
+\bibitem{Noethen}
+F.~Noethen,
+\emph{Well-separating common complements of a sequence of subspaces of the
+same codimension in a Hilbert space are generic},
+arXiv:1906.08514 (2019; PDF revision dated 9 March 2022).
+\end{thebibliography}
+
+\end{document}

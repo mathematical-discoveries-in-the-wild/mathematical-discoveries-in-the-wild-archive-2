@@ -1,0 +1,170 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\esssupp}{\operatorname{ess\mbox{-}supp}}
+\newcommand{\Lip}{\operatorname{Lip}}
+
+\title{Pure ReLU Networks Already Give Compact-Support Universality\\
+\large A literature-implied full answer to the pooling question in arXiv:2204.11231}
+\author{Automatic Math Discovery Run \texttt{fa\_banach\_001}}
+\date{August 9, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source question}
+
+Kratsios and Zamanlooy construct ReLU networks with bilinear pooling that
+approximate compactly supported functions while controlling the support
+\cite{KZ2022}.  On PDF page 16 they explain that replacing the exact product
+by a ReLU approximation to multiplication need not preserve compact support.
+They therefore leave open whether one can construct a deep ReLU network
+without pooling that satisfies the hypotheses of their Lemma~2.
+
+That lemma asks for the following.  Given a compactly supported Lipschitz map
+\(f:\R^d\to\R^D\), find approximants \(f_m\) such that
+\[
+  \lVert f_m-f\rVert_{L^1(\R^d;\R^D)}\longrightarrow 0
+\]
+and such that \(\esssupp f\) and all \(\esssupp f_m\) lie in one fixed
+enlarged cube.  Under these two conditions, Lemma~2 concludes that
+\(f_m\to f\) in the paper's compactly-supported \(L^1\) topology \(\tau\).
+
+\section*{Result}
+
+Let \(\mathcal N^{\mathrm{ReLU}}_{d,D}\) denote the functions
+\(\R^d\to\R^D\) realized by finite feedforward ReLU networks with affine
+output layer.
+
+\begin{theorem}[Pooling is unnecessary]
+Let \(d,D\geq 1\), and let \(f:\R^d\to\R^D\) be Lipschitz with compact
+essential support.  If
+\[
+ n_f=\min\{n\in\mathbb N:\esssupp f\subseteq[-n,n]^d\},
+ \qquad Q=[-n_f-1,n_f+1]^d,
+\]
+then for every \(\varepsilon>0\) there is
+\(N_\varepsilon\in\mathcal N^{\mathrm{ReLU}}_{d,D}\) such that
+\[
+ \lVert N_\varepsilon-f\rVert_{L^\infty(\R^d;\R^D)}<\varepsilon,
+ \qquad \esssupp N_\varepsilon\subseteq Q.
+\]
+Consequently, for the cs\(L^1\)-topology \(\tau\) of arXiv:2204.11231,
+\[
+ \overline{\mathcal N^{\mathrm{ReLU}}_{d,D}}^{\,\tau}
+ =L^1_{\mathrm{loc}}(\R^d;\R^D).
+\]
+\end{theorem}
+
+\section*{Idea of the proof}
+
+The product-and-mask route is not needed.  On a simplicial mesh of the fixed
+cube \(Q\), interpolate \(f\) at the vertices.  The interpolation error is
+bounded by the Lipschitz constant times the mesh diameter.  Because the cube
+has a full collar outside the support of \(f\), all boundary data are zero;
+the interpolant therefore extends by zero to a global compactly supported
+continuous piecewise-affine map.  A pre-existing exact representation theorem
+then turns this finite CPWL map into a finite ReLU network without changing it
+or its support.
+
+\section*{Proof}
+
+For a continuous function, essential support agrees with the closure of its
+nonzero set.  Indeed, if \(f(x)\neq0\), continuity makes \(f\) nonzero on a
+set of positive measure near \(x\).  Hence \(f=0\) outside
+\([-n_f,n_f]^d\), and in particular on a neighbourhood of \(\partial Q\).
+
+Write \(L=\Lip(f)\).  If \(L=0\), compact support forces \(f=0\), and the
+zero network proves the claim.  Assume \(L>0\).  Choose a finite conforming
+simplicial triangulation \(\mathcal T_h\) of \(Q\) whose mesh diameter
+\[
+ h:=\max_{S\in\mathcal T_h}\operatorname{diam}(S)
+\]
+is smaller than \(\varepsilon/L\).  Let \(I_hf\) be the nodal affine
+interpolant of \(f\) on this triangulation.  If \(x\) belongs to a simplex
+\(S\) with vertices \(v_0,\dots,v_d\) and barycentric coordinates
+\(\lambda_0,\dots,\lambda_d\), then
+\[
+ I_hf(x)=\sum_{i=0}^d\lambda_i f(v_i).
+\]
+Therefore
+\[
+ \begin{aligned}
+ \lVert I_hf(x)-f(x)\rVert
+ &\leq \sum_{i=0}^d\lambda_i\lVert f(v_i)-f(x)\rVert \\
+ &\leq L\sum_{i=0}^d\lambda_i\lVert v_i-x\rVert
+ \leq Lh<\varepsilon.
+ \end{aligned}
+\]
+
+Every boundary vertex of \(Q\) has value zero.  On each boundary face the
+interpolant is affine with zero vertex values, so its boundary trace is zero.
+Extend \(I_hf\) by zero on \(\R^d\setminus Q\), and call the resulting map
+\(g_h\).  It is globally continuous, affine on each member of a finite
+polyhedral decomposition of \(\R^d\), and satisfies
+\[
+ \supp g_h\subseteq Q,
+ \qquad \lVert g_h-f\rVert_\infty<\varepsilon.
+\]
+Thus every coordinate of \(g_h\) is a finite scalar CPWL function.
+
+Theorem~5.2 on PDF page 23 of He--Li--Xu--Zheng states that every finite
+scalar CPWL function on \(\R^d\) is represented exactly by a finite ReLU
+DNN \cite{HLXZ2018}.  Apply that theorem to the \(D\) coordinates of
+\(g_h\), run the resulting networks in parallel, and collect their outputs
+with one affine output layer.  The resulting pure ReLU network
+\(N_\varepsilon\) equals \(g_h\) pointwise.  It therefore has the claimed
+uniform error and support.
+
+Choose \(h_m\downarrow0\).  The networks just constructed have all their
+supports in the same cube \(Q\), and
+\[
+ \lVert N_m-f\rVert_{L^1}
+ \leq |Q|\,\lVert N_m-f\rVert_\infty\longrightarrow0.
+\]
+These are exactly the two hypotheses of Lemma~2 of the source paper (PDF
+page 12), so \(N_m\to f\) in \(\tau\).  Lemma~1 of that paper says that
+compactly supported Lipschitz maps are \(\tau\)-dense in
+\(L^1_{\mathrm{loc}}\).  The usual transitivity-of-density argument used in
+the source now gives the asserted \(\tau\)-density of pure ReLU networks.
+\qed
+
+\section*{Status and scope}
+
+This completely answers the qualitative question on PDF page 16: a pure ReLU
+network can meet Lemma~2, so bilinear pooling is not required for cs\(L^1\)
+universality.  The result also gives uniform approximation of each compactly
+supported Lipschitz target with support in the fixed one-unit enlargement
+\(Q\).  It does not claim the specific width, depth, or metric-capacity bounds
+of the source's quantitative Theorem~3.
+
+The status is \texttt{literature\_implied\_answer}: the interpolation
+reduction above identifies the answer, while the decisive exact CPWL-to-ReLU
+representation theorem was already available before the source paper.  A
+search of the run indexes and arXiv/web queries found no paper explicitly
+presenting this reduction as an answer to the question in arXiv:2204.11231.
+
+\begin{thebibliography}{9}
+\bibitem{KZ2022}
+A. Kratsios and B. Zamanlooy,
+\emph{Do ReLU Networks Have An Edge When Approximating Compactly-Supported
+Functions?}, Transactions on Machine Learning Research (2022),
+arXiv:2204.11231.
+
+\bibitem{HLXZ2018}
+J. He, L. Li, J. Xu, and C. Zheng,
+\emph{ReLU Deep Neural Networks and Linear Finite Elements},
+arXiv:1807.03973, Theorem~5.2, PDF p.~23 (2018).
+The paper records that the exact general CPWL representation theorem is due
+to R. Arora, A. Basu, P. Mianjy, and A. Mukherjee,
+\emph{Understanding Deep Neural Networks with Rectified Linear Units},
+arXiv:1611.01491.
+\end{thebibliography}
+
+\end{document}

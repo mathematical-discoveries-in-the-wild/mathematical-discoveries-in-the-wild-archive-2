@@ -1,0 +1,323 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert_\infty}
+
+\title{Arbitrarily small nonconvex quasihyperbolic balls\\
+\large A counterexample in a punctured Banach space}
+\author{Automated Math Discovery Run \texttt{fa\_banach\_001}, lane 8}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{black}{blue!5}{\parbox{0.88\linewidth}{
+\textbf{Result.} In $X=(\R^2,\lVert\cdot\rVert_\infty)$, punctured at the
+origin, there are nonconvex quasihyperbolic balls of arbitrarily small radius.
+Thus the general Banach-space critical-radius question in arXiv:1104.3745 has
+a negative answer.
+}}
+\end{center}
+
+\section{Question and conclusion}
+
+Let $X$ be a Banach space and $\Omega=X\setminus\{0\}$.  The
+quasihyperbolic length and distance are
+\[
+ \ell_k(\gamma)=\int \frac{\lVert d\gamma\rVert}{\lVert\gamma\rVert},
+ \qquad
+ k(x,y)=\inf_{\gamma:x\leadsto y}\ell_k(\gamma).
+\]
+Kl\'en--Rasila--Talponen ask whether there is, in the Banach-space setting, a
+positive critical radius below which quasihyperbolic balls in punctured spaces
+are convex \cite[PDF p.~16]{KRT}.  Rasila--Talponen later emphasize that their
+arbitrarily-small counterexample concerns the distance-ratio metric and that
+the analogous assertion for quasihyperbolic balls was only presumed
+\cite[PDF p.~11]{RT}.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.96\linewidth,height=0.44\textheight,keepaspectratio]{figures/open_problem_crop.png}
+\caption{The Banach-space convexity-radius discussion in arXiv:1104.3745,
+PDF page 16.}
+\end{figure}
+
+\section{Proof intuition}
+
+At a fixed face point of the square unit sphere, the most obvious local
+counterexample fails: the reachable-set boundary is a concave square-root
+curve, hence the small quasihyperbolic ball is convex.  The obstruction instead
+appears when the center approaches a corner.  Two short paths can exploit
+different dominant coordinates.  Their endpoints remain at distance
+$\frac32\delta+\frac98\delta^2+O(\delta^3)$, while every path to their midpoint
+must cross the diagonal and pays the larger second-order cost
+$\frac32\delta+\frac{81}{64}\delta^2+O(\delta^3)$.
+
+The lower bound is global.  Coordinate sorting is nonexpansive for the infinity
+norm, so any path can be folded into one which stays on one side of the
+diagonal before a single crossing and on the other side afterwards.  On each
+side the dominant coordinate controls both coordinate speeds.  A sharp
+one-dimensional envelope estimate then bounds the two pieces of the path.
+
+\begin{theorem}\label{thm:main}
+Let $X=(\R^2,\lVert\cdot\rVert_\infty)$ and
+$\Omega=X\setminus\{0\}$. For every $R>0$ there exist $c\in\Omega$ and
+$0<r<R$ such that the quasihyperbolic ball
+\[
+ B_k(c,r)=\{z\in\Omega:k(c,z)<r\}
+\]
+is not convex.
+\end{theorem}
+
+\section{Two elementary path estimates}
+
+We use the following sharp envelope bound.
+
+\begin{lemma}[exponential tent bound]\label{lem:tent}
+Suppose $u:[0,T]\to(0,\infty)$ is absolutely continuous,
+$|u'|\leq u$ almost everywhere, $u(0)=a$, and $u(T)=b$. Then
+\[
+ u(t)\leq\min\{ae^t,be^{T-t}\}
+\]
+and consequently
+\[
+ \int_0^T u(t)\,dt
+ \leq 2e^{T/2}\sqrt{ab}-a-b.
+\]
+\end{lemma}
+
+\begin{proof}
+The function $\log u$ is $1$-Lipschitz, giving the two pointwise bounds.
+Their graphs meet at
+$t_0=(T+\log(b/a))/2$, which lies in $[0,T]$ because necessarily
+$T\geq|\log(b/a)|$. Integrating the two exponentials on the corresponding
+subintervals gives the displayed formula.
+\end{proof}
+
+We also use the standard radial lower bound
+\begin{equation}\label{eq:radial}
+ k(x,y)\geq\left|\log\frac{\norm{y}}{\norm{x}}\right|.
+\end{equation}
+Indeed, the norm is absolutely continuous along a rectifiable path and the
+absolute derivative of its logarithm is bounded by the quasihyperbolic speed.
+
+\section{The explicit configuration}
+
+Fix a sufficiently small $\delta>0$ and put
+\begin{align*}
+ c_\delta&=(1,1-\delta),
+ &q_0&=1-\frac\delta2,\\
+ A_\delta&=\left(1-\frac{3\delta}{2},1-2\delta\right),
+ &B_\delta&=\left(1-\frac{3\delta}{2}-\frac{3\delta^2}{4},
+                         1-\frac\delta2\right),\\
+ M_\delta&=\frac{A_\delta+B_\delta}{2}
+ =\left(1-\frac{3\delta}{2}-\frac{3\delta^2}{8},
+          1-\frac{5\delta}{4}\right).
+\end{align*}
+Thus $M_\delta$ is the midpoint of the two proposed in-ball points. Define
+\begin{align}
+ L_A(\delta)
+ &= -\log\left(1-\frac{3\delta}{2}\right),\label{eq:LA}\\
+ g_B(\delta)
+ &= (B_\delta)_2-(B_\delta)_1
+ =\delta+\frac{3\delta^2}{4},\nonumber\\
+ L_B(\delta)
+ &= -\log q_0+2\log\left(1+\frac{g_B(\delta)}{2q_0}\right),\label{eq:LB}\\
+ g_M(\delta)
+ &= (M_\delta)_2-(M_\delta)_1
+ =\frac\delta4+\frac{3\delta^2}{8},\nonumber\\
+ L_M(\delta)
+ &= -\log q_0
+ +2\log\left(
+ \frac{2q_0+g_M(\delta)}
+ {2\sqrt{q_0(M_\delta)_2}}
+ \right).\label{eq:LM}
+\end{align}
+
+\subsection{Upper bound for \texorpdfstring{$A_\delta$}{A-delta}}
+
+Let $T=L_A(\delta)$ and, for $0\leq t\leq T$, set
+\[
+ x(t)=e^{-t},\qquad
+ y(t)=1-\delta-\frac23(1-e^{-t}).
+\]
+This path joins $c_\delta$ to $A_\delta$.  Moreover $x(t)>y(t)>0$ for
+small $\delta$, $\max\{|x'|,|y'|\}=x$, and
+$\norm{(x,y)}=x$.  Its quasihyperbolic speed is therefore one, so
+\begin{equation}\label{eq:Aupper}
+ k(c_\delta,A_\delta)\leq L_A(\delta).
+\end{equation}
+
+\subsection{Upper bound for \texorpdfstring{$B_\delta$}{B-delta}}
+
+First follow
+\[
+ x(t)=e^{-t},\qquad y(t)=2-\delta-e^{-t},
+ \qquad 0\leq t\leq-\log q_0.
+\]
+This has unit quasihyperbolic speed, stays in $x\geq y$, and ends at
+$(q_0,q_0)$.  Set
+\[
+ T_B=2\log\left(1+\frac{g_B(\delta)}{2q_0}\right)
+\]
+and define, for $0\leq t\leq T_B$,
+\[
+ Y(t)=q_0e^{\min\{t,T_B-t\}},
+ \qquad
+ X(t)=q_0-\int_0^tY(s)\,ds.
+\]
+Here $Y\geq q_0\geq X$, and
+$\max\{|X'|,|Y'|\}=Y=\norm{(X,Y)}$ almost everywhere. Also
+\[
+ \int_0^{T_B}Y(s)\,ds
+ =2q_0(e^{T_B/2}-1)=g_B(\delta),
+\]
+so the second path ends at $B_\delta$. Concatenation yields
+\begin{equation}\label{eq:Bupper}
+ k(c_\delta,B_\delta)\leq L_B(\delta).
+\end{equation}
+
+\section{A path-independent lower bound for the midpoint}
+
+We prove
+\begin{equation}\label{eq:Mlower}
+ k(c_\delta,M_\delta)\geq L_M(\delta).
+\end{equation}
+For small $\delta$, $L_M(\delta)<1/4$.  A path of quasihyperbolic length
+less than $1/4$ starting at $c_\delta$ remains in the positive quadrant:
+after quasihyperbolic arclength $t$, its norm is at most $e^t$, hence its
+ordinary displacement is at most $te^t<1/2$.  Longer paths already satisfy
+\eqref{eq:Mlower}.
+
+Consider therefore a path in the positive quadrant from $c_\delta$, where
+$x>y$, to $M_\delta$, where $y>x$. Choose a time at which it meets the
+diagonal. Before that time apply the coordinate-sorting map
+$(x,y)\mapsto(\max\{x,y\},\min\{x,y\})$; afterwards apply the reverse sorting
+map. These maps fix the diagonal, preserve the infinity norm, and are
+$1$-Lipschitz. Thus the folded path has no greater quasihyperbolic length,
+stays in $x\geq y$ before one crossing $(q,q)$, and stays in $y\geq x$
+afterwards.
+
+Let its two lengths be $T_1,T_2$.  On the first piece the dominant coordinate
+is $x$, so both coordinate speeds are bounded by $x$. Lemma~\ref{lem:tent}
+and the net increase of the second coordinate give
+\[
+ q-(1-\delta)
+ \leq 2e^{T_1/2}\sqrt q-1-q.
+\]
+Consequently, writing $q_0=1-\delta/2$,
+\begin{equation}\label{eq:T1}
+ T_1\geq
+ \begin{cases}
+  -\log q,&q\leq q_0,\\[2mm]
+  2\log\dfrac{2q+\delta}{2\sqrt q},&q\geq q_0.
+ \end{cases}
+\end{equation}
+The first line is \eqref{eq:radial}; the second is the preceding envelope
+inequality.
+
+Put $y_M=(M_\delta)_2$ and $g=g_M(\delta)=y_M-(M_\delta)_1$. On the second
+piece the dominant coordinate is $y$.  The required decrease of the first
+coordinate and Lemma~\ref{lem:tent} imply
+\[
+ q-(M_\delta)_1
+ \leq 2e^{T_2/2}\sqrt{qy_M}-q-y_M,
+\]
+hence
+\begin{equation}\label{eq:T2}
+ T_2\geq2\log\frac{2q+g}{2\sqrt{qy_M}}.
+\end{equation}
+
+If $q\leq q_0$, adding \eqref{eq:T1} and \eqref{eq:T2} gives
+\[
+ T_1+T_2
+ \geq -\log y_M+2\log\left(1+\frac{g}{2q}\right),
+\]
+which decreases as $q$ increases and is therefore minimized at $q_0$.
+If $q\geq q_0$, the lower bound is
+\[
+ 2\log\frac{(2q+\delta)(2q+g)}{4q\sqrt{y_M}}.
+\]
+Apart from constants independent of $q$, its argument is
+\[
+ \frac{(2q+\delta)(2q+g)}q
+ =4q+2(\delta+g)+\frac{\delta g}{q}.
+\]
+Its derivative is $4-\delta g/q^2>0$ for all $q\geq q_0$ when $\delta$ is
+small. This branch is likewise minimized at $q_0$. At $q=q_0$ the common
+lower bound is exactly \eqref{eq:LM}, proving \eqref{eq:Mlower}.
+
+\section{The second-order separation}
+
+Taylor expansion at $\delta=0$ gives
+\begin{align*}
+ L_A(\delta)
+ &=\frac32\delta+\frac98\delta^2+O(\delta^3),\\
+ L_B(\delta)
+ &=\frac32\delta+\frac98\delta^2+O(\delta^3),\\
+ L_M(\delta)
+ &=\frac32\delta+\frac{81}{64}\delta^2+O(\delta^3).
+\end{align*}
+Since $81/64-9/8=9/64>0$, for every sufficiently small positive $\delta$,
+\[
+ \max\{L_A(\delta),L_B(\delta)\}<L_M(\delta).
+\]
+Choose
+\[
+ r_\delta=\frac{max\{L_A(\delta),L_B(\delta)\}+L_M(\delta)}2.
+\]
+Equations \eqref{eq:Aupper}, \eqref{eq:Bupper}, and \eqref{eq:Mlower} show
+that $A_\delta,B_\delta\in B_k(c_\delta,r_\delta)$ but their midpoint
+$M_\delta$ is not in the ball. Finally $r_\delta\to0$, proving
+Theorem~\ref{thm:main}.
+
+\section{Scope and literature check}
+
+The counterexample answers the unrestricted Banach-space question. It does
+not contradict positive results under Hilbertian, uniformly convex, or
+uniformly smooth hypotheses: the infinity norm is deliberately nonsmooth and
+not strictly convex.  The related paper \cite{RT} proves an averaging estimate
+under power-type-$2$ assumptions but explicitly says it does not obtain a
+critical radius for punctured Banach spaces.
+
+A bounded search through 11 August 2026 used the exact question wording,
+``critical radius,'' ``punctured Banach space,'' and quasihyperbolic
+convexity keywords, together with the citation neighborhood of
+arXiv:1007.3197 and arXiv:1104.3745. It found Luiro's later solution of the
+Euclidean finite-dimensional convexity conjecture \cite{Luiro}, but no later
+answer to the Banach-space question treated here. The present result is
+therefore recorded as an agent counterexample, subject to expert verification
+and normal novelty review.
+
+\begin{thebibliography}{9}
+\bibitem{KRT}
+R. Kl\'en, A. Rasila, and J. Talponen,
+\emph{Quasihyperbolic Geometry in Euclidean and Banach Spaces},
+arXiv:1104.3745 (2011),
+\url{https://arxiv.org/abs/1104.3745}.
+
+\bibitem{RT}
+A. Rasila and J. Talponen,
+\emph{Convexity properties of quasihyperbolic balls on Banach spaces},
+Ann. Acad. Sci. Fenn. Math. 37 (2012), 215--228,
+arXiv:1007.3197,
+\url{https://arxiv.org/abs/1007.3197}.
+
+\bibitem{Luiro}
+H. Luiro,
+\emph{On the uniqueness of quasihyperbolic geodesics},
+arXiv:1504.01981 (2015),
+\url{https://arxiv.org/abs/1504.01981}.
+\end{thebibliography}
+
+\end{document}

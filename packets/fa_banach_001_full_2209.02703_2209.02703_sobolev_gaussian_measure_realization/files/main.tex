@@ -1,0 +1,236 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+
+\title{Every Sobolev Gaussian measure has a measurable\\
+Gaussian-process realization}
+\author{Automated Math Discovery Run \texttt{fa\_banach\_001}, lane 8}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{black}{green!5}{\parbox{0.88\linewidth}{
+\textbf{Result.} Concluding question (ii) of Henderson has an affirmative
+answer.  Every Gaussian measure on \(W^{m,p}(\mathcal D)\), for integer
+\(m\ge0\) and \(1\le p<\infty\), is induced by a jointly measurable
+Gaussian process whose sample classes are \(W^{m,p}\)-valued almost surely.
+The proof also applies to any separable Banach function space continuously
+injected into an \(L^p\) space.
+}}
+\end{center}
+
+\section{Source questions}
+
+The paper \cite{Henderson} asks:
+\begin{enumerate}
+\item whether Sobolev small-ball problems can be handled using spectral
+properties of the covariance, such as its nuclear norm;
+\item whether every Gaussian measure on \(W^{m,p}(\mathcal D)\) is induced
+by some Gaussian process.
+\end{enumerate}
+It notes that its Proposition~2.9 gives the second statement for \(m=0\),
+that is, on \(L^p(\mathcal D)\).  We completely answer (ii), and give exact
+limitations on the nuclear-norm suggestion in (i).
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.95\linewidth]{figures/open_problem_crop.png}
+\caption{The concluding open questions in arXiv:2209.02703, PDF page 29.}
+\end{figure}
+
+\section{Idea of the proof}
+
+Forget the derivatives and push the Sobolev Gaussian measure into
+\(L^p(\mathcal D)\).  Proposition~2.9 realizes that pushforward as the law
+of the sample classes of a jointly measurable Gaussian process.  Those
+classes are supported on the Sobolev image.  Although the image need not be
+closed in \(L^p\), the Lusin--Souslin theorem makes it Borel and makes the
+inverse embedding Borel.  Applying that inverse recovers exactly the
+original Sobolev-valued law.
+
+\section{An abstract realization theorem}
+
+\begin{theorem}\label{thm:abstract}
+Let \(1\le p<\infty\), let \(\mathcal D\subset\mathbb R^d\) be open, and
+let \(X\) be a separable Banach space equipped with a continuous injective
+linear map
+\[
+ J:X\longrightarrow L^p(\mathcal D).
+\]
+Assume the \(L^p\)-realization statement of Proposition~2.9 of
+\cite{Henderson}.  Then every Gaussian Borel probability measure \(\mu\)
+on \(X\) is induced by a jointly measurable Gaussian process
+\((U(x))_{x\in\mathcal D}\): its sample-class map is almost surely in
+\(J(X)\), the map
+\[
+ \omega\longmapsto J^{-1}[U_\omega]\in X
+\]
+is Borel measurable after an arbitrary definition on a null set, and its
+law is \(\mu\).
+\end{theorem}
+
+\begin{proof}
+First suppose that \(\mu\) is centered and put \(\nu=J_*\mu\).  This is a
+centered Gaussian measure on \(L^p(\mathcal D)\): for every
+\(\ell\in(L^p)^*\), the pullback \(\ell\circ J\) belongs to \(X^*\), so the
+\(\ell\)-marginal of \(\nu\) is Gaussian.
+
+By Proposition~2.9, there is a jointly measurable centered Gaussian
+process \(U:\Omega\times\mathcal D\to\mathbb R\) such that its sample paths
+lie in \(L^p\) almost surely, the class map
+\[
+ F:\Omega\longrightarrow L^p(\mathcal D),\qquad F(\omega)=[U_\omega],
+\]
+is Borel, and \(F_*\mathbb P=\nu\).
+
+The spaces \(X\) and \(L^p(\mathcal D)\) are Polish.  Since \(J\) is Borel
+and injective, the Lusin--Souslin theorem implies that
+\[
+ C:=J(X)
+\]
+is Borel in \(L^p\), that \(J^{-1}:C\to X\) is Borel, and, more generally,
+that \(J(A)\) is Borel in \(L^p\) for every Borel \(A\subset X\).
+Furthermore,
+\[
+ \mathbb P(F\in C)=\nu(C)=\mu(X)=1.
+\]
+Define \(G=J^{-1}\circ F\) on this full-probability event and define it
+arbitrarily on its complement.  Then \(G:\Omega\to X\) is Borel.  For
+every Borel \(A\subset X\),
+\[
+ \mathbb P(G\in A)
+ =\mathbb P(F\in J(A))
+ =\nu(J(A))
+ =\mu(A).
+\]
+Thus \(G\) has law \(\mu\), and \(F=J(G)\) almost surely.  In particular,
+the sample class of \(U\) lies in \(J(X)\) almost surely.
+
+For a noncentered Gaussian measure, its mean \(a\) belongs to \(X\) because
+\(X\) is separable.  Apply the centered case to the translate of \(\mu\)
+by \(-a\), choose a measurable representative \(\widehat{J(a)}\) of
+\(J(a)\), and replace \(U(\omega,x)\) by
+\(U(\omega,x)+\widehat{J(a)}(x)\).  Joint measurability and Gaussianity are
+preserved, and the resulting \(X\)-valued law is \(\mu\).
+\end{proof}
+
+\begin{corollary}\label{cor:sobolev}
+Let \(\mathcal D\subset\mathbb R^d\) be open, let \(m\in\mathbb N_0\), and
+let \(1\le p<\infty\).  Every Gaussian Borel probability measure on
+\(W^{m,p}(\mathcal D)\) is induced by a jointly measurable Gaussian
+process with almost surely \(W^{m,p}\) sample classes, and the
+Sobolev-valued sample-class map has exactly the prescribed law.
+\end{corollary}
+
+\begin{proof}
+The Sobolev space is a separable Banach space for finite \(p\), and the
+canonical map
+\[
+ J:W^{m,p}(\mathcal D)\hookrightarrow L^p(\mathcal D)
+\]
+is continuous and injective.  Apply Theorem~\ref{thm:abstract}.
+\end{proof}
+
+The result includes \(p=1\), beyond the range \(1<p<\infty\) of the main
+Sobolev theorems in the source, because its \(L^p\)-realization
+Proposition~2.9 is valid for \(1\le p<\infty\).  The argument does not
+cover \(p=\infty\), where both separability and the cited realization
+theorem fail in general.
+
+\section{What nuclear norm cannot say about small balls}
+
+Question (i) is broad, but its suggested scalar invariant has an exact
+negative answer.
+
+\begin{proposition}\label{prop:trace}
+Nuclear norm alone does not determine norm-small-ball probabilities, even
+for Gaussian measures on a Hilbert Sobolev space.
+\end{proposition}
+
+\begin{proof}
+Let \(H=W^{m,2}(\mathcal D)\) have dimension at least two and choose
+orthonormal \(f_1,f_2\in C_c^\infty(\mathcal D)\) (start with two
+independent test functions and apply Gram--Schmidt in \(H\)).  With
+independent standard normal variables,
+set
+\[
+ X_1=\xi f_1,\qquad
+ X_2=\frac{\xi_1f_1+\xi_2f_2}{\sqrt2}.
+\]
+Their covariance operators on \(H\) are
+\[
+ Q_1=f_1\otimes f_1,\qquad
+ Q_2=\tfrac12(f_1\otimes f_1+f_2\otimes f_2),
+\]
+so both have trace and nuclear norm one.  Nevertheless, for
+\(\varepsilon>0\),
+\[
+ \mathbb P(\|X_1\|_H\le\varepsilon)
+ =2\Phi(\varepsilon)-1
+ \sim\sqrt{\frac2\pi}\,\varepsilon,
+\]
+whereas
+\[
+ \mathbb P(\|X_2\|_H\le\varepsilon)
+ =\mathbb P(\xi_1^2+\xi_2^2\le2\varepsilon^2)
+ =1-e^{-\varepsilon^2}
+ \sim\varepsilon^2.
+\]
+The small-ball orders themselves differ.
+\end{proof}
+
+Even the complete eigenvalue list of the covariance on the
+\emph{underlying} \(L^2\) space is insufficient for a Sobolev norm.  On
+\(\mathcal D=(0,2\pi)\), let
+\[
+ e_0=(2\pi)^{-1/2},\qquad e_N(x)=\pi^{-1/2}\sin(Nx).
+\]
+Both are \(L^2\)-unit vectors, so the \(L^2\)-covariance operators of
+\(\xi e_0\) and \(\xi e_N\) have the identical spectrum
+\(\{1,0,0,\ldots\}\).  But
+\[
+ \|e_0\|_{H^1}=1,\qquad \|e_N\|_{H^1}=\sqrt{1+N^2},
+\]
+and hence their \(H^1\) small-ball probabilities are respectively
+\[
+ 2\Phi(\varepsilon)-1
+ \quad\text{and}\quad
+ 2\Phi\!\left(\frac{\varepsilon}{\sqrt{1+N^2}}\right)-1.
+\]
+Thus the Sobolev geometry of the covariance eigenfunctions matters.  By
+contrast, the entire spectrum of the covariance \emph{on the Hilbert
+Sobolev space itself} does determine the norm-small-ball law through the
+distribution of \(\sum_j\lambda_j\xi_j^2\).
+
+\section{Verification and novelty notes}
+
+The realization proof is measure-theoretic and uses no computation.  The
+accompanying script checks the exact small-ball formulas at a sample value
+of \(\varepsilon\); those formulas are proved analytically above.
+
+A bounded official-arXiv search through 11 August 2026 used the exact
+question, source title and author, and combinations of the phrases
+\emph{Gaussian measure Sobolev process realization},
+\emph{Lusin--Souslin}, and \emph{small ball nuclear norm}.  It found the
+source but no later answer to these exact questions.  This is not an
+exhaustive literature review.
+
+\begin{thebibliography}{9}
+\bibitem{Henderson}
+I.~Henderson,
+\emph{Sobolev regularity of Gaussian random fields},
+arXiv:2209.02703.
+\end{thebibliography}
+
+\end{document}

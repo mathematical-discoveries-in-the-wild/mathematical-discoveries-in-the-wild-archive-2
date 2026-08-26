@@ -1,0 +1,250 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in,bottom=1.18in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\Irr}{\operatorname{Irr}}
+\newcommand{\cp}{\operatorname{cp}}
+\newcommand{\cd}{\operatorname{cd}}
+
+\title{Finite Support of Projected Plancherel Weak Limits\\
+\large A partial answer to Question (I) in arXiv:1712.04772}
+\author{Automated mathematics run \texttt{fa\_banach\_001}}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\fbox{\parbox{0.94\textwidth}{\textbf{Status.}
+Candidate substantial partial result, likely valid.  The theorem rules out
+all infinite-support limits.  It does not classify the finitely supported
+limits.}}
+
+\section{Source question}
+
+The source is R.~Adamczak, \emph{Random non-Abelian $G$-circulant
+matrices. Spectrum of random convolution operators on large finite groups},
+arXiv:1712.04772 \cite{Adamczak}.  Section~7, Question~(I), page~25 asks for a
+characterization of the weak limits of projected Plancherel measures and notes
+that the examples in the paper contain only finite mixtures.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{The complete source passage containing Question~(I), rendered from
+  page~25 of the source paper.}
+\end{figure}
+
+For a finite group $G$, write $\Irr(G)$ for its irreducible complex
+characters and put
+\[
+ \mu_G=\sum_{\chi\in\Irr(G)}\frac{\chi(1)^2}{|G|}\,\delta_{\chi(1)}.
+\]
+This is a probability measure on
+$\overline{\mathbb N}=\mathbb N\cup\{\infty\}$, where
+$\overline{\mathbb N}$ has its one-point compactification topology.
+
+\section{Result and proof intuition}
+
+\subsection*{Proof intuition}
+
+The projected Plancherel measure remembers the commuting probability through
+one continuous moment:
+\[
+ \cp(G)=\frac{|\Irr(G)|}{|G|}
+       =\int_{\overline{\mathbb N}}d^{-2}\,d\mu_G(d),
+ \qquad \infty^{-2}:=0.
+\]
+Consequently, a limiting measure with any mass at finite integers forces a
+uniform positive lower bound on commuting probability.  P.~M.~Neumann's
+theorem then puts the groups, uniformly, within bounded index of a group that
+is finite-by-abelian with bounded finite kernel.
+
+The remaining point is not that the character degrees themselves are bounded
+--- extraspecial groups show this is false --- but that their \emph{number of
+distinct values} is bounded.  Clifford theory reduces each degree to a
+constituent over the bounded finite kernel and a projective representation of
+an abelian quotient.  For a fixed multiplier, all irreducible projective
+representations of a finite abelian group have the same degree.  Thus only
+boundedly many degree values occur.  Support cardinality at most $D$ is closed
+under weak convergence, which finishes the argument.
+
+\begin{theorem}\label{thm:main}
+Let $(G_j)$ be finite groups with $|G_j|\to\infty$.  If
+$\mu_{G_j}$ converges weakly on $\overline{\mathbb N}$ to a probability
+measure $\mu$, then $\mu$ has finite support.
+
+More quantitatively, if
+\[
+ c:=\int_{\overline{\mathbb N}}d^{-2}\,d\mu(d)>0,
+\]
+then $|\operatorname{supp}\mu|$ is bounded by a constant depending only on
+$c$.
+\end{theorem}
+
+Thus the infinite-support examples suggested in Question~(I) do not exist.
+The exact characterization of the possible finite-support measures remains
+open.
+
+\section{The finite-by-abelian degree lemma}
+
+For a finite group $K$, let
+$\cd(K)=\{\chi(1):\chi\in\Irr(K)\}$.
+
+\begin{lemma}\label{lem:degrees}
+For every pair of positive integers $a,b$ there is $D(a,b)$ with the
+following property.  Suppose $G$ is finite and has normal subgroups
+$H\leq \Gamma\leq G$ such that
+\[
+ [G:\Gamma]\leq a,\qquad |H|\leq b,
+ \qquad\text{and}\qquad \Gamma/H\ \text{is abelian}.
+\]
+Then $|\cd(G)|\leq D(a,b)$.
+\end{lemma}
+
+\begin{proof}
+First consider $\Gamma$.  Given $\eta\in\Irr(\Gamma)$, choose an irreducible
+constituent $\theta\in\Irr(H)$ of $\eta|_H$, and let
+$I=I_\Gamma(\theta)$ be its inertia group.  Clifford correspondence gives
+\[
+ \eta=\operatorname{Ind}_I^\Gamma\psi,
+ \qquad
+ \eta(1)=[\Gamma:I]\,\psi(1)
+\]
+for some $\psi\in\Irr(I)$ lying over $\theta$.
+
+The character $\theta$ is $I$-invariant.  The character-triple form of
+Clifford theory identifies the characters of $I$ lying over $\theta$ with
+irreducible projective representations of the abelian group $I/H$ for one
+fixed multiplier, with all degrees multiplied by $\theta(1)$.  For a finite
+abelian group $A$ and a fixed multiplier $\alpha$, every irreducible
+$\alpha$-projective representation has the same degree.  Indeed, if $R$ is
+the radical of the commutator bicharacter of $\alpha$, the twisted group
+algebra $\mathbb C^\alpha[A]$ is a direct sum of equal matrix blocks of size
+$\sqrt{|A|/|R|}$.
+
+\pagebreak
+It follows that, for each $\Gamma$-orbit in $\Irr(H)$, all irreducible
+characters of $\Gamma$ lying over that orbit have the same degree.  Hence
+\[
+ |\cd(\Gamma)|\leq |\Irr(H)|\leq |H|\leq b.
+\]
+
+Now take $\chi\in\Irr(G)$ and a constituent
+$\eta\in\Irr(\Gamma)$ of $\chi|_\Gamma$.  A second application of Clifford
+theory gives
+\[
+ \chi(1)=t e\,\eta(1),
+\]
+where $t$ is the size of the $G$-orbit of $\eta$ and $e$ is the degree of an
+irreducible projective representation of a subgroup of $G/\Gamma$.  In
+particular, $1\leq t\leq a$ and $1\leq e\leq a$.  Thus each of the at most
+$b$ values of $\eta(1)$ gives at most $a^2$ values of $\chi(1)$.  One may
+therefore take $D(a,b)=a^2b$.
+\end{proof}
+
+\section{Proof of the main theorem}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Define $f:\overline{\mathbb N}\to\mathbb R$ by
+$f(d)=d^{-2}$ for $d\in\mathbb N$ and $f(\infty)=0$.  This is continuous.
+The character-degree sum formula and the equality between the number of
+irreducible characters and the number of conjugacy classes give
+\[
+ \int f\,d\mu_G
+ =\sum_{\chi\in\Irr(G)}\frac{\chi(1)^2}{|G|}\frac1{\chi(1)^2}
+ =\frac{|\Irr(G)|}{|G|}
+ =\cp(G).
+\]
+Therefore weak convergence implies $\cp(G_j)\to c$.
+
+If $c=0$, positivity of $f$ at every finite integer forces
+$\mu=\delta_\infty$, so the conclusion holds.  Suppose $c>0$.  For all large
+$j$, $\cp(G_j)\geq c/2$.  P.~M.~Neumann's theorem, in the quantitative form
+quoted in \cite[Theorem~1.2]{Tointon}, supplies constants $a=a(c)$ and
+$b=b(c)$ and normal subgroups
+\[
+ H_j\leq\Gamma_j\leq G_j
+\]
+such that $[G_j:\Gamma_j]\leq a$, $|H_j|\leq b$, and
+$\Gamma_j/H_j$ is abelian.  Lemma~\ref{lem:degrees} shows that every
+$\mu_{G_j}$ is supported on at most $D(a,b)$ points.
+
+It remains only to pass this bound to the weak limit.  If $\mu$ had
+$D(a,b)+1$ distinct support points, choose pairwise disjoint open
+neighborhoods of those points.  Each has positive $\mu$-measure.  By the
+Portmanteau theorem, all these neighborhoods have positive
+$\mu_{G_j}$-measure for all sufficiently large $j$, contradicting the support
+bound.  Hence $\mu$ has finite support.
+\end{proof}
+
+\section{A mixed finite--infinite example}
+
+The conclusion cannot be strengthened to a dichotomy between finite support
+inside $\mathbb N$ and $\delta_\infty$.  Fix a prime $p$ and let $E_m$ be an
+extraspecial $p$-group of order $p^{1+2m}$.  It has $p^{2m}$ linear
+characters and $p-1$ irreducible characters of degree $p^m$.  Therefore
+\[
+ \mu_{E_m}=\frac1p\delta_1+\frac{p-1}{p}\delta_{p^m}
+ \ \Longrightarrow\ 
+ \frac1p\delta_1+\frac{p-1}{p}\delta_\infty.
+\]
+This also explains why bounded commuting probability does not bound the
+degrees themselves; the bounded quantity needed in the proof is the number
+of distinct degree values.
+
+\section{Scope, novelty, and verification}
+
+The theorem settles the infinite-support part of Question~(I), but it does not
+determine which finitely supported measures occur.  In particular, arithmetic
+and representation-theoretic restrictions on their atoms and weights remain
+to be classified.
+
+A bounded search covered the run's solution, attempt, proof-gap, and registry
+indexes; the local parsed arXiv corpus; and targeted primary-source searches
+for projected Plancherel limits, character-degree distributions, and commuting
+probability.  The search found Neumann's structure theorem and work on scalar
+commuting-probability limits, but no explicit statement of
+Theorem~\ref{thm:main}.  Novelty is plausible, not certified.
+
+The proof is non-computational.  Human review should focus on
+Lemma~\ref{lem:degrees}, especially the standard character-triple reduction
+and the equal-degree decomposition of a twisted group algebra of a finite
+abelian group.  The source crop and every final packet page were rendered and
+visually inspected.
+
+\begin{thebibliography}{9}
+
+\bibitem{Adamczak}
+R.~Adamczak,
+\emph{Random non-Abelian $G$-circulant matrices. Spectrum of random
+convolution operators on large finite groups},
+Electron. J. Probab. \textbf{24} (2019), paper no.~42;
+arXiv:1712.04772.
+
+\bibitem{Tointon}
+M.~Tointon,
+\emph{Commuting probability of infinite groups},
+J. Lond. Math. Soc. (2) \textbf{101} (2020), 1280--1297;
+arXiv:1707.05565.  See Theorem~1.2 for the finite-group theorem of
+P.~M.~Neumann used here.
+
+\bibitem{Isaacs}
+I.~M.~Isaacs,
+\emph{Character Theory of Finite Groups},
+Dover Publications, 1994.
+
+\bibitem{Eberhard}
+S.~Eberhard,
+\emph{Commuting probabilities of finite groups},
+Bull. Lond. Math. Soc. \textbf{47} (2015), 796--808;
+arXiv:1411.0848.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,283 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,enumitem,graphicx,xcolor,hyperref,microtype}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\hypersetup{colorlinks=true,linkcolor=blue!55!black,urlcolor=blue!55!black,citecolor=blue!55!black}
+\setlist{itemsep=2pt,topsep=4pt}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Sym}{\operatorname{Sym}}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\title{Permutation-Symmetric Ogata Approximation Fails\\for Three Pauli Observables}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 17}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\linewidth}{\textbf{Status.}
+Candidate counterexample, likely valid, requiring human review.  The result is
+a full negative answer to the simultaneous tensor-permutation-symmetry
+instantiation of the source question; it does not settle every other symmetry
+pattern mentioned there.}}
+\end{center}
+
+\begin{abstract}
+Herrera asks whether the commuting approximants in Ogata's theorem can
+preserve the symmetries of three or more macroscopic observables.  We show
+that the most canonical tensor-permutation version is false.  For the three
+macroscopic Pauli observables on $N$ qubits, every commuting self-adjoint
+triple invariant under the transposition $(1\,2)$ and the long cycle
+$(1\,2\,\ldots\,N)$ has maximum coordinate error at least $1/6$, independently
+of $N$.  The two symmetries generate $S_N$, so the approximants reduce the
+fully symmetric tensor block.  There the observables form the normalized
+irreducible spin-$N/2$ triple.  Its Pauli localizer has unbalanced inertia,
+whereas the invertible localizer of a commuting triple has balanced inertia.
+The argument is elementary and gives the explicit constant.
+\end{abstract}
+
+\section{Source question and exact scope}
+
+The source is David Herrera, \emph{A Projection Characterization and Symmetry
+Bootstrap for Elements of a von Neumann Algebra that are Nearby Commuting
+Elements}, arXiv:2412.20795v1 (2024) \cite{Herrera2024}.  In Example 2.5,
+PDF pages 14--15, it defines the tensor-factor permutation symmetries
+$S_\sigma(A)=U_\sigma A U_\sigma^{-1}$ on $M_d(\C)^{\otimes N}$ and notes that
+the macroscopic observable
+\[
+ T_N(A)=\frac1N\sum_{r=1}^N
+ I_d^{\otimes(r-1)}\otimes A\otimes I_d^{\otimes(N-r)}
+\]
+is fixed by every $S_\sigma$.  It also notes that fixedness for the
+transposition $(1\,2)$ and long cycle $(1\,2\,\ldots\,N)$ already implies
+fixedness for all permutations.
+
+The question is transcribed as follows:
+\begin{quote}
+``A natural question that one can ask is if a symmetry version of Ogata's
+theorem holds. Namely, when $H_i$ satisfy certain symmetries and
+antisymmetries, is it true that the $H_i$ are nearby commuting matrices that
+also satisfy these symmetries. How much symmetry that is preserved for
+$m\ge 3$ is still not known.''
+\end{quote}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.94\linewidth]{figures/open_problem_crop.png}
+\caption{The open question in arXiv:2412.20795v1, PDF page 15.}
+\end{figure}
+
+Our scope is precise: can the two noncommuting permutation generators be
+preserved \emph{simultaneously} for the three macroscopic Pauli observables?
+The answer is no.  We do not claim that preserving one fixed $S_\sigma$ at a
+time is impossible.
+
+\section{Definitions and proof intuition}
+
+Let
+\[
+ s_1=\frac12\begin{pmatrix}0&1\\1&0\end{pmatrix},\qquad
+ s_2=\frac12\begin{pmatrix}0&-i\\i&0\end{pmatrix},\qquad
+ s_3=\frac12\begin{pmatrix}1&0\\0&-1\end{pmatrix}
+\]
+be the norm-$1/2$ Pauli spin matrices, and set
+$H_{i,N}=T_N(s_i)$ on $\mathcal H_N=(\C^2)^{\otimes N}$.
+Write $U_\sigma$ for the unitary permuting tensor factors according to
+$\sigma\in S_N$.
+
+For self-adjoint $X_1,X_2,X_3$ on a finite-dimensional Hilbert space, define
+their Pauli localizer
+\[
+ \mathcal L(X)=\sum_{i=1}^3 X_i\otimes\tau_i,
+ \qquad \tau_i=2s_i.
+\]
+The $\tau_i$ are the unit-norm Pauli matrices.
+
+\paragraph{Proof intuition.}
+Ogata's theorem permits its commuting approximants to mix the spin sectors in
+the tensor power.  Full permutation invariance removes that escape route.
+Indeed, any permutation-invariant operator reduces the symmetric tensor
+subspace $K_N=\Sym^N(\C^2)$.  The compressed macroscopic Pauli triple on
+$K_N$ is the ``fuzzy sphere,'' or normalized spin-$N/2$ triple.  Its localizer
+has one extra positive channel: positive and negative multiplicities are
+$N+2$ and $N$.  By contrast, a commuting triple has joint eigenvalues
+$z\in\mathbb R^3$, and each nonzero $z$ contributes the balanced pair
+$\{+|z|,-|z|\}$ to its localizer.  Since the fuzzy-sphere localizer has a
+uniform gap $1/2$ about zero, this inertia mismatch cannot disappear under a
+small perturbation.
+
+\section{Counterexample theorem}
+
+\begin{theorem}[uniform obstruction]\label{thm:main}
+For every integer $N\ge2$, let $H_{i,N}=T_N(s_i)$, $i=1,2,3$.  Suppose
+$Y_{1,N},Y_{2,N},Y_{3,N}\in M_{2^N}(\C)$ are self-adjoint and pairwise
+commuting, and suppose each $Y_{i,N}$ is fixed under conjugation by both
+$U_{(1\,2)}$ and $U_{(1\,2\,\ldots\,N)}$.  Then
+\[
+ \max_{1\le i\le3}\|Y_{i,N}-H_{i,N}\|\ge \frac16.
+\]
+Consequently, the macroscopic Pauli triple admits no asymptotically close
+commuting self-adjoint approximants preserving those two symmetries
+simultaneously.
+\end{theorem}
+
+The proof uses two elementary lemmas.
+
+\begin{lemma}[symmetric-block localizer]\label{lem:spin}
+Let $K_N=\Sym^N(\C^2)$ and let $X_i=H_{i,N}|_{K_N}$.  Then
+$\dim K_N=N+1$ and the spectrum of $\mathcal L(X)$ is
+\[
+ \left\{\frac12\ \text{with multiplicity }N+2,\quad
+ -\left(\frac12+\frac1N\right)\ \text{with multiplicity }N\right\}.
+\]
+In particular, $\mathcal L(X)$ is invertible, its distance from singular
+self-adjoint matrices is $1/2$, and its inertia is $(N+2,N)$.
+\end{lemma}
+
+\begin{proof}
+The symmetric power $K_N$ carries the irreducible spin $j=N/2$
+representation.  If $J_1,J_2,J_3$ are its generators, then
+$X_i=J_i/N$.  We compute the localizer directly, avoiding any index theorem.
+
+Choose the $J_3$-basis $\{|m\rangle:-j\le m\le j\}$, so
+\[
+ J_3|m\rangle=m|m\rangle,\qquad
+ J_-|m\rangle=\sqrt{(j+m)(j-m+1)}\,|m-1\rangle.
+\]
+Writing $\tau_\pm=(\tau_1\pm i\tau_2)/2$, we have
+\[
+ N\mathcal L(X)=J_3\otimes\tau_3+J_+\otimes\tau_-+J_-\otimes\tau_+.
+\]
+The vectors $|j\rangle\otimes|\!\uparrow\rangle$ and
+$|-j\rangle\otimes|\!\downarrow\rangle$ are eigenvectors with eigenvalue
+$j$.  For each $m=-j+1,\ldots,j$, the span of
+$|m\rangle\otimes|\!\downarrow\rangle$ and
+$|m-1\rangle\otimes|\!\uparrow\rangle$ is invariant, and the matrix of
+$N\mathcal L(X)$ there is
+\[
+ \begin{pmatrix}
+ -m & c_m\\ c_m&m-1
+ \end{pmatrix},\qquad
+ c_m^2=(j+m)(j-m+1)=j(j+1)-m(m-1).
+\]
+Its trace is $-1$ and its determinant is $-j(j+1)$, so its eigenvalues are
+$j$ and $-(j+1)$.  There are $2j=N$ such two-dimensional blocks, plus the two
+extreme eigenvectors.  Dividing by $N=2j$ gives the stated spectrum and
+multiplicities.
+\end{proof}
+
+\begin{lemma}[commuting triples have balanced inertia]\label{lem:balanced}
+If $Z_1,Z_2,Z_3$ are commuting self-adjoint operators on an $n$-dimensional
+complex Hilbert space and $\mathcal L(Z)$ is invertible, then its inertia is
+$(n,n)$.
+\end{lemma}
+
+\begin{proof}
+Simultaneously diagonalize the $Z_i$.  For every joint eigenvalue
+$z=(z_1,z_2,z_3)\in\mathbb R^3$, the corresponding two-dimensional block of
+$\mathcal L(Z)$ is $z_1\tau_1+z_2\tau_2+z_3\tau_3$, whose eigenvalues are
+$\pm|z|$.  Invertibility excludes $z=0$, so every joint eigenspace contributes
+equally to the positive and negative counts.
+\end{proof}
+
+\begin{proof}[Proof of Theorem \ref{thm:main}]
+The transposition and long cycle generate $S_N$.  Fixedness under conjugation
+by their unitaries therefore implies $[Y_{i,N},U_\sigma]=0$ for every
+$\sigma\in S_N$.  The group average
+\[
+ P_N=\frac1{N!}\sum_{\sigma\in S_N}U_\sigma
+\]
+is the orthogonal projection onto $K_N=\Sym^N(\C^2)$, hence every $Y_{i,N}$
+commutes with $P_N$.  The restrictions
+$Z_i=Y_{i,N}|_{K_N}$ are consequently self-adjoint and pairwise commuting,
+and
+\[
+ \|Z_i-X_i\|\le \|Y_{i,N}-H_{i,N}\|.
+\]
+
+Assume for contradiction that the maximum on the right is less than $1/6$.
+Since $\|\tau_i\|=1$,
+\[
+ \|\mathcal L(Z)-\mathcal L(X)\|
+ \le\sum_{i=1}^3\|Z_i-X_i\|<\frac12.
+\]
+Lemma \ref{lem:spin} says that $\mathcal L(X)$ has spectral gap $1/2$ about
+zero.  Thus the straight-line path from $\mathcal L(X)$ to $\mathcal L(Z)$
+remains invertible, so inertia is constant along it.  Hence
+$\mathcal L(Z)$ would have inertia $(N+2,N)$.  But the $Z_i$ commute on the
+$(N+1)$-dimensional space $K_N$, so Lemma \ref{lem:balanced} gives inertia
+$(N+1,N+1)$, a contradiction.
+\end{proof}
+
+\section{Checks, limitations, and novelty status}
+
+\paragraph{Independent calculation.}
+The included script \texttt{code/verify\_localizer.py} constructs the
+spin matrices and checks the exact spectrum, Casimir relation, commutators,
+and gap numerically for $1\le N\le24$.  Errors were below
+$3\cdot10^{-16}$.  This is only a consistency check; the proof above is exact.
+
+\paragraph{What is and is not disproved.}
+The theorem answers negatively the simultaneous preservation of the two
+specific linear multiplicative symmetries which the source identifies as
+generators of all tensor permutations.  It therefore also rules out
+simultaneously preserving all $S_N$ symmetries.  It does not rule out
+preservation of one fixed permutation symmetry at a time.  Nor does it decide
+the source's transpose, conjugation, real, symplectic, phase, or signed
+symmetry patterns.  Ordinary Ogata approximation remains valid: the
+counterexample shows only that its approximants must break enough
+tensor-permutation symmetry to couple the obstructed sector to other sectors.
+
+\paragraph{Bounded novelty audit.}
+The run indexes contained no duplicate.  On 11 August 2026, OpenAlex reported
+zero citing works for arXiv:2412.20795.  Exact-phrase searches for the source
+question and close searches combining Ogata approximation, tensor-permutation
+invariance, symmetric powers, spin matrices, Bott index, and localizers found
+no direct answer.  We inspected the source, Ogata's theorem
+\cite{Ogata2013}, Herrera's constructive qubit treatment \cite{Herrera2022},
+and standard Bott/localizer sources \cite{HastingsLoring,LoringGuide}.
+Those sources supply context for the obstruction but do not state this
+application to simultaneous permutation symmetry.  The novelty assessment is
+therefore moderate-to-high under a bounded search, not an exhaustive priority
+claim.
+
+\paragraph{Human-review recommendation.}
+Prioritize review.  Verify (i) that simultaneous preservation of the two
+generators is within the intended scope of Example 2.5, (ii) the reduction to
+$\Sym^N(\C^2)$, and (iii) the two localizer inertia calculations.  No
+conditional lemma remains.
+
+\begin{thebibliography}{9}
+\bibitem{Herrera2024}
+D. Herrera,
+\emph{A Projection Characterization and Symmetry Bootstrap for Elements of a
+von Neumann Algebra that are Nearby Commuting Elements},
+arXiv:2412.20795v1 (2024), Example 2.5.
+
+\bibitem{Ogata2013}
+Y. Ogata,
+\emph{Approximating macroscopic observables in quantum spin systems with
+commuting matrices}, J. Funct. Anal. \textbf{264} (2013), 2005--2033;
+arXiv:1111.5933.
+
+\bibitem{Herrera2022}
+D. Herrera,
+\emph{Constructing Nearby Commuting Matrices for Reducible Representations of
+$su(2)$ with an Application to Ogata's Theorem}, arXiv:2212.06012v2 (2023).
+
+\bibitem{HastingsLoring}
+M. B. Hastings and T. A. Loring,
+\emph{Almost Commuting Matrices, Localized Wannier Functions, and the Quantum
+Hall Effect}, J. Math. Phys. \textbf{51} (2010), 015214;
+arXiv:0910.5490.
+
+\bibitem{LoringGuide}
+T. A. Loring,
+\emph{A Guide to the Bott Index and Localizer Index}, arXiv:1907.11791 (2019).
+\end{thebibliography}
+
+\end{document}

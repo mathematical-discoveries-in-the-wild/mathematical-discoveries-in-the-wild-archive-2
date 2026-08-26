@@ -1,0 +1,186 @@
+\documentclass[10pt]{article}
+\usepackage[margin=0.84in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\E}{\mathbb E}
+\newcommand{\cC}{\mathcal C}
+
+\title{Smooth bounded nonlinear regression need not satisfy\\
+covariance domination in infinite dimension}
+\author{Run \texttt{fa\_banach\_001} --- \texttt{agent\_lane\_11}}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.} Candidate full counterexample; likely valid subject
+to human review. It answers negatively the natural smoothness-only
+interpretation of the covariance-bound question of
+Mollenhauer--M\"ucke--Sullivan~\cite{source}.
+
+\section{The question and the answer}
+
+For Hilbert-valued $X,Y$, the source uses the uncentred covariances
+$C_{YX}=\E[Y\otimes X]$ and $C_{XX}=\E[X\otimes X]$. In its concluding
+discussion it asks whether a nonlinear model $Y=f(X)+\varepsilon$ admits,
+under reasonable regularity assumptions, a finite $\beta$ such that
+\begin{equation}\label{eq:target}
+ C_{XY}C_{YX}\leq \beta C_{XX}^{,2}.
+\end{equation}
+This is equivalent to the relevant covariance range inclusion and to
+existence of a bounded linear least-squares minimiser.
+
+\begin{center}
+\includegraphics[width=0.92\textwidth]{figures/source_question_crop.png}
+\end{center}
+
+The following shows that even very strong smoothness, boundedness, and tail
+assumptions do not imply \eqref{eq:target}.
+
+\begin{theorem}\label{thm:main}
+There are a compactly supported random variable $X$ in $\ell_2$ with
+injective covariance and a globally Lipschitz Fr\'echet-$\cC^\infty$ map
+$f:\ell_2\to\R$, all of whose derivatives are globally bounded, such that,
+for the bounded noiseless response $Y=f(X)$, no finite $\beta$ satisfies
+\eqref{eq:target}. The same remains true after adding any independent,
+centred, square-integrable scalar noise to $Y$.
+\end{theorem}
+
+Thus bounded (hence sub-Gaussian) data, moments of every order, smoothness of
+every order, and exogenous noise do not by themselves force the desired
+range inclusion.
+
+\section{A smooth map with nonsquare-summable sampled slopes}
+
+Let $(e_n)_{n\geq2}$ be the standard basis of $\ell_2$, and set
+\[
+ p_n=2^{1-n},\qquad a_n=\frac1{\log(n+1)},\qquad
+ r_n=\frac1{\sqrt n},\qquad \rho_n=\frac{a_n}{4}.
+\]
+Then $\sum_{n\geq2}p_n=1$, $a_n\downarrow0$, and $(r_n)\notin\ell_2$.
+Choose $\eta\in\cC_c^\infty(\R)$ equal to one near zero and supported in
+$(-1,1)$, and define
+\begin{equation}\label{eq:f}
+ f(x)=\sum_{n\geq2}\sum_{\sigma\in\{-1,1\}}
+ \sigma a_nr_n\,
+ \eta\!\left(\frac{\|x-\sigma a_ne_n\|^2}{\rho_n^2}\right).
+\end{equation}
+
+\begin{lemma}\label{lem:smooth}
+The supports in \eqref{eq:f} are pairwise disjoint, and $f$ is globally
+Lipschitz and Fr\'echet-$\cC^\infty$ on $\ell_2$. For every $k\geq1$,
+$D^kf$ is globally bounded and $D^kf(0)=0$.
+\end{lemma}
+
+\begin{proof}
+Opposite centres at index $n$ are distance $2a_n$ apart. If $n\ne m$, the
+distance between any two centres is $(a_n^2+a_m^2)^{1/2}$, whereas the sum
+of their support radii is
+\[
+ \frac{a_n+a_m}{4}\leq\frac{\sqrt2}{4}(a_n^2+a_m^2)^{1/2}.
+\]
+Thus the supports are disjoint. They are locally finite away from their only
+accumulation point, zero.
+
+On the pair of supports indexed by $n$, the chain rule gives, for constants
+$M_k$ depending only on $k$ and $\eta$,
+\[
+ \|D^kf(x)\|\leq M_k a_nr_n\rho_n^{-k}
+ \leq 4^kM_k r_na_n^{1-k}
+ =4^kM_k\frac{(\log(n+1))^{k-1}}{\sqrt n}\longrightarrow0.
+\]
+Hence every derivative on $\ell_2\setminus\{0\}$ extends continuously by
+zero at the origin. Induction using the Banach-space fundamental theorem of
+calculus makes these extensions the Fr\'echet derivatives of $f$ at zero.
+For each fixed $k$ the displayed sequence is bounded, so $D^kf$ is globally
+bounded. The case $k=1$ implies global Lipschitz continuity.
+\end{proof}
+
+In particular,
+\begin{equation}\label{eq:sample-values}
+ f(\sigma a_ne_n)=\sigma a_nr_n.
+\end{equation}
+
+\section{Covariances and the divergent test vectors}
+
+Define the symmetric atomic design by
+\[
+ \mathbb P(X=\sigma a_ne_n)=\frac{p_n}{2}
+ \qquad(n\geq2,\ \sigma\in\{-1,1\})
+\]
+and put $Y=f(X)$. Both random variables are centred and bounded. Writing
+$\lambda_n=p_na_n^2>0$, direct calculation from
+\eqref{eq:sample-values} gives
+\begin{equation}\label{eq:covariances}
+ C_{XX}e_n=\lambda_ne_n,
+ \qquad
+ b:=\E[YX]=\sum_{n\geq2}\lambda_nr_ne_n.
+\end{equation}
+For scalar $Y$, $C_{YX}$ is represented by the vector $b$, and therefore
+$C_{XY}C_{YX}=b\otimes b$. Notice that $C_{XX}$ is injective.
+The support closure $\{0\}\cup\{\pm a_ne_n:n\geq2\}$ is compact because
+$a_n\to0$.
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Suppose \eqref{eq:target} holds. For $N\geq2$, take the finite vector
+\[
+ x^{(N)}=\sum_{n=2}^N\frac{r_n}{\lambda_n}e_n.
+\]
+Using \eqref{eq:covariances},
+\[
+ \langle b,x^{(N)}\rangle=\sum_{n=2}^N r_n^2,
+ \qquad
+ \|C_{XX}x^{(N)}\|^2=\sum_{n=2}^N r_n^2.
+\]
+Evaluation of the positive-operator inequality on $x^{(N)}$ yields
+\[
+ \left(\sum_{n=2}^N r_n^2\right)^2
+ \leq\beta\sum_{n=2}^N r_n^2,
+ \quad\text{so}\quad
+ \sum_{n=2}^N\frac1n\leq\beta.
+\]
+The harmonic partial sums diverge, a contradiction. Equivalently, the formal
+preimage of $b$ under $C_{XX}$ is $(r_n)$, which is not in $\ell_2$.
+
+If independent centred noise $\varepsilon$ is added, then
+$\E[\varepsilon X]=0$, so $C_{YX}$ and the same contradiction are unchanged.
+\end{proof}
+
+\section{Audit, novelty, and scope}
+
+The accompanying script checks probability normalisation, support separation,
+the derivative scales through order eight, and the exact finite-dimensional
+quadratic-form ratios. The proof itself is exact and does not rely on these
+computations.
+
+A bounded search on 13 August 2026 used the exact title, the displayed
+inequality, and the phrases ``covariance bounds,'' ``range inclusion,'' and
+``nonlinear infinite-dimensional regression.'' It found the source and nearby
+operator-learning literature, but no later answer to this question or this
+construction. The novelty verdict is therefore \emph{apparently new within
+the bounded search}, not an exhaustive bibliographic claim.
+
+Because the source intentionally leaves ``reasonable assumptions'' open,
+the theorem does not exclude tailored sufficient hypotheses such as a
+finite-rank design or an explicit source/range condition. It gives a sharp
+negative result: arbitrary-order smoothness of $f$, bounded/sub-Gaussian
+inputs and outputs, injective covariance, and independent noise are still
+insufficient.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+M. Mollenhauer, N. M\"ucke, and T. J. Sullivan,
+\emph{Learning linear operators: Infinite-dimensional regression as a
+well-behaved non-compact inverse problem}, arXiv:2211.08875v3 (2024),
+p.~31.
+\end{thebibliography}
+
+\end{document}

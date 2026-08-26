@@ -1,0 +1,278 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\C}{\mathbb C}
+\newcommand{\ns}{\operatorname{ns}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\1}{\mathbf 1}
+
+\title{Exact low-dimensional numerical-sparsity uncertainty constants\\
+and a stronger asymptotic lower bound}
+\author{Candidate partial solution packet for arXiv:1504.01014, Problem 3}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.9\textwidth}{\textbf{Status.}
+Candidate substantial partial solution, likely valid.  We determine
+$c(1),c(2),c(3)$ exactly and improve the source's asymptotic lower bound by a
+factor of $16.2$.  The exact problem for $n\ge4$ remains open.}}
+\end{center}
+
+\section{Source problem}
+
+For $x\in\C^n\setminus\{0\}$, Bandeira, Lewis, and Mixon define the
+\emph{numerical sparsity}
+\[
+ \ns(x)=\frac{\|x\|_1^2}{\|x\|_2^2}.
+\]
+Problem 3 on page 5 of \cite{BLM} asks for the exact value of
+\begin{equation}\label{eq:def-c}
+ c(n)=\frac1n\sup_{U\in\mathrm U(n)}
+       \inf_{x\ne0}\bigl(\ns(x)+\ns(Ux)\bigr).
+\end{equation}
+The source proves $\liminf c(n)\ge1/540000$ and records the upper bound
+$c(n)<1+1/n$ for $n\ge4$.
+
+\begin{figure}[ht]
+ \centering
+ \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+ \caption{Problem 3 and the original bounds on page 5 of \cite{BLM}.}
+\end{figure}
+
+\section{Proof intuition}
+
+In dimensions two and three, the trivial basis-vector upper bound can be
+attained by the Fourier matrix.  For a unit vector $z$, numerical sparsity is
+one plus twice the sum of the magnitudes of all pairwise coordinate products.
+For $F_2$, the sole output pair product is
+$(x_0^2-x_1^2)/2$.  For $F_3$, three phase-weighted sums of the three output
+pair products isolate, up to unit phases, the quadrics
+$x_0^2-x_1x_2$, $x_1^2-x_0x_2$, and $x_2^2-x_0x_1$.  Choosing the largest
+coordinate then turns the desired estimate into the elementary inequality
+$a(a+b+c)\ge a^2+b^2+c^2$.
+
+For the asymptotic bound, we keep the source's random-unitary restricted
+isometry theorem but replace its coarse width lemma.  Sorting a null vector
+into decreasing blocks of size $k$ controls the head by RIP and the tail by
+the $\ell_1$ norm.  Pythagoras then gives a width constant valid for every
+$\delta<1$, allowing a much larger RIP distortion and a much larger $k$.
+
+\section{The first three constants}
+
+Let $F_n$ denote the normalized Fourier matrix
+\[
+ (F_nx)_j=\frac1{\sqrt n}\sum_{r=0}^{n-1}\omega_n^{jr}x_r,
+ \qquad \omega_n=e^{-2\pi i/n}.
+\]
+
+\begin{theorem}[Exact low-dimensional values]\label{thm:small}
+For the constants in \eqref{eq:def-c},
+\[
+ \boxed{c(1)=2,\qquad c(2)=\frac32,\qquad c(3)=\frac43.}
+\]
+The matrices $F_2$ and $F_3$ attain the two nontrivial suprema.
+\end{theorem}
+
+\begin{proof}
+For every unit vector $v\in\C^n$, Cauchy--Schwarz gives $\ns(v)\le n$.
+Testing an arbitrary $U$ at a coordinate vector therefore gives
+\begin{equation}\label{eq:upper}
+ \inf_{x\ne0}\bigl(\ns(x)+\ns(Ux)\bigr)\le n+1.
+\end{equation}
+This proves the required upper bounds $3$ and $4$ in dimensions two and
+three.  The case $n=1$ is immediate.
+
+For $n=2$, normalize $\|x\|_2=1$ and put $y=F_2x$.  Then
+\[
+ \ns(x)+\ns(y)
+ =2+2\bigl(|x_0x_1|+|y_0y_1|\bigr),
+ \qquad y_0y_1=\frac{x_0^2-x_1^2}{2}.
+\]
+Write $a=\max(|x_0|,|x_1|)$ and $b=\min(|x_0|,|x_1|)$.  The reverse triangle
+inequality gives
+\begin{align*}
+ |x_0x_1|+|y_0y_1|
+ &\ge ab+\frac{a^2-b^2}{2}\\
+ &\ge \frac{a^2+b^2}{2}=\frac12,
+\end{align*}
+where the second inequality is $ab\ge b^2$.  Thus the uncertainty sum is at
+least $3$, and equality holds at a coordinate vector.  Hence $c(2)=3/2$.
+
+For $n=3$, define
+\[
+ S(z)=|z_0z_1|+|z_1z_2|+|z_2z_0|.
+\]
+For unit $z$ one has $\ns(z)=1+2S(z)$.  Put $y=F_3x$ and
+$\omega=\omega_3$.  Direct expansion, using $1+\omega+\omega^2=0$, gives
+\begin{align}
+ y_0y_1+y_1y_2+y_2y_0
+   &=x_0^2-x_1x_2,\label{eq:q0}\\
+ y_0y_1+\omega y_1y_2+\omega^2y_2y_0
+   &=\omega(x_1^2-x_0x_2),\label{eq:q1}\\
+ y_0y_1+\omega^2y_1y_2+\omega y_2y_0
+   &=\omega^2(x_2^2-x_0x_1).\label{eq:q2}
+\end{align}
+Each left side has modulus at most $S(y)$.  Relabel the coordinates so that
+their magnitudes are $a\ge b\ge c$.  The identity corresponding to the
+largest coordinate and the reverse triangle inequality yield
+\[
+ S(y)\ge a^2-bc.
+\]
+Consequently,
+\[
+ S(x)+S(y)
+ \ge ab+ac+bc+a^2-bc
+ =a(a+b+c)
+ \ge a^2+b^2+c^2=1.
+\]
+It follows that
+\[
+ \ns(x)+\ns(F_3x)=2+2(S(x)+S(F_3x))\ge4.
+\]
+Again a coordinate vector gives equality.  Combining with
+\eqref{eq:upper} proves $c(3)=4/3$.
+\end{proof}
+
+\section{A direct RIP-to-width estimate}
+
+We use the standard definition that a matrix $\Phi$ satisfies
+$(k,\delta)$-RIP if
+\[
+ (1-\delta)\|w\|_2^2\le\|\Phi w\|_2^2
+ \le(1+\delta)\|w\|_2^2
+\]
+for every $k$-sparse $w$.
+
+\begin{lemma}[Nullspace width for every $\delta<1$]\label{lem:width}
+If $\Phi$ satisfies $(k,\delta)$-RIP with $0<\delta<1$, then every
+$z\in\ker\Phi$ satisfies
+\begin{equation}\label{eq:width}
+ \|z\|_2^2\le\frac{2}{(1-\delta)k}\|z\|_1^2.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Partition the coordinates of $z$ into blocks $S_0,S_1,\ldots$ of size $k$
+(except possibly the last), in decreasing order of $|z_i|$.  For $j\ge1$,
+\[
+ \|z_{S_j}\|_2
+ \le\frac1{\sqrt k}\|z_{S_{j-1}}\|_1,
+\]
+and hence, with $A=\|z\|_1/\sqrt k$,
+\begin{equation}\label{eq:tailblocks}
+ \sum_{j\ge1}\|z_{S_j}\|_2\le A,
+ \qquad \|z_{S_0^c}\|_2\le A.
+\end{equation}
+Since $\Phi z=0$, RIP and the triangle inequality give
+\[
+ \sqrt{1-\delta}\,\|z_{S_0}\|_2
+ \le\|\Phi z_{S_0}\|_2
+ \le\sqrt{1+\delta}\sum_{j\ge1}\|z_{S_j}\|_2
+ \le\sqrt{1+\delta}\,A.
+\]
+Using the orthogonality of the two coordinate pieces and
+\eqref{eq:tailblocks},
+\[
+ \|z\|_2^2
+ =\|z_{S_0}\|_2^2+\|z_{S_0^c}\|_2^2
+ \le\left(\frac{1+\delta}{1-\delta}+1\right)A^2
+ =\frac{2}{1-\delta}\frac{\|z\|_1^2}{k}.
+\]
+\end{proof}
+
+\section{Improved asymptotic constant}
+
+We use Theorem 8 of \cite{BLM}: if $U$ is Haar unitary, then
+$\Phi=[I\ U]$ satisfies $(k,\delta)$-RIP with positive probability for all
+sufficiently large $n$ provided $\delta<1$ and
+\begin{equation}\label{eq:source-rip}
+ n\ge\frac{256}{\delta^2}k\log\!\left(\frac{en}{k}\right).
+\end{equation}
+
+\begin{theorem}[Improved asymptotic lower bound]\label{thm:asymptotic}
+For every sufficiently large $n$, there exists $U\in\mathrm U(n)$ such that
+\[
+ \ns(x)+\ns(Ux)\ge\frac3{20}\left\lfloor\frac n{5000}\right\rfloor
+ \qquad(x\in\C^n\setminus\{0\}).
+\]
+Consequently,
+\[
+ \boxed{\displaystyle\liminf_{n\to\infty}c(n)\ge\frac3{100000}.}
+\]
+\end{theorem}
+
+\begin{proof}
+Take $\delta=7/10$ and $k=\lfloor n/5000\rfloor$.  The function
+$\alpha\mapsto\alpha\log(e/\alpha)$ is increasing on $(0,1)$.  Therefore
+\begin{align*}
+ \frac{256}{\delta^2}\frac{k}{n}\log\!\left(\frac{en}{k}\right)
+ &\le \frac{25600}{49}\frac1{5000}\log(5000e)\\
+ &=\frac{256}{2450}\log(5000e)
+ <\frac{256}{2450}(9.52)<1.
+\end{align*}
+Thus \eqref{eq:source-rip} holds.  The probability in \cite[Theorem 8]{BLM}
+is positive once $n$ is sufficiently large, so there exists a unitary $U$
+for which $\Phi=[I\ U]$ has this RIP.
+
+For nonzero $x$, put $z=(Ux,-x)\in\ker[I\ U]$.  Lemma~\ref{lem:width}
+gives
+\[
+ \frac{\|z\|_1^2}{\|z\|_2^2}\ge\frac{(1-\delta)k}{2}=\frac{3k}{20}.
+\]
+On the other hand, unitarity and the elementary inequality
+$(a+b)^2/2\le a^2+b^2$ give
+\begin{align*}
+ \frac{\|z\|_1^2}{\|z\|_2^2}
+ &=\frac{(\|x\|_1+\|Ux\|_1)^2}{2\|x\|_2^2}\\
+ &\le\frac{\|x\|_1^2+\|Ux\|_1^2}{\|x\|_2^2}
+ =\ns(x)+\ns(Ux).
+\end{align*}
+This proves the finite-$n$ assertion.  Divide by $n$ and let $n$ tend to
+infinity.
+\end{proof}
+
+\section{Limitations and novelty check}
+
+Theorem~\ref{thm:small} does not determine $c(4)$ or any later exact value.
+Theorem~\ref{thm:asymptotic} improves only the lower constant; it does not
+identify the asymptotically optimal one.  Numerical exploration of $F_4$,
+$F_5$, and a small sample of Haar unitaries was used only to decide where
+further exact arguments cease to be credible and supplies no proof claim.
+
+A bounded literature search on 11 August 2026 used the exact source title and
+arXiv id, the authors, the formula $\ns(x)+\ns(Ux)$, ``numerical sparsity
+optimal unitary,'' and small-dimensional discrete Fourier $\ell_1$
+uncertainty.  No later paper explicitly answering Problem 3 or recording the
+values $c(2),c(3)$ was found.  Nearby finite-dimensional uncertainty papers use
+different localization functionals.  Novelty confidence is moderate for the
+exact small-dimensional values and moderate-to-high for the explicit
+factor-$16.2$ improvement obtained from the source's own RIP theorem.
+
+\paragraph{Human-review recommendation.}
+Check the Fourier phase convention in \eqref{eq:q0}--\eqref{eq:q2}, the
+largest-coordinate inequality in dimension three, the decreasing-block bound
+\eqref{eq:tailblocks}, and the numerical inequality verifying
+\eqref{eq:source-rip}.  If these pass, retain this as a substantial partial
+answer to Problem 3.
+
+\begin{thebibliography}{9}
+\bibitem{BLM}
+A.~S. Bandeira, M.~E. Lewis, and D.~G. Mixon,
+\emph{Discrete uncertainty principles and sparse signal processing},
+J. Fourier Anal. Appl. 24 (2018), 935--956; arXiv:1504.01014.
+\end{thebibliography}
+
+\end{document}

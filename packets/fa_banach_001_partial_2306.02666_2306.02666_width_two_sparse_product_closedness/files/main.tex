@@ -1,0 +1,311 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{example}{Example}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\rank}{\operatorname{rank}}
+
+\title{Exact closedness of a width-two sparse matrix-product image}
+\author{Candidate partial result for arXiv:2306.02666}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.} \texttt{candidate\_partial\_likely\_valid}. This
+packet proves an exact hidden-width-two subcase of the efficient closedness
+problem and gives an exact Bernoulli probability for the resulting
+nonclosedness certificate. It does not solve the unrestricted-width problem.
+
+\begin{abstract}
+For two coordinate rectangles $S_i\times T_i$, consider the set of sums of one
+rank-one matrix on each rectangle. We give a necessary and sufficient
+combinatorial criterion for this set to be closed. Besides the familiar local
+LU degeneration, exactly two transposed ``coalescing direction'' degenerations
+occur. The criterion is linear-time after the supports are read. As an upgrade,
+we derive the exact probability of nonclosedness for independent Bernoulli
+supports. Through Theorem 3.1 of the source paper, every nonclosed pattern
+certifies a sparse ReLU architecture for which some finite regression problem
+has no optimum.
+\end{abstract}
+
+\section{Source question}
+
+The source is Q.-T. Le, E. Riccietti, and R. Gribonval, \emph{Does a sparse
+ReLU network training problem always admit an optimum?}, arXiv:2306.02666v2
+\cite{source}. Section 3.3 asks for more efficient algorithms deciding the
+closedness of the sparse matrix-product image $\mathcal L_{\mathbf I}$ and
+leaves the general problem open. Question 3.2 asks:
+
+\begin{quote}
+If the supports of the weight matrices are randomly sampled from a
+distribution, what is the probability that the corresponding training problem
+potentially admits no optimal solutions?
+\end{quote}
+
+The source then gives a polynomial sufficient detector for one-hidden-layer
+networks, explicitly noting that it may have false negatives. Figure
+\ref{fig:source} reproduces the full source context from page 7.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{Source page 7: the efficient-decision problem, Question 3.2, and the
+false-negative limitation of the existing detector.}
+\label{fig:source}
+\end{figure}
+
+\section{Setup}
+
+For $S\subseteq[m]$ and $T\subseteq[n]$, define the coordinate rank-one cone
+\[
+ \mathcal C(S,T)=\{uv^{\mathsf T}:u\in\R^m,\ v\in\R^n,
+       \supp(u)\subseteq S,\ \supp(v)\subseteq T\}.
+\]
+For two hidden components, the source's two-factor linear image is precisely
+\[
+ \mathcal L=\mathcal C(S_1,T_1)+\mathcal C(S_2,T_2).
+ \tag{1}\label{eq:L}
+\]
+Put
+\[
+ S_0=S_1\cap S_2,\quad T_0=T_1\cap T_2,\quad
+ S_i^\circ=S_i\setminus S_{3-i},\quad
+ T_i^\circ=T_i\setminus T_{3-i}.
+\]
+
+\section{Proof intuition}
+
+Any escaping factor sequence must cancel its leading rank-one term inside the
+common rectangle $S_0\times T_0$. There are only three ways for the finite
+first-order residue to become impossible to express by two limiting rank-one
+terms. One rectangle can carry an exclusive row and column, producing the
+usual $2\times2$ LU anti-diagonal. Alternatively, the two rank-one column
+directions can coalesce while two exclusive columns pin both of them to the
+same limiting line, leaving a transverse common column; the transpose gives
+the third case.
+
+If none of those mechanisms is available, a short set-theoretic case split
+forces the rectangles to be disjoint, cross-nested, or one-dimensional in the
+only noncomparable direction. The cross-nested image is exactly a determinantal
+set described by three rank inequalities, so it is closed. This also explains
+why the classification yields an immediate decision algorithm. The original
+general-width problem remains open because three or more cones can fill one
+another's boundary points or support genuinely multi-term cancellations.
+
+\section{Exact classification}
+
+\begin{theorem}[Hidden width two]\label{thm:classification}
+The set $\mathcal L$ in \eqref{eq:L} is nonclosed if and only if $S_0$ and
+$T_0$ are nonempty and at least one of the following holds:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $S_1^\circ,T_1^\circ$ are nonempty, or
+      $S_2^\circ,T_2^\circ$ are nonempty;
+\item $|S_0|\ge2$ and both $T_1^\circ,T_2^\circ$ are nonempty;
+\item $|T_0|\ge2$ and both $S_1^\circ,S_2^\circ$ are nonempty.
+\end{enumerate}
+Consequently, closedness can be decided in $O(m+n)$ time from bit-vector
+representations of the four supports.
+\end{theorem}
+
+We first record the elementary closed-case lemma used in the converse.
+
+\begin{lemma}[Cross-nested block lemma]\label{lem:block}
+Suppose $S_2\subseteq S_1$ and $T_1\subseteq T_2$. Put
+$A=S_1\setminus S_2$, $C=S_2$, $B=T_2\setminus T_1$, and $D=T_1$.
+After ordering rows as $A,C$ and columns as $B,D$, the image $\mathcal L$ is
+exactly the set of block matrices
+\[
+ M=\begin{pmatrix}0&Y\\X&Z\end{pmatrix}
+ \quad\text{such that}\quad
+ \rank M\le2,\quad\rank X\le1,\quad\rank Y\le1. \tag{2}\label{eq:block}
+\]
+In particular, $\mathcal L$ is closed.
+\end{lemma}
+
+\begin{proof}
+Every element of $\mathcal L$ is the sum of a rank-one matrix supported on
+$(A\cup C)\times D$ and one supported on $C\times(B\cup D)$, so it satisfies
+\eqref{eq:block}.
+
+Conversely, first suppose $X$ and $Y$ are nonzero. The columns over $B$ span a
+line $V$ contained in the $C$ coordinate subspace. Because $Y\ne0$, some
+column over $D$ is not in $V$. Since $\rank M\le2$, this column together with
+$V$ spans the entire column space. Hence every $D$-column is the sum of a
+multiple of one fixed vector in $A\cup C$ and a multiple of the generator of
+$V$, while every $B$-column uses only the latter. These are the required two
+rank-one summands.
+
+If $X\ne0$ and $Y=0$, the same argument applies with all column vectors in the
+$C$ coordinate subspace: the $B$-columns span one line and the total column
+space has dimension at most two. The case $X=0$, $Y\ne0$ follows by applying
+this argument to the transpose. If $X=Y=0$, then $Z$ has rank at most two and
+is the sum of two rank-one matrices supported on the common rectangle
+$C\times D$. Thus every matrix in \eqref{eq:block} belongs to $\mathcal L$.
+The right-hand side of \eqref{eq:block} is cut out by support equations and
+minors, hence is closed.
+\end{proof}
+
+\begin{proof}[Proof of Theorem \ref{thm:classification}]
+Assume first that (i) holds for the first rectangle. Choose
+$a\in S_1^\circ$, $c\in S_0$, $b\in T_1^\circ$, and $d\in T_0$. For $t>0$,
+\[
+ (t e_c+e_a)(e_d+t^{-1}e_b)^{\mathsf T}
+       +(-t e_c)e_d^{\mathsf T}
+ \longrightarrow e_c e_b^{\mathsf T}+e_a e_d^{\mathsf T}=:M.
+ \tag{3}
+\]
+The two summands on the left belong to the two cones. On rows $a,c$ and columns
+$b,d$, the second cone can contribute only at $(c,d)$, while a rank-one first
+summand cannot match the anti-diagonal entries of $M$. Thus $M\notin\mathcal L$.
+The other half of (i) is symmetric.
+
+For (ii), choose distinct $p,q\in S_0$, columns
+$b\in T_1^\circ$, $e\in T_2^\circ$, and $d\in T_0$. Then
+\[
+ e_p(e_b-t e_d)^{\mathsf T}
+ +(e_p+t^{-1}e_q)(e_e+t e_d)^{\mathsf T}
+ \longrightarrow
+ e_p e_b^{\mathsf T}+e_p e_e^{\mathsf T}+e_q e_d^{\mathsf T}=:N.
+ \tag{4}
+\]
+If $N$ were in $\mathcal L$, its exclusive $b$-column would force the first
+rank-one column direction to be $\R e_p$, and its exclusive $e$-column would
+force the second direction to be $\R e_p$. Every common column would then lie
+in $\R e_p$, contradicting the $d$-column $e_q$. Hence $N\notin\mathcal L$.
+Case (iii) is the transpose of this construction. These sequences prove
+nonclosedness in all listed cases.
+
+Conversely, suppose $S_0,T_0$ are nonempty and none of (i)--(iii) holds. If
+both $S_1^\circ$ and $S_2^\circ$ are nonempty, failure of (i) forces
+$T_1=T_2$; failure of (iii) then forces $|T_0|=1$. In that case both cones lie
+in a one-dimensional column coordinate space, and their sum is a linear
+subspace. The transposed argument treats the case in which both
+$T_1^\circ,T_2^\circ$ are nonempty.
+
+In every remaining case, after possibly interchanging indices, the supports
+are cross-nested: $S_2\subseteq S_1$ and $T_1\subseteq T_2$. Lemma
+\ref{lem:block} shows that their sum is closed. If $S_0$ or $T_0$ is empty,
+the two cones occupy disjoint coordinate sets, so coordinate projection
+separates two convergent summands and their sum is closed. This exhausts all
+possibilities and proves the converse.
+\end{proof}
+
+\begin{example}[A minimal false negative of the local-LU detector]
+Let $S_1=S_2=\{1,2\}$, $T_1=\{1,3\}$, and $T_2=\{2,3\}$. The source detector
+cannot find three entries exclusive to one rank-one rectangle around a shared
+corner, because the row supports coincide. Nevertheless (ii) applies, and
+\[
+ e_1(e_1-t e_3)^{\mathsf T}
+ +(e_1+t^{-1}e_2)(e_2+t e_3)^{\mathsf T}
+ \longrightarrow e_1e_1^{\mathsf T}+e_1e_2^{\mathsf T}+e_2e_3^{\mathsf T}
+\]
+is a missing boundary point. Thus the sufficient detector's admitted false
+negatives already occur with two hidden components.
+\end{example}
+
+\section{Upgrade: exact Bernoulli probability}
+
+Let every row membership in $S_1,S_2$ be independent Bernoulli($\alpha$), and
+every column membership in $T_1,T_2$ independent Bernoulli($\beta$), with the
+row and column masks independent. For a row, let
+$\rho=(\rho_{11},\rho_{10},\rho_{01},\rho_{00})$ count the four membership
+types across the $m$ rows. Define $\tau$ analogously across the $n$ columns.
+For $p\in[0,1]$ and $\kappa_\bullet$ summing to $k$, put
+\[
+ w_{k,p}(\kappa)=\frac{k!}{\prod_z\kappa_z!}
+ (p^2)^{\kappa_{11}}[p(1-p)]^{\kappa_{10}+\kappa_{01}}
+ [(1-p)^2]^{\kappa_{00}}.
+\]
+Let $\Phi(\rho,\tau)$ be the Boolean condition
+\[
+\begin{split}
+ &\rho_{11}\ge1,\quad\tau_{11}\ge1,\quad\text{and}\\
+ &[(\rho_{10}\ge1\wedge\tau_{10}\ge1)
+ \vee(\rho_{01}\ge1\wedge\tau_{01}\ge1)
+ \vee(\rho_{11}\ge2\wedge\tau_{10}\ge1\wedge\tau_{01}\ge1)\\
+ &\hspace{38mm}\vee(\tau_{11}\ge2\wedge\rho_{10}\ge1\wedge\rho_{01}\ge1)].
+\end{split}\tag{5}\label{eq:phi}
+\]
+
+\begin{corollary}\label{cor:probability}
+Under this model, the exact probability that $\mathcal L$ is nonclosed is
+\[
+ \boxed{\displaystyle
+ \sum_{\rho_{11}+\rho_{10}+\rho_{01}+\rho_{00}=m}
+ \sum_{\tau_{11}+\tau_{10}+\tau_{01}+\tau_{00}=n}
+ w_{m,\alpha}(\rho)w_{n,\beta}(\tau)\mathbf1_{\Phi(\rho,\tau)}.}
+ \tag{6}\label{eq:probability}
+\]
+It can be evaluated in $O(m+n)$ arithmetic operations by retaining only the
+threshold states $0,1,\ge2$ for common counts and $0,\ge1$ for exclusive counts.
+Every mask counted in \eqref{eq:probability} is potentially ill-posed for a suitable
+finite regression problem in the sense of the source paper.
+\end{corollary}
+
+\begin{proof}
+The four row categories have probabilities
+$\alpha^2,\alpha(1-\alpha),\alpha(1-\alpha),(1-\alpha)^2$, so $\rho$ has the
+displayed multinomial mass; the column count has the analogous independent
+law with parameter $\beta$. Condition \eqref{eq:phi} is exactly Theorem
+\ref{thm:classification} written in terms of these counts, proving the sum.
+The finite-state dynamic program follows because no larger count is
+distinguished by $\Phi$. Finally, Theorem 3.1 and Proposition 3.1 of the source
+turn nonclosedness of $\mathcal L$ into nonclosedness of a finite realization
+set and hence a regression instance whose infimum is not attained.
+\end{proof}
+
+\section{Verification, novelty, and limitations}
+
+The accompanying script exhaustively checks that the theorem's nonclosed and
+proved-closed cases partition all support patterns for $m,n\le4$. It also
+checks formula \eqref{eq:probability} against direct weighted enumeration for
+$m,n\le3$ and 27 dimension/parameter choices. These computations verify the
+case split and bookkeeping, not the proof.
+
+A bounded primary-source search on 11 August 2026 used the exact source title,
+the phrases ``rank-one supports closedness'' and ``sum of two rank-one
+cones'', and the source's cited fixed-support factorization paper
+arXiv:2112.00386 \cite{fsmf}. It found the source's sufficient local-LU
+criterion but no exact hidden-width-two converse or the two coalescing-direction
+degenerations. Novelty confidence is moderate because this elementary result
+may exist under other terminology.
+
+The main limitation is structural: for hidden width at least three, a third
+cone can fill a two-cone boundary point or join a multi-term cancellation.
+Also, $\mathcal L$ closed does not imply that every ReLU realization set is
+closed. Corollary \ref{cor:probability} therefore gives the exact probability
+of the source's linear nonclosedness certificate at width two, but only a lower
+bound for the probability of all potentially ill-posed ReLU masks.
+
+\paragraph{Human-review recommendation.}
+Recommended for expert review as a fully proved substantial partial result.
+The key checks are Lemma \ref{lem:block}, exhaustion of the support case split,
+and possible prior appearance of the classification in matrix-factorization
+geometry.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+Q.-T. Le, E. Riccietti, and R. Gribonval,
+\emph{Does a sparse ReLU network training problem always admit an optimum?},
+Advances in Neural Information Processing Systems 36 (2023),
+arXiv:2306.02666.
+
+\bibitem{fsmf}
+Q.-T. Le, E. Riccietti, and R. Gribonval,
+\emph{Spurious Valleys, NP-hardness, and Tractability of Sparse Matrix
+Factorization With Fixed Support},
+SIAM J. Matrix Anal. Appl. 44 (2023), 503--529,
+arXiv:2112.00386.
+\end{thebibliography}
+
+\end{document}

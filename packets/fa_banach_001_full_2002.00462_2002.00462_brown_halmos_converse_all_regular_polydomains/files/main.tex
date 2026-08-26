@@ -1,0 +1,260 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.82in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!55!black,urlcolor=blue!55!black,citecolor=blue!55!black}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newcommand{\cH}{\mathcal H}
+\newcommand{\cK}{\mathcal K}
+\newcommand{\cF}{\mathcal F}
+\newcommand{\cR}{\mathcal R}
+\newcommand{\F}{\mathbb F}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Phiop}{\Phi}
+\DeclareMathOperator{\ran}{Ran}
+
+\title{The Brown--Halmos converse for all regular polydomains}
+\author{Candidate full solution to the open problem in arXiv:2002.00462}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.94\textwidth}{\textbf{Status: candidate full proof, likely valid, pending human review.}
+The proof closes the converse left open after Theorem 4.3 of Popescu's paper: every bounded solution of its Brown--Halmos equations is a weighted multi-Toeplitz operator for an arbitrary noncommutative regular polydomain.}}
+\end{center}
+
+\section*{Source problem}
+
+Gelu Popescu, \emph{Multi-Toeplitz operators associated with regular polydomains}, arXiv:2002.00462v1 (2020) \cite{Popescu}.  The open problem appears on PDF page 28, immediately after Theorem 4.3.  The source proves that weighted multi-Toeplitz operators satisfy the Brown--Halmos condition and asks for the converse for all regular polydomains; only the poly-hyperball case was known there.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\textbf{Transcription.} ``While we believe that the converse is true for all the noncommutative polydomains $\mathbf D_{\mathbf f}^{\mathbf m}$, for now, it remains an open problem.''
+
+\section*{Result at a glance}
+
+The converse is true.  The Brown--Halmos equation in coordinate $i$ is first compressed back to the Fock space.  It becomes the elementary defect identity
+\[
+ (I-\Phi_i)^{m_i}(T)=T-P_iTP_i,                                      \tag{1}
+\]
+where $P_i$ projects onto basis vectors whose $i$th word is nonempty.  The right side has matrix entries only on the ``boundary'' where at least one $i$th word is empty.  On each fixed matrix coefficient, the formal inverse
+\[
+ (I-\Phi_i)^{-m_i}=\sum_{p\geq0}\binom{p+m_i-1}{m_i-1}\Phi_i^p       \tag{2}
+\]
+is actually a \emph{finite} sum.  Evaluating its paths gives exactly Popescu's coefficients $b_{i,\delta}^{(m_i)}$.  Thus (1) forces both right-comparability and the precise Toeplitz weight recurrence.  Applying this independently in all $k$ coordinates yields the defining weighted multi-Toeplitz matrix relation.
+
+\section*{Notation and the Brown--Halmos equation}
+
+Fix the setting of \cite[Sections 1 and 4]{Popescu}.  For each coordinate $i$, let
+$f_i=\sum_{|\alpha|\geq1}a_{i,\alpha}Z_{i,\alpha}$ be positive regular and let $m_i\geq1$.  Put $b_{i,g_0}^{(m_i)}=1$ and, for a nonempty word $\delta$,
+\[
+b_{i,\delta}^{(m_i)}
+=\sum_{p=1}^{|\delta|}\binom{p+m_i-1}{m_i-1}
+  \sum_{\substack{\eta_1\cdots\eta_p=\delta\\ |\eta_j|\geq1}}
+  a_{i,\eta_1}\cdots a_{i,\eta_p}.                                 \tag{3}
+\]
+On $\cF:=\bigotimes_{s=1}^kF^2(H_{n_s})$, let $\boldsymbol\Lambda_{i,\alpha}$ be the weighted right creation operators.  In one coordinate they satisfy
+\[
+ \Lambda_{i,\alpha}e_\gamma
+ =\sqrt{\frac{b_{i,\gamma}^{(m_i)}}
+                   {b_{i,\gamma\widetilde\alpha}^{(m_i)}}}
+   e_{\gamma\widetilde\alpha}.
+\]
+On $B(\cK\otimes\cF)$ define
+\[
+ \Phi_i(X)=\sum_{|\alpha|\geq1}a_{i,\widetilde\alpha}
+ (I_{\cK}\otimes\boldsymbol\Lambda_{i,\alpha})X
+ (I_{\cK}\otimes\boldsymbol\Lambda_{i,\alpha})^* .                \tag{4}
+\]
+The sum is WOT-convergent.  Let $C_i=C_{\widetilde f_i,I\otimes\boldsymbol\Lambda_i}$ be the row operator in \cite[Section 4]{Popescu}, $\cR_i=\ran C_i^*$, and
+\[
+ C_i'=C_i(C_i^*C_i)^{-1}:\cR_i\longrightarrow\cK\otimes\cF.
+\]
+Its range projection is
+\[
+ P_i=C_i(C_i^*C_i)^{-1}C_i^*,                                      \tag{5}
+\]
+which is the projection onto tensors whose $i$th word is nonempty.  The source Brown--Halmos equation is
+\[
+ C_i^{\prime *}TC_i'
+ =P_{\cR_i}\operatorname{diag}
+ \left(\sum_{j=0}^{m_i-1}(-1)^j\binom{m_i}{j+1}\Phi_i^j(T)\right)
+ \big|_{\cR_i}.                                                     \tag{BH$_i$}
+\]
+
+Two words $\omega,\gamma$ are right-comparable when one is a right suffix of the other: $\omega=\sigma\gamma$ or $\gamma=\beta\omega$.  Coordinatewise comparability, the simplification map $\mathbf s(\boldsymbol\omega,\boldsymbol\gamma)=(\boldsymbol\omega',\boldsymbol\gamma')$, and the weights
+\[
+ \tau_{(\boldsymbol\omega,\boldsymbol\gamma)}
+ =\prod_{i=1}^k
+ \sqrt{\frac{b_{i,\min\{\omega_i,\gamma_i\}}^{(m_i)}}
+              {b_{i,\max\{\omega_i,\gamma_i\}}^{(m_i)}}}          \tag{6}
+\]
+are as in \cite[Definition 1.2]{Popescu}; here min and max mean the shorter and longer word in a comparable pair.
+
+\section*{Proof intuition}
+
+The source equation looks difficult because it lives on the range of a long row operator and contains an alternating polynomial in a completely positive map.  Multiplying it by $C_i$ and $C_i^*$ removes both complications: the Cauchy duals become the nonvacuum projection, while the alternating polynomial becomes $I-(I-\Phi_i)^{m_i}$.
+
+The remaining equation is a noncommutative renewal equation.  Its defect is supported at the vacuum boundary.  Although $(I-\Phi_i)^{-m_i}$ need not converge in operator norm, no analytic convergence is needed: $\Phi_i^p(X)$ cannot contribute to a coefficient indexed by words of lengths below $p$.  Hence the negative-binomial inverse is locally finite.  A contributing path strips a common right suffix.  It can hit the vacuum boundary precisely when the two words are comparable, and the total weight of all factorizations of that suffix is, by definition, $b_{i,\delta}^{(m_i)}$.  This is exactly the missing Toeplitz recurrence.
+
+\section*{Formal proof}
+
+\begin{lemma}[Boundary-defect form]\label{lem:defect}
+If $T$ satisfies $(\mathrm{BH}_i)$, then
+\[
+ (I-\Phi_i)^{m_i}(T)=T-P_iTP_i.                                    \tag{7}
+\]
+Consequently, the right side has zero matrix coefficient whenever both $i$th words are nonempty.
+\end{lemma}
+
+\begin{proof}
+Multiply $(\mathrm{BH}_i)$ on the left by $C_i|_{\cR_i}$ and on the right by $C_i^*$.  Since $C_i=C_iP_{\cR_i}$, $P_{\cR_i}C_i^*=C_i^*$, and
+\[
+ C_iC_i^{\prime *}=C_i'C_i^*=P_i,
+\]
+the left side becomes $P_iTP_i$.  From the row definition,
+\[
+ C_i\operatorname{diag}(X)C_i^*=\Phi_i(X).
+\]
+Thus the right side becomes
+\[
+ \sum_{j=0}^{m_i-1}(-1)^j\binom{m_i}{j+1}\Phi_i^{j+1}(T)
+ =T-(I-\Phi_i)^{m_i}(T),
+\]
+by the binomial identity.  Rearranging proves (7).  Formula (5) shows that $P_iTP_i$ and $T$ have the same coefficient when both $i$th words are nonempty, and that $P_iTP_i$ has zero coefficient when either is empty.
+\end{proof}
+
+\begin{lemma}[Coefficientwise negative-binomial inverse]\label{lem:inverse}
+Let $X,D\in B(\cK\otimes\cF)$ satisfy $D=(I-\Phi_i)^{m_i}X$.  For any basis-word tuples $\boldsymbol\omega,\boldsymbol\gamma$ and $x,y\in\cK$,
+\[
+ \langle X(x\otimes e_{\boldsymbol\gamma}),y\otimes e_{\boldsymbol\omega}\rangle
+ =\sum_{p=0}^{\min\{|\omega_i|,|\gamma_i|\}}
+ \binom{p+m_i-1}{m_i-1}
+ \langle\Phi_i^p(D)(x\otimes e_{\boldsymbol\gamma}),
+              y\otimes e_{\boldsymbol\omega}\rangle.              \tag{8}
+\]
+\end{lemma}
+
+\begin{proof}
+Every summand in (4) removes a nonempty common right suffix from the two $i$th indexing words before it reads a coefficient of $X$.  Therefore the displayed coefficient of $\Phi_i^p(X)$ is zero for $p>\min\{|\omega_i|,|\gamma_i|\}$.  On this coefficient all power series are consequently finite.  The formal scalar identity
+\[
+ \left(\sum_{p\geq0}\binom{p+m_i-1}{m_i-1}z^p\right)(1-z)^{m_i}=1
+\]
+may thus be substituted with $z=\Phi_i$ coefficientwise, giving (8).  This also justifies the argument for an infinite-support $f_i$; only finitely many suffixes of fixed finite words can occur.
+\end{proof}
+
+\begin{lemma}[One-coordinate Toeplitz recurrence]\label{lem:recurrence}
+Suppose $T$ satisfies $(\mathrm{BH}_i)$.  Hold all coordinates other than $i$ fixed.
+
+If $\omega_i$ and $\gamma_i$ are not right-comparable, then the corresponding matrix coefficient of $T$ is zero.  If $\omega_i=\sigma_i\gamma_i$, then
+\begin{equation}
+\tag{9}
+\begin{split}
+&\langle T(x\otimes e_{\boldsymbol\gamma}),y\otimes e_{\boldsymbol\omega}\rangle\\
+&\qquad=\sqrt{\frac{b_{i,\sigma_i}^{(m_i)}b_{i,\gamma_i}^{(m_i)}}
+                         {b_{i,\omega_i}^{(m_i)}}}
+\langle T(x\otimes e_{\boldsymbol\gamma^{\circ i}}),
+            y\otimes e_{\boldsymbol\omega^{\sigma i}}\rangle,
+\end{split}
+\end{equation}
+where $\boldsymbol\gamma^{\circ i}$ replaces $\gamma_i$ by the empty word and $\boldsymbol\omega^{\sigma i}$ replaces $\omega_i$ by $\sigma_i$.  The symmetric formula holds when $\gamma_i=\beta_i\omega_i$.
+\end{lemma}
+
+\begin{proof}
+Set $D_i=T-P_iTP_i$.  Lemmas \ref{lem:defect} and \ref{lem:inverse} express the desired coefficient as the locally finite inverse applied to $D_i$.  A term can be nonzero only if its path strips the same right suffix $\delta$ from $\omega_i$ and $\gamma_i$ and leaves at least one empty prefix, because $D_i$ is boundary-supported.  Such a $\delta$ exists exactly when the words are right-comparable.  This proves the zero assertion.
+
+Assume $\omega_i=\sigma_i\gamma_i$.  The only boundary-reaching common suffix is $\delta=\gamma_i$.  A $p$-step path is equivalent, after reversing the right-creation indices, to a factorization
+$\gamma_i=\eta_1\cdots\eta_p$ into nonempty words.  Its scalar $f_i$ coefficient is
+$a_{i,\eta_1}\cdots a_{i,\eta_p}$, and the creation weights telescope to
+\[
+ \sqrt{\frac{b_{i,\sigma_i}^{(m_i)}}{b_{i,\omega_i}^{(m_i)}}}
+ \sqrt{\frac{1}{b_{i,\gamma_i}^{(m_i)}}}.
+\]
+Summing over $p$ with the coefficient in (8), formula (3) says that the total path coefficient is
+\[
+ b_{i,\gamma_i}^{(m_i)}
+ \sqrt{\frac{b_{i,\sigma_i}^{(m_i)}}
+              {b_{i,\omega_i}^{(m_i)}b_{i,\gamma_i}^{(m_i)}}}
+ =\sqrt{\frac{b_{i,\sigma_i}^{(m_i)}b_{i,\gamma_i}^{(m_i)}}
+              {b_{i,\omega_i}^{(m_i)}}}.
+\]
+At the boundary, $D_i$ has the same coefficient as $T$, proving (9).  Interchanging input and output gives the other orientation.  Empty and equal-word cases are included: $b_{i,g_0}^{(m_i)}=1$.
+\end{proof}
+
+\begin{theorem}[Full Brown--Halmos converse]\label{thm:main}
+Let $\cK$ be separable and let $T\in B(\cK\otimes\bigotimes_{i=1}^kF^2(H_{n_i}))$.  For an arbitrary noncommutative regular polydomain $\mathbf D_{\mathbf f}^{\mathbf m}$, if $T$ satisfies Popescu's Brown--Halmos equation $(\mathrm{BH}_i)$ for every $i=1,\dots,k$, then $T$ is a weighted multi-Toeplitz operator associated with $\mathbf D_{\mathbf f}^{\mathbf m}$.
+
+Together with \cite[Theorem 4.3]{Popescu}, the Brown--Halmos condition is therefore necessary and sufficient for weighted multi-Toeplitzness on every such regular polydomain.
+\end{theorem}
+
+\begin{proof}
+Apply Lemma \ref{lem:recurrence} successively for $i=1,\dots,k$.  If any coordinate pair is not comparable, the matrix coefficient vanishes.  Otherwise, each application removes the shorter word as a common right suffix and contributes, in the case $\omega_i=\sigma_i\gamma_i$, the factor
+\[
+ \sqrt{\frac{b_{i,\sigma_i}^{(m_i)}b_{i,\gamma_i}^{(m_i)}}
+              {b_{i,\omega_i}^{(m_i)}}}
+ =\frac{\sqrt{b_{i,\gamma_i}^{(m_i)}/b_{i,\omega_i}^{(m_i)}}}
+        {1/\sqrt{b_{i,\sigma_i}^{(m_i)}}}
+ =\frac{\tau_{(\omega_i,\gamma_i)}}
+        {\tau_{(\sigma_i,g_0)}}.                                   \tag{10}
+\]
+The other orientation is identical.  Since the maps $\Phi_i$ act in separate tensor coordinates, the order of these reductions is immaterial.  Multiplying (10) over all coordinates gives
+\[
+\langle T(x\otimes e_{\boldsymbol\gamma}),y\otimes e_{\boldsymbol\omega}\rangle
+=\frac{\tau_{(\boldsymbol\omega,\boldsymbol\gamma)}}
+       {\tau_{(\boldsymbol\omega',\boldsymbol\gamma')}}
+ \langle T(x\otimes e_{\boldsymbol\gamma'}),
+              y\otimes e_{\boldsymbol\omega'}\rangle,             \tag{11}
+\]
+where $(\boldsymbol\omega',\boldsymbol\gamma')=\mathbf s(\boldsymbol\omega,\boldsymbol\gamma)$.  Formula (11), together with the zero coefficients for noncomparable pairs, is exactly the matrix characterization in \cite[Proposition 1.3]{Popescu}.  Hence $T$ is weighted multi-Toeplitz.
+\end{proof}
+
+\section*{Eight focused verification audits}
+
+\begin{enumerate}
+\item \textbf{Cauchy-dual audit.}  Domains and ranges in the multiplication of $(\mathrm{BH}_i)$ were checked explicitly; both products $C_iC_i^{\prime *}$ and $C_i'C_i^*$ equal the same nonvacuum range projection.
+\item \textbf{Polynomial/sign audit.}  The right side compresses to $\sum_{q=1}^{m_i}(-1)^{q-1}\binom{m_i}{q}\Phi_i^q(T)=T-(I-\Phi_i)^{m_i}(T)$.
+\item \textbf{Convergence audit.}  No norm, strong, or weak convergence of (2) is invoked.  Every fixed coefficient vanishes after at most the shorter word length, even when $f_i$ has infinite support.
+\item \textbf{Word-orientation audit.}  Since $\Lambda_{i,\alpha}$ appends $\widetilde\alpha$ and (4) carries $a_{i,\widetilde\alpha}$, reversing a $p$-step path produces precisely a factorization of the removed suffix with coefficient $\prod a_{i,\eta_j}$, as in (3).
+\item \textbf{Weight audit.}  The two creation weights telescope independently on the input and output words; multiplication by the path sum $b_{i,\delta}^{(m_i)}$ gives the exact square-root factor in (9), including equal and vacuum cases.
+\item \textbf{Comparability audit.}  A common suffix can leave one prefix empty if and only if one original word is a suffix of the other.  Thus the inverse creates no forbidden noncomparable coefficient.
+\item \textbf{Tensor/operator-valued audit.}  Other Fock coordinates and vectors in $\cK$ are spectators in the one-coordinate computation.  Successive reductions commute and multiply to the global $\tau$ ratio.
+\item \textbf{Finite exhaustive audit.}  The included checker exhausts all binary words through length four for asymmetric nonlinear positive coefficients and $m=1,2,3$.  It independently verifies the inverse, defect, comparability, and exact Toeplitz-weight identities to numerical tolerance.
+\end{enumerate}
+
+Run the last audit from the repository root with
+\begin{verbatim}
+cd runs/fa_banach_001/solutions/full
+cd 2002.00462_brown_halmos_converse_all_regular_polydomains
+conda run --no-capture-output -n sandbox python \
+  code/verify_finite_words.py
+\end{verbatim}
+The computation is a sanity check, not part of the proof.
+
+\section*{Novelty check, scope, and review recommendation}
+
+Bounded searches performed on 13 August 2026 covered the exact title and quoted open-problem sentence, combinations of ``converse'', ``Brown--Halmos'', ``regular polydomains'', and Popescu's name, arXiv records through 2026, the run's local registry and source corpus, and OpenAlex citation metadata.  The arXiv source still states the problem.  OpenAlex listed one distinct citing work, arXiv:2002.07801, whose topic is free monodromy/pluriharmonic conjugates and which did not furnish this converse.  No later solution or matching coefficientwise-inverse argument was found.  Novelty is plausible but not certified; no priority claim is made.
+
+The theorem has exactly the scope of the source Brown--Halmos definition (separable coefficient space $\cK$, bounded $T$, arbitrary positive regular $f_i$, and arbitrary $m_i\geq1$).  It uses no polynomial-support, symmetry, or poly-hyperball assumption.  The proof relies on the source's row identity $C_i\operatorname{diag}(X)C_i^*=\Phi_i(X)$, which fixes the intended support indexing of $C_i$.
+
+\textbf{Human review recommendation.}  High priority.  Check Lemma \ref{lem:defect} first, then the reversal/path coefficient and telescoping factor in Lemma \ref{lem:recurrence}.  Those are the only genuinely structural steps; the final tensor iteration is formal.
+
+\begin{thebibliography}{9}
+\bibitem{Popescu}
+G. Popescu,
+\emph{Multi-Toeplitz operators associated with regular polydomains},
+arXiv:2002.00462v1, 2020.
+\url{https://arxiv.org/abs/2002.00462}.
+\end{thebibliography}
+
+\end{document}

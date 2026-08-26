@@ -1,0 +1,337 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\rad}{\operatorname{rad}}
+\newcommand{\ee}{\mathrm e}
+
+\title{Nilpotents of Every Index for White's Lacunary Weight}
+\author{Run \texttt{fa\_banach\_001}, lane 0
+  (\texttt{agent\_lane\_00})}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+White constructs the weight
+\(
+ \omega(n)=\exp(|n|_{S_0})
+\)
+on \(\Z\), where \(S_0=\{2^{i^2}:i\geq0\}\), and asks whether the
+radical of \(\ell^1(\Z,\omega)^{**}\) contains nilpotent elements of
+arbitrarily high index.  We answer yes.  In fact, for every \(m\geq2\)
+we construct a weak-star cluster point \(\Phi_m\) of normalized point
+masses such that \(\Phi_m\) has nilpotency index exactly \(m\).  More
+strongly, the principal left ideal
+\(\ell^1(\Z,\omega)^{**}\Box\Phi_m\) has nilpotency index exactly \(m\).
+The construction uses sparse balanced digits in the mixed-radix chain
+\(2^{i^2}\mid2^{(i+1)^2}\): fewer than \(m\) copies create no carries,
+whereas \(m\) copies create an independent word-length saving at every
+common digit.
+\end{abstract}
+
+\noindent\fbox{\parbox{0.94\textwidth}{
+\textbf{Status: candidate full result, likely valid.}
+The literal open question following Theorem 1.3 of arXiv:1708.09635 is
+resolved affirmatively for the paper's exact weight.  Novelty is plausible
+but not certified; human review should focus on the balanced-digit lemma and
+the passage from the uniform convolution estimate to the Arens product.}}
+
+\section{Exact source question}
+
+Let
+\[
+ q_i=2^{i^2}\quad(i\geq0),\qquad
+ S_0=\{q_i:i\geq0\},\qquad
+ \eta(n)=|n|_{S_0},\qquad
+ \omega(n)=\ee^{\eta(n)}.
+\]
+Here \(\eta(n)\) is the least number of signed elements of \(S_0\)
+whose sum is \(n\).  White proves that the radical of
+\(A^{**}\), where \(A=\ell^1(\Z,\omega)\) and \(A^{**}\) carries the
+first Arens product \(\Box\), contains a nonnilpotent element.  He then
+asks \cite[p.~2]{white2018}:
+
+\begin{center}
+\includegraphics[width=0.94\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\begin{quote}
+``However, we do not know whether or not this example has nilpotent
+elements of arbitrarily high index.''
+\end{quote}
+
+We prove the stronger statement that the radical contains a principal left
+ideal of every prescribed finite nilpotency index.
+
+\section{Idea of the proof}
+
+\subsection*{Proof Intuition}
+
+The generators \(q_i\) form a mixed-radix system with enormous even radices
+\[
+ R_i=\frac{q_{i+1}}{q_i}=2^{2i+1}.
+\]
+Fix the desired index \(m\).  At sparse positions \(r_j\), put a digit
+\(d_j\) just larger than \(R_{r_j}/(2m)\), and let \(t_k\) be the integer
+formed from the first \(k\) such digits.  If fewer than \(m\) prefixes are
+added, every resulting digit remains strictly below half its radix, so the
+word lengths add exactly.  With \(m\) prefixes, every position common to all
+of them crosses the half-radix threshold.  Replacing \(m d_j\) copies of
+\(q_{r_j}\) by one \(q_{r_j+1}\) and a small negative digit saves at least
+one generator.  Sparsity keeps these carries disjoint.  Hence the normalized
+product of \(m\) point masses has norm at most
+\(\ee^{-\min(k_1,\ldots,k_m)}\), while every product of fewer than \(m\)
+has norm one.
+
+A weak-star cluster point \(\Phi_m\) therefore satisfies
+\(\Phi_m^m=0\) but \(\Phi_m^{m-1}\neq0\).  The same estimate survives after
+arbitrary bounded factors are inserted between the point masses: at the
+finite level convolution on \(\Z\) is commutative, so those factors can be
+grouped separately.  Consequently the entire left ideal
+\(A^{**}\Box\Phi_m\) vanishes at the chosen power \(m\), placing
+\(\Phi_m\) in the Jacobson radical.
+
+\section{A balanced mixed-radix lemma}
+
+We use the following elementary exact description of the word metric.
+
+\begin{lemma}[strict balanced digits]\label{lem:balanced}
+Suppose a finite expansion
+\[
+ x=\sum_{i\geq0}c_iq_i
+\]
+satisfies
+\[
+ |c_i|\leq \frac{R_i}{2}-1\qquad(i\geq0).
+\]
+Then
+\[
+ \eta(x)=\sum_{i\geq0}|c_i|.
+\]
+\end{lemma}
+
+\begin{proof}
+The displayed expansion gives the upper bound.  Consider any other finite
+integer-coefficient representation \(x=\sum_i a_iq_i\).  Normalize it from
+low positions to high positions.  Once positions below \(i\) agree with the
+digits \(c_0,\ldots,c_{i-1}\), reduction modulo
+\(q_{i+1}=R_iq_i\) gives
+\(a_i=c_i+R_ih\) for some \(h\in\Z\).  Replace
+\[
+ (a_i,a_{i+1})\quad\hbox{by}\quad(c_i,a_{i+1}+h).
+\]
+This preserves the represented integer.  It does not increase the sum of
+absolute coefficients, because
+\[
+ |c_i|+|h|\leq |c_i+R_ih|.
+\]
+Indeed, this is immediate when \(c_i h\geq0\).  When \(c_i h<0\), we have
+\[
+ |c_i+R_ih|-|c_i|-|h|
+ =(R_i-1)|h|-2|c_i|
+ \geq (R_i-1)-(R_i-2)>0.
+\]
+Iterating through the finitely many nonzero positions converts the arbitrary
+representation into the displayed one without increasing its length.  Thus
+the displayed length is minimal.
+\end{proof}
+
+\section{Full resolution}
+
+\begin{theorem}\label{thm:main}
+For the exact weight \(\omega(n)=\exp(|n|_{S_0})\) constructed in
+\cite{white2018}, and for every integer \(m\geq2\), there exists
+\[
+ \Phi_m\in\rad\bigl(\ell^1(\Z,\omega)^{**},\Box\bigr)
+\]
+whose nilpotency index is exactly \(m\).  More strongly, the principal left
+ideal
+\[
+ I_m=\ell^1(\Z,\omega)^{**}\Box\Phi_m
+\]
+has nilpotency index exactly \(m\).
+\end{theorem}
+
+\begin{proof}
+Fix \(m\geq2\).  Choose \(N\geq2\) so large that
+\(R_i\geq4m^2\) for every \(i\geq N\), and set
+\[
+ r_j=N+2(j-1),\qquad
+ d_j=\left\lfloor\frac{R_{r_j}}{2m}\right\rfloor+1
+ \quad(j\geq1).
+\]
+The choice of \(N\) gives
+\begin{equation}\label{eq:thresholds}
+ (m-1)d_j\leq \frac{R_{r_j}}2-1,
+ \qquad
+ m d_j\geq \frac{R_{r_j}}2+1.
+\end{equation}
+Indeed, the second inequality is immediate, while
+\[
+ (m-1)d_j
+ \leq \frac{(m-1)R_{r_j}}{2m}+m-1
+ =\frac{R_{r_j}}2-\frac{R_{r_j}}{2m}+m-1
+ \leq\frac{R_{r_j}}2-1.
+\]
+Define
+\[
+ t_k=\sum_{j=1}^k d_jq_{r_j}\qquad(k\geq1).
+\]
+Lemma \ref{lem:balanced} and \eqref{eq:thresholds} show that
+\begin{equation}\label{eq:length-tk}
+ \eta(t_k)=\sum_{j=1}^kd_j.
+\end{equation}
+
+Take \(1\leq s\leq m\) and positive integers \(k_1,\ldots,k_s\).  In
+the sum \(t_{k_1}+\cdots+t_{k_s}\), the coefficient at \(q_{r_j}\) is
+\(h_jd_j\), where
+\[
+ h_j=|\{\ell:j\leq k_\ell\}|.
+\]
+If \(s<m\), then \(h_j\leq m-1\), so all digits are strictly balanced by
+\eqref{eq:thresholds}.  Lemma \ref{lem:balanced} therefore gives
+\begin{equation}\label{eq:no-carry}
+ \eta(t_{k_1}+\cdots+t_{k_s})
+ =\sum_{\ell=1}^s\eta(t_{k_\ell})
+ \qquad(s<m).
+\end{equation}
+
+Now let \(s=m\), and write \(K=\min(k_1,\ldots,k_m)\).  For every
+\(j\leq K\), replace the digit \(m d_j\) by
+\[
+ m d_jq_{r_j}
+ =(m d_j-R_{r_j})q_{r_j}+q_{r_j+1}.
+\]
+The new digit at \(r_j\) has absolute value at most
+\(R_{r_j}/2-1\), by the second inequality in
+\eqref{eq:thresholds}; the digit at \(r_j+1\) is \(1\).  The positions
+\(r_j\) are separated by two, so no carry position is another selected
+position.  All remaining digits have multiplicity at most \(m-1\).
+Thus the resulting expansion is strictly balanced, and Lemma
+\ref{lem:balanced} gives the exact identity
+\begin{equation}\label{eq:carry}
+ \eta(t_{k_1}+\cdots+t_{k_m})
+ =\sum_{\ell=1}^m\eta(t_{k_\ell})
+  -\sum_{j=1}^{K}\sigma_j,
+ \qquad
+ \sigma_j=2m d_j-R_{r_j}-1\geq1.
+\end{equation}
+
+Put \(e_t=\delta_t/\omega(t)\).  Then \(\|e_t\|_\omega=1\), and
+\begin{equation}\label{eq:norm}
+ \|e_{u_1}*\cdots*e_{u_s}\|_\omega
+ =\exp\!\left(
+   \eta(u_1+\cdots+u_s)-\sum_{\ell=1}^s\eta(u_\ell)
+ \right).
+\end{equation}
+Equations \eqref{eq:no-carry}--\eqref{eq:carry} imply
+\begin{align}
+ \|e_{t_{k_1}}*\cdots*e_{t_{k_s}}\|_\omega&=1
+ &&(s<m),\label{eq:lower}\\
+ \|e_{t_{k_1}}*\cdots*e_{t_{k_m}}\|_\omega&leq \ee^{-K}
+ &&(s=m).\label{eq:upper}
+\end{align}
+
+Choose a weak-star convergent subnet of \((e_{t_k})\) in the unit ball of
+\(A^{**}\), and call its limit \(\Phi_m\).  Since the weight \(\omega\)
+itself is a norm-one functional in
+\(A^*=\ell^\infty(\Z,1/\omega)\), equation \eqref{eq:lower} and the
+iterated-limit definition of \(\Box\) give
+\[
+ \langle\Phi_m^{\Box s},\omega\rangle=1
+ \qquad(1\leq s<m).
+\]
+In particular \(\Phi_m^{\Box(m-1)}\neq0\).  On the other hand,
+\eqref{eq:upper} tends to zero uniformly whenever all \(k_\ell\) tend to
+infinity.  Every iterated weak-star limit defining
+\(\Phi_m^{\Box m}\) is therefore zero, so
+\[
+ \Phi_m^{\Box m}=0.
+\]
+Thus \(\Phi_m\) has nilpotency index exactly \(m\).
+
+It remains to prove radical membership.  Let
+\(\Psi_1,\ldots,\Psi_m\in A^{**}\), and choose bounded nets
+\((a_{i,\alpha})\subset A\) converging weak-star to \(\Psi_i\).  Expand
+\[
+ (\Psi_1\Box\Phi_m)\Box\cdots\Box
+ (\Psi_m\Box\Phi_m)
+\]
+using the iterated-limit definition of the first Arens product.  At every
+finite stage the approximating product is, because convolution on \(\Z\)
+is commutative,
+\[
+ (a_{1,\alpha_1}*\cdots*a_{m,\alpha_m})*
+ (e_{t_{k_1}}*\cdots*e_{t_{k_m}}).
+\]
+Its norm is at most
+\[
+ \left(\prod_{i=1}^m\|a_{i,\alpha_i}\|_\omega\right)\ee^{-K}
+\]
+by \eqref{eq:upper}.  The nets \((a_{i,\alpha})\) are bounded and the
+estimate is uniform in their indices, so every required iterated limit is
+zero.  Hence \(I_m^{\Box m}=\{0\}\).  Conversely,
+\(\Phi_m\in I_m\) because \(A^{**}\) is unital, and
+\(\Phi_m^{\Box(m-1)}\neq0\), so \(I_m\) has index exactly \(m\).
+
+A nilpotent left ideal consists of quasinilpotent elements and is contained
+in the Jacobson radical.  Therefore \(\Phi_m\in\rad(A^{**},\Box)\), as
+claimed.
+\end{proof}
+
+\section{Verification and boundary checks}
+
+The proof uses strict inequalities, so there is no ambiguous half-radix
+digit.  The spacing \(r_{j+1}-r_j=2\) is essential: it ensures that the
+carry \(q_{r_j+1}\) does not alter another chosen digit.  The construction
+also uses prefixes rather than disjoint blocks; consequently exactly the
+first \(\min(k_1,\ldots,k_m)\) digits carry, producing the uniform decay
+needed for every ordering of Arens limits.
+
+The accompanying script independently minimizes finite word-length problems
+by mixed-integer linear programming.  It checks all threshold formulas for
+\(m=2,\ldots,8\), 32 exact word-length identities, and 69,632 instances of
+the local normalization inequality.  These checks are corroborative only;
+Lemma \ref{lem:balanced} supplies the proof for all \(m\).
+
+\section{Novelty audit and limitations}
+
+The local run indexes, exact-title and exact-question web searches, phrase
+variants involving weighted \(\ell^1(\Z)\), the source author's current
+publication list, and the author's 2026 sequel arXiv:2602.02764
+\cite{white2026} were checked
+through 17 August 2026.  The sequel concerns different radicals for the two
+Arens products on a weighted free group and does not state this result.  The
+OpenAlex record for the 2018 source reported no indexed citing works at the
+time of the audit.  No prior answer to this exact question was located.
+This is a bounded search, not a priority claim.
+
+The theorem concerns the particular lacunary weight in the question and the
+first Arens product, exactly as asked.  It does not settle the source's much
+broader open questions about \(\rad(\ell^1(\Z)^{**})^2\), semisimplicity for
+nonamenable groups, or Fourier algebras.
+
+\begin{thebibliography}{9}
+\bibitem{white2018}
+J.~T. White,
+\emph{The radical of the bidual of a Beurling algebra},
+Quarterly Journal of Mathematics \textbf{69} (2018), 975--993;
+arXiv:1708.09635.
+
+\bibitem{white2026}
+J.~T. White,
+\emph{Radicals of Biduals of Beurling Algebras Can Be Different for the Two
+Arens Products}, arXiv:2602.02764 (2026).
+\end{thebibliography}
+
+\end{document}

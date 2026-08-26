@@ -1,0 +1,385 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Sph}{\mathbb S}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\E}{\mathbb E}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\dd}{\,\mathrm d}
+
+\title{Exact iid universality for unshifted binary embeddings:\\
+       projective direction is the complete invariant}
+\author{Candidate partial-result packet for arXiv:1512.04433}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{
+\textbf{Status.} Candidate substantial partial result, likely valid, pending
+human review.  The theorem resolves an exact iid-row formalization of the
+source question.  It does not solve the broader dependent fast-transform or
+rate-comparison problem.}}
+\end{center}
+
+\section{Source question and scope}
+
+Oymak and Recht study sign/Hamming embeddings of subsets of the unit sphere
+and ask which matrix ensembles can exhibit Gaussian behavior
+\cite{OymakRecht}.  In the numerical-experiments discussion on PDF page 16,
+they write:
+
+\begin{quote}
+``Following from this example, it would be interesting to study the class of
+matrices that has the same empirical behavior as a Gaussian.  For linear
+embedding this question has been studied extensively [9,19] and it remains as
+an open problem whether results of similar flavor would hold for binary
+embedding.''
+\end{quote}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{The source passage, rendered from page 16 of arXiv:1512.04433.}
+\end{figure}
+
+The phrase ``same empirical behavior'' is intentionally broad.  This packet
+isolates the exact iid, unshifted formulation: rows are independent copies of
+one random vector, the quantizer is the sign at threshold zero, and ``same''
+means equality in law of the complete array of pairwise empirical Hamming
+distances on every finite set.  In this formulation there is a sharp answer.
+
+\section{Definitions and statement}
+
+Fix $n\geq 1$.  A random vector $A\in\R^n$ is called
+\emph{hyperplane-nondegenerate} if
+\[
+  \Pp\{\langle A,x\rangle=0\}=0
+  \qquad(x\in\Sph^{n-1}).
+\]
+This condition in particular implies $A\neq0$ almost surely.  Its
+\emph{projective direction} is the unoriented line $[A]\in\R P^{n-1}$.
+Let $\overline\mu$ denote the law of $[A]$, and let $\mu$ be its even lift to
+$\Sph^{n-1}$: conditionally on a line, choose either unit representative with
+probability $1/2$.  Write $\sigma$ for Haar probability on the sphere.
+
+For iid rows $A_1,\dots,A_m$ and $x,y\in\Sph^{n-1}$ set
+\[
+  h_m(x,y)=\frac1m\sum_{j=1}^m
+  \mathbf1\!\left\{
+  \sgn\langle A_j,x\rangle\neq\sgn\langle A_j,y\rangle
+  \right\},
+  \qquad
+  d_{\rm ang}(x,y)=\frac{\arccos\langle x,y\rangle}{\pi}.
+\]
+The population separation metric is
+\[
+  d_\mu(x,y)=\Pp\{\sgn\langle A,x\rangle
+                     \neq\sgn\langle A,y\rangle\}.
+\]
+
+\begin{theorem}[Exact iid projective universality]\label{thm:main}
+Let $A\in\R^n$ be hyperplane-nondegenerate.  The following are equivalent.
+\begin{enumerate}
+\item The projective direction $[A]$ is Haar-uniform on $\R P^{n-1}$.
+\item For every finite $K\subset\Sph^{n-1}$ and every $m\geq1$, the joint
+array $(h_m(x,y))_{x,y\in K}$ has exactly the same law as for $m$ iid standard
+Gaussian rows.
+\item For every $x,y\in\Sph^{n-1}$,
+\[
+  d_\mu(x,y)=d_{\rm ang}(x,y).
+\]
+\end{enumerate}
+Consequently, projective direction is the complete invariant for exact iid,
+unshifted Gaussian universality of pairwise binary distances.
+\end{theorem}
+
+\begin{corollary}[Any non-Haar law has a two-point obstruction]
+If $[A]$ is not projective Haar, there exist $x,y\in\Sph^{n-1}$ and $b>0$
+such that
+\[
+ |d_\mu(x,y)-d_{\rm ang}(x,y)|=b.
+\]
+For iid copies of $A$ and every $0<\delta<b$,
+\[
+ \Pp\{|h_m(x,y)-d_{\rm ang}(x,y)|\leq\delta\}\longrightarrow0.
+\]
+\end{corollary}
+
+\section{Proof intuition}
+
+Pairwise sign disagreements ignore both the row length and a simultaneous
+flip of all signs, so the row's projective direction is the only possible
+invariant.  Haar projective direction is plainly sufficient.  The substantive
+point is necessity.
+
+Subtract Haar measure from the even spherical lift of the row law.  Equality
+of all separation probabilities says that this signed measure annihilates
+every product of two hemisphere-sign functions.  The hemisphere-sign
+transform has a nonzero Funk--Hecke eigenvalue in every odd harmonic degree,
+so every odd spherical harmonic can be recovered from such sign functions.
+The signed measure therefore annihilates every product of two odd harmonics.
+Those products span the even spherical polynomials, which determine an even
+measure.  Hence the measure difference vanishes.
+
+This gives exact classification in the iid model, but not the source paper's
+dependent fast-transform problem.  It also reveals a sharp obstruction:
+ordinary isotropy and subgaussian tails do not control projective direction.
+
+\section{Proof of the characterization}
+
+For $x\in\Sph^{n-1}$ define the hemisphere-sign function
+\[
+  s_x(u)=\sgn\langle u,x\rangle,
+  \qquad u\in\Sph^{n-1}.
+\]
+Values on the equator are immaterial under the nondegeneracy assumption and
+under Haar measure.
+
+\begin{lemma}[Odd hemisphere transform is invertible by degree]
+\label{lem:fh}
+For every odd spherical harmonic $Y$ on $\Sph^{n-1}$ there is a nonzero
+constant $\lambda_Y$ such that
+\[
+  \int_{\Sph^{n-1}} s_x(u)Y(x)\,\dd\sigma(x)
+  =\lambda_Y Y(u).
+\]
+The constant depends only on the harmonic degree (and on $n$).
+\end{lemma}
+
+\begin{proof}
+The Funk--Hecke formula diagonalizes every zonal convolution on spherical
+harmonics; see, for example, \cite[Chapter 1]{DaiXu}.  Applied to the kernel
+$t\mapsto\sgn t$, it gives the asserted identity.  It remains to verify that
+the eigenvalue is nonzero in every odd degree.
+
+Suppose first that $n\geq3$, put $\alpha=(n-2)/2$, and let the odd degree be
+$\ell=2k+1$.  Up to nonzero normalization factors, its eigenvalue is
+\begin{align*}
+ I_\ell
+ &=\int_{-1}^{1}\sgn(t)C_\ell^\alpha(t)
+       (1-t^2)^{\alpha-1/2}\,\dd t\\
+ &=2\int_0^1 C_\ell^\alpha(t)
+       (1-t^2)^{\alpha-1/2}\,\dd t,
+\end{align*}
+where $C_\ell^\alpha$ is the Gegenbauer polynomial.  Rodrigues' formula says
+that the integrand is a nonzero constant times
+\[
+ \frac{\dd^\ell}{\dd t^\ell}
+ (1-t^2)^{\ell+\alpha-1/2}.
+\]
+After integration, the derivative of order $\ell-1$ vanishes at $t=1$,
+because the remaining order of vanishing is $\alpha+1/2>0$.  At $t=0$ it is
+\[
+ (2k)!(-1)^k
+ \binom{\ell+\alpha-1/2}{k},
+\]
+which is nonzero.  Thus $I_\ell\neq0$.
+
+For $n=2$, write the circle variable as an angle.  The Fourier series of
+$\sgn(\cos\theta)$ has a nonzero coefficient at every odd frequency, so the
+same conclusion holds for every odd circular harmonic.  When $n=1$ the
+projective space is a singleton and no inversion is needed.
+\end{proof}
+
+\begin{lemma}[Separation metric determines an even measure]
+\label{lem:inject}
+Let $\mu$ be an even probability measure on $\Sph^{n-1}$ that gives every
+great subsphere measure zero.  If
+\[
+ \int \mathbf1_{\{s_x(u)\neq s_y(u)\}}\,\dd\mu(u)
+ =d_{\rm ang}(x,y)
+ \qquad(x,y\in\Sph^{n-1}),
+\]
+then $\mu=\sigma$.
+\end{lemma}
+
+\begin{proof}
+If $n=1$, then $\R P^0$ is a singleton and the conclusion is immediate.
+Assume henceforth that $n\geq2$.
+
+Let $\nu=\mu-\sigma$.  It is an even finite signed measure of total mass zero.
+Rotational invariance in the plane spanned by $x$ and $y$ gives the classical
+random-hyperplane identity
+\[
+ \int\mathbf1_{\{s_x\neq s_y\}}\,\dd\sigma
+ =\frac{\arccos\langle x,y\rangle}{\pi}.
+\]
+Since $\mathbf1_{\{s_x\neq s_y\}}=(1-s_xs_y)/2$ away from the two equators,
+the hypothesis is equivalent to
+\begin{equation}\label{eq:annihilate-signs}
+  \int_{\Sph^{n-1}}s_x(u)s_y(u)\,\dd\nu(u)=0
+  \qquad(x,y\in\Sph^{n-1}).
+\end{equation}
+
+Let $Y$ and $Z$ be arbitrary odd spherical harmonics.  By
+Lemma~\ref{lem:fh}, each is a nonzero scalar multiple of its hemisphere-sign
+integral representation.  Fubini's theorem and
+\eqref{eq:annihilate-signs} therefore give
+\[
+ \int_{\Sph^{n-1}}Y(u)Z(u)\,\dd\nu(u)=0.
+\]
+
+These products span all even spherical polynomials.  Indeed, if $P$ is the
+restriction to the sphere of an even polynomial, then on the sphere
+\[
+ P(u)=\sum_{i=1}^n u_i\bigl(u_iP(u)\bigr).
+\]
+Each $u_i$ is an odd degree-one harmonic, while the odd spherical polynomial
+$u_iP$ is a finite sum of odd spherical harmonics by the standard harmonic
+decomposition of polynomials.  Hence $\nu$ annihilates $P$.
+
+Spherical polynomials are uniformly dense in continuous functions on the
+sphere, and symmetrization makes the even ones dense in the continuous even
+functions.  Thus $\nu$ annihilates every continuous even function.  Since
+$\nu$ itself is even, it also annihilates the odd part of every continuous
+function.  The Riesz representation theorem yields $\nu=0$, proving
+$\mu=\sigma$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Suppose (1) holds.  A pairwise disagreement pattern induced by one row is
+unchanged when that row is rescaled or negated, hence it is a measurable
+function only of its projective direction.  A standard Gaussian row also has
+projective Haar direction.  The per-row joint cut patterns on any finite $K$
+therefore have the same law; taking $m$ iid products and averaging proves (2).
+
+Condition (2), applied to $K=\{x,y\}$ (already with $m=1$), gives equality of
+the expected disagreement indicators.  The Gaussian random-hyperplane
+identity gives (3).
+
+Finally, if (3) holds, apply Lemma~\ref{lem:inject} to the even lift $\mu$.
+It follows that $\mu=\sigma$, which is equivalent to projective Haar
+uniformity.  Thus (3) implies (1).
+\end{proof}
+
+\begin{proof}[Proof of the corollary]
+The contrapositive of Theorem~\ref{thm:main} gives $x,y$ with nonzero bias
+$b$.  For this fixed pair the summands defining $h_m(x,y)$ are iid Bernoulli
+variables of mean $d_\mu(x,y)$.  The strong law gives
+$h_m(x,y)\to d_\mu(x,y)$ almost surely.  Therefore the displayed probability
+tends to zero whenever $\delta<b$.
+\end{proof}
+
+\section{A sharp obstruction to linear-style universality}
+
+\begin{corollary}[Isotropic subgaussian rows need not be binary-universal]
+\label{cor:rademacher}
+Let $n\geq2$ and let $A=(\varepsilon_1,\dots,\varepsilon_n)$ have independent
+Rademacher coordinates.  The row is isotropic and bounded subgaussian.  Yet
+for every $0<t<1$, with
+\[
+ x=e_1,
+ \qquad
+ y=\frac{e_1+t e_2}{\sqrt{1+t^2}},
+\]
+one has, for every row realization,
+\[
+ \sgn\langle A,x\rangle=\sgn\langle A,y\rangle.
+\]
+Consequently $h_m(x,y)=0$ deterministically for every $m$, while
+\[
+ d_{\rm ang}(x,y)=\frac{\arctan t}{\pi}>0.
+\]
+Thus no distortion smaller than $\arctan(t)/\pi$ is possible for this
+two-point set, regardless of the number of rows.
+\end{corollary}
+
+\begin{proof}
+Isotropy is $\E AA^T=I_n$, and the standard Rademacher moment-generating
+function bound gives a dimension-free subgaussian constant.  Moreover
+\[
+ \sgn\langle A,x\rangle=\varepsilon_1,
+ \qquad
+ \sgn\langle A,y\rangle
+ =\sgn(\varepsilon_1+t\varepsilon_2)=\varepsilon_1,
+\]
+because $0<t<1$.  The angle identity follows from
+$\langle x,y\rangle=(1+t^2)^{-1/2}$.
+\end{proof}
+
+\begin{remark}
+The Rademacher law has atoms on some great subspheres, so it is intentionally
+presented as a direct obstruction to broad isotropic/subgaussian universality,
+not as an application of the nondegenerate equivalence theorem.  The displayed
+pair itself never encounters a zero inner product.
+\end{remark}
+
+\section{Verification, novelty boundary, and limitations}
+
+The proof was audited separately in \path{verification.md}.  The reusable
+script
+\begin{center}
+\path{code/check_gegenbauer_coefficients.py}
+\end{center}
+symbolically checks the odd coefficient integral for dimensions $3$ through
+$8$ and odd degrees $1$ through $9$, and exhaustively checks the
+two-dimensional Rademacher sign
+calculation for three rational values of $t$.  These finite checks passed, but
+they are not proof; Lemma~\ref{lem:fh} and Corollary~\ref{cor:rademacher} give
+the general arguments.
+
+A bounded novelty search checked the run's registry, solution, attempt, and
+proof-gap indexes, as well as arXiv/web searches around binary embedding,
+projective direction, random hyperplanes, universality, and Funk--Hecke.
+Later work includes fast Gaussian circulant embeddings
+\cite{DirksenStollenwerk}, structured quantized embeddings
+\cite{HuynhSaab}, and non-Gaussian tessellations using affine random
+hyperplanes (random shifts/dithering) \cite{DirksenMendelson}.  No exact version
+of Theorem~\ref{thm:main} was located.  This is bounded-search evidence only,
+not a guarantee of novelty.
+
+The result is partial relative to the source question in three ways.
+\begin{itemize}
+\item It assumes iid rows and therefore does not analyze dependent fast maps
+such as the structured transform highlighted by Oymak and Recht.
+\item It characterizes exact equality in law, not equality of sample
+complexity or distortion rates up to constants.
+\item It concerns the unshifted sign quantizer.  Dithering can restore useful
+non-Gaussian results by changing the geometry of the hyperplanes.
+\end{itemize}
+
+\textbf{Human-review recommendation.}  Review as a substantial partial result.
+The critical checks are the nonzero odd Funk--Hecke coefficient and the span of
+even spherical polynomials by products of odd harmonics.
+
+\begin{thebibliography}{9}
+
+\bibitem{OymakRecht}
+S.~Oymak and B.~Recht,
+\emph{Near-Optimal Bounds for Binary Embeddings of Arbitrary Sets},
+arXiv:1512.04433 (2015).
+
+\bibitem{DaiXu}
+F.~Dai and Y.~Xu,
+\emph{Approximation Theory and Harmonic Analysis on Spheres and Balls},
+Springer Monographs in Mathematics, Springer, 2013.
+
+\bibitem{DirksenStollenwerk}
+S.~Dirksen and A.~Stollenwerk,
+\emph{Fast Binary Embeddings with Gaussian Circulant Matrices: Improved
+Bounds}, arXiv:1608.06498 (2016).
+
+\bibitem{HuynhSaab}
+D.~Huynh and R.~Saab,
+\emph{Fast Binary Embeddings, and Quantized Compressed Sensing with Structured
+Matrices}, arXiv:1801.08639 (2018).
+
+\bibitem{DirksenMendelson}
+S.~Dirksen and S.~Mendelson,
+\emph{Non-Gaussian Hyperplane Tessellations and Robust One-Bit Compressed
+Sensing}, arXiv:1805.09409 (2018).
+
+\end{thebibliography}
+
+\end{document}

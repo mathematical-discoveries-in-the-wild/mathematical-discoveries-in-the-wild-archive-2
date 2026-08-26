@@ -1,0 +1,249 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newcommand{\D}{\mathbb D}
+\newcommand{\Hk}{\mathcal H(K)}
+\newcommand{\Hl}{\mathcal H(L)}
+
+\title{Vertical-Slice Reconstruction in the Canonical Agler Space\\
+\large A complete RKHS answer to Question 5.6 of arXiv:1312.0177}
+\author{fa\_banach\_001, lane 4}
+\date{August 17, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{
+\textbf{Status: literature-implied answer (complete answer to Question 5.6).}
+The needed mechanism is the classical restriction theorem for reproducing
+kernel Hilbert spaces.  The new step here is its direct identification with
+the vertical-slice uniqueness argument already proved in the source paper.
+}}
+\end{center}
+
+\section{Source question}
+
+On page 36 of \cite{BickelKnese}, Bickel and Knese ask:
+\begin{quote}
+\textbf{Question 5.6.} Assume \(g\in\mathcal H(K^{\max}_1)\).
+Is there an explicit way to construct \(g\) using only the function
+\(g(0,w_2)\)?
+\end{quote}
+They add that a clean answer would give formulas for two canonical
+colligation blocks \(A\) and \(B\).
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{Question 5.6 and its stated motivation in the source PDF, page 36.}
+\end{figure}
+
+\section{Identification and proof}
+
+The restriction principle used below is classical; see Aronszajn's
+Section 5, \emph{The restriction of a reproducing kernel} \cite{Aronszajn}.
+We include the short operator-valued proof, so the conclusion does not
+depend on any unstated scalar-to-vector extension.
+
+Let \(E_*\) be the coefficient Hilbert space, let
+\[
+K=K^{\max}_1:\D^2\times\D^2\longrightarrow\mathcal L(E_*),
+\qquad
+L(\zeta,\eta):=K((0,\zeta),(0,\eta)),
+\]
+and let \(R:\Hk\to\Hl\) be vertical restriction,
+\[
+(Rg)(\zeta)=g(0,\zeta).
+\]
+Here \(\Hl\) means the RKHS associated with the restricted kernel \(L\),
+not an ambient Hardy norm.
+
+\begin{theorem}[Exact reconstruction from the vertical trace]
+\label{thm:reconstruct}
+For the canonical kernel \(K^{\max}_1\) of the source paper, \(R\) is a
+unitary operator.  Hence, if \(h(\zeta)=g(0,\zeta)\), then
+\[
+g=R^*h.
+\]
+Equivalently, for every \(z\in\D^2\) and \(\nu\in E_*\),
+\begin{equation}
+\label{eq:cross}
+\langle g(z),\nu\rangle_{E_*}
+=
+\left\langle
+h,\ \zeta\longmapsto K((0,\zeta),z)\nu
+\right\rangle_{\Hl}.
+\end{equation}
+Thus \(g\) is constructed using only its one-variable trace and the
+known canonical kernel.
+\end{theorem}
+
+\begin{proof}
+For \(\eta\in\D\) and \(u\in E_*\), write
+\[
+K_{(0,\eta)}u=K(\,\cdot\,,(0,\eta))u,
+\qquad
+L_\eta u=L(\,\cdot\,,\eta)u.
+\]
+On the dense span of the \(L_\eta u\), define
+\[
+J(L_\eta u)=K_{(0,\eta)}u.
+\]
+The two Gram matrices agree:
+\[
+\langle L_\eta u,L_\zeta v\rangle_{\Hl}
+=
+\langle K_{(0,\eta)}u,K_{(0,\zeta)}v\rangle_{\Hk}.
+\]
+Therefore \(J\) extends isometrically from \(\Hl\) into \(\Hk\).
+Its range is
+\[
+\overline{\operatorname{span}}\{K_{(0,\eta)}u:
+\eta\in\D,\ u\in E_*\}
+=
+\{f\in\Hk:f(0,\eta)=0\ \forall\eta\in\D\}^{\perp}.
+\]
+The source paper proves immediately before Question 5.6 that the vertical
+slice is a uniqueness set for \(\mathcal H(K^{\max}_1)\).  The vanishing
+space in the last display is consequently zero, so \(J\) is onto.
+
+The reproducing property gives \(R=J^*\), initially on kernel functions
+and hence everywhere.  Since \(J\) is unitary, so are \(R\) and \(R^*=J\),
+and \(g=R^*(Rg)\).  Finally,
+\[
+\langle g(z),\nu\rangle
+=\langle g,K_z\nu\rangle_{\Hk}
+=\langle h,RK_z\nu\rangle_{\Hl},
+\]
+while \((RK_z\nu)(\zeta)=K((0,\zeta),z)\nu\).  This is
+\eqref{eq:cross}.
+\end{proof}
+
+\section{Finite Gram reconstruction}
+
+Formula \eqref{eq:cross} is exact, but it also gives a concrete convergent
+algorithm.  Choose points \(\lambda_n\in\D\) with an accumulation point in
+\(\D\), and choose a countable total set of vectors in \(E_*\).  Enumerate
+the resulting kernel sections as
+\[
+\ell_j(\zeta)=L(\zeta,\lambda_j)u_j,\qquad j\geq1,
+\]
+repeating points as needed to pair them with coefficient vectors.  Let
+\(P_N\) denote the orthogonal projection in \(\Hl\) onto
+\(\operatorname{span}\{\ell_1,\ldots,\ell_N\}\).
+
+The coefficients \(c^{(N)}_j\) of \(P_Nh=\sum_{j=1}^N
+c^{(N)}_j\ell_j\) are obtained from the finite Gram equations
+\[
+\left\langle\sum_{j=1}^N c^{(N)}_j\ell_j,\ell_i\right\rangle_{\Hl}
+=\langle h,\ell_i\rangle_{\Hl}
+=\langle h(\lambda_i),u_i\rangle_{E_*},
+\qquad 1\leq i\leq N.
+\]
+If the Gram matrix is singular, its Moore--Penrose solution gives the
+same projection.  Set
+\begin{equation}
+\label{eq:finite}
+g_N(z)=\sum_{j=1}^N c^{(N)}_jK(z,(0,\lambda_j))u_j.
+\end{equation}
+The identity theorem and totality of the coefficient vectors imply that
+the \(\ell_j\)'s have dense span in \(\Hl\).  Consequently,
+\[
+g_N=R^*P_Nh\longrightarrow R^*h=g
+\quad\hbox{in }\Hk.
+\]
+Bounded point evaluations give pointwise convergence, and local boundedness
+of \(K(z,z)\) gives uniform convergence on compact subsets of \(\D^2\).
+Every datum on the right side of the finite Gram equations is a value of
+the one-variable trace \(h\).
+
+\section{The promised colligation-block formulas}
+
+Let \(T=R^*:\Hl\to\Hk\) be the reconstruction operator in
+Theorem~\ref{thm:reconstruct}.  In the notation of the source paper, for
+\(f=(f_1,f_2)\) define the analytic one-variable functions
+\[
+q_f(\zeta)=
+\begin{cases}
+\dfrac{f_1(0,\zeta)-f_1(0)+f_2(0,\zeta)-f_2(0)}{\zeta},
+&\zeta\ne0,\\[6pt]
+\partial_2f_1(0)+\partial_2f_2(0),&\zeta=0,
+\end{cases}
+\]
+and, for \(\eta\in E\),
+\[
+q_\eta(\zeta)=
+\begin{cases}
+\dfrac{\Phi(0,\zeta)-\Phi(0)}{\zeta}\eta,&\zeta\ne0,\\[6pt]
+\partial_2\Phi(0)\eta,&\zeta=0.
+\end{cases}
+\]
+The source paper proves that these traces belong to \(\Hl\).  Its
+previously implicit unique functions are therefore
+\begin{equation}
+\label{eq:AB}
+(Af)_2=Tq_f,\qquad (B\eta)_2=Tq_\eta.
+\end{equation}
+Their first components are then the source paper's structured Gleason
+quotients
+\[
+(Af)_1(z)=
+\frac{f_1(z)-f_1(0)+f_2(z)-f_2(0)-z_2(Tq_f)(z)}{z_1},
+\]
+\[
+(B\eta)_1(z)=
+\frac{(\Phi(z)-\Phi(0))\eta-z_2(Tq_\eta)(z)}{z_1},
+\]
+with the removable values at \(z_1=0\) filled in analytically.
+Combining \eqref{eq:AB} with \eqref{eq:cross} or the Gram scheme
+\eqref{eq:finite} gives the requested formulas using only vertical traces.
+
+\section{Scope and novelty status}
+
+This answers Question 5.6 for every coefficient Hilbert space covered by
+the source paper.  It is not a new general RKHS theorem: the restriction
+mechanism is classical.  The contribution of this note is the direct
+identification of the paper's vertical uniqueness lemma with the injective
+case of that theorem, plus the explicit cross-kernel and finite-Gram
+reconstruction formulas.
+
+A bounded search covered the run indexes; arXiv:1312.0177; the exact phrase
+of Question 5.6; the terms \emph{canonical Agler}, \emph{vertical slice},
+\emph{restriction}, and \emph{reconstruction}; and later arXiv papers on
+Agler spaces and transfer-function realizations.  No later paper explicitly
+answering Question 5.6 was found.  Because the decisive abstract theorem is
+classical, the conservative provenance label is
+\emph{literature-implied answer}, not a new full theorem.  The official AMS
+metadata identifies Aronszajn's Section 5 as the restriction theorem.
+An environment download limit prevented copying that supporting PDF into
+this packet; the source PDF and its question screenshot are included.
+
+\section{Review recommendation}
+
+Verify the convention for operator-valued kernel inner products in
+\eqref{eq:cross}, the source paper's vertical uniqueness argument immediately
+before Question 5.6, and that the trace data \(q_f,q_\eta\) are the ones in
+equations (5.8)--(5.9).  The reconstruction theorem itself is a two-line
+adjoint argument once those points are fixed.
+
+\begin{thebibliography}{9}
+\bibitem{BickelKnese}
+K. Bickel and G. Knese,
+\emph{Canonical Agler Decompositions and Transfer Function Realizations},
+Trans. Amer. Math. Soc. 368 (2016), 6293--6324;
+arXiv:1312.0177.
+
+\bibitem{Aronszajn}
+N. Aronszajn,
+\emph{Theory of reproducing kernels},
+Trans. Amer. Math. Soc. 68 (1950), 337--404,
+Section 5, doi:10.1090/S0002-9947-1950-0051437-7.
+\end{thebibliography}
+
+\end{document}

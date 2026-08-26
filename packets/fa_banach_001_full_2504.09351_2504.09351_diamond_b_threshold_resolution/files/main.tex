@@ -1,0 +1,421 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{microtype}
+
+\hypersetup{colorlinks=true,linkcolor=blue!50!black,citecolor=blue!50!black,urlcolor=blue!60!black}
+\setlist{nosep}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{claim}[theorem]{Claim}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\ww}{\omega^\omega}
+\newcommand{\cM}{\mathcal M}
+\newcommand{\concat}{\mathbin{{}^\frown}}
+
+\title{A threshold resolution under $\Diamond(\mathfrak b)$\\
+\large Candidate full answer to Question 1 of arXiv:2504.09351}
+\author{Automatic mathematics run \texttt{fa\_banach\_001}, lane 7}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status: full solution likely valid, pending human review.}
+The new ingredient is Lemma~\ref{lem:threshold}, a threshold analogue of the
+source paper's basic-star guessing condition.}}
+\end{center}
+
+\section{Source question and result}
+
+Mart\'inez-Celis and Morawski prove under $\Diamond(\operatorname{non}(\cM))$
+that there is a Radon--Nikod\'ym (RN) compact space of weight $\aleph_1$ with a
+non-RN continuous image \cite{MC}.  Their construction necessarily has weight
+at least $\operatorname{non}(\cM)$, and they ask:
+
+\begin{quote}
+\textbf{Question 1.} Is it consistent to have
+$\operatorname{non}(\cM)>\aleph_1$, but have a Radon--Nikod\'ym compact space
+of weight $\aleph_1$ with a continuous image that is not Radon--Nikod\'ym?
+\end{quote}
+
+They specifically suggest changing their condition (5) so that the space can
+be constructed from $\Diamond(\mathfrak b)$.  The relevant passage is reproduced
+below from page 9 of the source PDF.
+
+\begin{center}
+\includegraphics[width=0.94\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+We carry out that suggestion.
+
+\begin{theorem}[Main theorem]\label{thm:main}
+Assume $\Diamond(\mathfrak b)$.  There are compact spaces $L_0,L_1$ of weight
+$\aleph_1$ and a continuous surjection $\pi:L_0\to L_1$ such that $L_0$ is
+Radon--Nikod\'ym and $L_1$ is not Radon--Nikod\'ym.
+\end{theorem}
+
+\begin{corollary}\label{cor:consistency}
+It is relatively consistent with ZFC that
+$\operatorname{non}(\cM)>\aleph_1$ and that an RN compactum of weight
+$\aleph_1$ has a non-RN continuous image.  Hence Question 1 has an affirmative
+consistency answer.
+\end{corollary}
+
+Indeed, Minami's Corollary 4.7(ii) gives a model in which
+\[
+ \mathfrak c=\operatorname{non}(\cM)=\operatorname{cov}(\cM)=\aleph_2
+ \quad\text{and}\quad \Diamond(\mathfrak b)
+\]
+hold simultaneously \cite[Corollary 4.7(ii), p.~762]{Minami}.  Applying
+Theorem~\ref{thm:main} in that model proves the corollary.
+
+\section{Proof intuition}
+
+The source construction assigns to each dyadic cell $t\in2^n$ a continuous
+Cantor map whose image is the dyadic interval determined by $t$.  Exact
+guessing was used to arrange that one small cylinder in each relevant fiber is
+sent to the two endpoints of that interval.  Exact strings on a whole level
+lead naturally to $\operatorname{non}(\cM)$.
+
+Only the \emph{length} of the small cylinder is actually needed.  If $S_m$
+deletes the first $m$ bits, then
+\[
+             \sigma\longmapsto t\concat S_m(\sigma)
+\]
+maps every cylinder of length at most $m$ onto the full Cantor cylinder $[t]$.
+Thus an integer threshold replaces an exact-string guess.
+
+There are two simultaneous requirements.  For each useful level $n$, one
+integer $m_\beta(n)$ must work for every $t\in2^n$; and for every such $t$ we
+need infinitely many base points, so they converge to the resolution point
+$\beta$.  A single $\Diamond(\mathfrak b)$ coordinate does both jobs.  Its value
+sets the threshold for its own level, while that same successful coordinate
+adds one new good ladder point to every earlier cell.  Infinitely many
+successful coordinates therefore populate every cell infinitely often.
+
+Crucially, maps belonging to level $n$ still have image diameter at most
+$2^{-n}$.  That shrinking-diameter property is exactly what preserves the
+Reznichenko metric on the Cantor resolution $L_0$.  On the interval resolution
+$L_1$, lower semicontinuity gives an estimate $4^{-n}$ across every dyadic
+cell, and chaining $2^n$ cells forces the distance between the two endpoints
+to be at most $2^{-n}$ on infinitely many levels.
+
+\section{The threshold ladder fan}
+
+We use the following standard form of $\Diamond(\mathfrak b)$.  For every
+Borel map $F:2^{<\omega_1}\to\ww$ there is a sequence
+$\langle u_\beta:\beta<\omega_1\rangle$, $u_\beta\in\ww$, such that for every
+$\gamma\in2^{\omega_1}$, stationarily many $\beta$ satisfy
+\begin{equation}\label{eq:diamond}
+       F(\gamma\mathbin{\upharpoonright}\beta)(j)<u_\beta(j)
+       \quad\text{for infinitely many }j.
+\end{equation}
+This is the Borel relational presentation used in \cite{MHD,Minami,MC}.
+
+Let $T=2^{<\omega}$ and, for $t\in T$, put
+$A_t=\{t\}\times\omega_1$ and $A=\bigcup_{t\in T}A_t$.  Let $B$ be the set of
+nonzero countable limit ordinals.  For every $\beta\in B$, fix an increasing
+cofinal sequence $\langle\lambda_\beta(j):j\in\omega\rangle$ in $\beta$.
+For $n\le j$, $t\in2^n$, fix an enumeration
+\[
+ e_{\beta,j,n,t}:\omega\longrightarrow
+ \beta\setminus(\lambda_\beta(j)+1).
+\]
+Repetitions are harmless, although the enumerations may be chosen bijective.
+
+\begin{lemma}[Threshold ladder lemma]\label{lem:threshold}
+Under $\Diamond(\mathfrak b)$ there are countable sets $C_\beta\subset A$
+and integers $m_\beta(n)$, for $\beta\in B$ and $n\in\omega$, such that:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $C_\beta\cap C_\eta$ is finite whenever $\beta\ne\eta$;
+\item $C_\beta\cap A_t$ is infinite for every $t\in T$;
+\item for every $\ell:A\to\omega$ there are $\beta\in B$ and an infinite
+set $W\subset\omega$ such that, whenever $n\in W$ and $t\in2^n$,
+\[
+ \bigl\{a\in C_\beta\cap A_t:\ell(a)\le m_\beta(n)\bigr\}
+ \quad\text{is infinite.}\tag{$\ast$}
+\]
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+We describe the Borel target before applying the diamond.  A branch can use a
+fixed standard code for a countable family
+$\langle G_t:t\in T\rangle$ of subsets of $\omega_1$ and integers
+$\langle H(t):t\in T\rangle$.  At a countable stage $\beta$, for $j,n,t$ with
+$n\le j$ and $t\in2^n$, let
+\[
+ p_{\beta,j,n,t}=min\{k:e_{\beta,j,n,t}(k)\in G_t\cap\beta\},
+\]
+when this set is nonempty.  On correctly formed codes for which all the needed
+minima exist, set
+\[
+ F(\gamma\mathbin{\upharpoonright}\beta)(j)
+ =\max\Bigl(
+   \{H(t):t\in2^n,\ n\le j\}
+   \cup
+   \{p_{\beta,j,n,t}:n\le j,\ t\in2^n\}
+ \Bigr).
+\tag{1}
+\]
+Set the value equal to $0$ on malformed codes.  For each fixed $\beta$ and
+$j$, (1) takes a maximum over a finite set, and every displayed minimum is a
+first-hit search in a fixed enumeration.  Hence each coordinate is Borel.
+The usual pairing of $\omega_1\times\omega$ with $\omega_1$ makes this one
+Borel map on $2^{<\omega_1}$.
+
+Let $\langle u_\beta\rangle$ be the $\Diamond(\mathfrak b)$ sequence for $F$,
+and put
+\[
+ m_\beta(n)=u_\beta(n),
+\]
+\[
+ C_\beta[j]=
+ \left\{(t,e_{\beta,j,n,t}(k)):
+ n\le j,\ t\in2^n,\ k\le u_\beta(j)\right\},
+ \qquad C_\beta=\bigcup_{j<\omega}C_\beta[j].
+\tag{2}
+\]
+Every stage in (2) is finite.  If $\beta<\eta$, then $C_\beta$ has all second
+coordinates below $\beta$, whereas all but finitely many stages of $C_\eta$
+have all second coordinates above $\beta$.  Thus $C_\beta\cap C_\eta$ is
+finite, proving (i).  For fixed $t\in2^n$, every stage $j\ge n$ contributes a
+point of $A_t$ above $\lambda_\beta(j)$; cofinality of the latter sequence
+gives (ii).
+
+Now fix $\ell:A\to\omega$.  Since $A_t$ has size $\aleph_1$ and
+$A_t=\bigcup_H\{a:\ell(a)\le H\}$, choose $H(t)$ so that
+\[
+             G_t=\{\xi<\omega_1:\ell(t,\xi)\le H(t)\}
+\]
+is uncountable.  There is a club of $\beta$ for which every $G_t\cap\beta$ is
+cofinal in $\beta$ and the branch code restricts correctly.  Choose in this
+club a diamond stage $\beta$ satisfying \eqref{eq:diamond}, and let $J$ be the
+infinite set of successful coordinates $j$.
+
+If $j\in J$, then $u_\beta(j)>H(t)$ for every $t$ on every level at most $j$.
+Moreover, (2) includes, for each such $t$, a point whose second coordinate is
+$e_{\beta,j,n,t}(p_{\beta,j,n,t})\in G_t$.  Fix $n\in J$ and $t\in2^n$.
+Every sufficiently large $j\in J$ therefore contributes a point of
+$C_\beta\cap A_t$ with $\ell$-value at most $H(t)<u_\beta(n)=m_\beta(n)$.
+As these points lie above the cofinal lower bounds $\lambda_\beta(j)$, infinitely
+many are distinct.  Taking $W=J$ proves (iii).
+\end{proof}
+
+\section{The two resolutions}
+
+Give $A\cup B$ the locally compact topology in which points of $A$ are isolated
+and
+\[
+ \bigl\{\{\beta\}\cup(C_\beta\setminus F):F\subset C_\beta\text{ finite}\bigr\}
+\]
+is a neighborhood base at $\beta\in B$.  Lemma~\ref{lem:threshold}(i) makes
+this space Hausdorff.  Let $K=A\cup B\cup\{c\}$ be its one-point
+compactification.  This is the source paper's ``pre-basic'' space, and
+$w(K)=|K|=\aleph_1$ \cite[Lemma 2.3]{MC}.
+
+Blow up each isolated $a\in A$ to a Cantor fiber:
+\[
+                  L=(A\times2^\omega)\cup B\cup\{c\}.
+\]
+The topology has the fiber cylinders $\{a\}\times[s]$ and, for $U$ open in
+$K$, the sets $((U\cap A)\times2^\omega)\cup(U\setminus A)$.  Thus $L$ is
+zero-dimensional compact and has weight $\aleph_1$.
+
+Write $S_m(\sigma)(i)=\sigma(m+i)$ for the tail shift and let
+$\rho$ be the usual Cantor metric.  For $\beta\in B$, define the continuous
+map $g_\beta:L\setminus\{\beta\}\to2^\omega$ by
+\[
+ g_\beta(a,\sigma)=t\concat S_{m_\beta(n)}(\sigma)
+ \quad\text{if }a\in C_\beta\cap A_t, |t|=n,
+\tag{3}
+\]
+and put $g_\beta=\mathbf 0$ off $(C_\beta\times2^\omega)\cup\{\beta\}$.
+Continuity on an isolated fiber is clear.  At $\eta\in B\setminus\{\beta\}$,
+it follows from finiteness of $C_\eta\cap C_\beta$; at $c$, take a neighborhood
+avoiding the compact set $(C_\beta\times2^\omega)\cup\{\beta\}$.  Notice the
+uniform range estimate
+\[
+ \operatorname{diam}_\rho g_\beta(\{a\}\times2^\omega)\le 2^{-n}
+ \quad(a\in C_\beta\cap A_t, |t|=n).
+\tag{4}
+\]
+
+Let $q:2^\omega\to[0,1]$ be
+$q(x)=\sum_i x(i)2^{-(i+1)}$, and put $h_\beta=q\circ g_\beta$.  Define graph
+resolutions
+\begin{align*}
+L_0&=\{(u,v)\in L\times(2^\omega)^B:
+       \beta\ne u\Rightarrow v(\beta)=g_\beta(u)\},\\
+L_1&=\{(u,w)\in L\times[0,1]^B:
+       \beta\ne u\Rightarrow w(\beta)=h_\beta(u)\}.
+\end{align*}
+They are compact, and applying $q$ coordinatewise gives a continuous
+surjection $\pi:L_0\to L_1$.  Both weights are $\aleph_1$.
+
+\section{The Cantor resolution is RN}
+
+We adapt Proposition 4.1 of Avil\'es--Koszmider \cite{AK} and Theorem 2.6 of
+the source paper \cite{MC}.  Define a metric $d$ on $L_0$ as follows.  It is
+zero on the diagonal; over one $\beta\in B$ use the Cantor distance between
+the two free $\beta$-coordinates; over one isolated base point $a\in A$ use
+the Cantor distance between the two fiber parameters; and set $d=1$ in every
+remaining off-diagonal case.
+
+Exactly as in \cite[Proposition 4.1]{AK}, $d$ fragments $L_0$.  Indeed, a
+nonempty subset meeting an isolated Cantor fiber has a relatively open piece
+of arbitrarily small $d$-diameter.  If it meets no such fiber, project it to
+the scattered space $B\cup\{c\}$, isolate one projected point, and restrict
+the corresponding free Cantor coordinate.
+
+It remains to verify the Reznichenko separation property.  Distinct points
+with distinct base points, or two distinct points in one isolated fiber, are
+handled by disjoint base or Cantor neighborhoods.  Consider two distinct
+points over the same $\beta\in B$, and choose disjoint clopen Cantor
+neighborhoods of their free $\beta$-coordinates.  If these lifted neighborhoods
+had $d$-distance zero, there would be pairs over common isolated base points
+$a_i=(t_i,\xi_i)\in C_\beta$ with fiber parameters $\sigma_i,\tau_i$ such that
+$\rho(\sigma_i,\tau_i)\to0$, while
+$g_\beta(a_i,\sigma_i)$ and $g_\beta(a_i,\tau_i)$ remain in the two separated
+coordinate neighborhoods.
+
+If $|t_i|\to\infty$ along a subsequence, (4) makes the two images converge
+together.  Otherwise pass to a subsequence on which $t_i=t$ is fixed.  Formula
+(3) then uses one fixed continuous shift $S_{m_\beta(|t|)}$, so again the two
+images converge together.  Both alternatives contradict separation of the
+coordinate neighborhoods.  Thus $d$ is a fragmenting Reznichenko metric.
+
+It follows that $L_0$ is quasi-RN.  It is zero-dimensional, and every
+zero-dimensional quasi-RN compactum is RN by Arvanitakis
+\cite[Theorem 3.6]{Arv}.  Hence $L_0$ is RN.
+
+\section{The interval resolution is not RN}
+
+Suppose toward a contradiction that an l.s.c. metric $\delta$ fragments
+$L_1$.  For $a\in A$, write $a+\sigma$ for the unique point of $L_1$ over
+$(a,\sigma)\in L$.  Fix $n\ge1$, $t\in2^n$, and $a\in A_t$.  Fragment the
+Cantor fiber $\{a+\sigma:\sigma\in2^\omega\}$ at scale $4^{-n}$.  A nonempty
+relatively open piece contains a cylinder $[s(a)]$ such that
+\[
+ \operatorname{diam}_\delta\{a+\sigma:\sigma\in[s(a)]\}<4^{-n}.
+\tag{5}
+\]
+Put $\ell(a)=|s(a)|$ (define it arbitrarily on the level $n=0$), and apply
+Lemma~\ref{lem:threshold}.  Obtain $\beta$ and an infinite $W$ satisfying
+$(\ast)$.  Discard $0$ from $W$.
+
+Fix $n\in W$ and $t\in2^n$.  There are infinitely many
+$a\in C_\beta\cap A_t$ with $|s(a)|\le m=m_\beta(n)$.  For each such $a$, choose
+two points of $[s(a)]$ by filling with zeroes up to coordinate $m$ and then
+using respectively the constant-zero and constant-one tails.  Call them
+$x_a^0,x_a^1$.  Then
+\[
+ S_m(x_a^0)=\mathbf0,\qquad S_m(x_a^1)=\mathbf1,
+\]
+so (3) gives
+\[
+ h_\beta(a,x_a^0)=q(t\concat\mathbf0),\qquad
+ h_\beta(a,x_a^1)=q(t\concat\mathbf1).
+\tag{6}
+\]
+
+Enumerate infinitely many such $a$ without repetition.  They converge to
+$\beta$ because they lie in $C_\beta$.  In the graph resolution, continuity
+of every $h_\eta$ at $\beta$ for $\eta\ne\beta$, together with (6), gives
+\[
+ a+x_a^0\longrightarrow \beta\oplus q(t\concat\mathbf0),\qquad
+ a+x_a^1\longrightarrow \beta\oplus q(t\concat\mathbf1),
+\]
+where $\beta\oplus r$ denotes the point over $\beta$ with free
+$\beta$-coordinate $r$.  From (5) and lower semicontinuity,
+\[
+ \delta\bigl(\beta\oplus q(t\concat\mathbf0),
+              \beta\oplus q(t\concat\mathbf1)\bigr)\le4^{-n}.
+\tag{7}
+\]
+
+Order the $2^n$ words $t\in2^n$ lexicographically.  The right endpoint of one
+dyadic interval equals the left endpoint of the next:
+$q(t\concat\mathbf1)=q(t^+\concat\mathbf0)$.  Chaining (7) over all words gives
+\[
+             \delta(\beta\oplus0,\beta\oplus1)
+             \le 2^n4^{-n}=2^{-n}.
+\]
+This holds for infinitely many, hence unbounded, $n\in W$.  Therefore the two
+distinct points $\beta\oplus0$ and $\beta\oplus1$ have $\delta$-distance zero,
+a contradiction.  Thus $L_1$ is not RN, completing the proof of
+Theorem~\ref{thm:main}.
+
+\section{Verification notes and limitations}
+
+\begin{enumerate}
+\item The almost-disjointness check is insensitive to the diamond: all points
+added at stage $j$ lie above the cofinal lower bound $\lambda_\beta(j)$, and
+each stage is finite.
+\item In Lemma~\ref{lem:threshold}, one successful coordinate $j$ sets the
+threshold for level $j$ and simultaneously adds a point from every $G_t$ on
+all levels at most $j$.  Infinitely many successful coordinates are therefore
+enough to make every cell on each successful level infinite.
+\item The shift is fixed on a given $\beta$ and dyadic level.  This is essential
+in the bounded-level branch of the Reznichenko argument.
+\item No preservation theorem for RN compacta under forcing is used.  The
+spaces are constructed directly inside Minami's $\Diamond(\mathfrak b)$ model.
+\item The packet claims a relative-consistency answer, exactly matching the
+source question.  It does not prove in ZFC that such a weight-$\aleph_1$
+example exists.
+\end{enumerate}
+
+\paragraph{Human-review recommendation.}
+Verify the uniform Borel coding leading to (1), then audit the same-$\beta$
+Reznichenko case and the graph-resolution convergence used before (7).  These
+are the only nonroutine interfaces between the new combinatorial lemma and the
+published resolution argument.
+
+\section{Novelty check}
+
+A bounded search was performed in the run's registry, solution, attempt, and
+proof-gap indexes; for arXiv:2504.09351 and the exact wording of Question 1;
+for the core terms \texttt{diamond(b)}, \texttt{non(M)}, and small RN compact
+continuous images; and in the source's citation neighborhood and later
+arXiv/web records visible through 9 August 2026.  No later paper explicitly
+answering Question 1 was found.  Minami \cite{Minami} supplies the forcing
+model used in Corollary~\ref{cor:consistency}, but does not contain the
+topological construction proved here.
+
+\begin{thebibliography}{99}
+\bibitem{AK}
+A. Avil\'es and P. Koszmider,
+\emph{A continuous image of a Radon--Nikod\'ym compact space which is not
+Radon--Nikod\'ym}, Duke Math. J. \textbf{162} (2013), 2285--2299;
+arXiv:1112.4152.
+
+\bibitem{Arv}
+A. D. Arvanitakis,
+\emph{Some remarks on Radon--Nikod\'ym compact spaces},
+Fund. Math. \textbf{172} (2002), 41--60.
+
+\bibitem{MC}
+A. Mart\'inez-Celis and A. Morawski,
+\emph{A small Radon--Nikod\'ym compact space from a parametrized diamond},
+arXiv:2504.09351 (2025).
+
+\bibitem{Minami}
+H. Minami,
+\emph{Suslin forcing and parametrized diamond principles},
+J. Symbolic Logic \textbf{73} (2008), 752--764,
+\href{https://doi.org/10.2178/jsl/1230396745}{doi:10.2178/jsl/1230396745}.
+
+\bibitem{MHD}
+J. T. Moore, M. Hru\v{s}\'ak, and M. D\v{z}amonja,
+\emph{Parametrized diamond principles},
+Trans. Amer. Math. Soc. \textbf{356} (2004), 2281--2306.
+\end{thebibliography}
+
+\end{document}

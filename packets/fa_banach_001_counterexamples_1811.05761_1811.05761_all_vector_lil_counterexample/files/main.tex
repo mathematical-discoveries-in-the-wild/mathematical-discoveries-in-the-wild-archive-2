@@ -1,0 +1,128 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx,microtype,xcolor}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+\title{A counterexample to the all-vector law of the iterated logarithm for random weighted shifts}
+\author{Automated Math Discovery Run \texttt{fa\_banach\_001}}
+\date{21 August 2026}
+\begin{document}
+\maketitle
+\begin{center}
+\fcolorbox{black}{red!5}{\parbox{0.88\linewidth}{
+\textbf{Result.} Conjecture~7.17 of Cheng--Fang--Zhu is false.  There are
+bounded positive i.i.d. weights satisfying all of the paper's hypotheses
+and a deterministic nonzero vector \(x\in\ell^2\) for which
+\[
+ \frac{\log\|T^n x\|^2}{\sqrt{2\sigma^2n\log\log n}}\longrightarrow+\infty
+ \quad\text{almost surely}.
+\]
+}}
+\end{center}
+
+\section{The source conjecture}
+For a unilateral random weighted shift \(Te_k=X_ke_{k+1}\), Lemma~7.15 of
+\cite{CFZ} proves, for each basis vector \(e_k\), the usual LIL with
+normalization \(\sqrt{2\sigma^2n\log\log n}\), where
+\(\E\log X_1=0\) and \(\sigma^2=\E(\log X_1^2)^2<\infty\).
+Conjecture~7.17 asks whether the same assertion holds for every
+\(x\in\ell^2\).
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.96\linewidth,height=0.58\textheight,keepaspectratio]{figures/open_problem_crop.png}
+\caption{Lemma~7.15, formula (49), and Conjecture~7.17 in arXiv:1811.05761,
+PDF page 48.}
+\end{figure}
+
+\section{Proof intuition}
+For a fixed basis vector, \(\|T^n e_k\|\) sees only one length-\(n\)
+weight block, so the ordinary random-walk LIL applies.  An infinite-support
+vector is different: its norm is a sum over all starting locations and can
+select a rare exceptionally favorable block far out in the tail.
+
+With symmetric weights \(e^{\pm1}\), an all-\(e\) block has probability
+\(2^{-n}\).  Among \(\lceil e^n\rceil\) disjoint blocks, the probability of
+seeing none is double-exponentially small and hence summable.  The
+coefficient \(k^{-3/5}\) decays slowly enough that an all-\(e\) block starting
+before \(n e^n\) still contributes \(\exp((4/5)n-O(\log n))\) to the squared
+norm.  Borel--Cantelli therefore upgrades this rare-block mechanism to an
+almost-sure lower bound for every sufficiently large \(n\), far above the
+\(\sqrt{n\log\log n}\) LIL scale.
+
+\section{Counterexample}
+\begin{theorem}
+Let \(X_j=e\) and \(X_j=e^{-1}\), each with probability \(1/2\), independently,
+and set
+\[
+ x=\sum_{k=1}^{\infty}k^{-3/5}e_k.
+\]
+Then \(x\in\ell^2\), the weights satisfy the hypotheses of Lemma~7.15 with
+\(\sigma^2=4\), and almost surely
+\[
+ \lim_{n\to\infty}\frac{\log\|T^n x\|^2}{\sqrt{8n\log\log n}}=+\infty.
+\]
+In particular Conjecture~7.17 is false.
+\end{theorem}
+
+\begin{proof}
+Plainly \(\sum k^{-6/5}<\infty\), while
+\(\E\log X_1=0\) and
+\(\E(\log X_1^2)^2=\E(\pm2)^2=4\).
+
+Fix \(n\), put \(M_n=\lceil e^n\rceil\), and consider the \(M_n\) disjoint
+blocks of indices
+\[
+ B_{n,r}=\{1+rn,\ldots,(r+1)n\},\qquad 0\le r<M_n.
+\]
+Let \(F_n\) be the event that none of these blocks consists entirely of
+weights equal to \(e\).  Independence within this fixed collection gives
+\[
+ \Pp(F_n)=(1-2^{-n})^{M_n}
+ \le \exp(-M_n2^{-n})
+ \le \exp\bigl(-(e/2)^n\bigr).
+\]
+The last sequence is summable, so the first Borel--Cantelli lemma implies
+that, almost surely, \(F_n\) occurs for only finitely many \(n\).  Notice that
+no independence between different values of \(n\) is needed.
+
+Hence, almost surely for every sufficiently large \(n\), there is an
+\(r<M_n\) such that all weights in \(B_{n,r}\) equal \(e\).  With
+\(k=1+rn\le nM_n\), formula (49) of the source then yields the one-term
+lower bound
+\[
+ \|T^n x\|^2
+ =\sum_{j\ge1}j^{-6/5}X_j^2\cdots X_{j+n-1}^2
+ \ge k^{-6/5}e^{2n}
+ \ge (nM_n)^{-6/5}e^{2n}.
+\]
+Since \(M_n\le2e^n\) for \(n\ge1\),
+\[
+ \log\|T^n x\|^2
+ \ge \frac45n-\frac65\log n-\frac65\log2.
+\]
+Dividing by \(\sqrt{8n\log\log n}=o(n)\) proves the assertion.
+\end{proof}
+
+\section{Scope and verification}
+The construction exploits infinite spatial support: at time \(n\), the norm
+simultaneously samples exponentially many remote length-\(n\) blocks.  It
+does not contradict Lemma~7.15 for any fixed basis vector.  The proof uses
+only an exact norm identity and the first Borel--Cantelli lemma.  The
+accompanying script checks the numerical inequalities used above for a
+range of \(n\); those checks are transcription aids, not a substitute for
+the analytic proof.
+
+A bounded arXiv search through 21 August 2026 using the paper id, title,
+authors, and the exact conjecture found no later paper recording this
+counterexample.  This is not an exhaustive literature review.
+
+\begin{thebibliography}{9}
+\bibitem{CFZ} G.~Cheng, X.~Fang, and S.~Zhu,
+\emph{Random weighted shifts}, arXiv:1811.05761.
+\end{thebibliography}
+\end{document}

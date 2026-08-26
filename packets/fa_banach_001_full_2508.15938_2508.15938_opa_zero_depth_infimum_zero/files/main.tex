@@ -1,0 +1,346 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!60!black,urlcolor=blue!70!black,citecolor=blue!60!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\D}{\mathbb D}
+\newcommand{\T}{\mathbb T}
+\newcommand{\C}{\mathbb C}
+\newcommand{\dm}{dm}
+
+\title{Degree-one optimal polynomial approximants\\can have zeros arbitrarily close to the origin}
+\author{Candidate full solution to the zero-depth question in arXiv:2405.16943 and 2508.15938}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent
+\fbox{\begin{minipage}{0.94\textwidth}
+\textbf{Status: candidate full solution, likely valid.}
+For each \(s\in\{1,2,\infty\}\) and each \(\varepsilon>0\), there is a
+polynomial \(f\), nonvanishing on the closed bidisk, whose degree-one optimal
+polynomial approximant \(p\) to \(1/f\) has
+\[
+ \inf\bigl\{\|z\|_s:p(z)=0\bigr\}<\varepsilon.
+\]
+Thus the sharp universal zero-exclusion radius is zero for all three norms.
+The construction concentrates \(|f|^2\) near two almost co-rotating points
+of the distinguished boundary; the OPA normal equations then converge to a
+two-point interpolation system with coefficients of order \(m\).
+\end{minipage}}
+
+\section{The question and the later numerical benchmark}
+
+B\'en\'eteau, Khavinson, and Seco ask how far inside the bidisk zeros of an
+optimal polynomial approximant (OPA) can get, explicitly distinguishing the
+\(\ell_1\), \(\ell_2\), and \(\ell_\infty\) distances in \(\C^2\)
+\cite[pp.~13--14]{BKS}. Their complete statement is reproduced on the next
+two pages.
+
+\begin{center}
+\includegraphics[height=0.77\textheight]{figures/question-13.png}
+\end{center}
+
+\begin{center}
+\includegraphics[height=0.77\textheight]{figures/question-14.png}
+\end{center}
+
+Geronimo and Woerdeman later optimize numerically within the two-parameter
+family
+\[
+ f(z_1,z_2)=\left(1-\frac{z_1+z_2}{r}\right)^{-\alpha}
+\]
+and report the value \(0.975766335\) \cite[p.~8]{GW}. Their complete source
+page is reproduced below. The theorem here shows that this benchmark is a
+feature of that family, not a positive universal barrier.
+
+\begin{center}
+\includegraphics[height=0.77\textheight]{figures/target-8.png}
+\end{center}
+
+\section{Setup and proof intuition}
+
+The Hardy norm on \(H^2(\D^2)\) is the \(\ell_2\)-norm of Taylor
+coefficients, equivalently the boundary \(L^2(\T^2)\)-norm. The degree-one
+OPA for \(1/f\) is the polynomial
+\[
+ p_f=p_0+p_1z_1+p_2z_2
+\]
+minimizing \(\|1-pf\|_{H^2}\).
+
+The key is to view its normal equations through the probability measure
+\[
+ d\mu_f=\frac{|f|^2}{\|f\|_{H^2}^2}\,dm
+ \quad\text{on }\T^2.
+\]
+After dividing by \(p_0\), the two nonconstant normal equations depend only
+on the first moments of \(\mu_f\). If these measures converge to equal mass
+at two points \((1,1)\) and \((a,b)\), the normalized OPA converges to the
+affine polynomial that vanishes at both points.
+
+We choose \(a\) and \(b\) so that both rotate by about \(2\pi/m\), but their
+relative rotation is only \(2\pi/m^2\). The two interpolation rows are
+therefore almost proportional while asking for incompatible constant
+values. The affine coefficients grow like \(m\), and its zero hyperplane
+passes within distance \(O(1/m)\) of the origin.
+
+\section{OPA normal equations as moments}
+
+\begin{lemma}[moment form and continuity]\label{lem:moment}
+Let \(0\ne f\in H^2(\D^2)\) with \(f(0)\ne0\), and let \(p_f\) be its
+degree-one OPA. Then \(p_0\ne0\). Writing
+\[
+ p_f=p_0(1+q_1z_1+q_2z_2),
+\]
+the vector \(q=(q_1,q_2)^T\) is the unique solution of
+\begin{equation}\label{eq:normal}
+ \left(\int_{\T^2} z_i\overline{z_j}\,d\mu_f\right)_{j,i=1}^2 q
+ =
+ -\left(\int_{\T^2}\overline{z_j}\,d\mu_f\right)_{j=1}^2.
+\end{equation}
+If probability measures \(\mu_\nu\) converge weakly and the limiting
+\(2\times2\) matrix in \eqref{eq:normal} is invertible, their normalized OPA
+coefficient vectors converge to the limiting solution.
+\end{lemma}
+
+\begin{proof}
+The Gram matrix of \(f,z_1f,z_2f\) is positive definite: an analytic
+identity
+\[
+ c_0f+c_1z_1f+c_2z_2f=0
+\]
+forces the affine factor to vanish identically. The right side of the full
+normal system is \((\overline{f(0)},0,0)^T\). Positivity and the Schur
+complement show that the first coordinate \(p_0\) is nonzero.
+
+For \(j=1,2\), the right side is zero because \(z_jf\) has zero constant
+term. Hence
+\[
+ 0=\langle p_ff,z_jf\rangle
+ =p_0\left\langle(1+q_1z_1+q_2z_2)f,z_jf\right\rangle.
+\]
+Division by \(p_0\|f\|_{H^2}^2\) gives \eqref{eq:normal}. Weak convergence
+gives convergence of all displayed continuous moments, and inversion is
+continuous at an invertible matrix.
+\end{proof}
+
+\section{A boundary concentration codebook}
+
+Fix an integer \(m\ge3\), put \(D=m^2\), and let
+\[
+ \zeta=e^{2\pi i/D}.
+\]
+Define the analytic polynomials
+\begin{align}
+ G_m(z_1,z_2)&=z_1^m+z_1^{m-1}z_2^m,\label{eq:G}\\
+ L_\omega(z)&=\frac1D\sum_{r=0}^{D-1}(z/\omega)^r,\\
+ H_m(z_1,z_2)&=-1+L_1(z_2)+L_{\zeta^{m+1}}(z_2).\label{eq:H}
+\end{align}
+
+\begin{lemma}[two-point concentration]\label{lem:concentration}
+For \(t,M>0\), set
+\[
+ f_{m,t,M}(z)=\exp\bigl(tG_m(z)+MH_m(z)\bigr).
+\]
+These functions are entire and zero-free. Their boundary probability
+measures satisfy
+\[
+ \lim_{M\to\infty}\lim_{t\to\infty}\mu_{f_{m,t,M}}
+ =
+ \frac12\delta_{(1,1)}
+ +\frac12\delta_{(a_m,b_m)},
+\]
+where
+\[
+ a_m=\zeta^m=e^{2\pi i/m},
+ \qquad
+ b_m=\zeta^{m+1}=e^{2\pi i(1/m+1/m^2)}.
+\]
+\end{lemma}
+
+\begin{proof}
+On \(\T^2\), \(\operatorname{Re}G_m\le2\). Equality holds precisely when
+\[
+ z_1^m=1,
+ \qquad
+ z_1^{m-1}z_2^m=1.
+\]
+The exponent matrix
+\[
+ \begin{pmatrix}m&0\\m-1&m\end{pmatrix}
+\]
+has determinant \(m^2\), so the maximum set consists of exactly
+\[
+ K_m=\bigl\{(\zeta^{mk},\zeta^{(m+1)k}):0\le k<D\bigr\}.
+\]
+All maxima are nondegenerate and have the same Hessian: in local angular
+coordinates the quadratic loss is
+\[
+ \frac12\bigl[(m u)^2+((m-1)u+mv)^2\bigr].
+\]
+
+Because \(\gcd(m+1,D)=1\), the second coordinates in \(K_m\) run through all
+\(D\)-th roots of unity. The root-of-unity filter \(L_\omega\) equals one
+at \(\omega\) and zero at the other such roots. Hence \(H_m\) equals zero
+at \((1,1)\) and \((a_m,b_m)\), and equals \(-1\) at every other point of
+\(K_m\).
+
+The elementary Laplace method at finitely many equal, nondegenerate maxima
+now gives, for fixed \(M\), limiting masses proportional to
+\(e^{2M H_m(x)}\). Thus the two selected points have weight one and each
+other point has weight \(e^{-2M}\). Sending \(M\) to infinity proves the
+claim.
+\end{proof}
+
+\section{Exact limiting zero depths}
+
+\begin{lemma}\label{lem:depth}
+For the equal two-point measure in Lemma~\ref{lem:concentration}, the limiting
+normalized OPA is
+\[
+ \ell_m(z)=1+q_{1,m}z_1+q_{2,m}z_2,
+\]
+where
+\[
+ q_{1,m}=\frac{b_m-1}{a_m-b_m},
+ \qquad
+ q_{2,m}=\frac{1-a_m}{a_m-b_m}.
+\]
+If \(\rho_s(\ell)=\inf\{\|z\|_s:\ell(z)=0\}\), then
+\[
+ \rho_s(\ell_m)=\frac1{\|(q_{1,m},q_{2,m})\|_{s^*}},
+\]
+where \(s^*\) is the dual exponent. In particular,
+\begin{align}
+ \rho_\infty(\ell_m)
+ &=\frac{\sin(\pi/m^2)}
+ {\sin(\pi/m)+\sin(\pi/m+\pi/m^2)}
+ \sim\frac1{2m},\label{eq:rinf}\\
+ \rho_2(\ell_m)
+ &\sim\frac1{\sqrt2\,m},
+ \qquad
+ \rho_1(\ell_m)\sim\frac1m.\label{eq:rother}
+\end{align}
+\end{lemma}
+
+\begin{proof}
+The two feature rows \((1,1)\) and \((a_m,b_m)\) are linearly independent
+because \(a_m\ne b_m\). They therefore span all functions on the two-point
+space. The limiting normal equations say exactly that \(\ell_m\) vanishes
+at both points:
+\[
+ 1+q_{1,m}+q_{2,m}=0,
+ \qquad
+ 1+q_{1,m}a_m+q_{2,m}b_m=0.
+\]
+Solving gives the displayed coefficients.
+
+H\"older's inequality, with equality in the dual direction, gives
+\[
+ \inf\bigl\{\|z\|_s:q_{1,m}z_1+q_{2,m}z_2=-1\bigr\}
+ =\frac1{\|q_m\|_{s^*}}.
+\]
+Finally,
+\begin{align*}
+ |a_m-b_m|&=2\sin(\pi/m^2),\\
+ |1-a_m|&=2\sin(\pi/m),\\
+ |1-b_m|&=2\sin(\pi/m+\pi/m^2).
+\end{align*}
+Substitution proves \eqref{eq:rinf}; the \(\ell_2\) and \(\ell_1\) formulas
+follow by replacing the sum of the last two chord lengths by their Euclidean
+norm or maximum. Their asymptotics are immediate.
+\end{proof}
+
+\section{The full polynomial result}
+
+\begin{theorem}\label{thm:main}
+For every \(\varepsilon>0\) and each
+\(s\in\{1,2,\infty\}\), there exists a polynomial \(F\) with no zeros on
+\(\overline{\D}^2\) such that its degree-one OPA \(p_F\) has a zero \(z\)
+with \(\|z\|_s<\varepsilon\). Consequently,
+\[
+ \inf_F \inf\bigl\{\|z\|_s:p_F(z)=0\bigr\}=0,
+\]
+even when \(F\) ranges only over polynomials nonvanishing on the closed
+bidisk.
+\end{theorem}
+
+\begin{proof}
+Choose \(m\) so large that the three quantities in
+\eqref{eq:rinf}--\eqref{eq:rother} are below \(\varepsilon/2\). By
+Lemmas~\ref{lem:moment} and~\ref{lem:concentration}, first choosing \(M\)
+large and then \(t\) large makes the normalized OPA coefficients of the
+zero-free entire function \(f_{m,t,M}\) arbitrarily close to those of
+\(\ell_m\). The corresponding affine zero depths are continuous functions
+of the two nonconstant coefficients, so all three depths are below
+\(\varepsilon\).
+
+It remains to obtain a polynomial. The Taylor polynomials \(F_N\) of
+\(f_{m,t,M}\) converge uniformly on the closed bidisk. Since the limiting
+entire function has a positive minimum modulus there, \(F_N\) is
+nonvanishing on the closed bidisk for all sufficiently large \(N\).
+Uniform convergence also gives \(H^2\)-convergence, hence convergence of the
+finite Gram matrices and of the degree-one OPA coefficients. Taking \(N\)
+large preserves the strict zero-depth inequalities.
+\end{proof}
+
+\section{Checks, upgrade attempts, and scope}
+
+\paragraph{Exact finite check.}
+The packet-local script \texttt{code/verify\_two\_point\_construction.py}
+checks the finite group relations, solves the two-point interpolation
+system, verifies the chord-length formula, and shows numerically the
+\(1/m\) decay for all three norms. It is confirmatory only; every step is
+proved above.
+
+\paragraph{Deep upgrades.}
+The first attempt reduced the source's symmetric two-parameter family to
+one-dimensional positive sums and reproduced its reported minimum
+\(0.9757663352595\). A second search over zero-free exponential families
+found explicit values below \(0.15\). The decisive upgrade replaced
+numerical search by the two-point concentration codebook, proving that the
+infimum is zero. A final upgrade used uniform Taylor approximation to obtain
+zero-free polynomials, rather than only zero-free entire functions.
+
+\paragraph{Scope.}
+The theorem completely answers the zero-depth extremal question for
+degree-one OPAs with the standard total-degree space
+\(\operatorname{span}\{1,z_1,z_2\}\), simultaneously for the three norms
+asked in the source. It does not address higher-degree OPAs, eventual escape
+of zeros, other monomial orderings, or Dirichlet-type spaces.
+
+\paragraph{Novelty check.}
+Bounded primary-source searches through 11 August 2026 covered the exact
+question, degree-one OPAs, zero-free polynomials on the bidisk, and zeros
+arbitrarily close to the origin. They recovered the two source papers and
+one-variable zero-exclusion results, but no primary source stating the
+theorem above. Novelty confidence is moderate because the search was
+bounded.
+
+\paragraph{Human review.}
+Audit the two-stage Laplace limit, the moment-to-interpolation passage, and
+the preservation of zero-freeness under uniform Taylor approximation.
+
+\begin{thebibliography}{9}
+\bibitem{BKS}
+C. B\'en\'eteau, D. Khavinson, and D. Seco,
+\emph{A counterexample to the weak Shanks conjecture},
+Constr. Approx. 62 (2025), 645--661;
+\href{https://arxiv.org/abs/2405.16943}{arXiv:2405.16943}.
+
+\bibitem{GW}
+J. S. Geronimo and H. J. Woerdeman,
+\emph{A Fourier analysis approach to disprove the weak Shanks conjecture},
+Proc. Amer. Math. Soc. 154 (2026);
+\href{https://arxiv.org/abs/2508.15938}{arXiv:2508.15938}.
+\end{thebibliography}
+
+\end{document}

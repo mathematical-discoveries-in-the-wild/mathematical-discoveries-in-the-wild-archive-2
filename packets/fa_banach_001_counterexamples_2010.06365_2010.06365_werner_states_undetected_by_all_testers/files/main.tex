@@ -1,0 +1,341 @@
+\documentclass[11pt]{amsart}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newcommand{\M}{\mathcal M}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\gammatwo}{\gamma_2}
+\newcommand{\sa}{\mathrm{sa}}
+
+\begin{document}
+
+\title{Entangled Werner States Undetected by Every Entanglement Tester}
+\author{Run fa\_banach\_001}
+\date{August 11, 2026}
+\maketitle
+\pagestyle{plain}
+
+\section*{Status}
+
+This is a candidate counterexample, subject to human review, to the main open
+question of Jivulescu, Lancien, and Nechita \cite{JLN}.  Without the index
+permutation allowed in their positive theorem, the family of entanglement
+testers is not complete.  In fact, a whole interval of entangled Werner
+states is invisible to every possible tailored pair of testers.
+
+\section*{Source Question}
+
+For a multipartite state $\rho$, the source applies contractions
+$\mathcal E_i:S_1^{d_i}\to\ell_2^{n_i}$ and tests whether
+\[
+ \| (\mathcal E_1\otimes\cdots\otimes\mathcal E_m)(\rho)\|_
+ {\ell_2^{n_1}\otimes_\pi\cdots\otimes_\pi\ell_2^{n_m}}>1.
+\]
+It asks whether every entangled state is detected in this way, without first
+permuting indices.  The source notes that in the bipartite case this asks
+whether every entangled state has a norm-one witness factoring through
+$\ell_2$ \cite[Section 13, p.~35]{JLN}.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Proof Intuition}
+
+The source already identifies the right geometric object: tester witnesses
+are maps $S_1^d\to S_\infty^d$ with Hilbert-factorization norm at most one.
+Werner states are invariant under $U\otimes U$.  Averaging any such witness
+over this symmetry preserves both its value on the state and its
+factorization bound, and leaves only a two-parameter witness $aI+bF$.
+
+The decisive calculation is exact.  For the map represented by $aI+bF$,
+\[
+ \gammatwo(T_{a,b})
+ =\max\left\{|b|,
+ \left|a+\frac bd\right|+\left(1-\frac1d\right)|b|\right\}.
+\]
+The upper bound splits a matrix into its scalar and traceless parts and sends
+the latter through Hilbert--Schmidt space.  For the lower bound, an
+off-diagonal matrix unit sees $|b|$, while restriction to diagonal matrices
+produces $aJ+bI$; its nuclear norm divided by $d$ gives the other term.
+The remaining two-variable optimization shows that no tailored tester beats
+ordinary realignment on a Werner state.
+
+\section*{Factorable Witnesses}
+\par\medskip
+Use the complex bilinear trace duality between $S_1^d$ and $S_\infty^d$.
+For $W\in\M_d\otimes\M_d$, let $T_W:S_1^d\to S_\infty^d$ be determined by
+\[
+ \Tr\bigl(T_W(X)Y\bigr)=\Tr\bigl(W(X\otimes Y)\bigr).
+\]
+Changing the tensor-to-map convention can insert a transpose, which is an
+isometry on both Schatten classes and does not affect any norm below.  Put
+\[
+ \gammatwo(T)=\inf\{\|A\|\,\|B\|:
+ T=BA,\ A:S_1^d\to H,\ B:H\to S_\infty^d,
+ \ H\text{ Hilbert}\}.
+\]
+
+For a state $\rho$, define its all-tester envelope
+\[
+ \alpha(\rho)=\sup_{\mathcal E,\mathcal F}
+ \|(\mathcal E\otimes\mathcal F)(\rho)\|_\pi,
+\]
+where the supremum is over contractions from the two local $S_1$ spaces to
+arbitrary finite-dimensional Hilbert spaces.  Requiring the maps to have norm
+exactly one gives the same detection question.
+
+\begin{lemma}[Tester duality]\label{lem:duality}
+For every bipartite state $\rho$,
+\[
+ \alpha(\rho)\leq
+ \sup_{\gammatwo(T_W)\leq1}|\Tr(W\rho)|.
+\]
+\end{lemma}
+
+\begin{proof}
+Fix contractions
+\[
+ \mathcal E:S_1^d\to H,\qquad \mathcal F:S_1^d\to K.
+\]
+By projective/injective duality on $H\otimes K$,
+each functional used to norm $(\mathcal E\otimes\mathcal F)(\rho)$ is a
+bounded bilinear form $v$ on $H\times K$ of norm at most one.  By the Riesz
+representation theorem, $v$ is represented by a contraction between the two
+Hilbert spaces.  Hence
+\[
+ (X,Y)\longmapsto v(\mathcal E X,\mathcal F Y)
+\]
+has associated map $S_1^d\to S_\infty^d$ factoring through a Hilbert space
+with product of norms at most one.  Its representing tensor is some $W$ with
+$\gammatwo(T_W)\leq1$.  Taking the successive suprema proves the claim.
+\end{proof}
+
+\section*{The Exact Invariant Factorization Norm}
+
+Let $F(x\otimes y)=y\otimes x$ be the flip and put
+$W_{a,b}=aI+bF$.  Then, up to the harmless transpose mentioned above,
+\[
+ T_{a,b}(X)=a\Tr(X)I+bX.
+\]
+
+\begin{lemma}\label{lem:gamma}
+For every $a,b\in\mathbb C$ and $d\geq2$,
+\begin{equation}\label{eq:gamma}
+ \gammatwo(T_{a,b})=
+ \max\left\{|b|,
+ \left|a+\frac bd\right|+\left(1-\frac1d\right)|b|\right\}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Write
+\[
+ A=a+\frac bd,\qquad c=1-\frac1d,
+ \qquad X_0=X-\frac{\Tr X}{d}I.
+\]
+For $r,s>0$, factor $T_{a,b}=G_{r,s}E_{r,s}$ through
+$\mathbb C\oplus_2 S_2^{d,0}$ by
+\[
+ E_{r,s}(X)=(r\Tr X,sX_0),\qquad
+ G_{r,s}(z,Z)=\frac Ar zI+\frac bs Z.
+\]
+The extreme points of the complex $S_1$ unit ball are rank-one matrices
+$uv^*$ with $\|u\|=\|v\|=1$.  If $t=\Tr(uv^*)$, then
+$\|(uv^*)_0\|_2^2=1-|t|^2/d$.  It follows, and by duality the same calculation
+applies to $G_{r,s}$, that
+\begin{align}
+ \|E_{r,s}\|^2&=\max\{s^2,r^2+cs^2\},\label{eq:E}\\
+ \|G_{r,s}\|^2&=\max\left\{\frac{|b|^2}{s^2},
+ \frac{|A|^2}{r^2}+c\frac{|b|^2}{s^2}\right\}.
+ \label{eq:G}
+\end{align}
+If $b=0$, the scalar factorization gives $\gammatwo(T_{a,0})\leq|a|$.
+Assume $b\ne0$ and set $B=|b|$, $C=|A|$, and $s=1$.  If $C\leq B/d$,
+choose $r^2$ in the nonempty interval
+\[
+ d(C/B)^2\leq r^2\leq1/d.
+\]
+Equations \eqref{eq:E}--\eqref{eq:G} give
+$\|E_{r,1}\|\|G_{r,1}\|=B$.  If $C\geq B/d$, choose
+$r^2=C/B$; the product is $C+cB$.  This proves the upper bound in
+\eqref{eq:gamma}.
+
+For the reverse bound, $\gammatwo(T)\geq\|T\|$.  Applying $T_{a,b}$ to an
+off-diagonal matrix unit gives $\gammatwo(T_{a,b})\geq|b|$.  Next restrict the
+domain to diagonal matrices and project the range onto its diagonal.  These
+maps have norm one, so the resulting operator
+\[
+ M=aJ+bI:\ell_1^d\longrightarrow\ell_\infty^d
+\]
+has $\gammatwo(M)\leq\gammatwo(T_{a,b})$.  If
+$M_{ij}=\langle x_j,y_i\rangle$ is any Hilbert factorization, then
+\[
+ \|M\|_*\leq
+ \left(\sum_j\|x_j\|^2\right)^{1/2}
+ \left(\sum_i\|y_i\|^2\right)^{1/2}
+ \leq d\,\|A_0\|\,\|B_0\|,
+\]
+where $A_0:\ell_1^d\to H$ and $B_0:H\to\ell_\infty^d$ are the two
+factors.  Thus $\gammatwo(M)\geq\|M\|_*/d$.  The eigenvalues (and singular
+values in modulus) of $aJ+bI$ are $dA$ once and $b$ with multiplicity
+$d-1$.  Consequently
+\[
+ \gammatwo(T_{a,b})\geq\frac{\|M\|_*}{d}
+ =|A|+c|b|.
+\]
+Together with the off-diagonal bound, this proves equality.
+\end{proof}
+
+\section*{Werner States and the Negative Answer}
+
+For $0\leq\mu\leq1$, the Werner state \cite{Werner,JLN} is
+\begin{equation}\label{eq:werner}
+ \sigma_\mu=
+ \mu\frac{I+F}{d(d+1)}+(1-\mu)\frac{I-F}{d(d-1)}.
+\end{equation}
+It is positive, has trace one, is invariant under $U\otimes U$, and satisfies
+\begin{equation}\label{eq:f}
+ f_\mu:=\Tr(F\sigma_\mu)=2\mu-1.
+\end{equation}
+
+\begin{theorem}[Exact all-tester envelope]\label{thm:envelope}
+For every $d\geq2$ and $0\leq\mu\leq1$,
+\begin{equation}\label{eq:envelope}
+ \alpha(\sigma_\mu)=1+2\left(\frac1d-\mu\right)_+.
+\end{equation}
+Hence the realignment tester is optimal among all tailored pairs of
+entanglement testers on every Werner state.
+\end{theorem}
+
+\begin{proof}
+The $\gammatwo$ unit ball is convex and invariant under local unitary
+conjugations.  Given a witness $W$ in that ball, average it over
+$W\mapsto(U\otimes U)W(U^*\otimes U^*)$.  Its value on $\sigma_\mu$ is
+unchanged, and the average remains in the ball.  Taking a Hermitian part also
+does not increase $\gammatwo$.  By the elementary two-fold Schur--Weyl
+commutant, the averaged Hermitian witness has the form $aI+bF$ with
+$a,b\in\mathbb R$.
+
+Put $A=a+b/d$ and $c=1-1/d$.  Lemma \ref{lem:gamma} says that the feasible
+region is
+\[
+ |b|\leq1,\qquad |A|+c|b|\leq1.
+\]
+Using \eqref{eq:f}, the objective is
+\[
+ \Tr((aI+bF)\sigma_\mu)=A+b(f_\mu-1/d).
+\]
+For fixed $b$ it is maximal at $A=1-c|b|$.  Maximizing over
+$-1\leq b\leq1$ gives
+\begin{align*}
+ \sup_{\gammatwo(T_W)\leq1}|\Tr(W\sigma_\mu)|
+ &=1+\bigl(|f_\mu-1/d|-c\bigr)_+\\
+ &=1+2(1/d-\mu)_+.
+\end{align*}
+The absolute value causes no extra branch because
+$-1\leq f_\mu\leq1$.  Lemma \ref{lem:duality} proves the corresponding
+upper bound for $\alpha$.
+
+For the reverse bound, if $\mu\geq1/d$, the one-dimensional trace testers
+$X\mapsto\Tr X$ give output norm $\Tr\sigma_\mu=1$.  If $\mu<1/d$, the
+realignment tester gives
+\[
+ \|(\mathcal R\otimes\mathcal R)(\sigma_\mu)\|_1
+ =\frac{d+2}{d}-2\mu
+ =1+2(1/d-\mu),
+\]
+by the direct calculation in \cite[Section 9]{JLN}.  Thus equality holds in
+all cases, and realignment attains the nontrivial branch.
+\end{proof}
+
+\begin{corollary}[Counterexamples to completeness]\label{cor:counterexample}
+For every $d\geq3$ and
+\[
+ \frac1d\leq\mu<\frac12,
+\]
+$\sigma_\mu$ is entangled, but no pair of entanglement testers detects it.
+In particular, on $\mathbb C^3\otimes\mathbb C^3$,
+\[
+ \rho_*:=\sigma_{1/3}=\frac{5I-3F}{36}
+\]
+is an explicit counterexample to the source question.
+\end{corollary}
+
+\begin{proof}
+For positive $P,Q$, $\Tr(F(P\otimes Q))=\Tr(PQ)\geq0$.  Hence every
+separable state has nonnegative flip expectation.  Equation \eqref{eq:f}
+is negative when $\mu<1/2$, so $\sigma_\mu$ is entangled.  On the other hand,
+Theorem \ref{thm:envelope} gives $\alpha(\sigma_\mu)=1$ when
+$\mu\geq1/d$.  Since the tester criterion requires a strict value greater
+than one, no tester pair detects these states.
+
+For $d=3$, $F$ has eigenvalue $+1$ with multiplicity six and $-1$ with
+multiplicity three.  Thus $\rho_*$ has eigenvalues $1/18$ (six times) and
+$2/9$ (three times), has trace one, and
+$\Tr(F\rho_*)=-1/3$.  This verifies all density-state and entanglement
+claims directly.
+\end{proof}
+
+\section*{Verification Notes}
+
+The proof uses the complex $S_1$ unit ball in Lemma \ref{lem:gamma}; its
+rank-one extreme points are essential for the exact norm formulas
+\eqref{eq:E}--\eqref{eq:G}.  The diagonal lower bound is normalized by $d$,
+not $\sqrt d$: a factorization of a $d\times d$ matrix has at most $d$ row
+vectors and $d$ column vectors, so the product of their Frobenius norms is at
+most $d$ times the factorization constant.
+
+The supplementary script verifies positivity, trace, and flip expectation
+for $\rho_*$; scans the invariant support problem for $d=2,\ldots,10$; and
+checks the optimizing factorization parameters on 7000 random coefficient
+pairs.  It is not used as proof.
+
+\section*{Novelty Check and Scope}
+
+A bounded local, arXiv, and web search on August 11, 2026 used the source id
+and title together with ``entanglement testers'', ``Werner'', ``complete'',
+``factorization through $\ell_2$'', and the exact open-question wording.  It
+found no prior negative answer or exact all-tester Werner envelope.  A 2021
+workshop report still states the problem as open.  The six works indexed by
+OpenAlex as citing the source through 2025 were checked at title/abstract or
+full-text citation context; accessible arXiv sources 2202.13993, 2402.09972,
+and 2503.21177 use the paper for adjacent tensor-norm or SIC/realignment
+results, not this completeness question.  Novelty is plausible, not
+certified.
+
+One bipartite counterexample answers the source's multipartite universal
+question negatively.  The result does not address whether testers are
+complete for $2\times2$ states or after the source's permitted index
+permutation; the latter is already positive in \cite{JLN}.
+
+\section*{Human Review Recommendation}
+
+First verify Lemma \ref{lem:duality}'s normalization and the nuclear-norm
+lower bound in Lemma \ref{lem:gamma}.  Then check the one-line support
+optimization in Theorem \ref{thm:envelope}.  If those pass, the explicit
+$3\times3$ state is a complete negative answer and the full Werner-state
+optimality statement is an additional sharp result.
+
+\begin{thebibliography}{9}
+
+\bibitem{JLN}
+M. A. Jivulescu, C. Lancien, and I. Nechita,
+\emph{Multipartite entanglement detection via projective tensor norms},
+Ann. Henri Poincar\'e \textbf{23} (2022), 3791--3838;
+arXiv:2010.06365.
+
+\bibitem{Werner}
+R. F. Werner,
+\emph{Quantum states with Einstein--Podolsky--Rosen correlations admitting a
+hidden-variable model},
+Phys. Rev. A \textbf{40} (1989), 4277--4281.
+
+\end{thebibliography}
+
+\end{document}

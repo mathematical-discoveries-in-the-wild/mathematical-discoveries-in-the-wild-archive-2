@@ -1,0 +1,322 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+\setlength{\emergencystretch}{2em}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{example}[theorem]{Example}
+\newcommand{\WA}{\mathrm{WA}}
+\newcommand{\rankR}{\operatorname{rank}_{\mathbb R}}
+
+\title{Weak amenability with one infinite-center rank-one factor}
+\author{Automated mathematical discovery run \texttt{fa\_banach\_001}}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{black}{gray!8}{\parbox{0.91\linewidth}{
+\textbf{Status.} Candidate substantial partial result, likely valid, subject
+to human review.  The theorem proves the conjectured sufficiency direction
+for connected Lie groups having at most one rank-one simple Levi factor with
+infinite center.  It does not settle the remaining multi-factor central
+mixing or the full necessity direction.
+}}
+\end{center}
+
+\section{Source problem}
+
+The source is S. Knudby, \emph{Weak amenability of Lie groups made
+discrete}, arXiv:1612.04280~\cite{KnudbyDiscrete}.  On source p.~2 it recalls
+that the weak-amenability classification for connected Lie groups was known
+when the Levi factor has finite center and when the group is simply
+connected, and then states: ``Some intermediate cases remain open.''  The
+passage is reproduced below.
+
+\begin{center}
+\includegraphics[width=\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+More explicitly, write a Levi decomposition of the Lie algebra as
+\[
+ \mathfrak g=\mathfrak r\rtimes\mathfrak s,
+ \qquad \mathfrak s=\bigoplus_{i=1}^k\mathfrak s_i,
+\]
+where $\mathfrak r$ is solvable and the $\mathfrak s_i$ are simple.  The
+simply connected classification~\cite[Theorem~1.10]{KnudbySimplyConnected}
+asserts that weak amenability is equivalent to
+\begin{equation}\label{eq:C}
+ \text{for every $i$, either }\rankR(\mathfrak s_i)=0,
+ \quad\text{or}\quad
+ \rankR(\mathfrak s_i)=1\ \text{ and }[\mathfrak s_i,\mathfrak r]=0.
+\end{equation}
+The open classification predicts the same criterion without a restriction
+on global topology.
+
+We write $\Lambda_{\WA}(H)$ for the Cowling--Haagerup constant.  We use the
+standard permanence facts collected in~\cite[Section~2]{KnudbyDiscrete}:
+compact normal quotients preserve this constant; direct products multiply
+it; and if $N\triangleleft H$ is closed and $H/N$ is amenable, then
+$\Lambda_{\WA}(N)=\Lambda_{\WA}(H)$.  We also use the source's semisimple
+theorem~\cite[Theorem~3.1]{KnudbyDiscrete}, which in particular shows that
+the constant of a connected simple Lie group is unchanged on passing among
+its connected local forms.
+
+\section{Proof intuition}
+
+Under condition~\eqref{eq:C}, every noncompact Levi factor splits away from
+the amenable part of the universal cover.  Factors with finite center can be
+made adjoint by one finite compact quotient.  What remains is an amenable
+group $A$ and, at worst, one simple group $U$ whose center is infinite
+cyclic, modulo an arbitrary discrete central subgroup $D$.
+
+The key is to close the image of $U$.  Its quotient in the ambient group is
+amenable, so it alone determines the Cowling--Haagerup constant.  Modulo the
+part of $D$ already lying in $A$, the kernel is cyclic.  A cyclic subgroup
+of an abelian Lie group either is closed (unless its closure is compact) or
+has compact closure.  In the closed case the closure of $U$ is just $U$;
+in the compact case it differs from the adjoint form $U/Z(U)$ only by a
+compact central group.  Both alternatives have exactly the expected
+constant.
+
+Two infinite cyclic simple centers are qualitatively different: a
+rank-two kernel can have dense image in a noncompact real direction.  This
+explains both the reach and the stopping point of the argument.
+
+\section{The cyclic-closure lemma}
+
+\begin{lemma}\label{lem:cyclic}
+Let $A$ be an amenable Lie group and let $U$ be a connected simple Lie group
+whose center is infinite cyclic.  Let
+\[
+ D\leq Z(A)\times Z(U)
+\]
+be discrete, and put $Q=(A\times U)/D$.  Then
+\[
+ \Lambda_{\WA}(Q)=\Lambda_{\WA}(U).
+\]
+\end{lemma}
+
+\begin{proof}
+Let $q:A\times U\to Q$ be the quotient map and set
+$N=\overline{q(U)}$.  The group $N$ is closed and normal, and $Q/N$ is a
+quotient of $A$, hence amenable.  Therefore
+\begin{equation}\label{eq:coamenable}
+ \Lambda_{\WA}(Q)=\Lambda_{\WA}(N).
+\end{equation}
+
+Fix a generator $z$ of $Z(U)$, let
+\[
+ A_0=\overline{\operatorname{pr}_A(D)},
+ \qquad D_A=D\cap(A\times\{e\}).
+\]
+Because multiplying an element of $D$ by $U$ absorbs its $U$-coordinate,
+\[
+ q^{-1}(N)=\overline{UD}=A_0\times U,
+ \qquad N=(A_0\times U)/D.
+\]
+The group $D_A$ is discrete central in $A_0$.  If the projection of $D$ to
+$Z(U)$ is trivial, then $D=D_A$, $A_0=D_A$, and $N\cong U$, proving the
+claim.
+
+Otherwise this projection is $\langle z^\ell\rangle$ for some $\ell\geq1$.
+Choose $(a,z^\ell)\in D$.  Then $D/D_A$ is generated by the class of this
+element.  In the abelian Lie group
+\[
+ B=A_0/D_A,
+\]
+the cyclic subgroup generated by $b=aD_A$ is dense by the definition of
+$A_0$.  The elementary structure theorem for abelian Lie groups now gives
+the following dichotomy: either $B$ is compact, or $B=\langle b\rangle$ is
+an infinite discrete cyclic group.  Indeed, a dense cyclic subgroup cannot
+be dense in a nonzero Euclidean factor; if its projection to a discrete
+factor is nonzero, convergence forces the exponent to be eventually
+constant, making the cyclic subgroup closed; with neither type of factor,
+the closure is compact.
+
+If $B=\langle b\rangle$ is infinite discrete, every element of $A_0$ can be
+absorbed using a power of $(a,z^\ell)$ and an element of $D_A$.  Thus the
+map $U\to N$ is surjective.  Its kernel is trivial, since $b$ has infinite
+order, so $N\cong U$.
+
+Suppose instead that $B$ is compact.  After dividing by $D_A$ we may write
+\[
+ N\cong (B\times U)/\langle(b,z^\ell)\rangle.
+\]
+The image
+\[
+ C=(B\times Z(U))/\langle(b,z^\ell)\rangle
+\]
+is central in $N$ and is compact: every one of its elements has a
+representative in
+\[
+ B\times\{e,z,\ldots,z^{\ell-1}\},
+\]
+a compact set.  Moreover $N/C\cong U/Z(U)$.  Compact-quotient invariance and
+the semisimple theorem therefore yield
+\[
+ \Lambda_{\WA}(N)=\Lambda_{\WA}(U/Z(U))
+ =\Lambda_{\WA}(U).
+\]
+Together with~\eqref{eq:coamenable}, this proves the lemma.
+\end{proof}
+
+\section{Partial classification theorem}
+
+Among the real-rank-one simple real Lie algebras, precisely those of type
+$\mathfrak{su}(n,1)$, $n\geq1$, have a simply connected Lie group with
+infinite center; here $\mathfrak{su}(1,1)\cong\mathfrak{sl}(2,\mathbb R)$.
+
+\begin{theorem}\label{thm:main}
+Let $G$ be a connected Lie group whose Lie algebra satisfies
+condition~\eqref{eq:C}.  Suppose that at most one rank-one simple ideal
+$\mathfrak s_i$ is of type $\mathfrak{su}(n,1)$ for some $n\geq1$.
+Then $G$ is weakly amenable.  More precisely, if $\widetilde S_i$ is the
+simply connected simple Lie group with Lie algebra $\mathfrak s_i$, then
+\[
+ \Lambda_{\WA}(G)=\prod_{i=1}^k
+ \Lambda_{\WA}(\widetilde S_i).
+\]
+Thus the conjectured sufficiency direction and its predicted constant hold
+for this class.
+\end{theorem}
+
+\begin{proof}
+Let $\widetilde G\to G$ be the universal covering homomorphism and let $D$
+be its discrete central kernel.  In the simply connected Levi decomposition,
+separate the compact simple factors from the noncompact ones.  By
+condition~\eqref{eq:C}, every noncompact factor commutes with the solvable
+radical and therefore is a direct factor.  Consequently
+\[
+ \widetilde G\cong A\times P\times U.
+\]
+Here $A$ is the semidirect product of the simply connected solvable radical
+by the compact Levi factors, and is amenable; $P$ is the product of the
+rank-one factors having finite center; and $U$ is absent or is the unique
+rank-one factor having infinite cyclic center.
+
+Let $F=Z(P)$, a finite group, and let $K=(DF)/D\triangleleft G$.  The group
+$K$ is finite, hence compact.  Passing to $G/K$ does not change the
+Cowling--Haagerup constant.  In $\widetilde G/F$, the factor $P/F$ is
+center-free.  Therefore the image $D'$ of $DF/F$ has trivial $P/F$
+coordinate and
+\[
+ G/K\cong (P/F)\times Q,
+ \qquad Q=(A\times U)/D',
+ \qquad D'\leq Z(A)\times Z(U).
+\]
+The group $D'$ is still discrete, since only a finite group was removed.
+
+If $U$ is absent, then $Q$ is amenable.  If $U$ is present,
+Lemma~\ref{lem:cyclic} gives
+$\Lambda_{\WA}(Q)=\Lambda_{\WA}(U)$.  Hence product and compact-quotient
+invariance give
+\[
+ \Lambda_{\WA}(G)
+ =\Lambda_{\WA}(P/F)\Lambda_{\WA}(Q)
+ =\prod_{i=1}^k\Lambda_{\WA}(\widetilde S_i).
+\]
+The last equality uses the semisimple local-form theorem and the fact that
+compact factors have constant one.  In particular the displayed value is
+finite, so $G$ is weakly amenable.
+\end{proof}
+
+\begin{example}[A genuinely intermediate topology]\label{ex:irrational}
+Let $U$ be the universal cover of $\mathrm{SU}(n,1)$, let $z$ generate
+$Z(U)$, and fix $\alpha\notin\mathbb Q$.  In $\mathbb R\times U$ set
+\[
+ D=\langle(1,e),(\alpha,z)\rangle,
+ \qquad G=(\mathbb R\times U)/D.
+\]
+The subgroup $D$ is discrete although its projection
+$\mathbb Z+\alpha\mathbb Z$ to $\mathbb R$ is dense.  The group $G$ is
+neither simply connected nor covered by the finite-center-Levi hypothesis;
+indeed the analytic image of $U$ is injective and dense.  Nevertheless
+Theorem~\ref{thm:main} gives
+$\Lambda_{\WA}(G)=\Lambda_{\WA}(U)$.  This shows that the theorem is not
+merely a reformulation of either previously known extreme case.
+\end{example}
+
+\section{Upgrade attempts and remaining obstruction}
+
+Eight focused routes were audited.  First, lifting an arbitrary lattice to
+the universal cover does \emph{not} descend weak amenability: Cowling's
+discrete central-quotient inequality has the opposite direction from the
+one needed.  Second, a lattice that splits in the universal cover would
+work, as in the source's free-lattice argument for $\mathrm{SL}(2,\mathbb
+R)$, but splitting is a real cohomological obstruction for complex
+hyperbolic lattices.  Third, periodizing compactly supported Herz--Schur
+multipliers over $D$ has no known uniform completely bounded norm estimate.
+
+Fourth, the cyclic-closure route gives Lemma~\ref{lem:cyclic} and
+Theorem~\ref{thm:main}.  Fifth, it cannot simply be iterated: with two
+infinite centers the homomorphism
+\[
+ \mathbb Z^2\longrightarrow\mathbb R,
+ \qquad(m,n)\longmapsto m+\alpha n
+\]
+can have dense noncompact image, neither compact nor discrete.  Sixth, an
+attempt at necessity via locally bad analytic subgroups stops because such
+subgroups need not be closed in intermediate topology.  Seventh, no
+non-weakly-amenable closed discrete subgroup was obtained from central
+quotients of rank-one lattices.  Eighth, the later-literature search
+described below found no theorem removing the remaining obstruction.
+
+Thus the packet makes no claim when two or more
+$\mathfrak{su}(n,1)$ factors can mix simultaneously with a noncompact
+central direction.  It also does not claim the necessity half in arbitrary
+intermediate topology.  The source proves additional special cases by
+different lattice methods, notably multiple $\mathfrak{sl}_2$ factors at
+constant one; the present result is complementary, not a maximal catalogue.
+
+\section{Novelty audit and verification recommendation}
+
+A bounded search on 13 August 2026 covered arXiv:1612.04280 and
+arXiv:1505.00984, the exact phrase ``some intermediate cases remain open'',
+``weak amenability connected Lie groups arbitrary fundamental group'',
+``reductive Lie groups lattices'', and ``lattice lifts to the universal
+cover'' for $\mathrm{SU}(n,1)$.  It found the known finite-center,
+simply-connected, semisimple, and special $\mathrm{SL}(2,\mathbb R)$
+results, plus later work on residual finiteness of complex-hyperbolic
+central extensions, but no full later classification or this cyclic-closure
+subcase.  Novelty confidence is provisional.
+
+Human review should focus on two points: the decomposition after killing
+$Z(P)$ in Theorem~\ref{thm:main}, and the claim that the dense cyclic group
+in Lemma~\ref{lem:cyclic} has either compact closure or is itself closed.
+Both have been expanded in the proof so that no multiplier construction or
+lattice-splitting assumption is hidden.
+
+\begin{thebibliography}{9}
+\bibitem{KnudbyDiscrete}
+S. Knudby,
+\emph{Weak amenability of Lie groups made discrete},
+Pacific J. Math. 297 (2018), 101--116;
+arXiv:1612.04280.
+
+\bibitem{KnudbySimplyConnected}
+S. Knudby,
+\emph{Weak amenability and simply connected Lie groups},
+Kyoto J. Math. 56 (2016), 689--700;
+arXiv:1505.00984.
+
+\bibitem{CDSW}
+M. Cowling, B. Dorofaeff, A. Seeger, and J. Wright,
+\emph{A family of singular oscillatory integral operators and failure of
+weak amenability},
+Duke Math. J. 127 (2005), 429--486.
+
+\bibitem{CowlingHaagerup}
+M. Cowling and U. Haagerup,
+\emph{Completely bounded multipliers of the Fourier algebra of a simple Lie
+group of real rank one},
+Invent. Math. 96 (1989), 507--549.
+\end{thebibliography}
+
+\end{document}

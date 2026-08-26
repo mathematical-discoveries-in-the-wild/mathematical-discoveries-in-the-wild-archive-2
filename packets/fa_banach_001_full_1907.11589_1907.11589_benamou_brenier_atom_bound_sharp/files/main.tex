@@ -1,0 +1,216 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\T}{\mathbb T}
+\newcommand{\R}{\mathbb R}
+\newcommand{\M}{\mathcal M}
+\newcommand{\supp}{\operatorname{supp}}
+
+\title{Sharpness of the Dimension Bound for\\
+Benamou--Brenier Sparse Representations}
+\author{Automated Math Discovery Run \texttt{fa\_banach\_001}, lane 4}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Bredies, Carioni, Fanzon, and Romero proved that a dynamic inverse problem with
+finite-dimensional data $H$ and Benamou--Brenier regularization has a minimizer
+representable by at most $\dim H$ trajectory atoms, and asked whether this
+upper bound is optimal.  We show that it is optimal without additional
+assumptions.  For every $D\ge1$ and every $\alpha,\beta>0$, we construct a
+one-sample problem with $H=\R^D$, a weak-star continuous observation operator,
+and squared Hilbert fidelity whose unique minimizer has atomic complexity
+exactly $D$.
+\end{abstract}
+
+\section{Source question and answer}
+
+For a narrowly continuous positive measure curve $\rho=dt\otimes\rho_t$ and a
+momentum measure $m$ satisfying the homogeneous continuity equation, the source
+uses
+\[
+ J_{\alpha,\beta}(\rho,m)
+ =\beta B(\rho,m)+\alpha\|\rho\|_{\M((0,1)\times\overline\Omega)},
+ \qquad \alpha,\beta>0,
+\]
+where $B$ is the Benamou--Brenier kinetic energy.  For a continuous linear
+observation $A$ with values in a finite-dimensional Hilbert space $H$ and a
+convex fidelity $F$, its representer theorem gives a minimizer that is a
+positive combination of at most $\dim H$ normalized trajectory atoms.  The
+paper explicitly asks whether this number can be improved; see Figure~1.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.94\textwidth]{figures/source_question_crop.png}
+\caption{Corollary 12 and the open sharpness question in arXiv:1907.11589.}
+\end{figure}
+
+\begin{theorem}[Universal sharpness]\label{thm:main}
+For every integer $D\ge1$ and every $\alpha,\beta>0$, there is an instance of
+the source's discrete-time inverse problem with one sampling time,
+$H=\R^D$, a weak-star continuous observation operator, and fidelity
+$F(s)=\frac12\|s-y\|_2^2$, such that:
+\begin{enumerate}
+\item the problem has a unique minimizer $(\widehat\rho,\widehat m)$;
+\item it has a representation by exactly $D$ normalized trajectory atoms;
+\item every representation of $(\widehat\rho,\widehat m)$ as a positive
+combination of normalized trajectory atoms uses at least $D$ atoms.
+\end{enumerate}
+Consequently, the general bound $p\le\dim H$ in the source theorem and the
+bound $p\le\sum_i\dim H_i$ in its discrete-time corollary cannot be decreased
+without extra hypotheses.
+\end{theorem}
+
+\section{The measurement construction}
+
+Take the connected one-dimensional domain $\Omega=(0,1)$ and fix a sampling
+time $t_0\in(0,1)$.  Choose distinct points $x_1,\ldots,x_D\in\Omega$ and
+continuous functions $\varphi_j:\overline\Omega\to[0,1]$ with pairwise
+disjoint supports such that
+\[
+ \varphi_j(x_j)=1,
+ \qquad \{x:\varphi_j(x)=1\}=\{x_j\}.
+\]
+For example, sufficiently narrow triangular bumps around the $x_j$ work.
+In particular,
+\begin{equation}\label{eq:partition}
+ \sum_{j=1}^D\varphi_j\le1,
+ \qquad
+ \left\{x:\sum_{j=1}^D\varphi_j(x)=1\right\}
+ =\{x_1,\ldots,x_D\}.
+\end{equation}
+Let $H=\R^D$ and define the one-time observation
+\begin{equation}\label{eq:A}
+ A\rho
+ =\left(\int\varphi_1\,d\rho_{t_0},\ldots,
+         \int\varphi_D\,d\rho_{t_0}\right).
+\end{equation}
+This satisfies exactly the source's continuity requirement: weak-star
+convergence of $\rho_{t_0}$ implies convergence of all $D$ integrals.  Set
+\[
+ y=(\alpha+1,\ldots,\alpha+1)
+ \quad\text{and}\quad
+ G(\rho,m)=J_{\alpha,\beta}(\rho,m)
+       +\frac12\|A\rho-y\|_2^2.
+\]
+
+\section{The unique minimizer}
+
+We first reduce the infinite-dimensional problem to a sharp scalar inequality.
+
+\begin{lemma}\label{lem:mass}
+If $J_{\alpha,\beta}(\rho,m)<\infty$ and $s=A\rho$, then $s_j\ge0$ and
+\begin{equation}\label{eq:lower}
+ J_{\alpha,\beta}(\rho,m)\ge \alpha\sum_{j=1}^D s_j.
+\end{equation}
+Equality in \eqref{eq:lower} implies $m=0$ and that the time slices are equal
+to one fixed positive measure supported on $\{x_1,\ldots,x_D\}$.
+\end{lemma}
+
+\begin{proof}
+Finiteness of the Benamou--Brenier integrand forces $\rho\ge0$.  Testing the
+continuity equation against spatially constant functions shows that
+$M:=\rho_t(\overline\Omega)$ is independent of $t$.  Hence
+$\|\rho\|_{\M}=M$.  By \eqref{eq:partition},
+\[
+ \sum_{j=1}^D s_j
+ =\int\sum_{j=1}^D\varphi_j\,d\rho_{t_0}
+ \le M,
+\]
+and therefore
+\[
+ J_{\alpha,\beta}(\rho,m)=\beta B(\rho,m)+\alpha M
+ \ge\alpha M\ge\alpha\sum_j s_j.
+\]
+If equality holds, then $B(\rho,m)=0$, so the velocity density and hence $m$
+vanish.  The continuity equation becomes $\partial_t\rho=0$, and narrow
+continuity gives $\rho_t=\mu$ for a fixed positive measure $\mu$.  Equality in
+the mass estimate says
+$\int(1-\sum_j\varphi_j)\,d\mu=0$.  Formula \eqref{eq:partition} then forces
+$\supp\mu\subset\{x_1,\ldots,x_D\}$.
+\end{proof}
+
+For any admissible pair and $s=A\rho$, Lemma~\ref{lem:mass} yields
+\begin{align}\label{eq:separable}
+ G(\rho,m)
+ &\ge \sum_{j=1}^D
+ \left[\alpha s_j+\frac12(s_j-(\alpha+1))^2\right].
+\end{align}
+On $[0,\infty)$ each bracket is strictly convex and has its unique minimum at
+$s_j=1$.  This lower bound is attained by
+\begin{equation}\label{eq:minimizer}
+ \widehat\rho=dt\otimes\sum_{j=1}^D\delta_{x_j},
+ \qquad \widehat m=0,
+\end{equation}
+because $A\widehat\rho=(1,\ldots,1)$ and
+$J_{\alpha,\beta}(\widehat\rho,0)=\alpha D$.
+
+Now let $(\rho,m)$ be any minimizer.  Equality must hold both in
+\eqref{eq:separable} and in the scalar minimizations, so $s_j=1$ for every
+$j$ and Lemma~\ref{lem:mass} applies with equality.  Thus
+$m=0$ and $\rho_t=\mu$ with $\mu$ supported on the $x_j$.  Since
+$1=s_j=\int\varphi_j\,d\mu=\mu(\{x_j\})$, we obtain
+$\mu=\sum_j\delta_{x_j}$.  This proves uniqueness of \eqref{eq:minimizer}.
+
+\section{Exact atomic complexity}
+
+The normalized trajectory atom associated with an absolutely continuous curve
+$\gamma$ is
+\[
+ \rho^\gamma=a_\gamma\,dt\otimes\delta_{\gamma(t)},
+ \qquad m^\gamma=\dot\gamma\,\rho^\gamma,
+ \qquad
+ a_\gamma^{-1}=\alpha+\frac\beta2\int_0^1|\dot\gamma(t)|^2\,dt.
+\]
+Its observation vector is
+\begin{equation}\label{eq:atommeasurement}
+ A\rho^\gamma
+ =a_\gamma\bigl(\varphi_1(\gamma(t_0)),\ldots,
+                  \varphi_D(\gamma(t_0))\bigr).
+\end{equation}
+Because the supports of the $\varphi_j$ are disjoint, the vector in
+\eqref{eq:atommeasurement} has at most one nonzero coordinate.
+
+Suppose
+\[
+ (\widehat\rho,\widehat m)
+ =\sum_{\ell=1}^p c_\ell(\rho^{\gamma_\ell},m^{\gamma_\ell}),
+ \qquad c_\ell>0.
+\]
+Applying $A$ writes $(1,\ldots,1)$ as a sum of $p$ vectors, each supported in
+at most one coordinate.  Since all $D$ coordinates of the sum are nonzero,
+necessarily $p\ge D$.
+
+Conversely, let $\gamma_j(t)\equiv x_j$.  Then $a_{\gamma_j}=1/\alpha$, and
+\[
+ (\widehat\rho,\widehat m)
+ =\sum_{j=1}^D \alpha(\rho^{\gamma_j},m^{\gamma_j}).
+\]
+Thus $p=D$ is attained.  This completes the proof of
+Theorem~\ref{thm:main}.
+
+\section{Scope}
+
+The result establishes optimality of the source's bound over the full class of
+admissible observation operators and squared fidelities, already for one
+sampling time and a connected interval domain.  It does not preclude smaller
+bounds under additional geometric assumptions coupling the measurement
+channels or under hypotheses that force a single trajectory to contribute to
+several independent data coordinates.
+
+\begin{thebibliography}{9}
+\bibitem{BCFR}
+K. Bredies, M. Carioni, S. Fanzon, and F. Romero,
+\emph{On the extremal points of the ball of the Benamou--Brenier energy},
+Bull. Lond. Math. Soc. 53 (2021), 1436--1452; arXiv:1907.11589.
+\end{thebibliography}
+
+\end{document}

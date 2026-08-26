@@ -1,0 +1,300 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\TV}{\operatorname{TV}}
+
+\title{A Smooth Counterexample to the Exponential\\
+Total-Variation Conjecture for the Truncated Hilbert Transform}
+\author{Automatic mathematics run \texttt{fa\_banach\_001}}
+\date{9 August 2026}
+
+\begin{document}
+\setlength{\emergencystretch}{3em}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{
+\textbf{Status.} Candidate counterexample, likely valid, for expert review.
+The construction gives a full negative answer to equation (2.1) and to the
+exponential stability conjecture after Theorem 2.1 of
+Alaifari--Pierce--Steinerberger.  It works for every interval pair in their
+Cases 3 and 4 and already uses real functions in $C_c^\infty(I)$.
+}}
+\end{center}
+
+\section{Source conjecture}
+
+For finite open intervals $I,J\subset\R$, the truncated Hilbert transform is
+normalized here as
+\[
+ Hf(x)=\frac1\pi\operatorname{p.v.}\int_I\frac{f(y)}{x-y}\,dy,
+ \qquad x\in J.
+\]
+The source is R. Alaifari, L. B. Pierce, and S. Steinerberger,
+\emph{Lower bounds for the truncated Hilbert transform},
+arXiv:1311.6845, published in \emph{Revista Matem\'atica Iberoamericana}
+32 (2016), 23--56 \cite{source}.
+
+On printed page 7, Section 2.2, for $I,J$ in Case 3 (a gap) or Case 4
+(overlap), Theorem 2.1 establishes the
+existence of some positive stability function for $BV(I)$ and then conjectures
+an exponential lower rate.  Equation (2.1) states the corresponding concrete
+inequality for weakly differentiable functions:
+\begin{equation}\label{eq:conjecture}
+ \|Hf\|_{L^2(J)}
+ \ge c_1\exp\!\left(-c_2\frac{\|f'\|_{L^1(I)}}
+                              {\|f\|_{L^2(I)}}\right)
+       \|f\|_{L^2(I)},
+\end{equation}
+where $c_1,c_2>0$ may depend on $I,J$ but not on $f$.
+The source evidence is reproduced below.
+
+\begin{center}
+\includegraphics[width=0.98\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The paper itself notes in Sections 1.5 and 2.4 that Case 4 contains the gap
+mechanism by restricting to functions compactly supported away from $J$.
+That is precisely the localization used below.
+
+\section{Proof intuition and result}
+
+For $K>0$, define the maximal lower-stability envelope
+\begin{equation}\label{eq:envelope}
+ \mathcal S_{I,J}(K)=
+ \inf\left\{
+ \frac{\|Hf\|_{L^2(J)}}{\|f\|_{L^2(I)}}:
+ 0\ne f\in W^{1,1}(I),\quad
+ \frac{\|f'\|_{L^1(I)}}{\|f\|_{L^2(I)}}\le K
+ \right\}.
+\end{equation}
+The conjecture would imply
+$\mathcal S_{I,J}(K)\ge c_1e^{-c_2K}$.
+
+The counterexample is a train of disjoint smooth bumps with coefficients
+\[
+ 1,-\binom m1,\binom m2,\ldots,(-1)^m.
+\]
+The $L^2$ norm of this train is governed by
+$\sum_j\binom mj^2=\binom{2m}m$, whereas its total variation is governed by
+$\sum_j\binom mj=2^m$.  Their quotient contributes only $m^{1/4}$.
+Each bump has width comparable to $m^{-1}$, contributing another $m^{1/2}$,
+so the normalized variation is $O(m^{3/4})$.
+
+On the observation interval the Hilbert kernel is smooth.  The alternating
+binomial coefficients are an $m$th finite difference, hence annihilate the
+first $m-1$ orders of the kernel.  The remainder is geometrically small in
+$m$.  Thus the data are $O(e^{-cm})$ while the regularity parameter is only
+$O(m^{3/4})$, producing an $e^{-cK^{4/3}}$ upper obstruction.
+
+\begin{theorem}[Smooth binomial-bump obstruction]\label{thm:main}
+Let $I,J\subset\R$ be finite open intervals such that
+$I\setminus\overline J$ contains a nonempty open interval.  This includes
+every interval pair in Cases 3 and 4 of the source paper.  There are constants
+$A,B,c>0$ and real functions $f_m\in C_c^\infty(I)$ such that, for all
+sufficiently large integers $m$,
+\begin{equation}\label{eq:kappa}
+ \frac{\|f_m'\|_{L^1(I)}}{\|f_m\|_{L^2(I)}}
+   \le A m^{3/4},
+\end{equation}
+and
+\begin{equation}\label{eq:delta}
+ \frac{\|Hf_m\|_{L^2(J)}}{\|f_m\|_{L^2(I)}}
+   \le B e^{-cm}.
+\end{equation}
+Consequently, for suitable $B_0,c_0,K_0>0$,
+\begin{equation}\label{eq:fourthirds}
+ \mathcal S_{I,J}(K)\le B_0e^{-c_0K^{4/3}}
+ \qquad(K\ge K_0).
+\end{equation}
+In particular, the conjectured inequality \emph{\eqref{eq:conjecture}} is
+false, even on $C_c^\infty(I)$.
+\end{theorem}
+
+\section{Proof}
+
+Choose a compact interval $K\Subset I\setminus\overline J$ with positive
+length and put
+\[
+ D=\operatorname{dist}(K,J)>0.
+\]
+Choose $\rho>0$ so small that $2\rho<|K|$ and $\rho<D$.  Fix a point $a$
+such that $[a,a+2\rho]\subset K$, and fix a nonzero real
+$\phi\in C_c^\infty(0,1)$.  For $m\ge2$, put $h_m=\rho/m$ and define
+\begin{equation}\label{eq:fm}
+ f_m(y)=\sum_{j=0}^m(-1)^j\binom mj
+ \phi\!\left(\frac{y-a-jh_m}{h_m}\right).
+\end{equation}
+All summands have disjoint supports, and their total span is
+$(m+1)h_m<2\rho$.  Thus $f_m$ is real, nonzero, and belongs to
+$C_c^\infty(K)\subset C_c^\infty(I)$.
+
+\subsection*{Exact norm identities}
+
+Disjointness and a change of variables give
+\begin{equation}\label{eq:l2}
+ \|f_m\|_{L^2(I)}^2
+ =h_m\|\phi\|_2^2\sum_{j=0}^m\binom mj^2
+ =h_m\|\phi\|_2^2\binom{2m}m,
+\end{equation}
+while
+\begin{equation}\label{eq:l1}
+ \|f_m'\|_{L^1(I)}
+ =\|\phi'\|_1\sum_{j=0}^m\binom mj
+ =2^m\|\phi'\|_1.
+\end{equation}
+Using the standard central-binomial estimate
+\begin{equation}\label{eq:central}
+ \binom{2m}m\ge\frac{4^m}{2\sqrt m}\qquad(m\ge1),
+\end{equation}
+we obtain
+\begin{align*}
+ \frac{\|f_m'\|_1}{\|f_m\|_2}
+ &\le \sqrt2\,\frac{\|\phi'\|_1}{\|\phi\|_2}
+       m^{1/4}h_m^{-1/2}\\
+ &=\sqrt{\frac2\rho}\,\frac{\|\phi'\|_1}{\|\phi\|_2}
+       m^{3/4}.
+\end{align*}
+This proves \eqref{eq:kappa}.
+
+\subsection*{Finite-difference cancellation}
+
+For $x\in J$, the support of $f_m$ is separated from $x$, so no principal
+value is needed.  Changing variables in every summand of \eqref{eq:fm} gives
+\begin{equation}\label{eq:kernel-sum}
+ \pi Hf_m(x)=h_m\int_0^1\phi(t)
+ \sum_{j=0}^m(-1)^j\binom mj
+ \frac{dt}{x-a-h_m(j+t)}.
+\end{equation}
+For fixed $x,t$, let
+\[
+ q_{x,t}(s)=\frac1{x-a-h_m(s+t)}.
+\]
+The alternating sum in \eqref{eq:kernel-sum} is
+$(-1)^m\Delta^m q_{x,t}(0)$.  Repeated use of the fundamental theorem of
+calculus gives the exact identity
+\begin{equation}\label{eq:difference}
+ \Delta^m q(0)=\int_{[0,1]^m}
+ q^{(m)}(u_1+\cdots+u_m)\,du_1\cdots du_m.
+\end{equation}
+Every point $a+h_m(s+t)$ occurring here lies in $K$.  Therefore
+\begin{equation}\label{eq:derivative}
+ |q_{x,t}^{(m)}(s)|
+ =\frac{m!h_m^m}{|x-a-h_m(s+t)|^{m+1}}
+ \le\frac{m!h_m^m}{D^{m+1}}.
+\end{equation}
+Combining \eqref{eq:kernel-sum}--\eqref{eq:derivative},
+\begin{equation}\label{eq:pointwise}
+ |Hf_m(x)|
+ \le\frac{\|\phi\|_1}{\pi}
+      \frac{m!h_m^{m+1}}{D^{m+1}}
+ \qquad(x\in J).
+\end{equation}
+
+Taking the $L^2(J)$ norm and dividing by \eqref{eq:l2}, then using
+\eqref{eq:central}, yields a constant $C=C(I,J,\phi)$ such that
+\begin{equation}\label{eq:ratio-bound}
+ \frac{\|Hf_m\|_{L^2(J)}}{\|f_m\|_{L^2(I)}}
+ \le C\frac{m!h_m^{m+1/2}m^{1/4}}{2^mD^{m+1}}.
+\end{equation}
+Since $h_m=\rho/m$ and $m!\le m^m$, the right-hand side is at most
+\begin{equation}\label{eq:geometric}
+ C' m^{-1/4}\left(\frac{\rho}{2D}\right)^m.
+\end{equation}
+Our choice $\rho<D$ makes the base smaller than $1/2$, proving
+\eqref{eq:delta}.
+
+Finally let $A$ be the constant in \eqref{eq:kappa}.  For sufficiently large
+$K$, choose an integer
+\[
+ m=\left\lfloor\left(\frac{K}{2A}\right)^{4/3}\right\rfloor.
+\]
+Then $Am^{3/4}\le K$ and $m\ge c'K^{4/3}$ after increasing the lower
+threshold.  The definition \eqref{eq:envelope} and \eqref{eq:delta} give
+\eqref{eq:fourthirds}.
+
+If \eqref{eq:conjecture} held, then the same functions would satisfy
+\[
+ \frac{\|Hf_m\|_2}{\|f_m\|_2}
+ \ge c_1e^{-c_2Am^{3/4}},
+\]
+contradicting the geometric upper bound \eqref{eq:geometric}.  This completes
+the proof. \qed
+
+\section{Consequences and quantitative window}
+
+\begin{corollary}[Negative answer to both source formulations]
+For every Case 3 or Case 4 interval pair, the exponential conjecture after
+Theorem 2.1 and its weakly differentiable formulation (2.1) are false.  The
+failure is not caused by jumps or roughness: it occurs inside
+$C_c^\infty(I)$.
+\end{corollary}
+
+For $f\in W^{1,1}(I)$, total variation equals $\|f'\|_1$, so the theorem
+directly applies to the $BV$ stability parameter used in Theorem 2.1.  On the
+other hand, Theorem 2.4 of the source proves a lower bound of the form
+\[
+ \mathcal S_{I,J}(K)\ge c_1e^{-c_2K^2}.
+\]
+Together with \eqref{eq:fourthirds}, the presently justified window is
+\[
+ c_1e^{-c_2K^2}
+ \ \le\ \mathcal S_{I,J}(K)
+ \ \le\ B_0e^{-c_0K^{4/3}}
+ \qquad(K\gg1).
+\]
+Determining the sharp exponent or non-power correction inside this window
+remains open.  The present result is therefore a full refutation and a
+quantitative obstruction, not a full characterization of the optimal modulus.
+
+\section{Verification and novelty bounds}
+
+The accompanying script \path{code/verify_binomial_bumps.py} verifies the
+two binomial identities and the reciprocal-kernel finite-difference identity
+using exact integer/rational arithmetic.  It also checks the $m^{3/4}$ scaling
+and geometric decay numerically.  The computation is a sanity check and is
+not used in the proof.
+
+On 9 August 2026, the four local run indexes were searched for the arXiv id,
+exact title, displayed conjecture, and core keyword combinations.  Exact-title
+and keyword searches of arXiv and the web found the source, related truncated
+transform papers, and the dyadic model of Jaming--Pozzi--Wick \cite{dyadic},
+but no refutation, alternating-binomial construction, or $4/3$ obstruction.
+The dyadic work concerns a different operator and does not answer the present
+continuous conjecture.  This is a bounded novelty check, not certification;
+MathSciNet, zbMATH, full citation graphs, and author correspondence were not
+exhaustively checked.
+
+\section{Human-review recommendation}
+
+\textbf{Recommendation: promote after expert confirmation.}  The main review
+points are: (i) the source's Case 4 orientation and the separated subinterval
+of $I\setminus\overline J$; (ii) the signs and derivative order in
+\eqref{eq:difference}--\eqref{eq:derivative}; (iii) the normalization in
+\eqref{eq:ratio-bound}; and (iv) whether the construction has appeared outside
+the bounded novelty search.  None of these checks revealed a defect in the
+present audit.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+R. Alaifari, L. B. Pierce, and S. Steinerberger,
+\emph{Lower bounds for the truncated Hilbert transform},
+Rev. Mat. Iberoam. 32 (2016), no. 1, 23--56;
+arXiv:1311.6845; doi:10.4171/RMI/880.
+
+\bibitem{dyadic}
+P. Jaming, E. Pozzi, and B. D. Wick,
+\emph{Lower bounds for the dyadic Hilbert transform},
+Ann. Fac. Sci. Toulouse Math. (6) 26 (2017), no. 1, 185--204;
+arXiv:1605.05511.
+\end{thebibliography}
+
+\end{document}

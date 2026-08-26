@@ -1,0 +1,160 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,graphicx,microtype}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newcommand{\R}{\mathbb R}
+\title{The tangential $L\log L$ estimate fails at the printed $n=2$ endpoint}
+\author{A counterexample to (4.1) in arXiv:1210.1454}
+\date{17 August 2026}
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+Candidate counterexample, likely valid, pending human review.  Estimate (4.1),
+printed without a restriction beyond $n\geq2$, is false already for $n=2$,
+even on a compact set strictly inside a smooth domain and for a sequence
+converging strongly to zero in $W^{1,1}$.  The case $n\geq3$ is not settled.
+
+\section{Source question}
+Ka\l amajska, Kr\"omer, and Kružík ask whether the nonnegative tangential Jacobian
+\[
+ \det{}'\xi=\det(\xi_{ij})_{i,j=1,\ldots,n-1},
+ \qquad \xi\in\R^{(n-1)\times n},
+\]
+obeys the uniform estimate
+\begin{equation}\label{eq:source}
+ \sup_k\int_K\gamma(\det{}'\nabla u_k)\,dx
+ \leq C\bigl(K,\|u_k\|_{W^{1,n-1}(\Omega;\R^{n-1})}\bigr),
+ \qquad \gamma(s)=s\log^+s,
+\end{equation}
+for compact $K\subset\overline\Omega$ away from boundary points whose outer
+normal is not $e_n$ \cite[Section 4, equation (4.1), p.~12]{Source}.  The source
+calls this an open problem and does not exclude $n=2$; its following
+Example~4.1 explicitly starts with $n\geq2$.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+For a uniform estimate, the right side is naturally read as depending on a
+uniform Sobolev bound.  The construction also defeats the per-index reading:
+its Sobolev norms tend to zero while the integrals tend to infinity.
+
+\section{Proof intuition}
+At $n=2$, the matrix in $\det{}'$ is $1\times1$:
+\[
+ \det{}'\nabla u=\partial_1u,\qquad u:\Omega\to\R.
+\]
+No multidimensional determinant compensation remains.  Put a positive slope
+$A_k$ on an interval of width $\ell_k$.  Its $W^{1,1}$ cost is
+$A_k\ell_k$, whereas its $L\log L$ cost is
+$A_k\ell_k\log A_k$.  Taking $A_k=e^{k^2}$ and
+$A_k\ell_k=1/k$ makes the first vanish and the second equal $k$.
+
+\section{Counterexample}
+\begin{theorem}\label{thm:main}
+Let $\Omega=B_2(0)\subset\R^2$ and
+\[
+ K=[-1/4,1/4]\times[-1/2,1/2]\Subset\Omega.
+\]
+There are $u_k\in W^{1,1}(\Omega)$, $k\geq2$, such that
+\[
+ u_k\to0\ \hbox{strongly in }W^{1,1}(\Omega),\qquad
+ \det{}'\nabla u_k\geq0\ \hbox{a.e.},
+\]
+but
+\[
+ \int_K\gamma(\det{}'\nabla u_k)\,dx=k\to\infty.
+\]
+Consequently, the unqualified estimate~\eqref{eq:source} is false.
+\end{theorem}
+
+\begin{proof}
+Set
+\[
+ A_k=e^{k^2},\qquad \ell_k=\frac1{kA_k}=\frac{e^{-k^2}}k,
+\]
+and define $u_k(x_1,x_2)=\psi_k(x_1)$, where
+\[
+ \psi_k(t)=
+ \begin{cases}
+ 0,&t\leq0,\\
+ A_kt,&0<t<\ell_k,\\
+ 1/k,&t\geq\ell_k.
+ \end{cases}
+\]
+Almost everywhere,
+\[
+ \partial_1u_k=A_k\mathbf1_{(0,\ell_k)}(x_1),\qquad
+ \partial_2u_k=0.
+\]
+Thus $\det{}'\nabla u_k=\partial_1u_k\geq0$.
+
+Since $0\leq u_k\leq1/k$ and $|\Omega|=4\pi$,
+\[
+ \|u_k\|_{L^1(\Omega)}\leq\frac{4\pi}{k}.
+\]
+Every vertical section of $B_2(0)$ has length at most $4$, whence
+\[
+ \|\nabla u_k\|_{L^1(\Omega)}
+ \leq4A_k\ell_k=\frac4k.
+\]
+Therefore $\|u_k\|_{W^{1,1}}\leq(4\pi+4)/k\to0$.
+
+For $k\geq2$, $\ell_k<1/4$, so
+$(0,\ell_k)\times[-1/2,1/2]\subset K$.  Since $\log A_k=k^2$,
+\[
+ \int_K\gamma(\det{}'\nabla u_k)\,dx
+ =\ell_kA_k\log A_k
+ =\frac1{kA_k}A_kk^2=k.
+\]
+Finally $K\Subset\Omega$, so it has positive distance from the whole boundary
+and automatically meets the source condition on boundary normals.
+\end{proof}
+
+This is stronger than a bounded-sequence counterexample: adding weak
+convergence to the question would not repair the endpoint.
+
+\section{Scope and upgrade attempts}
+The construction exploits the collapse of $\det{}'$ to a first derivative at
+$n=2$.  It neither contradicts Mueller's theorem for genuinely
+multidimensional nonnegative Jacobians nor disproves~\eqref{eq:source} for
+$n\geq3$.
+
+Five higher-dimensional routes were checked.  The source anisotropic example
+has a nonintegrable normal derivative.  Truncating that singularity makes the
+normal-derivative cost suppress the logarithmic divergence.  Reflection across
+a flat boundary leaves a codimension-one minor, not the full Jacobian covered
+by Mueller's theorem.  A diagonal embedding of the scalar spike forces the
+$L^{n-1}$ energy to dominate its determinant mass.  Separated-variable and
+shrinking-bubble scalings encounter the same tradeoff.  No proof or
+counterexample resulted for $n\geq3$.
+
+The final upgrade strengthened the low-dimensional example: choosing
+$A_k\ell_k=1/k$ rather than a fixed mass makes $u_k\to0$ strongly while
+$A_k\ell_k\log A_k\to\infty$.  This rules out weak-convergence and boundedness
+repairs of the printed statement.
+
+\section{Novelty and verification}
+A bounded primary-source search used the exact source title, equation (4.1),
+the phrases higher integrability and null Lagrangians at the boundary,
+and the terms tangential Jacobian and $L\log L$.  Twelve indexed later
+citations through 2020 were screened by title and primary text where available;
+none explicitly resolves (4.1).  No later primary statement of this $n=2$
+observation was found.  Novelty confidence is moderate-low because the example
+is elementary; correctness confidence is high.
+
+The included verifier checks the exact scaling formulas.  Human review should
+first decide whether the source intended its printed $n\geq2$ range.  If it
+silently intended $n\geq3$, this packet is a scope correction, not a solution
+of that higher-dimensional problem.
+
+\begin{thebibliography}{1}
+\bibitem{Source}
+A.~Ka\l amajska, S.~Kr\"omer, and M.~Kružík,
+\emph{Sequential weak continuity of null Lagrangians at the boundary},
+Calc. Var. Partial Differential Equations 49 (2014), 1263--1278;
+arXiv:1210.1454.
+\end{thebibliography}
+\end{document}

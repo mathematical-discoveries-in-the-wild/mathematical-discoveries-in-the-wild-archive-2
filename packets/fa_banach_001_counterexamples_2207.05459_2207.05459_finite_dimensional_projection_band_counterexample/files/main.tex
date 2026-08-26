@@ -1,0 +1,167 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newcommand{\BE}{\mathbb B_E}
+\newcommand{\PM}{P_{\mathrm M}}
+
+\title{Finite-dimensional counterexamples to a projection-band inverse-limit question}
+\author{Automated mathematics run \texttt{fa\_banach\_001}\\Lane 14, model GPT5.6}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status: candidate counterexample, likely valid.}
+
+\section{Source question}
+
+Van Amstel and van der Walt introduce, for an Archimedean vector lattice
+$E$ and a non-trivial ideal $\mathrm M$ in the Boolean algebra $\BE$ of
+projection bands, the inverse system $\mathcal I_{\mathrm M}$ formed by the
+bands in $\mathrm M$ and the band projections between them.  Its canonical
+map is
+\[
+  \PM:E\longrightarrow \varprojlim \mathcal I_{\mathrm M},
+  \qquad u\longmapsto (P_Bu)_{B\in\mathrm M}.
+\]
+After Remark~4.12 they ask the following question \cite{source}.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\begin{quote}
+Given a Dedekind complete vector lattice $E$, does there exist a proper ideal
+$\mathrm M$ in $\BE$ so that $\PM:E\to\varprojlim\mathcal I_{\mathrm M}$ is
+an isomorphism onto $\varprojlim\mathcal I_{\mathrm M}$?
+\end{quote}
+
+The question occurs on page 23 of the arXiv PDF, immediately after
+Remark~4.12.
+
+\section{Definitions}
+
+A \emph{projection band} $B$ of $E$ is a band for which
+$E=B\oplus B^d$; the associated band projection is denoted by $P_B$.
+The projection bands form a Boolean algebra $\BE$.  An ideal
+$\mathrm M\subseteq\BE$ is downward closed and upward directed.  These two
+properties imply closure under finite joins: if $B,C\in\mathrm M$, choose
+$D\in\mathrm M$ with $B,C\subseteq D$ and use downward closure to obtain
+$B\vee C\in\mathrm M$.
+
+For $A\subseteq\{1,\dots,n\}$, write
+\[
+ B_A:=\{x\in\mathbb R^n:x_j=0\text{ for every }j\notin A\}.
+\]
+With the coordinate order, the projection bands of $\mathbb R^n$ are exactly
+the $B_A$, and $P_{B_A}$ is coordinate restriction to $A$.
+
+\section{Proof intuition}
+
+The proposed reconstruction can only be injective if the projections in the
+ideal separate points.  In a finite Boolean algebra, however, a proper ideal
+has a largest member.  For the coordinate bands of $\mathbb R^n$, that largest
+member omits at least one coordinate.  The basis vector in the omitted
+coordinate is invisible to every projection in the ideal.  Thus the
+finite-dimensional case supplies a direct obstruction before surjectivity is
+even considered.
+
+\section{Counterexample}
+
+\begin{theorem}
+For every integer $n\geq1$, let $E=\mathbb R^n$ with its coordinate order.
+Then $E$ is Dedekind complete, and for every proper ideal
+$\mathrm M\subsetneq\BE$ the canonical map
+\[
+ \PM:E\longrightarrow\varprojlim\mathcal I_{\mathrm M}
+\]
+is not injective.  Consequently the question as stated has a negative answer.
+\end{theorem}
+
+\begin{proof}
+Coordinatewise suprema show directly that $E=\mathbb R^n$ is Dedekind
+complete.  Identify $\BE$ with the finite Boolean algebra
+$\mathcal P(\{1,\dots,n\})$ through $A\mapsto B_A$.
+
+Let $\mathrm M$ be a proper ideal and put
+\[
+ U:=\bigcup\{A:B_A\in\mathrm M\}.
+\]
+Because $\BE$ is finite and $\mathrm M$ is closed under finite joins,
+$B_U\in\mathrm M$.  If $U=\{1,\dots,n\}$, then $B_U=E$ belongs to
+$\mathrm M$; downward closure would give $\mathrm M=\BE$, contradicting
+properness.  Hence some $j$ does not belong to $U$.
+
+For every $B_A\in\mathrm M$ we have $A\subseteq U$, and therefore
+$P_{B_A}e_j=0$.  By the definition of the canonical map,
+\[
+ \PM(e_j)=(P_Be_j)_{B\in\mathrm M}=0.
+\]
+Since $e_j\neq0$, the map $\PM$ is not injective and hence cannot be a lattice
+isomorphism onto the inverse limit.
+\end{proof}
+
+\begin{proposition}
+More generally, if a nonzero Dedekind complete vector lattice has only
+finitely many projection bands, no proper ideal of its projection-band Boolean
+algebra can yield an injective canonical map.
+\end{proposition}
+
+\begin{proof}
+The finite ideal has a largest member $C$, and properness gives $C\neq E$.
+Choose $0\neq x\in C^d$.  Every band $B$ in the ideal satisfies $B\subseteq C$,
+so $P_Bx=0$.  Hence $\PM x=0$.
+\end{proof}
+
+\section{Verification report}
+
+The hypotheses and conclusion are checked directly:
+\begin{enumerate}
+\item $\mathbb R^n$ is Archimedean and Dedekind complete under coordinatewise
+order.
+\item Its projection bands are the coordinate bands $B_A$.
+\item A finite proper ideal has a largest member $B_U\neq E$.
+\item An omitted coordinate vector $e_j$ lies in the kernel of every projection
+indexed by the ideal, and hence in $\ker\PM$.
+\end{enumerate}
+No numerical experiment or external theorem is used.  If the word ``ideal''
+in the question is interpreted as allowing the trivial ideal $\{0\}$, the
+same conclusion holds: the canonical map has all of $E$ as kernel.  Under the
+paper's standing non-trivial-ideal convention, the one-dimensional example
+$E=\mathbb R$ admits no candidate proper ideal at all.
+
+\section{Novelty check and limitations}
+
+On 9 August 2026, a bounded search covered the run indexes, arXiv:2207.05459,
+the exact question, and combinations of ``proper ideal'', ``projection bands'',
+``Dedekind complete vector lattice'', and ``inverse limit''.  It found the
+source and published versions of the paper, but no later paper explicitly
+answering the question.
+
+The result settles only the literal universal statement.  It does not answer
+the natural repaired question in which $E$ is required to be
+infinite-dimensional.  The source examples surrounding the question are
+infinite-dimensional, so this omitted hypothesis may have been intended.
+That scope issue lowers the mathematical novelty of the observation but does
+not affect the counterexample to the printed statement.
+
+\paragraph{Human-review recommendation.}
+Check the intended quantifier and scope.  If the question is read as printed,
+the kernel argument is complete.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+W. van Amstel and J. H. van der Walt,
+\emph{Limits of vector lattices}, arXiv:2207.05459 (2022; revised 2023),
+Remark~4.12 and page~23,
+\url{https://arxiv.org/abs/2207.05459}.
+\end{thebibliography}
+
+\end{document}
+

@@ -1,0 +1,191 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\theoremstyle{definition}
+\newtheorem{remark}{Remark}
+
+\newcommand{\T}{\mathbb T}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Lip}{\operatorname{Lip}}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+
+\title{A Translation-Invariant Lipschitz Summing Map\\
+Whose Pietsch Measure Is Not Haar Measure}
+\author{Automatic math-discovery run \texttt{fa\_banach\_001}, lane 14}
+\date{August 9, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Result Status}
+
+\textbf{Candidate full counterexample, likely valid, pending expert review.}
+For every \(1\le p<\infty\), the construction below answers the open problem
+repeated in Bispo--Macedo--Santos \cite{BMS} in the negative.  It also answers
+the original 2012 formulation of Botelho--Pellegrino--Rueda--Santos--Seoane-
+Sep\'ulveda \cite{BPRSS}.
+
+\section{Source Problem}
+
+Let \(G\) be a compact Hausdorff topological group, let \(H\) be a closed
+translation-invariant subspace of \(C(G)\), let \(Y\) be a metric space, and
+let \(u:H\to Y\) be a translation-invariant Lipschitz \(p\)-summing map.  The
+question asks whether normalized Haar measure \(\sigma_G\) must be a Pietsch
+measure for \(u\) \cite[p.~2, Introduction, Open Problem]{BMS}.
+
+In the pairwise form used in \cite[Section 4]{BMS}, this would mean that there
+is a finite constant \(C\) such that
+\begin{equation}\label{eq:haar-domination}
+ d_Y(u(f),u(g))
+ \le C\left(\int_G |f(x)-g(x)|^p\,d\sigma_G(x)\right)^{1/p}
+ \qquad(f,g\in H).
+\end{equation}
+The counterexample below rules out even domination with an arbitrary finite
+constant, and therefore also rules out the sharper convention in which the
+constant must be \(\pi_p^L(u)\).
+
+\section{Proof Intuition}
+
+The scalar-valued case exposes a simple gap between the hypothesis and the
+desired conclusion.  Every base-point-preserving real-valued Lipschitz
+function on a metric space is automatically Lipschitz \(p\)-summing: after
+normalization, the function itself is one of the test functions over which
+the defining supremum is taken.
+
+On \(C(G)\), the supremum norm is such a scalar-valued Lipschitz function, and
+it is invariant under translations of \(G\).  Haar domination for this map
+would force the supremum norm on \(C(G)\) to be bounded by its \(L^p\)-norm.
+Continuous peaks on the circle have supremum one and arbitrarily small
+\(L^p\)-norm, giving the contradiction.
+
+\section{Counterexample}
+
+\begin{theorem}\label{thm:counterexample}
+Fix \(1\le p<\infty\).  Let \(G=\T\), let
+\(H=C(\T,\R)\), let \(Y=\R\) with its usual metric, and define
+\[
+ u:H\longrightarrow\R,\qquad u(f)=\norm{f}_{\infty}.
+\]
+Then:
+\begin{enumerate}
+\item \(H\) is a closed translation-invariant subspace of \(C(\T)\);
+\item \(u\) is translation invariant;
+\item \(u\) is Lipschitz \(p\)-summing, in fact \(\pi_p^L(u)=1\);
+\item normalized Haar measure on \(\T\) is not a Pietsch measure for \(u\).
+\end{enumerate}
+Consequently, the answer to the source open problem is negative for every
+finite \(p\).
+\end{theorem}
+
+\begin{proof}
+The first assertion is immediate.  For \(\psi\in\T\), the translation
+\(I_\psi(z)=\psi z\) is a bijection of \(\T\), and hence
+\[
+ u(f\circ I_\psi)=\norm{f\circ I_\psi}_\infty
+ =\norm{f}_\infty=u(f).
+\]
+Thus \(u\) is translation invariant.
+
+We next verify the summing condition directly.  The reverse triangle
+inequality gives
+\[
+ |u(f)-u(g)|\le \norm{f-g}_\infty,
+\]
+so \(u(0)=0\) and \(u\) belongs to the unit ball of the Lipschitz dual
+\(H^\#=\Lip_0(H,\R)\).  Therefore, for arbitrary
+\(f_1,\ldots,f_m,g_1,\ldots,g_m\in H\),
+\begin{align*}
+ \left(\sum_{j=1}^m |u(f_j)-u(g_j)|^p\right)^{1/p}
+ &\le
+ \sup_{v\in B_{H^\#}}
+ \left(\sum_{j=1}^m |v(f_j)-v(g_j)|^p\right)^{1/p}.
+\end{align*}
+This is exactly the Farmer--Johnson Lipschitz \(p\)-summing inequality, with
+constant one.  Taking \(m=1\), \(f_1\equiv1\), and \(g_1=0\) shows that the
+best constant is one, so \(\pi_p^L(u)=1\).
+
+It remains to disprove Haar domination.  Write a point of \(\T\) as
+\(e^{it}\), with \(-\pi\le t\le\pi\), and let normalized Haar measure be
+\(dt/(2\pi)\).  For \(n\ge1\), define the continuous peak
+\[
+ f_n(e^{it})=(1-n|t|)_+.
+\]
+The endpoint values agree, so this is a well-defined continuous function on
+the circle.  Moreover,
+\[
+ \norm{f_n}_\infty=1
+ \quad\text{and}\quad
+ \int_\T |f_n|^p\,d\sigma_\T
+ =\frac1{2\pi}\int_{-1/n}^{1/n}(1-n|t|)^p\,dt
+ =\frac1{\pi n(p+1)}.
+\]
+If normalized Haar measure were a Pietsch measure for \(u\), then applying
+\eqref{eq:haar-domination} to \((f_n,0)\) would give, for some finite \(C\),
+\[
+ 1=|u(f_n)-u(0)|
+ \le C\left(\frac1{\pi n(p+1)}\right)^{1/p}
+ \qquad(n\ge1),
+\]
+which is impossible as \(n\to\infty\).  Thus Haar measure is not a Pietsch
+measure for \(u\).
+\end{proof}
+
+\section{Robustness and Boundary Checks}
+
+\begin{remark}[Why the source's partial theorem is not contradicted]
+Bispo--Macedo--Santos prove Haar domination for the smaller class of
+Lipschitz \(p\)-\(B_{H^*}\)-summing maps \cite[Theorem 4.3]{BMS}.  The map
+above cannot belong to that smaller class: their theorem would then imply
+\eqref{eq:haar-domination}, which the peaks disprove.  Thus the example lands
+exactly in the gap between ordinary Lipschitz \(p\)-summability, tested by
+the nonlinear Lipschitz dual \(H^\#\), and their linear-dual hypothesis.
+\end{remark}
+
+\begin{remark}[No dependence on the optimal constant]
+The contradiction uses only the nonexistence of any finite domination
+constant.  It is therefore unaffected by differing conventions for the term
+``Pietsch measure.''
+\end{remark}
+
+\begin{remark}[More general form]
+The same construction works on any infinite compact group that admits
+continuous functions of supremum one with Haar \(L^p\)-norm tending to zero.
+The circle was chosen to make this concentration explicit and avoid any
+auxiliary topological-measure lemma.
+\end{remark}
+
+\section{Novelty Check}
+
+The March 2026 source paper still states the question as open and conjectures
+that its \(B_{H^*}\)-based partial theorem is the best possible answer
+\cite[Remark following Theorem 4.3]{BMS}.  Exact-title, arXiv-id, and
+translation-invariant Lipschitz-summing searches through August 9, 2026 found
+no later primary source recording this counterexample or another resolution.
+This is evidence of novelty, not a claim of exhaustive bibliographic proof.
+
+\begin{thebibliography}{9}
+
+\bibitem{BMS}
+A. Bispo, R. Macedo, and J. Santos,
+\emph{A new criterion for the normalized Haar measure to be a Pietsch
+measure}, arXiv:2603.27851 (2026).
+
+\bibitem{BPRSS}
+G. Botelho, D. Pellegrino, P. Rueda, J. Santos, and
+J. B. Seoane-Sep\'ulveda,
+\emph{When is the Haar measure a Pietsch measure for nonlinear mappings?},
+Studia Math. \textbf{213} (2012), 275--287; arXiv:1204.5621.
+
+\bibitem{FJ}
+J. D. Farmer and W. B. Johnson,
+\emph{Lipschitz \(p\)-summing operators},
+Proc. Amer. Math. Soc. \textbf{137} (2009), 2989--2995.
+
+\end{thebibliography}
+
+\end{document}

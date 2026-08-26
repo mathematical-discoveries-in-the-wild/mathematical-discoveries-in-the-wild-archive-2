@@ -1,0 +1,387 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\Ftwo}{\mathbb F_2^+}
+\newcommand{\HH}{\mathcal H}
+\newcommand{\emptyword}{\varnothing}
+
+\title{The Sharp Free Approximation Rate for $(1-x)(1-y)$\\
+\large An exact recursion and a full candidate answer to the example in arXiv:2209.10373}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 5}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Candidate full solution to the explicit sharpness question for
+$f(x,y)=(1-x)(1-y)$, likely valid and awaiting human review.  The theorem
+below proves the stronger asymptotic $\sqrt n\,c_n\to1$.}}
+\end{center}
+
+\section{Source question}
+
+The source is P.~Arora, M.~Augat, M.~T.~Jury, and M.~Sargent,
+\emph{An Optimal Approximation Problem for Free Polynomials},
+arXiv:2209.10373, published in \emph{Proceedings of the American Mathematical
+Society} \textbf{152} (2024), 455--470 \cite{AAJS}.  Free words are declared
+orthonormal, and the authors consider
+\[
+ c_n=\min_{\deg p\le n}\|p f-1\|_2^2.
+\]
+In Section 3.1 (arXiv PDF page 14), they observe that for
+$f(x,y)=(1-x)(1-y)$ one can obtain $c_n\lesssim n^{-1/2}$, but state that
+they do not know whether the exponent $1/2$ is sharp.  The relevant source
+passage is reproduced below.
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{The sharpness question in Section 3.1 of the source, arXiv PDF page 14.}
+\end{figure}
+\clearpage
+
+\section{Definitions and statement}
+
+Let $\Ftwo$ be the free monoid on the letters $x,y$, with empty word
+$\emptyword$.  Write $e_w$ for the word basis of
+$\ell^2(\Ftwo)$, and let
+\[
+ \HH_n=\operatorname{span}\{e_w:|w|\le n\}.
+\]
+A free polynomial is identified with its coefficient vector in this Hilbert
+space.  The optimal squared error for the source example is
+\[
+ c_n:=\min_{p\in\HH_n}
+ \|p(1-x)(1-y)-e_{\emptyword}\|_2^2.
+\]
+
+\begin{theorem}\label{thm:main}
+Define two positive sequences $(e_m)_{m\ge-1}$ and
+$(\kappa_m)_{m\ge-1}$ by
+\[
+ e_{-1}=1,\qquad \kappa_{-1}=\frac12,
+\]
+and, for $m\ge0$,
+\begin{align}
+ \kappa_m
+ &=\kappa_{m-1}+\frac{e_{m-1}}{1+e_{m-1}},\label{eq:krec}\\
+ e_m
+ &=1+\frac{\kappa_{m-1}e_{m-1}}
+ {\kappa_{m-1}+e_{m-1}}.\label{eq:erec}
+\end{align}
+Then the optimal errors for $f(x,y)=(1-x)(1-y)$ satisfy the exact formula
+\[
+ \boxed{\ c_n=\frac1{e_n}\ }\qquad(n\ge0).
+\]
+Moreover,
+\[
+ \boxed{\ \lim_{n\to\infty}\sqrt n\,c_n=1\ }.
+\]
+Consequently the exponent $p=1/2$ in the source question is sharp, and its
+leading constant is one.
+\end{theorem}
+
+For orientation, the first exact values are
+\[
+ c_0=\frac34,\qquad c_1=\frac7{11},\qquad
+ c_2=\frac{14}{25},\qquad c_3=\frac{56}{111}.
+\]
+
+\section{Proof intuition}
+
+Right multiplication by $(1-x)(1-y)$ sends the coefficient at a word $w$
+to a four-point pattern supported at $w,wx,wy,wxy$.  Orthogonality to all
+such patterns rooted at depth at most $n$ is therefore the local relation
+\[
+ h_w-h_{wx}-h_{wy}+h_{wxy}=0.
+\]
+Projection duality says that $c_n^{-1}$ is the least squared norm of a vector
+satisfying all these relations and normalized by $h_{\emptyword}=1$.
+
+This is an electrical-energy-style minimization on a finite binary tree.  A
+rooted subtree has only two boundary data relevant to its parent: its root
+and its $y$-child.  Eliminating all other values turns the entire tree into a
+$2\times2$ positive quadratic form.  Its Schur complement is summarized by
+one scalar $\kappa_m$, while the unconstrained-root energy is $e_m$.  This
+gives the exact recursion in Theorem~\ref{thm:main}.
+
+For the asymptotics, $e\mapsto1+\kappa e/(\kappa+e)$ has a moving fixed point
+$r(\kappa)$ defined by $r^2-r=\kappa$.  The recursion keeps $e_m$ below this
+fixed point, while any fixed relative gap is closed by a uniformly positive
+amount at each step; the fixed point itself moves only by $O(1/r)$.  Hence
+$e_m/r(\kappa_m)\to1$.  Since $\kappa_m\sim m$, the claimed limit follows.
+
+\section{Exact dual recursion}
+
+Let $R_xe_w=e_{wx}$ and $R_ye_w=e_{wy}$ be the right creation operators, and
+put
+\[
+ A=(I-R_y)(I-R_x).
+\]
+Thus $Ap=p(1-x)(1-y)$ and
+\[
+ c_n=\operatorname{dist}(e_{\emptyword},A\HH_n)^2.
+\]
+Let $L_n=(A\HH_n)^\perp$.  Standard Hilbert-space projection duality gives
+\begin{equation}\label{eq:dual}
+ \frac1{c_n}
+ =\min\{\|h\|_2^2:h\in L_n,\ h_{\emptyword}=1\}.
+\end{equation}
+Indeed, if $g$ is the orthogonal projection of $e_{\emptyword}$ onto $L_n$,
+then $c_n=\|g\|^2$; among $h\in L_n$ with
+$\langle e_{\emptyword},h\rangle=1$, equality in Cauchy--Schwarz is attained
+by $h=g/\|g\|^2$.
+
+For every word $w$,
+\[
+ (A^*h)_w=h_w-h_{wx}-h_{wy}+h_{wxy}.
+\]
+Consequently $h\in L_n$ precisely when
+\begin{equation}\label{eq:local}
+ h_w-h_{wx}-h_{wy}+h_{wxy}=0
+ \qquad (|w|\le n).
+\end{equation}
+Only coordinates of depth at most $n+2$ occur in these constraints.  Setting
+all deeper coordinates to zero preserves feasibility and decreases the norm,
+so the minimum in \eqref{eq:dual} is a finite-tree problem.
+
+We now solve that problem.  For $m\ge-1$, let $E_m(a)$ be the minimum energy
+in a rooted binary subtree whose root has value $a$, with
+\eqref{eq:local} imposed through relative depth $m$.  Let $F_m(a,z)$ be the
+same minimum when the value $z$ at the root's $y$-child is also fixed.  The
+case $m=-1$ means that no relation is imposed, so
+\[
+ E_{-1}(a)=|a|^2,
+ \qquad F_{-1}(a,z)=|a|^2+|z|^2.
+\]
+Tree symmetry and homogeneity give
+\[
+ E_m(a)=e_m|a|^2,
+ \qquad
+ F_m(a,z)=
+ \begin{bmatrix}\overline a&\overline z\end{bmatrix}
+ Q_m
+ \begin{bmatrix}a\\z\end{bmatrix},
+\]
+where $Q_m$ is a real symmetric positive matrix.  The data are real, so this
+Hermitian formulation also shows that allowing complex coefficients does not
+change the scalar recursion.
+
+Suppose
+\[
+ Q_{m-1}=\begin{bmatrix}A&B\\B&C\end{bmatrix},
+ \qquad
+ \kappa_{m-1}:=
+ \frac{\det Q_{m-1}}{A+2B+C}.
+\]
+At a root with value $a$, write $b,c,d$ for the values at $wx,wy,wxy$.
+The root relation is $d=b+c-a$.  If the $y$-child is fixed at $z=c$, the
+two child subtrees are disjoint and therefore
+\begin{equation}\label{eq:Fsplit}
+ F_m(a,z)=|a|^2+E_{m-1}(z)
+ +\min_b F_{m-1}(b,b+z-a).
+\end{equation}
+For any $s\in\mathbb C$, direct completion of the square gives
+\[
+ \min_b F_{m-1}(b,b+s)
+ =\frac{AC-B^2}{A+2B+C}|s|^2
+ =\kappa_{m-1}|s|^2.
+\]
+Hence
+\begin{equation}\label{eq:Qrec}
+ Q_m=
+ \begin{bmatrix}
+ 1+\kappa_{m-1}&-\kappa_{m-1}\\
+ -\kappa_{m-1}&e_{m-1}+\kappa_{m-1}
+ \end{bmatrix}.
+\end{equation}
+If the $y$-child is not fixed, a second one-variable minimization in
+\eqref{eq:Fsplit} yields
+\[
+ E_m(a)
+ =|a|^2+\min_z\bigl(e_{m-1}|z|^2
+ +\kappa_{m-1}|z-a|^2\bigr)
+ =\left(1+\frac{\kappa_{m-1}e_{m-1}}
+ {\kappa_{m-1}+e_{m-1}}\right)|a|^2.
+\]
+This is \eqref{eq:erec}.  From \eqref{eq:Qrec},
+\[
+ \frac{\det Q_m}{(Q_m)_{11}+2(Q_m)_{12}+(Q_m)_{22}}
+ =\kappa_{m-1}+\frac{e_{m-1}}{1+e_{m-1}},
+\]
+which is \eqref{eq:krec}.  Since $Q_{-1}=I$, its initial Schur-complement
+parameter is $\kappa_{-1}=1/2$.
+
+Finally, the minimum in \eqref{eq:dual} is exactly the root energy
+$E_n(1)=e_n$.  Therefore $c_n=1/e_n$, proving the exact part of
+Theorem~\ref{thm:main}.
+
+\section{Sharp asymptotics}
+
+We prove that $e_n\sim\sqrt n$.  Write $k_n=\kappa_n$ for brevity and define
+\[
+ r(k)=\frac{1+\sqrt{1+4k}}2,
+ \qquad r(k)^2-r(k)=k.
+\]
+For fixed $k>0$, set
+\[
+ \Phi_k(u)=1+\frac{ku}{k+u}.
+\]
+The number $r(k)$ is the positive fixed point of $\Phi_k$, and $\Phi_k$ is
+increasing.  Since $e_{-1}=1<r(k_{-1})$ and $k_n>k_{n-1}$, induction gives
+\begin{equation}\label{eq:belowroot}
+ 1\le e_n\le r(k_n)\qquad(n\ge-1).
+\end{equation}
+Indeed, $e\le r(k)$ implies
+$\Phi_k(e)\le r(k)<r(k')$ for every $k'>k$.  It also implies monotonicity,
+because
+\begin{equation}\label{eq:increment}
+ \Phi_k(e)-e=\frac{k+e-e^2}{k+e}\ge0.
+\end{equation}
+
+The recursion for $k_n$, together with $e_n\ge1$, gives
+\begin{equation}\label{eq:kbounds}
+ \frac{n+2}{2}\le k_n<n+\frac32
+ \qquad(n\ge0).
+\end{equation}
+We also record a useful elementary lower bound.  Since
+$k_0=1$ and $e_0=4/3$, induction shows
+\begin{equation}\label{eq:halfsqrt}
+ e_n\ge\frac12\sqrt{k_n}\qquad(n\ge0).
+\end{equation}
+To verify the induction step, suppose $k\ge1$ and
+$e\ge\tfrac12\sqrt k$, and put
+$k'=k+e/(1+e)\le k+1$.  If
+$e\ge\tfrac12\sqrt{k+1}$ there is nothing to prove, by
+\eqref{eq:increment}.  Otherwise $e^2<(k+1)/4$ and
+$e<\tfrac12\sqrt{k+1}\le k$, so
+\[
+ \Phi_k(e)-e
+ =\frac{k+e-e^2}{k+e}
+ >\frac{k-(k+1)/4}{2k}\ge\frac14.
+\]
+But
+\[
+ \frac12(\sqrt{k+1}-\sqrt k)
+ =\frac1{2(\sqrt{k+1}+\sqrt k)}<\frac14,
+\]
+which proves $\Phi_k(e)\ge\tfrac12\sqrt{k+1}\ge
+\tfrac12\sqrt{k'}$.
+
+Equations \eqref{eq:belowroot}--\eqref{eq:halfsqrt} already give explicit
+two-sided estimates
+\begin{equation}\label{eq:explicit}
+ \frac1{1+\sqrt{n+3/2}}
+ \le c_n\le\frac{2\sqrt2}{\sqrt{n+2}}.
+\end{equation}
+Thus the exponent $1/2$ is sharp even without identifying the leading
+constant.  We finish by proving that the constant is one.
+
+The lower bounds above imply $e_n\to\infty$.  Hence
+\[
+ k_n=\frac12+\sum_{j=-1}^{n-1}\frac{e_j}{1+e_j}
+ \quad\Longrightarrow\quad \frac{k_n}{n}\longrightarrow1
+\]
+by Ces\`aro convergence.  It remains to compare $e_n$ with $r(k_n)$.
+
+Fix $0<\varepsilon<1$ and set $s=(1-\varepsilon)r$, where $r=r(k)$.
+The increment $\Phi_k(u)-u$ is decreasing in $u>0$, and at $s$ it equals
+\begin{equation}\label{eq:boundaryincrement}
+ \Phi_k(s)-s
+ =\frac{(r-s)(r+s-1)}{k+s}
+ =\varepsilon\frac{(2-\varepsilon)r-1}{r-\varepsilon}
+ \longrightarrow\varepsilon(2-\varepsilon)>0.
+\end{equation}
+On the other hand, since $k_{n+1}-k_n<1$ and
+$r'(k)=1/(2r(k)-1)$,
+\begin{equation}\label{eq:rootmotion}
+ r(k_{n+1})-r(k_n)
+ \le\frac1{2r(k_n)-1}\longrightarrow0.
+\end{equation}
+Choose $d>0$ and $N$ so that, for $n\ge N$, the boundary increment in
+\eqref{eq:boundaryincrement} is at least $d$, while the increase of
+$(1-\varepsilon)r(k_n)$ is less than $d/2$.  Whenever
+$e_n\le(1-\varepsilon)r(k_n)$, its next increment is at least $d$, so its
+gap below that moving boundary decreases by at least $d/2$.  It crosses the
+boundary after finitely many steps.  Once it has crossed, monotonicity of
+$\Phi_{k_n}$ and the same two estimates show that it remains above the
+boundary.  Therefore
+\[
+ \liminf_{n\to\infty}\frac{e_n}{r(k_n)}\ge1-\varepsilon.
+\]
+Since \eqref{eq:belowroot} gives the reverse upper bound and $\varepsilon$ is
+arbitrary,
+\[
+ \frac{e_n}{r(k_n)}\longrightarrow1.
+\]
+Now $r(k_n)/\sqrt{k_n}\to1$ and $k_n/n\to1$, so
+$e_n/\sqrt n\to1$.  The identity $c_n=1/e_n$ completes the proof of
+Theorem~\ref{thm:main}.
+
+\section{Verification notes}
+
+The exact recursion was checked independently against the original primal
+least-squares problem.  The script \texttt{code/verify\_recurrence.py} builds
+the four-term coefficient column of $w(1-x)(1-y)$ for every $|w|\le n$,
+forms its Gram matrix over the rational numbers, solves the normal equations,
+and compares the resulting residual with $1/e_n$.  The values agree exactly
+for every tested degree.  The script also iterates the scalar recurrence in
+floating point to display convergence of $\sqrt n/e_n$ to one.  These checks
+are corroborative only; no numerical assertion is used in the proof.
+
+The most delicate formal points are local and exposed in the packet: the
+right-multiplication order in the definition of $A$, the fact that $wxy$ is
+the $y$-child of the $x$-child in the tree split, and the Schur-complement
+coefficient in the one-variable minimization.  The separate
+\texttt{verification.md} records these checks and the tested range.
+
+\section{Scope and novelty check}
+
+This result fully answers the source paper's explicit question whether the
+exponent $1/2$ is sharp for $(1-x)(1-y)$.  It does not answer the broader
+question in the same section asking whether there is a uniform positive
+exponent valid independently of the free polynomial $F$.
+
+The bounded novelty search was performed on 9 August 2026.  The run's
+registry, solution, attempt, and proof-gap indexes were searched for
+arXiv:2209.10373, the source title, ``optimal polynomial approximants'',
+``free polynomial'', and the explicit factor $(1-x)(1-y)$.  Web/arXiv
+searches used the exact title and example, the author names, the journal DOI
+10.1090/proc/16474, and combinations with ``sharp'', ``rate'', and
+``one-half''.  The available citation trail surfaced later work on classical
+Hardy-space optimal approximants that cites the source as background, but no
+paper treating this free example or giving the recursion above.  The search
+is bounded rather than exhaustive, so bibliographic novelty remains subject
+to specialist review.
+
+\section{Human-review recommendation}
+
+Review as a full solution to the concrete source example.  First check
+\eqref{eq:dual} and the coordinate identity for $A^*$.  Then check the
+subtree split \eqref{eq:Fsplit}, particularly that the fixed value $b+z-a$
+is the $y$-child of the $x$-child.  Finally verify the moving-boundary
+argument after \eqref{eq:boundaryincrement}.  If those points pass, the
+exact recurrence and the asymptotic constant follow without any external
+mathematical input.
+
+\begin{thebibliography}{9}
+
+\bibitem{AAJS}
+P. Arora, M. Augat, M. T. Jury, and M. Sargent,
+\emph{An Optimal Approximation Problem for Free Polynomials},
+Proc. Amer. Math. Soc. \textbf{152} (2024), no.~2, 455--470;
+arXiv:2209.10373,
+\href{https://doi.org/10.1090/proc/16474}{doi:10.1090/proc/16474}.
+
+\end{thebibliography}
+
+\end{document}

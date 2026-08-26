@@ -1,0 +1,233 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.86in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Var}{\operatorname{Var}}
+
+\title{A Derivative Obstruction to Almost Periodicity in Variation}
+\author{fa\_banach\_001 / agent\_lane\_00}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{
+\textbf{Claimed status: full negative answer to the question in Example 3.3
+of arXiv:2205.09031, subject to human review.}
+For every $1\leq p<\infty$, the displayed function is Stepanov-$p$ almost
+periodic, as recalled in the source, but it is \emph{not}
+Stepanov-$p$ almost periodic in variation.
+}}
+\end{center}
+
+\section{Source question and definitions}
+
+Set
+\begin{equation}\label{eq:f}
+ f(t)=\sin\!\left(\frac{1}{\zeta(t)}\right),\qquad
+ \zeta(t)=2+\cos t+\cos(\sqrt2t).
+\end{equation}
+The source asks whether $f$ is $S^p$-almost periodic in variation, meaning
+that its Bochner transform
+\[
+ \widehat f(t)\in L^p([0,1]),\qquad \widehat f(t)(s)=f(t+s),
+\]
+is almost periodic in variation.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.91\textwidth]{figures/open_question_crop.png}
+\caption{The question on PDF page 19 of arXiv:2205.09031v1.}
+\end{figure}
+
+For a continuous map $H:\R\to Y$ into a Banach space, write
+\[
+ \Var_1(H;q)=\sup_{q-1=t_0<\cdots<t_N=q+1}
+       \sum_{j=0}^{N-1}\|H(t_{j+1})-H(t_j)\|_Y.
+\]
+The source's definition, specialized to ordinary almost periodicity, says
+that $H$ is almost periodic in variation if, for every $\varepsilon>0$,
+the set of $\tau$ satisfying
+\begin{equation}\label{eq:apvar}
+ \sup_{q\in\R}\bigl(\|H(q+\tau)-H(q)\|_Y
+  +\Var_1(H(\cdot+\tau)-H(\cdot);q)\bigr)<\varepsilon
+\end{equation}
+is relatively dense.
+
+\section{The transfer lemma}
+
+\begin{lemma}[Variation transfers to the derivative]\label{lem:transfer}
+Let $F\in C^1(\R)$ and $1\leq p<\infty$.  If
+\(\widehat F(t)=F(t+\cdot)\) is almost periodic in variation as an
+$L^p([0,1])$-valued map, then $F'$ is Stepanov-$1$ almost periodic.
+In particular,
+\begin{equation}\label{eq:s1bound}
+       \sup_{q\in\R}\int_q^{q+1}|F'(u)|\,du<\infty.
+\end{equation}
+\end{lemma}
+
+\subsection*{Idea of the proof}
+
+The variation of a differentiable Banach-valued curve is the integral of
+the norm of its derivative.  Differentiating a translation difference of
+the Bochner transform produces translation differences of $F'$.  A short
+Tonelli argument then shows that the former variation dominates the usual
+Stepanov-$1$ distance between the latter functions.
+
+\begin{proof}
+Put $G=F'$ and, for a fixed $\tau$, define
+\[
+ H_\tau(r)=\widehat F(r+\tau)-\widehat F(r).
+\]
+On every compact $r$-interval this is a $C^1$ curve in $L^p([0,1])$, with
+\[
+ H_\tau'(r)(s)=G(r+s+\tau)-G(r+s).
+\]
+Consequently,
+\begin{equation}\label{eq:variationidentity}
+ \Var_1(H_\tau;q)=\int_{q-1}^{q+1}\|H_\tau'(r)\|_{L^p([0,1])}\,dr.
+\end{equation}
+For every $q\in\R$, Tonelli's theorem and
+$\|h\|_1\leq\|h\|_p$ on the unit interval give
+\begin{align}
+ \int_q^{q+1}|G(u+\tau)-G(u)|\,du
+ &\leq \int_{q-1}^{q+1}\int_0^1
+       |G(r+s+\tau)-G(r+s)|\,ds\,dr \notag\\
+ &\leq \int_{q-1}^{q+1}\|H_\tau'(r)\|_p\,dr
+  =\Var_1(H_\tau;q).                                      \label{eq:key}
+\end{align}
+Indeed, after the change $u=r+s$, the double integral has convolution
+weight exactly one for $u\in[q,q+1]$.
+
+Thus every $\varepsilon$-translation in \eqref{eq:apvar} is a
+Stepanov-$1$ $\varepsilon$-translation of $G$, and such translations are
+relatively dense.  This proves Stepanov-$1$ almost periodicity.
+
+For completeness, boundedness follows directly.  Take $\varepsilon=1$ and
+let $L$ witness relative density.  Given $x$, choose a $1$-translation
+$\tau\in[x-L,x+L]$.  Then
+\[
+ \int_x^{x+1}|G(u)|\,du
+ \leq 1+\int_{x-\tau}^{x-\tau+1}|G(v)|\,dv,
+\]
+and the final integral is bounded because $x-\tau\in[-L,L]$ and $G$ is
+continuous.  This proves \eqref{eq:s1bound}.
+\end{proof}
+
+\section{The specific function has unbounded derivative variation}
+
+The denominator in \eqref{eq:f} is strictly positive.  Equality to zero
+would force both cosines to equal $-1$, making $\sqrt2$ a ratio of odd
+integers.  Hence $f\in C^\infty(\R)$ and
+\begin{equation}\label{eq:g}
+ g(t):=f'(t)=
+ \frac{\sin t+\sqrt2\sin(\sqrt2t)}{\zeta(t)^2}
+ \cos\!\left(\frac1{\zeta(t)}\right).
+\end{equation}
+
+\begin{lemma}\label{lem:unbounded}
+There is a fixed $b\in(0,1)$ and a sequence of intervals
+$[m_n,m_n+b]$ such that
+\[
+             \int_{m_n}^{m_n+b}|g(t)|\,dt\longrightarrow\infty.
+\]
+In particular, $g$ is not Stepanov-$1$ bounded.
+\end{lemma}
+
+\subsection*{Proof intuition}
+
+The irrational orbit $(t,\sqrt2t)$ comes arbitrarily close to
+$(\pi,\pi)$ modulo $2\pi$.  Near each such visit, $\zeta$ has a positive,
+strictly convex well whose minimum tends to zero.  On one side of the well,
+the change of variables $u=1/\zeta(t)$ turns the total variation of
+$\sin(1/\zeta)$ into a long integral of $|\cos u|$.
+
+\begin{proof}
+The sequence $(2k+1)\sqrt2$ is dense modulo $2$.  We may therefore choose
+integers $k_n$ such that, for $x_n=(2k_n+1)\pi$,
+\[
+ e^{i\sqrt2x_n}\longrightarrow-1.
+\]
+It follows that
+\[
+ \zeta(x_n)\to0,\qquad \zeta'(x_n)\to0,\qquad
+ \zeta''(x_n)\to3.
+\]
+More precisely, uniformly for $|h|\leq a$,
+\[
+ \zeta''(x_n+h)\longrightarrow \cos h+2\cos(\sqrt2h).
+\]
+Choose a fixed, sufficiently small $a\in(0,1/2)$.  For all large $n$,
+\begin{equation}\label{eq:convex}
+                  \zeta''(t)\geq1\quad(|t-x_n|\leq a).
+\end{equation}
+Since $\zeta'(x_n)\to0$, strict convexity gives a unique
+$m_n=x_n+o(1)$ in this interval with $\zeta'(m_n)=0$.  It is the local
+minimum, and
+\[
+       0<\delta_n:=\zeta(m_n)\leq\zeta(x_n)\longrightarrow0.
+\]
+Fix $b=a/2$.  For large $n$, \eqref{eq:convex} holds throughout
+$[m_n,m_n+b]$; hence $\zeta$ is increasing there and
+\[
+              \zeta(m_n+b)\geq\delta_n+\frac{b^2}{2}
+              \geq\frac{b^2}{2}.
+\]
+Using \eqref{eq:g} and then the monotone substitutions
+$v=\zeta(t)$ and $u=1/v$, we obtain
+\begin{align*}
+ \int_{m_n}^{m_n+b}|g(t)|\,dt
+ &=\int_{\delta_n}^{\zeta(m_n+b)}
+       \frac{|\cos(1/v)|}{v^2}\,dv\\
+ &=\int_{1/\zeta(m_n+b)}^{1/\delta_n}|\cos u|\,du
+   \longrightarrow\infty.
+\end{align*}
+The lower endpoint is at most $2/b^2$, whereas the upper endpoint tends
+to infinity, and $|\cos u|$ has positive mean $2/\pi$.  Since $b<1$,
+these intervals lie inside unit intervals, proving the last assertion.
+\end{proof}
+
+\section{Answer}
+
+\begin{theorem}[Full negative resolution]\label{thm:answer}
+For every $1\leq p<\infty$, the function in \eqref{eq:f} is not
+$S^p$-almost periodic in variation.
+\end{theorem}
+
+\begin{proof}
+If it were, $\widehat f$ would be almost periodic in variation as an
+$L^p([0,1])$-valued map.  Lemma~\ref{lem:transfer} would make $f'=g$
+Stepanov-$1$ bounded, contradicting Lemma~\ref{lem:unbounded}.
+\end{proof}
+
+\begin{remark}[Scope]
+The argument does not dispute the source's statement that $f$ is ordinary
+Stepanov-$p$ almost periodic.  It separates that property from the strictly
+stronger variation version.  Lemma~\ref{lem:transfer} is also a general
+obstruction: any $C^1$ function with unbounded local $L^1$ derivative
+variation gives the same negative conclusion for every finite $p$.
+\end{remark}
+
+A bounded novelty search of the run registry, exact question wording,
+displayed formula, and the 2025 journal publication found no later explicit
+answer.  Novelty is provisional; the proof above is self-contained.
+
+\begin{thebibliography}{9}
+\bibitem{CKV}
+B. Chaouchi, M. Kosti\'c, and D. Velinov,
+\emph{Metrical approximations of functions}, arXiv:2205.09031v1 (2022);
+Funkcialaj Ekvacioj \textbf{68} (2025), 1--44,
+\href{https://doi.org/10.1619/fesi.68.1}{doi:10.1619/fesi.68.1}.
+\end{thebibliography}
+
+\end{document}

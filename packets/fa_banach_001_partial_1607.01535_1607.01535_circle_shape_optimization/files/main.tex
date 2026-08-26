@@ -1,0 +1,307 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.86in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage[colorlinks=true,urlcolor=blue!55!black,citecolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\Torus}{\mathbb T}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Ucal}{\mathcal U}
+
+\title{Exact circle shape optimization for geodesic observation\\and for resonant wave times}
+\author{Candidate partial answer to the shape-optimization problems of arXiv:1607.01535}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{\textbf{Status: candidate partial result, likely valid.}
+On the circle, the finite-time geometric functional $g_2^T$ has supremum
+$L$ for every observation time, with a complete attainment classification by
+rational rotations.  At the resonant times $T\in2\pi\N$, the deterministic
+wave constant satisfies $C_T=(T/2)g_1$ exactly; its supremum is $TL/2$ and it
+is attained precisely at volume fraction $L=1/2$ by antipodal selectors.}}
+\end{center}
+
+\section*{Source problem}
+
+Humbert, Privat, and Tr\'elat ask on PDF page 22 of
+\emph{Observability properties of the homogeneous wave equation on a closed
+manifold} \cite{source}:
+\begin{quote}
+A challenging problem is to maximize $\omega\mapsto C_T(\omega)$ over all
+measurable subsets of prescribed volume fraction $L$.  Maximizing the
+geometric functional $\omega\mapsto g_2(\omega)$ is also an interesting open
+problem and would be a step toward the deterministic problem.
+\end{quote}
+The source passage is reproduced below.
+
+\begin{center}
+\includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+We solve the complete circle subcase for the long-time functional $g_2$, and
+more strongly for its finite-time version $g_2^T$.  We also solve the
+deterministic problem at every common spectral period.  The arbitrary-time
+deterministic problem and higher-dimensional manifolds remain open.
+
+\section*{Definitions}
+
+Write $\Torus=\mathbb R/(2\pi\mathbb Z)$, with arc-length measure, and
+\[
+ \Ucal_L=\{\omega\subset\Torus:\omega\text{ measurable and }
+ |\omega|=2\pi L\},\qquad 0<L<1.
+\]
+Every unit-speed geodesic is $t\mapsto x\pm t$.  Hence the source's geometric
+quantity is
+\begin{equation}\label{eq:g2def}
+ g_2^T(\omega)=\inf_{x\in\Torus}\frac1T
+ \int_0^T\chi_\omega(x+t)\,dt.
+\end{equation}
+The sign of the ray is immaterial after changing $x$.
+
+For the wave equation on the zero-mean sector used in the source's circle
+example, let $C_T(\omega)$ be its deterministic observability constant and let
+\[
+ g_1(\omega)=\inf_{j\geq1}\ \inf_{0\neq\phi\in
+ \operatorname{span}\{\cos(jx),\sin(jx)\}}
+ \frac{\int_\omega|\phi|^2}{\int_\Torus|\phi|^2}.
+\]
+
+\section*{Proof intuition}
+
+For $g_2^T$, remove the whole turns made by a geodesic.  What remains is the
+least mass of $\omega$ in a sliding arc of a fixed length $r$.  Its average over
+the starting point is $rL$, so it cannot have minimum above $rL$.  Fine
+periodic checkerboards make every sliding arc asymptotically have that mass.
+Equality means that every sliding arc has exactly its average mass; taking a
+distributional derivative says precisely that $\omega$ is invariant under
+rotation by $r$.
+
+At times $2\pi m$, all distinct temporal Fourier modes of the circle are
+orthogonal.  The full wave Gramian becomes block diagonal by Laplace
+eigenspaces, so its bottom eigenvalue is exactly $(T/2)g_1$.  The quantity
+$g_1$ is controlled by the even Fourier coefficients of $\chi_\omega$.
+Fourier-flat unions of very small cells show that all these coefficients can
+be made uniformly small.  Vanishing of every even coefficient, however,
+forces $\chi_\omega(x)+\chi_\omega(x+\pi)$ to be constant, which a
+$\{0,1,2\}$-valued function permits only when $L=1/2$.
+
+\section*{The geometric functional at every time}
+
+\begin{theorem}\label{thm:g2}
+Let $T>0$ and $0<L<1$.  Then
+\[
+ \sup_{\omega\in\Ucal_L}g_2^T(\omega)=L.
+\]
+Write $T=2\pi q+r$ with $q\in\N\cup\{0\}$ and $0\leq r<2\pi$.
+If $r=0$, every $\omega\in\Ucal_L$ is a maximizer.  If $r>0$, then
+$\omega$ is a maximizer if and only if
+\begin{equation}\label{eq:invariance}
+ \chi_\omega(x+r)=\chi_\omega(x)\quad\text{for almost every }x.
+\end{equation}
+Consequently maximizers exist for every $L$ when $r/(2\pi)$ is rational, and
+no maximizer exists when $r/(2\pi)$ is irrational.  Moreover, for every
+$\omega\in\Ucal_L$,
+\[
+ g_2(\omega):=\lim_{T\to\infty}g_2^T(\omega)=L.
+\]
+\end{theorem}
+
+\begin{proof}
+Put
+\[
+ F_r(x)=\int_0^r\chi_\omega(x+t)\,dt.
+\]
+Every complete turn contributes $|\omega|=2\pi L$, and therefore
+\begin{equation}\label{eq:turns}
+ g_2^T(\omega)=\frac{2\pi qL+\inf_xF_r(x)}{T}.
+\end{equation}
+Fubini's theorem gives
+\[
+ \frac1{2\pi}\int_\Torus F_r(x)\,dx=rL.
+\]
+Thus $\inf_xF_r(x)\leq rL$ (with essential infimum if preferred), proving
+$g_2^T(\omega)\leq L$.
+
+For sharpness, divide the circle into $N$ cells of length $2\pi/N$ and retain
+the first proportion $L$ of each cell:
+\[
+ \omega_N=\bigcup_{k=0}^{N-1}
+ \left[\frac{2\pi k}{N},\frac{2\pi(k+L)}N\right).
+\]
+Every arc differs from a union of complete cells only at its two ends.  Hence,
+uniformly in $x$ and $0\leq r\leq2\pi$,
+\[
+ \left|F_r^{\omega_N}(x)-rL\right|\leq\frac{4\pi}{N}.
+\]
+Together with \eqref{eq:turns}, this proves
+$g_2^T(\omega_N)\to L$.
+
+Equality in the minimum--average bound holds exactly when $F_r$ is constant
+almost everywhere.  Its distributional derivative is
+\[
+ F_r'(x)=\chi_\omega(x+r)-\chi_\omega(x),
+\]
+so equality is equivalent to \eqref{eq:invariance}.  If
+$r/(2\pi)=p/s$ in lowest terms, the set
+\[
+ \bigcup_{k=0}^{s-1}
+ \left[\frac{2\pi k}{s},\frac{2\pi(k+L)}s\right)
+\]
+is invariant under rotation by $r$ and has measure $2\pi L$.  If the ratio is
+irrational, ergodicity of irrational circle rotation forces every invariant
+measurable set to have measure zero or $2\pi$, impossible here.  Finally,
+\eqref{eq:turns} directly gives $g_2^T(\omega)\to L$ as $T\to\infty$.
+\end{proof}
+
+\section*{The deterministic constant at resonant times}
+
+\begin{lemma}\label{lem:flat}
+For every $0<L<1$, there are sets $\omega_N\in\Ucal_L$ such that
+\begin{equation}\label{eq:flat}
+ \sup_{\ell\in\mathbb Z\setminus\{0\}}
+ \left|\int_{\omega_N}e^{i\ell x}\,dx\right|\longrightarrow0.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Partition the circle into $N$ equal cells $I_k$.  Select cells independently
+with probability $L$.  The elementary Hoeffding bound, followed by a union
+bound over the $N-1$ nonzero discrete Fourier frequencies, shows that one can
+choose a realization for which both the discrepancy in the number of selected
+cells and every discrete Fourier sum
+\[
+ \sum_{k\ \mathrm{selected}}e^{2\pi iak/N},\qquad 1\leq a<N,
+\]
+are $O(\sqrt{N\log N})$.  Add or remove
+$O(\sqrt{N\log N})$ cells to leave exactly $\lfloor LN\rfloor$ full cells,
+and add a subinterval of one remaining cell to make the measure exactly
+$2\pi L$.  The same bounds persist.
+
+For an integer $\ell\neq0$, the integral over the union of full cells factors
+as
+\[
+ \left(\int_0^{2\pi/N}e^{i\ell x}\,dx\right)
+ \sum_{k\ \mathrm{selected}}e^{2\pi i\ell k/N}.
+\]
+The first factor has modulus at most $2\pi/N$; when $N$ divides $\ell$ it is
+zero.  The final partial cell contributes at most $2\pi/N$.  Uniformly in
+$\ell\neq0$, the result is $O(\sqrt{\log N/N})$, proving
+\eqref{eq:flat}.
+\end{proof}
+
+\begin{theorem}\label{thm:C}
+Let $m\in\N^*$, $T=2\pi m$, and $0<L<1$.  For every
+$\omega\in\Ucal_L$,
+\begin{equation}\label{eq:exactC}
+ C_T(\omega)=\frac{T}{2}g_1(\omega),
+\end{equation}
+where
+\begin{equation}\label{eq:g1fourier}
+ g_1(\omega)=L-\frac1{2\pi}\sup_{j\geq1}
+ \left|\int_\omega e^{2ijx}\,dx\right|.
+\end{equation}
+Consequently
+\[
+ \sup_{\omega\in\Ucal_L}C_T(\omega)=\frac{TL}{2}.
+\]
+This supremum is attained if and only if $L=1/2$.  For $L=1/2$, the maximizers
+are exactly the antipodal selectors
+\begin{equation}\label{eq:selector}
+ \chi_\omega(x)+\chi_\omega(x+\pi)=1\quad\text{a.e.}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The positive circle frequencies are the integers $j\geq1$, with eigenspaces
+\[
+ E_j=\operatorname{span}\{\cos(jx),\sin(jx)\}.
+\]
+In the source's
+$y^+,y^-$ variables, integration over $[0,2\pi m]$ kills every temporal term
+with nonzero integer frequency.  The observation Gramian is therefore block
+diagonal: on each of the two time branches and each $E_j$, its quadratic form
+is $T\int_\omega|u|^2$, while the source normalization contributes the factor
+$1/2$.  Taking the lowest block eigenvalue proves \eqref{eq:exactC}.
+
+Every unit vector in $E_j$ is a phase shift of
+$\pi^{-1/2}\sin(jx)$.  Since
+\[
+ \sin^2(jx+\theta)=\frac12-\frac12\cos(2jx+2\theta),
+\]
+minimization over $\theta$ gives \eqref{eq:g1fourier}.  Lemma~\ref{lem:flat}
+then yields $\sup g_1=L$ and hence the stated supremum of $C_T$.
+
+If $g_1(\omega)=L$, every even nonzero Fourier coefficient of
+$\chi_\omega$ vanishes.  On $[0,\pi)$ define
+\[
+ h(x)=\chi_\omega(x)+\chi_\omega(x+\pi).
+\]
+All nonconstant Fourier coefficients of $h$ vanish, so Fourier uniqueness
+gives $h=2L$ almost everywhere.  But $h$ takes values only in
+$\{0,1,2\}$; as $0<L<1$, this forces $L=1/2$ and $h=1$.  Conversely,
+\eqref{eq:selector} makes every even nonzero Fourier coefficient vanish and
+therefore gives $g_1=L$.  This proves the classification.
+\end{proof}
+
+\section*{Upgrade attempts, limitations, and novelty bounds}
+
+The finite-time $g_2^T$ theorem is a complete result for the circle and
+strictly strengthens its long-time $g_2$ subcase.  The deterministic theorem
+settles an infinite family of observation times but not arbitrary $T$.
+
+An additional upgrade attempt used rotation averaging: concavity and
+translation invariance give the natural relaxed upper bound obtained from the
+constant density $L$.  The checkerboards in Theorem~\ref{thm:g2} also make the
+high-frequency geometric obstruction converge uniformly to this relaxed
+value.  What remains for arbitrary $T$ is a two-scale estimate controlling the
+off-diagonal wave Gramian when the observation cells and the Fourier modes
+both tend to high frequency.  Weak-* convergence of characteristic functions
+does not control this operator norm, so the resonant proof cannot simply be
+perturbed.  Higher-dimensional manifolds likewise lose the one-dimensional
+sliding-arc reduction.
+
+On 11 August 2026, searches covered the exact source title and question,
+$g_2^T$/circle/sliding-window formulations, resonant-time deterministic
+observability, and the citing literature.  Privat--Tr\'elat--Zuazua
+\cite{ptz} already note Parseval equality of deterministic and randomized
+constants at common periods in a one-dimensional interval and establish
+related no-gap/nonattainment results for the randomized spectral design.
+No source located in the bounded search states Theorem~\ref{thm:g2} or this
+combined circle classification.  Novelty confidence is moderate: the proofs
+are elementary once the circle reduction is made, and the resonant part has
+clear antecedents.
+
+The included script numerically checks sliding-window convergence,
+Fourier-flat finite-cell samples, and the formulas for $g_1$; it is not used in
+the proof.  Human review should focus on the normalization in
+\eqref{eq:exactC}, the uniform-in-frequency step in Lemma~\ref{lem:flat}, and
+the distinction between essential and pointwise infima for arbitrary
+measurable representatives.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+E. Humbert, Y. Privat, and E. Tr\'elat,
+\emph{Observability properties of the homogeneous wave equation on a closed
+manifold}, arXiv:1607.01535, concluding shape-optimization problems (PDF p.~22).
+
+\bibitem{ptz}
+Y. Privat, E. Tr\'elat, and E. Zuazua,
+\emph{Optimal observability of the multi-dimensional wave and Schr\"odinger
+equations in quantum ergodic domains}, arXiv:1211.5655.
+
+\bibitem{hoeffding}
+W. Hoeffding,
+\emph{Probability inequalities for sums of bounded random variables},
+J. Amer. Statist. Assoc. 58 (1963), 13--30.
+\end{thebibliography}
+
+\end{document}

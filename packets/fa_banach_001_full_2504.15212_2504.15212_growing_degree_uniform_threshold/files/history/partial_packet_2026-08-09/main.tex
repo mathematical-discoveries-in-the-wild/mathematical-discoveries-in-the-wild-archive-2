@@ -1,0 +1,368 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\dist}{\operatorname{dist}}
+
+\title{A Uniform Geometric-Embedding Threshold\\
+for Trees of Moderately Growing Degree}
+\author{FA/Banach run \texttt{fa\_banach\_001}}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This packet records a candidate substantial partial answer to Problem~1.6 of
+Altschuler--Dodos--Tikhomirov--Tyros \cite{ADTT}. The proof is complete modulo
+the estimates already proved in that source, and the current verdict is
+\[
+ \boxed{\textbf{likely valid partial result; human review requested.}}
+\]
+It does not settle the full growing-degree problem or the optimal-constants
+Problem~1.5.
+
+\section*{Source problem}
+
+A graph $G=(V,E)$ is \emph{geometrically embeddable} into a normed space $X$
+if there is a map $\zeta:V\to X$ such that, for all distinct $u,v\in V$,
+\[
+ \|\zeta(u)-\zeta(v)\|_X\leq 1
+ \quad\Longleftrightarrow\quad \{u,v\}\in E.
+\]
+The source proves a universal $\Theta(\log N/\log\log N)$ threshold when the
+maximum degree $\Delta$ is fixed. On PDF page~3 it asks for the threshold when
+$\Delta$ grows with $N$.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+In transcription, Problem~1.6 asks for an explicit function $m(N,\Delta)$ and
+universal constants $\alpha_0,\alpha_1$ such that every $N$-vertex tree of
+maximum degree $\Delta$ embeds into every normed space of dimension at least
+$\alpha_1m$, while a complete tree of degree $\Delta$ does not embed below
+$\alpha_0m$.
+
+\section*{Proof Intuition}
+
+The height of a complete degree-$\Delta$ tree with $N$ vertices is naturally
+\[
+ H=\frac{\log N}{\log(\Delta-1)}.
+\]
+Packing its mutually nonadjacent vertices forces dimension of order
+$\log N/\log(2+H)$. This suggests the scale
+\[
+ q(N,\Delta)=\frac{\log N}{\log(2+H)}.
+\]
+
+The upper bound is hidden in the source's randomized construction. Its local
+lemma separates paths into three ranges. Short paths are controlled with
+probability $\exp(-m^{\kappa/2})$ and have dependency cost
+$\exp(O(\log\Delta))$; this is the origin of the growth assumption below.
+For paths of length at most $H$, the largest logarithmic dependency cost is
+\[
+ \frac{H}{\log H}\log\Delta\asymp \frac{\log N}{\log H}\asymp q.
+\]
+For paths longer than $H$, the probability exponent is $m\log H\asymp\log N$.
+Thus $m=64q$ closes every local-lemma inequality. The Gaussian part of the
+source proof contains no $\Delta$ and remains uniform on the whole interval
+$c\log N/\log\log N\leq m\leq C\log N$.
+
+\section*{The partial theorem}
+
+Let $\kappa\in(0,1)$ be the absolute exponent in the thin-shell estimate
+stated as Theorem~2.2 of \cite{ADTT}.
+
+\begin{theorem}[Uniform moderately growing-degree threshold]\label{thm:main}
+Let $(N_j)$ and $(\Delta_j)$ be integer sequences such that
+$N_j\to\infty$ and $3\leq\Delta_j\leq N_j-1$. Set
+\[
+ D_j=\log(\Delta_j-1),\qquad
+ H_j=\frac{\log N_j}{D_j},\qquad
+ q_j=\frac{\log N_j}{\log(2+H_j)}.
+\]
+Assume
+\begin{equation}\label{eq:growth}
+ D_j=o\big(q_j^{\kappa/2}\big).
+\end{equation}
+Then, for all sufficiently large $j$, the following hold.
+\begin{enumerate}[label=(\roman*)]
+ \item Every tree on $N_j$ vertices of maximum degree at most $\Delta_j$
+ geometrically embeds into every normed space of dimension at least
+ $\lceil64q_j\rceil$.
+ \item There is a breadth-first truncation of the complete rooted
+ degree-$\Delta_j$ tree on $N_j$ vertices which does not geometrically embed
+ into any normed space of dimension at most $q_j/2$.
+\end{enumerate}
+At cardinalities of a full complete rooted tree, the witness in (ii) is the
+full complete tree. Hence $q(N,\Delta)$ is the threshold scale, up to universal
+constants, throughout the regime \eqref{eq:growth}.
+\end{theorem}
+
+\begin{corollary}\label{cor:beta}
+For every fixed $\beta<\kappa/2$, Theorem~\ref{thm:main} applies whenever
+\[
+ 3\leq\Delta_N\leq \exp\big((\log N)^\beta\big).
+\]
+\end{corollary}
+
+\section*{Proof}
+
+We suppress the sequence index. Put $D=\log(\Delta-1)$,
+$H=\log N/D$, and $q=\log N/\log(2+H)$.
+
+\subsection*{Elementary consequences of the growth condition}
+
+Since $D\geq\log2$, we have
+\[
+ H\leq \frac{\log N}{\log2},\qquad
+ q\geq c\frac{\log N}{\log\log N},\qquad
+ q\leq C\log N
+\]
+for absolute constants $c,C>0$. Conversely $q\leq C\log N$, so
+\eqref{eq:growth} implies $D=o((\log N)^{\kappa/2})$. Therefore
+$H=\log N/D\to\infty$, and
+\begin{equation}\label{eq:logH}
+ \frac{\log H}{\log(2+H)}\longrightarrow1.
+\end{equation}
+
+Retain the source parameters
+\[
+ c_1=\frac14,\qquad
+ c_2=\min\left\{\frac14,\frac\kappa4\right\},\qquad
+ \ell_0=\exp\big((\log N)^{c_2}\big),
+\]
+and its absolute integer $k_0$. Set
+\[
+ m=\lceil64q\rceil,\qquad k_1=\lfloor H\rfloor.
+\]
+Because $H\to\infty$ but $H=O(\log N)$, while $\ell_0$ grows faster than
+every power of $\log N$, eventually
+\begin{equation}\label{eq:order}
+ k_0<k_1<\ell_0.
+\end{equation}
+Also
+\begin{equation}\label{eq:smallterms}
+ (\log N)^{c_2}=o(q^{\kappa/2})
+ \quad\text{and}\quad
+ (\log N)^{c_2}=o(q).
+\end{equation}
+Indeed, $c_2\leq\kappa/4$ and
+$q\geq c\log N/\log\log N$.
+
+\subsection*{Uniform local-lemma estimate}
+
+Use exactly the random edge vectors, path events, dependency graph, and
+weights from Section~4.2 of \cite{ADTT}. For a path-event of length $k$, the
+weight is
+\[
+ b_k=
+ \begin{cases}
+ \displaystyle\frac{1}{2^{k+1}6\ell_0 k(\Delta-1)^k},&2\leq k\leq k_1,\\[6pt]
+ \displaystyle\frac{3}{2\pi^2k^2N^2},&k_1<k\leq\ell_0.
+ \end{cases}
+\]
+Claim~4.1 of the source bounds the number of dependent length-$k$ paths for a
+fixed path by the minimum of $N^2$ and a constant multiple of
+$\ell_0k(\Delta-1)^k$. If $k\leq k_1$, then
+$(\Delta-1)^k\leq N$, while $k\ell_0=N^{o(1)}$. Hence, uniformly,
+\begin{equation}\label{eq:dependency}
+ 6k\ell_0(\Delta-1)^k\leq N^2
+\end{equation}
+for all sufficiently large $N$. The product estimate (4.16) of the source
+therefore remains valid:
+\begin{equation}\label{eq:product}
+ \prod_{B\sim A}(1-b_B)\geq\frac12
+\end{equation}
+for every path-event $A$. It remains to compare each event probability with
+$b_k/2$.
+
+For $2\leq k\leq k_0$, Lemma~3.3 of the source gives
+\[
+ \mathbb P(A)\leq \exp(-m^{\kappa/2}).
+\]
+On the other hand,
+\[
+ \log\frac{2}{b_k}leq C_0+k_0\log(2\Delta-2)+(\log N)^{c_2}
+ =o(q^{\kappa/2})=o(m^{\kappa/2})
+\]
+by \eqref{eq:growth} and \eqref{eq:smallterms}. Thus
+$\mathbb P(A)\leq b_k/2$ eventually.
+
+Next suppose $k_0<k\leq k_1$. Lemma~3.2 of the source, with $c_1=1/4$, gives
+\begin{equation}\label{eq:midprob}
+ \mathbb P(A)\leq \exp\left(-\frac m8\log k\right).
+\end{equation}
+The function $x/\log x$ is increasing for $x\geq3$. Since
+$\log(2\Delta-2)=D+\log2\leq2D$, \eqref{eq:logH} gives
+\begin{align}
+ \frac{k}{\log k}\log(2\Delta-2)
+ &\leq \frac{k_1}{\log k_1}\log(2\Delta-2)\notag\\
+ &\leq (2+o(1))\frac{HD}{\log H}
+  =(2+o(1))\frac{\log N}{\log H}
+  =(2+o(1))q.\label{eq:middlecost}
+\end{align}
+The constant, $\log k$, and $\log\ell_0$ terms in $\log(2/b_k)$ contribute
+$o(q)\log k$ by \eqref{eq:smallterms}. Consequently
+\[
+ \log\frac{2}{b_k}\leq(3+o(1))q\log k,
+\]
+whereas $m/8\geq8q$. Comparing with \eqref{eq:midprob} yields
+$\mathbb P(A)\leq b_k/2$ uniformly in this range.
+
+Finally suppose $k_1<k\leq\ell_0$. The same small-ball estimate gives
+\[
+ \mathbb P(A)\leq
+ \exp\left(-\frac m8\log k\right)
+ \leq \exp\left(-8q\log H\right)
+ =\exp\big(-(8-o(1))\log N\big),
+\]
+using \eqref{eq:logH}. Meanwhile
+\[
+ \log\frac{2}{b_k}=2\log N+2\log k+O(1)
+ =(2+o(1))\log N
+\]
+because $k\leq\ell_0=N^{o(1)}$. Again $\mathbb P(A)\leq b_k/2$.
+
+Together with \eqref{eq:product}, these three estimates verify the asymmetric
+Lovasz local lemma \cite{AlonSpencer}. Thus the source's event $\mathcal L$,
+on which every nonadjacent pair at tree distance at most $\ell_0$ has the
+required uniform-vector separation, has positive probability.
+
+\subsection*{Uniform Gaussian completion}
+
+The remainder of Section~4.3 of \cite{ADTT} is independent of $\Delta$. We
+record why every ``sufficiently large'' estimate there is uniform for the new
+dimension. From the elementary bounds above,
+\begin{equation}\label{eq:mrange}
+ c\frac{\log N}{\log\log N}\leq m\leq C\log N.
+\end{equation}
+The source uses
+\[
+ \delta=\exp\left(-\left(\frac12-\frac{c_1}{2}\right)(\log N)^{c_2}\right).
+\]
+For adjacent pairs its Gaussian tail threshold is
+$m^{-1/2}\delta^{-1}(\log N)^{-1}$. For distances $2\leq k\leq k_0$ it is,
+up to absolute factors, $\delta^{-1}m^{-(3/2-\kappa)}$. For
+$k_0<k\leq\ell_0$ it is, up to absolute factors,
+$\exp((c_1/2)(\log N)^{c_2})m^{-1/2}$. In all three cases the exponential in
+$(\log N)^{c_2}$ dominates every power of $m$ and $\log N$ allowed by
+\eqref{eq:mrange}. The Gaussian upper-tail estimate therefore makes each bad
+probability at most $N^{-2}$, exactly as in the source.
+
+For $k>\ell_0$, the source's Gaussian small-ball bound is
+\[
+ \exp\big(-\tfrac{c_1}{4}m(\log N)^{c_2}\big).
+\]
+The lower bound in \eqref{eq:mrange} implies
+$m(\log N)^{c_2}\gg\log N$, so this is also at most $N^{-2}$.
+
+Conditioned on $\mathcal L$, fewer than $N^2/2$ unordered pairs remain. The
+union bound is therefore strictly less than $1/2$, and a geometric embedding
+exists with positive probability. If the ambient normed space has dimension
+larger than $m$, perform the construction in any $m$-dimensional subspace.
+This proves part~(i).
+
+\subsection*{Complete-tree obstruction}
+
+Use the breadth-first truncated complete tree from part~(A) of the source's
+Theorem~1.1. It has $N$ vertices, maximum degree at most $\Delta$, a root $r$,
+and radius
+\[
+ h_0=\left\lceil
+ \frac{\log\left((N-1)(\Delta-2)/\Delta+1\right)}{\log(\Delta-1)}
+ \right\rceil\leq H+1.
+\]
+At full complete-tree cardinalities, no truncation occurs.
+
+Suppose it geometrically embeds into a $d$-dimensional normed space $X$.
+Because the tree is bipartite, it has an independent set $V_0$ with
+$|V_0|\geq N/2$. The radius-$1/2$ balls centered at the images of vertices in
+$V_0$ are pairwise disjoint, and all lie in the radius-$(h_0+1/2)$ ball about
+the image of $r$. Comparing Lebesgue volumes gives
+\[
+ \frac N2\leq(2h_0+1)^d.
+\]
+Hence
+\begin{align*}
+ d&\geq\frac{\log(N/2)}{\log(2h_0+1)}
+ \geq\frac{\log(N/2)}{\log(2H+3)}\\
+  &=(1-o(1))\frac{\log N}{\log(2+H)}=(1-o(1))q,
+\end{align*}
+where $H\to\infty$ was proved above. Thus $d\leq q/2$ is impossible for all
+sufficiently large $N$, proving part~(ii).
+
+For Corollary~\ref{cor:beta}, if
+$D\leq(\log N)^\beta$ with $\beta<\kappa/2$, then
+$H\geq(\log N)^{1-\beta}$ and
+\[
+ q\asymp\frac{\log N}{\log\log N}.
+\]
+It follows that $D=o(q^{\kappa/2})$, so Theorem~\ref{thm:main} applies.
+\hfill$\Box$
+
+\section*{Verification notes}
+
+The verification audit checked every occurrence in Section~4 of the source
+where $N$ was taken sufficiently large in terms of fixed $\Delta$.
+The degree enters only through:
+\begin{enumerate}
+ \item the path-dependency count and inequality corresponding to
+ \eqref{eq:dependency};
+ \item the short-path comparison $m^{\kappa/2}\gg\log\Delta$;
+ \item the transition length $k_1=\lfloor\log N/\log(\Delta-1)\rfloor$ in
+ \eqref{eq:middlecost} and the longer-path estimate.
+\end{enumerate}
+All later estimates are degree-free, and \eqref{eq:mrange} is exactly the
+uniform range they require. No finite computation is used as proof.
+
+The main human-review focus should be the uniformity of the source's
+Lemma~3.3 in $k\leq k_0$ (the lemma is stated uniformly for all $k\geq2$) and
+the interpretation of ``complete tree'' at non-full cardinalities. The lower
+bound is exact for full complete trees and uses the same truncation as the
+source for arbitrary $N$.
+
+\section*{Limitations and novelty status}
+
+The theorem leaves open degrees for which
+$\log(\Delta-1)$ is comparable to or larger than $q^{\kappa/2}$, does not
+optimize the constants, and does not address Problem~1.5. Its use of the
+thin-shell exponent means the displayed degree range improves automatically
+with any stronger uniform short-path estimate.
+
+A bounded literature search on 9 August 2026 used arXiv:2504.15212, the exact
+paper title, the exact phrase ``Trees of growing maximal degree'', and keyword
+combinations involving geometric embeddings, trees, growing degree, and
+normed spaces. It found no separate paper answering Problem~1.6 or stating
+this uniformized range. Since the source v2 dates from 17 April 2026, novelty
+confidence is moderate rather than definitive.
+
+\section*{Human-review recommendation}
+
+Review the three local-lemma comparisons and the Gaussian uniformity interval
+\eqref{eq:mrange}. If those checks pass, this packet gives a rigorous
+substantial partial answer to Problem~1.6 with an explicit threshold scale and
+universal constants on a nontrivial growing-degree regime.
+
+\begin{thebibliography}{9}
+\bibitem{ADTT}
+D.~J. Altschuler, P.~Dodos, K.~Tikhomirov, and K.~Tyros,
+\emph{A universal threshold for geometric embeddings of trees},
+arXiv:2504.15212v2 (17 April 2026),
+\url{https://arxiv.org/abs/2504.15212}.
+
+\bibitem{AlonSpencer}
+N.~Alon and J.~H. Spencer,
+\emph{The Probabilistic Method}, 4th ed., Wiley, 2016.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,319 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{microtype}
+
+\hypersetup{colorlinks=true,linkcolor=blue!55!black,urlcolor=blue!55!black,citecolor=blue!55!black}
+\setlist{nosep}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\cE}{\mathcal{E}}
+\newcommand{\cF}{\mathcal{F}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+
+\title{Smooth Kernels Suffice for Two-Layer\\Universal Operator Approximation}
+\author{Candidate full solution for arXiv:1910.01545}
+\date{August 11, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.88\linewidth}{\textbf{Status: full solution, likely valid, pending human review.}
+The theorem below affirmatively answers the existence part of the first future-work
+question in Section~6 of Guss--Salakhutdinov, and removes the suggested extra
+regularity assumption on the target operator.}}
+\end{center}
+
+\section{Source problem and scope}
+
+The source is William H. Guss and Ruslan Salakhutdinov,
+\emph{On Universal Approximation by Neural Networks with Uniform Guarantees on
+Approximation of Infinite Dimensional Maps}, arXiv:1910.01545v1 (2019)~\cite{GS}.
+On page~12, Section~6, the authors ask:
+
+\begin{quote}
+``Given some regularity conditions on a nonlinear operator, are the weight
+functions of the operator layer based neural networks that approximate it
+smooth or regular?''
+\end{quote}
+
+Figure~\ref{fig:source} reproduces the source context.  We answer the
+existence question in the affirmative.  In fact, continuity of the nonlinear
+operator and compactness of the input family already suffice; no additional
+regularity of the operator is needed.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.98\linewidth]{figures/open_problem_crop.png}
+  \caption{The first future-work question in Section~6, page~12 of
+  arXiv:1910.01545v1.}
+  \label{fig:source}
+\end{figure}
+
+The conclusion is qualitative and existential.  It does not provide bounds
+on derivatives, sample complexity, or the outcome of a training algorithm.
+
+\section{Set-up and exact statement}
+
+Let $K\subset\R^d$ and $K'\subset\R^{d'}$ be the compact domains of the
+source paper, equipped with Lebesgue measure.  Let $C(K)$ and $C(K')$ carry
+the supremum norm.  We say that a function on a compact Euclidean set is
+\emph{ambient smooth} if it is the restriction of a $C^\infty$ function on
+the surrounding Euclidean space.  Our construction gives compactly supported
+ambient extensions.
+
+For a latent domain $I=[0,1]$, smooth kernels and biases define the two-layer
+network
+\begin{equation}\label{eq:operator-net}
+ \mathcal{N}(f)(y)
+ =\int_I W_2(v,y)\,
+ g\!\left(\int_K f(u)W_1(u,v)\,du+B_1(v)\right)dv+B_2(y).
+\end{equation}
+This is precisely a composition of two affine operator layers with a
+pointwise activation between them.
+
+\begin{theorem}[smooth two-operator-layer universality]\label{thm:main}
+Let $K\subset\R^d$ and $K'\subset\R^{d'}$ be compact domains, let
+$E\subset C(K)$ be compact, and let $F:C(K)\to C(K')$ be continuous.  If
+$g:\R\to\R$ is continuous and nonpolynomial, then for every $\varepsilon>0$
+there exist
+\[
+ W_1\in C_c^\infty(\R^d\times\R),\qquad
+ W_2\in C_c^\infty(\R\times\R^{d'}),
+\]
+and $B_1\in C_c^\infty(\R)$, $B_2\in C_c^\infty(\R^{d'})$ such that the
+network \eqref{eq:operator-net}, using their restrictions to
+$K\times I$, $I\times K'$, $I$, and $K'$, satisfies
+\[
+ \sup_{f\in E}\norm{\mathcal{N}(f)-F(f)}_\infty<\varepsilon.
+\]
+Consequently, two-layer operator networks whose two weight kernels and two
+biases are jointly ambient $C^\infty$ are dense, on every compact input
+family, in $C(C(K),C(K'))$.
+\end{theorem}
+
+\section{Proof intuition}
+
+The key is that the source paper has already reduced the infinite-dimensional
+problem to finitely many hidden features.  Its Theorem~2 gives
+\[
+ N_0(f)(y)=\sum_{i=1}^N a_i(y)
+ g\!\left(\int_K f(u)c_i(u)\,du+b_i\right)+a_0(y),
+\]
+where $c_i\in L^1(K)$ and $a_i,a_0\in C(K')$.  On the compact input set $E$,
+the input norms are uniformly bounded.  Thus small $L^1$ changes in $c_i$
+make all preactivations uniformly close.  The activation is uniformly
+continuous on the single compact interval containing both the original and
+perturbed preactivations.  Smooth density in $L^1$ and Stone--Weierstrass
+therefore smooth all coefficients without losing uniform accuracy.
+
+The resulting expression is still a finite hidden sum.  To express it
+\emph{exactly} with two integral operator layers, assign one disjoint smooth
+bump to each hidden unit in the latent interval.  A companion cutoff is one
+on that bump's support, so the latent integral reads each hidden feature
+without cross-talk.  The integral of each normalized bump is one, hence the
+integral is exactly the finite sum.
+
+\section{Proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Apply Theorem~2 of the source paper~\cite{GS} with tolerance
+$\varepsilon/2$.  There are $N\geq1$, functions
+$c_i\in L^1(K)$, $a_i\in C(K')$, constants $b_i\in\R$, and
+$a_0\in C(K')$ such that
+\begin{equation}\label{eq:source-approx}
+ \sup_{f\in E}\norm{N_0(f)-F(f)}_\infty<\frac{\varepsilon}{2},
+\end{equation}
+where
+\[
+ N_0(f)(y)=\sum_{i=1}^N a_i(y)g(z_i(f))+a_0(y),
+ \qquad
+ z_i(f)=\int_K f(u)c_i(u)\,du+b_i.
+\]
+
+\paragraph{Step 1: smooth the finite-hidden network.}
+Compactness of $E$ gives
+\[
+ M:=\max_{f\in E}\norm{f}_\infty<\infty.
+\]
+Put
+\[
+ A:=\sum_{i=1}^N\norm{a_i}_\infty,
+ \qquad
+ R:=1+\max_{1\leq i\leq N}\bigl(M\norm{c_i}_{L^1}+|b_i|\bigr),
+ \qquad
+ G:=\max_{|t|\leq R}|g(t)|.
+\]
+By uniform continuity of $g$ on $[-R,R]$, choose $0<\eta<1$ so that
+\begin{equation}\label{eq:uc}
+ |g(s)-g(t)|<\frac{\varepsilon}{8(1+A)}
+ \quad\text{if }s,t\in[-R,R]\text{ and }|s-t|<\eta.
+\end{equation}
+
+Extend each $c_i$ by zero outside $K$.  Density of
+$C_c^\infty(\R^d)$ in $L^1(\R^d)$ gives $p_i\in C_c^\infty(\R^d)$ with
+\begin{equation}\label{eq:input-smooth}
+ \norm{p_i-c_i}_{L^1(K)}<\frac{\eta}{M+1}.
+\end{equation}
+For every $f\in E$,
+\[
+ \left|\int_K f(u)(p_i-c_i)(u)\,du\right|
+ \leq M\norm{p_i-c_i}_{L^1(K)}<\eta.
+\]
+The original preactivations have absolute value at most $R-1$; hence the new
+ones
+\[
+ z'_i(f):=\int_K f(u)p_i(u)\,du+b_i
+\]
+belong to $[-R,R]$.  Therefore \eqref{eq:uc} applies uniformly in $f$.
+
+By the real Stone--Weierstrass theorem, polynomial restrictions are uniformly
+dense in $C(K')$.  Multiplying the approximating polynomials by a smooth
+cutoff equal to one on a neighborhood of $K'$ shows that restrictions of
+$C_c^\infty(\R^{d'})$ are uniformly dense in $C(K')$.  Choose
+$q_i,q_0\in C_c^\infty(\R^{d'})$ such that
+\begin{equation}\label{eq:output-smooth}
+ \norm{q_i-a_i}_{C(K')}<\frac{\varepsilon}{8N(1+G)},
+ \qquad
+ \norm{q_0-a_0}_{C(K')}<\frac{\varepsilon}{8}.
+\end{equation}
+Define the smoothed finite-hidden network
+\[
+ N_s(f)(y):=\sum_{i=1}^Nq_i(y)g(z'_i(f))+q_0(y).
+\]
+Adding and subtracting $a_i(y)g(z'_i(f))$, and using
+\eqref{eq:uc}--\eqref{eq:output-smooth}, yields
+\begin{align*}
+ \norm{N_s(f)-N_0(f)}_\infty
+ &\leq \sum_{i=1}^N\norm{q_i-a_i}_\infty G
+  +\sum_{i=1}^N\norm{a_i}_\infty
+      \frac{\varepsilon}{8(1+A)}
+  +\norm{q_0-a_0}_\infty \\
+ &<\frac{\varepsilon}{8}+\frac{\varepsilon}{8}
+   +\frac{\varepsilon}{8}
+ =\frac{3\varepsilon}{8}.
+\end{align*}
+Together with \eqref{eq:source-approx}, this gives
+\begin{equation}\label{eq:smoothed-error}
+ \sup_{f\in E}\norm{N_s(f)-F(f)}_\infty
+ <\frac{7\varepsilon}{8}<\varepsilon.
+\end{equation}
+
+\paragraph{Step 2: encode the finite sum exactly by smooth operator layers.}
+Choose pairwise disjoint open intervals $J_1,\dots,J_N$ compactly contained
+in $(0,1)$.  For each $i$, choose a nonnegative
+$\zeta_i\in C_c^\infty(J_i)$ with
+$\int_0^1\zeta_i(v)\,dv=1$.  Choose
+$\chi_i\in C_c^\infty(J_i)$ that equals one on $\supp\zeta_i$.  Set
+\begin{align*}
+ W_1(u,v)&:=\sum_{i=1}^N\chi_i(v)p_i(u),
+ &B_1(v)&:=\sum_{i=1}^N\chi_i(v)b_i,\\
+ W_2(v,y)&:=\sum_{i=1}^N\zeta_i(v)q_i(y),
+ &B_2(y)&:=q_0(y).
+\end{align*}
+These functions have the asserted compactly supported smooth ambient
+extensions.  If $v\in\supp\zeta_i$, disjointness gives
+$\chi_i(v)=1$ and $\chi_j(v)=0$ for $j\neq i$.  Consequently,
+\begin{align*}
+ &\int_0^1 W_2(v,y)
+ g\!\left(\int_K f(u)W_1(u,v)\,du+B_1(v)\right)dv+B_2(y)\\
+ &\quad=\sum_{i=1}^Nq_i(y)
+    \int_0^1\zeta_i(v)g\!\left(\int_Kf(u)p_i(u)\,du+b_i\right)dv+q_0(y)\\
+ &\quad=\sum_{i=1}^Nq_i(y)g(z'_i(f))+q_0(y)
+ =N_s(f)(y).
+\end{align*}
+The operator-layer network is therefore exactly $N_s$, and
+\eqref{eq:smoothed-error} proves the claim.
+\end{proof}
+
+\section{Verification notes}
+
+\begin{enumerate}
+\item \textbf{Topology check.}  The only use of compactness of $E$ is the
+uniform input bound $M$.  Continuity of $F$ and nonpolynomiality of $g$ enter
+through the source paper's Theorem~2.
+\item \textbf{Norm check.}  $L^1$ approximation of $c_i$ is the correct norm
+because inputs are bounded in $L^\infty$; H\"older's inequality gives the
+uniform preactivation bound.
+\item \textbf{Activation check.}  No global Lipschitz assumption on $g$ is
+used.  Both old and new preactivations lie in $[-R,R]$, where continuity
+implies uniform continuity and boundedness.
+\item \textbf{Joint smoothness check.}  Each kernel is a finite sum of
+products of ambient smooth functions in separate variables, hence is jointly
+$C^\infty$.  All supports are compact.
+\item \textbf{Architecture check.}  The disjoint supports eliminate all
+cross-terms, and normalization $\int\zeta_i=1$ makes the latent integral
+exactly the finite hidden sum.
+\item \textbf{Mechanical check.}  The script
+\texttt{code/verify\_error\_budget.py} verifies that the allocated errors sum
+to $7\varepsilon/8$ and checks the diagonal overlap algebra of the bump
+encoding using exact rational arithmetic.
+\end{enumerate}
+
+\section{Limitations and novelty check}
+
+The theorem answers whether smooth weights \emph{can be chosen} in uniformly
+approximating operator-layer networks.  It does not show that every
+representation is smooth, that training discovers such weights, or that an
+exact representation of $F$ exists.  It is qualitative: no derivative bounds,
+rates, network-size estimates, or sample bounds are claimed.  The other two
+future directions in the source conclusion (variational optimization and
+sub-exponential sampling bounds) are untouched.
+
+A bounded novelty search was performed on August~11, 2026.  The run's cheap
+registry, solution, attempt, and proof-gap indexes were searched for the arXiv
+identifier and the core phrases.  The official arXiv API was queried for
+``operator layer'' with ``smooth weight'', ``neural operator'' with ``smooth
+kernel'' and ``universal approximation'', and the exact source title.  Bounded
+arXiv web searches used close variants.  They found later neural-operator
+universality results, notably Kovachki et al.~\cite{Kovachki} and a KNO theorem
+with continuous positive-definite kernels~\cite{KNO}, but no theorem located
+in those bounds states the present ambient-smooth, two-layer,
+$C(K)\to C(K')$, uniform-on-compact-family conclusion.  This is a bounded
+search, not an exhaustive literature review; novelty confidence remains
+moderate.
+
+\section{Human-review recommendation}
+
+The argument is short, uses only standard density results, and preserves the
+source architecture exactly.  Review should focus on (i) matching the source's
+``compact domains'' convention for Lebesgue integration, (ii) confirming that
+the future-work question is intended existentially rather than as a request
+for quantitative regularity inherited from $F$, and (iii) checking for an
+unindexed later statement of the same smoothing observation.  Mathematically,
+the packet is recommended for full-solution review.
+
+\begin{thebibliography}{9}
+\bibitem{GS}
+W. H. Guss and R. Salakhutdinov,
+\emph{On Universal Approximation by Neural Networks with Uniform Guarantees on
+Approximation of Infinite Dimensional Maps}, arXiv:1910.01545v1, 2019.
+
+\bibitem{Kovachki}
+N. Kovachki, Z. Li, B. Liu, K. Azizzadenesheli, K. Bhattacharya, A. Stuart,
+and A. Anandkumar,
+\emph{Neural Operator: Learning Maps Between Function Spaces},
+arXiv:2108.08481.
+
+\bibitem{KNO}
+M. Lowery, J. Turnage, Z. Morrow, J. D. Jakeman, A. Narayan, S. Zhe, and
+V. Shankar,
+\emph{Kernel Neural Operators (KNOs) for Scalable, Memory-efficient,
+Geometrically-flexible Operator Learning}, arXiv:2407.00809.
+
+\bibitem{Rudin}
+W. Rudin, \emph{Real and Complex Analysis}, 3rd ed., McGraw--Hill, 1987.
+Standard references for $L^1$ approximation and Stone--Weierstrass.
+\end{thebibliography}
+
+\end{document}
+

@@ -1,0 +1,159 @@
+\documentclass[10pt]{article}
+\usepackage[a4paper,margin=0.72in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+\usepackage{xcolor}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\D}{\mathcal D}
+\newcommand{\W}{\mathcal W}
+\newcommand{\SM}{\mathrm{SM}}
+\newcommand{\C}{\mathbb C}
+
+\title{A padded Pauli pencil answers the stated\\self-dual spectrahedron question}
+\author{Candidate full solution packet\\\texttt{agent\_lane\_09} --- GPT5.6}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{black}{gray!8}{\parbox{0.91\linewidth}{
+\textbf{Status.} Candidate full affirmative answer to the literal question in
+Remark~3.20 of Evert--Passer, pending human review.  The construction is
+reducible and does not settle the natural strengthened question for
+irreducible or size-minimal pencils.}}
+\end{center}
+
+\section*{Source and exact question}
+
+Eric Evert and Benjamin Passer, \emph{Matrix convex sets over the Euclidean
+ball and polar duals of real free spectrahedra}, arXiv:2507.20325v2
+(15 January 2026), Remark~3.20, PDF p.~23 \cite{EP}.  The paper was published
+in \emph{Linear Algebra and its Applications} 736 (2026), 54--83.
+
+\begin{center}
+\includegraphics[width=0.97\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+Thus the question as written is whether there are integers $d\geq3$ and
+$g<d^2-d+2$, and a tuple $A\in\SM_d(\C)^g$, for which the free
+spectrahedron $\D_A$ is self-dual.
+
+\section*{Definitions}
+
+For a self-adjoint tuple $B=(B_1,\ldots,B_g)\in\SM_r(\C)^g$, its monic
+pencil at a self-adjoint matrix tuple $X=(X_1,\ldots,X_g)\in\SM_n(\C)^g$ is
+\[
+ L_B(X)=I_{rn}-\sum_{j=1}^g B_j\otimes X_j,
+ \qquad
+ \D_B(n)=\{X:L_B(X)\succeq0\}.
+\]
+The free polar dual $K^\circ$ depends only on the matrix convex set $K$;
+hence equal free spectrahedra have equal polar duals.
+
+Let
+\[
+ P_1=\begin{bmatrix}1&0\\0&-1\end{bmatrix},\qquad
+ P_2=\begin{bmatrix}0&1\\1&0\end{bmatrix},\qquad
+ P_3=\begin{bmatrix}0&i\\-i&0\end{bmatrix}.
+\]
+Evert--Passer prove in their Theorem~2.2 that the Pauli free spectrahedron is
+self-dual:
+\begin{equation}\label{eq:pauli}
+ \D_P=\D_P^\circ.
+\end{equation}
+Their proof identifies $\D_P$ with the matrix range $\W(P)$ using Choi's
+criterion and then invokes the standard free-polar relation
+$\D_P^\circ=\W(P)$ \cite{EP}.
+
+\section*{Proof intuition}
+
+The size $d$ of a coefficient tuple is not intrinsic unless a minimality
+condition is imposed.  Appending a zero reducing summand to every coefficient
+does not change any positivity inequality: it merely appends a fixed identity
+block to the monic pencil.  We therefore lift the paper's $2\times2$
+self-dual Pauli example to every coefficient size $d\geq3$ without changing
+the free spectrahedron.
+
+\begin{lemma}[Zero-padding invariance]\label{lem:padding}
+Let $B\in\SM_r(\C)^g$ and $d\geq r$.  Define
+$A_j=B_j\oplus0_{d-r}$.  Then $\D_A=\D_B$ at every matrix level.  In
+particular, boundedness and self-duality pass from $\D_B$ to $\D_A$.
+\end{lemma}
+
+\begin{proof}
+For every $n$ and every $X\in\SM_n(\C)^g$, Kronecker products respect direct
+sums, so
+\begin{align*}
+ L_A(X)
+ &=I_{dn}-\sum_{j=1}^g(B_j\oplus0_{d-r})\otimes X_j\\
+ &=\left(I_{rn}-\sum_{j=1}^gB_j\otimes X_j\right)
+   \oplus I_{(d-r)n}\\
+ &=L_B(X)\oplus I_{(d-r)n}.
+\end{align*}
+The last matrix is positive semidefinite exactly when $L_B(X)$ is.  Hence
+$\D_A(n)=\D_B(n)$ for every $n$.  Equality of the sets preserves boundedness,
+and $\D_A^\circ=\D_B^\circ$ by the definition of free polarity.
+\end{proof}
+
+\begin{theorem}[Affirmative answer to Remark~3.20]\label{thm:answer}
+For every integer $d\geq3$ there exists
+$A\in\SM_d(\C)^3$ such that $\D_A$ is bounded and self-dual.  Consequently
+$g=3<d^2-d+2$, and the existence question in Remark~3.20 has an affirmative
+answer as stated.
+\end{theorem}
+
+\begin{proof}
+For $j=1,2,3$, set
+\[
+ A_j=P_j\oplus0_{d-2}\in\SM_d(\C).
+\]
+Lemma~\ref{lem:padding} and \eqref{eq:pauli} give
+\[
+ \D_A=\D_P=\D_P^\circ=\D_A^\circ.
+\]
+The set is bounded because $\D_P=\W(P)$ in Theorem~2.2 of \cite{EP}, and the
+matrix range of a finite matrix tuple is bounded.  Finally, for $d\geq3$,
+\[
+ d^2-d+2\geq8>3=g.
+\]
+All stated requirements are therefore satisfied (already with $d=3$).
+\end{proof}
+
+\section*{Verification and limitations}
+
+The proof is an identity at every free level, not a scalar-level argument.
+A seeded numerical regression check reproduced the block identity for
+$d=3,4,5$, levels $n=1,2,3$, and ten random self-adjoint triples per pair;
+the algebraic computation in Lemma~\ref{lem:padding} is the proof.
+
+The construction has a zero reducing summand.  It is therefore not a minimal
+defining pencil and does not span $M_d$ as an operator system.  Remark~3.20
+does not impose irreducibility, size-minimality, or a spanning condition, so
+this is a full answer to its literal statement.  The strengthened question
+under any such nondegeneracy hypothesis remains open here.
+
+Bounded searches through 13 August 2026 used the arXiv id, source title, exact
+dimension bound, and combinations of ``self-dual free spectrahedron'',
+``Pauli'', ``direct sum'', and ``zero padding''.  No prior statement of this
+observation was found; arXiv v2 and the May 2026 journal version retain the
+question.  Novelty confidence is moderate pending expert review.
+
+\paragraph{Human-review recommendation.}
+Check only the scope point: whether the authors intended an unstated
+minimal-pencil convention.  Under the definitions and wording actually
+printed, the block computation is conclusive.
+
+\begin{thebibliography}{9}
+\bibitem{EP}
+E.~Evert and B.~Passer,
+\emph{Matrix convex sets over the Euclidean ball and polar duals of real free
+spectrahedra}, Linear Algebra Appl. 736 (2026), 54--83;
+arXiv:2507.20325v2.
+\end{thebibliography}
+
+\end{document}

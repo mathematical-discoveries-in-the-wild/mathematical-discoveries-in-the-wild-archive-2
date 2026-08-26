@@ -1,0 +1,289 @@
+\documentclass[10pt]{article}
+\usepackage[margin=0.82in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Kreiss}{\mathcal K}
+
+\title{Polynomial lower bounds for every fixed Kreiss constant\\
+\large Candidate full solution to Question 6.1 of arXiv:2512.10025}
+\author{Agent lane 17 (model GPT5.6)}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\linewidth}{\textbf{Status.}
+Candidate full solution, likely valid; novelty unconfirmed.  The argument
+answers Question 6.1 affirmatively.  It does not answer the stronger uniform
+exponent Question 6.2.}}
+\end{center}
+
+\section{Source question}
+
+The source is N. Chalmoukis, G. Tsikalas, and D. Yakubovich,
+\emph{Operators with small Kreiss constants},\\
+arXiv:2512.10025v2
+\cite{CTY}.  For an $N\times N$ matrix $A$, write
+\[
+ \Kreiss(A)=\sup_{|z|>1} (|z|-1)\|(zI-A)^{-1}\|.
+\]
+The source defines $P(N,K)$ as the least universal bound on
+$\sup_{n\ge1}\|A^n\|$ over all $N\times N$ matrices with
+$\Kreiss(A)\le K$.
+
+Question 6.1 on PDF page 18 asks whether there is a strictly increasing
+$\alpha:(1,\infty)\to(0,1)$, with endpoint limits $0$ and $1$, such that
+\[
+ P(N,K)\gtrsim_K N^{\alpha(K)} \qquad(N\ge1,\ K>1).
+\]
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/open_problem_crop.png}
+\caption{The source context and complete statement of Question 6.1, PDF page 18.}
+\end{figure}
+
+\section{Proof intuition}
+
+The source obtains arbitrarily high powers of $\log N$ by increasing an
+internal matrix dimension, but its perturbation constants deteriorate too
+quickly with that dimension.  The key idea here is to tensorize a single
+$2\times2$ nilpotent perturbation instead.  Tensor products amplify a
+carefully selected power exponentially in the tensor degree $m$, while a
+pointwise comparison collapses the entire perturbation estimate to the scalar
+weight $((j+n)/j)^a-1$.  Its averaged square is $O(a^2)$ independently of
+$m$.  Abel summation then gives a Kreiss constant $1+O(a)$, whereas choosing
+$m\asymp a\log L$ in an $L$-coordinate compression turns the exponential
+tensor amplification into a positive power of the total dimension.
+
+\section{Quantitative theorem}
+
+All logarithms are natural.  For $0<a<\tfrac12$, set
+\[
+ \gamma(a)=a\sqrt{\frac{6}{(1-2a)(1-a)}},
+ \qquad
+ \beta(a)=\frac{a\log2}{4(1+a\log2)}.
+\]
+
+\begin{theorem}\label{thm:quant}
+For every $0<a<\tfrac12$ there is $c_a>0$ such that
+\[
+ P(N,1+\gamma(a))\ge c_a N^{\beta(a)}
+ \qquad(N\ge1).
+\]
+Consequently, Question 6.1 has an affirmative answer.
+\end{theorem}
+
+The proof is self-contained except for the previously known large-$K$ lower
+bound of Nikolski \cite{Nikolski}, already recorded as equation (1.5) in the
+source paper \cite{CTY}.
+
+\section{A dimension-free perturbation estimate}
+
+Let
+\[
+ J=\begin{pmatrix}0&1\\0&0\end{pmatrix},\qquad J^2=0.
+\]
+Fix $m\ge1$ and put $H_m=(\C^2)^{\otimes m}$.  On
+$\ell^2(\N;H_m)$ define the weighted backward shift $T=T_{a,m}$ by
+\[
+ (Tx)_j=B_{m,j+1}x_{j+1},\qquad
+ B_{m,k}=\left(I_2+\frac{a}{m}\log\frac{k}{k-1}\,J\right)^{\otimes m}
+ \quad(k\ge2).
+\]
+Let $S$ be the unweighted backward shift on the same space.
+
+Because tensor products multiply componentwise and $J^2=0$, the block of
+$T^n$ carrying coordinate $j+n$ to coordinate $j$ is exactly
+\begin{equation}\label{eq:block}
+ C_{j,n}=\left(I_2+\frac{a}{m}\log\frac{j+n}{j}\,J\right)^{\otimes m}.
+\end{equation}
+For $t\ge0$, telescoping the difference of tensor powers gives
+\[
+ \|(I_2+tJ)^{\otimes m}-I_{H_m}\|
+ \le (1+t)^m-1\le e^{mt}-1.
+\]
+Hence \eqref{eq:block} implies
+\begin{equation}\label{eq:blockdiff}
+ \|C_{j,n}-I_{H_m}\|
+ \le \left(\frac{j+n}{j}\right)^a-1.
+\end{equation}
+
+\begin{lemma}\label{lem:average}
+With $D_n=T^n-S^n$, one has, for every $x\in\ell^2(\N;H_m)$ and $M\ge1$,
+\[
+ \frac1M\sum_{n=1}^M\|D_nx\|\le\gamma(a)\|x\|.
+\]
+The bound is independent of $m$.
+\end{lemma}
+
+\begin{proof}
+Put $f_a(u)=(u^{-a}-1)^2$.  A direct integration gives
+\begin{equation}\label{eq:integral}
+ I_a:=\int_0^1 f_a(u)\,du
+ =\frac{2a^2}{(1-2a)(1-a)}.
+\end{equation}
+By \eqref{eq:blockdiff}, changing variables from $(j,n)$ to $k=j+n$ yields
+\[
+ \frac1M\sum_{n=1}^M\|D_nx\|^2
+ \le\sum_{k\ge2}q_{M,k}\|x_k\|^2,
+\]
+where
+\[
+ q_{M,k}=\frac1M\sum_{n=1}^{\min(M,k-1)}
+ \left[\left(\frac{k}{k-n}\right)^a-1\right]^2.
+\]
+We claim $q_{M,k}\le3I_a$.  If $k\le2M+1$, monotonicity of $f_a$ and the
+upper Riemann-sum estimate give
+\[
+ q_{M,k}\le\frac1M\sum_{j=1}^{k-1}f_a(j/k)
+ \le\frac{k}{M}I_a\le3I_a.
+\]
+If $k>2M+1$, then $1-n/k>1/2$ for $1\le n\le M$.  The mean value theorem
+gives
+\[
+ (1-n/k)^{-a}-1\le a2^{a+1}\frac nk,
+\]
+and therefore
+\[
+ q_{M,k}\le a^2 2^{2a+2}\left(\frac Mk\right)^2
+ \le a^2 2^{2a}<2a^2\le3I_a.
+\]
+Thus the quadratic average is at most $3I_a\|x\|^2$.  Cauchy--Schwarz in
+$n$ and \eqref{eq:integral} finish the proof because
+$\sqrt{3I_a}=\gamma(a)$.
+\end{proof}
+
+\begin{proposition}\label{prop:kreiss}
+$\Kreiss(T_{a,m})\le1+\gamma(a)$ for every $m\ge1$.
+\end{proposition}
+
+\begin{proof}
+The block formula gives $\|T^n\|\le(n+1)^a$, so the Neumann resolvent series
+converges in norm for $|z|>1$.  Let $r=|z|$, $q=r^{-1}$, and
+$d_n=\|D_nx\|$.  Lemma \ref{lem:average} says that
+$A_N:=\sum_{n=1}^Nd_n\le\gamma(a)N\|x\|$.  Abel summation gives
+\begin{align*}
+ (r-1)\sum_{n\ge1}r^{-n-1}d_n
+ &=(1-q)\sum_{n\ge1}q^nd_n\\
+ &=(1-q)^2\sum_{N\ge1}q^N A_N
+ \le\gamma(a)q\|x\|\le\gamma(a)\|x\|.
+\end{align*}
+Since $S$ is a contraction,
+\[
+ (r-1)\|(zI-S)^{-1}\|
+ \le(r-1)\sum_{n\ge0}r^{-n-1}=1.
+\]
+Writing the resolvent of $T$ as the resolvent series for $S$ plus the series
+of the $D_n$ proves the assertion.
+\end{proof}
+
+\section{Finite compressions and polynomial growth}
+
+Let $A_{m,L}$ be the restriction of $T_{a,m}$ to its invariant first $L$
+coordinates.  It acts on a space of dimension $2^mL$, is nilpotent, and by
+Proposition \ref{prop:kreiss} satisfies
+\[
+ \Kreiss(A_{m,L})\le1+\gamma(a).
+\]
+Apply $A_{m,L}^{L-1}$ to the unit vector supported at coordinate $L$ with
+internal component $e_2^{\otimes m}$.  Formula \eqref{eq:block} gives
+\begin{equation}\label{eq:power}
+ \|A_{m,L}^{L-1}\|
+ \ge\left(1+\left(\frac{a\log L}{m}\right)^2\right)^{m/2}.
+\end{equation}
+If $a\log L\ge2$ and $m=\lfloor a\log L\rfloor$, then
+$m\ge a\log L/2$ and $a\log L/m\ge1$.  Therefore
+\begin{equation}\label{eq:Lgrowth}
+ \|A_{m,L}^{L-1}\|\ge2^{m/2}\ge L^{a\log2/4},
+ \qquad
+ \dim A_{m,L}=2^mL\le L^{1+a\log2}.
+\end{equation}
+
+Given a sufficiently large target dimension $N$, take
+\[
+ L=\left\lfloor N^{1/(1+a\log2)}\right\rfloor,
+ \qquad m=\lfloor a\log L\rfloor.
+\]
+Then $2^mL\le N$.  Pad $A_{m,L}$ with a zero block to obtain an $N\times N$
+matrix without increasing its Kreiss constant.  The floor losses are absorbed
+in a constant depending only on $a$, and \eqref{eq:Lgrowth} yields
+\[
+ P(N,1+\gamma(a))\gtrsim_a
+ N^{\frac{a\log2}{4(1+a\log2)}}.
+\]
+The finitely many smaller $N$ are absorbed using $P(N,K)\ge1$.  This proves
+the quantitative assertion of Theorem \ref{thm:quant}.
+
+\section{The exponent requested in Question 6.1}
+
+For $K>1$, put
+\[
+ a(K)=\frac{K-1}{4K} \in(0,1/4).
+\]
+On $0<a\le1/4$, one has $\gamma(a)\le4a$, and hence
+$1+\gamma(a(K))<K$.  Since $P(N,K)$ increases with $K$, the theorem gives a
+positive polynomial exponent at every $K>1$.
+
+Nikolski's established estimate \cite{Nikolski}, quoted in the source as
+equation (1.5), is
+\[
+ P(N,K)\ge\frac15N^{1-2/K}\qquad(K>\pi+1).
+\]
+Define
+\[
+ \alpha(K)=
+ \begin{cases}
+ \displaystyle\frac{a(K)\log2}{4(1+a(K)\log2)},&1<K\le\pi+1,\\[6pt]
+ \displaystyle1-\frac2K,&K>\pi+1.
+ \end{cases}
+\]
+The first branch is strictly increasing and tends to $0$ at $1^+$.  Its
+value is less than $\log2/16$, whereas the right limit of the second branch
+at $\pi+1$ is $1-2/(\pi+1)>1/2$.  Thus the piecewise function is strictly
+increasing on $(1,\infty)$, and its limit at infinity is $1$.  The two lower
+bounds prove $P(N,K)\gtrsim_KN^{\alpha(K)}$, completing the affirmative answer.
+
+\section{Verification and limitations}
+
+The script \texttt{code/verify\_tensor\_shift.py} checks the tensor product
+identity, the scalar averaging inequality on finite grids, the power witness,
+and sampled Kreiss ratios for three finite matrices.  All tests passed.  The
+sampling is not a proof of the resolvent estimate; Proposition
+\ref{prop:kreiss} is the proof.
+
+The four lightweight run indexes and bounded arXiv/web searches were queried
+using arXiv:2512.10025 and combinations of ``small Kreiss constants'',
+``$P(N,K)$'', ``polynomial lower bound'', ``tensor power'', and ``weighted
+shift''.  They returned the source and background material but no later answer
+to Question 6.1.  The current arXiv version is v2 (11 March 2026), where the
+question remains open.  This is not an exhaustive literature review; novelty
+is unconfirmed.
+
+The most important human-review points are Lemma \ref{lem:average}, the Abel
+conversion in Proposition \ref{prop:kreiss}, and the exact-dimension padding.
+Question 6.2 remains open.
+
+\begin{thebibliography}{9}
+\bibitem{CTY}
+N. Chalmoukis, G. Tsikalas, and D. Yakubovich,
+\emph{Operators with small Kreiss constants}, arXiv:2512.10025v2, 2026.
+
+\bibitem{Nikolski}
+N. Nikolski,
+\emph{Sublinear dimension growth in the Kreiss matrix theorem},
+Algebra i Analiz 25 (2013), no.~3, 3--51;
+St. Petersburg Math. J. 25 (2014), 361--396.
+\end{thebibliography}
+
+\end{document}

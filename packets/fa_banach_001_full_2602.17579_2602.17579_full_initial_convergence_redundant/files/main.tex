@@ -1,0 +1,208 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\Pp}{\mathcal P}
+\newcommand{\Ent}{\mathcal H}
+\newcommand{\X}{\mathcal X}
+\newcommand{\Y}{\mathcal Y}
+\newcommand{\Zs}{\mathcal Z}
+
+\title{Initial-data convergence is redundant in the scale-separated
+coarse-graining theorem}
+\author{FA/Banach run packet for arXiv:2602.17579}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source conjecture}
+
+The source is B. Hilder, P. van Meurs, and U. Sharma,
+\emph{Non-equilibrium functional inequalities for finite Markov chains},
+arXiv:2602.17579. Its Theorem 5.6 concerns a finite scale-separated Markov
+chain on \(\X=\Y\times\Zs\), with generator
+\[
+ L^\varepsilon=\varepsilon^{-1}Q+G,
+\]
+coarse marginal \(\widehat\mu_t^\varepsilon\), and effective law
+\(\eta_t^\varepsilon\). Among its hypotheses is the convergence, as
+\(\varepsilon\to0\), of the microscopic initial law
+\(\mu_0^\varepsilon\) and the two coarse initial laws
+\(\widehat\mu_0^\varepsilon,\eta_0^\varepsilon\).
+
+Remark 5.7 says that convergence of \(\mu_0^\varepsilon\) is used only to
+obtain a uniform bound on
+\(\Ent(\mu_0^\varepsilon\mid\rho^\varepsilon)\), where
+\(\rho^\varepsilon\) is the stationary law of \(L^\varepsilon\), and
+conjectures that this assumption can be removed.
+
+\section*{Result and proof intuition}
+
+We prove more: the entire convergence bullet is unnecessary. The two uses of
+convergence in the cited proof have direct uniform replacements.
+
+\begin{enumerate}[leftmargin=2em]
+\item Since the finite-state stationary laws \(\rho^\varepsilon\) converge to
+a strictly positive law, their smallest coordinates are uniformly positive.
+The elementary estimate
+\[
+ \Ent(\mu\mid\rho^\varepsilon)
+ \leq \log\frac1{\min_x\rho^\varepsilon(x)}
+\]
+is then uniform over \emph{all} probability laws \(\mu\).
+\item Uniform positivity of the two coarse initial laws propagates on every
+fixed time interval. Indeed, cancellation of the fast within-cluster
+generator gives a scalar inequality \(p_y'(t)\geq-Rp_y(t)\), where \(R\)
+depends only on the bounded inter-cluster rates.
+\end{enumerate}
+
+\begin{theorem}\label{thm:main}
+In Theorem 5.6 of arXiv:2602.17579, delete the hypothesis that
+\[
+ \mu_0^\varepsilon,\qquad
+ \widehat\mu_0^\varepsilon,\qquad
+ \eta_0^\varepsilon
+\]
+converge as \(\varepsilon\to0\). Retain all the other hypotheses, in
+particular uniform strict positivity of
+\(\widehat\mu_0^\varepsilon,\eta_0^\varepsilon\) and the initial
+\(O(\varepsilon)\) coarse relative-entropy estimate. Then the conclusions
+(60) and (61) of that theorem remain valid, with constants independent of
+sufficiently small \(\varepsilon\).
+\end{theorem}
+
+\section*{Proof}
+
+We use the notation and assumptions of Theorem 5.6. The state spaces are
+finite. Hilder--Sharma, \emph{Quantitative Coarse-Graining of Markov Chains},
+arXiv:2201.10256, Lemma 4.3, proves
+\[
+ \rho^\varepsilon\longrightarrow\rho\in\Pp_+(\X)
+ \qquad(\varepsilon\to0).
+\]
+Consequently, after decreasing \(\varepsilon_0\) if necessary, there is
+\(r>0\) such that
+\begin{equation}\label{eq:rho}
+ \min_{x\in\X}\rho^\varepsilon(x)\geq r
+ \qquad(0<\varepsilon<\varepsilon_0).
+\end{equation}
+For every \(\mu\in\Pp(\X)\), with \(0\log0=0\),
+\begin{align}
+ \Ent(\mu\mid\rho^\varepsilon)
+ &=\sum_{x\in\X}\mu(x)\log\frac{\mu(x)}{\rho^\varepsilon(x)}
+ \nonumber\\
+ &\leq \sum_{x\in\X}\mu(x)\log\frac1{\rho^\varepsilon(x)}
+ \leq \log\frac1r.                                      \label{eq:entropy}
+\end{align}
+Here we used \(\mu(x)\leq1\), hence \(\mu(x)\log\mu(x)\leq0\).
+This gives exactly the uniform microscopic entropy bound for which
+convergence of \(\mu_0^\varepsilon\) is invoked in Remark 5.7 and in the
+last paragraph of the proof of Hilder--Sharma Theorem 4.5.
+
+We next replace the use of convergence of the two coarse initial laws. For
+\(y\in\Y\), let
+\[
+ R_y=\max_{z\in\Zs}\sum_{z'\in\Zs}G_{y,1-y}(z,z'),
+ \qquad R=\max_{y\in\Y}R_y.
+\]
+These numbers are finite and independent of \(\varepsilon\). Summing the
+microscopic forward equation over the fiber
+\(\Lambda_y=\{y\}\times\Zs\), all terms from
+\(\varepsilon^{-1}Q_y\) cancel because \(Q_y\) is a Markov generator.
+The remaining inflow from the other fiber is nonnegative, while the outflow
+is at most \(R_y\widehat\mu_t^\varepsilon(y)\). Thus
+\begin{equation}\label{eq:coarse-diff}
+ \frac{d}{dt}\widehat\mu_t^\varepsilon(y)
+ \geq -R_y\widehat\mu_t^\varepsilon(y).
+\end{equation}
+
+The effective off-diagonal rate is an average of the same microscopic
+inter-fiber rates:
+\[
+ N^\varepsilon(y,1-y)
+ =\sum_{z,z'\in\Zs}
+   \rho^\varepsilon(z\mid y)G_{y,1-y}(z,z')
+ \leq R_y.
+\]
+The effective forward equation therefore similarly gives
+\begin{equation}\label{eq:effective-diff}
+ \frac{d}{dt}\eta_t^\varepsilon(y)
+ \geq -R_y\eta_t^\varepsilon(y).
+\end{equation}
+The retained first bullet of Theorem 5.6 supplies a constant \(c_0>0\)
+such that both initial coarse laws are at least \(c_0\). Gronwall's
+inequality applied to \eqref{eq:coarse-diff} and
+\eqref{eq:effective-diff} yields, for every \(T<\infty\),
+\begin{equation}\label{eq:positive}
+ \inf_{\substack{0\leq t\leq T\\y\in\Y\\0<\varepsilon<\varepsilon_0}}
+ \left\{
+ \widehat\mu_t^\varepsilon(y),\eta_t^\varepsilon(y)
+ \right\}
+ \geq c_0e^{-RT}>0.
+\end{equation}
+This is precisely the finite-time, \(\varepsilon\)-uniform positivity used
+in the proof of Hilder--Sharma Theorem 4.5 to control the logarithm. The
+cited proof originally obtains it from convergence of the coarse initial
+laws to averaged dynamics; \eqref{eq:positive} supplies it directly.
+
+We have now replaced every use of the deleted convergence bullet. The
+source paper already removes the formerly assumed uniform log-Sobolev
+constant by continuity of its generalized log-Sobolev constant. Applying
+the rest of the proof of Theorem 5.6 unchanged gives the finite-time
+\(O(\varepsilon)\) estimate. In that estimate the entropy dissipation is
+bounded by its initial value, which is uniformly bounded by
+\eqref{eq:entropy}. The source's long-time generalized log-Sobolev argument
+then combines with the finite-time estimate exactly as written to give
+\[
+ \Ent_{\eta_t^\varepsilon}
+ \left(\frac{\widehat\mu_t^\varepsilon}{\eta_t^\varepsilon}\right)
+ \leq C_1\varepsilon e^{-\beta t}\qquad(t\geq0),
+\]
+and hence its time-uniform consequence. This proves
+Theorem~\ref{thm:main}. \(\square\)
+
+\section*{Verification, scope, and novelty}
+
+The source conjecture and convergence bullet were checked on PDF page 25.
+The exact use of microscopic initial convergence was checked on page 21 of
+the supporting paper: it is invoked only to bound
+\(\Ent(\mu_0^\varepsilon\mid\rho^\varepsilon)\). Its Lemma 4.3 proves the
+finite-state convergence to a positive stationary law used in
+\eqref{eq:rho}. The fiber summation leading to
+\eqref{eq:coarse-diff} is also the cancellation used throughout both papers'
+scale-separated setup.
+
+The result retains uniform strict positivity at time zero. Removing that
+condition while keeping an estimate from \(t=0\) is different: the logarithm
+used in the relative-entropy comparison is singular at zero. The cited paper
+does give delayed-time estimates on \([\delta,T]\) without this positivity,
+but no all-time strengthening is claimed here.
+
+Before promotion, the run indexes were searched for arXiv:2602.17579, its
+title, Theorem 5.6, and initial-data convergence phrases. A bounded arXiv/web
+search on 13 August 2026 used the exact conjecture sentence and close
+variants. It found the source and arXiv:2201.10256, but no later answer.
+
+\section*{References}
+
+\begin{itemize}[leftmargin=2em,nosep]
+\item B. Hilder, P. van Meurs, and U. Sharma,
+\emph{Non-equilibrium functional inequalities for finite Markov chains},
+arXiv:2602.17579.
+\item B. Hilder and U. Sharma,
+\emph{Quantitative Coarse-Graining of Markov Chains},
+SIAM J. Math. Anal. 56 (2024), 913--954; arXiv:2201.10256.
+\end{itemize}
+
+\medskip
+\noindent\textbf{Human-review recommendation.}
+Review as a short, likely valid full solution with strengthening. The key
+checks are \eqref{eq:entropy}, cancellation of \(Q_y\) in
+\eqref{eq:coarse-diff}, and the uniform effective-rate bound.
+
+\end{document}

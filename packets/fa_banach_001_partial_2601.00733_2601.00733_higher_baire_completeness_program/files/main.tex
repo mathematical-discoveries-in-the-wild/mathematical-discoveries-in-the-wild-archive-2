@@ -1,0 +1,393 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\cP}{\mathcal{P}}
+\newcommand{\Ba}{B_{\alpha}(X)}
+
+\title{Completeness of Higher Baire-Class Function Spaces:\\
+An Abstract Quasi-Completion Theorem and the Metrizable Program}
+\author{Candidate partial result for arXiv:2601.00733}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{black}{gray!8}{\parbox{0.88\linewidth}{
+\textbf{Status: candidate partial result, likely valid.}
+The strong completeness/reflexivity half is settled for arbitrary Tychonoff
+spaces, both halves are settled for metrizable spaces, and the full Baire
+union $B(X)$ is settled.  The fixed-rank local-completeness problem for
+arbitrary nonmetrizable spaces remains open.}}
+\end{center}
+
+\section{Source problem}
+
+Gabriyelyan, Osipov, and Reznichenko characterize completeness and
+reflexivity-type properties of the pointwise space $B_1(X)$ and then ask for
+the corresponding program for every countable $\alpha>1$ and for
+$B(X)=\bigcup_{\alpha<\omega_1}B_\alpha(X)$
+\cite[Problem~3.10, PDF p.~11]{GOR2026}.  The exact problem is reproduced
+below.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{Problem 3.10 in arXiv:2601.00733v2, PDF page 11.}
+\end{figure}
+
+All function spaces below carry the topology of pointwise convergence,
+inherited from $\R^X$.  We use the source's definitions of complete,
+quasi-complete, (semi-)reflexive, (semi-)Montel, sequentially complete, and
+locally complete.  In particular, local completeness means that the closed
+absolutely convex hull of every null sequence is compact.
+
+For a nonzero countable ordinal $\alpha$, $B_\alpha(X)$ is the usual Baire
+class: $B_0(X)=C(X)$ and $B_\alpha(X)$ consists of pointwise limits of
+sequences from $\bigcup_{\xi<\alpha}B_\xi(X)$.  For a metrizable $X$, write
+$\boldsymbol\Sigma^0_\xi(X)$ and $\boldsymbol\Pi^0_\xi(X)$ for the additive
+and multiplicative Borel classes.
+
+\section{Proof intuition}
+
+There are two different mechanisms.
+
+First, quasi-completeness is so strong in a pointwise function space that it
+has nothing specifically to do with Baire rank.  Continuous functions can
+interpolate arbitrary zero--one data on each finite subset of a Tychonoff
+space.  The resulting net is pointwise Cauchy and stays in the bounded unit
+box.  If the ambient pointwise subspace is quasi-complete, the net must
+converge inside it, so every characteristic function belongs to the space.
+Bounded finite-range approximations then put every real function in the
+space.  Thus any quasi-complete pointwise vector space containing $C(X)$ is
+already the whole product $\R^X$.
+
+Second, on a metrizable domain the Lebesgue--Hausdorff theorem identifies
+Baire rank $\alpha$ with Borel rank $\boldsymbol\Sigma^0_{\alpha+1}$.
+If $A$ has additive rank $\alpha+1$, it can be partitioned into disjoint
+ambiguous-rank-$\alpha+1$ pieces $A_n$.  The functions
+$2^{n+1}\mathbf 1_{A_n}$ form a null sequence.  Local completeness makes
+its closed disk compact, while the disk contains partial sums converging to
+$\mathbf 1_A$.  Hence $\mathbf 1_A$ already has Baire rank $\alpha$, forcing
+the additive and multiplicative Borel classes to coincide.  That equality
+collapses the next Baire class and gives sequential completeness.
+
+\section{The abstract quasi-completion theorem}
+
+\begin{theorem}[Pointwise quasi-completion]\label{thm:abstract}
+Let $X$ be a Tychonoff space and let $E$ be a vector subspace of $\R^X$,
+endowed with the pointwise topology, such that $C(X)\subseteq E$.  Then
+\[
+                 E\text{ is quasi-complete}
+                 \quad\Longleftrightarrow\quad E=\R^X.
+\]
+\end{theorem}
+
+\begin{proof}
+Only the forward implication requires proof.  Fix an arbitrary set
+$A\subseteq X$.  Direct the finite subsets $F\subseteq X$ by inclusion.
+For $a\in F\cap A$, complete regularity gives a function
+$v_{a,F}\in C(X,[0,1])$ such that
+\[
+ v_{a,F}(a)=1,
+ \qquad v_{a,F}(F\setminus\{a\})=\{0\}.
+\]
+Set $u_F=0$ if $F\cap A=\varnothing$, and otherwise set
+$u_F=\max_{a\in F\cap A}v_{a,F}$.  Then
+\[
+ u_F\in C(X,[0,1]),
+ \qquad u_F|_F=\mathbf 1_A|_F.
+\]
+
+The box
+\[
+ K=E\cap[0,1]^X
+\]
+is closed and bounded in $E$, hence complete by quasi-completeness.  The net
+$(u_F)$ lies in $K$ and is pointwise Cauchy: once $F$ contains a fixed
+$x\in X$, every later $u_G(x)$ equals $\mathbf 1_A(x)$.  Therefore $(u_F)$
+converges in $K$.  Its pointwise limit is uniquely $\mathbf 1_A$, so
+$\mathbf 1_A\in E$.  Since $A$ was arbitrary, $E$ contains every finite-range
+real function on $X$.
+
+Now fix $f\in\R^X$.  Define the finite-range function
+\[
+ s_n(x)=2^{-n}\max\bigl\{-n2^n,
+           \min\{n2^n,\lfloor 2^n f(x)\rfloor\}\bigr\}.
+\]
+Then $s_n\in E$, $s_n(x)\to f(x)$ for every $x$, and
+$|s_n(x)|\leq |f(x)|+1$.  Thus $(s_n)$ is a pointwise Cauchy sequence whose
+range is bounded in $E$.  Its closure in $E$ is a closed bounded set and is
+therefore complete.  Hence $(s_n)$ converges in $E$, and uniqueness of the
+coordinatewise limit gives $f\in E$.  Thus $E=\R^X$.
+
+The product $\R^X$ is complete, so the converse follows.
+\end{proof}
+
+\begin{corollary}[All strong properties]\label{cor:strong}
+Let $X$ be Tychonoff and let $E$ be either $B_\alpha(X)$, for a nonzero
+countable ordinal $\alpha$, or $B(X)$.  The following are equivalent:
+\begin{enumerate}
+\item $E$ is Montel;
+\item $E$ is semi-Montel;
+\item $E$ is reflexive;
+\item $E$ is semi-reflexive;
+\item $E$ is complete;
+\item $E$ is quasi-complete;
+\item $E=\R^X$.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+The source proves that $B_1(X)$ is barrelled
+\cite[Theorem~1.1(i)]{GOR2026}.  A locally convex space containing a dense
+barrelled subspace, with the inherited topology on that subspace, is
+barrelled: if $D$ is a closed barrel, $D$ intersects the dense subspace in a
+neighborhood; shrinking that neighborhood in the ambient space and using
+density and closedness puts an ambient neighborhood inside $D$.  Hence every
+$E$ in the statement is barrelled.
+
+Finite interpolation shows that $C(X)$, and therefore $E$, is pointwise dense
+in $\R^X$.  Every continuous linear functional on $E$ depends on finitely many
+coordinates, so the pointwise topology is precisely the weak topology of
+$E$.  The standard theorem for barrelled locally convex spaces carrying their
+weak topology makes semi-Montel, reflexive, semi-reflexive, and
+quasi-complete equivalent; this is the same result used in the source
+\cite[proof of Theorem~3.3]{GOR2026} and comes from
+\cite[Proposition~11.4.2]{Jarchow}.  Completeness implies
+quasi-completeness, and Theorem~\ref{thm:abstract} says that
+quasi-completeness forces $E=\R^X$.  Finally, $\R^X$ has every listed
+property.
+\end{proof}
+
+\section{Sequential completeness at an arbitrary rank}
+
+\begin{theorem}[Successor-rank criterion]\label{thm:sequential}
+For every Tychonoff space $X$ and every nonzero countable ordinal $\alpha$,
+\[
+ B_\alpha(X)\text{ is sequentially complete}
+ \quad\Longleftrightarrow\quad
+ B_\alpha(X)=B_{\alpha+1}(X).
+\]
+\end{theorem}
+
+\begin{proof}
+Because the Baire hierarchy is increasing, $B_{\alpha+1}(X)$ is exactly the
+set of pointwise limits of sequences from $B_\alpha(X)$.  Every pointwise
+Cauchy sequence in $B_\alpha(X)$ has a coordinatewise limit in $\R^X$, and
+that limit belongs to $B_{\alpha+1}(X)$.  Thus equality of the two classes is
+equivalent to retaining every Cauchy-sequence limit in $B_\alpha(X)$.
+\end{proof}
+
+\section{The complete metrizable program}
+
+We use the classical Lebesgue--Hausdorff theorem: if $X$ is metrizable and
+$0<\alpha<\omega_1$, then a real function $f$ is of Baire class $\alpha$ if
+and only if $f^{-1}(U)\in\boldsymbol\Sigma^0_{\alpha+1}(X)$ for every open
+$U\subseteq\R$; in particular,
+\[
+ \mathbf 1_A\in B_\alpha(X)
+ \quad\Longleftrightarrow\quad
+ A\in\boldsymbol\Delta^0_{\alpha+1}(X)
+ :=\boldsymbol\Sigma^0_{\alpha+1}(X)
+   \cap\boldsymbol\Pi^0_{\alpha+1}(X).
+\]
+See, for example, the classical treatments in
+\cite{Kuratowski,Kechris}.
+
+\begin{theorem}[Metrizable characterization]\label{thm:metric}
+Let $X$ be metrizable and let $0<\alpha<\omega_1$.
+
+\medskip\noindent
+\textbf{(A) Strong properties.}
+Each of the seven equivalent conditions in Corollary~\ref{cor:strong} for
+$E=B_\alpha(X)$ is equivalent to
+\[
+        \boldsymbol\Sigma^0_{\alpha+1}(X)=\cP(X),
+\]
+that is, every subset of $X$ has additive Borel rank at most $\alpha+1$.
+
+\medskip\noindent
+\textbf{(B) Sequential and local completeness.}
+The following are equivalent:
+\begin{enumerate}
+\item $B_\alpha(X)$ is sequentially complete;
+\item $B_\alpha(X)$ is locally complete;
+\item $B_\alpha(X)=B_{\alpha+1}(X)$;
+\item
+$\boldsymbol\Sigma^0_{\alpha+1}(X)
+ =\boldsymbol\Pi^0_{\alpha+1}(X)$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+For (A), Corollary~\ref{cor:strong} reduces everything to
+$B_\alpha(X)=\R^X$.  If that equality holds, every characteristic function
+has Baire class $\alpha$, so every subset lies in
+$\boldsymbol\Delta^0_{\alpha+1}$.  Conversely, if every subset lies in
+$\boldsymbol\Sigma^0_{\alpha+1}$, then the inverse image of every open set
+under every $f:X\to\R$ lies in that class.  The Lebesgue--Hausdorff theorem
+gives $f\in B_\alpha(X)$.
+
+For (B), Theorem~\ref{thm:sequential} gives (1)$\Leftrightarrow$(3), and
+sequential completeness implies local completeness in every locally convex
+space.
+
+Assume (2), and fix
+$A\in\boldsymbol\Sigma^0_{\alpha+1}(X)$.  Write
+$A=\bigcup_n C_n$ with $C_n\in\boldsymbol\Pi^0_\alpha(X)$, and put
+$D_n=\bigcup_{k\leq n}C_k$.  Finite unions preserve
+$\boldsymbol\Pi^0_\alpha$.  The sets
+\[
+ A_0=D_0,
+ \qquad A_n=D_n\setminus D_{n-1}\quad(n\geq1)
+\]
+are pairwise disjoint, cover $A$, and belong to
+$\boldsymbol\Delta^0_{\alpha+1}(X)$.  Therefore
+$\mathbf 1_{A_n}\in B_\alpha(X)$.
+
+Set $g_n=2^{n+1}\mathbf 1_{A_n}$.  Disjointness makes $(g_n)$ a null sequence
+in the pointwise topology.  By local completeness, its closed absolutely
+convex hull $K$ is compact.  For every $N$,
+\[
+ F_N=\sum_{n\leq N}2^{-n-1}g_n
+     =\mathbf 1_{\bigcup_{n\leq N}A_n}
+     \in K,
+\]
+because the sum of the absolute values of the coefficients is at most one.
+The sequence $(F_N)$ converges pointwise to $\mathbf 1_A$.  Compactness gives
+a cluster point in $K$, and its coordinates force that cluster point to be
+$\mathbf 1_A$.  Hence $\mathbf 1_A\in B_\alpha(X)$, so
+$A\in\boldsymbol\Pi^0_{\alpha+1}(X)$.  Taking complements yields
+\[
+ \boldsymbol\Sigma^0_{\alpha+1}(X)
+ =\boldsymbol\Pi^0_{\alpha+1}(X),
+\]
+which proves (2)$\Rightarrow$(4).
+
+Finally, (4) collapses the next additive class:
+\[
+ \boldsymbol\Sigma^0_{\alpha+2}(X)
+ =\Bigl(\boldsymbol\Pi^0_{\alpha+1}(X)\Bigr)_\sigma
+ =\Bigl(\boldsymbol\Sigma^0_{\alpha+1}(X)\Bigr)_\sigma
+ =\boldsymbol\Sigma^0_{\alpha+1}(X).
+\]
+The Lebesgue--Hausdorff theorem therefore gives
+$B_{\alpha+1}(X)\subseteq B_\alpha(X)$; the reverse inclusion is automatic.
+Thus (4)$\Rightarrow$(3), completing the cycle.
+\end{proof}
+
+For $\alpha=1$, part (B) recovers the source's $\sigma$-space criterion in
+the metrizable setting.  For higher $\alpha$, it identifies the exact Borel
+level whose collapse is measured by local and sequential completeness.
+
+\section{The full Baire union}
+
+\begin{theorem}[The $B(X)$ program]\label{thm:union}
+Let $X$ be Tychonoff.
+\begin{enumerate}
+\item $B(X)$ is always sequentially complete and locally complete.
+\item Each strong property in Corollary~\ref{cor:strong} is equivalent to
+      $B(X)=\R^X$.
+\item The equality $B(X)=\R^X$ holds if and only if
+      $\mathbf 1_A\in B(X)$ for every $A\subseteq X$.
+\end{enumerate}
+If $X$ is metrizable, the last condition is equivalent to every subset of
+$X$ being Borel.
+\end{theorem}
+
+\begin{proof}
+The source proves sequential completeness of $B(X)$
+\cite[Proposition~3.1]{GOR2026}; the general implication from sequential to
+local completeness gives the rest of (1).  Part (2) is
+Corollary~\ref{cor:strong}.
+
+For the nontrivial direction of (3), suppose every characteristic function
+belongs to $B(X)$.  Every finite-range real function then belongs to $B(X)$.
+The truncation--quantization sequence $(s_n)$ from the proof of
+Theorem~\ref{thm:abstract} consists of such functions and converges pointwise
+to an arbitrary $f:X\to\R$.  Sequential completeness puts $f$ in $B(X)$.
+The converse is immediate.  On a metrizable space, the
+Lebesgue--Hausdorff theorem identifies characteristic Baire functions with
+Borel sets of some countable rank.
+\end{proof}
+
+\section{Upgrade audit, limitations, and novelty check}
+
+Eight focused routes were audited.
+\begin{enumerate}
+\item Finite interpolation in the bounded unit box produced the abstract
+      quasi-completion theorem.
+\item Successor-rank closure produced the exact sequential criterion.
+\item A direct rescaling of telescoping differences failed: pointwise
+      convergence supplies no common rate over an arbitrary $X$.
+\item Disjoint Borel-rank decomposition repaired that failure for metrizable
+      spaces and proved local $\Rightarrow$ sequential completeness.
+\item Lebesgue--Hausdorff converted both functional conclusions into exact
+      Borel-hierarchy criteria.
+\item Sequential completeness of $B(X)$ completed the full-union program.
+\item The same disjointification works on broader domains whenever the
+      appropriate generalized Lebesgue--Hausdorff identification is known;
+      this was not promoted as an unconditional arbitrary-space theorem.
+\item A universal nonmetrizable upgrade was tested through functional
+      additive/multiplicative classes.  The missing converse from functional
+      measurability to Baire class on arbitrary domains is a genuine
+      obstruction, so the packet stops at the stated scope.
+\end{enumerate}
+
+Thus the remaining part of Problem~3.10 is an intrinsic characterization of
+local completeness of a fixed $B_\alpha(X)$ for arbitrary nonmetrizable
+Tychonoff $X$.  The packet also does not address the source's other open
+problems about $Q_f$-spaces or special sets of reals.
+
+A bounded novelty search was performed on 11 August 2026.  It checked the
+source arXiv page and published-title result; exact searches for combinations
+of ``$B_\alpha(X)$'', ``quasi-complete'', ``locally complete'',
+``$B_\alpha(X)=B_{\alpha+1}(X)$'', and higher Baire-class pointwise spaces;
+and arXiv searches for the abstract pointwise quasi-completion statement.
+The searches returned the source paper, its $B_1$ results, and general papers
+on Baire classification, but no statement of Theorems~\ref{thm:abstract} or
+\ref{thm:metric}.  This supports only bounded novelty confidence.
+
+The most important human checks are: (i) completeness of the bounded box in
+Theorem~\ref{thm:abstract}; (ii) the barrelled weak-space transfer in
+Corollary~\ref{cor:strong}; and (iii) the transfinite Borel indexing in
+Theorem~\ref{thm:metric}.
+
+\begin{thebibliography}{9}
+
+\bibitem{GOR2026}
+S.~Gabriyelyan, A.~V.~Osipov, and E.~Reznichenko,
+\emph{Completeness and reflexivity type properties of $B_1(X)$},
+arXiv:2601.00733v2 (2026); Topology Appl., article 109772 (2026).
+
+\bibitem{Jarchow}
+H.~Jarchow,
+\emph{Locally Convex Spaces},
+B.~G.~Teubner, Stuttgart, 1981.
+
+\bibitem{Kechris}
+A.~S.~Kechris,
+\emph{Classical Descriptive Set Theory},
+Springer, New York, 1995.
+
+\bibitem{Kuratowski}
+K.~Kuratowski,
+\emph{Topology}, Vol.~1,
+Academic Press, 1966.
+
+\end{thebibliography}
+
+\end{document}

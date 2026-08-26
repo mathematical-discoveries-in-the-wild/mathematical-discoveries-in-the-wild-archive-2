@@ -1,0 +1,191 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\cH}{\mathcal H}
+
+\title{An Analytic Two-Dimensional Counterexample\\
+to the Wronski-Basis Conjecture}
+\author{Candidate counterexample for arXiv:2508.04639\\
+Run \texttt{fa\_banach\_001}, lane 7}
+\date{12 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Candidate full counterexample, likely valid, pending specialist human review.
+It disproves Conjecture~8 already for a two-dimensional Hilbert space of
+entire functions.}}
+\end{center}
+
+\section{Source question}
+
+Micheas asks whether every orthonormal basis of a Hilbert function space is
+the fundamental solution set, via Wronski orthogonalization, of a unique
+linear homogeneous ordinary differential equation (HODE), possibly of
+infinite order \cite[Conjecture~8, p.~16]{Micheas}.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{Conjecture~8 in arXiv:2508.04639v4, PDF page 16.}
+\end{figure}
+
+Immediately after the conjecture, the paper says that it is satisfied
+``trivially'' for a finite basis $\{e_1,\ldots,e_N\}$ and identifies the
+claimed equation as the $N$th-order Wronskian quotient
+\[
+  \frac{W(e_1,\ldots,e_N,y)}{W(e_1,\ldots,e_N)}=0.
+\]
+The paper's regular-ODE convention requires continuous coefficients on the
+domain and a leading coefficient that is nonzero at every point
+\cite[Remark~1]{Micheas}.  We use exactly that finite-dimensional
+interpretation.
+
+\section{Proof intuition}
+
+Linear independence of functions does not imply that their Wronskian is
+pointwise nonzero.  This distinction is invisible if one divides formally by
+the Wronskian.  The smallest possible example is $1,x^2$: they are linearly
+independent and can be made an orthonormal basis, but
+$W(1,x^2)=2x$ vanishes at the origin.  The formal Wronskian equation is
+$xy''-y'=0$, which is necessarily singular at that point.  Direct
+substitution shows that no other regular second-order equation can avoid the
+same obstruction.
+
+\section{Counterexample}
+
+Let
+\[
+  \cH=\operatorname{span}_{\R}\{1,x^2\}
+\]
+as a space of real-valued functions on $\R$, and define
+\[
+ \big\langle a+bx^2,c+dx^2\big\rangle_{\cH}=ac+bd.
+\]
+
+\begin{theorem}\label{thm:counterexample}
+The space $\cH$ is a Hilbert function space and
+$\mathcal E=\{1,x^2\}$ is an orthonormal basis of entire functions.  There
+is no regular linear second-order HODE on $\R$ having $\mathcal E$ as a
+fundamental set of solutions.  Consequently, Conjecture~8 and its asserted
+finite-basis case are false as stated.
+\end{theorem}
+
+\begin{proof}
+The coefficient map
+\[
+  \R^2\longrightarrow\cH,\qquad (a,b)\longmapsto a+bx^2,
+\]
+is an isometric linear bijection.  Thus $\cH$ is complete, and
+$\{1,x^2\}$ is an orthonormal basis.  Both functions are entire.
+
+Suppose that a regular second-order linear HODE on $\R$,
+\begin{equation}\label{eq:general}
+ p_2(x)y''(x)+p_1(x)y'(x)+p_0(x)y(x)=0,
+\end{equation}
+has $1$ and $x^2$ as solutions.  Here the coefficients are continuous and
+$p_2(x)\ne0$ for every $x\in\R$, as required by the source paper's regularity
+convention.  Substituting $y=1$ into \eqref{eq:general} gives
+\[
+  p_0(x)=0\qquad(x\in\R).
+\]
+Substituting $y=x^2$ then gives
+\[
+  2p_2(x)+2x p_1(x)=0\qquad(x\in\R).
+\]
+At $x=0$ this says $p_2(0)=0$, contradicting regularity.  Hence no such HODE
+exists.
+
+A fundamental set for a regular $N$th-order equation has $N$ elements; this
+is also the convention used in the source paper's finite-basis paragraph.
+Thus the two-element basis is precisely the $N=2$ case claimed there, and
+failure of existence already disproves the universal conjecture.
+\end{proof}
+
+\section{The failed Wronskian formula}
+
+The source paper's proposed formula makes the singularity completely
+explicit:
+\[
+ W(1,x^2)=
+ \det\begin{pmatrix}1&x^2\\0&2x\end{pmatrix}=2x,
+\]
+whereas expansion of the augmented determinant gives
+\[
+ W(1,x^2,y)=
+ \det\begin{pmatrix}
+  1&x^2&y\\
+  0&2x&y'\\
+  0&2&y''
+ \end{pmatrix}
+ =2xy''-2y'.
+\]
+Away from the origin, division by $W(1,x^2)$ produces
+$y''-x^{-1}y'=0$.  On all of $\R$, its undivided form
+$xy''-y'=0$ has leading coefficient $x$, so it is singular exactly where the
+denominator vanishes.  Reordering or rescaling the basis only multiplies the
+Wronskian by a nonzero constant and cannot repair this zero.
+
+More generally, if two $C^2$ functions form a fundamental system for a
+regular second-order equation on an interval, Abel's identity forces their
+Wronskian either to vanish nowhere or to vanish identically.  Therefore any
+linearly independent pair with a Wronskian having an isolated zero supplies
+the same kind of obstruction.
+
+\section{Verification notes}
+
+There are three independent exact checks.
+\begin{enumerate}
+  \item The coefficient map above proves completeness and orthonormality.
+  \item Direct substitution into an arbitrary regular equation forces
+        $p_2(0)=0$.
+  \item Direct determinant expansion yields
+        $W(1,x^2)=2x$ and $W(1,x^2,y)=2xy''-2y'$.
+\end{enumerate}
+No numerical computation or unproved external lemma is needed.
+
+\section{Scope, repair, and novelty check}
+
+The counterexample concerns the conjecture exactly as stated on the global
+domain $\R$ and its own finite-order interpretation.  It does not rule out a
+corrected theorem on an interval avoiding the origin: on $(0,\infty)$, for
+example, $y''-x^{-1}y'=0$ is regular.  Nor does it address a newly defined
+notion of ``fundamental set'' for infinite-order equations.  A necessary
+finite-dimensional repair is to require the basis Wronskian to be nonzero
+everywhere on the domain; under the usual differentiability assumptions,
+the standard Wronskian formula then applies.
+
+On 12 August 2026, bounded arXiv searches for the exact title, the exact
+phrase ``Bases as solutions to HODEs'', and ``Wronski basis'' found the source
+paper but no later arXiv paper or note answering Conjecture~8.  This is a
+bounded novelty check, not a claim of exhaustive bibliographic priority.
+
+\section{Human review recommendation}
+
+Review as a likely valid full counterexample.  The two points worth checking
+are that finite-dimensional function spaces are included in the source's
+phrase ``any Hilbert function space'' (as its finite-basis paragraph itself
+indicates), and that its stated regularity convention is imposed globally on
+$\R$.  Once those are accepted, the contradiction is elementary.
+
+\begin{thebibliography}{9}
+\bibitem{Micheas}
+Athanasios Christou Micheas,
+\emph{Construction of linearly independent and orthogonal functions in
+Hilbert function spaces via Wronski determinants},
+arXiv:2508.04639v4, 2026.
+\url{https://arxiv.org/abs/2508.04639}.
+\end{thebibliography}
+
+\end{document}

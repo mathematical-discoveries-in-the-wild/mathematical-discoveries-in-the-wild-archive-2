@@ -1,0 +1,352 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\newcommand{\Sym}{\operatorname{Sym}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\kron}{\otimes}
+\newcommand{\D}{\mathcal D}
+\newcommand{\R}{\mathbb R}
+\newcommand{\normmax}[1]{\lVert #1\rVert_{\max}}
+
+\title{An exact non-free matrix extreme point of the two-variable wild disc}
+\author{Solution packet for arXiv:2212.00748}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Epperly, Evert, Helton, and Klep ask whether a real free spectrahedron in two
+variables can have a matrix extreme point which is not free extreme, and they
+``strongly strongly conjecture'' this for the wild disc.  We give such a
+point at level $n=8$.  The entries are specified exactly: one coordinate is
+rational, while the other is a symmetric zero of a quadratic matrix equation
+in a certified rational ball.  Exact rational residual bounds prove
+existence of that zero and prove full column rank of the matrix-extreme
+system.  A strict $15<16$ equation count then proves that the point is not
+Arveson extreme and hence not free extreme.  All proof-critical inequalities
+are checked with integer and rational arithmetic by the accompanying script.
+\end{abstract}
+
+\section{The question and the answer}
+
+Let
+\[
+A_1=\begin{pmatrix}0&1&0\\1&0&0\\0&0&0\end{pmatrix},\qquad
+A_2=\begin{pmatrix}0&0&1\\0&0&0\\1&0&0\end{pmatrix}.
+\]
+The associated wild disc is
+\[
+ \D_A(n)=\left\{(X,Y)\in\Sym_n(\R)^2:
+ L_A(X,Y)=\begin{pmatrix}I&X&Y\\X&I&0\\Y&0&I\end{pmatrix}\succeq0\right\}.
+\]
+Equivalently, by a Schur complement,
+\[
+ (X,Y)\in\D_A(n)\quad\Longleftrightarrow\quad I-X^2-Y^2\succeq0.
+\]
+This free spectrahedron is bounded.  Section 5.3 of the authors' current
+manuscript says that the existence of non-free matrix extreme points for
+$g=2$ is open and makes the specific wild-disc conjecture; see the included
+source PDF and the page-17 source image.
+
+\begin{theorem}[Two-variable wild-disc conjecture]
+There exist real symmetric $8\times8$ matrices $X,Y$ such that $(X,Y)$ is a
+matrix extreme point of the wild disc but is not a free extreme point.
+\end{theorem}
+
+The rest of the packet gives the exact construction and proof.
+
+\section{Exact data}
+
+Set $X=M/30$ and $Z=R/30$, where
+{\small
+\[
+M=\begin{pmatrix}
+-3&5&-3&1&-3&-4&-3&0\\
+5&-1&5&-3&-5&-2&3&-1\\
+-3&5&2&-2&1&3&0&1\\
+1&-3&-2&5&-4&3&-2&2\\
+-3&-5&1&-4&3&-5&1&1\\
+-4&-2&3&3&-5&3&-5&-1\\
+-3&3&0&-2&1&-5&2&-5\\
+0&-1&1&2&1&-1&-5&1
+\end{pmatrix},\qquad
+R=\begin{pmatrix}
+5&3&-1&0&1&5&-4&2\\
+1&2&-3&-5&-1&-5&0&-5\\
+5&-3&5&3&-3&1&-5&0
+\end{pmatrix}.
+\]
+}
+Put
+\[
+ P=I-X^2-Z^TZ.
+\]
+We next specify a rational matrix $Q=N/10^{15}$ near an exact symmetric
+square root of $P$.  To keep the integers readable, write
+$N=[N^{(1)}\ N^{(2)}\ N^{(3)}\ N^{(4)}]$ in two-column blocks:
+{\scriptsize
+\[
+N^{(1)}=\begin{pmatrix}
+469136539517107&418057100896713\\
+418057100896713&226044565094389\\
+-513730559248146&316155862074043\\
+-19705331325464&-591487703586026\\
+115589350876164&-404383337428309\\
+315461324061599&-102525629138037\\
+-262136144216438&105847039317755\\
+126120353785681&-68076824009979
+\end{pmatrix},\quad
+N^{(2)}=\begin{pmatrix}
+-513730559248146&-19705331325464\\
+316155862074043&-591487703586026\\
+343845406695791&-286080313659530\\
+-286080313659530&-185003309748076\\
+-5713670391864&-525675862063652\\
+441714042553604&313713354292056\\
+-342388858747631&-197186242248850\\
+160943853597458&47691229959701
+\end{pmatrix},
+\]
+}
+{\scriptsize
+\[
+N^{(3)}=\begin{pmatrix}
+115589350876164&315461324061599\\
+-404383337428309&-102525629138037\\
+-5713670391864&441714042553604\\
+-525675862063652&313713354292056\\
+647636604497521&110185471831049\\
+110185471831049&546819792547518\\
+-79262335507014&306432223723976\\
+209718944007&-160736732966099
+\end{pmatrix},\quad
+N^{(4)}=\begin{pmatrix}
+-262136144216438&126120353785681\\
+105847039317755&-68076824009979\\
+-342388858747631&160943853597458\\
+-197186242248850&47691229959701\\
+-79262335507014&209718944007\\
+306432223723976&-160736732966099\\
+721476885267441&110205575101764\\
+110205575101764&918313788896616
+\end{pmatrix}.
+\]
+}
+The displayed blocks show directly that $Q$ is symmetric.
+
+Choose a symmetric matrix $Y$ in the certified ball
+\begin{equation}\label{eq:rootball}
+ \normmax{Y-Q}<3.014\cdot10^{-12}
+\end{equation}
+which satisfies $Y^2=P$.  Existence follows from Lemma~\ref{lem:root}; thus
+this is an exact implicit algebraic specification of $Y$, not a
+floating-point definition.  The fixed point used in that lemma is unique in
+its smaller closed contraction ball, although uniqueness is not needed here.
+
+For orientation only, $Y$ begins numerically as
+{\scriptsize
+\[
+\begin{pmatrix}
+.469136540&.418057101&-.513730559&-.019705331&.115589351&.315461324&-.262136144&.126120354\\
+.418057101&.226044565&.316155862&-.591487704&-.404383337&-.102525629&.105847039&-.068076824\\
+-.513730559&.316155862&.343845407&-.286080314&-.005713670&.441714043&-.342388859&.160943854\\
+-.019705331&-.591487704&-.286080314&-.185003310&-.525675862&.313713354&-.197186242&.047691230\\
+.115589351&-.404383337&-.005713670&-.525675862&.647636604&.110185472&-.079262336&.000209719\\
+.315461324&-.102525629&.441714043&.313713354&.110185472&.546819793&.306432224&-.160736733\\
+-.262136144&.105847039&-.342388859&-.197186242&-.079262336&.306432224&.721476885&.110205575\\
+.126120354&-.068076824&.160943854&.047691230&.000209719&-.160736733&.110205575&.918313789
+\end{pmatrix}.
+\]
+}
+
+\section{A certified exact square root}
+
+On $\Sym_8(\R)$ use the entrywise norm
+$\normmax{H}=\max_{i,j}|H_{ij}|$.  Let
+\[
+ \mathcal L_Q(H)=QH+HQ,\qquad E=Q^2-P.
+\]
+
+\begin{lemma}\label{lem:root}
+The operator $\mathcal L_Q$ is invertible.  There is a symmetric $H$ with
+\[
+ \normmax{H}<3.014\cdot10^{-12},\qquad (Q+H)^2=P.
+\]
+\end{lemma}
+
+\begin{proof}
+The exact checker represents $\mathcal L_Q$ on the 36 upper-triangular
+coordinates.  From a rational approximate inverse $T$ it verifies
+\[
+ \lVert I-T\mathcal L_Q\rVert_\infty<1.827\cdot10^{-9},
+ \qquad \lVert\mathcal L_Q^{-1}\rVert_\infty<1192.
+\]
+This is a standard Neumann-series certificate and in particular proves
+invertibility.  The checker also obtains
+\[
+ \rho:=\normmax{E}<1.265\cdot10^{-15}.
+\]
+Let $\beta$ denote the exact rational inverse bound produced by this
+certificate (so $\beta<1192$), and let $r=2\beta\rho$.  On the closed
+radius-$r$ ball in $\Sym_8(\R)$ consider
+\[
+ \Phi(H)=-\mathcal L_Q^{-1}(E+H^2).
+\]
+For matrices in that ball,
+\[
+ \normmax{H^2-G^2}\le 16r\normmax{H-G}.
+\]
+The exact certificate checks
+\[
+ q:=4\cdot8\,\lVert\mathcal L_Q^{-1}\rVert_\infty^2\rho
+ <5.748\cdot10^{-8}<1,
+ \qquad r<3.014\cdot10^{-12}.
+\]
+Consequently $\Phi$ maps the ball to itself and has Lipschitz constant at
+most $q$.  Banach's fixed-point theorem supplies $H=\Phi(H)$, which is
+equivalent to $(Q+H)^2=P$.
+\end{proof}
+
+Set $Y=Q+H$.  We now have the exact identity
+\begin{equation}\label{eq:defect}
+ I-X^2-Y^2=Z^TZ\succeq0.
+\end{equation}
+Thus $(X,Y)\in\D_A(8)$.
+
+\section{The matrix-extreme certificate}
+
+The columns of $K=K_0/42$, where
+\[
+K_0=\begin{pmatrix}
+39&34&58&31&62\\
+-108&-92&-236&10&-190\\
+-129&-64&-208&17&-176\\
+42&0&0&0&0\\
+0&42&0&0&0\\
+0&0&42&0&0\\
+0&0&0&42&0\\
+0&0&0&0&42
+\end{pmatrix},
+\]
+form a basis of $\ker Z$.  Indeed $ZK=0$, and a $3\times3$ minor of the
+integer numerator $R$ has determinant $-42$, so $\operatorname{rank}Z=3$.
+Equation~\eqref{eq:defect} therefore gives
+\[
+ \dim\ker L_A(X,Y)=\dim\ker(Z^TZ)=5,
+\]
+with kernel basis
+\[
+ \mathcal K(Y)=\begin{pmatrix}K\\-XK\\-YK\end{pmatrix}.
+\]
+
+We use Theorem 2.6(3) of the source paper.  It says that $(X,Y)$ is matrix
+extreme exactly when the only symmetric triple $(B_0,B_1,B_2)$ satisfying
+\begin{align}
+ B_0v-B_1Xv-B_2Yv&=0,\label{eq:m1}\\
+ B_1v-B_0Xv&=0,\label{eq:m2}\\
+ B_2v-B_0Yv&=0\label{eq:m3}
+\end{align}
+for every $v\in\ker Z$, together with
+\begin{equation}\label{eq:trace}
+ \tr(B_0+XB_1+YB_2)=0,
+\end{equation}
+is the zero triple.  In upper-triangular coordinates this is a
+$121\times108$ homogeneous linear system; denote its coefficient matrix by
+$C(Y)$.
+
+The checker selects a fixed $108\times108$ row minor $M(Y)$ of $C(Y)$.  All
+selected row indices are listed in the code.  For the rational center $Q$, a
+rational approximate inverse gives the exact Neumann certificate
+\[
+ \lVert I-T_M M(Q)\rVert_\infty<2.075\cdot10^{-6},
+ \qquad \lVert M(Q)^{-1}\rVert_\infty<3146.
+\]
+Only the terms $B_2Yv$, $B_0Yv$, and the $YB_2$ trace term vary with $Y$.
+Since the largest $\ell^1$ norm among the columns of $K_0$ is $544$,
+\[
+ \lVert M(Y)-M(Q)\rVert_\infty
+ \le c\normmax{Y-Q},\qquad
+ c=\max\left\{\frac{8\cdot544}{42},8^2\right\}
+ =\frac{2176}{21}<104.
+\]
+The exact certificate finally verifies
+\[
+ \lVert M(Q)^{-1}\rVert_\infty\,
+ \lVert M(Y)-M(Q)\rVert_\infty
+ <9.824\cdot10^{-7}<1.
+\]
+Therefore $M(Y)$ is invertible.  Hence $C(Y)$ has full column rank, and
+Theorem 2.6(3) proves that $(X,Y)$ is matrix extreme.
+
+\section{Why the point is not free extreme}
+
+The source paper's Arveson equation, Theorem 2.6(1), has $gn=2\cdot8=16$
+real unknowns.  Its codomain has dimension
+\[
+ d\,\dim\ker L_A(X,Y)=3\cdot5=15.
+\]
+It therefore has a nonzero solution by rank-nullity.  Thus $(X,Y)$ is not
+Arveson extreme.  A matrix extreme point is irreducible, and the source
+paper's Proposition 2.4 and Corollary 2.5 identify free extreme points with
+irreducible Arveson extreme points.  Hence our matrix extreme point is not
+free extreme.  This completes the proof of the theorem.
+
+\section{What is exact, and what the computation does}
+
+No semidefinite or rank conclusion is inferred from a floating-point
+tolerance.  The checker performs the following proof steps with Python
+integers and \texttt{Fraction} objects:
+\begin{enumerate}[leftmargin=2em]
+\item verifies $ZK=0$, $\operatorname{rank}Z=3$, and all displayed rational
+data;
+\item constructs the 36-dimensional Lyapunov matrix and the
+$121\times108$ matrix-extreme system from their definitions;
+\item uses floating point only to propose rational approximate inverses;
+\item recomputes both inverse residuals exactly and proves the stated
+Neumann bounds;
+\item proves the contraction and rank-stability inequalities by exact
+rational comparison.
+\end{enumerate}
+The two approximate inverse numerators are fingerprinted in the output, but
+their correctness is not assumed: every run rebuilds and checks them.
+
+\section{Search scope, novelty, and review status}
+
+The January 24, 2024 author manuscript included here still states that the
+$g=2$ case is unknown and makes the wild-disc conjecture.  A bounded search
+on 13 August 2026 for the arXiv identifier, ``wild disc'', ``non-free matrix
+extreme'', and later work citing the paper found no subsequent exact
+two-variable example.  This is evidence, not a substitute for a specialist
+citation-database search.
+
+The result should therefore be treated as a \emph{candidate full solution,
+likely valid, novelty cautious}.  Human review should prioritize (i) the
+translation from Theorem 2.6 to equations~\eqref{eq:m1}--\eqref{eq:trace},
+(ii) the max-norm perturbation constant $2176/21$, and (iii) an independent
+run of the exact checker.  The safety margins are large: the final
+rank-stability product is below $10^{-6}$.
+
+\begin{thebibliography}{9}
+\bibitem{EEHK}
+A. Epperly, E. Evert, J. W. Helton, and I. Klep,
+\emph{Matrix and free extreme points of free spectrahedra},
+arXiv:2212.00748; author manuscript dated January 24, 2024.
+
+\bibitem{EHKM}
+E. Evert, J. W. Helton, I. Klep, and S. McCullough,
+\emph{Extreme points of matrix convex sets, free spectrahedra and dilation
+theory}, J. Geom. Anal. 28 (2018), 1373--1408.
+\end{thebibliography}
+
+\end{document}

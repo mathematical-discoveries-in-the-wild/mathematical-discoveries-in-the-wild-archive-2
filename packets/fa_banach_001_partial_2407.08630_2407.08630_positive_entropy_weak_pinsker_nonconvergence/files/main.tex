@@ -1,0 +1,276 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem*{sourcequestion}{Source question}
+
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\E}{\mathbb E}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+
+\title{Positive-Entropy Systems Admit Divergent\\
+Non-Commuting Double Averages}
+\author{Candidate partial solution packet\\
+Run \texttt{fa\_banach\_001} --- lane 0}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.9\textwidth}{
+\textbf{Status: candidate partial result, likely valid.}
+Austin's question has an affirmative answer for every weakly mixing
+probability-preserving automorphism of positive entropy.  More generally, the
+proof needs only ergodicity and positive entropy.  A subsequent identification
+shows that the universal affirmative question is false: Chacon's weakly mixing
+transformation forces convergence against every second system.  The theorem
+here remains a positive-entropy occurrence result.
+}}
+\end{center}
+
+\section{Source problem}
+
+Let $S$ and $T$ be invertible probability-preserving transformations of a
+standard probability space $(X,\mathcal B,\mu)$, and let $f\in L^\infty(\mu)$.
+Austin~\cite{AustinDivergence} studies the scalar averages
+\begin{equation}\label{eq:averages}
+ A_N(S,T;f):=\frac1N\sum_{i=0}^{N-1}
+ \int_X f(S^i x)f(T^i x)\,d\mu(x).
+\end{equation}
+His examples include isomorphic rigid Gaussian transformations $S,T$ for
+which these averages diverge.  The conclusion of the paper asks the following
+broader question (arXiv PDF page~6).
+
+\begin{center}
+\includegraphics[width=0.98\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\begin{sourcequestion}
+Can every weakly mixing transformation appear, up to isomorphism, as $S$ in a
+non-convergent example of the averages~\eqref{eq:averages}?
+\end{sourcequestion}
+
+The theorem below settles every positive-entropy instance.  It says nothing
+about zero entropy; a separate literature-implied obstruction now shows that
+no uniform affirmative extension to all weakly mixing systems is possible.
+
+\section{Proof intuition}
+
+The weak Pinsker theorem~\cite{AustinPinsker} decomposes every
+positive-entropy ergodic system into a direct product of a nontrivial Bernoulli
+shift and a remainder.  The only new construction needed is therefore on an
+arbitrary Bernoulli shift.
+
+On a two-sided Bernoulli shift, a permutation $p$ of the coordinate labels
+induces a measure-preserving coordinate permutation $C_p$.  The conjugate
+$\tau=C_p^{-1}\sigma C_p$ is another copy of the same Bernoulli shift.  We
+choose $p$ so that its fixed points among $0,1,\ldots,N-1$ have no asymptotic
+density.  If $f$ is a centered observable of coordinate zero, then at time $i$
+the two copies of $f$ inspect coordinates $i$ and $p(i)$.  Their correlation is
+the variance of $f$ when those coordinates coincide and zero when they are
+distinct.  Thus the correlation averages are exactly a constant multiple of
+the non-convergent fixed-point densities.  No approximation is involved.
+
+\section{The theorem}
+
+\begin{theorem}\label{thm:main}
+Let $(X,\mathcal B,\mu,S)$ be an ergodic invertible
+probability-preserving system with positive Kolmogorov--Sinai entropy
+$h_\mu(S)>0$, allowing $h_\mu(S)=\infty$.  Then there are an invertible
+probability-preserving transformation $T$ of $X$ and a bounded real function
+$f\in L^\infty(\mu)$ such that:
+\begin{enumerate}
+\item $T$ is measurably isomorphic to $S$; in fact, $T$ is conjugate to $S$ on
+the same probability space;
+\item the sequence $A_N(S,T;f)$ in~\eqref{eq:averages} does not converge.
+\end{enumerate}
+More precisely, $f$ may be chosen so that
+\[
+ \liminf_{N\to\infty}A_N(S,T;f)=0,
+ \qquad
+ \limsup_{N\to\infty}A_N(S,T;f)=\|f\|_2^2>0.
+\]
+Consequently, Austin's question has an affirmative answer for every weakly
+mixing transformation of positive entropy.
+\end{theorem}
+
+We first isolate the elementary Bernoulli construction.
+
+\begin{lemma}\label{lem:permutation}
+There is a permutation $p:\Z\to\Z$ with $p(0)=0$ for which
+\[
+ d_N:=\frac1N\#\{0\leq i<N:p(i)=i\}
+\]
+satisfies $\liminf_N d_N=0$ and $\limsup_N d_N=1$.
+\end{lemma}
+
+\begin{proof}
+Set $N_0=1$.  Recursively choose an even integer $L_k>kN_k$ and put
+$N_{k+1}=N_k+L_k$.  Thus every block
+$I_k=[N_k,N_{k+1})\cap\Z$ has even cardinality.  On blocks with even $k$, let
+$p$ be the identity.  On blocks with odd $k$, interchange adjacent pairs, so
+$p(N_k+2j)=N_k+2j+1$ and $p(N_k+2j+1)=N_k+2j$.  Finally, let $p(n)=n$ for
+$n\leq0$.
+
+These disjoint blockwise prescriptions define a permutation of $\Z$ fixing
+zero.  At the endpoint of an identity block, the newest block alone occupies
+more than $k/(k+1)$ of all preceding nonnegative indices, so the fixed-point
+density tends to one along those endpoints.  At the endpoint of a swapped
+block, all fixed points lie before that block, and hence their density is less
+than $1/(k+1)$.  The two asserted subsequential limits follow.
+\end{proof}
+
+\begin{lemma}\label{lem:bernoulli}
+Let $(K,\kappa)$ be any nontrivial standard probability space, let
+$Y=K^\Z$ with product measure $\nu=\kappa^\Z$, and let
+\[
+ (\sigma y)_n=y_{n+1}\qquad(n\in\Z)
+\]
+be the two-sided Bernoulli shift.  There are a transformation $\tau$ conjugate
+to $\sigma$ and a bounded real $g\in L^\infty(\nu)$ for which
+\[
+ \liminf_N A_N(\sigma,\tau;g)=0,
+ \qquad
+ \limsup_N A_N(\sigma,\tau;g)=\|g\|_2^2>0.
+\]
+\end{lemma}
+
+\begin{proof}
+Choose a nonzero bounded real function $h$ on $K$ with
+$\int_Kh\,d\kappa=0$; such a function exists because the base is nontrivial.
+Let $p$ be the permutation from Lemma~\ref{lem:permutation}, and define the
+coordinate permutation
+\[
+ (C_p y)_n:=y_{p(n)}.
+\]
+Product measure is invariant under coordinate permutations, so $C_p$ is an
+invertible measure-preserving map.  Put
+\[
+ \tau:=C_p^{-1}\sigma C_p,
+ \qquad g(y):=h(y_0).
+\]
+Then $\tau$ is conjugate to $\sigma$.  Since $p(0)=0$, for every $i\geq0$,
+\[
+ (\tau^i y)_0
+ = (C_p^{-1}\sigma^iC_p y)_0
+ = y_{p(i)}.
+\]
+It follows that
+\[
+ g(\sigma^i y)=h(y_i),
+ \qquad
+ g(\tau^i y)=h(y_{p(i)}).
+\]
+If $p(i)=i$, their integral product is $\|h\|_{L^2(\kappa)}^2$.  If
+$p(i)\neq i$, the two coordinates are independent and $h$ is centered, so the
+integral product is zero.  Therefore
+\[
+ \int_Yg(\sigma^iy)g(\tau^iy)\,d\nu(y)
+ =\|h\|_2^2\mathbf 1_{\{p(i)=i\}},
+\]
+and hence
+\[
+ A_N(\sigma,\tau;g)=\|h\|_2^2d_N.
+\]
+Lemma~\ref{lem:permutation} completes the proof.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+By the weak Pinsker theorem~\cite{AustinPinsker}, for every $\varepsilon>0$
+the system $(X,\mu,S)$ is measurably isomorphic to a direct product
+\begin{equation}\label{eq:pinsker}
+ (Y\times Z,\nu\times\eta,\sigma\times R),
+\end{equation}
+where $\sigma$ is a Bernoulli shift and $h_\eta(R)<\varepsilon$.
+
+If $0<h_\mu(S)<\infty$, choose $\varepsilon<h_\mu(S)$.  Entropy is invariant
+under isomorphism and additive under direct products, so
+\[
+ h_\nu(\sigma)=h_\mu(S)-h_\eta(R)>0.
+\]
+If $h_\mu(S)=\infty$, the finite bound on $h_\eta(R)$ forces
+$h_\nu(\sigma)=\infty$.  Thus the Bernoulli factor is nontrivial in either
+case.
+
+Apply Lemma~\ref{lem:bernoulli} to obtain $\tau$ conjugate to $\sigma$ and a
+bounded real $g$ with divergent scalar averages.  On the product space set
+\[
+ S_0:=\sigma\times R,
+ \qquad T_0:=\tau\times R,
+ \qquad f_0(y,z):=g(y).
+\]
+If $\tau=C_p^{-1}\sigma C_p$, then
+\[
+ T_0=(C_p\times\mathrm{id}_Z)^{-1}S_0
+     (C_p\times\mathrm{id}_Z),
+\]
+so $T_0$ and $S_0$ are conjugate.  Since $f_0$ ignores the $Z$ coordinate,
+Fubini's theorem gives
+\[
+ A_N(S_0,T_0;f_0)=A_N(\sigma,\tau;g)
+\]
+for every $N$.  The latter sequence has liminf zero and limsup
+$\|g\|_2^2=\|f_0\|_2^2$.
+
+Finally, transport $T_0$ and $f_0$ back to $X$ through the isomorphism
+in~\eqref{eq:pinsker}.  Conjugacy, boundedness, and all the displayed
+integrals are preserved.  This gives the required $T$ and $f$.
+\end{proof}
+
+\section{Verification, limitations, and novelty status}
+
+The proof is exact after the weak Pinsker splitting.  The two calculations a
+reviewer should check most closely are the coordinate identity
+$(\tau^iy)_0=y_{p(i)}$ and the entropy argument ensuring that the Bernoulli
+factor is nontrivial.  Both are expanded explicitly above.  The accompanying
+\texttt{VERIFICATION.md} gives a separate audit.
+
+This result is partial: weakly mixing zero-entropy automorphisms include many
+of the difficult rigid, rank-one, and distal-adjacent regimes motivating the
+source question, and the argument says nothing about them.  A subsequent
+lane-0 packet records the decisive negative obstruction: Lesigne--Rittaud--de
+La Rue proved that Chacon's weakly mixing transformation is universal for weak
+disjointness, which forces convergence on the same-space diagonal against
+every second system~\cite[Proposition~4.2]{LRR}.  Thus the theorem here is a broad positive occurrence
+result, but it cannot extend to every weakly mixing transformation.
+
+A bounded novelty search through 9 August 2026 checked the run registry and
+cheap local indexes, the exact wording of Austin's question, title/citation
+matches for arXiv:2407.08630, and recent related arXiv papers 2407.13741,
+2410.11787, and 2411.02024.  Those searches found Gaussian,
+Poisson-suspension, simple-spectrum, and rank-one-base constructions, but no
+statement of the positive-entropy reduction proved here.  This is not an
+exhaustive literature review, so novelty confidence is moderate.  Human
+review is recommended before treating the result as established literature.
+
+\begin{thebibliography}{9}
+\bibitem{AustinDivergence}
+T. Austin,
+\emph{Non-convergence of some non-commuting double ergodic averages},
+Proc. Amer. Math. Soc. \textbf{153} (2025), 1701--1707;
+arXiv:2407.08630.
+
+\bibitem{AustinPinsker}
+T. Austin,
+\emph{Measure concentration and the weak Pinsker property},
+Publ. Math. Inst. Hautes \'{E}tudes Sci. \textbf{128} (2018), 1--119;
+arXiv:1705.00302.
+
+\bibitem{LRR}
+E. Lesigne, B. Rittaud, and T. de La Rue,
+\emph{Weak disjointness of measure preserving dynamical systems},
+Ergodic Theory Dynam. Systems \textbf{23} (2003), 1173--1198;
+doi:10.1017/S0143385702001505.
+\end{thebibliography}
+
+\end{document}

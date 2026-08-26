@@ -1,0 +1,227 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\makeatletter
+\renewcommand{\@seccntformat}[1]{\csname the#1\endcsname\hspace{0.65em}}
+\makeatother
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\D}{\mathbb D}
+\newcommand{\T}{\mathbb T}
+\newcommand{\olD}{\overline{\mathbb D}}
+\newcommand{\M}{\mathrm M}
+
+\title{Lacunary polynomials exclude the missing reverse Carleson measures}
+\author{A candidate full answer to Problem 8.1 of arXiv:2412.02354}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{\textbf{Status: candidate full result, likely valid.}
+Problem 8.1 has an affirmative answer.  More strongly, for fine index below
+two, no finite-measure $L^s$ norm can dominate either of the two mixed analytic
+spaces considered below, for any finite $s$.}}
+\end{center}
+
+\section{Source problem}
+
+Doubtsov, Tselishchev, and Vasilyev study reverse Carleson inequalities for
+spaces of analytic functions in the disk \cite{DTV}.  On page 22, Problem 8.1
+asks whether there are no reverse Carleson measures for $HB^{p,q}_0$ when
+$0<p<1$ and $p<q<2$.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{Problem 8.1 and its parameter context in \cite[p.~22]{DTV}.}
+\end{figure}
+
+\clearpage
+For $0<a,q<\infty$, use normalized Lebesgue measure $m$ on $\T$ and write
+\[
+ \M_a(r,g)=\left(\int_{\T}|g(r\zeta)|^a\,dm(\zeta)\right)^{1/a}.
+\]
+At smoothness zero, equivalent quasinorms for the holomorphic Besov and
+Triebel--Lizorkin spaces are
+\begin{align}
+ \|f\|_{HB^{a,q}_0}
+ &=|f(0)|+
+ \left(\int_0^1 \M_a(r,f')^q(1-r)^{q-1}\,dr\right)^{1/q}, \label{eq:HB}\\
+ \|f\|_{HF^{a,q}_0}
+ &=|f(0)|+
+ \left(\int_{\T}\left(\int_0^1|f'(r\zeta)|^q
+ (1-r)^{q-1}\,dr\right)^{a/q}dm(\zeta)\right)^{1/a}. \label{eq:HF}
+\end{align}
+The source's reverse inequality for $HB^{p,q}_0$ has $a=p$ and right-hand
+exponent $p$.
+
+\section{Proof intuition}
+
+The threshold $q=2$ is exposed by a normalized lacunary polynomial with $N$
+frequency blocks.  Orthogonality, or the classical lacunary inequality, keeps
+every fixed Hardy norm bounded.  On the other hand, each frequency has its own
+thin radial annulus on which its derivative dominates all other frequencies.
+Every annulus contributes order $N^{-q/2}$ to the $q$th power of either mixed
+analytic quasinorm, so their total size is $N^{1/q-1/2}$.
+
+An arbitrary finite measure can concentrate anywhere in the closed disk, so a
+fixed polynomial need not have controlled $L^s(\mu)$ norm.  Averaging all
+rotations removes this obstruction: the angular average at every point of the
+disk is a Hardy radial mean.  Hence at least one rotation has bounded
+$L^s(\mu)$ norm, while the mixed analytic norms are rotation invariant.  This
+contradicts any proposed reverse inequality when $q<2$.
+
+\section{The theorem}
+
+\begin{theorem}\label{thm:main}
+Let $0<a,s<\infty$ and $0<q<2$.  There is no finite positive Borel measure
+$\mu$ on $\olD$, together with a constant $C$, such that either
+\[
+ \|f\|_{HB^{a,q}_0}\le C\|f\|_{L^s(\mu)}
+ \quad\text{for every analytic polynomial }f,
+ \tag{B}
+\]
+or
+\[
+ \|f\|_{HF^{a,q}_0}\le C\|f\|_{L^s(\mu)}
+ \quad\text{for every analytic polynomial }f.
+ \tag{F}
+\]
+Consequently Problem 8.1 of \cite{DTV} has an affirmative answer.
+\end{theorem}
+
+\begin{lemma}[annular lacunary lower bound]\label{lem:lower}
+There is an absolute integer $M>2$ such that, for
+\[
+ P_N(z)=\frac1{\sqrt N}\sum_{j=1}^N z^{M^j},
+ \]
+one has, for every $0<a<\infty$ and $0<q<2$,
+\[
+ \min\!\left\{\|P_N\|_{HB^{a,q}_0},\|P_N\|_{HF^{a,q}_0}\right\}
+ \ge c_{a,q}N^{1/q-1/2}.
+\]
+\end{lemma}
+
+\begin{proof}
+Take $M=64$, put $n_j=M^j$, and consider the pairwise disjoint intervals
+\[
+ I_j=\left[1-\frac{2}{n_j},\,1-\frac{1}{n_j}\right].
+\]
+If $r\in I_j$, then
+\[
+ n_jr^{n_j-1}\ge e^{-3}n_j.
+\]
+Indeed, $r\ge1-2/n_j$ and
+$(n_j-1)\log(1-2/n_j)\ge-2(n_j-1)/(n_j-2)\ge-3$.
+The terms of lower degree satisfy
+\[
+ \sum_{k<j}n_kr^{n_k-1}\le\sum_{k<j}n_k<\frac{n_j}{M-1},
+\]
+whereas $r\le1-1/n_j$ gives
+\[
+ \sum_{k>j}n_kr^{n_k-1}
+ \le n_j e^{1/M}\sum_{\ell\ge1}M^\ell e^{-M^\ell}.
+\]
+For $M=64$, the sum of the last two displayed upper bounds is strictly less
+than $e^{-3}n_j$.  The reverse triangle inequality therefore yields a
+constant $c_0>0$, independent of $j,N,r$, such that
+\[
+ |P_N'(re^{it})|\ge \frac{c_0n_j}{\sqrt N}
+ \qquad(r\in I_j,\ t\in\mathbb R). \label{eq:pointwise}
+\]
+
+Using \eqref{eq:pointwise} in \eqref{eq:HB} and summing over the disjoint
+$I_j$ gives
+\begin{align*}
+ \|P_N\|_{HB^{a,q}_0}^q
+ &\ge \sum_{j=1}^N\left(\frac{c_0n_j}{\sqrt N}\right)^q
+ \int_{I_j}(1-r)^{q-1}\,dr\\
+ &=\frac{c_0^q(2^q-1)}q\,N^{1-q/2}.
+\end{align*}
+Because \eqref{eq:pointwise} holds for every angle, inserting it first in the
+inner radial integral in \eqref{eq:HF} gives the same lower bound for the
+$HF^{a,q}_0$ quasinorm.  Taking $q$th roots proves the lemma.
+\end{proof}
+
+\begin{proof}[Proof of Theorem \ref{thm:main}]
+If $0<s\le2$, orthogonality and monotonicity of norms give
+\[
+ \|P_N\|_{H^s}\le \|P_N\|_{H^2}=1.
+\]
+If $2<s<\infty$, the frequency sequence $(M^j)$ is Hadamard lacunary, so the
+classical Paley--Zygmund inequality for lacunary polynomials
+\cite[Ch.~V]{Zygmund} gives
+\[
+ \|P_N\|_{H^s}\le C_s
+ \left(\sum_{j=1}^N\frac1N\right)^{1/2}=C_s.
+\]
+Combining the two cases, with a suitable $C_s$ one has
+$\|P_N\|_{H^s}\le C_s$ for every finite $s>0$.
+In particular, the exact range of Problem 8.1 uses only orthogonality.
+
+For $0\le\theta<2\pi$, set $P_{N,\theta}(z)=P_N(e^{i\theta}z)$.  Fubini's
+theorem, followed by monotonicity of Hardy radial means, gives
+\begin{align*}
+ \frac1{2\pi}\int_0^{2\pi}\|P_{N,\theta}\|_{L^s(\mu)}^s\,d\theta
+ &=\int_{\olD}\frac1{2\pi}\int_0^{2\pi}|P_N(e^{i\theta}z)|^s
+ \,d\theta\,d\mu(z)\\
+ &\le \mu(\olD)\|P_N\|_{H^s}^s
+ \le C_s^s\mu(\olD).
+\end{align*}
+Thus some $\theta_N$ satisfies
+\[
+ \|P_{N,\theta_N}\|_{L^s(\mu)}\le C_s\mu(\olD)^{1/s}. \label{eq:rotation}
+\]
+Both mixed analytic quasinorms are rotation invariant.  If (B) or (F) held,
+Lemma \ref{lem:lower} and \eqref{eq:rotation} would imply
+\[
+ c_{a,q}N^{1/q-1/2}\le CC_s\mu(\olD)^{1/s}
+\]
+for every $N$.  This is impossible because $q<2$.  Taking $a=s=p$ with
+$0<p<1$ and $p<q<2$ proves the assertion in Problem 8.1.
+\end{proof}
+
+\section{Scope, checks, and novelty}
+
+The theorem is stronger than the source problem in two directions: it covers
+both $HB$ and $HF$, and permits an arbitrary finite right-hand exponent $s$.
+It supplies the complete negative fine-index range $q<2$ of the source's more
+general second problem.  It makes no assertion at $q=2$, for $s=\infty$, or
+about the remaining positive regimes.
+
+The proof uses only polynomials.  The derivative estimate is pointwise, so no
+convexity is used when $a<1$.  Boundary mass and atoms in $\mu$ are harmless
+because the rotation identity integrates directly over the closed disk.
+
+A bounded search on 13 August 2026 used the exact text of Problem 8.1,
+arXiv:2412.02354, and combinations of ``reverse Carleson'', ``Besov'',
+``$p<1$'', ``$p<q<2$'', and ``lacunary''.  The current arXiv version still
+states the problem as open, and no later explicit resolution or matching
+argument was found.  Novelty confidence is moderate: the ingredients are
+classical, but the rotation-averaged combination appears not to have been
+recorded for this problem.
+
+\paragraph{Human-review recommendation.}
+Check the numerical separation in Lemma \ref{lem:lower}, the all-$s$ form of
+the standard lacunary inequality, and the Fubini/rotation step.  The exact
+$p<1$ source problem uses only orthogonality in place of the lacunary theorem.
+
+\begin{thebibliography}{9}
+\bibitem{DTV}
+E. Doubtsov, A. Tselishchev, and I. Vasilyev,
+\emph{Reverse Carleson measures for spaces of analytic functions},
+arXiv:2412.02354 (2024).
+
+\bibitem{Zygmund}
+A. Zygmund,
+\emph{Trigonometric Series}, 2nd ed., Vols. I--II,
+Cambridge University Press, 1959.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,150 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\E}{\mathcal E}
+\newcommand{\C}{\mathcal C}
+\renewcommand{\thesection}{\arabic{section}.}
+
+\title{The optimal exponent for 4D cylindrical cartoon approximation}
+\author{A candidate full answer to the conjecture in arXiv:2110.03221}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\fbox{\parbox{0.94\linewidth}{\textbf{Status: candidate full result,
+likely valid.}  In the standard polynomial-depth model used in the cited
+optimality literature, the squared $L^2$ approximation exponent $1$ for the
+source's 4D cylindrical cartoon class is optimal.  Thus the source's
+$N^{-1}(\log N)^2$ upper bound is sharp in its power of $N$.}}
+
+\section{Conjecture and precise conclusion}
+
+For $A>0$, the source defines $\E(A)\subset L^2(\R^4)$ from functions
+\[
+ f(x,t)=h_0(x)g_0(t)+h_1(x)\mathbf1_B(x)g_1(t),
+ \qquad x\in\R^3, t\in\R,
+\]
+where the spatial boundary $\partial B$ is a uniformly $C^2$ two-manifold and
+all amplitudes have bounded $C^2$ norm.  Its cylindrical shearlet theorem gives
+\begin{equation}\label{eq:upper}
+ \sup_{f\in\E(A)}\|f-f_N\|_2^2
+ \le C N^{-1}(\log N)^2.
+\end{equation}
+The following remark conjectures that the exponent one is optimal.
+
+\begin{figure}[h]
+ \centering
+ \includegraphics[width=0.96\linewidth]{figures/conjecture_crop.png}
+ \caption{The optimality conjecture on page 10 of arXiv:2110.03221.}
+\end{figure}
+
+The word ``optimal'' requires a feasibility convention.  We use exactly the
+standard one in the 3D cartoon/shearlet literature cited by the source:
+normalized dictionaries with adaptive $N$-term selection subject to
+polynomial-depth search.  Without an information budget of this kind, an
+arbitrarily fine dense dictionary destroys every universal lower bound [2].
+
+\begin{theorem}[optimality of the cylindrical exponent]\label{thm:main}
+Under polynomial-depth search, no dictionary and selection scheme can satisfy,
+for any $\varepsilon>0$,
+\[
+ \sup_{f\in\E(A)}\|f-A_Nf\|_2^2
+ \le C_\varepsilon N^{-1-\varepsilon}
+ \qquad(N\ge1).
+\]
+Consequently \eqref{eq:upper} has the optimal power exponent, up to its
+logarithmic factor.
+\end{theorem}
+
+\section{A 3D hard class inside the 4D class}
+
+Let $\C_3(A_0)$ be the ordinary class of 3D $C^2$ cartoon functions
+\[
+ u(x)=a_0(x)+a_1(x)\mathbf1_B(x),\qquad x\in\R^3,
+\]
+with uniformly controlled amplitudes and $C^2$ surface boundary.  Its standard
+information-theoretic optimality theorem states that no polynomial-depth
+scheme has squared $L^2$ error exponent strictly larger than one [2,3].
+
+Choose a nonzero $g\in C_c^2((-1,1))$ and normalize it in $L^2(\R)$.  Define
+\begin{equation}\label{eq:J}
+ Ju(x,t)=u(x)g(t).
+\end{equation}
+Then $J:L^2(\R^3)\to L^2(\R^4)$ is an isometry.  After multiplying the whole
+class $\C_3(A_0)$ by one fixed positive constant, chosen only from the $C^2$
+bounds of $g$ and $A$, its image under $J$ is contained in $\E(A)$.  Such a
+fixed rescaling does not change any approximation exponent.
+
+The adjoint of $J$ is the time-profile projection
+\begin{equation}\label{eq:adjoint}
+ (J^*F)(x)=\int_{\R}F(x,t)\overline{g(t)}\,dt.
+\end{equation}
+It satisfies $J^*J=I$ and $\|J^*\|=1$.
+
+\begin{lemma}[projection of schemes]\label{lem:projection}
+Every polynomial-depth $N$-term scheme on $L^2(\R^4)$ induces a
+polynomial-depth $N$-term scheme on $L^2(\R^3)$ whose error on $u$ is at most
+the original error on $Ju$.
+\end{lemma}
+
+\begin{proof}
+Let an approximant selected from a normalized 4D dictionary be
+\[
+ A_N(Ju)=\sum_{n=1}^N c_n\phi_{i_n}.
+\]
+Apply $J^*$ and use $J^*J=I$:
+\begin{equation}\label{eq:contract}
+ \left\|u-\sum_{n=1}^N c_nJ^*\phi_{i_n}\right\|_2
+ \le \|Ju-A_N(Ju)\|_2.
+\end{equation}
+Each projected atom has norm at most one.  Delete zero atoms; for every
+nonzero one, normalize $J^*\phi_i$ and absorb its norm into its coefficient.
+The indices and their ordering have not changed, so the same polynomial search
+bound applies.  Equation \eqref{eq:contract} proves the claim.
+\end{proof}
+
+\section{Proof and scope}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Suppose a 4D scheme achieved squared error
+$C_\varepsilon N^{-1-\varepsilon}$ uniformly on $\E(A)$.  Restrict it to the
+fixed scaled copy $J\C_3(A_0)\subset\E(A)$ and apply
+Lemma~\ref{lem:projection}.  The result is a polynomial-depth 3D scheme with
+the same squared-error exponent on $\C_3(A_0)$.  This contradicts the known
+3D optimality theorem.  Hence no exponent larger than one is possible.
+Together with \eqref{eq:upper}, this proves optimality of the power exponent.
+\end{proof}
+
+The result does not remove the logarithmic factor in \eqref{eq:upper}; it
+settles exactly the power-law conjecture.  A later paper [4] proves a related
+projection-based optimality statement for a different $L^2(\R^3)$ model with
+two spatial variables and time, whose optimal exponent is two.  A bounded
+exact-title and conjecture search on 13 August 2026 found no explicit later
+answer for the present 3D-space-plus-time class.
+
+\medskip\noindent\textbf{Human-review focus.}
+Confirm that the source intends the polynomial-depth benchmark of its cited
+3D literature; the fixed tensor subclass lies in $\E(A)$ after rescaling; and
+normalizing projected atoms preserves the selection budget.
+
+\medskip
+\noindent{\large\bfseries References}\par\smallskip\small
+\noindent[1] T.~A. Bubba, G.~Easley, T.~Heikkil\"a, D.~Labate, and
+J.~P. Rodriguez Ayllon, \emph{Efficient representation of spatio-temporal data
+using cylindrical shearlets}, J. Comput. Appl. Math. 429 (2023), 115206.\par
+\noindent[2] D.~L. Donoho, \emph{Sparse components of images and optimal
+atomic decompositions}, Constr. Approx. 17 (2001), 353--382.\par
+\noindent[3] G.~Kutyniok, J.~Lemvig, and W.-Q. Lim, \emph{Shearlets and
+optimally sparse approximations}, arXiv:1106.1325.\par
+\noindent[4] T.~A. Bubba, T.~Heikkil\"a, D.~Labate, and L.~Ratti,
+\emph{Regularization with optimal space-time priors}, arXiv:2405.06337.
+
+\end{document}

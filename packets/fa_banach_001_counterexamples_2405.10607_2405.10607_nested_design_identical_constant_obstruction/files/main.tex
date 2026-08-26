@@ -1,0 +1,271 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Sd}{\mathbb S^d}
+\newcommand{\I}{\mathcal I}
+\emergencystretch=1em
+\title{A Complement-Layer Obstruction to\\
+Identical-Constant Nested Spherical Designs}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 3}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Zheng and Zhuang conjecture that for every pair $t_1<t$ one can nest a
+spherical $t_1$-design of cardinality $C_dt_1^d$ in a spherical $t$-design
+of cardinality $C_dt^d$, with the same dimension-dependent constant.  We
+disprove this identical-constant statement.  The added layer in any nested
+pair is itself a $t_1$-design and therefore has $\Omega_d(t_1^d)$ points.
+For adjacent strengths $t=t_1+1$, however, the conjectured cardinalities
+leave only $O_d(t_1^{d-1})$ new points.  The argument also rules out a common
+asymptotic leading coefficient and forces $\Omega_d(T^{d+1})$ points in a
+strict every-degree nested chain through strength $T$.  In the positive
+direction, regular polygons settle the weaker pairwise optimal-order problem
+on $\mathbb S^1$.  Status: \emph{candidate full counterexample, likely valid,
+pending human review}.
+\end{abstract}
+
+\section{Source conjecture and its exact convention}
+The source is R.~Zheng and X.~Zhuang,
+\emph{On the existence and estimates of nested spherical designs}
+\cite{ZZ}.  A multiset $Z_K\subset\Sd$ is a spherical $s$-design if
+\[
+ \frac1K\sum_{z\in Z_K}P(z)=\int_{\Sd}P\,d\mu_d
+\]
+for every polynomial $P$ of degree at most $s$.  The source explicitly allows
+repeated points.  It calls $Y_M\subset Z_K$ a nested pair when $Y_M$ is a
+$t_1$-design, $Z_K$ is a $t$-design, and $t_1<t$.
+
+The interpretation of ``order'' matters here.  The source defines $N$ to be
+of order $h(t_1,t,d)$ when
+\[
+ N=C_dh(t_1,t,d)
+\]
+for a constant depending only on $d$; it separately writes $N\sim t^d$ for
+two-sided comparability.  Figure~\ref{fig:definition} reproduces this
+definition.  The conjecture in Figure~\ref{fig:conjecture} asks for the
+\emph{same} constant in the cardinalities of the lower- and higher-strength
+designs for all $t_1<t$.
+
+\begin{figure}[ht]
+ \centering
+ \includegraphics[width=0.92\textwidth]{figures/order_definition_crop.png}
+ \caption{The source's exact definition of ``of order'', from PDF page~6.}
+ \label{fig:definition}
+\end{figure}
+
+\begin{figure}[ht]
+ \centering
+ \includegraphics[width=0.94\textwidth]{figures/conjecture_crop.png}
+ \caption{The identical-constant conjecture, from PDF page~12.}
+ \label{fig:conjecture}
+\end{figure}
+
+\section{Proof intuition}
+Equal weights make nesting unexpectedly rigid.  Both the full design and its
+old part integrate every polynomial of degree at most $t_1$ exactly.  On
+subtracting the two unnormalized quadrature identities, the new part also
+integrates those polynomials exactly with equal weights.  Thus every nonempty
+added layer must itself be a $t_1$-design.
+
+The source quotes the classical lower bound that any $t_1$-design requires a
+constant multiple of $t_1^d$ points.  Increasing the strength from $t_1$ to
+$t_1+1$ while preserving one coefficient $C_d$ changes $C_dt^d$ by only a
+discrete derivative, of order $t_1^{d-1}$.  These two requirements are
+incompatible.  Notice that this argument targets the conjecture's
+identical-coefficient clause; it does not rule out optimal power laws with
+different comparison constants.
+
+\section{The layer theorem and the counterexample}
+For a polynomial $P$, write
+$\I(P)=\int_{\Sd}P\,d\mu_d$.
+
+\begin{lemma}[Complement-layer principle]\label{lem:layer}
+Let $Y_M\subset Z_K$ be multisets on $\Sd$, with $K>M$.  If $Y_M$ is a
+spherical $s$-design and $Z_K$ is a spherical $r$-design for some $r\geq s$,
+then the multiset difference $X_{K-M}=Z_K\setminus Y_M$ is a spherical
+$s$-design.  Consequently,
+\begin{equation}\label{eq:gap}
+ K-M\geq N(d,s),
+\end{equation}
+where $N(d,s)$ is the minimum cardinality of a spherical $s$-design.
+\end{lemma}
+\begin{proof}
+For every polynomial $P$ of degree at most $s$, exactness of the two designs
+gives
+\[
+ \sum_{z\in Z_K}P(z)=K\I(P),
+ \qquad
+ \sum_{y\in Y_M}P(y)=M\I(P).
+\]
+Subtracting yields
+\[
+ \sum_{x\in X_{K-M}}P(x)=(K-M)\I(P),
+\]
+which is exactly the $s$-design identity for the added layer.  The definition
+of $N(d,s)$ now gives \eqref{eq:gap}.
+\end{proof}
+
+The Delsarte--Goethals--Seidel lower bound quoted in the source
+\cite{DGS} is
+\begin{equation}\label{eq:dgs}
+ L_d(s)=
+ \begin{cases}
+ \displaystyle\binom{d+k}{d}+\binom{d+k-1}{d},&s=2k,\\[6pt]
+ \displaystyle2\binom{d+k}{d},&s=2k+1,
+ \end{cases}
+ \qquad N(d,s)\geq L_d(s).
+\end{equation}
+In particular,
+\begin{equation}\label{eq:asymptotic}
+ L_d(s)\sim \frac{2^{1-d}}{d!}\,s^d.
+\end{equation}
+
+\begin{theorem}[Negative resolution of the identical-constant conjecture]
+\label{thm:negative}
+For every $d\geq1$, there is no constant $C_d>0$ such that for all integers
+$t_1<t$ there is a nested pair with
+\[
+ |Y|=C_dt_1^d,
+ \qquad |Z|=C_dt^d.
+\]
+More generally, adjacent nested pairs cannot have a common asymptotic leading
+coefficient: there are no pairs satisfying
+\[
+ |Y_n|=Cn^d+o(n^d),
+ \qquad |Z_n|=C(n+1)^d+o(n^d)
+\]
+for every sufficiently large $n$.
+\end{theorem}
+\begin{proof}
+Set $t_1=n$ and $t=n+1$.  Lemma~\ref{lem:layer} and
+\eqref{eq:dgs} would imply
+\begin{equation}\label{eq:contradiction}
+ C_d\bigl((n+1)^d-n^d\bigr)\geq L_d(n).
+\end{equation}
+The left side is $O_d(n^{d-1})$, whereas by \eqref{eq:asymptotic} the right
+side is $\Omega_d(n^d)$, contradicting \eqref{eq:contradiction} for large
+$n$.
+
+Under the asymptotic formulation, the difference $|Z_n|-|Y_n|$ is
+$o(n^d)$, while Lemma~\ref{lem:layer} still makes it at least
+$L_d(n)=\Omega_d(n^d)$.  This is the same contradiction.
+\end{proof}
+
+\begin{corollary}[Strict every-degree chains are one power larger]
+\label{cor:chain}
+Suppose
+\[
+ Z_1\subsetneq Z_2\subsetneq\cdots\subsetneq Z_T
+\]
+and $Z_s$ is a spherical $s$-design.  Then
+\[
+ |Z_T|\geq |Z_1|+\sum_{s=1}^{T-1}L_d(s)
+ =\Omega_d(T^{d+1}).
+\]
+\end{corollary}
+\begin{proof}
+Lemma~\ref{lem:layer} makes every nonempty layer
+$Z_{s+1}\setminus Z_s$ an $s$-design, so its cardinality is at least
+$L_d(s)$.  Sum the disjoint layer sizes and use
+$L_d(s)=\Omega_d(s^d)$.
+\end{proof}
+
+\begin{remark}
+Geometrically spaced strengths are consistent with the layer bound: for
+$s_j\asymp q^j$, the sum $\sum_j s_j^d$ is of the same order as its largest
+term.  This explains why the source's fixed-rational-ratio construction does
+not conflict with Theorem~\ref{thm:negative}.
+\end{remark}
+
+\section{The weaker optimal-order question is true on the circle}
+The preceding obstruction leaves open whether both sizes can merely be
+comparable to $t_1^d$ and $t^d$ with nonidentical constants.  For $d=1$ this
+weaker question has a completely explicit positive answer.
+
+\begin{theorem}\label{thm:circle}
+For every pair of integers $1\leq t_1<t$, there are nested designs
+$Y\subset Z$ on $\mathbb S^1$ such that
+\[
+ t_1<|Y|\leq2t_1,
+ \qquad t<|Z|\leq2t.
+\]
+\end{theorem}
+\begin{proof}
+Identify $\mathbb S^1$ with the unit complex numbers.  Put
+\[
+ q=t_1+1,
+ \qquad \ell=\left\lfloor\frac tq\right\rfloor+1.
+\]
+Let $Y$ be the regular $q$-gon and $Z$ the regular $q\ell$-gon, arranged as
+the corresponding sets of roots of unity.  Since $q$ divides $q\ell$, we
+have $Y\subset Z$.
+
+The regular $m$-gon is an $(m-1)$-design: its averages of $z^k$ vanish for
+$0<|k|<m$, and restrictions of real polynomials of degree at most $m-1$ are
+linear combinations of these Fourier modes.  Hence $Y$ is a $t_1$-design.
+Since $q\ell>t$, $Z$ is a $t$-design.  Finally,
+\[
+ q=t_1+1\leq2t_1,
+ \qquad q\ell\leq t+q\leq2t,
+\]
+where $q\leq t$ follows from $t_1<t$.
+\end{proof}
+
+\begingroup
+\small
+\section{Verification, scope, and novelty status}
+The complement identity is an exact subtraction of the two equal-weight
+quadrature formulas.  The cardinality contradiction uses the lower bound
+quoted by the source under its own multiset convention.  The circle
+construction was also checked directly through roots-of-unity power sums.
+
+Theorem~\ref{thm:negative} refutes the identical-coefficient conjecture as
+formulated using the source's definition of ``order''.  It does not refute
+the weaker higher-dimensional possibility
+$|Y|\asymp_dt_1^d$, $|Z|\asymp_dt^d$ with unrelated constants.  Nor does
+Corollary~\ref{cor:chain} apply to a chain that reuses the same already
+higher-strength design at several levels; it concerns strict new layers at
+every consecutive strength.
+
+A bounded novelty search on 11 August 2026 used the exact title, arXiv id,
+conjecture wording, and complement/layer/identical-constant keywords.  The
+January 2026 survey of An and Zhuang still describes the $O(t^d)$ optimal
+bound as believed and reports only the fixed-ratio case \cite{AZ}.  No direct
+complement-layer obstruction, adjacent-strength counterexample, or circle
+construction above was found.  This was not an exhaustive literature review.
+
+Human review should focus on the intended force of ``identical constants''
+and on the source's use of the Delsarte lower bound under its explicit
+multiset convention.
+
+\begin{thebibliography}{9}
+\bibitem{ZZ}
+R.~Zheng and X.~Zhuang,
+\emph{On the existence and estimates of nested spherical designs},
+Appl. Comput. Harmon. Anal. \textbf{73} (2024), 101672,
+\href{https://doi.org/10.1016/j.acha.2024.101672}{doi:10.1016/j.acha.2024.101672};
+arXiv:2405.10607.
+
+\bibitem{DGS}
+P.~Delsarte, J.-M.~Goethals, and J.~J.~Seidel,
+\emph{Spherical codes and designs}, in \emph{Geometry and Combinatorics},
+Elsevier, 1991, pp.~68--93.
+
+\bibitem{AZ}
+C.~An and X.~Zhuang,
+\emph{A survey on spherical designs: existence, numerical constructions,
+and applications}, arXiv:2601.11963 (2026).
+\end{thebibliography}
+\endgroup
+
+\end{document}

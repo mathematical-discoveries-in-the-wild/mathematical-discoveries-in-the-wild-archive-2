@@ -1,0 +1,250 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.88in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,microtype,graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newcommand{\Hh}{\mathcal H}
+\newcommand{\Tt}{\mathcal T}
+\newcommand{\Uu}{\mathcal U}
+\DeclareMathOperator{\ran}{ran}
+\DeclareMathOperator{\spec}{spec}
+
+\title{A sharp uniform noise bound for interpolating\\oblique reconstructions}
+\author{Candidate full solution to the operator-norm question in arXiv:1706.06444}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.93\textwidth}{\textbf{Result.}
+If the sampling frame has lower frame bound $A$ and
+$c=\cos(\varphi_{\Tt,\Uu})>0$, then every member of the source's interpolating
+family satisfies
+\[
+             \|Q_\lambda\|_{\mathrm{op}}
+             \le \frac{1}{\sqrt A\,c},\qquad 0\le\lambda\le1.
+\]
+This is the best possible universal bound for every fixed choice of
+$0<A\le B$, $0<c\le1$, and $\lambda$: equality is attained simultaneously
+for all $\lambda$ by an explicit three-dimensional example.}}
+\end{center}
+
+\section{Source question and notation}
+
+Berger, Gr\"ochenig, and Matz \cite{BGM} study a frame $(u_j)$ for a closed
+subspace $\Uu\subset\Hh$.  Write $U:\ell^2\to\Hh$ for its synthesis
+operator, $U^*$ for its analysis operator, $S=UU^*$ for its frame operator,
+and $G=U^*U$ for its Gramian.  Let $A,B$ be frame bounds, so that
+\[
+ \spec(S|_{\Uu})\subset[A,B],\qquad 0<A\le B<\infty.
+\]
+For a closed reconstruction space $\Tt$, assume
+\[
+ c:=\cos(\varphi_{\Tt,\Uu})
+   =\inf_{\substack{t\in\Tt\\\|t\|=1}}\|P_{\Uu}t\|>0.
+\]
+For $0<\lambda\le1$, put
+\[
+ \Sigma_\lambda=\lambda I+(1-\lambda)G,
+ \qquad
+ Q_\lambda d=\underset{g\in\Tt}{\operatorname{argmin}}
+ \|\Sigma_\lambda^{-1/2}(U^*g-d)\|_2.
+\]
+At $\lambda=0$ the source uses $G^{\dagger/2}$ in place of
+$\Sigma_\lambda^{-1/2}$.  These operators are perfect:
+$Q_\lambda U^*t=t$ for $t\in\Tt$.
+
+Lemma 3.8 of the source bounds the different quantity
+$\|Q_\lambda U^*\|$.  Immediately afterward, on source PDF page 16, the
+authors state that they do not know how to obtain a meaningful bound on
+$\|Q_\lambda\|$ itself.  The relevant passage is reproduced below.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.91\textwidth]{figures/open_problem_crop.png}
+\caption{The extracted request after Lemma 3.8 in the source PDF, page 16.}
+\end{figure}
+
+\section{Proof intuition}
+
+The apparent obstruction is that $\|\Sigma_\lambda^{-1/2}\|$ blows up as
+$\lambda\downarrow0$ whenever the sampling frame is redundant.  But
+$Q_\lambda$ annihilates the orthogonal complement of $\ran U^*$, exactly
+where that blow-up occurs.  On $\ran U^*$ the preconditioner has norm
+$(\lambda+(1-\lambda)A)^{-1/2}$.
+
+The same preconditioner improves the lower bound of the weighted analysis
+map on $\Tt$ by the reciprocal factor
+$\sqrt{A/(\lambda+(1-\lambda)A)}$.  Taking its Moore--Penrose inverse and
+multiplying the two estimates makes all $\lambda$-dependence cancel.  A
+one-dimensional reconstruction space aligned with a lower-frame-bound
+eigenvector makes both estimates equalities, proving optimality.
+
+\section{The sharp theorem}
+
+Let $J:\ell^2(I)\to\Tt$ be a unitary synthesis map for an orthonormal basis
+of $\Tt$.  Define
+\[
+ W_\lambda=
+ \begin{cases}
+  (\lambda I+(1-\lambda)G)^{-1/2},&0<\lambda\le1,\\
+  G^{\dagger/2},&\lambda=0,
+ \end{cases}
+ \qquad D_\lambda=W_\lambda U^*J.
+\]
+
+\begin{lemma}[Two compensating estimates]\label{lem:compensate}
+For $d_\lambda=\lambda+(1-\lambda)A$,
+\[
+ \|D_\lambda x\|\ge
+ c\sqrt{\frac{A}{d_\lambda}}\,\|x\|,
+ \qquad
+ \|W_\lambda|_{\ran U^*}\|\le\frac1{\sqrt{d_\lambda}}.
+\]
+Both statements include $\lambda=0$ with $d_0=A$.
+\end{lemma}
+
+\begin{proof}
+Because $(u_j)$ is a frame for $\Uu$, $\ran U^*$ is closed.  Under the polar
+decomposition of $U^*|_{\Uu}$, the restriction of $G$ to $\ran U^*$ is
+unitarily equivalent to $S|_{\Uu}$.  Hence
+\[
+ \spec(G|_{\ran U^*})\subset[A,B],
+\]
+and functional calculus gives the second estimate.
+
+The same polar decomposition, or the standard push-through identity for
+frame operators, gives for $t\in\Tt$
+\begin{align*}
+ \|W_\lambda U^*t\|^2
+ &=\left\langle P_{\Uu}t,
+ S\bigl(\lambda I+(1-\lambda)S\bigr)^{-1}P_{\Uu}t\right\rangle.
+\end{align*}
+The scalar function $s\mapsto s/(\lambda+(1-\lambda)s)$ is increasing on
+$(0,\infty)$ (constant when $\lambda=0$).  Spectral calculus and the angle
+condition therefore yield
+\[
+ \|W_\lambda U^*t\|^2
+ \ge \frac{A}{d_\lambda}\|P_{\Uu}t\|^2
+ \ge \frac{A}{d_\lambda}c^2\|t\|^2.
+\]
+Taking $t=Jx$ proves the first estimate.  At $\lambda=0$ the middle operator
+is $P_{\Uu}$, so the same formula remains valid.
+\end{proof}
+
+\begin{theorem}[Optimal universal noise bound]\label{thm:main}
+For every $0\le\lambda\le1$,
+\[
+                 \boxed{\displaystyle
+                 \|Q_\lambda\|_{\mathrm{op}}
+                 \le\frac1{\sqrt A\,c}.}
+\]
+Moreover this constant is optimal even if $A,B,c$, and $\lambda$ are all
+fixed in advance.
+\end{theorem}
+
+\begin{proof}
+The representation theorem for $Q_\lambda$ in the source, applied to an
+orthonormal basis of $\Tt$, reads
+\[
+                    Q_\lambda=J D_\lambda^\dagger W_\lambda.
+\]
+Here $D_\lambda$ has closed range by Lemma \ref{lem:compensate}.  Its range
+is contained in $\ran U^*$, so $D_\lambda^\dagger$ annihilates
+$(\ran U^*)^\perp$.  Since $W_\lambda$ preserves the orthogonal decomposition
+$\ell^2=\ran U^*\oplus(\ran U^*)^\perp$, Lemma \ref{lem:compensate} gives
+\begin{align*}
+ \|Q_\lambda\|
+ &\le \|D_\lambda^\dagger\|
+       \|W_\lambda|_{\ran U^*}\|\\
+ &\le \frac1c\sqrt{\frac{d_\lambda}{A}}
+       \frac1{\sqrt{d_\lambda}}
+  =\frac1{\sqrt A\,c}.
+\end{align*}
+
+For sharpness, fix arbitrary $0<A\le B$ and $0<c\le1$.  In
+$\Hh=\mathbb C^3$ with orthonormal basis $e_1,e_2,e_3$, take
+\[
+ \Uu=\operatorname{span}\{e_1,e_2\},\quad
+ u_1=\sqrt A\,e_1,\quad u_2=\sqrt B\,e_2,
+ \quad
+ \Tt=\operatorname{span}\{t\},
+ \quad t=ce_1+\sqrt{1-c^2}\,e_3.
+\]
+The sampling frame has optimal bounds $A,B$, and the subspace angle has
+cosine $c$.  If $d=(d_1,d_2)$ and $g=\alpha t$, the weighted least-squares
+functional is
+\[
+ \frac{|\sqrt A\,c\alpha-d_1|^2}{\lambda+(1-\lambda)A}
+ +\frac{|d_2|^2}{\lambda+(1-\lambda)B}.
+\]
+Its unique minimizer is
+$\alpha=d_1/(\sqrt A\,c)$, including the Moore--Penrose endpoint
+$\lambda=0$.  Thus
+\[
+ Q_\lambda(d_1,d_2)=\frac{d_1}{\sqrt A\,c}\,t,
+ \qquad \|Q_\lambda\|=\frac1{\sqrt A\,c}
+\]
+for every $\lambda\in[0,1]$.  This attains the asserted bound with all
+parameters fixed.
+\end{proof}
+
+\begin{corollary}[Complete universal bracket]
+Put
+\[
+ a_{\Tt}:=\inf_{\substack{t\in\Tt\\\|t\|=1}}\|U^*t\|>0.
+\]
+Then
+\[
+ \frac1{a_{\Tt}}=\|Q_1\|\le\|Q_\lambda\|
+ \le\frac1{\sqrt A\,c},\qquad 0\le\lambda\le1.
+\]
+Both inequalities can be equalities simultaneously.
+\end{corollary}
+
+\begin{proof}
+$Q_1=(U^*|_{\Tt})^\dagger$ is the Moore--Penrose left inverse, so its norm
+is $1/a_{\Tt}$.  Every $Q_\lambda$ is a left inverse of $U^*|_{\Tt}$;
+testing on unit vectors approaching the lower modulus $a_{\Tt}$ shows that
+no left inverse has smaller norm.  The upper estimate is Theorem
+\ref{thm:main}, and the sharpness example has
+$a_{\Tt}=\sqrt A\,c$.
+\end{proof}
+
+\section{Verification, novelty, and scope}
+
+The included script constructs random finite frames, redundant analysis
+operators, reconstruction subspaces, and all endpoint/interior values of
+$\lambda$.  It checks perfect reconstruction and the theorem's inequality.
+It separately verifies the equality construction for several prescribed
+values of $A,B,c$.  These computations are sanity checks only; the proof is
+the functional-calculus argument above.
+
+A bounded novelty search on 17 August 2026 covered the run's four lightweight
+indexes and web searches for the exact title together with the phrase
+\emph{operator norm $Q_\lambda$}, the source's phrase
+\emph{meaningful bound}, and weighted pseudoinverse norm bounds.  The exact
+hits were the arXiv and published versions of the source; no later paper
+explicitly resolving this request was found.  Novelty is therefore plausible,
+not certified.
+
+The result completely determines the best universal bound in terms of the
+source's frame bounds and subspace angle.  It does not claim an exact formula
+for a specified frame, nor does it prove or disprove monotonicity of
+$\lambda\mapsto\|Q_\lambda\|$ for every individual frame.  Human review
+should focus on the range restriction before the norm estimate and the
+$\lambda=0$ Moore--Penrose endpoint.  Verdict:
+\textbf{candidate full solution, likely valid}.
+
+\begin{thebibliography}{9}
+\bibitem{BGM}
+P. Berger, K. Gr\"ochenig, and G. Matz,
+\emph{Sampling and Reconstruction in Distinct Subspaces Using Oblique
+Projections}, arXiv:1706.06444; J. Fourier Anal. Appl. 25 (2019), 1080--1112.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,221 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.9in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\Prob}{\mathcal P}
+\newcommand{\TV}{\operatorname{TV}}
+\newcommand{\C}{\mathbb C}
+
+\title{A classical finite counterexample to the\\
+$({\rm Lip}_p)$-isometric state-span conjecture}
+\author{Candidate solution packet for run \texttt{fa\_banach\_001}}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.9\textwidth}{
+\textbf{Status: candidate counterexample, likely valid.}
+For every $p\geq1$, the regular action of the classical group $C_3$ on a
+three-point path metric has
+$\overline{\operatorname{span}}^{w^*}S_p(A)=A^*$, although $S_p(A)$ is a
+proper subset of the state space.  This disproves Conjecture~4.13 of
+Chirvasitu.
+}}
+\end{center}
+
+\section{Source conjecture}
+
+For a compact quantum group $A$ acting on a compact metric space $(X,d)$,
+Chirvasitu defines a state $\psi\in S(A)$ to be
+$({\rm Lip}_p)$-isometric when
+\[
+ W_p(x\mathbin{\triangleleft}\psi,y\mathbin{\triangleleft}\psi)
+ \leq d(x,y)\qquad(x,y\in X).
+\]
+The set of such states is denoted by $S_p(A)$.  Conjecture~4.13 on PDF
+page~23 of arXiv:1407.0960 \cite{source} states:
+
+\begin{quote}
+Let $A$ act faithfully on the compact metric space $(X,d)$, and $p\geq1$.
+The set of states in the weak$^*$-closed linear span of $S_p(A)$ coincides
+with $S_p(A)$.
+\end{quote}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.97\textwidth]{figures/open_problem_crop.png}
+\caption{Definition~4.12 and Conjecture~4.13 in the source (PDF page~23).}
+\end{figure}
+
+\section{Idea of the proof}
+
+Classical states are probability measures on the acting group.  For a
+transitive finite action, Haar measure sends every point of $X$ to the same
+uniform distribution.  Measures sufficiently close to Haar therefore send
+every pair of points to distributions whose Wasserstein distance is smaller
+than the least nonzero distance in $X$.  Thus $S_p(A)$ contains a relative
+neighborhood of Haar and consequently spans the whole dual $A^*$.
+
+This is incompatible with any non-isometric element of the group: its point
+mass is a state of $A$ and hence lies in that full span, but it expands some
+distance and so is not in $S_p(A)$.  The three-cycle acting on a three-point
+path is the smallest transparent example.
+
+\section{A finite transport estimate}
+
+We use $\TV(\alpha,\beta)=\frac12\|\alpha-\beta\|_1$ for probability
+measures on a finite set.
+
+\begin{lemma}\label{lem:transport}
+Let $(X,d)$ be a finite metric space of diameter $D$.  For all
+$\alpha,\beta\in\Prob(X)$ and $p\geq1$,
+\[
+ W_p(\alpha,\beta)^p\leq D^p\TV(\alpha,\beta).
+\]
+\end{lemma}
+
+\begin{proof}
+Put the common mass $\min\{\alpha(z),\beta(z)\}$ on $(z,z)$ for every
+$z\in X$.  The unmatched mass on either side has total mass
+$r=\TV(\alpha,\beta)$.  Couple those two residual measures arbitrarily.
+The diagonal part costs zero and every residual pair costs at most $D^p$,
+so the resulting transport plan has cost at most $D^p r$.
+\end{proof}
+
+\section{A general counterexample principle}
+
+\begin{theorem}\label{thm:general}
+Let a finite group $G$ act faithfully and transitively on a finite metric
+space $(X,d)$.  Suppose the action is not isometric.  Put $A=C(G)$.  Then,
+for every $p\geq1$,
+\[
+ \overline{\operatorname{span}}^{w^*}S_p(A)=A^*,
+ \qquad S_p(A)\ne S(A).
+\]
+In particular, the states in the weak$^*$-closed linear span of $S_p(A)$ do
+not coincide with $S_p(A)$.
+\end{theorem}
+
+\begin{proof}
+A state of $A=C(G)$ is a probability measure $\mu$ on $G$, and
+$x\mathbin{\triangleleft}\mu$ is the pushforward of $\mu$ under
+$g\mapsto xg$.  Let $h$ be the uniform probability measure on $G$.  By
+transitivity, $x\mathbin{\triangleleft}h$ is the uniform probability measure
+$u_X$ on $X$, independently of $x$.
+
+Let $D=\operatorname{diam}X$ and let
+$m=\min\{d(x,y):x\ne y\}>0$.  Pushforward contracts total variation, hence
+for every $x,y\in X$,
+\begin{align*}
+ \TV(x\mathbin{\triangleleft}\mu,
+       y\mathbin{\triangleleft}\mu)
+ &\leq \TV(x\mathbin{\triangleleft}\mu,u_X)
+       +\TV(u_X,y\mathbin{\triangleleft}\mu)\\
+ &\leq 2\TV(\mu,h).
+\end{align*}
+Lemma~\ref{lem:transport} gives
+\[
+ W_p(x\mathbin{\triangleleft}\mu,
+       y\mathbin{\triangleleft}\mu)^p
+ \leq 2D^p\TV(\mu,h).
+\]
+Thus every state satisfying
+$\TV(\mu,h)<m^p/(2D^p)$ belongs to $S_p(A)$: the case $x=y$ is trivial,
+and otherwise the displayed Wasserstein distance is less than
+$m\leq d(x,y)$.
+
+Consequently $S_p(A)$ contains a relative neighborhood of the interior point
+$h$ in the probability simplex on $G$.  Its real affine span is the whole
+mass-one hyperplane, and its real linear span is the space of all signed
+measures on $G$.  After complexification, its complex linear span is $A^*$.
+Since $A^*$ is finite-dimensional, weak$^*$ closure changes nothing.
+
+It remains to see that $S_p(A)$ is proper.  Since the action is not
+isometric, some group element expands a distance.  Indeed, if an element
+strictly contracts some pair, its inverse expands the image pair; hence there
+are $g\in G$ and $x,y\in X$ with
+$d(xg,yg)>d(x,y)$.  For the state $\delta_g$,
+\[
+ W_p(x\mathbin{\triangleleft}\delta_g,
+       y\mathbin{\triangleleft}\delta_g)
+ =W_p(\delta_{xg},\delta_{yg})=d(xg,yg)>d(x,y).
+\]
+Therefore $\delta_g\notin S_p(A)$, although it lies in the linear span just
+proved to be all of $A^*$.
+\end{proof}
+
+\section{The explicit three-point example}
+
+Take $X=\{0,1,2\}$ with
+\[
+ d(0,1)=d(1,2)=1,\qquad d(0,2)=2,
+\]
+and let $G=C_3=\mathbb Z/3\mathbb Z$ act by
+$xg=x+g\pmod 3$.  This regular action is faithful and transitive.  It is not
+isometric because addition by one sends the pair $(1,2)$, at distance one,
+to $(2,0)$, at distance two.  Faithfulness in the source's coaction sense is
+also immediate: the regular action has trivial kernel (equivalently, its
+matrix coefficients contain all point masses in $C(C_3)$).  Theorem~\ref{thm:general}
+therefore disproves Conjecture~4.13 for every $p\geq1$.
+
+For completeness, the full-span claim can be witnessed by only three states.
+Let $h=(1/3,1/3,1/3)$ and choose
+$0<\varepsilon<2^{-(p+1)}$.  Then
+\[
+ \mu_0=h,\qquad
+ \mu_1=h+\varepsilon(\delta_0-\delta_2),\qquad
+ \mu_2=h+\varepsilon(\delta_1-\delta_2)
+\]
+are states in $S_p(A)$, because $D=2$, $m=1$, and
+$\TV(\mu_i,h)\leq\varepsilon$.  As row vectors, their determinant is
+$\varepsilon^2\ne0$, so they span $A^*\cong\C^3$.  Yet
+\[
+ W_p(1\mathbin{\triangleleft}\delta_1,
+       2\mathbin{\triangleleft}\delta_1)
+ =W_p(\delta_2,\delta_0)=2>1=d(1,2),
+\]
+so $\delta_1\notin S_p(A)$.
+
+\section{Verification and novelty status}
+
+The included script \texttt{code/verify\_c3\_transport.py} uses exact rational
+arithmetic and a finite min-cost-flow solver to compute all nine orbit-law
+transport problems for the three displayed spanning states at
+$p=1,2,3,4,5,8$.  It verifies their determinant and the point-mass violation.
+The calculation is a regression check only; Lemma~\ref{lem:transport} and the
+proof above establish the result for every real $p\geq1$.
+
+A bounded novelty check on 17 August 2026 searched arXiv, exact web phrases,
+the visible citation record, and later same-author quantum-isometry papers for
+the arXiv id, paper title, ``Conjecture 4.13,'' ``$S_p(A)$,''
+``weak$^*$-closed linear span,'' and close variants involving
+$({\rm Lip}_p)$-isometric states.  No later proof or counterexample to this
+span conjecture was found.  Novelty is plausible, not certified.
+
+\section{Scope and human-review recommendation}
+
+This packet fully negates Conjecture~4.13, even for a classical finite group.
+It does not address the separate conjecture earlier in the source that the
+conjunction of all $({\rm Lip}_p)$ conditions implies $(D)$-isometry.
+Human review should first check the total-variation neighborhood argument and
+the classical identification of states with group measures.  All remaining
+claims reduce to the displayed three-point metric and elementary linear
+algebra.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+A.~Chirvasitu,
+\emph{On quantum symmetries of compact metric spaces},
+J. Geom. Phys. 87 (2015), 134--151;
+\href{https://arxiv.org/abs/1407.0960}{arXiv:1407.0960}.
+\end{thebibliography}
+
+\end{document}

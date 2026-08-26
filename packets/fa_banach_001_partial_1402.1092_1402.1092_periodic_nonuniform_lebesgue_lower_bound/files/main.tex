@@ -1,0 +1,332 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,microtype,graphicx}
+\usepackage[colorlinks=true,urlcolor=blue,citecolor=blue,linkcolor=blue]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\PW}{\mathcal{PW}}
+\newcommand{\T}{\mathbb T}
+\DeclareMathOperator{\spanop}{span}
+\title{Logarithmic Lebesgue lower bounds for periodic nonuniform sampling}
+\author{Partial-result packet for \texttt{fa\_banach\_001}}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+Substantial partial resolution of Conjecture 80 in Boche--M\"onich
+\cite{source}: the conjectured pointwise \(c\log N\) lower bound holds for
+every periodic nonuniform perturbation of the integer sampling lattice.
+The general aperiodic complete-interpolating-sequence case remains open.
+
+\section*{Source conjecture}
+
+Holger Boche and Ullrich J.\ M\"onich,
+\emph{Signal and System Approximation from General Measurements},
+arXiv:1402.1092 (2014) \cite{source}.  In Conjecture 80, following Remark 26,
+they ask whether every ordered complete interpolating sequence
+\(\{t_k\}_{k\in\mathbb Z}\) for \(\PW_\pi^2\), with cardinal functions
+\(\phi_k\), satisfies
+\[
+ \frac1{2\pi}\int_{-\pi}^{\pi}
+ \left|\sum_{k=-N}^{N}e^{i\omega t_k}\widehat\phi_k(x)\right|\,dx
+ \geq C\log N
+\]
+for every \(\omega\in[-\pi,\pi]\) and \(N\in\mathbb N\).  Their proved
+estimate has instead the maximum over all earlier truncation indices
+\(1\leq M\leq N\).
+
+The cached TeX was faithfully compiled with a substitute article class
+because its publisher class was absent; the conjecture appears on page 18
+of that local source PDF, where automatic numbering labels it Conjecture
+5.3 rather than 80.
+
+\begin{center}
+\includegraphics[width=0.97\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Definitions and theorem}
+
+Fix an integer \(q\geq2\) and real numbers
+\[
+ 0=\alpha_0<\alpha_1<\cdots<\alpha_{q-1}<q.
+\]
+For \(m\in\mathbb Z\) and \(0\leq r<q\), define
+\begin{equation}\label{eq:nodes}
+ t_{qm+r}=qm+\alpha_r.
+\end{equation}
+These nodes are strictly increasing and \(t_0=0\).  Let
+\(\phi_k\in\PW_\pi^2\) be their cardinal functions, normalized by
+\[
+ \phi_k(t_\ell)=\delta_{k\ell},\qquad
+ \phi_k(t)=\frac1{2\pi}\int_{-\pi}^{\pi}
+ \widehat\phi_k(x)e^{ixt}\,dx.
+\]
+Put
+\[
+ L_N(\omega)=\frac1{2\pi}\int_{-\pi}^{\pi}
+ \left|\sum_{k=-N}^{N}e^{i\omega t_k}\widehat\phi_k(x)\right|\,dx.
+\]
+
+\begin{theorem}[Periodic nonuniform case]\label{thm:main}
+The sequence in \eqref{eq:nodes} is a complete interpolating sequence for
+\(\PW_\pi^2\).  There is a constant
+\(c=c(q,\alpha_1,\ldots,\alpha_{q-1})>0\) such that
+\[
+ L_N(\omega)\geq c\log(N+1)
+\]
+for every \(N\geq1\) and every \(\omega\in[-\pi,\pi]\).
+\end{theorem}
+
+\begin{corollary}[Alternating nonuniform grids]\label{cor:q2}
+For every \(0<a<2\), the nonuniform sequence
+\[
+ t_{2m}=2m,\qquad t_{2m+1}=2m+a
+\]
+satisfies Conjecture 80.  Except when \(a=1\), its consecutive gaps alternate
+between \(a\) and \(2-a\), so this is a genuinely non-equidistant family.
+\end{corollary}
+
+\section*{Proof intuition}
+
+Split the frequency interval into \(q\) equal cells.  Under this splitting,
+the exponential basis associated with \eqref{eq:nodes} becomes the ordinary
+Fourier basis on one cell, multiplied pointwise by a fixed Vandermonde
+matrix and harmless unimodular phases.  Inverting that finite matrix gives
+the biorthogonal functions explicitly.
+
+For a fixed evaluation frequency \(\omega\), restrict the Lebesgue integral
+to the same cell as \(\omega\).  All residue classes modulo \(q\) have a
+large common block of truncation indices.  Their contribution factors as
+a scalar Dirichlet kernel times a continuous coefficient whose value on
+the diagonal is exactly \(q\).  The non-common endpoints contribute only
+a uniformly bounded remainder.  The local \(L^1\)-norm of the Dirichlet
+kernel is logarithmic, and the bounded remainder cannot cancel that growth.
+
+\section*{Proof}
+
+Partition \([-\pi,\pi)\) into cells
+\[
+ I_j=I_0+s_j,\qquad
+ I_0=[-\pi,-\pi+2\pi/q),\qquad s_j=\frac{2\pi j}{q},
+ \quad 0\leq j<q.
+\]
+Set
+\[
+ z_r=e^{2\pi i\alpha_r/q},\qquad
+ V=(z_r^j)_{\substack{0\leq j<q\\0\leq r<q}}.
+\]
+The \(z_r\) are distinct, so the Vandermonde matrix \(V\) is invertible.
+
+\subsection*{The exponential system is a Riesz basis}
+
+Use the cell-splitting map
+\[
+ (\mathcal Jf)(y)=\bigl(f(y+s_0),\ldots,f(y+s_{q-1})\bigr),
+ \qquad y\in I_0.
+\]
+For \(k=qm+r\),
+\[
+ \mathcal J(e^{it_k\cdot})(y)
+ =e^{iqmy}e^{i\alpha_r y}v_r,
+ \qquad v_r=(1,z_r,\ldots,z_r^{q-1})^{\mathsf T}.
+\]
+Thus the split system is obtained from the orthogonal vector Fourier basis
+\(\{e^{iqmy}e_r:m\in\mathbb Z,0\leq r<q\}\) by multiplication with
+\[
+ W(y)=V\,\operatorname{diag}
+ \bigl(e^{i\alpha_0y},\ldots,e^{i\alpha_{q-1}y}\bigr).
+\]
+Both \(W(y)\) and \(W(y)^{-1}\) are uniformly bounded on \(I_0\).
+Consequently \(\{e^{it_kx}\}_{k\in\mathbb Z}\) is a Riesz basis of
+\(L^2[-\pi,\pi]\).  By the complete-interpolation/Riesz-basis equivalence
+recalled in the source \cite[Theorem 11]{source}, the nodes form a complete
+interpolating sequence for \(\PW_\pi^2\).
+
+\subsection*{Explicit biorthogonal functions}
+
+Let
+\begin{equation}\label{eq:C}
+ C=q(V^{\mathsf T})^{-1}=(c_{jr})_{0\leq j,r<q}.
+\end{equation}
+We claim that the Fourier transforms of the cardinal functions are
+characterized cellwise by
+\begin{equation}\label{eq:dual}
+ \widehat\phi_{qm+r}(y+s_j)
+ =e^{-i(qm+\alpha_r)y}c_{jr},
+ \qquad y\in I_0.
+\end{equation}
+Indeed, for \(t_{qn+s}=qn+\alpha_s\), cell splitting gives
+\begin{align*}
+ &\frac1{2\pi}\int_{-\pi}^{\pi}
+ e^{it_{qn+s}x}\widehat\phi_{qm+r}(x)\,dx\\
+ &\quad=\frac1{2\pi}\int_{I_0}
+ e^{iq(n-m)y}e^{i(\alpha_s-\alpha_r)y}
+ \sum_{j=0}^{q-1}z_s^jc_{jr}\,dy.
+\end{align*}
+By \eqref{eq:C}, the sum is \(q\delta_{sr}\).  When \(s=r\),
+orthogonality of \(\{e^{iqmy}\}\) on the interval of length \(2\pi/q\)
+then makes the last display \(\delta_{nm}\); when \(s\neq r\), it is zero
+before integration.  Hence \eqref{eq:dual} is the unique biorthogonal
+family.
+
+\subsection*{Dirichlet core of every truncation}
+
+Fix \(\omega\in I_j\), write \(\omega=y_\omega+s_j\), and restrict the
+integration variable to \(x=y+s_j\in I_j\).  Put \(u=\omega-x\) and
+\[
+ b_{jr}=z_r^jc_{jr},\qquad
+ A_j(u)=\sum_{r=0}^{q-1}b_{jr}e^{i\alpha_ru}.
+\]
+From \eqref{eq:dual},
+\begin{equation}\label{eq:kernel}
+ K_N(\omega,x):=\sum_{k=-N}^{N}
+ e^{i\omega t_k}\widehat\phi_k(x)
+ =
+ \sum_{r=0}^{q-1}b_{jr}e^{i\alpha_ru}
+ \sum_{\substack{m\in\mathbb Z\\|qm+r|\leq N}}e^{iqmu}.
+\end{equation}
+Since \(C^{\mathsf T}=qV^{-1}\),
+\[
+ A_j(0)=\sum_{r=0}^{q-1}V_{jr}C_{jr}
+ =(VC^{\mathsf T})_{jj}=q.
+\]
+There are finitely many \(j\), so some \(\eta>0\), chosen also with
+\(\eta\leq\pi/q\), satisfies
+\begin{equation}\label{eq:Aaway}
+ |A_j(u)|\geq q/2
+ \quad(0\leq j<q,\ |u|\leq\eta).
+\end{equation}
+
+Write \(N=q\ell+s\), \(0\leq s<q\).  The integer ranges in the inner sums
+of \eqref{eq:kernel} all contain the same consecutive block
+\[
+ J_N=
+ \begin{cases}
+ \{-\ell,\ldots,\ell-1\},&s\leq q-2,\\
+ \{-\ell,\ldots,\ell\},&s=q-1.
+ \end{cases}
+\]
+Each residue class has at most two further endpoint indices.  Therefore
+\begin{equation}\label{eq:decomp}
+ K_N(\omega,x)=A_j(u)P_N(u)+R_{N,j}(u),
+ \qquad
+ P_N(u)=\sum_{m\in J_N}e^{iqmu},
+\end{equation}
+where
+\begin{equation}\label{eq:R}
+ |R_{N,j}(u)|\leq
+ B:=2\max_j\sum_{r=0}^{q-1}|b_{jr}|
+\end{equation}
+for every \(N,j,u\).
+
+\subsection*{Local logarithmic lower bound}
+
+If a consecutive integer set has cardinality \(d\), then
+\[
+ \left|\sum_{m=a}^{a+d-1}e^{iqmu}\right|
+ =\frac{|\sin(dqu/2)|}{|\sin(qu/2)|}.
+\]
+The elementary Dirichlet-kernel estimate
+\begin{equation}\label{eq:Dir}
+ \int_0^\eta
+ \frac{|\sin(dqu/2)|}{|\sin(qu/2)|}\,du
+ \geq c_0\log(d+1)-C_0
+\end{equation}
+holds with constants depending only on \(q,\eta\).  For completeness,
+\(|\sin(qu/2)|\leq q|u|/2\), and after the change of variables
+\(v=dqu/2\), the lower bound follows by summing
+\(\int_{m\pi+\pi/6}^{m\pi+5\pi/6}|\sin v|v^{-1}\,dv\)
+over \(m\leq d\eta q/(2\pi)\).
+
+For every \(\omega\), one of the two one-sided intervals of length \(\eta\)
+starting at \(\omega\) lies in the same cell \(I_j\); at a cell boundary,
+choose either adjacent cell.  On that interval, \eqref{eq:Aaway}--\eqref{eq:R}
+and the triangle inequality give, for all sufficiently large \(N\),
+\begin{align*}
+ 2\pi L_N(\omega)
+ &\geq \int_0^\eta
+ \bigl(|A_j(u)||P_N(u)|-|R_{N,j}(u)|\bigr)\,du\\
+ &\geq \frac q2\bigl(c_0\log(|J_N|+1)-C_0\bigr)-B\eta\\
+ &\geq c_1\log(N+1)-C_1,
+\end{align*}
+uniformly in \(\omega\).  This is at least \(c_2\log(N+1)\) once \(N\)
+is large.
+
+For each of the finitely many remaining \(N\), the function
+\(\omega\mapsto L_N(\omega)\) is continuous and strictly positive: a
+finite nontrivial linear combination of the biorthogonal functions cannot
+vanish in \(L^2\).  Shrinking \(c_2\) covers those \(N\) as well and proves
+Theorem \ref{thm:main}.  Corollary \ref{cor:q2} is the case
+\(q=2,\alpha_0=0,\alpha_1=a\).
+\qed
+
+\section*{Verification notes}
+
+\begin{itemize}
+\item The identity \(VC^{\mathsf T}=qI\) is the key noncancellation check:
+      it forces the coefficient of the Dirichlet core to equal \(q\) on
+      the diagonal, independently of the cell.
+\item Every residue-class truncation differs from the common block \(J_N\)
+      by at most two indices.  This is why the remainder in
+      \eqref{eq:decomp} is bounded independently of \(N\).
+\item The optional checker in the packet's code directory verifies the
+      Vandermonde/dual identities and numerically evaluates sample Lebesgue
+      functions for alternating and three-periodic grids.  No numerical
+      output is used in the proof.
+\item The proof gives constants depending on the fixed periodic pattern.
+      It does not assert a uniform constant over degenerating patterns
+      where two \(\alpha_r\)'s approach one another modulo \(q\).
+\end{itemize}
+
+\section*{Upgrade attempts, novelty, and limitations}
+
+The source's first two named conjectures are proved later in the same paper
+and were rejected as extraction noise.  Conjecture 80 is genuine.  Direct
+attempts to upgrade the source's Szarek lemma fail because that lemma is
+intrinsically a maximal-partial-sum statement.  General lower bounds for
+projection norms control a supremum over \(\omega\), whereas Conjecture 80
+requires every \(\omega\) and every truncation.  Finite or summable
+perturbations of a periodic pattern were also considered, but the dual
+Riesz basis changes nonlocally, so the uniformly bounded endpoint remainder
+used here no longer follows.
+
+A bounded search on 11 August 2026 used the paper title, Conjecture 80,
+complete interpolating sequences, periodic nonuniform sampling, Lebesgue
+constants, and logarithmic lower bounds.  It found the authors' later
+\emph{Strong Divergence for System Approximations} \cite{strong}, which
+strengthens equidistant and adaptive-kernel results but does not establish
+the arbitrary nonuniform kernel estimate above.  It also found literature
+on periodic nonuniform reconstruction and on complete interpolating
+sequences, but no exact pointwise \(L^1\) lower bound matching this theorem.
+Novelty confidence is therefore moderate, not definitive.
+
+The unresolved step is genuinely aperiodic: for a general complete
+interpolating sequence, splitting into finitely many cells does not produce
+a fixed finite matrix, and no common Dirichlet core with bounded remainder
+is available.  The full Conjecture 80 remains open in this packet.
+
+\section*{Human-review recommendation}
+
+Validity confidence is high.  A reviewer should check the transpose
+convention in \eqref{eq:C}, the normalization \(q\) in the biorthogonality
+calculation, and the common-block indexing for \(N=q\ell+s\).  Those are the
+only places where a phase or endpoint error could affect the theorem.
+Specialist literature review is recommended before a public novelty claim.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+H. Boche and U. J. M\"onich,
+\emph{Signal and System Approximation from General Measurements},
+\href{https://arxiv.org/abs/1402.1092}{arXiv:1402.1092} (2014).
+
+\bibitem{strong}
+H. Boche and U. J. M\"onich,
+\emph{Strong Divergence for System Approximations},
+\href{https://arxiv.org/abs/1505.03057}{arXiv:1505.03057} (2015).
+\end{thebibliography}
+
+\end{document}

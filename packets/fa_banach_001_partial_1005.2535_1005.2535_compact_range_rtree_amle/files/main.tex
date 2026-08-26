@@ -1,0 +1,267 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\Lip}{\operatorname{Lip}}
+\newcommand{\conv}{\operatorname{conv}}
+\newcommand{\dist}{\operatorname{dist}}
+
+\title{Compact-Domain AMLEs with Arbitrary Complete $\R$-Tree Targets}
+\author{FA Banach run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_10}}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This packet records a candidate partial result, likely valid, toward the
+conjectural extension stated after Theorem~1 of Naor and Sheffield
+\cite{NS}.  The source proves existence and uniqueness of tree-valued
+absolutely minimal Lipschitz extensions when the domain is locally compact
+and the target tree comes from a finite graph.  It conjectures that local
+compactness can be removed and that the target may instead be a bounded
+$\R$-tree.  We remove the finiteness restriction on the target for compact
+domains, and prove existence.  We do not prove uniqueness for the enlarged
+target class or remove local compactness of the domain.
+
+\section*{Source Passage}
+
+\begin{center}
+\includegraphics[width=0.98\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Question and Answered Part}
+
+The source defines a metric tree as the one-dimensional simplicial complex
+of a finite graph-theoretical tree, with arbitrary positive edge lengths.  It
+then writes:
+
+\begin{quote}
+We conjecture that the assumption that $X$ is locally compact can be dropped,
+and that $T$ need not correspond to a finite graph-theoretical tree, but
+rather can belong to the more general class of bounded $\R$-trees.
+\end{quote}
+
+We establish the target-tree extension when $X$ is compact.  In fact the
+ambient target need not be bounded: compactness of the boundary data confines
+the construction to a compact subtree.
+
+\section*{Definitions}
+
+Let $Y$ be closed in a metric space $X$ and let $f:Y\to T$ be Lipschitz.  A
+Lipschitz extension $u:X\to T$ is an \emph{absolutely minimal Lipschitz
+extension} (AMLE) if, for every open $U\subseteq X\setminus Y$ and every
+Lipschitz $h:X\to T$ agreeing with $u$ on $X\setminus U$,
+\[
+ \Lip_U(h)\geq \Lip_U(u).
+\]
+
+For a map $u:X\to T$, say that $u$ satisfies \emph{$T$-comparison} on
+$X\setminus Y$ when, for every $t\in T$, the real-valued function
+$x\mapsto d_T(t,u(x))$ satisfies comparison with distance functions from
+above in the sense of \cite[Section~2]{NS}.  Proposition~7 of \cite{NS}
+shows that $T$-comparison implies the AMLE property.  Importantly, the source
+notes that this implication works for an arbitrary metric target; the finite
+tree structure is needed only for the converse direction.
+
+\section*{Proof Intuition}
+
+The finite-tree theorem can be used as an approximation engine.  The boundary
+image is compact, and in a complete $\R$-tree its closed convex hull is still
+compact.  Approximate that hull from inside by finite subtrees and project the
+boundary values onto them.  The source theorem produces AMLEs for all the
+finite problems.  These maps are equi-Lipschitz and live in one compact tree,
+so a subsequence converges uniformly.
+
+The key point is that the property used to recognize the limit is stable.
+If $K$ is a finite approximating subtree and $p(t)$ is the gate projection of
+$t$ onto $K$, then for $z\in K$,
+\[
+ d(t,z)=d(t,p(t))+d(p(t),z).
+\]
+Thus comparison for target points in $K$ automatically gives comparison for
+every target point in the full compact hull.  Uniform limits preserve these
+scalar comparison inequalities, and comparison implies absolute minimality.
+
+\section*{Compact Convex Hulls in $\R$-Trees}
+
+\begin{lemma}\label{lem:hull}
+Let $T$ be a complete $\R$-tree and let $A\subseteq T$ be compact.  Then the
+closed convex hull
+\[
+ C=\overline{\conv}(A)
+\]
+is a compact $\R$-tree.
+\end{lemma}
+
+\begin{proof}
+Fix $\varepsilon>0$ and choose a finite $\varepsilon$-net
+$F\subseteq A$.  In an $\R$-tree the convex hull of a set is the union of
+the geodesic segments joining pairs of its points.  The set $\conv(F)$ is a
+finite union of compact segments and is therefore compact.
+
+Let $z\in\conv(A)$, so that $z\in[a,b]$ for some $a,b\in A$.  Choose
+$a',b'\in F$ with $d(a,a')<\varepsilon$ and
+$d(b,b')<\varepsilon$.  Parameterize $[a,b]$ and $[a',b']$ proportionally
+and let $z'\in[a',b']$ have the same parameter as $z$.  Geodesics in an
+$\R$-tree are Busemann convex, hence
+\[
+ d(z,z')\leq (1-s)d(a,a')+s d(b,b')<\varepsilon
+\]
+for the relevant $s\in[0,1]$.  Thus $\conv(A)$ lies in the
+$\varepsilon$-neighborhood of the compact set $\conv(F)$.  It follows that
+$\conv(A)$ is totally bounded.  Its closure $C$ is complete, being closed in
+the complete space $T$, and hence is compact.  A closed convex subset of an
+$\R$-tree is again an $\R$-tree.
+\end{proof}
+
+\section*{The Compact-Domain Extension Theorem}
+
+\begin{theorem}\label{thm:main}
+Let $X$ be a compact length space, let $\varnothing\neq Y\subseteq X$ be
+closed, let $T$ be an arbitrary complete $\R$-tree, and let
+$f:Y\to T$ be Lipschitz.  Then $f$ admits an AMLE $u:X\to T$.
+Moreover, writing
+\[
+ C=\overline{\conv}(f(Y)),
+\]
+one may choose $u(X)\subseteq C$ and
+\[
+ \Lip_X(u)=\Lip_Y(f).
+\]
+\end{theorem}
+
+\begin{proof}
+Put $L=\Lip_Y(f)$.  Because $Y$ is compact, $f(Y)$ is compact; hence
+$C$ is compact by Lemma~\ref{lem:hull}.
+
+Choose increasing finite sets $F_n\subseteq C$ such that $F_n$ is a
+$1/n$-net in $C$, and set
+\[
+ K_n=\conv(F_n).
+\]
+Each $K_n$ is the realization of a finite graph-theoretical tree.  Let
+$p_n:C\to K_n$ be the nearest-point, or gate, projection.  Closed convex
+subtrees of an $\R$-tree admit a $1$-Lipschitz gate projection, and the net
+property gives
+\begin{equation}\label{eq:projection}
+ \sup_{z\in C} d(z,p_n(z))\leq \frac1n.
+\end{equation}
+Define $f_n=p_n\circ f:Y\to K_n$.  Then
+$\Lip_Y(f_n)\leq L$, and $f_n\to f$ uniformly.
+
+Theorem~1 of \cite{NS}, applied to the compact length space $X$ and finite
+metric tree $K_n$, supplies an AMLE $u_n:X\to K_n$ of $f_n$.  These maps
+may be taken with
+\begin{equation}\label{eq:lipbound}
+ \Lip_X(u_n)=\Lip_Y(f_n)\leq L.
+\end{equation}
+For completeness, the upper bound also follows from absolute minimality:
+the injectivity of a metric tree gives an $L$-Lipschitz extension competitor;
+apply absolute minimality on $X\setminus Y$, and then use the length-space
+property and continuity to control pairs with one endpoint in $Y$.
+
+We next regard every $u_n$ as a map into the fixed compact tree $C$.  We
+claim that $u_n$ satisfies $C$-comparison, not merely $K_n$-comparison.
+Fix $t\in C$ and put $q=p_n(t)$.  For every $z\in K_n$, the gate property
+gives
+\begin{equation}\label{eq:gate}
+ d(t,z)=d(t,q)+d(q,z).
+\end{equation}
+By Proposition~7 of \cite{NS}, the scalar function
+$x\mapsto d(q,u_n(x))$ satisfies comparison with distance functions from
+above.  Adding the constant $d(t,q)$ preserves comparison, so
+\eqref{eq:gate} shows that $x\mapsto d(t,u_n(x))$ also satisfies comparison.
+Since $t\in C$ was arbitrary, the claim follows.
+
+The family $(u_n)$ is equi-Lipschitz by \eqref{eq:lipbound}, and it consists
+of maps from compact $X$ into compact $C$.  The Arzel\`a--Ascoli theorem
+\cite[Theorem~6.1]{Munkres}
+therefore gives a uniformly convergent subsequence; write
+$u_n\to u:X\to C$.  Equation~\eqref{eq:projection} implies
+$u|_Y=f$, and uniform convergence preserves the Lipschitz bound
+$\Lip_X(u)\leq L$.  The reverse inequality follows by restriction to $Y$.
+
+We verify $C$-comparison.  Fix $t\in C$.  The real-valued functions
+\[
+ g_n(x)=d(t,u_n(x))
+ \quad\hbox{converge uniformly to}\quad
+ g(x)=d(t,u(x)).
+\]
+Comparison with distance functions from above is closed under uniform
+limits.  Indeed, if $g$ is bounded above by a distance cone on the boundary
+of an open set, then for every $\delta>0$ and all sufficiently large $n$,
+$g_n$ is bounded there by the cone plus $\delta$.  Comparison for $g_n$
+propagates that bound to the open set; let $n\to\infty$ and then
+$\delta\downarrow0$.  Hence $u$ satisfies $C$-comparison.  The
+comparison-implies-AMLE direction of Proposition~7 in \cite{NS} now shows
+that $u$ is a $C$-valued AMLE of $f$.
+
+Finally, $C$ is a closed convex subtree of $T$, so its gate projection
+$P_C:T\to C$ is $1$-Lipschitz.  If a $T$-valued competitor $h$ agreed with
+$u$ off an open set and had smaller Lipschitz constant there, then
+$P_C\circ h$ would be a $C$-valued competitor with no larger Lipschitz
+constant.  This contradicts absolute minimality in $C$.  Thus $u$ is also
+an AMLE with ambient target $T$.
+\end{proof}
+
+\begin{remark}
+If $Y=\varnothing$, any constant map is an AMLE after choosing a point of
+$T$.  The nonempty assumption only avoids this harmless choice.
+\end{remark}
+
+\section*{What Remains Open}
+
+Theorem~\ref{thm:main} proves existence for the target-tree extension of the
+source conjecture when the domain is compact.  It is stronger on the target
+side than the stated bounded-$\R$-tree conjecture, because $T$ itself may be
+unbounded.  It does not prove:
+\begin{itemize}
+\item existence for arbitrary length spaces after local compactness is
+removed;
+\item existence for locally compact noncompact domains when the boundary
+range has noncompact convex hull in a bounded nonproper $\R$-tree;
+\item uniqueness of AMLEs for arbitrary $\R$-tree targets.
+\end{itemize}
+The last point is kept explicit because the source's proof that AMLE implies
+tree comparison is written for finite metric trees.  Our proof only uses the
+reverse implication, whose target generality the source explicitly records.
+
+\section*{Novelty Check and Human Review}
+
+The lightweight run indexes and bounded searches performed on 9 August 2026
+used the arXiv identifier 1005.2535 and the exact paper title.  Additional
+phrases included ``R-tree AMLE,'' ``compact R-tree absolutely minimal
+Lipschitz extension,'' and close variants.  The searches found the
+source paper and general AMLE material, but no exact statement of
+Theorem~\ref{thm:main}.  This is evidence, not a guarantee, of novelty.
+
+Human review should focus on Lemma~\ref{lem:hull}, the gate identity
+\eqref{eq:gate}, stability of comparison under uniform convergence, and the
+ambient projection argument.  The source-dependent point to verify is that
+comparison implies AMLE for an arbitrary metric target, as stated in the
+discussion preceding Proposition~7 of \cite{NS}.
+
+\begin{thebibliography}{9}
+
+\bibitem{NS}
+A. Naor and S. Sheffield,
+\emph{Absolutely minimal Lipschitz extension of tree-valued mappings},
+Math. Ann. 354 (2012), 1049--1078; arXiv:1005.2535.
+
+\bibitem{Munkres}
+J. R. Munkres,
+\emph{Topology: A First Course},
+Prentice--Hall, 1975.
+
+\end{thebibliography}
+
+\end{document}

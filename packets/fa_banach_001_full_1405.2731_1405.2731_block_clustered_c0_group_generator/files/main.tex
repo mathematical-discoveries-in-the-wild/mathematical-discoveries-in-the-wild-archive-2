@@ -1,0 +1,299 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+
+\definecolor{deepblue}{RGB}{28,62,103}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\e}{\mathrm e}
+
+\title{A Block-Clustered Generator with a Bounded Non-Riesz\\
+Basis of Eigenvectors}
+\author{Candidate full solution packet for arXiv:1405.2731}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\begin{minipage}{0.9\textwidth}
+\textbf{Status.} Candidate full solution, likely valid, pending human review.
+The construction gives an affirmative answer and also produces simple purely
+imaginary eigenvalues and a linearly bounded group.
+\end{minipage}}
+\end{center}
+
+\section{Source question}
+
+Sklyar and Marchenko ask in the concluding remarks of
+\cite[p.~32]{SklyarMarchenko}:
+\begin{quote}
+Is it possible to construct the unbounded generator of a $C_0$-group with
+bounded non-Riesz basis family of eigenvectors?
+\end{quote}
+Here ``bounded non-Riesz basis'' means a Schauder basis whose vector norms are
+bounded above and away from zero, but which is not a Riesz basis; see also the
+authors' later formulation in arXiv:1809.03079.  The source passage is shown
+below.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.98\textwidth]{figures/open_problem_crop.png}
+  \caption{The complete question and the semigroup comparison on page 32 of
+  the source paper.}
+\end{figure}
+
+\section{Idea of the proof}
+
+Start from one normalized conditional Schauder basis in a Hilbert space and
+look at longer and longer finite prefixes.  Their basis constants remain
+uniform, but their Hilbertian condition numbers become arbitrarily large.
+Place copies of these prefixes in mutually orthogonal finite-dimensional
+blocks.  The concatenation is still a normalized Schauder basis, while its
+block condition numbers force it not to be Riesz.
+
+An arbitrary diagonal phase multiplier can be large on an ill-conditioned
+block.  The key is to give the vectors in that block almost the same
+frequency.  The common phase is an isometry and disappears from the norm
+estimate; only the within-block frequency diameter is amplified by the bad
+condition number.  Choosing that diameter inversely proportional to the
+condition number yields a uniform group bound.  Meanwhile the common
+frequencies of successive blocks tend to infinity, so the generator is
+unbounded.  This simultaneously reconciles strong continuity, unbounded
+spectrum, and conditional basis geometry.
+
+\section{The result}
+
+\begin{theorem}\label{thm:main}
+There exist a separable complex Hilbert space $H$, a strongly continuous group
+$(T(t))_{t\in\mathbb R}$ on $H$, and its unbounded generator $A$ such that:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $A$ has pairwise distinct purely imaginary eigenvalues;
+\item corresponding normalized eigenvectors form a Schauder basis of $H$ but
+      not a Riesz basis; and
+\item
+\[
+             \|T(t)\|\le 1+\frac{|t|}{2}\qquad(t\in\mathbb R).
+\]
+\end{enumerate}
+In particular, the answer to the source question is affirmative.
+\end{theorem}
+
+\section{Proof}
+
+The existence of a normalized conditional Schauder basis in a separable
+Hilbert space is classical.  For example, the source paper
+\cite[p.~7]{SklyarMarchenko} recalls Babenko's explicit bounded non-Riesz basis
+in $L_2(-\pi,\pi)$ \cite{Babenko}.  Fix such a basis $(u_j)_{j\ge1}$ in a
+Hilbert space $H_0$, and let
+\[
+ K=\sup_{r\ge1}\left\|\sum_{j=1}^r u_j^*\otimes u_j\right\|<\infty
+\]
+be its Schauder basis constant.
+
+For $N\ge1$, put $E_N=\operatorname{span}\{u_1,\ldots,u_N\}$ and let
+\[
+ S_N:\ell_2^N\longrightarrow E_N,\qquad S_N e_j=u_j,
+ \qquad \kappa_N=\|S_N\|\,\|S_N^{-1}\|.
+\]
+
+\begin{lemma}\label{lem:condition}
+The sequence $(\kappa_N)$ is unbounded.
+\end{lemma}
+
+\begin{proof}
+Normalization gives $\|S_N\|\ge1$ and $\|S_N^{-1}\|\ge1$.  If
+$\sup_N\kappa_N<\infty$, both factors would be uniformly bounded.  Hence a
+constant $C$ would satisfy
+\[
+ C^{-1}\Big(\sum_{j=1}^N|c_j|^2\Big)^{1/2}
+ \le \left\|\sum_{j=1}^N c_j u_j\right\|
+ \le C\Big(\sum_{j=1}^N|c_j|^2\Big)^{1/2}
+\]
+for every $N$ and every scalar family $(c_j)_{j=1}^N$.  These are precisely
+uniform Riesz inequalities, contradicting that $(u_j)$ is non-Riesz.
+\end{proof}
+
+Choose strictly increasing $N_m$ such that
+$\kappa_m:=\kappa_{N_m}\to\infty$.  Let $H_m$ be an orthogonal copy of
+$E_{N_m}$, write $(v_{m,j})_{j=1}^{N_m}$ for the copied basis, and retain the
+notation
+\[
+ S_m:\ell_2^{N_m}\longrightarrow H_m,\qquad S_m e_j=v_{m,j}.
+\]
+Set
+\[
+                  H=\left(\bigoplus_{m=1}^{\infty}H_m\right)_{\ell_2}
+\]
+and order the vectors $(v_{m,j})$ block by block.
+
+\begin{lemma}\label{lem:basis}
+The blockwise concatenation $(v_{m,j})$ is a normalized Schauder basis of $H$
+with basis constant at most $\max(1,K)$, and it is not a Riesz basis.
+\end{lemma}
+
+\begin{proof}
+Let $P_{m,r}$ be the projection in $H_m$ onto the first $r$ copied basis
+vectors.  It is the restriction of the corresponding partial-sum projection
+of $(u_j)$, so $\|P_{m,r}\|\le K$.  A global partial-sum projection retains
+all blocks before some $m$, applies $P_{m,r}$ in block $m$, and annihilates
+later blocks.  Orthogonality gives, for $x=(x_q)_q$,
+\[
+ \left\|\big(x_1,\ldots,x_{m-1},P_{m,r}x_m,0,\ldots\big)\right\|^2
+ \le \max(1,K^2)\sum_q\|x_q\|^2.
+\]
+Uniform boundedness of these projections and density of the finite block
+vectors prove the Schauder basis assertion.
+
+If the concatenation had Riesz bounds independent of the coefficients, their
+restriction to block $m$ would uniformly bound both $\|S_m\|$ and
+$\|S_m^{-1}\|$.  This would bound $\kappa_m$, a contradiction.
+\end{proof}
+
+We now assign frequencies.  For $m\ge1$ put
+\[
+ a_m=4^m,
+ \qquad
+ \delta_m=\frac{2^{-m}}{\kappa_m N_m},
+ \qquad
+ \beta_{m,j}=a_m+\delta_m j\quad(1\le j\le N_m).
+\]
+Since $0<\delta_mN_m\le2^{-m}<1$, the frequencies in block $m$ lie in
+$(4^m,4^m+1)$.  Thus all $\beta_{m,j}$ are positive and pairwise distinct.
+On $H_m$ define
+\[
+ T_m(t)=S_m\,\operatorname{diag}
+       (\e^{i\beta_{m,1}t},\ldots,\e^{i\beta_{m,N_m}t})\,S_m^{-1}.
+\]
+After removing the common scalar phase $\e^{ia_mt}$,
+\begin{align*}
+ \|T_m(t)\|
+ &\le 1+\|S_m\|\,\|S_m^{-1}\|
+        \max_{1\le j\le N_m}|\e^{i\delta_mjt}-1|\\
+ &\le 1+\kappa_m\delta_mN_m|t|
+  =1+2^{-m}|t|.                                      \tag{1}\label{eq:block}
+\end{align*}
+Here we used $|\e^{is}-1|\le |s|$ for real $s$.
+
+Define the orthogonal direct sum
+\[
+                       T(t)=\bigoplus_{m=1}^{\infty}T_m(t).
+\]
+Estimate \eqref{eq:block} shows that this is a bounded operator and
+\[
+                    \|T(t)\|=\sup_m\|T_m(t)\|
+                    \le 1+\frac{|t|}{2}.              \tag{2}\label{eq:global}
+\]
+The group law holds in every block and hence globally.  On the dense subspace
+of vectors supported in finitely many blocks, $T(t)x\to x$ as $t\to0$ by
+finite-dimensional continuity.  Estimate \eqref{eq:global} is uniform for
+$|t|\le1$, so a density argument extends this convergence to every $x\in H$.
+Thus $(T(t))_{t\in\mathbb R}$ is a $C_0$-group.
+
+For completeness, we identify its generator without invoking a direct-sum
+generator theorem.  Put
+\[
+ A_m=S_m\,\operatorname{diag}
+       (i\beta_{m,1},\ldots,i\beta_{m,N_m})\,S_m^{-1}
+\]
+and define
+\[
+ \begin{split}
+ D(A)&=\{x=(x_m)_m\in H:(A_mx_m)_m\in H\},\\
+ Ax&=(A_mx_m)_m.
+ \end{split}                                           \tag{3}\label{eq:domain}
+\]
+If $x\in D(A)$ and $y=Ax$, the finite-dimensional identities
+\[
+ T_m(t)x_m-x_m=\int_0^tT_m(s)A_mx_m\,ds
+\]
+assemble, using strong continuity and the local bound, into
+\[
+                  T(t)x-x=\int_0^tT(s)y\,ds.
+\]
+Dividing by $t$ and letting $t\to0$ proves that $x$ belongs to the generator
+domain and that the generator sends $x$ to $Ax$.  Conversely, if $x$ belongs
+to the generator domain, applying the bounded orthogonal projection onto
+$H_m$ to its difference quotient gives $(Ax)_m=A_mx_m$.  The generator value
+lies in $H$, so $(A_mx_m)_m\in H$.  This proves \eqref{eq:domain} is exactly
+the generator domain.
+
+Finally,
+\[
+             Av_{m,j}=i\beta_{m,j}v_{m,j}.
+\]
+The eigenvalues are distinct and purely imaginary, and Lemma
+\ref{lem:basis} gives the required normalized non-Riesz Schauder basis of
+eigenvectors.  Moreover,
+\[
+                 \|Av_{m,1}\|=\beta_{m,1}\ge4^m
+\]
+while $\|v_{m,1}\|=1$, so $A$ is unbounded.  This proves the theorem.
+\qed
+
+\section{Verification report}
+
+The proof is analytic and does not depend on finite computation.  The checks
+most likely to expose a defect were carried out separately:
+\begin{enumerate}[leftmargin=*,label=\arabic*.]
+\item Uniform partial-sum bounds survive concatenation because the blocks are
+orthogonal; Lemma \ref{lem:basis} gives the exact estimate.
+\item The basis cannot accidentally become Riesz, because Riesz bounds would
+hold on every block and contradict $\kappa_m\to\infty$.
+\item The only amplification by the ill-conditioned basis is
+$\kappa_m\delta_mN_m$, which equals $2^{-m}$ exactly.  This proves boundedness
+for every $t$ and supplies the uniform local bound needed for strong
+continuity.
+\item Formula \eqref{eq:domain} was verified in both directions through the
+integral identity and block projections.  Unboundedness is witnessed on unit
+eigenvectors, not inferred merely from the written eigenvalue formula.
+\end{enumerate}
+No unproved lemma or computational dependency remains.  A longer checklist is
+included as \texttt{verification\_report.md} in the packet.
+
+\section{Novelty check, limitations, and review recommendation}
+
+A bounded search was performed on 9 August 2026 in the run's local arXiv
+corpus and through web/arXiv search.  Queries included the exact sentence
+``unbounded generator ... bounded non-Riesz basis'', the authors' names, and
+combinations of ``conditional Schauder basis'', ``eigenvectors'', and
+``$C_0$-group''.  The search also inspected the authors' later arXiv:1809.03079
+and the related 2021 work on resolvents and polynomial bounds.  Those works
+treat complete minimal eigenvector families that do not form a Schauder basis;
+no later source explicitly answering the bounded Schauder non-Riesz question
+was found.  This is a bounded novelty check, not a certification of priority.
+
+The theorem answers the construction question but does not address Conjecture
+20 of the source paper, which imposes a finite-union uniform-gap condition on
+the spectrum.  Indeed, the close frequency clusters here deliberately violate
+that condition.  Human review should focus on Lemma \ref{lem:basis} and
+estimate \eqref{eq:block}; the rest is a standard but fully written direct-sum
+group argument.
+
+\begin{thebibliography}{9}
+
+\bibitem{SklyarMarchenko}
+G.~M. Sklyar and V.~Marchenko,
+\emph{Hardy inequality and the construction of infinitesimal operators with
+non-basis family of eigenvectors},
+J. Funct. Anal. \textbf{272} (2017), 1017--1043;
+arXiv:1405.2731v4.
+
+\bibitem{Babenko}
+K.~I. Babenko,
+\emph{On conjugate functions},
+Dokl. Akad. Nauk \textbf{62} (1948), no.~2, 157--160 (Russian),
+MR0027093.
+
+\end{thebibliography}
+
+\end{document}

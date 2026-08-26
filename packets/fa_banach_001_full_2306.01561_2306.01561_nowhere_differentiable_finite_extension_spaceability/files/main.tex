@@ -1,0 +1,282 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newcommand{\R}{\mathbb R}
+\newcommand{\ND}{\mathcal{ND}[0,1]}
+\newcommand{\cC}{\mathfrak c}
+
+\title{Every finite-dimensional nowhere-differentiable subspace\\
+extends to a closed continuum-dimensional one}
+\author{Candidate full solution for arXiv:2306.01561}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\linewidth}{\textbf{Status.} Candidate full proof, likely
+valid, requiring human review.  The result affirmatively answers the stated
+$(1,\cC)$-spaceability question and proves the stronger
+$(n,\cC)$-spaceability statement for every finite positive integer $n$.}}
+\end{center}
+
+\section{Source question}
+
+Let $C[0,1]$ be the real Banach space with the supremum norm, and let
+\[
+ \ND=\{f\in C[0,1]:f\text{ is nowhere differentiable}\}.
+\]
+Ara\'ujo, Barbosa, Raposo Jr., and Ribeiro state on PDF page 4 of
+\cite{ABRR2025} that $\ND$ is known to be spaceable, but ask whether it is
+specifically $(1,\cC)$-spaceable.  In other words: does every prescribed
+one-dimensional subspace contained in $\ND\cup\{0\}$ lie in a closed
+$\cC$-dimensional subspace contained in $\ND\cup\{0\}$?
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\linewidth]{figures/open_problem_crop.png}
+\caption{The exact open-question passage in \cite[p.~4]{ABRR2025}, rendered
+and cropped from the local source-paper PDF.}
+\end{figure}
+
+We use one quantitative theorem of Hencl.  In
+\cite[Proposition~2]{Hencl2000}, Hencl proves that for every continuous
+increasing function
+\(
+ \varphi:[0,\infty)\to[0,\infty)
+\)
+with $\varphi(0)=0$, there are a Cantor set $K\subset[0,1]$ and a linear
+isometry
+\[
+                  T:C(K)\longrightarrow C[0,1]
+\]
+such that the following holds.  For every $0\ne u\in C(K)$, $z\in(0,1)$,
+and $m\in\mathbb N$, the set
+\begin{equation}\label{eq:hencl-set}
+ D_z(u,m)=\left\{y\in[0,1]\setminus\{z\}:
+ \frac{|Tu(y)-Tu(z)|}{\varphi(|y-z|)}>m\right\}
+\end{equation}
+has symmetric upper density one at $z$.  At $0$ and $1$ it has,
+respectively, right and left upper density one.  Hencl also obtains $Tu=u$
+on $K$, though that feature is not needed here.
+
+\section{Proof intuition}
+
+A prescribed finite-dimensional subspace $E\subset C[0,1]$ has a common
+modulus of continuity: compactness of its unit ball makes the oscillations of
+all its unit vectors uniformly small at small scales.  Choose Hencl's
+embedding to oscillate much more rapidly than that common modulus.  Then no
+fixed element of $E$ can cancel the small-scale oscillations of any nonzero
+Hencl function.
+
+Consequently the Hencl range is disjoint from $E$ except at zero, and every
+nonzero vector in their algebraic sum is still nowhere differentiable.  The
+Hencl range is closed because the embedding is isometric, and adding the
+finite-dimensional space $E$ preserves closedness.  This produces the
+required closed extension without altering the prescribed directions.
+
+\section{A common modulus for a finite-dimensional subspace}
+
+Let $E$ be a nonzero finite-dimensional subspace of $C[0,1]$.  For
+$0\le t\le1$, define
+\begin{equation}\label{eq:Omega}
+ \Omega_E(t)=\sup\bigl\{|e(x)-e(y)|:
+       e\in E,\ \|e\|_\infty\le1,\ x,y\in[0,1],\ |x-y|\le t\bigr\}.
+\end{equation}
+
+\begin{lemma}\label{lem:modulus}
+The function $\Omega_E$ is increasing, subadditive, and continuous, with
+$\Omega_E(0)=0$ and $\Omega_E(t)\to0$ as $t\downarrow0$.  If $E$ contains a
+nonconstant function, then for some $c>0$ and all sufficiently small $t>0$,
+\[
+                         \Omega_E(t)\ge ct.
+\]
+\end{lemma}
+
+\begin{proof}
+The closed unit ball of $E$ is compact in the supremum norm.  A finite
+$\varepsilon$-net, together with uniform continuity of its finitely many
+members, shows that this ball is uniformly equicontinuous.  Hence
+$\Omega_E(t)\to0$ as $t\downarrow0$.
+
+Monotonicity is immediate.  To prove subadditivity, suppose
+$|x-y|\le s+t$.  Choose a point between $x$ and $y$ so that the two resulting
+distances are at most $s$ and $t$.  Applying the triangle inequality and then
+taking the supremum in \eqref{eq:Omega} gives
+\(
+ \Omega_E(s+t)\le\Omega_E(s)+\Omega_E(t)
+\)
+when $s+t\le1$.  Thus
+\(
+ |\Omega_E(s)-\Omega_E(t)|\le\Omega_E(|s-t|),
+\)
+which, with the limit at zero, proves continuity.
+
+Finally choose $e_0\in E$ with $\|e_0\|_\infty=1$ and points $a<b$ for which
+$\delta=|e_0(b)-e_0(a)|>0$.  Partition $[a,b]$ into
+$N=\lceil(b-a)/t\rceil$ intervals of length at most $t$.  The triangle
+inequality yields
+\[
+ \delta\le N\Omega_E(t)\le\left(\frac{b-a}{t}+1\right)\Omega_E(t),
+\]
+and therefore
+\(
+ \Omega_E(t)\ge \delta t/(b-a+t).
+\)
+This gives the claimed linear lower bound near zero.
+\end{proof}
+
+\section{The finite-extension theorem}
+
+\begin{theorem}\label{thm:main}
+For every $n\in\mathbb N$, the set $\ND$ is $(n,\cC)$-spaceable in
+$C[0,1]$.  Explicitly, if $E\subset C[0,1]$ is $n$-dimensional and
+\[
+                         E\setminus\{0\}\subset\ND,
+\]
+then there is a closed subspace $M\subset C[0,1]$ such that
+\[
+ E\subset M,\qquad \dim M=\cC,\qquad
+ M\setminus\{0\}\subset\ND.
+\]
+The same proof rules out finite one-sided derivatives at the endpoints.
+\end{theorem}
+
+\begin{proof}
+Fix such an $E$.  Since every nonzero member of $E$ is nowhere
+differentiable, $E$ contains a nonconstant function.  Extend $\Omega_E$
+constantly from $[0,1]$ to $[0,\infty)$ and set
+\[
+                         \varphi(t)=\sqrt{\Omega_E(t)}.
+\]
+By Lemma~\ref{lem:modulus}, $\varphi$ is continuous and increasing, with
+$\varphi(0)=0$.  Moreover,
+\begin{equation}\label{eq:two-ratios}
+ \frac{\Omega_E(t)}{\varphi(t)}=\sqrt{\Omega_E(t)}\longrightarrow0,
+ \qquad
+ \frac{\varphi(t)}{t}\longrightarrow\infty
+ \quad(t\downarrow0).
+\end{equation}
+The second assertion follows from $\Omega_E(t)\ge ct$ near zero.
+
+Apply Hencl's proposition to this $\varphi$, and denote the resulting
+isometry by $T:C(K)\to C[0,1]$.  Put $Y=T(C(K))$.
+
+We first prove the key perturbation statement.  Fix $0\ne u\in C(K)$,
+$e\in E$, and $z\in[0,1]$.  Because $D_z(u,1)$ in
+\eqref{eq:hencl-set} has upper density one at $z$ (with the stated one-sided
+interpretation at an endpoint), it contains a sequence $y_j\ne z$ converging
+to $z$ from the allowed side.  By the definition of $\Omega_E$,
+\begin{equation}\label{eq:E-bound}
+ |e(y_j)-e(z)|\le\|e\|_\infty\Omega_E(|y_j-z|).
+\end{equation}
+The first limit in \eqref{eq:two-ratios} shows that, for all sufficiently
+large $j$, the right side of \eqref{eq:E-bound} is at most
+$\varphi(|y_j-z|)/2$.  On the other hand, membership in $D_z(u,1)$ gives
+\(
+ |Tu(y_j)-Tu(z)|>\varphi(|y_j-z|).
+\)
+Hence
+\begin{align*}
+ |(Tu+e)(y_j)-(Tu+e)(z)|
+ &\ge |Tu(y_j)-Tu(z)|-|e(y_j)-e(z)|\\
+ &>\frac12\varphi(|y_j-z|).
+\end{align*}
+After division by $|y_j-z|$, the second limit in
+\eqref{eq:two-ratios} shows that these difference quotients are unbounded.
+Thus $Tu+e$ has no finite derivative at $z$.  Since $z$ was arbitrary,
+\begin{equation}\label{eq:rough-sum}
+       0\ne u\in C(K),\ e\in E
+       \quad\Longrightarrow\quad Tu+e\in\ND.
+\end{equation}
+
+In particular $Y\cap E=\{0\}$: if $Tu=e\in E$ with $u\ne0$, then
+\eqref{eq:rough-sum} applied to $Tu-e=0$ would assert that the zero function
+is nowhere differentiable, a contradiction.  Now define
+\[
+                              M=Y+E=Y\oplus E.
+\]
+The range $Y$ is closed because $T$ is an isometry.  Also $Y+E$ is closed:
+if $q:C[0,1]\to C[0,1]/Y$ is the quotient map, then
+$q(E)$ is finite-dimensional and hence closed, while
+$Y+E=q^{-1}(q(E))$.
+
+Every nonzero element of $M$ has the unique form $Tu+e$.  If $u\ne0$, it
+belongs to $\ND$ by \eqref{eq:rough-sum}; if $u=0$, then $e\ne0$ and the
+hypothesis on $E$ applies.  Finally $Y$ is isometric to $C(K)$, whose Hamel
+dimension is $\cC$, so $\dim M=\cC$.  This proves all assertions.
+\end{proof}
+
+\begin{corollary}
+The $(1,\cC)$-spaceability question in \cite{ABRR2025} has an affirmative
+answer.
+\end{corollary}
+
+\section{Verification, scope, and novelty}
+
+The proof is noncomputational.  Its load-bearing points are: compactness of
+the unit ball of a finite-dimensional subspace; the two scale comparisons in
+\eqref{eq:two-ratios}; the upper-density quantifier in Hencl's Proposition~2;
+and closedness of a finite-dimensional extension of a closed subspace.  The
+accompanying \texttt{verification.md} records adversarial checks of each.
+
+The theorem concerns real-valued continuous functions, exactly as in the
+source passage.  It proves the positive finite-dimensional part.  Ribeiro's
+2024 thesis independently proves that $\ND$ is not
+$(\alpha,\beta)$-spaceable when $\alpha$ is infinite
+\cite[Corollary~2.2]{Ribeiro2024}; together, the two statements give the
+finite-versus-infinite classification for prescribed starting dimension.
+
+\paragraph{Bounded novelty check.}
+On 11 August 2026, the local run indexes were searched by arXiv id, title,
+and the terms ``nowhere differentiable'', ``$(1,\cC)$-spaceable'',
+``pointwise spaceability'', ``Hencl'', and ``finite-dimensional extension''.
+External exact and close searches used the same phrases and checked the
+source/publisher record, Hencl's theorem, Ribeiro's 2024 thesis, and work
+indexed through August 2026.  The thesis's pointwise-spaceability result is
+for a different set of unbounded integrable functions; for $\ND$ it supplies
+only the negative infinite-dimensional obstruction.  The July 2026 preprint
+of Lima, Santos, and Ribeiro proves that every prescribed finite-dimensional
+subspace extends to a countably infinite-dimensional \emph{algebraic}
+subspace \cite{LSR2026}.  It does not claim a closed extension or continuum
+dimension, and it does not invoke Hencl's quantitative embedding.  No prior
+statement of the theorem above or of this perturbation argument was found.
+Novelty confidence is moderate rather than definitive; specialist review of
+non-indexed theses and citing literature is recommended.
+
+\begin{thebibliography}{9}
+\bibitem{ABRR2025}
+G. Ara\'ujo, A. Barbosa, A. Baganha Raposo Jr., and G. Ribeiro,
+\emph{Complements of unions: insights on spaceability and applications},
+Mathematika \textbf{71} (2025), e70006;
+\href{https://arxiv.org/abs/2306.01561}{arXiv:2306.01561}.
+
+\bibitem{Hencl2000}
+S. Hencl,
+\emph{Isometrical embeddings of separable Banach spaces into the set of
+nowhere approximatively differentiable and nowhere H\"older functions},
+Proc. Amer. Math. Soc. \textbf{128} (2000), 3505--3511,
+\href{https://doi.org/10.1090/S0002-9939-00-05595-7}
+{doi:10.1090/S0002-9939-00-05595-7}.
+
+\bibitem{Ribeiro2024}
+G. dos Santos Ribeiro,
+\emph{A search for linearity in the universe of topological vector spaces},
+Ph.D. thesis, Universidade Federal da Para\'iba, 2024,
+\href{https://repositorio.ufpb.br/jspui/handle/123456789/38081}
+{institutional repository record}.
+
+\bibitem{LSR2026}
+F. Lima, M. Santos, and G. Ribeiro,
+\emph{On the $(n,\aleph_0)$-lineability of nowhere differentiable functions},
+\href{https://arxiv.org/abs/2607.15749}{arXiv:2607.15749} (2026).
+\end{thebibliography}
+
+\end{document}

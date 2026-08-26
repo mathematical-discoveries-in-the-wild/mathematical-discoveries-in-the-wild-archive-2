@@ -1,0 +1,228 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\E}{\mathbb E}
+\newcommand{\TV}{\operatorname{TV}}
+\newcommand{\F}{\mathcal F}
+
+\title{A counterexample to an aggregate $\phi$--$\eta$ mixing comparison}
+\author{Autonomous solution packet for arXiv:0711.0986}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Kontorovich conjectured that a sum of finite-sequence $\phi$-mixing
+coefficients is controlled by one plus the maximal row sum of the
+$\eta$-mixing matrix.  We give a full-support counterexample on a finite
+alphabet.  It consists of independent weak binary channels whose outputs are
+delayed by a common distance.  Every nonzero $\eta$ row has sum one, but the
+weak channels accumulate in the $\phi$ coefficients.  An elementary
+likelihood-ratio estimate makes the conjectured left side exceed $2.933$ while
+the right side equals $2$.
+\end{abstract}
+
+\section{Source conjecture and definitions}
+
+The source paper is L.~Kontorovich, \emph{Constructing processes with
+prescribed mixing coefficients} \cite{K}.  It first appeared as
+arXiv:0711.0986.  Page 2 defines $\bar\eta_{ij}$, displays the conjecture, and
+says that it remains open.  The page is reproduced next.
+
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=0.94\textwidth,height=0.91\textheight,keepaspectratio]
+    {figures/open_problem_page-02.png}
+  \caption{The source definition and conjecture on \cite[p.~2]{K}.}
+\end{figure}
+\clearpage
+
+Let $X_1,\ldots,X_n$ be a random sequence.  For $1\leq i<j\leq n$,
+the source coefficient is
+\[
+ \bar\eta_{ij}
+ =\max_{y,w,w'}\TV\!\left(
+   \mathcal L(X_j^n\mid X_1^i=yw),
+   \mathcal L(X_j^n\mid X_1^i=yw')\right),
+\]
+where total variation has range $[0,1]$.  Our law will have full support, so
+all atoms in this maximum have positive probability.  We use the standard
+finite-sequence $\phi$ coefficient
+\begin{equation}\label{eq:phi}
+ \phi_r=\max_{1\leq t\leq n-r}
+ \sup_{\substack{A\in\sigma(X_1^t),\ \Pp(A)>0\\
+                 B\in\sigma(X_{t+r}^n)}}
+ \left|\Pp(B\mid A)-\Pp(B)\right|.
+\end{equation}
+The conjecture displayed in the source is
+\begin{equation}\label{eq:conj}
+ \frac12\sum_{r=1}^{n-1}\phi_r
+ \leq 1+\max_{1\leq i<n}\sum_{j=i+1}^n\bar\eta_{ij}.
+\end{equation}
+
+\section{Proof intuition}
+
+Put a fair latent sign at time $k$ and reveal just one slightly correlated
+copy at time $k+L$.  The resulting $k$th $\eta$ row is a flat block of height
+$c$ and length $L$.  Choosing $c=1/L$ makes every row sum one.  Now place
+$L$ such channels independently in parallel.  At a middle cut, the past
+reveals many latent signs and the future contains their noisy copies.
+Conditioning all the latent signs to be positive changes a product of $m$
+fair signs into a product of $m$ signs of bias $c$.  That total variation is
+of order $c\sqrt m$.  Summing over the $L$ lags gives order
+$cL^{3/2}=\sqrt L$, which cannot be controlled by the fixed row sum.
+
+\section{Counterexample}
+
+\begin{theorem}\label{thm:main}
+The comparison \eqref{eq:conj} is false, even for a full-support probability
+measure on a finite alphabet.  More precisely, there is such a sequence of
+length $n=2048$ for which
+\[
+ \max_i\sum_{j=i+1}^n\bar\eta_{ij}=1
+ \quad\text{but}\quad
+ \frac12\sum_{r=1}^{n-1}\phi_r>2.933.
+\]
+Thus the right side of \eqref{eq:conj} is $2$ and the inequality is violated.
+\end{theorem}
+
+\begin{proof}
+We first give a construction for an integer $L\geq2$ and a parameter
+$0<c<1$, with $n=2L$.  For each $1\leq k\leq L$, let $(Z_k,Y_k)$ be an
+independent pair of signs with
+\[
+ \Pp(Z_k=1)=\Pp(Z_k=-1)=\frac12,
+ \qquad
+ \Pp(Y_k=Z_k\mid Z_k)=\frac{1+c}{2}.
+\]
+The pairs are mutually independent.  Also take mutually independent fair
+signs $U_{k,t}$, independent of all pairs, for
+$1\leq k\leq L$ and $t\notin\{k,k+L\}$.  Define
+\[
+ A_t^{(k)}=
+ \begin{cases}
+  Z_k,&t=k,\\
+  Y_k,&t=k+L,\\
+  U_{k,t},&t\notin\{k,k+L\},
+ \end{cases}
+ \qquad
+ X_t=(A_t^{(1)},\ldots,A_t^{(L)})\in\{-1,1\}^L.
+\]
+Because $0<c<1$, all four outcomes of every pair $(Z_k,Y_k)$ have positive
+probability.  Hence the law of $X_1^n$ has full support.
+
+We calculate its $\eta$ matrix.  If $i\leq L$, the only coordinate of $X_i$
+that can affect a future variable is $Z_i$, and its only dependent future
+variable is $Y_i$ at time $i+L$.  Conditional on $Z_i=1$ and $Z_i=-1$, the
+two laws of $Y_i$ have total variation $c$.  All other tail coordinates have
+the same conditional law.  If $i>L$, no coordinate of $X_i$ has a dependent
+future variable.  It follows exactly that
+\begin{equation}\label{eq:eta-matrix}
+ \bar\eta_{ij}=
+ \begin{cases}
+  c,&1\leq i\leq L\ \text{and}\ i<j\leq i+L,\\
+  0,&\text{otherwise}.
+ \end{cases}
+\end{equation}
+Consequently the maximal row sum is $Lc$.
+
+We next lower-bound $\phi_r$ for $1\leq r\leq L$.  Use the cut $t=L$ in
+\eqref{eq:phi} and condition on the positive-probability past event
+\[
+ E_r=\{Z_r=Z_{r+1}=\cdots=Z_L=1\}.
+\]
+The future $X_{L+r}^{2L}$ contains $Y_r,\ldots,Y_L$.  Marginally these are
+$m=L-r+1$ independent fair signs, while conditional on $E_r$ they are
+independent signs of mean $c$.  Taking the supremum over future events gives
+\begin{equation}\label{eq:phi-lower}
+ \phi_r\geq d_m(c):=
+ \TV\!\left(\operatorname{Rad}(c)^{\otimes m},
+             \operatorname{Rad}(0)^{\otimes m}\right),
+ \qquad m=L-r+1,
+\end{equation}
+where $\operatorname{Rad}(c)$ denotes a sign of mean $c$.
+
+It remains to estimate $d_m(c)$ from below.  Under the fair product law $Q$,
+write the coordinate signs as $\varepsilon_1,\ldots,\varepsilon_m$ and put
+$S=\sum_a\varepsilon_a$.  The likelihood ratio of the biased product law is
+\[
+ \Lambda=\prod_{a=1}^m(1+c\varepsilon_a)=1+cS+R.
+\]
+Orthogonality of the Rademacher monomials gives
+\begin{equation}\label{eq:remainder}
+ \E_Q R^2=(1+c^2)^m-1-mc^2.
+\end{equation}
+If $mc^2\leq1$ and $z=mc^2$, then
+\[
+ (1+c^2)^m-1-mc^2
+ \leq e^z-1-z\leq\frac12e^z z^2,
+\]
+so
+\begin{equation}\label{eq:R-bound}
+ \E_Q|R|\leq\frac{e^{1/2}}{\sqrt2}mc^2.
+\end{equation}
+For completeness, $\E_QS^2=m$ and $\E_QS^4=3m^2-2m$.  H\"older interpolation
+gives
+\[
+ \E_Q|S|\geq
+ \frac{(\E_QS^2)^{3/2}}{(\E_QS^4)^{1/2}}
+ \geq\sqrt{\frac m3}.
+\]
+Since $d_m(c)=\frac12\E_Q|\Lambda-1|$, the triangle inequality and
+\eqref{eq:R-bound} yield
+\begin{equation}\label{eq:tv-bound}
+ d_m(c)\geq
+ \frac c2\sqrt{\frac m3}
+ -\frac{e^{1/2}}{2\sqrt2}mc^2.
+\end{equation}
+
+Finally choose $c=1/L$.  Then $mc^2\leq1$, and \eqref{eq:eta-matrix} gives
+maximal row sum $Lc=1$.  Using \eqref{eq:phi-lower},
+\eqref{eq:tv-bound}, $\sum_{m=1}^L\sqrt m\geq\frac23L^{3/2}$, and
+$\sum_{m=1}^Lm=L(L+1)/2$, we obtain
+\begin{align*}
+ \frac12\sum_{r=1}^{2L-1}\phi_r
+ &\geq\frac12\sum_{m=1}^Ld_m(1/L)\\
+ &\geq \frac{\sqrt L}{6\sqrt3}
+ -\frac{e^{1/2}(L+1)}{8\sqrt2L}.
+\end{align*}
+For $L=1024$, this last quantity is
+$2.9333313745\ldots>2$.  The right side of \eqref{eq:conj} is
+$1+1=2$, proving the claim.
+\end{proof}
+
+\section{Verification and scope}
+
+The script \texttt{code/check\_counterexample.py} evaluates both the analytic
+bound and the exact binomial total variations for all $1\leq m\leq1024$.
+It reports analytic left-side lower bound $2.9333313745\ldots$ and exact
+product lower value $4.2591246806\ldots$, against right side $2$.  The exact
+evaluation is a check, not a dependency of the proof.
+
+A bounded novelty search on 11 August 2026 covered the run registry, the exact
+paper title, the phrases ``eta-mixing'', ``phi-mixing'', and ``the latter
+remains open'', and the displayed comparison.  It found the source and
+bibliographic copies but no later primary proof or counterexample.  A broader
+primary-source query timed out, and no complete citation-graph sweep was
+performed, so novelty confidence is moderate.  Specialist review should focus
+on agreement with the source's finite-sequence convention for $\phi_r$ and on
+the exact calculation \eqref{eq:eta-matrix}.
+
+\begin{thebibliography}{9}
+\bibitem{K}
+L. Kontorovich,
+\emph{Constructing processes with prescribed mixing coefficients},
+Statistics \& Probability Letters 78 (2008), 2910--2915;
+arXiv:0711.0986; doi:10.1016/j.spl.2008.04.016.
+\end{thebibliography}
+
+\end{document}

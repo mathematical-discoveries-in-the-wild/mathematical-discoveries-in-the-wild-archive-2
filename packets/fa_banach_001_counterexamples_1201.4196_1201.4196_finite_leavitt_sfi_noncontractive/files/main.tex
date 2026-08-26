@@ -1,0 +1,213 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newcommand{\N}{\mathbb N}
+\newcommand{\C}{\mathbb C}
+\newcommand{\ellp}{\ell^p}
+
+\title{A strongly forward isometric noncontractive\\
+representation of the finite Leavitt algebra}
+\author{Automated mathematics run \texttt{fa\_banach\_001}\\
+Model: GPT5.6}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\linewidth}{\textbf{Status.}
+Claimed full negative resolution (counterexample), likely valid pending human
+review. The construction works for every finite $d\ge2$ and every
+$1\le p<\infty$.}}
+\end{center}
+
+\section{Source question}
+
+For $d\ge2$, the Leavitt algebra $L_d$ is the universal unital complex algebra
+with generators $s_1,\ldots,s_d,t_1,\ldots,t_d$ satisfying
+\begin{equation}\label{eq:leavitt}
+ t_js_k=\delta_{jk}1,
+ \qquad
+ \sum_{j=1}^d s_jt_j=1.
+\end{equation}
+Phillips calls a representation $\rho:L_d\to L(E)$ \emph{contractive on
+generators} if all $\rho(s_j)$ and $\rho(t_j)$ have norm at most one. It is
+\emph{strongly forward isometric} if every $\rho(s_j)$ is an isometry and,
+for every $\lambda\in\C^d$, the operator
+$\rho(s_\lambda)=\sum_j\lambda_j\rho(s_j)$ is a scalar multiple of an
+isometry \cite[Definition~2.12]{Phillips}.
+
+After giving a strongly forward isometric representation of $L_\infty$ which
+is not contractive on generators, Phillips asks whether the same behavior can
+occur for finite $L_d$ \cite[Remark~2.13 and p.~15]{Phillips}.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=.94\linewidth]{figures/open_problem_crop.png}
+\caption{The definitions and open question in \cite[p.~10]{Phillips}.}
+\end{figure}
+
+\section{Idea of the proof}
+
+The standard representation of $L_d$ on $\ell^p$ identifies $\ell^p$ with
+the $p$-direct sum of $d$ copies of itself: its forward generators insert a
+vector into disjoint coordinate classes, and its reverse generators extract
+those classes. We apply a nonisometric change of basis to the first two copies.
+
+Choose the change of basis so that each new column has $\ell^p$-norm one.
+This makes every new forward generator an isometry. More strongly, any linear
+combination of the forward generators still has a norm-scaling factor
+independent of the input vector, so it is a scalar multiple of an isometry.
+But the inverse change of basis has a row of norm greater than one. The
+corresponding reverse generator is therefore expansive. The algebraic Leavitt
+relations are preserved because the changes on the forward and reverse sides
+are inverse matrices.
+
+\section{The counterexample}
+
+\begin{theorem}\label{thm:main}
+For every $d\ge2$ and every $1\le p<\infty$, there exists a strongly forward
+isometric representation
+\[
+ \rho:L_d\longrightarrow L(\ell^p(\N))
+\]
+which is not contractive on generators. Consequently, the finite-$d$ question
+in \cite[Remark~2.13]{Phillips} has a negative answer.
+\end{theorem}
+
+\begin{proof}
+Let $V_j,W_j\in L(\ell^p(\N))$, $1\le j\le d$, be the standard spatial
+Leavitt family. Explicitly,
+\[
+ V_j\delta_n=\delta_{d(n-1)+j},
+ \qquad
+ (W_j\xi)(n)=\xi(d(n-1)+j).
+\]
+Thus
+\begin{equation}\label{eq:standard-relations}
+ W_jV_k=\delta_{jk}I,
+ \qquad
+ \sum_{j=1}^dV_jW_j=I,
+\end{equation}
+and the ranges of $V_1,\ldots,V_d$ have disjoint supports. In particular,
+for all $a=(a_1,\ldots,a_d)\in\C^d$ and $\xi\in\ell^p$,
+\begin{equation}\label{eq:row-norm}
+ \left\|\sum_{j=1}^d a_jV_j\xi\right\|_p
+ =\left(\sum_{j=1}^d|a_j|^p\right)^{1/p}\|\xi\|_p.
+\end{equation}
+
+Set $\alpha=2^{-1/p}$ and define
+\begin{align*}
+ &S_1=V_1,
+ &&S_2=\alpha(V_1+V_2),
+ &&S_j=V_j \quad(3\le j\le d),\\
+ &T_1=W_1-W_2,
+ &&T_2=\alpha^{-1}W_2,
+ &&T_j=W_j \quad(3\le j\le d).
+\end{align*}
+The relations $T_jS_k=\delta_{jk}I$ involving indices at least three follow
+immediately from \eqref{eq:standard-relations}. For the first two indices,
+\begin{align*}
+ T_1S_1&=(W_1-W_2)V_1=I,
+ &T_1S_2&=\alpha(W_1-W_2)(V_1+V_2)=0,\\
+ T_2S_1&=\alpha^{-1}W_2V_1=0,
+ &T_2S_2&=W_2(V_1+V_2)=I.
+\end{align*}
+Moreover,
+\begin{align*}
+ S_1T_1+S_2T_2
+ &=V_1(W_1-W_2)+(V_1+V_2)W_2\\
+ &=V_1W_1+V_2W_2.
+\end{align*}
+Adding $\sum_{j=3}^dV_jW_j$ gives the identity. Hence the $S_j,T_j$
+satisfy \eqref{eq:leavitt}, and the universal property produces a
+representation $\rho$ with $\rho(s_j)=S_j$ and $\rho(t_j)=T_j$.
+
+We next verify strong forward isometry. Formula \eqref{eq:row-norm} shows that
+$S_1$ is an isometry and, since $2\alpha^p=1$, that $S_2$ is an isometry;
+the remaining $S_j$ are already isometries. For
+$\lambda=(\lambda_1,\ldots,\lambda_d)\in\C^d$,
+\[
+ \sum_{j=1}^d\lambda_jS_j
+ = (\lambda_1+\alpha\lambda_2)V_1
+   +\alpha\lambda_2V_2
+   +\sum_{j=3}^d\lambda_jV_j.
+\]
+Therefore \eqref{eq:row-norm} gives, for every $\xi\in\ell^p$,
+\begin{equation}\label{eq:scaling}
+ \left\|\sum_{j=1}^d\lambda_jS_j\xi\right\|_p
+ =c(\lambda)\|\xi\|_p,
+\end{equation}
+where
+\[
+ c(\lambda)=
+ \left(
+ |\lambda_1+\alpha\lambda_2|^p
+ +|\alpha\lambda_2|^p
+ +\sum_{j=3}^d|\lambda_j|^p
+ \right)^{1/p}.
+\]
+The triangular change of variables appearing here is invertible, so
+$c(\lambda)>0$ whenever $\lambda\ne0$. Dividing the operator in
+\eqref{eq:scaling} by $c(\lambda)$ gives an isometry. (For $\lambda=0$ the
+operator is the zero scalar multiple of any isometry.) Thus $\rho$ is strongly
+forward isometric.
+
+Finally, $W_2$ has norm one, and hence
+\[
+ \|\rho(t_2)\|=\|T_2\|=\alpha^{-1}=2^{1/p}>1.
+\]
+Thus $\rho$ is not contractive on generators.
+\end{proof}
+
+\section{Matrix interpretation and verification}
+
+On the first two coordinates the construction is the generator change
+\[
+ B=\begin{pmatrix}1&\alpha\\0&\alpha\end{pmatrix},
+ \qquad
+ B^{-1}=\begin{pmatrix}1&-1\\0&\alpha^{-1}\end{pmatrix}.
+\]
+The columns of $B$ have $\ell^p_2$-norm one, which is exactly forward
+isometry. The second row of $B^{-1}$ has norm $\alpha^{-1}>1$, which is
+exactly the failed reverse-generator contraction. This is also a quick audit
+of why both properties can coexist without contradicting the Leavitt
+relations.
+
+No numerical or computer-assisted step is used. The proof consists only of
+the displayed operator identities and the disjoint-support norm formula
+\eqref{eq:row-norm}.
+
+\section{Scope and novelty check}
+
+The construction covers all finite $d\ge2$ and all $1\le p<\infty$, so it
+fully answers the existence question as stated. It makes no assertion about
+spatiality, closures of representation ranges, or isomorphism classes of the
+resulting completed Banach algebras.
+
+A bounded search on 9 August 2026 covered the run registry, solution,
+attempt, and proof-gap indexes; exact searches for ``strongly forward
+isometric'' with ``contractive on generators''; the verbatim open sentence;
+title/citation searches for arXiv:1201.4196; and searches for finite-$d$
+Leavitt representations. The search found the source and later general
+$L^p$-operator-algebra literature, but no later answer to this exact question.
+This supports, but does not certify, novelty.
+
+Recommended human review is high priority but narrow: check the four
+first-two-coordinate relations, the reconstruction of the identity, and the
+norm formula \eqref{eq:scaling}.
+
+\begin{thebibliography}{1}
+\bibitem{Phillips}
+N. Christopher Phillips,
+\emph{Analogs of Cuntz algebras on $L^p$ spaces},
+arXiv:1201.4196v1, 2012.
+\end{thebibliography}
+
+\end{document}
+

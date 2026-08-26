@@ -1,0 +1,242 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,enumitem,graphicx,xcolor,hyperref,microtype}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\hypersetup{colorlinks=true,linkcolor=blue!55!black,urlcolor=blue!55!black,citecolor=blue!55!black}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\N}{\mathbb N}
+\newcommand{\D}{\mathcal D}
+\newcommand{\linf}{\ell_\infty}
+\newcommand{\lone}{\ell_1}
+\title{A Permutation-Group Counterexample\\to Interpolation of Cocompactness}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 17}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\linewidth}{\textbf{Status.}
+Candidate full counterexample, likely valid, requiring human review.  The
+construction gives a negative answer to the arbitrary-group interpolation
+question in source Remark 1.7, for both the complex method and the real
+method.}}
+\end{center}
+
+\begin{abstract}
+Cwikel and Tintarev ask whether cocompactness persists under interpolation
+for every choice of the acting group, without the additional mollifier
+hypotheses in their theorem.  It does not.  Take both Banach couples to be
+$(\ell_\infty,\ell_1)$ and let the group consist of all coordinate
+permutations.  The endpoint identity on $\ell_1$ is cocompact because
+$\ell_1$ has the Schur property.  For every $0<\theta<1$, however, both
+complex interpolation and the real method with fine index $1/\theta$ yield
+$\ell_{1/\theta}$.  Normalized indicators of growing finite sets have norm
+one but are weakly null after every sequence of coordinate permutations.
+Thus the interpolated identity is not cocompact.
+\end{abstract}
+
+\section{Source question}
+
+The source is Cwikel and Tintarev's \emph{On interpolation of cocompact
+imbeddings} \cite{CT}.  We use arXiv:1008.4371v3.  For a group $\D$ of
+continuous linear bijections of a Banach space $A$, the paper defines
+\[
+ u_k\stackrel{\D}{\rightharpoonup}u
+ \quad\Longleftrightarrow\quad
+ g_k(u_k-u)\rightharpoonup0
+ \text{ for every sequence }(g_k)\subset\D.
+ \tag{1}\label{eq:dweak}
+\]
+An embedding $A\hookrightarrow B$ is $\D$-cocompact when every sequence
+converging in the sense of \eqref{eq:dweak} converges in the norm of $B$.
+
+Theorem 2.3 proves persistence of cocompactness under real and complex
+interpolation assuming, among other baseline hypotheses, the existence of a
+$\D$-covariant mollifier family.  Remark 1.7 asks whether the additional
+conditions can be removed so that persistence holds for every group $\D$,
+and explicitly anticipates that the answer may be negative.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.94\linewidth]{figures/open_problem_crop.png}
+\caption{The open question in arXiv:1008.4371v3, PDF page 3.}
+\end{figure}
+
+\section{Proof intuition}
+
+The two endpoints play opposite roles.  At the strong endpoint, the Schur
+property of $\ell_1$ turns ordinary weak convergence into norm convergence.
+Because the identity belongs to every group, this immediately makes the
+identity on $\ell_1$ cocompact relative to any group of isometries.
+
+Interpolation with $\ell_\infty$ destroys the Schur property.  In the
+intermediate $\ell_p$ space, distribute unit mass evenly over $k$ coordinates.
+The resulting vector still has norm one.  A permutation may move its support
+to any $k$-element set, but it cannot concentrate the individual coefficient,
+which is only $k^{-1/p}$.  Splitting any dual vector into a finite head and a
+small tail proves weak convergence uniformly over all such moved supports.
+
+\section{The construction}
+
+For a permutation $\pi$ of $\N$, let
+\[
+ (P_\pi x)_j=x_{\pi^{-1}(j)},
+ \qquad
+ \D=\{P_\pi:\pi\in\operatorname{Sym}(\N)\}.
+\]
+Every $P_\pi$ is a linear bijective isometry on $\ell_r$ for
+$1\le r\le\infty$.  Set
+\[
+ (A_0,A_1)=(B_0,B_1)=(\linf,\lone).
+ \tag{2}\label{eq:couples}
+\]
+Thus $A_1\hookrightarrow A_0$, all endpoint inclusions $A_j\hookrightarrow
+B_j$ are identities, and the same group acts isometrically on all four
+endpoints.
+
+\begin{lemma}\label{lem:endpoint}
+The identity embedding $\lone\hookrightarrow\lone$ is $\D$-cocompact.
+\end{lemma}
+
+\begin{proof}
+Suppose $x_k\stackrel{\D}{\rightharpoonup}0$ in $\lone$.  Since the identity
+operator belongs to $\D$, definition \eqref{eq:dweak} implies
+$x_k\rightharpoonup0$ ordinarily.  The Schur property of $\ell_1$ says that
+weakly convergent sequences converge in norm \cite{Diestel}.  Hence
+$\|x_k\|_1\to0$, exactly as required.
+\end{proof}
+
+\begin{lemma}\label{lem:flat}
+Let $1<p<\infty$ and define
+\[
+ u_k=k^{-1/p}\sum_{j=1}^k e_j\in\ell_p.
+ \tag{3}\label{eq:uk}
+\]
+Then $\|u_k\|_p=1$ and
+$u_k\stackrel{\D}{\rightharpoonup}0$ in $\ell_p$.
+\end{lemma}
+
+\begin{proof}
+The norm assertion is immediate.  Let $(P_{\pi_k})$ be an arbitrary sequence
+in $\D$.  The vector $P_{\pi_k}u_k$ equals $k^{-1/p}$ on a $k$-element set
+$S_k\subset\N$ and vanishes elsewhere.
+
+Write $p'=p/(p-1)$.  Fix $f\in\ell_{p'}$ and a finite set $F\subset\N$.
+By the triangle inequality and H\"older's inequality,
+\begin{align*}
+ \bigl|\langle P_{\pi_k}u_k,f\rangle\bigr|
+ &\le k^{-1/p}\sum_{j\in S_k\cap F}|f_j|
+     +k^{-1/p}\sum_{j\in S_k\setminus F}|f_j|\\
+ &\le k^{-1/p}\|f\mathbf1_F\|_1
+     +k^{-1/p}|S_k|^{1/p}\|f\mathbf1_{F^c}\|_{p'}\\
+ &=k^{-1/p}\|f\mathbf1_F\|_1+\|f\mathbf1_{F^c}\|_{p'}.
+ \tag{4}\label{eq:headtail}
+\end{align*}
+For fixed $F$, the first term tends to zero.  The second can be made
+arbitrarily small by taking $F$ sufficiently large, independently of the
+sets $S_k$.  Therefore $P_{\pi_k}u_k\rightharpoonup0$ for every permutation
+sequence, proving the $\D$-weak convergence.
+\end{proof}
+
+\section{Failure of persistence}
+
+\begin{theorem}\label{thm:main}
+For the couples and group in \eqref{eq:couples}, the endpoint embedding
+$A_1\hookrightarrow B_1$ is $\D$-cocompact.  Nevertheless, for every
+$\theta\in(0,1)$, if $p=1/\theta$, then neither
+\[
+ [A_0,A_1]_\theta\hookrightarrow[B_0,B_1]_\theta
+ \tag{5}\label{eq:complex}
+\]
+nor
+\[
+ (A_0,A_1)_{\theta,p}\hookrightarrow(B_0,B_1)_{\theta,p}
+ \tag{6}\label{eq:real}
+\]
+is $\D$-cocompact.
+\end{theorem}
+
+\begin{proof}
+Endpoint cocompactness is Lemma \ref{lem:endpoint}.  The standard
+sequence-space interpolation identities are \cite{BL}
+\[
+ [\ell_\infty,\ell_1]_\theta=\ell_p,
+ \qquad
+ (\ell_\infty,\ell_1)_{\theta,q}=\ell_{p,q},
+ \qquad \frac1p=\theta.
+ \tag{7}\label{eq:interpolation}
+\]
+For $q=p$, $\ell_{p,p}=\ell_p$ with an equivalent norm.  Thus both
+\eqref{eq:complex} and \eqref{eq:real} are identity embeddings of $\ell_p$
+into itself, up to equivalent norms.  Lemma \ref{lem:flat} supplies a
+$\D$-weakly null sequence whose norm is constantly one.  Neither embedding
+is $\D$-cocompact.
+\end{proof}
+
+This is a negative answer to Remark 1.7.  The same example defeats the
+complex assertion and, at an allowed fine index, the real assertion for every
+interpolation parameter.
+
+\section{Checks, comparison, and novelty status}
+
+\paragraph{Quantifiers.}
+The crucial estimate \eqref{eq:headtail} is uniform in the permutation
+sequence.  It therefore proves the universal quantifier in the source's
+definition of $\D$-weak convergence, not merely weak convergence along one
+selected sequence of permutations.
+
+\paragraph{Equivalent norms.}
+Replacing the real-method norm by the equivalent standard $\ell_p$ norm does
+not change the continuous dual, weak convergence, or which sequences converge
+to zero in norm.  Hence it cannot change cocompactness of the identity.
+
+\paragraph{Relation to the source hypotheses.}
+All baseline endpoint and group assumptions hold.  The construction need not
+admit the source's covariant mollifier family: that is an additional condition
+whose proposed removal is exactly what the question asks about.  Indeed, the
+source theorem and Theorem \ref{thm:main} together imply that no such family
+can satisfy all its stated conditions for this example.
+
+\paragraph{Bounded novelty audit.}
+The run indexes contained no duplicate.  Exact and close searches found no
+published answer.  OpenAlex listed twelve works citing the source; their titles
+and available abstracts concern applications rather than this abstract
+question.  Tintarev's 2013 survey \cite{Tintarev} still says one would expect a
+general interpolation principle and refers only to the conditional source
+theorem.  That survey uses the same flat vectors to illustrate remainders for
+the shift group, but does not combine them with the full permutation group and
+the Schur endpoint.  Novelty confidence is moderate-to-high under this bounded
+audit, not an exhaustive priority claim.
+
+\paragraph{Human-review recommendation.}
+Prioritize review.  The proof is short and answers both interpolation methods.
+Check the exponent convention in \eqref{eq:interpolation}, the head--tail
+estimate, and priority beyond the searched citation graph.
+
+\begin{thebibliography}{9}
+\bibitem{CT}
+M. Cwikel and K. Tintarev,
+\emph{On interpolation of cocompact imbeddings},
+Rev. Mat. Complut. \textbf{26} (2013), 33--55;
+arXiv:1008.4371v3.
+
+\bibitem{BL}
+J. Bergh and J. L\"ofstr\"om,
+\emph{Interpolation Spaces: An Introduction},
+Springer, 1976.
+
+\bibitem{Diestel}
+J. Diestel,
+\emph{Sequences and Series in Banach Spaces},
+Springer, 1984.
+
+\bibitem{Tintarev}
+C. Tintarev,
+\emph{Concentration analysis and cocompactness},
+arXiv:1309.3431, 2013.
+\end{thebibliography}
+
+\end{document}

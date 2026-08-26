@@ -1,0 +1,228 @@
+\documentclass[10pt]{article}
+\usepackage[letterpaper,margin=0.74in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\setlist{nosep,leftmargin=*}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\A}{\mathbf A}
+\newcommand{\M}{\mathbf M}
+\newcommand{\Hh}{\mathbf H}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\sigmaerr}[2]{\sigma_{#1\A,\M}(#2)}
+
+\definecolor{resultblue}{RGB}{235,245,252}
+\definecolor{resultborder}{RGB}{38,105,145}
+\newcommand{\resultbox}[1]{%
+  \begin{center}\fcolorbox{resultborder}{resultblue}{%
+  \begin{minipage}{0.93\linewidth}\textbf{Result.} #1\end{minipage}}\end{center}}
+
+\title{A five-dimensional counterexample to greedy suboptimality for sparse approximation triples}
+\author{Solution packet for arXiv:1506.03549, Appendix B}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+\vspace{-1.5em}
+
+\resultbox{The greedy estimate (B.4) in arXiv:1506.03549 is false for
+general sparse approximation triples, even in dimension five and even when
+every signal is compressible.  All greedy choices in the example are unique.
+For a family $x_\varepsilon$, the two-step greedy/best-error ratio is
+$(1+\varepsilon)/\varepsilon\to\infty$; at three steps the best error is zero
+but the greedy error remains positive.}
+
+\section*{1. The question}
+
+Sun and Tang define, for a sparse approximation triple
+$(\A,\M,\Hh)$, the greedy iterates
+\[
+ x^{k+1}=x^k+\operatorname*{argmin}_{a\in\A}
+ \|x-x^k-a\|_{\M},\qquad x^0=0.
+\]
+Their Appendix B asks whether there is a constant $C>0$ such that
+\[
+ \|x^k-x\|_{\M}\leq C\,\sigmaerr{k}{x},\qquad
+ \sigmaerr{k}{x}:=\inf_{z\in k\A}\|x-z\|_{\M},                 \tag{1}
+\]
+even for compressible $x$ \cite{source}.  Here is the exact question from
+page 27 of the official arXiv PDF.
+
+\begin{center}
+\includegraphics[width=0.93\linewidth]{source_question_crop.png}
+\end{center}
+\vspace{0.1em}
+\begin{center}\small\emph{Official source evidence: arXiv:1506.03549, p.~27.}\end{center}
+
+\section*{2. Proof intuition}
+
+Coordinate subspaces turn this greedy algorithm into weighted greedy set
+cover.  In $\ell_1$, the best approximation on a coordinate support simply
+keeps the coordinates on that support.  Thus a greedy step chooses the
+allowed support containing the largest remaining $\ell_1$ mass, whereas a
+best $k$-term approximation chooses $k$ supports whose \emph{union} captures
+the most mass.  Overlapping supports can lure greedy into covering two large
+coordinates that the optimal pair would cover separately.
+
+The only delicate issue is whether such a support family satisfies every
+axiom imposed on a sparse approximation triple.  It does in finite
+dimension: coordinate projections are simultaneously best in $\ell_1$ and
+$\ell_2$, both required norm-splitting identities are exact, and all closed
+sets are proximinal.
+
+\section*{3. The fixed triple}
+
+Let
+\[
+ \M=(\R^5,\|\cdot\|_1),\qquad
+ \Hh=(\R^5,\|\cdot\|_2).
+\]
+For $S\subset\{1,\ldots,5\}$, write
+$E_S=\{z\in\R^5:\supp z\subset S\}$.  Define
+\[
+ \begin{array}{c@{\qquad}c@{\qquad}c@{\qquad}c}
+ S_1=\{1,2\},&S_2=\{3,4\},&S_3=\{1,3\},&S_4=\{5\},
+ \end{array}
+\]
+and $\A=E_{S_1}\cup E_{S_2}\cup E_{S_3}\cup E_{S_4}$.
+
+\begin{lemma}\label{lem:triple}
+$(\A,\M,\Hh)$ is a sparse approximation triple in the sense of the source.
+Moreover $3\A=\R^5$.
+\end{lemma}
+
+\begin{proof}
+We verify the five source axioms.
+\begin{enumerate}[label=(\roman*)]
+\item The inclusions $\A\subset\M\subset\Hh$ are continuous:
+$\|z\|_2\leq\|z\|_1$, and on every $E_{S_i}$,
+$\|z\|_1\leq\sqrt2\|z\|_2$.
+\item $\A$ is a finite union of closed subspaces.  Every nonempty closed
+subset of finite-dimensional $\M$ is proximinal: a minimizing sequence for
+distance from a fixed point is bounded and has a convergent subsequence.
+\item If $P_S$ denotes coordinate projection, then $P_Sx$ is the unique
+best approximation to $x$ from $E_S$ in both $\ell_1$ and $\ell_2$.
+\item Coordinate separation gives exactly
+\[
+ \|x\|_1=\|P_Sx\|_1+\|x-P_Sx\|_1,
+ \quad
+ \|x\|_2^2=\|P_Sx\|_2^2+\|x-P_Sx\|_2^2.
+\]
+\item Since $S_1\cup S_2\cup S_4=\{1,\ldots,5\}$,
+$E_{S_1}+E_{S_2}+E_{S_4}=\R^5$.  Hence $3\A=\Hh$, which is stronger than
+the required density of $\bigcup_k k\A$.
+\end{enumerate}
+\end{proof}
+
+For any residual $r$ and allowed support $S_i$,
+\[
+ \inf_{a\in E_{S_i}}\|r-a\|_1
+ =\|r-P_{S_i}r\|_1
+ =\|r\|_1-\sum_{j\in S_i}|r_j|.                        \tag{2}
+\]
+Thus the greedy support is exactly the one capturing the greatest remaining
+coordinate mass.
+
+\section*{4. The counterexample}
+
+Fix $0<\varepsilon<1$ and put
+\[
+ x_\varepsilon=(2,\tfrac32,2,1,\varepsilon).
+\]
+The captured masses at the first three greedy steps are:
+\[
+\begin{array}{c@{\quad}c@{\quad}cccc@{\quad}c}
+ k & \text{residual} & S_1&S_2&S_3&S_4&\text{unique choice}\\
+\midrule
+0&(2,\frac32,2,1,\varepsilon)&\frac72&3&4&\varepsilon&S_3\\
+1&(0,\frac32,0,1,\varepsilon)&\frac32&1&0&\varepsilon&S_1\\
+2&(0,0,0,1,\varepsilon)&0&1&0&\varepsilon&S_2
+\end{array}
+\]
+The inequalities are strict because $0<\varepsilon<1$.  Hence the two- and
+three-step greedy residuals are
+\[
+ r^2=(0,0,0,1,\varepsilon),\qquad
+ r^3=\varepsilon e_5,                                   \tag{3}
+\]
+so their errors are $1+\varepsilon$ and $\varepsilon$.
+
+\begin{theorem}\label{thm:main}
+For the fixed sparse approximation triple of Lemma~\ref{lem:triple}, no
+constant $C$ can satisfy (1), even when restricted to compressible signals
+and even under unique greedy choices.
+\end{theorem}
+
+\begin{proof}
+The pair $S_1,S_2$ covers coordinates $1,2,3,4$, so
+$\sigmaerr{2}{x_\varepsilon}\leq\varepsilon$.  Every other union of two
+allowed supports misses at least one of those four coordinates, whose weight
+is at least one.  Therefore
+\[
+ \sigmaerr{2}{x_\varepsilon}=\varepsilon,qquad
+ \frac{\|x^2-x_\varepsilon\|_1}{\sigmaerr{2}{x_\varepsilon}}
+ =\frac{1+\varepsilon}{\varepsilon}\longrightarrow\infty.   \tag{4}
+\]
+This already rules out a uniform $C$ while the denominator is positive.
+
+There is also a pointwise exact-sparsity failure.  Because
+$x_\varepsilon\in E_{S_1}+E_{S_2}+E_{S_4}\subset3\A$,
+\[
+ \sigmaerr{3}{x_\varepsilon}=0,
+ \qquad \|x^3-x_\varepsilon\|_1=\varepsilon>0              \tag{5}
+\]
+by (3).  Hence no finite constant works even for a fixed $x_\varepsilon$.
+
+Finally, every $x\in\M$ is compressible in the source's sense.  Indeed,
+$3\A=\M$ implies $\sigmaerr{k}{x}=0$ for $k\geq3$; for any $\alpha>0$, a
+finite enlargement of the constant handles $k=1,2$ in
+$\sigmaerr{k}{x}\leq C_xk^{-\alpha}$.  Thus (4)--(5) occur entirely inside
+the requested compressible class.
+\end{proof}
+
+\section*{5. Structural meaning and reproducibility}
+
+More generally, any finite family of coordinate supports whose finite unions
+span $\R^d$ gives a sparse approximation triple with
+$\M=\ell_1^d$, $\Hh=\ell_2^d$.  Formula (2) identifies the source algorithm
+with weighted greedy maximum coverage, while best approximation from $k\A$
+is optimal weighted coverage by $k$ allowed supports.  Consequently a
+positive theorem needs an additional structural hypothesis on the support
+family; the five axioms alone cannot imply (1).
+
+The included exact-rational script
+\texttt{code/verify\_counterexample.py} enumerates all support unions,
+confirms the three strict greedy choices, and verifies (4)--(5) for several
+rational $\varepsilon$.  Run:
+\begin{verbatim}
+python3 code/verify_counterexample.py
+\end{verbatim}
+The expected final line is
+\texttt{coordinate-group greedy counterexample: PASS}.  The script is an
+audit aid; the proof above is exact and self-contained.
+
+Exact-id and exact-phrase searches of the run indexes found no duplicate.  A
+bounded public search through 2026-08-13 found the arXiv and published source
+but no later answer to this exact sparse-approximation-triple question.  The
+claim here is the negative result above, not a characterization of support
+families for which a positive Lebesgue bound holds.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+Q. Sun and W.-S. Tang,
+\emph{Nonlinear frames and sparse reconstructions in Banach spaces},
+arXiv:1506.03549; J. Fourier Anal. Appl. 23 (2017), 1118--1152,
+especially (5.3) and Appendix B,
+\url{https://arxiv.org/abs/1506.03549}.
+\end{thebibliography}
+
+\end{document}

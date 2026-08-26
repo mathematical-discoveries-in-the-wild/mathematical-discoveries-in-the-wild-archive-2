@@ -1,0 +1,141 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=27mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newcommand{\R}{\mathbb R}
+\newcommand{\D}{\mathcal D}
+\newcommand{\F}{\mathcal F}
+
+\title{When extended operator-norm completeness detects completeness of the range}
+\author{Autonomous proof-discovery packet for arXiv:1006.1175}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.} Candidate full negative answer in the source's stated generality, with an exact positive repair; likely valid, human review requested. Model: GPT5.6.
+
+\section{Source question}
+
+For asymmetric normed spaces $(X,p)$ and $(Y,q)$, Cobza\c{s} writes $L(X,Y)$ for the continuous linear maps between the symmetrized normed spaces $(X,p^s)$ and $(Y,q^s)$.  The source equips this space with the extended symmetric operator norm
+\[
+ \|A\|^*_{p,q}
+ :=\sup_{p(x)\leq1}q^s(Ax)\in[0,\infty].
+\]
+Proposition~3.7 proves that biBanachness of $(Y,q)$ implies completeness of this extended-metric operator space.  Remark~3.8(2), on source PDF page~19, asks whether the converse holds, as it does for ordinary operator norms \cite{Cobzas}.  The exact excerpt is reproduced below.
+
+\begin{center}
+\includegraphics[width=\textwidth]{source_question_crop.pdf}
+\end{center}
+
+The answer is no.  More precisely, the only obstruction is whether the domain admits a nonzero functional controlled in both $p$-directions.
+
+\section{The domain dichotomy}
+
+Define the \emph{bilaterally $p$-bounded dual}
+\[
+ \D_p:=\left\{\varphi\in(X,p^s)^*:
+ b_p(\varphi):=\sup_{p(x)\leq1}|\varphi(x)|<\infty\right\}.
+\]
+Also let
+\[
+ \F_{p,q}(X,Y):=\{A\in L(X,Y):\|A\|^*_{p,q}<\infty\},
+\]
+the finite-distance component of zero.
+
+\subsection*{Proof intuition}
+
+In the classical converse, one fixes a nonzero bounded functional $\varphi$ on $X$ and embeds $Y$ into $L(X,Y)$ through the rank-one maps $x\mapsto\varphi(x)y$.  The same proof works here exactly when $\varphi$ is bounded on the one-sided unit ball $B_p$ in absolute value.  If no such functional exists, Hahn--Banach shows something stronger: no nonzero operator can have finite extended norm.  The extended metric then separates every two distinct operators by infinite distance, so all Cauchy sequences are eventually constant.
+
+\begin{theorem}[Exact repaired converse]\label{thm:dichotomy}
+Let $(X,p)$ and $(Y,q)$ be real asymmetric normed spaces.
+\begin{enumerate}
+\item If $\D_p\neq\{0\}$ and $(L(X,Y),\|\cdot\|^*_{p,q})$ is complete, then $(Y,q)$ is biBanach.
+\item If $\D_p=\{0\}$, then $\F_{p,q}(X,Y)=\{0\}$ for every $(Y,q)$. Consequently $(L(X,Y),\|\cdot\|^*_{p,q})$ is complete for every $Y$, regardless of whether $(Y,q)$ is biBanach.
+\end{enumerate}
+Thus, for a fixed domain $(X,p)$, operator-space completeness forces range completeness for every asymmetric range precisely when $\D_p\neq\{0\}$.
+\end{theorem}
+
+\begin{proof}
+Suppose first that $0\neq\varphi\in\D_p$.  Scale $x_0\in X$ so that $\varphi(x_0)=1$, and put $b=b_p(\varphi)>0$.  If $(y_n)$ is $q^s$-Cauchy in $Y$, define
+\[
+ A_nx:=\varphi(x)y_n.
+\]
+These maps belong to $L(X,Y)$ because $\varphi$ is $p^s$-continuous, and absolute homogeneity of the norm $q^s$ gives the exact identity
+\[
+ \|A_n-A_m\|^*_{p,q}
+ =b\,q^s(y_n-y_m).
+\]
+Hence $(A_n)$ is Cauchy.  By the assumed completeness it converges in $\|\cdot\|^*_{p,q}$ to some $A\in L(X,Y)$.  Since $|\varphi(x)|\leq b p(x)$, the equality $\varphi(x_0)=1$ implies $p(x_0)>0$.  Therefore
+\[
+ q^s(y_n-Ax_0)
+ =q^s((A_n-A)x_0)
+ \leq p(x_0)\|A_n-A\|^*_{p,q}\longrightarrow0.
+\]
+Every $q^s$-Cauchy sequence converges, so $(Y,q)$ is biBanach.
+
+Now suppose $\D_p=\{0\}$ and let $A\in\F_{p,q}(X,Y)$.  If $A\neq0$, choose $x_1$ with $Ax_1\neq0$.  Hahn--Banach in the ordinary normed space $(Y,q^s)$ supplies $g\in(Y,q^s)^*$ with $g(Ax_1)\neq0$.  Then $\varphi=g\circ A$ is nonzero and
+\[
+ \sup_{p(x)\leq1}|\varphi(x)|
+ \leq \|g\|\sup_{p(x)\leq1}q^s(Ax)
+ =\|g\|\|A\|^*_{p,q}<\infty,
+\]
+contradicting $\D_p=\{0\}$.  Thus $\F_{p,q}(X,Y)=\{0\}$.
+
+Finally, if $(A_n)$ is Cauchy for the extended metric, then for all sufficiently large $m,n$ one has $\|A_m-A_n\|^*_{p,q}<1$.  The difference belongs to $\F_{p,q}(X,Y)=\{0\}$, so the sequence is eventually constant and hence convergent.
+\end{proof}
+
+\section{Explicit counterexample}
+
+\begin{corollary}[Negative answer to Remark~3.8(2)]\label{cor:counterexample}
+There are nonzero $X$ and incomplete $Y$ for which $(L(X,Y),\|\cdot\|^*)$ is complete.
+\end{corollary}
+
+\begin{proof}
+Take
+\[
+ X=\R,\qquad p(t)=u(t):=\max\{t,0\},
+\]
+so $p^s(t)=|t|$.  Every linear functional has the form $\varphi(t)=ct$.  If $c\neq0$, then
+\[
+ b_p(\varphi)=\sup_{t\leq1}|ct|=\infty,
+\]
+because the one-sided unit ball contains the entire negative half-line.  Hence $\D_p=\{0\}$.
+
+Let $Y=c_{00}$ with its ordinary $\ell^2$ norm, viewed as the symmetric asymmetric norm $q=\|\cdot\|_2$.  It is incomplete: the sequence
+\[
+ y_N=(1,1/2,\ldots,1/N,0,0,\ldots)
+\]
+is Cauchy and its unique limit in $\ell^2$ is $(1/n)_{n\geq1}\notin c_{00}$.
+
+Every $A\in L(X,Y)$ is $A_y(t)=ty$ for some $y\in c_{00}$.  Directly, for $y\neq0$,
+\[
+ \|A_y\|^*_{p,q}
+ =\sup_{t\leq1}\|ty\|_2=\infty.
+\]
+Thus distinct operators are at infinite distance.  Every Cauchy sequence in $L(X,Y)$ is eventually constant, so the operator space is complete although $Y$ is not.
+\end{proof}
+
+\section{Scope, novelty, and review recommendation}
+
+The counterexample uses exactly the source's definition of asymmetric norm: $p(x)=p(-x)=0$ forces $x=0$, but $p(x)$ itself need not be positive for every nonzero $x$.  In particular, $u$ is allowed throughout the source and is one of its basic examples.  The result does not assert that the converse fails under an additional $T_1$ hypothesis.  Theorem~\ref{thm:dichotomy} instead identifies a natural hypothesis---$\D_p\neq0$---under which the converse is restored verbatim.
+
+A bounded novelty check through 13 August 2026 searched all four run indexes, the exact arXiv id and title, the exact question wording, and combinations of \emph{extended operator norm}, \emph{completeness}, \emph{biBanach}, and \emph{asymmetric norm}.  It found the source, its later book version, and neighboring work on compact and Hahn--Banach extension operators, but no later answer to Remark~3.8(2) and no statement of the dichotomy above.  Novelty is therefore plausible but provisional.
+
+Human review should focus on the intended scope of ``a similar result,'' the use of completeness for an extended metric, and whether $T_1$ or finite-valued operator-norm hypotheses were tacitly intended despite not appearing in the remark.
+
+\begin{thebibliography}{9}
+\bibitem{Cobzas}
+S.~Cobza\c{s},
+\emph{Functional analysis in asymmetric normed spaces},
+arXiv:1006.1175v1, 2010.
+\end{thebibliography}
+
+\end{document}

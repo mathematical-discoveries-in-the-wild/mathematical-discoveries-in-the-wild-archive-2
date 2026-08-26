@@ -1,0 +1,306 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\T}{\mathbb T}
+\newcommand{\cG}{\mathcal G}
+
+\title{A three-cell multi-tile generating a critical Gabor Riesz basis\\
+\large Candidate full counterexample for Problems 6.1 and 6.2 of arXiv:2202.06343}
+\author{Autonomous proof packet --- agent\_lane\_18 (GPT5.6)}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let
+\[
+  \Omega=[0,2)\cup[3,4),\qquad \Lambda=\Gamma=\Z.
+\]
+Then $\Omega$ is a level-three multi-tile, but not a tile, with respect to
+$\Z$. Nevertheless, the critical Gabor system
+$\cG(\chi_\Omega,\Z\times\Z)$ is a Riesz basis for $L^2(\R)$. On the Zak
+unit square its multiplier is $1+z+z^3$, and
+\[
+ \frac{47-14\sqrt7}{27}\leq |1+z+z^3|^2\leq 9
+ \qquad (|z|=1).
+\]
+This gives a positive answer to Problem 6.2, even with $\Gamma$ a lattice,
+and a negative answer to the intended tiling-necessity question in Problem
+6.1. It also contradicts Theorems 1.3 and 1.4 of the source as stated. The
+source proof incorrectly promotes an almost-everywhere multi-tiling property
+to continuity of the Zak transform across lattice-cell boundaries.
+\end{abstract}
+
+\section{The questions in the source}
+
+Frederick and Mayeli ask the following on page 20 of arXiv:2202.06343v1.
+The image is included to fix the version and wording.
+
+\begin{center}
+\includegraphics[width=0.98\textwidth]{runs/fa_banach_001/solutions/full/2202.06343_multitile_gabor_riesz_counterexample/figures/open_problem_crop.png}
+\end{center}
+
+The exact relevant text is:
+
+\begin{quote}
+\textbf{Problem 6.1.}
+Our characterization in Theorem 1.2 shows that the statement that
+$\mathcal G(\chi_\Omega,\Lambda\times\Gamma)$ forms a Riesz Gabor basis for
+any time-frequency shift domain $\Lambda\times\Gamma$ is equivalent to the
+statement that $\mathcal E(\Gamma)$ forms a Riesz basis for $L^2(\Omega)$,
+provided that $\Omega$ tiles $\mathbb R^d$ by $\Lambda$. This result holds
+under a prior assumption on the structure of $\Omega$. We also observed in
+Theorem 1.3 that for certain lattices, if $\Omega$ multi-tiles $\mathbb R^d$
+by $\Lambda$, for $\mathcal G(\chi_\Omega,\Lambda\times\Gamma)$ to form a
+Gabor Riesz basis, it is necessary that $\Omega$ tiles $\mathbb R^d$ by
+$\Lambda$. Can we improve these results and find a necessary tiling condition
+for any separable Riesz time-frequency domain $\Lambda\times\Gamma$ without
+any prior geometric assumptions on the set $\Omega$?
+
+\medskip
+\textbf{Problem 6.2.}
+Let $\Omega$ be a multi-tiling set with respect to a lattice $\Lambda$ at
+level $k>1$. Is it possible to find a countable set $\Gamma$ (not necessarily
+a lattice) such that $\mathcal G(\chi_\Omega,\Lambda\times\Gamma)$ is a Riesz
+Basis for $L^2(\mathbb R^d)$?
+\end{quote}
+
+The capitalization and punctuation above follow the source. Problem 6.3,
+concerning a ball, is not addressed here.
+
+\section{Definitions and proof intuition}
+
+For $g\in L^2(\R)$ and $m,n\in\Z$, set
+\[
+  M_mg(t)=e^{2\pi i mt}g(t),\qquad T_ng(t)=g(t-n).
+\]
+The critical integer Gabor system is
+$\cG(g,\Z\times\Z)=\{M_mT_ng:m,n\in\Z\}$.
+A sequence $(f_j)$ is a Riesz basis if it is the image of an orthonormal
+basis under a boundedly invertible operator. Equivalently, it is complete
+and there are $0<A\leq B<\infty$ such that
+\[
+ A\sum_j|c_j|^2\leq\left\|\sum_jc_jf_j\right\|_2^2
+ \leq B\sum_j|c_j|^2
+\]
+for every finitely supported scalar family $(c_j)$.
+
+The Zak transform, with the convention used in the source, is
+\[
+  Zf(x,\xi)=\sum_{k\in\Z}f(x+k)e^{2\pi i k\xi},
+  \qquad (x,\xi)\in[0,1)^2.
+\]
+It extends to a unitary map from $L^2(\R)$ onto $L^2([0,1)^2)$.
+Moreover,
+\begin{equation}\label{eq:covariance}
+ Z(M_mT_nf)(x,\xi)=e^{2\pi i(mx+n\xi)}Zf(x,\xi).
+\end{equation}
+
+\paragraph{Intuition.}
+If $\Omega$ is made from finitely many integer translates of $[0,1)$, then
+$Z\chi_\Omega$ is a finite $0/1$ Laurent polynomial in
+$z=e^{2\pi i\xi}$. At critical density, equation \eqref{eq:covariance}
+says that the Gabor system is exactly the standard Fourier basis of the Zak
+square multiplied by this polynomial. It is therefore a Riesz basis if and
+only if the polynomial never vanishes on the unit circle. Two-term masks
+always vanish, but the three-term mask $1+z+z^3$ does not.
+
+\section{A finite-mask criterion}
+
+For a nonempty finite set $A\subset\Z$, define, modulo null endpoints,
+\[
+  \Omega_A=\bigcup_{a\in A}([0,1)+a),
+  \qquad p_A(z)=\sum_{a\in A}z^a.
+\]
+
+\begin{proposition}[finite lattice-fiber masks]\label{prop:mask}
+The set $\Omega_A$ multi-tiles $\R$ by $\Z$ at level $|A|$. Furthermore,
+\[
+ \cG(\chi_{\Omega_A},\Z\times\Z)
+ \text{ is a Riesz basis for }L^2(\R)
+ \quad\Longleftrightarrow\quad
+ p_A(z)\neq0\ \text{for every }z\in\T.
+\]
+When these conditions hold, the optimal squared Riesz bounds are
+\[
+ A_0=\min_{|z|=1}|p_A(z)|^2,
+ \qquad B_0=\max_{|z|=1}|p_A(z)|^2.
+\]
+\end{proposition}
+
+\begin{proof}
+Fix a noninteger $t$ and write $t=x+j$ with $0<x<1$ and $j\in\Z$.
+For each $a\in A$, precisely the translate
+$\Omega_A+(j-a)$ contains $t$. These $|A|$ translates are distinct, and no
+other integer translate contains $t$. Hence the multi-tiling level is $|A|$
+almost everywhere.
+
+For $0\leq x<1$, again away from irrelevant endpoints,
+\[
+ Z\chi_{\Omega_A}(x,\xi)
+ =\sum_{k\in\Z}\chi_{\Omega_A}(x+k)e^{2\pi i k\xi}
+ =\sum_{a\in A}e^{2\pi i a\xi}
+ =p_A(e^{2\pi i\xi}).
+\]
+Let $E_{m,n}(x,\xi)=e^{2\pi i(mx+n\xi)}$. The family
+$(E_{m,n})_{m,n\in\Z}$ is an orthonormal basis of $L^2([0,1)^2)$.
+By \eqref{eq:covariance}, the Zak transform carries the proposed Gabor
+system to $(p_A(e^{2\pi i\xi})E_{m,n})_{m,n\in\Z}$.
+
+If $p_A$ is zero-free on $\T$, compactness gives $0<A_0\leq B_0<\infty$.
+Thus multiplication by $p_A(e^{2\pi i\xi})$ is boundedly invertible on the
+Zak square. Its image of the Fourier orthonormal basis is a Riesz basis,
+with the displayed bounds. Conversely, if $p_A$ has a unit-circle zero,
+continuity makes its essential infimum zero. Multiplication by it is not
+bounded below, so its image of the Fourier basis cannot be a Riesz basis.
+\end{proof}
+
+\section{The counterexample}
+
+\begin{theorem}\label{thm:counterexample}
+Let
+\[
+ \Omega=[0,2)\cup[3,4),\qquad \Lambda=\Gamma=\Z,
+ \qquad g=\chi_\Omega.
+\]
+Then:
+\begin{enumerate}
+\item $\Omega$ multi-tiles $\R$ by $\Lambda$ at level three and does not tile
+      $\R$ by $\Lambda$ at level one;
+\item $\cG(g,\Lambda\times\Gamma)$ is a Riesz basis for $L^2(\R)$;
+\item its optimal squared Riesz bounds are
+\[
+  \frac{47-14\sqrt7}{27}\quad\text{and}\quad 9.
+\]
+\end{enumerate}
+Consequently Problem 6.2 has a positive answer, even with $\Gamma$ a lattice,
+and tiling by $\Lambda$ is not necessary in Problem 6.1.
+\end{theorem}
+
+\begin{proof}
+Here $\Omega=\Omega_A$ for $A=\{0,1,3\}$, so Proposition
+\ref{prop:mask} gives the level-three assertion and reduces the Riesz-basis
+claim to the polynomial
+\[
+ p(z)=1+z+z^3.
+\]
+Suppose $z=e^{i\theta}$ and $p(z)=0$. Taking imaginary parts yields
+\[
+ 0=\sin\theta+\sin3\theta
+  =2\sin2\theta\cos\theta
+  =4\sin\theta\cos^2\theta.
+\]
+Thus $\theta$ is congruent modulo $2\pi$ to one of
+$0,\pi,\pi/2,3\pi/2$. Direct substitution gives, respectively,
+$p(z)=3,-1,1,1$, a contradiction. Hence $p$ is zero-free on $\T$, proving
+the Riesz-basis assertion.
+
+For the exact bounds, put $c=\cos\theta$. A direct expansion gives
+\begin{align*}
+ |1+e^{i\theta}+e^{3i\theta}|^2
+ &=3+2(\cos\theta+\cos2\theta+\cos3\theta)\\
+ &=8c^3+4c^2-4c+1=:F(c).
+\end{align*}
+On $[-1,1]$, the only interior critical points are
+\[
+ c_\pm=\frac{-1\pm\sqrt7}{6}.
+\]
+Using $6c_\pm^2+2c_\pm-1=0$ gives
+\[
+ F(c_+)=\frac{47-14\sqrt7}{27},\qquad
+ F(c_-)=\frac{47+14\sqrt7}{27}.
+\]
+Together with $F(-1)=1$ and $F(1)=9$, this proves the displayed minimum and
+maximum. Finally, the level-three count rules out level-one tiling by the
+same lattice $\Lambda=\Z$.
+\end{proof}
+
+\section{Why the source's obstruction does not apply}
+
+The example is not merely outside Theorem 1.3 of the source: for $M=N=1$ it
+meets that theorem's stated hypotheses and contradicts its conclusion.
+The same is true of the equivalence asserted in Theorem 1.4.
+
+The standard critical-density statement used by the source is sound: if a
+Zak transform is continuous on all of $\R^2$ with the usual
+quasi-periodicity, then it must vanish. But an arbitrary multi-tiling
+indicator need not have a continuous Zak transform. In the present example,
+for $0<x<1$ its lattice fiber is $\{0,1,3\}$, whereas for $1<x<2$ the fiber
+is $\{-1,0,2\}$. Thus
+\[
+ Zg(x,\xi)=p(e^{2\pi i\xi})\quad(0<x<1),
+\]
+while crossing the boundary $x=1$ changes the expression by the nontrivial
+quasi-periodic phase $e^{-2\pi i\xi}$. Except at integer $\xi$, the two
+one-sided limits differ.
+
+The source's Lemma 5.3 argues, after saying \emph{without loss of generality,
+assume that $\Omega$ is open}, that the finite lattice fiber is locally
+constant at every point. Neither step follows from an almost-everywhere
+multi-tiling hypothesis. Replacing $\Omega$ by the open representative
+$(0,2)\cup(3,4)$ changes no $L^2$ or tiling assertion, but the fiber still
+jumps at integer cell boundaries. The claimed continuity in Theorem 5.4
+therefore fails, and the zero theorem cannot be invoked.
+
+\section{Independent checks, novelty, and limitations}
+
+The companion script \texttt{verify\_counterexample.py} checks the exact
+critical values symbolically, samples the multi-tiling count away from the
+null boundary set, and performs a million-point numerical audit of the mask.
+The proof above is independent of that computation.
+
+The polynomial $1+z+z^3$ and the same lower bound occur in an unrelated
+positive-definite Toeplitz quadratic-form example in arXiv:math/0507185.
+Searches of the local arXiv corpus and the web by the source title, exact
+problem wording, and mask polynomial found no published correction of
+arXiv:2202.06343 or use of this mask to answer Problems 6.1--6.2. This is a
+novelty search, not a proof of novelty.
+
+The packet does not address Problem 6.3 about balls, does not classify all
+separable Gabor Riesz bases, and does not claim that every level-$k$
+multi-tile works. Because the result directly challenges stated theorems in
+the source preprint, a specialist should verify the Zak convention and then
+notify the authors before dissemination.
+
+\section*{Human-review checklist}
+
+\begin{tabular}{@{}p{0.30\textwidth}p{0.64\textwidth}@{}}
+\toprule
+Item & Check \\
+\midrule
+Multi-tiling & Confirm the three translates covering each noninteger point.\\
+Zak covariance & Confirm signs in \eqref{eq:covariance}; signs do not affect the zero-free conclusion.\\
+Polynomial bound & Recheck the four critical values of $F(c)$.\\
+Source contradiction & Compare hypotheses of Theorems 1.3--1.4 with $M=N=1$.\\
+Novelty & Search journal versions, errata, MathSciNet, and citing literature.\\
+\bottomrule
+\end{tabular}
+
+\section*{References}
+
+\begin{enumerate}
+\item C. Frederick and A. Mayeli, \emph{A characterization of Gabor Riesz
+  bases with separable time-frequency shifts}, arXiv:2202.06343v1 (2022).
+\item K. Gr\"ochenig, \emph{Foundations of Time-Frequency Analysis},
+  Birkh\"auser, 2001. (Standard Zak-transform characterization at critical
+  density.)
+\item X. Huang and L. You, \emph{On the strong positive definiteness of
+  infinite matrices},\\ arXiv:math/0507185 (2005). (Unrelated occurrence of
+  $1+z+z^3$ and its lower bound.)
+\end{enumerate}
+
+\end{document}

@@ -1,0 +1,236 @@
+\documentclass[10pt]{article}
+\usepackage[margin=0.84in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newcommand{\T}{\mathbb T}
+\newcommand{\Pp}{\mathcal P}
+\newcommand{\wh}[1]{\widehat{#1}}
+
+\title{The strict Courtney--Sarason lower bound\\
+for every self-adjoint Toeplitz truncation level}
+\author{Run \texttt{fa\_banach\_001} --- \texttt{agent\_lane\_11}}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.} Candidate full solution of Question~1 in
+Courtney--Sarason~\cite{courtney-sarason}; likely valid subject to human review.
+Questions~2--4 of the source are not claimed solved.
+
+\section{Source question and notation}
+
+For $f\in L^\infty(\T)$, let
+\[
+ A_{f,N}=\bigl(\wh f(j-\ell)\bigr)_{j,\ell=0}^{N}
+\]
+be the compression of multiplication by $f$ to the polynomials
+$\Pp_N$. For a self-adjoint Toeplitz matrix $A$, let $c_A$ be the least
+$L^\infty$ norm of an inducing function with the prescribed Fourier
+coefficients, and set
+\[
+ c_N=\max_{0\ne A=A^*\text{ Toeplitz}}
+          \frac{c_A}{\|A\|}.
+\]
+The source asks in Section~8, PDF page~13:
+
+\begin{center}
+\includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+Courtney--Sarason prove that the minimum-norm inducer is an alternating step
+function and, conversely, that every alternating step function of height one
+and order at most $N$ is the minimum-norm inducer for its compression
+$A_{f,N}$~\cite[Sections 4--5]{courtney-sarason}. Consequently
+\begin{equation}\label{eq:step-lower}
+ c_N\ge \frac1{\|A_{f,N}\|}
+\end{equation}
+for every such height-one step function $f$.
+
+\section{Proof intuition}
+
+The source dilates a symbol $f$ to $f(z^k)$ only at the exact multiple level
+$kN$. The residue-class proof actually loses nothing at an arbitrary level
+$M$: each residue modulo $k$ carries a Toeplitz block for $f$, and the largest
+block has level $\lfloor M/k\rfloor$. Thus a single strict level-two witness
+can be copied without changing its compression norm into every level
+$M\ge4$ by taking $k=\lfloor M/2\rfloor$. The only uncovered level is $3$,
+where the source already supplies a rigorous strict witness.
+
+\section{The non-multiple dilation lemma}
+
+\begin{lemma}\label{lem:dilation}
+Let $f\in L^\infty(\T)$, let $M,k$ be positive integers with $k\le M$, and
+put $g(e^{i\theta})=f(e^{ik\theta})$. Then
+\begin{equation}\label{eq:dilation}
+ \|A_{g,M}\|=\|A_{f,\lfloor M/k\rfloor}\|.
+\end{equation}
+More precisely, $A_{g,M}$ is unitarily equivalent to the direct sum
+\begin{equation}\label{eq:blocksum}
+ \bigoplus_{r=0}^{\min\{k-1,M\}}
+ A_{f,\lfloor(M-r)/k\rfloor}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The Fourier coefficient $\wh g(n)$ is zero unless $k$ divides $n$, and
+$\wh g(kj)=\wh f(j)$. For each residue $r\in\{0,\ldots,k-1\}$, let $S_r$
+be the span of the monomials
+\[
+ z^r,z^{r+k},\ldots,z^{r+m_rk},
+ \qquad m_r=\left\lfloor\frac{M-r}{k}\right\rfloor,
+\]
+omitting empty spaces. The spaces $S_r$ are mutually orthogonal, span
+$\Pp_M$, and reduce $A_{g,M}$. Under the unitary identification
+$z^{r+jk}\leftrightarrow z^j$, the $(p,q)$ entry of the restriction is
+\[
+ \wh g(k(p-q))=\wh f(p-q),
+\]
+so the block is $A_{f,m_r}$. This proves \eqref{eq:blocksum}. The $r=0$
+block has level $m_0=\lfloor M/k\rfloor$, while every other block is a
+principal compression of it. Therefore the norm of the direct sum is exactly
+the norm of the $r=0$ block, proving \eqref{eq:dilation}.
+\end{proof}
+
+The exact-multiple case $M=kN$ is Proposition~7.1 of the source. The arbitrary
+$M$ formulation gives an additional comparison.
+
+\begin{corollary}\label{cor:comparison}
+For positive integers $M,k$ with $k\le M$,
+\[
+ c_M\ge c_{\lfloor M/k\rfloor}.
+\]
+\end{corollary}
+
+\begin{proof}
+Take an alternating step maximizer $f$ at level $\lfloor M/k\rfloor$ and
+put $g(z)=f(z^k)$. Its order is at most
+$k\lfloor M/k\rfloor\le M$, so \eqref{eq:step-lower} applies at level $M$.
+Lemma~\ref{lem:dilation} preserves the relevant compression norm.
+\end{proof}
+
+\section{A rigorous strict seed at level two}
+
+Let $\psi$ be the even alternating step function of height one and order two
+which equals $1$ at $1\in\T$ and has discontinuities at the angles
+\[
+ \pm L,\quad \pi\pm R,
+ \qquad L=\frac{\pi}{15},\quad R=\frac{\pi}{3}.
+\]
+Direct integration (the same formula used in Section~7 of the source) gives
+\begin{align}
+ a_0:=\wh\psi(0)&=-\frac15,\label{eq:a0}\\
+ a_1:=\wh\psi(1)&=\frac2\pi
+   \left(\sin\frac{\pi}{15}-\frac{\sqrt3}{2}\right),\label{eq:a1}\\
+ a_2:=\wh\psi(2)&=\frac1\pi
+   \left(\frac{\sqrt3}{2}+\sin\frac{2\pi}{15}\right).\label{eq:a2}
+\end{align}
+Thus
+\[
+ A_{\psi,2}=
+ \begin{pmatrix}a_0&a_1&a_2\\a_1&a_0&a_1\\a_2&a_1&a_0\end{pmatrix}.
+\]
+Put $x=|a_1|$ and $y=a_2$. The antisymmetric eigenvector gives the eigenvalue
+$-1/5-y$, and the two symmetric eigenvalues are
+\begin{equation}\label{eq:eigenvalues}
+ -\frac15+\frac y2\ \pm\ \frac12\sqrt{y^2+8x^2}.
+\end{equation}
+
+For completeness, all numerical separation needed below follows from the
+rational bounds
+\begin{gather*}
+ 3.14159<\pi<3.14160,\qquad
+ 0.20791<\sin(\pi/15)<0.20792,\\
+ 0.40673<\sin(2\pi/15)<0.40674,\qquad
+ 0.86602<\sqrt3/2<0.86603.
+\end{gather*}
+Machin's formula and alternating series prove the first bound; alternating
+Taylor bounds prove the two sine bounds; the last follows by squaring. They
+imply
+\[
+ x<0.41898,\qquad 0.40512<y<0.40514.
+\]
+Hence the antisymmetric eigenvalue has modulus below $0.60515$, while
+\[
+ \left|-\frac15+\frac y2\right|<0.00257,
+ \qquad
+ \frac12\sqrt{y^2+8x^2}<0.62620.
+\]
+By \eqref{eq:eigenvalues},
+\begin{equation}\label{eq:strict-seed}
+ \|A_{\psi,2}\|<0.62877<\frac2\pi.
+\end{equation}
+The accompanying verifier certifies each displayed decimal inequality by
+exact rational arithmetic. From \eqref{eq:step-lower} and
+\eqref{eq:strict-seed}, $c_2>\pi/2$.
+
+\section{Full answer to Question 1}
+
+\begin{theorem}\label{thm:main}
+For every integer $N>1$, the Courtney--Sarason mini-max constant satisfies
+\[
+ c_N>\frac\pi2.
+\]
+\end{theorem}
+
+\begin{proof}
+The case $N=2$ is \eqref{eq:strict-seed}. For $N=3$, Section~7 of the source
+constructs an alternating step function proving
+\[
+ c_3\ge\frac{\pi\kappa}{2\sqrt2},
+\]
+where $\kappa$ is the largest root of
+$1-3x-3x^2+3x^3$. Since this polynomial is negative at $3/2$,
+$\kappa>3/2$; consequently
+$c_3>3\pi/(4\sqrt2)>\pi/2$.
+
+Now let $N\ge4$ and set $k=\lfloor N/2\rfloor$. Then
+\[
+ \left\lfloor\frac Nk\right\rfloor=2,
+ \qquad 2k\le N.
+\]
+Equivalently, the dilated function $g(z)=\psi(z^k)$ is an alternating step
+function of order $2k\le N$, and Lemma~\ref{lem:dilation} gives
+\[
+ \|A_{g,N}\|=\|A_{\psi,2}\|<\frac2\pi.
+\]
+Applying \eqref{eq:step-lower} to $g$ yields $c_N>\pi/2$.
+\end{proof}
+
+\section{Verification, novelty, and limitations}
+
+The standard-library verifier proves the rational interval certificate, then
+checks the residue block levels for every $4\le N\le1000$. The finite sweep is
+only a sanity check; Lemma~\ref{lem:dilation} proves the statement for all
+$N$.
+
+A bounded run-index and arXiv/web search on 13 August 2026 used the exact title,
+authors, $c_N$, ``self-adjoint Toeplitz $\pi/2$,'' ``Courtney--Sarason,'' and
+the exact wording of Questions~1--2. It recovered the source and later papers
+citing it for other Toeplitz/Blaschke questions, but no resolution or
+non-multiple dilation formula. The novelty assessment is therefore
+\emph{apparently new within the bounded search}, not an exhaustive guarantee.
+
+Theorem~\ref{thm:main} completely answers Question~1. Corollary
+\ref{cor:comparison} gives new non-adjacent comparisons, but it does not imply
+$c_{N+1}>c_N$. Questions~2--4 remain open. Human review should prioritize the
+source-derived extremal reformulation and the arbitrary-level block
+decomposition.
+
+\begin{thebibliography}{9}
+\bibitem{courtney-sarason}
+D. Courtney and D. Sarason,
+\emph{A mini-max problem for self-adjoint Toeplitz matrices},
+Math. Scand. \textbf{110} (2012), 82--98;
+\href{https://doi.org/10.7146/math.scand.a-15198}{doi:10.7146/math.scand.a-15198};
+\href{https://arxiv.org/abs/1009.2553}{arXiv:1009.2553}.
+\end{thebibliography}
+
+\end{document}

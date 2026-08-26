@@ -1,0 +1,271 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue]{hyperref}
+\usepackage{microtype}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Ent}{\operatorname{Ent}}
+
+\title{The Entropic Difference-Body Inequality for Convex Measures\\
+Holds for Every Positive Excess Exponent}
+\author{Run \texttt{fa\_banach\_001} --- candidate full solution}
+\date{August 11, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Bobkov and Madiman asked whether, for i.i.d. random vectors with density
+$f=V^{-\beta}$ on $\R^n$, the bound
+$H(X-Y)\le C_\gamma H(X)$ holds uniformly in dimension when
+$\beta\ge n+\gamma$.  We answer affirmatively for every $\gamma>0$.
+The proof quantizes the information content $-\log f(X)$ in bins of width
+$n$.  Each bin lies in a convex superlevel set; Rogers--Shephard controls the
+support of every conditional difference.  The sharp varentropy estimate for
+convex measures controls both the larger information bin and the discrete
+mixing cost.  This yields a completely explicit, though unoptimized,
+constant depending only on $\gamma$.
+\end{abstract}
+
+\section{Question and result}
+
+For an absolutely continuous random vector $U$ in $\R^n$, write
+\[
+ h(U)=-\int f_U\log f_U,
+ \qquad H(U)=\exp\!\left(\frac{2h(U)}n\right).
+\]
+The question in Bobkov--Madiman \cite{BM} is reproduced below.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.84\textwidth]{figures/open_question_crop.png}
+\caption{The source question and its Rogers--Shephard motivation
+(arXiv:1111.6807, PDF page 5).}
+\end{figure}
+
+Define, for $\gamma>0$,
+\begin{align}
+ A_\gamma
+   &=2\max\left\{1,\sqrt{\gamma^{-2}+\gamma^{-1}}\right\},\label{eq:A}\\
+ B_\gamma
+   &=2\pi e\left((A_\gamma+\tfrac12)^2+\tfrac1{12}\right),\label{eq:B}\\
+ c_\gamma
+   &=1+\log4+\frac{A_\gamma}{\sqrt2}+\log B_\gamma.\label{eq:c}
+\end{align}
+
+\begin{theorem}\label{thm:main}
+Let $X,Y$ be independent and identically distributed random vectors in
+$\R^n$ with probability density
+\[
+ f=V^{-\beta},
+ \]
+where $V:\R^n\to(0,\infty]$ is convex and
+$\beta\ge n+\gamma$ for some $\gamma>0$.  Then
+\begin{equation}\label{eq:entropy-main}
+ h(X-Y)\le h(X)+n c_\gamma.
+\end{equation}
+Consequently
+\begin{equation}\label{eq:power-main}
+ H(X-Y)\le C_\gamma H(X),
+ \qquad C_\gamma=\exp(2c_\gamma).
+\end{equation}
+Thus the answer to the source question is: \emph{every $\gamma>0$}.
+\end{theorem}
+
+No symmetry, centering, moment assumption, or convexity of the difference
+density is required.
+
+\section{Two inputs}
+
+Put
+\[
+ Z=-\log f(X),\qquad \sigma^2=\Var Z.
+\]
+Then $\mathbb EZ=h(X)$.  The sharp varentropy estimate of
+Fradelizi--Li--Madiman \cite[Corollary 4.4]{FLM}, specialized from
+$s=-1/\beta$, is
+\begin{equation}\label{eq:varentropy}
+ \sigma^2\le \beta^2\sum_{i=1}^n(\beta-i)^{-2}.
+\end{equation}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.92\textwidth]{figures/varentropy_bound_crop.png}
+\caption{The sharp $s$-concave varentropy input in its original notation
+(arXiv:1512.01490, PDF page 9).  Substitution $s=-1/\beta$ gives
+\eqref{eq:varentropy}.}
+\end{figure}
+
+For fixed $n$ and $1\le i\le n$, the function
+$\beta/(\beta-i)$ decreases with $\beta$.  Hence $\beta\ge n+\gamma$ and
+\eqref{eq:varentropy} imply
+\begin{equation}\label{eq:sigma}
+ \frac\sigma n
+ \le \frac{n+\gamma}{n}
+ \left(\sum_{k=0}^{n-1}\frac1{(\gamma+k)^2}\right)^{1/2}
+ \le A_\gamma.
+\end{equation}
+For completeness, if $n\ge\gamma$, the prefactor is at most $2$ and
+\[
+ \sum_{k=0}^{n-1}(\gamma+k)^{-2}
+ \le \gamma^{-2}+\int_0^\infty(\gamma+x)^{-2}\,dx
+ =\gamma^{-2}+\gamma^{-1}.
+\]
+If $n<\gamma$, the sum is at most $n/\gamma^2$ and the product in
+\eqref{eq:sigma} is at most $2/\sqrt n\le2$.  This proves the last inequality.
+
+The geometric input is Rogers--Shephard: for every convex body $K\subset\R^n$,
+\begin{equation}\label{eq:RS}
+ |K-K|\le \binom{2n}{n}|K|\le4^n|K|.
+\end{equation}
+
+\section{Information bins and conditional difference bodies}
+
+Let $Z'$ be an independent copy of $Z$ and define the integer-valued indices
+\begin{equation}\label{eq:bins}
+ J=\left\lfloor\frac{Z-h(X)}n\right\rfloor,
+ \qquad
+ J'=\left\lfloor\frac{Z'-h(X)}n\right\rfloor.
+\end{equation}
+For $a\in\R$, set
+\[
+ K_a=\{x:f(x)>e^{-a}\}.
+\]
+Because $f=V^{-\beta}$, $K_a$ is a convex sublevel set of $V$.  Moreover,
+\begin{equation}\label{eq:level-volume}
+ |K_a|\le e^a,
+\end{equation}
+since $f>e^{-a}$ on $K_a$ and $\int f=1$.
+
+Condition on $J=j$ and $J'=k$, put $m=\max\{j,k\}$, and set
+\[
+ a=h(X)+n(m+1).
+\]
+The definition of the floor shows that both conditioned vectors lie in
+$K_a$.  Their difference is therefore supported in $K_a-K_a$.  A density
+supported on a set of volume $M$ has entropy at most $\log M$; thus
+\eqref{eq:RS} and \eqref{eq:level-volume} give
+\begin{align}
+ h(X-Y\mid J=j,J'=k)
+ &\le \log|K_a-K_a|\notag\\
+ &\le n\log4+\log|K_a|\notag\\
+ &\le h(X)+n\bigl(m+1+\log4\bigr).\label{eq:conditional-bin}
+\end{align}
+
+Since $J\le (Z-h(X))/n$, averaging \eqref{eq:conditional-bin} yields
+\begin{align}
+ h(X-Y\mid J,J')
+ &\le h(X)+n(1+\log4)
+       +\mathbb E\max\{Z-h(X),Z'-h(X)\}\notag\\
+ &=h(X)+n(1+\log4)+\frac12\mathbb E|Z-Z'|\notag\\
+ &\le h(X)+n(1+\log4)+\frac\sigma{\sqrt2}\notag\\
+ &\le h(X)+n\biggl(1+\log4+\frac{A_\gamma}{\sqrt2}\biggr).
+ \label{eq:conditional-average}
+\end{align}
+Here the equality uses
+$\max(u,v)=(u+v+|u-v|)/2$, and Cauchy--Schwarz gives
+$\mathbb E|Z-Z'|\le\sqrt{2}\,\sigma$.
+
+\section{The discrete mixing cost}
+
+It remains to show that the information-bin index itself has bounded entropy.
+Let
+\[
+ U=\frac{Z-h(X)}n,\qquad R=U-\lfloor U\rfloor.
+\]
+Since $0\le R<1$, $\Var R\le1/4$.  The triangle inequality in centered
+$L^2$ and \eqref{eq:sigma} give
+\begin{equation}\label{eq:varJ}
+ \sqrt{\Var J}=\sqrt{\Var(U-R)}
+ \le\sqrt{\Var U}+\sqrt{\Var R}
+ \le A_\gamma+\frac12.
+\end{equation}
+
+We record the standard integer-entropy estimate.  If $L$ is integer-valued
+with variance $v$, and $Q$ is independent and uniform on
+$[-\tfrac12,\tfrac12]$, then the unit intervals supporting $L+Q$ are
+disjoint and
+\[
+ h(L+Q)=\Ent(L),\qquad \Var(L+Q)=v+\frac1{12}.
+\]
+The Gaussian maximum-entropy inequality therefore gives
+\begin{equation}\label{eq:integer-entropy}
+ \Ent(L)\le\frac12\log\left(2\pi e(v+\tfrac1{12})\right).
+\end{equation}
+Applying \eqref{eq:integer-entropy} to \eqref{eq:varJ} proves
+\begin{equation}\label{eq:HJ}
+ \Ent(J)\le\frac12\log B_\gamma.
+\end{equation}
+
+The entropy-of-a-mixture inequality says
+\[
+ h(W)\le h(W\mid D)+\Ent(D)
+\]
+for a continuous $W$ and a countable discrete $D$.  Use it with
+$W=X-Y$ and $D=(J,J')$.  Since $J,J'$ are independent, \eqref{eq:conditional-average}
+and \eqref{eq:HJ} imply
+\begin{align*}
+ h(X-Y)
+ &\le h(X-Y\mid J,J')+\Ent(J,J')\\
+ &\le h(X)+n\biggl(1+\log4+\frac{A_\gamma}{\sqrt2}\biggr)
+       +\log B_\gamma\\
+ &\le h(X)+n c_\gamma,
+\end{align*}
+where $n\ge1$ was used in the last line.  This proves
+\eqref{eq:entropy-main}; exponentiating $2/n$ proves
+\eqref{eq:power-main}.
+
+\section{Technical audit, scope, and novelty}
+
+A positive-probability bin is contained in a finite-volume convex superlevel
+set.  Such a set is bounded up to closure, and \eqref{eq:RS} follows by the
+usual closure/approximation argument.  Within each bin the conditional density
+is bounded and has bounded support, so the conditional entropies used above
+are finite.  The countable mixture inequality follows directly from
+$g\ge p_dg_d$ for a mixture $g=\sum_dp_dg_d$, or by finite truncation.
+The hypothesis $\gamma>0$ is precisely what is needed for $\beta>n$ in the
+varentropy theorem.
+
+The source's maximum-density argument requires the difference density itself
+to be sufficiently convex.  At $\beta=n+\gamma$, its entropy--maximum-density
+comparison loses order $n\log n$ on Pareto extremizers, so it does not answer
+the question.  Later positional reverse-EPI results for $s$-concave densities
+do not state this fixed-additive-$\gamma$ conclusion.  A bounded search of the
+run indexes, arXiv titles, exact formulas, keywords, and citations found
+\cite{FLM} and other individual ingredients but no resolution of the displayed
+question.  Novelty is therefore plausible but provisional: this packet should
+be reviewed as a candidate new full proof.
+
+\paragraph{Human-review recommendation.}
+Check especially the passage from the countable information partition to the
+mixture entropy bound.  The direct inequality above makes this step robust;
+no limiting interchange involving differential entropy is needed.
+
+\begin{thebibliography}{9}
+\bibitem{BM}
+S. G. Bobkov and M. M. Madiman,
+\emph{On the Problem of Reversibility of the Entropy Power Inequality},
+arXiv:1111.6807; in \emph{Limit Theorems in Probability, Statistics and
+Number Theory}, Springer, 2013, 61--74.
+
+\bibitem{FLM}
+M. Fradelizi, J. Li, and M. Madiman,
+\emph{Concentration of Information Content for Convex Measures},
+arXiv:1512.01490; Electron. J. Probab. 25 (2020), paper 20, 1--22.
+
+\bibitem{RS}
+C. A. Rogers and G. C. Shephard,
+\emph{The Difference Body of a Convex Body},
+Arch. Math. 8 (1957), 220--233.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,254 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=25mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,urlcolor=blue!55!black,citecolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\e}{\mathrm e}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert_\infty}
+
+\title{Sharp Chernoff rates for the nonsmooth family $|\sin x|^\xi$}
+\author{Candidate full resolution of the periodic numerical question in arXiv:2301.05284}
+\date{12 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{blue!55!black}{blue!5}{\parbox{0.92\textwidth}{
+\textbf{Status: candidate full result for the source's periodic family; likely
+valid; human review needed.}
+For every fixed $t>0$, the exact uniform-norm decay exponents for both source
+schemes and every $f_\xi(x)=|\sin x|^\xi$, $\xi>0$, are determined below.}}
+\end{center}
+
+\section*{Source question and precise scope}
+Katalova (Dragunova), Nikbakht, and Remizov ask what convergence rate remains
+when the usual domain assumptions for a Chernoff rate theorem fail.  They
+study this numerically for functions of different H\"older smoothness
+\cite[p.~11]{KNR}.  The exact source text is reproduced here.
+
+\begin{center}
+\includegraphics[width=0.97\textwidth]{figures/source_question_crop.png}
+\end{center}
+
+Their principal periodic test family is
+$f_\xi(x)=|\sin x|^\xi$.  The present result gives the sharp asymptotic order
+for that entire family, for each of their two Chernoff functions.  It does not
+answer their separate variable-coefficient ``superfast approximation'' open
+problem.
+
+Let $T(t)=\e^{t\partial^2}$ be the heat semigroup on
+$UC_b(\R)$, and set
+\begin{align*}
+ (G(s)f)(x)&=\tfrac12f(x)+\tfrac14f(x+2\sqrt{s})
+                       +\tfrac14f(x-2\sqrt{s}),\\
+ (S(s)f)(x)&=\tfrac23f(x)+\tfrac16f(x+\sqrt{6s})
+                       +\tfrac16f(x-\sqrt{6s}).
+\end{align*}
+For $C\in\{G,S\}$ write
+\[
+ E^C_n(t,\xi)=\norm{C(t/n)^n f_\xi-T(t)f_\xi}.
+\]
+As usual, $A_n\asymp B_n$ means that their ratio is bounded above and below by
+positive constants independent of $n$.
+
+\section*{Sharp rate theorem and proof intuition}
+\begin{theorem}\label{thm:main}
+For every fixed $t>0$ and $\xi>0$,
+\begin{equation}\label{eq:G-rate}
+ E^G_n(t,\xi)\asymp n^{-\min\{1,(\xi+1)/2\}}.
+\end{equation}
+For the second-order scheme,
+\begin{equation}\label{eq:S-rate}
+ E^S_n(t,\xi)\asymp
+ \begin{cases}
+ n^{-2},&\xi=2,\\
+ n^{-\min\{2,(\xi+1)/2\}},&\xi\ne2.
+ \end{cases}
+\end{equation}
+The constants implicit in $\asymp$ may depend on $t$ and $\xi$.
+\end{theorem}
+
+\paragraph{Proof intuition.}
+There are two independent obstructions.  At every fixed Fourier frequency,
+the multiplier of $G(t/n)^n$ differs from the heat multiplier by order
+$n^{-1}$, while that of $S(t/n)^n$ differs by order $n^{-2}$.  These are the
+usual tangency ceilings.  But the discrete schemes are lattice convolutions,
+so their multipliers revive to a fixed positive size at frequencies of order
+$\sqrt n$, where the heat multiplier is negligible.  The Fourier coefficient
+of $|\sin x|^\xi$ there has size
+$(\sqrt n)^{-\xi-1}$.  This gives the second obstruction
+$n^{-(\xi+1)/2}$.  A Gaussian estimate around every revival proves that
+nothing larger was missed.  The lone exceptional case $\xi=2$ occurs because
+$\sin^2x$ is a trigonometric polynomial: it has no high-frequency tail to
+meet a revival.
+
+\section*{Fourier data and a multiplier lemma}
+Use the absolutely convergent Fourier series
+\[
+ f_\xi(x)=\frac{a_0}{2}+\sum_{k\ge1}a_k\cos(2kx).
+\]
+Beta integration gives
+\begin{equation}\label{eq:ak}
+ a_k=\frac{(-1)^k2^{1-\xi}\Gamma(\xi+1)}
+ {\Gamma(\xi/2-k+1)\Gamma(\xi/2+k+1)}.
+\end{equation}
+If $\xi\notin2\N$, reflection and the gamma-ratio asymptotic turn this into
+\begin{equation}\label{eq:ak-asymp}
+ a_k=-\frac{2^{1-\xi}\Gamma(\xi+1)\sin(\pi\xi/2)}{\pi}
+ \frac{\Gamma(k-\xi/2)}{\Gamma(k+\xi/2+1)},
+ \qquad |a_k|\asymp k^{-\xi-1}.
+\end{equation}
+If $\xi=2m$, the series instead terminates at $k=m$.  Notice also from
+\eqref{eq:ak} that $a_1\ne0$ for every $\xi>0$.
+
+On the mode $\cos(2kx)$, the three operators have multipliers
+\begin{align}
+ M^G_{n,k}&=\cos^{2n}\!\left(2k\sqrt{t/n}\right),\label{eq:MG}\\
+ M^S_{n,k}&=\left[\frac23+\frac13
+ \cos\!\left(2k\sqrt{6t/n}\right)\right]^n,\label{eq:MS}\\
+ H_k&=\e^{-4tk^2}.\label{eq:H}
+\end{align}
+
+\begin{lemma}[weighted revival bound]\label{lem:revival}
+Let $\beta>1$.  There are constants depending only on $t$ and $\beta$ such
+that, for every $n\ge1$,
+\begin{align}
+ \sum_{k\ge1}k^{-\beta}|M^G_{n,k}-H_k|
+ &\le C\bigl(n^{-1}+n^{-\beta/2}\bigr),\label{eq:sumG}\\
+ \sum_{k\ge1}k^{-\beta}|M^S_{n,k}-H_k|
+ &\le C\bigl(n^{-2}+n^{-\beta/2}\bigr).\label{eq:sumS}
+\end{align}
+Moreover, if $k^G_n$ and $k^S_n$ are nearest integers to
+\[
+ A_G\sqrt n=\frac{\pi\sqrt n}{2\sqrt t},
+ \qquad
+ A_S\sqrt n=\frac{\pi\sqrt n}{\sqrt{6t}},
+\]
+respectively, then
+\begin{equation}\label{eq:revival-lower}
+ M^G_{n,k^G_n}\ge c_t,\qquad M^S_{n,k^S_n}\ge c_t
+\end{equation}
+for all sufficiently large $n$.
+\end{lemma}
+
+\begin{proof}
+We give the details because the revival term is exactly what ordinary local
+Taylor estimates miss.  Around the central frequency cell, the analytic
+expansions of the logarithms, followed by
+$|\e^u-\e^v|\le |u-v|\e^{\max(u,v)}$, give
+\begin{align}
+ |M^G_{n,k}-H_k|&\le Cn^{-1}k^4\e^{-ck^2},\\
+ |M^S_{n,k}-H_k|&\le Cn^{-2}k^6\e^{-ck^2}
+\end{align}
+for $k\le\varepsilon\sqrt n$.  On the rest of that central cell both sides
+are exponentially small in $n$.  Thus its contribution to the weighted sums
+is $O(n^{-1})$ or $O(n^{-2})$.
+
+For the remaining cells use the elementary periodic Gaussian bounds
+\begin{align*}
+ M^G_{n,k}&\le
+ \exp\{-c\,\operatorname{dist}(k,A_G\sqrt n\,\mathbb Z)^2\},\\
+ M^S_{n,k}&\le
+ \exp\{-c\,\operatorname{dist}(k,A_S\sqrt n\,\mathbb Z)^2\}.
+\end{align*}
+They follow from $|\cos u|\le\e^{-c\operatorname{dist}(u,\pi\mathbb Z)^2}$
+and
+$\frac23+\frac13\cos u\le
+\e^{-c\operatorname{dist}(u,2\pi\mathbb Z)^2}$.
+In the cell centered at $\ell A_C\sqrt n$, the sum of the Gaussian factor
+over integer $k$ is bounded uniformly, while
+$k^{-\beta}\le C(\ell\sqrt n)^{-\beta}$.  Hence all noncentral cells together
+contribute at most
+\[
+ Cn^{-\beta/2}\sum_{\ell\ge1}\ell^{-\beta}
+ =O(n^{-\beta/2}).
+\]
+The heat tail is exponentially smaller.  This proves
+\eqref{eq:sumG}--\eqref{eq:sumS}.
+
+Finally, rounding the first positive revival center changes the phase by at
+most $\sqrt{t/n}$ for $G$ and $\sqrt{6t/n}$ for $S$.  Raising the resulting
+$1-O(n^{-1})$ quantity to the $n$th power leaves a positive lower bound,
+which is \eqref{eq:revival-lower}.
+\end{proof}
+
+\section*{Proof of Theorem \ref{thm:main}}
+Let $D^C_n=C(t/n)^nf_\xi-T(t)f_\xi$.  Its $k$th cosine coefficient is
+\begin{equation}\label{eq:error-coeff}
+ d^C_{n,k}=a_k(M^C_{n,k}-H_k).
+\end{equation}
+If $\xi\notin2\N$, equations \eqref{eq:ak-asymp} and
+Lemma~\ref{lem:revival}, with $\beta=\xi+1$, imply
+\begin{align}
+ \norm{D^G_n}&\le C\bigl(n^{-1}+n^{-(\xi+1)/2}\bigr),\label{eq:upperG}\\
+ \norm{D^S_n}&\le C\bigl(n^{-2}+n^{-(\xi+1)/2}\bigr).
+ \label{eq:upperS}
+\end{align}
+
+Both terms are necessary.  First, the fixed mode $k=1$ has
+\begin{align}
+ M^G_{n,1}-H_1
+ &=-\frac{8t^2}{3}\e^{-4t}n^{-1}+O(n^{-2}),\label{eq:fixedG}\\
+ M^S_{n,1}-H_1
+ &=\frac{64t^3}{15}\e^{-4t}n^{-2}+O(n^{-3}).\label{eq:fixedS}
+\end{align}
+Because $a_1\ne0$, these coefficients force lower bounds $cn^{-1}$ and
+$cn^{-2}$.  Second, at the respective $k^C_n$ from
+Lemma~\ref{lem:revival}, the heat multiplier is exponentially small, whereas
+$M^C_{n,k^C_n}\ge c_t$ and
+$|a_{k^C_n}|\ge c n^{-(\xi+1)/2}$.  Thus this single coefficient forces the
+lower bound $cn^{-(\xi+1)/2}$ for either scheme.  Here we used only the
+standard inequality
+\[
+ |d^C_{n,k}|=\left|\frac2\pi\int_0^\pi D^C_n(x)\cos(2kx)\,dx\right|
+ \le2\norm{D^C_n}.
+\]
+Taking the larger of the two lower bounds and comparing with
+\eqref{eq:upperG}--\eqref{eq:upperS} proves the claims for non-even $\xi$.
+
+If $\xi=2m$, only finitely many Fourier modes occur.  The central-cell
+estimates and \eqref{eq:fixedG}--\eqref{eq:fixedS} then give
+$E^G_n\asymp n^{-1}$ and $E^S_n\asymp n^{-2}$.  This agrees with the displayed
+formulas except that $\xi=2$ would otherwise incorrectly predict
+$n^{-3/2}$ for $S$.  The theorem follows. \qed
+
+\section*{What this explains in the source experiments}
+For $0<\xi<1$, both schemes have the same asymptotic exponent
+$(\xi+1)/2$: the exact line has slope $1/2$ and intercept $1/2$ as a function
+of $\xi$.  Once $\xi\ge1$, $G$ saturates at its formal order $1$; $S$ keeps
+improving until $\xi=3$ and then saturates at order $2$.  Consequently,
+regressions on $4\le n\le11$ that report an order greater than $1$ for $G$ or
+greater than $2$ for $S$ are necessarily pre-asymptotic.
+
+The multiplier revivals also supply a mechanism for the source's observed
+waves: their centers $A_C\sqrt n$ move past the integer Fourier lattice as
+$n$ changes.  The theorem controls the resulting envelope but does not claim
+that the normalized error has a limit.  Exponential initial conditions and
+the distinct superfast-approximation problem remain outside the result.
+
+\section*{Novelty note}
+The run's four cheap indexes contained no prior result for arXiv:2301.05284.
+Targeted arXiv searches for the exact heat schemes, the family
+$|\sin x|^\xi$, and sharp Fourier-multiplier rates found the source and
+adjacent abstract rate theory, but no primary-source theorem matching
+Theorem~\ref{thm:main}.  The source's December 2025 revision still lists the
+phenomena as theoretically unexplained.  Novelty is therefore provisional
+pending expert literature review.
+
+\begin{thebibliography}{9}
+\bibitem{KNR}
+K.~A. Katalova (Dragunova), N.~Nikbakht, and I.~D. Remizov,
+\emph{Concrete examples of the rate of convergence of Chernoff
+approximations: numerical results for the heat semigroup and open questions
+on them}, arXiv:2301.05284 (version downloaded 12 August 2026).
+\end{thebibliography}
+
+\end{document}

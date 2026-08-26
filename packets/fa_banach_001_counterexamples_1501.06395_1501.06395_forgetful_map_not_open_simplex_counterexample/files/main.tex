@@ -1,0 +1,296 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Xc}{\mathcal X}
+\newcommand{\OS}{\mathcal{OS}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\gamw}{\gamma_{\mathrm w}}
+\newcommand{\gams}{\gamma_{\mathrm s}}
+
+\title{The multiplicative forgetful map is not open}
+\author{Automated mathematics run \texttt{fa\_banach\_001}\\
+Lane 10 --- candidate counterexample for expert review}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{black!30}{gray!7}{\parbox{0.91\textwidth}{
+\textbf{Status.} Candidate full negative answer to Question 6.7 of
+Goldbring--Sinclair. For every $n\geq3$, the forgetful map is neither open for
+the weak topologies nor open for the strong topologies. The proof is complete
+subject to verification of the standard ternary-envelope lemma isolated
+below.
+}}
+\end{center}
+
+\section{Source question}
+
+Goldbring and Sinclair define $\Xc_n$ to retain the quantifier-free
+multiplicative structure of an $n$-dimensional unital operator subspace, while
+$\OS_n$ remembers only its operator-space structure. They prove that the
+forgetful map
+\[
+G:\Xc_n\longrightarrow\OS_n
+\]
+is weak--weak and strong--strong continuous. Question 6.7 on printed page 17
+asks whether $G$ is open for every $n$ \cite{GS}.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{Question 6.7 in the source paper. The crop is rendered from the
+  local copy \texttt{source\_paper.pdf}.}
+\end{figure}
+
+The source defines the $\Xc_n$ weak and strong metrics through quantities
+$\gamma_m(\phi)$ that compare the norms of all noncommutative
+$*$-polynomials of degree at most $m$ under a unital linear bijection $\phi$.
+We denote the resulting metrics by $\gamw$ and $\gams$. The weak metric is a
+weighted sum of the degree-$m$ discrepancies; the strong metric takes their
+supremum.
+
+\section{Proof intuition}
+
+Start with the $n$-point simplex, whose affine function system is the whole
+algebra $\C^n$. Add one vertex just beyond a face but let it tend to the
+midpoint of an edge. Affine matrix-valued functions cannot distinguish this
+new vertex in the limit, so after forgetting multiplication the resulting
+spaces converge even in completely bounded distance.
+
+Multiplication does distinguish it. The coordinate functions on $\C^n$ are
+orthogonal projections. If representatives of the perturbed operator spaces
+converged multiplicatively, their coordinate images would have all cross
+ternary products $xx^*y$ tending to zero. The ternary envelope makes this
+conclusion independent of the chosen C$^*$-cover. In the limit, Banach--Stone
+rigidity forces the coordinates to be a phased permutation. At the extra
+vertex, two coordinates then have modulus $1/2$, leaving a cross ternary
+product of modulus $1/8$.
+
+\section{The simplex family}
+
+Fix $n\geq3$ and put $E_0=\C^n$ with its canonical C$^*$-algebra operator
+space structure. For $0<\eps<1$, set
+\[
+a_\eps:=\frac{1+\eps}{2},\qquad
+L_\eps(z):=a_\eps z_1+a_\eps z_2-\eps z_3,
+\]
+and define
+\[
+J_\eps:\C^n\longrightarrow\C^{n+1},\qquad
+J_\eps(z)=(z_1,\ldots,z_n,L_\eps(z)),
+\qquad S_\eps:=J_\eps(\C^n).
+\]
+Since $2a_\eps-\eps=1$, $S_\eps$ contains the unit. It is self-adjoint and
+separates the $n+1$ coordinates, hence $C^*(S_\eps)=\C^{n+1}$.
+
+Geometrically, $S_\eps$ is the space of affine functions on
+\[
+V_\eps=\{e_1,\ldots,e_n,w_\eps\},\qquad
+w_\eps=a_\eps e_1+a_\eps e_2-\eps e_3,
+\]
+inside the real affine hyperplane $\sum_i t_i=1$. All $n+1$ points are exposed
+vertices: $e_1,e_2$ maximize their own coordinates, $e_3$ maximizes the third
+coordinate, $e_i$ for $i\geq4$ maximizes the $i$th coordinate, and $w_\eps$
+uniquely minimizes the third coordinate. Thus every point is a peak point for
+$S_\eps$. Consequently its Shilov boundary is all of $V_\eps$, and its
+C$^*$- and ternary envelopes are $\C^{n+1}$.
+
+\begin{lemma}[Uniform matrix-level convergence]\label{lem:convergence}
+For every matrix level $k$,
+\[
+\|J_\eps^{(k)}\|\leq1+2\eps,
+\qquad \|(J_\eps^{-1})^{(k)}\|\leq1.
+\]
+Therefore $G(S_\eps)\to G(E_0)$ in the strong topology of $\OS_n$, and hence
+also in the weak topology.
+\end{lemma}
+
+\begin{proof}
+For $Z=(Z_1,\ldots,Z_n)\in M_k(\C^n)$, put
+$M=\max_i\|Z_i\|$. Then
+\[
+\|J_\eps^{(k)}(Z)\|
+=\max\left\{M,\|a_\eps Z_1+a_\eps Z_2-\eps Z_3\|\right\}.
+\]
+The second entry is at most
+$(2a_\eps+\eps)M=(1+2\eps)M$, while the first $n$ coordinates show that
+$\|J_\eps^{(k)}(Z)\|\geq M$.
+\end{proof}
+
+\section{The cover-independent obstruction}
+
+We use the following standard consequence of Hamana's ternary-envelope
+universal property \cite{Hamana}. It is stated explicitly to isolate the only
+operator-space structure theorem used in the proof.
+
+\begin{lemma}[Ternary-envelope contraction]\label{lem:ternary}
+Let $F$ be a unital operator subspace of a C$^*$-algebra and let
+$u:F\to S_\eps$ be a surjective complete isometry; $u$ need not be unital.
+Then for all $x,y,z\in F$,
+\[
+\|u(x)u(y)^*u(z)\|_{\C^{n+1}}
+\leq \|xy^*z\|_{C^*(F)}.
+\]
+\end{lemma}
+
+\begin{proof}
+Because $F$ contains the unit, the TRO generated by $F$ inside $C^*(F)$ is
+all of $C^*(F)$. The universal property gives a surjective ternary morphism
+from this TRO cover onto the ternary envelope $T(F)$. The complete isometry
+$u$ induces a ternary isomorphism $T(F)\cong T(S_\eps)=\C^{n+1}$ carrying the
+canonical image of $x$ to $u(x)$. Ternary morphisms preserve $xy^*z$ and are
+contractive, which gives the inequality.
+\end{proof}
+
+\begin{lemma}[No multiplicative lifts]\label{lem:obstruction}
+Suppose $\eps_j\downarrow0$ and $F_j\in\Xc_n$ satisfy
+$G(F_j)=G(S_{\eps_j})$. Then neither
+$\gamw(F_j,E_0)\to0$ nor $\gams(F_j,E_0)\to0$ is possible.
+\end{lemma}
+
+\begin{proof}
+Either convergence would provide unital linear bijections
+$\phi_j:E_0\to F_j$ for which
+\[
+\gamma_1(\phi_j)\longrightarrow0,
+\qquad \gamma_3(\phi_j)\longrightarrow0.
+\]
+Choose surjective complete isometries $u_j:F_j\to S_{\eps_j}$, which need not
+be unital, and define
+\[
+A_j:=J_{\eps_j}^{-1}u_j\phi_j:\C^n\to\C^n.
+\]
+Testing $\gamma_1$ on the polynomial $p(X)=X$ gives, uniformly in $z$,
+\[
+(1-o(1))\|z\|_\infty
+\leq\|u_j\phi_j(z)\|
+\leq(1+o(1))\|z\|_\infty.
+\]
+Together with Lemma~\ref{lem:convergence}, this yields
+\[
+\frac{1-o(1)}{1+2\eps_j}\|z\|_\infty
+\leq\|A_jz\|_\infty
+\leq(1+o(1))\|z\|_\infty.
+\]
+After taking a subsequence, the finite-dimensional maps $A_j$ converge to a
+surjective linear isometry $A:\ell_\infty^n\to\ell_\infty^n$. By the
+finite-dimensional Banach--Stone theorem, there are a permutation $\sigma$
+and unimodular scalars $\lambda_r$ such that
+\[
+Ae_r=\lambda_r e_{\sigma(r)}\qquad(1\leq r\leq n).
+\]
+
+Choose distinct $r,s$ with $\sigma(r)=1$ and $\sigma(s)=2$, and put
+$f_{j,t}=u_j\phi_j(e_t)=J_{\eps_j}(A_je_t)$. At the extra coordinate,
+\[
+f_{j,t}(n+1)=a_{\eps_j}(A_je_t)_1
+            +a_{\eps_j}(A_je_t)_2
+            -\eps_j(A_je_t)_3.
+\]
+It follows that
+\[
+f_{j,r}(n+1)\longrightarrow\frac{\lambda_r}{2},
+\qquad
+f_{j,s}(n+1)\longrightarrow\frac{\lambda_s}{2},
+\]
+and hence
+\begin{equation}\label{eq:eighth}
+\liminf_j\|f_{j,r}f_{j,r}^*f_{j,s}\|_{\C^{n+1}}
+\geq\frac18.
+\end{equation}
+
+On the other hand, $e_re_r^*e_s=0$ in $E_0=\C^n$. Testing
+$\gamma_3(\phi_j)$ on the degree-three polynomial
+$p(X,Y)=XX^*Y$ gives
+\[
+\|\phi_j(e_r)\phi_j(e_r)^*\phi_j(e_s)\|_{C^*(F_j)}
+\leq\gamma_3(\phi_j)\longrightarrow0.
+\]
+Lemma~\ref{lem:ternary} contradicts \eqref{eq:eighth}.
+\end{proof}
+
+\section{Negative answer to Question 6.7}
+
+\begin{theorem}\label{thm:main}
+For every $n\geq3$, the forgetful map
+$G:\Xc_n\to\OS_n$ is not weak-open and is not strong-open. In particular,
+Question 6.7 has a negative answer under either topology introduced in the
+source paper.
+\end{theorem}
+
+\begin{proof}
+We give the weak argument; the strong argument is identical. Suppose $G$ were
+weak-open at $E_0$. For each $k$, let
+\[
+U_k=\{F\in\Xc_n:\gamw(F,E_0)<1/k\}.
+\]
+Then $G(U_k)$ is a neighborhood of $G(E_0)$. By
+Lemma~\ref{lem:convergence}, $G(S_{1/m})\to G(E_0)$, so one may choose
+$m_k\geq k$ and $F_k\in U_k$ such that
+\[
+G(F_k)=G(S_{1/m_k}).
+\]
+Thus $1/m_k\to0$ and $\gamw(F_k,E_0)\to0$, contradicting
+Lemma~\ref{lem:obstruction}. Replacing $\gamw$ by $\gams$ proves failure of
+strong openness.
+\end{proof}
+
+\section{Verification, scope, and novelty bounds}
+
+The argument is non-computational. The following points were checked
+independently in the proof:
+\begin{enumerate}
+\item the coefficient sum in $L_\eps$ is $1$, so the construction is unital;
+\item the matrix-level distortion is bounded by $1+2\eps$ uniformly in $k$;
+\item all $n+1$ evaluation points are exposed, so no coordinate disappears
+      in the Shilov/ternary envelope;
+\item arbitrary, possibly nonunital complete isometries are handled by the
+      ternary envelope rather than by an unjustified multiplicative extension;
+\item the extra-coordinate obstruction is exactly $(1/2)^2(1/2)=1/8$;
+\item nested open balls convert openness into the forbidden sequence of
+      multiplicative lifts.
+\end{enumerate}
+
+The construction covers every $n\geq3$. It does not determine openness for
+$n=1,2$, which is not needed to refute the statement ``open for each $n$.''
+
+A bounded novelty search on 9 August 2026 covered the run's registry,
+solution, attempt, and proof-gap indexes; the exact wording of Question 6.7;
+arXiv:1501.06395 and the source title; later papers citing the source; and web
+queries combining ``forgetful map,'' $\Xc_n$, $\OS_n$, and ``Kirchberg
+embedding problem.'' No later explicit resolution or simplex construction was
+found. This is not an exhaustive MathSciNet or zbMATH priority search.
+
+\paragraph{Human-review recommendation.}
+High priority. Verify Lemma~\ref{lem:ternary} against Hamana's universal
+property, then check the compactness passage to the phased permutation and the
+weak/strong open-map quantifiers. The remaining estimates are elementary.
+
+\begin{thebibliography}{9}
+\bibitem{GS}
+I. Goldbring and T. Sinclair,
+\emph{Omitting Types in Operator Systems}, Indiana Univ. Math. J. 66 (2017),
+no. 3, 821--844; arXiv:1501.06395;
+DOI: \href{https://doi.org/10.1512/iumj.2017.66.6019}{10.1512/iumj.2017.66.6019}.
+
+\bibitem{Hamana}
+M. Hamana,
+\emph{Triple Envelopes and \v{S}ilov Boundaries of Operator Spaces},
+Math. J. Toyama Univ. 22 (1999), 77--93;
+DOI: \href{https://doi.org/10.15099/00003027}{10.15099/00003027}.
+\end{thebibliography}
+
+\end{document}

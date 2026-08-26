@@ -1,0 +1,257 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
+
+\newcommand{\B}{\mathbb B}
+\newcommand{\C}{\mathbb C}
+\newcommand{\D}{\mathbb D}
+
+\title{Coordinate-Axis Points of the Complex Unit Ball\\Are Not MDM Points}
+\author{Run \texttt{fa\_banach\_001}, lane 8}
+\date{August 11, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status and source problem}
+
+\noindent\textbf{Status:} candidate counterexample, likely valid; human review
+requested.
+
+In Definition~7 of their paper, PDF page~3, Kazaniecki and Wojciechowski
+introduce local and global MDM points and then conjecture that the
+polynomial-hull obstruction described there is the only obstruction to the MDM
+property \cite{KW}.  They add that even for the Euclidean unit ball of
+\(\C^2\), they do not know whether any MDM point exists.  Here is the source
+passage.
+
+\begin{center}
+  \includegraphics[width=\textwidth,height=.56\textheight,keepaspectratio]
+  {figures/open_problem_crop.png}
+\end{center}
+
+For clarity, put
+\[
+ \B^2=\{(z_1,z_2)\in\C^2:|z_1|^2+|z_2|^2<1\}.
+\]
+In the source definition, a boundary point \(p\) is \emph{local MDM} if some
+Euclidean ball \(B(p,R)\) has the following property: for every \(c>0\), an
+analytic polynomial \(F\) has all five norms
+\[
+ \|F\|,\quad\|F_1\|,\quad\|F_2\|,
+ \quad\|F_{11}\|,\quad\|F_{22}\|
+\]
+at most one on \(\B^2\cap B(p,R)\), while \(|F_{12}(p)|\ge c\).
+The global definition replaces the cap by all of \(\B^2\).  Subscripts denote
+complex coordinate derivatives.
+
+\section*{Idea of the proof}
+
+At \(p=(1,0)\), restrict \(F_2\) to the axial disc and write
+\(h(\zeta)=F_2(\zeta,0)\).  The transverse fiber of \(\B^2\) above a real
+point \(r\) is the disc of radius \(\sqrt{1-r^2}\).  Cauchy's estimate on that
+fiber, applied to \(F_{11}\), yields
+\[
+ |h''(r)|\le \frac1{\sqrt{1-r^2}}.
+\]
+This singularity is integrable at \(r=1\), so \(h'(1)=F_{12}(1,0)\) is
+bounded.  Near \(p\), every sufficiently late full transverse fiber lies in
+an arbitrary prescribed cap, which upgrades the global argument to a local
+one.  Phase rotations and coordinate interchange then give all coordinate-axis
+boundary points.
+
+\section*{Counterexample theorem}
+
+\begin{theorem}\label{thm:main}
+For every \(\theta\in\mathbb R\), neither
+\[
+ p_\theta=(e^{i\theta},0)
+ \qquad\text{nor}\qquad
+ q_\theta=(0,e^{i\theta})
+\]
+is a local or global MDM point of \(\B^2\).
+
+More quantitatively, if \(F\) is a polynomial satisfying
+\[
+ \|F_2\|_{L^\infty(\B^2)}\le1,
+ \qquad
+ \|F_{11}\|_{L^\infty(\B^2)}\le1,
+\]
+then
+\[
+ |F_{12}(1,0)|\le 1+\frac\pi2.
+\]
+For every \(R>0\), there is also a finite constant \(C_R\) such that the same
+endpoint derivative is at most \(C_R\) whenever these two bounds hold on
+\(\B^2\cap B((1,0),R)\).
+\end{theorem}
+
+\begin{proof}
+We first prove the global estimate at \(p=(1,0)\).  Define
+\[
+ h(\zeta)=F_2(\zeta,0),\qquad \zeta\in\D.
+\]
+Then \(|h|\le1\) on \(\D\), and Cauchy's derivative estimate on discs of
+radius tending to one gives
+\[
+ |h'(0)|\le1. \tag{1}
+\]
+For each real \(0\le r<1\), the function
+\[
+ g_r(w)=F_{11}(r,w)
+\]
+is holomorphic and bounded by one on
+\(|w|<\sqrt{1-r^2}\).  Since
+\(g_r'(0)=F_{112}(r,0)=h''(r)\), another Cauchy estimate gives
+\[
+ |h''(r)|\le \frac1{\sqrt{1-r^2}}. \tag{2}
+\]
+Integrating along the real radius and using (1)--(2),
+\[
+ |h'(r)|
+ \le 1+\int_0^r\frac{dt}{\sqrt{1-t^2}}
+ \le 1+\frac\pi2.
+\]
+Because \(F\) is a polynomial, \(h'\) is continuous at one.  Letting
+\(r\uparrow1\) proves
+\[
+ |F_{12}(1,0)|=|h'(1)|\le1+\frac\pi2. \tag{3}
+\]
+The source normalization is stronger than the two hypotheses used in (3), so
+\((1,0)\) cannot be a global MDM point.
+
+We next establish the cap-local assertion.  Fix \(R>0\), and suppose only
+that \(|F_2|\le1\) and \(|F_{11}|\le1\) on
+\[
+ U_R=\B^2\cap B((1,0),R).
+\]
+Set
+\[
+ \varepsilon=\min\left\{\frac18,\frac R4,\frac{R^2}{8}\right\},
+ \qquad r_0=1-\varepsilon,
+ \qquad \rho=\frac\varepsilon2.
+\]
+If \(|\zeta-r_0|<\rho\), then
+\[
+ |\zeta|<1,
+ \qquad
+ |1-\zeta|<\frac{3\varepsilon}{2}<R.
+\]
+Thus this entire axial disc lies in \(U_R\).  Cauchy's estimate for \(h\) at
+its center gives
+\[
+ |h'(r_0)|\le\frac1\rho=\frac2\varepsilon. \tag{4}
+\]
+
+For \(r_0\le r<1\) and \(|w|<\sqrt{1-r^2}\), one has
+\[
+ |(r,w)-(1,0)|^2
+ =(1-r)^2+|w|^2
+ <(1-r)^2+(1-r^2)
+ =2(1-r)
+ \le2\varepsilon<R^2.
+\]
+Consequently the \emph{full} transverse fiber above every such \(r\) lies in
+\(U_R\), and the proof of (2) applies unchanged.  From (4),
+\begin{equation}
+ \begin{aligned}
+ |F_{12}(1,0)|
+  &=|h'(1)|\\
+  &\le \frac2\varepsilon+
+    \int_{r_0}^1\frac{dt}{\sqrt{1-t^2}}
+   =\frac2\varepsilon+\arccos(r_0)=:C_R<\infty.
+ \end{aligned}
+ \tag{5}
+\end{equation}
+Since (5) holds for every \(R>0\), no ball centered at \((1,0)\) can support
+the arbitrarily large mixed derivatives required by the local MDM definition.
+
+Finally, if \(p_\theta=(e^{i\theta},0)\), apply the result at \((1,0)\) to
+\[
+ G(z_1,z_2)=F(e^{i\theta}z_1,z_2).
+\]
+The ball and corresponding caps are preserved, all relevant norms are
+unchanged, and \(|G_{12}(1,0)|=|F_{12}(p_\theta)|\).  This proves the claim for
+\(p_\theta\).  Interchanging the two coordinates converts the hypotheses used
+above into the source bounds on \(F_1\) and \(F_{22}\), and proves the claim
+for every \(q_\theta\).
+\end{proof}
+
+\section*{Why this disproves the proposed obstruction criterion}
+
+The closed Euclidean unit ball is its own polynomial hull.  Indeed, if
+\(z\notin\overline{\B^2}\), then the holomorphic linear polynomial
+\[
+ L_z(w)=\overline{z_1}w_1+\overline{z_2}w_2
+\]
+satisfies
+\[
+ |L_z(z)|=\|z\|_2^2>
+ \|z\|_2=\sup_{w\in\overline{\B^2}}|L_z(w)|.
+\]
+Thus \(p_\theta,q_\theta\) lie on, not in the interior of, the polynomial
+hull.  Theorem~\ref{thm:main} nevertheless says that they are not MDM points.
+This is a direct counterexample to the conjecture that hull interiority is the
+only obstruction.
+
+\section*{Verification notes}
+
+The proof is analytic and does not depend on computation.  The reusable script
+\path{code/verify_axis_bound.py} checks the antiderivative in (3), the
+choice of \(\varepsilon\), and all strict cap inequalities for 15 positive
+radii ranging from \(10^{-6}\) to \(10^3\), together with several intermediate
+values.  It reports
+\[
+ 1+\pi/2=2.570796326795\ldots
+\]
+and that all transcription checks pass.  The command used was
+\begin{verbatim}
+conda run --no-capture-output -n sandbox python code/verify_axis_bound.py
+\end{verbatim}
+These checks are not a substitute for the Cauchy-estimate proof.
+
+\section*{Limitations and failed full-classification upgrade}
+
+The theorem completely classifies the coordinate-axis boundary orbit under
+phase rotations and coordinate interchange, but it does not decide whether a
+generic boundary point \((a,b)\), with \(ab\ne0\), is MDM.  Along the analogous
+coordinate slice at such a point, the available transverse radius is only of
+order \(1-r\).  Direct Cauchy estimation therefore produces a
+\((1-r)^{-1}\) singularity, which is not integrable.  A general unitary rotation
+does not repair this because the source normalization controls the
+coordinate-pure derivatives \(F_{11},F_{22}\), a family not preserved by
+general unitary mixing.  Accordingly, this packet does not claim that the
+unit ball has no MDM points.
+
+\section*{Bounded novelty check}
+
+The search performed through August 11, 2026 covered the run's registry,
+solution, attempt, and proof-gap indexes; the local source corpus; and bounded
+official-arXiv searches using \nolinkurl{arXiv:2301.09526}, the exact title, both author
+names, ``MDM point'', ``Mitiagin-DeLeeuw-Mirkhil'', and ``unit ball''.  No
+duplicate packet or later explicit resolution of this unit-ball question was
+found.  This is a bounded novelty check, not a claim of priority.
+
+\section*{Human review recommendation}
+
+A reviewer should check (i) the identification
+\(h''(r)=F_{112}(r,0)\), (ii) the two Cauchy estimates, (iii) the full-fiber cap
+inclusion preceding (5), and (iv) that the source's phrase ``the above obstacle
+is the only one'' is intended to cover the global MDM notion.  The
+generic-boundary limitation above should remain explicit.
+
+\begin{thebibliography}{9}
+
+\bibitem{KW}
+K. Kazaniecki and M. Wojciechowski,
+\emph{On the analytic version of the Mitiagin-DeLeeuw-Mirkhil
+non-inequality on bi-disc}, arXiv:2301.09526, 2023.
+
+\end{thebibliography}
+
+\end{document}

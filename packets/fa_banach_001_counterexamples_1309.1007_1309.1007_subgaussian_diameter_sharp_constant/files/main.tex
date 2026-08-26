@@ -1,0 +1,271 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx,xcolor,enumitem,microtype,hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newcommand{\DSG}{\Delta_{\mathrm{SG}}}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+\title{\vspace{-2em}The Subgaussian-Diameter Concentration Constant Is Sharp}
+\author{Counterexample packet for arXiv:1309.1007}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+\begin{center}
+\fcolorbox{red!65!black}{red!3}{\parbox{0.91\textwidth}{
+\textbf{Status: likely valid full negative answer to the constant-recovery
+question, with a sharpness theorem.}
+The sharp McDiarmid coefficient $2$ cannot survive when ordinary diameters
+are replaced by subgaussian diameters. In fact the coefficient $1/2$ in
+Theorem~1 of the source is the largest possible universal coefficient.
+}}
+\end{center}
+
+\section{Source and exact question}
+
+The source is A.~Kontorovich, \emph{Concentration in unbounded metric spaces
+and algorithmic stability}, arXiv:1309.1007 (2013), later published in
+Proceedings of ICML 2014 \cite{K}. Its Theorem~1 states that for a
+$1$-Lipschitz function on an $\ell_1$ product,
+\begin{equation}\label{eq:source}
+ \Pp\{|\varphi-\E\varphi|>t\}
+ \leq2\exp\!\left(-\frac{t^2}{2\sum_i\DSG(\mathcal X_i)^2}\right).
+\end{equation}
+Section~8 asks how tight this is, noting the coefficient $1/2$ in
+\eqref{eq:source} versus McDiarmid's optimal coefficient $2$, and asks for a
+bound recovering McDiarmid's in the finite-diameter case. The proceedings
+version states the issue explicitly: the author did not know whether
+McDiarmid's inequality holds verbatim with $\operatorname{diam}(\mathcal X_i)$
+replaced by $\DSG(\mathcal X_i)$.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.94\textwidth]{figures/open_question_crop.png}
+\caption{The tightness question in Section~8, page~14 of the arXiv source.}
+\end{figure}
+
+\section{Definitions and proposed strengthening}
+
+For independent $X,X'\sim\mu$ and an independent Rademacher sign
+$\varepsilon$, the source defines
+\[
+ \Xi(\mathcal X)=\varepsilon\rho(X,X'),\qquad
+ \DSG(\mathcal X)=\sigma^*(\Xi),\qquad
+ \sigma^*(Z)^2=\sup_{s\ne0}\frac{2\log\E e^{sZ}}{s^2}.
+\]
+For a universal coefficient $c>0$, let $\mathsf C(c)$ denote
+\begin{equation}\label{eq:c}
+ \Pp\{|\varphi-\E\varphi|>t\}
+ \leq2\exp\!\left(-\frac{c\,t^2}{\sum_i\DSG(\mathcal X_i)^2}\right)
+\end{equation}
+for all such products and all $1$-Lipschitz $\varphi$. The source proves
+$\mathsf C(1/2)$. Verbatim McDiarmid recovery would be $\mathsf C(2)$.
+
+\section{Proof intuition}
+
+Use one coordinate with the two-point metric and a Bernoulli law. The signed
+distance is the difference of two independent Bernoulli variables. For the
+uniform law its subgaussian diameter is exactly $1/\sqrt2$, already too small
+for coefficient $2$ to control the two atoms of a $1$-Lipschitz function.
+
+More sharply, as the success probability $p$ tends to zero, the optimal
+subgaussian variance of the signed distance is asymptotic to
+$1/(2\log(1/p))$. The coordinate function still has a deviation nearly $1$
+with probability $p$. Substitution into \eqref{eq:c} forces
+$p\lesssim p^{2c}$, impossible for every $c>1/2$. Thus the source constant is
+universally sharp.
+
+\section{An exact two-point counterexample}
+
+\begin{theorem}[McDiarmid's coefficient fails]\label{thm:explicit}
+Let $\mathcal X=\{0,1\}$, let $\rho(x,y)=|x-y|$, and give both points mass
+$1/2$. For $\varphi(x)=x$,
+\[
+                  \DSG(\mathcal X)^2=\frac12.
+\]
+At $t=9/20$,
+\[
+ \Pp\{|\varphi-\E\varphi|>t\}=1
+ \quad\text{but}\quad
+ 2\exp\!\left(-\frac{2t^2}{\DSG(\mathcal X)^2}\right)
+ =2e^{-81/100}<1.
+\]
+Consequently $\mathsf C(2)$ is false, already for one finite two-point space.
+\end{theorem}
+
+\begin{proof}
+If $B,B'$ are independent uniform Bernoulli variables, then
+$\Xi=\varepsilon|B-B'|$ has moment-generating function
+\[
+ M(s)=\frac12+\frac12\cosh s=\cosh^2(s/2).
+\]
+Hence, with $u=s/2$,
+\[
+ \DSG(\mathcal X)^2
+ =\sup_{s\ne0}\frac{2\log M(s)}{s^2}
+ =\sup_{u\ne0}\frac{\log\cosh u}{u^2}
+ =\frac12.
+\]
+Indeed $\log\cosh u\leq u^2/2$, with equality approached as $u\to0$.
+Also $\E\varphi=1/2$, so $|\varphi-\E\varphi|=1/2$ almost surely.
+\end{proof}
+
+\section{Sharpness of the source coefficient}
+
+\begin{lemma}[Rare-Bernoulli diameter]\label{lem:asymptotic}
+Give $1$ mass $p$ and $0$ mass $1-p$ on the same two-point metric space, and
+write $\Delta_p=\DSG(\mathcal X,\rho,\mu_p)$. Then
+\[
+              \Delta_p^2\sim\frac{1}{2\log(1/p)}
+              \qquad(p\downarrow0).
+\]
+\end{lemma}
+
+\begin{proof}
+Put $L=\log(1/p)$ and $q=2p(1-p)$. The signed distance has the same law as
+$B-B'$, for independent Bernoulli$(p)$ variables, so
+\begin{equation}\label{eq:mgf}
+ M_p(s)=1+q(\cosh s-1),\qquad
+ \Delta_p^2=\sup_{s>0}\frac{2\log M_p(s)}{s^2}.
+\end{equation}
+At $s=2L$,
+\[
+ M_p(2L)=1+2p(1-p)(\cosh(2L)-1)=p^{-1}+O(p),
+\]
+and hence $\Delta_p^2\geq(1+o(1))/(2L)$.
+
+For the reverse estimate, assume $L$ is large. If $0<s\leq L/2$, then
+\[
+ \log M_p(s)\leq q(\cosh s-1)\leq\frac{q s^2e^s}{2},
+\]
+so the quotient in \eqref{eq:mgf} is at most $2e^{-L/2}$.
+If $L/2\leq s\leq L$, then
+$M_p(s)\leq1+2e^{s-L}\leq3$, giving $8\log(3)/L^2$.
+Finally, if $s\geq L$, then
+\[
+ \log M_p(s)\leq s-L+\log3.
+\]
+The maximum of $2(s-L+\log3)/s^2$ on this range is at most
+$1/[2(L-\log3)]$. The maximum of these three estimates is
+$(1+o(1))/(2L)$.
+\end{proof}
+
+\begin{theorem}[Universal optimality]\label{thm:sharp}
+The inequality $\mathsf C(c)$ holds universally if and only if $c\leq1/2$.
+Thus the coefficient $1/2$ in Theorem~1 of the source is optimal.
+\end{theorem}
+
+\begin{proof}
+The source proves $\mathsf C(1/2)$, and smaller coefficients follow. Fix
+$c>1/2$ and use Lemma~\ref{lem:asymptotic} with $\varphi(x)=x$. For
+$t_p=1-2p$ and all small $p$,
+\[
+ \Pp\{|\varphi-\E\varphi|>t_p\}=p.
+\]
+If $\mathsf C(c)$ held, then
+\[
+ p\leq2\exp\!\left(-\frac{c(1-2p)^2}{\Delta_p^2}\right)
+ =2p^{\,2c+o(1)}.
+\]
+After division by $p$, the right side tends to zero since $2c-1>0$, a
+contradiction.
+\end{proof}
+
+\section{Companion answers to nearby source questions}
+
+\begin{theorem}[Equality of the two diameters]\label{thm:equality}
+Let a metric probability space have finite diameter $D>0$, and set
+$R=\rho(X,X')$. Then
+\[
+       \DSG(\mathcal X)=D
+       \quad\Longleftrightarrow\quad R=D\ \text{almost surely}.
+\]
+Consequently $\DSG(\mathcal X)<D$ for every nontrivial separable metric
+probability space, and hence for every Polish, countably supported, or Radon
+metric probability space.
+\end{theorem}
+
+\begin{proof}
+Since $\E e^{s\Xi}=\E\cosh(sR)$, set
+\[
+ h(s)=\frac{2\log\E\cosh(sR)}{s^2}\ (s\ne0),\qquad h(0)=\E R^2.
+\]
+This is continuous at zero and tends to zero as $|s|\to\infty$. If
+$\Pp\{R<D\}>0$, then $h(0)<D^2$ and, for $s\ne0$,
+\[
+ \E\cosh(sR)<\cosh(sD)<e^{s^2D^2/2}.
+\]
+Continuity and decay give $\sup_s h(s)<D^2$. Conversely, if $R=D$ almost
+surely, then $\operatorname{Var}(\Xi)=D^2$, so every subgaussian proxy is at
+least $D$; the source's Hoeffding bound gives the reverse inequality.
+
+If equality held on a separable space, every set of diameter less than $D$
+would be null. A countable cover by balls of radius $D/3$ is then impossible.
+A Radon probability is concentrated on a separable union of compact sets,
+reducing to this case.
+\end{proof}
+
+\begin{corollary}[Qualitative necessity]
+If, for some $x_0$, the $1$-Lipschitz random variable
+$x\mapsto\rho(x,x_0)$ has a subgaussian centered law, then
+$\DSG(\mathcal X)<\infty$. Thus subgaussianity of all Lipschitz functions
+does imply finite subgaussian diameter; a nearly matching quantitative lower
+bound remains separate.
+\end{corollary}
+
+\begin{proof}
+Put $A=\rho(X,x_0)$. Subgaussianity of $A-\E A$ implies
+$\E e^{A^2/K^2}<\infty$ for some $K$. Since
+$R\leq A+A'$, also $\E e^{R^2/K_1^2}<\infty$ for some $K_1$. Enlarge $K_1$
+so this expectation is at most $2$. For $Z=\varepsilon R$,
+\[
+ \E |Z|^{2k}\leq2k!K_1^{2k}.
+\]
+As $(2k)!\geq(k!)^2$, the even moment series gives
+\[
+ \E e^{sZ}\leq1+2\sum_{k\geq1}\frac{(s^2K_1^2)^k}{k!}
+ =2e^{s^2K_1^2}-1\leq e^{2s^2K_1^2}.
+\]
+Thus $Z$ is subgaussian.
+\end{proof}
+
+\section{Verification, novelty, and limitations}
+
+\paragraph{Checks.}
+The explicit example uses the exact identity
+$\frac12(1+\cosh s)=\cosh^2(s/2)$. The sharpness proof preserves the strict
+tail convention by taking $t_p=1-2p<1-p$. The three-range estimate is uniform
+in $s>0$. The included script is regression-only.
+
+\paragraph{Bounded novelty search.}
+The run's four lightweight indexes were searched for arXiv:1309.1007,
+subgaussian diameter, McDiarmid replacement, Bernoulli sharpness, and the
+factor-four gap. Exact-phrase and core-keyword arXiv/web searches found the
+source and classical work on Bernoulli subgaussian constants, but no direct
+answer to the replacement question and no statement of
+Theorem~\ref{thm:sharp}. Novelty is plausible but remains subject to expert
+review.
+
+\paragraph{Scope and review.}
+Theorem~\ref{thm:sharp} completely resolves the universal constant question.
+The packet does not produce a nearly matching lower-bound Lipschitz function
+for every product space, address the Kutin--Niyogi metric conjecture, or prove
+stability of the listed algorithms. In unrestricted nonseparable, non-Radon
+spaces, Theorem~\ref{thm:equality} is a characterization, not a ZFC existence
+claim. Human review should check the uniform upper estimate in
+Lemma~\ref{lem:asymptotic} and the proceedings version's interpretation of
+verbatim replacement.
+
+\begin{thebibliography}{9}
+\bibitem{K}
+A.~Kontorovich,
+\emph{Concentration in unbounded metric spaces and algorithmic stability},
+Proceedings of the 31st International Conference on Machine Learning,
+PMLR \textbf{32} (2014), 28--36;
+\href{https://arxiv.org/abs/1309.1007}{arXiv:1309.1007}.
+\end{thebibliography}
+\end{document}

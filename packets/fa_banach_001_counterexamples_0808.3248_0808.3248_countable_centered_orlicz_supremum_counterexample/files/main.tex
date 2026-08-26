@@ -1,0 +1,188 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=0.86in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.58em}
+\emergencystretch=3em
+
+\newtheorem{theorem}{Theorem}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\Or}{\operatorname{Or}}
+
+\title{A Centered Counterexample to the Orlicz-Supremum Question\\
+\large Full negative answer to arXiv:0808.3248, equation (14)}
+\author{Run \texttt{fa\_banach\_001}, lane 4}
+\date{August 11, 2026}
+
+\begin{document}
+\maketitle
+
+\textbf{Status.} \texttt{candidate\_counterexample\_likely\_valid}.
+The answer to the source question is negative, even for a centered field on a
+countable index set.
+
+\section*{Source question}
+Ostrovsky asks on p.~6 of arXiv:0808.3248 whether every separable random
+field $\theta=(\theta(t))_{t\in T}$ satisfying
+\[
+ \sup_{t\in T}|\theta(t)|<\infty\ \text{a.s.},
+ \qquad
+ \sup_{t\in T}\|\theta(t)\|_{\Or(\Phi)}<\infty
+\]
+must also satisfy
+\[
+ \left\|\sup_{t\in T}|\theta(t)|\right\|_{\Or(\Psi)}<\infty
+ \tag{14}
+\]
+whenever $\Psi\ll\Phi$, meaning
+$\Psi(vu)/\Phi(u)\to0$ as $u\to\infty$ for every $v>0$.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+For an Orlicz function $F$, we use the source's Luxemburg norm
+\[
+ \|X\|_{\Or(F)}=\inf\{c>0:\E F(|X|/c)\le1\}.
+\]
+
+\clearpage
+\section*{Proof intuition}
+Uniform control of each coordinate says nothing about how many disjoint rare
+coordinates occur at a given amplitude. We split a level of total probability
+$2^{-m}$ into roughly $e^{2m^4}$ separate coordinates of amplitude $m^2$.
+Each coordinate then has a negligible Gaussian-Orlicz moment. A sample point
+activates only one coordinate, so every sample path is bounded. The supremum,
+however, forgets the splitting: it has size comparable to $m^2$ with total
+probability $2^{-m}$ and therefore has no exponential moment at any scale.
+Subtracting each atom's probability centers every coordinate without changing
+this mechanism.
+
+\begin{theorem}
+Let
+\[
+ \Phi(u)=e^{u^2}-1,
+ \qquad
+ \Psi(u)=e^{|u|}-1.
+\]
+There is a centered separable real random field $\theta=(\theta(t))_{t\in T}$
+such that
+\[
+ \sup_{t\in T}\|\theta(t)\|_{\Or(\Phi)}\le2,
+ \qquad
+ \sup_{t\in T}|\theta(t)|<\infty\quad\text{a.s.},
+\]
+but
+\[
+ \left\|\sup_{t\in T}|\theta(t)|\right\|_{\Or(\Psi)}=\infty.
+\]
+Moreover $T$ is countable. Hence equation~\textup{(14)} is false, including
+under the optional centering hypothesis in the source.
+\end{theorem}
+
+\begin{proof}
+For $m\ge1$, put
+\[
+ q_m=2^{-m},\qquad a_m=m^2,\qquad
+ N_m=\left\lceil e^{2m^4}\right\rceil,
+ \qquad p_m=\frac{q_m}{N_m}.
+\]
+Take a countable atomic probability space whose atoms are
+$E_{m,j}$, $m\ge1$, $1\le j\le N_m$, with
+$\Pp(E_{m,j})=p_m$. This is a probability space because
+\[
+ \sum_{m\ge1}\sum_{j=1}^{N_m}p_m
+ =\sum_{m\ge1}q_m=1.
+\]
+Let $T=\{(m,j):m\ge1,\ 1\le j\le N_m\}$ and define
+\[
+ \theta(m,j)=a_m\bigl(\mathbf1_{E_{m,j}}-p_m\bigr).
+ \tag{1}
+\]
+The index set is countable, so the field is separable, and
+$\E\theta(m,j)=0$ for every coordinate.
+
+We first verify the uniform $\Phi$ bound. Since
+$N_m\ge e^{2m^4}$,
+\[
+ p_m\le 2^{-m}e^{-2m^4},
+ \qquad
+ a_mp_m\le\tfrac12.
+ \tag{2}
+\]
+At Luxemburg scale $2$, using $1-p_m\le1$ and (2),
+\begin{align*}
+ \E\Phi\!\left(\frac{|\theta(m,j)|}{2}\right)
+ &=p_m\Phi\!\left(\frac{a_m(1-p_m)}2\right)
+ +(1-p_m)\Phi\!\left(\frac{a_mp_m}2\right)\\
+ &\le p_m e^{a_m^2/4}+\Phi(1/4)\\
+ &\le \tfrac12e^{-7/4}+\bigl(e^{1/16}-1\bigr)<1.
+\end{align*}
+Thus $\|\theta(m,j)\|_{\Or(\Phi)}\le2$ uniformly.
+
+\newpage
+Next fix an outcome $\omega\in E_{M,J}$. Its distinguished coordinate has
+absolute value $a_M(1-p_M)\le a_M$, while every other coordinate has absolute
+value $a_mp_m<1$ by (2). Hence
+\[
+ \sup_{t\in T}|\theta(t,\omega)|\le\max\{a_M,1\}<\infty.
+\]
+The sample paths are therefore bounded almost surely. On the same atom,
+$p_M<1/2$ and the distinguished coordinate also gives the lower bound
+\[
+ S(\omega):=\sup_{t\in T}|\theta(t,\omega)|
+ \ge a_M(1-p_M)\ge\frac{M^2}{2}.
+ \tag{3}
+\]
+
+For any $c>0$, summing (3) over all atoms at level $m$ yields
+\begin{align*}
+ \E\Psi(S/c)
+ &\ge\sum_{m\ge1}\sum_{j=1}^{N_m}
+ p_m\Psi\!\left(\frac{m^2}{2c}\right)\\
+ &=\sum_{m\ge1}2^{-m}
+ \left(e^{m^2/(2c)}-1\right)=\infty.
+\end{align*}
+Indeed, the summands tend to infinity because
+$m^2/(2c)-m\log2\to\infty$. No Luxemburg scale is admissible, so
+$\|S\|_{\Or(\Psi)}=\infty$.
+
+Finally, $\Psi\ll\Phi$: for every fixed $v>0$,
+\[
+ \frac{\Psi(vu)}{\Phi(u)}
+ =\frac{e^{vu}-1}{e^{u^2}-1}\longrightarrow0.
+\]
+All hypotheses of the source question hold and its conclusion fails.
+\end{proof}
+
+\section*{Verification and limitations}
+The proof is exact and has no computational dependency. The total atom mass,
+centering, countable separability, pathwise boundedness, uniform Luxemburg
+bound, weakening relation, and divergence at every scale were audited
+separately in \texttt{verification\_report.md}.
+
+The construction is deliberately non-Gaussian and highly nonstationary. It
+does not contradict the positive Gaussian or generic-chaining cases cited by
+the source. The example printed immediately after the source question controls
+only $\sup_t\theta(t)$; its $\sup_t|\theta(t)|$ is infinite. Construction (1)
+meets the absolute-boundedness assumption exactly.
+
+\section*{Novelty check and review recommendation}
+Bounded searches used the exact title and arXiv id, verbatim question
+fragments, and combinations of ``uniform Orlicz norm,'' ``random field,'' and
+``supremum counterexample.'' They found the source and general sufficient-
+condition literature but no later exact answer. This supports, but does not
+certify, novelty. Human review should focus on the scale-2 moment estimate and
+the aggregation from coordinate mass $p_m$ to level mass $q_m=2^{-m}$.
+
+\begin{thebibliography}{9}
+\bibitem{O}
+E. Ostrovsky,
+\emph{Support of Borelian Measures in Separable Banach Spaces},
+arXiv:0808.3248, 2008, p.~6, equation (14).
+\end{thebibliography}
+
+\end{document}

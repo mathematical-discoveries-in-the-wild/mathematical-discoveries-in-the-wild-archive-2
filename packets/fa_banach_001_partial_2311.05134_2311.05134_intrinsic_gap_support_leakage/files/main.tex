@@ -1,0 +1,281 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.92in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Pp}{\mathcal P_2}
+\newcommand{\SW}{\mathrm{SW}}
+\newcommand{\ellSW}{\ell_{\mathrm{SW}}}
+\newcommand{\sphereavg}{\mathop{\int\!\!\!\!-}_{\mathbb S^{d-1}}}
+
+\title{Intrinsic-Gap Control of Support Leakage for\\
+Sliced-Wasserstein Geodesics}
+\author{Automated mathematics run \texttt{fa\_banach\_001}\\
+Lane 12, agent \texttt{agent\_lane\_12}, model GPT5.6}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\linewidth}{\textbf{Status.}
+Candidate partial result, likely valid. A quantitative support-leakage bound
+and several complete subclasses are proved. The unrestricted ball-support
+question remains open in this investigation.}}
+\end{center}
+
+\section{Source question}
+
+Park and Slep\v{c}ev~\cite{PS} define the length metric $\ellSW$ induced by
+the quadratic sliced-Wasserstein distance $\SW$ on $\Pp(\R^d)$. Their
+Remark~4.7, on printed and PDF page~26 of arXiv:2311.05134, asks whether an
+$\ellSW$-geodesic between measures supported in the closed unit ball must
+remain supported there.
+
+\begin{center}
+\includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+Write $R_\theta\mu=(x\mapsto\theta\cdot x)_\#\mu$ and use normalized surface
+measure in every spherical average. Thus
+\[
+ \SW^2(\mu,\nu)=\sphereavg
+ W_2^2(R_\theta\mu,R_\theta\nu)\,d\theta,
+ \qquad \SW\le \ellSW\le d^{-1/2}W_2.
+\]
+
+\section{Statement and proof intuition}
+
+For $\rho\in\Pp(\R^d)$ define its unit-ball leakage by
+\begin{equation}\label{eq:leak}
+ \mathcal E_B(\rho)^2
+ :=\sphereavg\int_{\R} (|r|-1)_+^2\,d(R_\theta\rho)(r)\,d\theta.
+\end{equation}
+This quantity vanishes exactly when $\rho$ is supported in the unit ball.
+
+The one-dimensional $W_2$ quantile formula realizes $\SW$ as a chordal
+distance in a Hilbert space. Unit-ball support becomes a closed convex
+pointwise box in that space, and $\mathcal E_B$ is precisely distance to the
+box. A simple projection inequality says that a path from one point of a
+convex set to another cannot pass a distance $r$ from the set with total
+chord length less than $\sqrt{D^2+4r^2}$, where $D$ is the endpoint chord.
+An intrinsic geodesic has available total chord length at most its intrinsic
+length. The difference between these two quantities therefore pays for every
+possible support excursion.
+
+\begin{theorem}[Intrinsic-gap leakage bound]\label{thm:main}
+Let $\mu_0,\mu_1\in\Pp(\R^d)$ be supported in the closed unit ball, and let
+$(\mu_t)_{0\le t\le1}$ be any constant-speed $\ellSW$-geodesic between them.
+Set
+\[
+ L=\ellSW(\mu_0,\mu_1),\qquad D=\SW(\mu_0,\mu_1).
+\]
+Then for every $t\in[0,1]$,
+\begin{equation}\label{eq:main}
+ \mathcal E_B(\mu_t)
+ \le \min\left\{tL,(1-t)L,\frac12\sqrt{L^2-D^2}\right\}.
+\end{equation}
+In particular, if $\ellSW(\mu_0,\mu_1)=\SW(\mu_0,\mu_1)$, then every
+$\ellSW$-geodesic between the endpoints stays supported in the unit ball.
+\end{theorem}
+
+\section{The Hilbert-space argument}
+
+Let $Q_\mu(\theta,s)$ be the generalized quantile at $s\in(0,1)$ of
+$R_\theta\mu$. The one-dimensional quantile identity gives the isometric
+embedding
+\begin{equation}\label{eq:embed}
+ \|Q_\mu-Q_\nu\|_{L^2(\mathbb S^{d-1}\times(0,1))}
+ =\SW(\mu,\nu).
+\end{equation}
+Consider the closed convex subset of this Hilbert space
+\[
+ \mathcal C=\{q: |q(\theta,s)|\le1\text{ for a.e. }(\theta,s)\}.
+\]
+Pointwise clipping to $[-1,1]$ is the metric projection onto $\mathcal C$.
+Consequently, by the quantile change of variables,
+\begin{equation}\label{eq:distC}
+ \operatorname{dist}(Q_\rho,\mathcal C)^2
+ =\sphereavg\int_0^1(|Q_\rho(\theta,s)|-1)_+^2\,ds\,d\theta
+ =\mathcal E_B(\rho)^2.
+\end{equation}
+
+We isolate the elementary geometry used next.
+
+\begin{lemma}\label{lem:hilbert}
+Let $\mathcal C$ be a closed convex subset of a Hilbert space, let
+$x,y\in\mathcal C$, and let $z$ be arbitrary. If
+$D=\|x-y\|$ and $r=\operatorname{dist}(z,\mathcal C)$, then
+\[
+ \|z-x\|+\|z-y\|\ge\sqrt{D^2+4r^2}.
+\]
+\end{lemma}
+
+\begin{proof}
+Let $p$ be the metric projection of $z$ onto $\mathcal C$. The projection
+inequality $\langle z-p,q-p\rangle\le0$ for $q\in\mathcal C$ gives
+\[
+ \|z-x\|^2\ge r^2+\|p-x\|^2,
+ \qquad
+ \|z-y\|^2\ge r^2+\|p-y\|^2.
+\]
+Put $u=\|p-x\|$ and $v=\|p-y\|$. Since $u+v\ge D$ and
+$s\mapsto\sqrt{r^2+s^2}$ is convex,
+\begin{align*}
+ \|z-x\|+\|z-y\|
+ &\ge \sqrt{r^2+u^2}+\sqrt{r^2+v^2}\\
+ &\ge2\sqrt{r^2+((u+v)/2)^2}
+ \ge\sqrt{4r^2+D^2}.
+\end{align*}
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Put $x=Q_{\mu_0}$, $y=Q_{\mu_1}$, and $z=Q_{\mu_t}$. The endpoint support
+assumption gives $x,y\in\mathcal C$. Since $(\mu_t)$ is a constant-speed
+$\ellSW$-geodesic and $\SW\le\ellSW$,
+\[
+ \|z-x\|=\SW(\mu_0,\mu_t)\le tL,
+ \qquad
+ \|z-y\|=\SW(\mu_t,\mu_1)\le(1-t)L.
+\]
+Thus each of the first two bounds in \eqref{eq:main} follows from
+\eqref{eq:distC}, since $x,y\in\mathcal C$. Their sum is at most $L$.
+Lemma~\ref{lem:hilbert}, \eqref{eq:embed}, and \eqref{eq:distC} therefore give
+\[
+ L\ge\sqrt{D^2+4\mathcal E_B(\mu_t)^2},
+\]
+which is the final bound in \eqref{eq:main}.
+
+It remains to justify that zero leakage is genuine support containment.
+Tonelli's theorem rewrites \eqref{eq:leak} as
+\[
+ \mathcal E_B(\rho)^2
+ =\int_{\R^d}\sphereavg (|\theta\cdot x|-1)_+^2\,d\theta\,d\rho(x).
+\]
+For every $x$ with $|x|>1$, the inner integral is strictly positive because
+an open set of directions near $x/|x|$ has $|\theta\cdot x|>1$. Hence
+$\mathcal E_B(\rho)=0$ forces $\rho(\overline B(0,1))=1$.
+\end{proof}
+
+\section{Complete subclasses}
+
+The preceding result immediately converts every equality
+$\ellSW=\SW$ into an affirmative support theorem.
+
+\begin{corollary}\label{cor:classes}
+Under the endpoint support hypothesis of Theorem~\ref{thm:main}, every
+$\ellSW$-geodesic remains in the unit ball in each of the following cases:
+\begin{enumerate}
+ \item one endpoint is a Dirac mass;
+ \item both endpoints are supported on one affine line;
+ \item $\mu_1=T_\#\mu_0$ for $T(x)=\lambda x+b$ with $\lambda\ge0$;
+ \item more generally, the pair admits an extrinsic $\SW$-geodesic.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+In the first case,
+\[
+ \SW^2(\delta_a,\mu)=\sphereavg\int|\theta\cdot(x-a)|^2\,d\mu(x)d\theta
+ =d^{-1}W_2^2(\delta_a,\mu).
+\]
+If both measures live on an affine line with unit direction $u$, every
+projected $W_2$ distance is $|\theta\cdot u|$ times the one-dimensional
+distance along that line; spherical averaging again gives
+$\SW=d^{-1/2}W_2$.
+
+For $T(x)=\lambda x+b$, the map induced on every projection is the
+nondecreasing affine map $r\mapsto\lambda r+\theta\cdot b$, hence is optimal
+in one dimension. The same spherical identity gives
+\[
+ \SW^2(\mu_0,T_\#\mu_0)
+ =d^{-1}\int|T(x)-x|^2\,d\mu_0(x)
+ =d^{-1}W_2^2(\mu_0,T_\#\mu_0).
+\]
+In all three cases $\SW\le\ellSW\le d^{-1/2}W_2$ forces $L=D$. In the fourth
+case the very existence of a path whose $\SW$-length equals the endpoint
+$\SW$ distance likewise forces $L=D$. Apply Theorem~\ref{thm:main}.
+\end{proof}
+
+Translations and dilations were already known extrinsic geodesics; Hopper
+\cite{Hopper} gives further extrinsic examples. Han~\cite{Han} proves, under
+an absolute-continuity hypothesis, rigidity and stability for the different
+deficit $d^{-1}W_2^2-\SW^2$ and identifies affine homotheties as its equality
+case. Those known facts are not claimed as novel here.
+
+\section{Upgrade attempts and remaining obstruction}
+
+\paragraph{Metric projection.}
+The most direct proof would project a minimizing curve radially onto the
+ball. Remark~4.7 of the source supplies an explicit counterexample showing
+that radial projection can increase $\SW$, so endpoint contraction is false.
+
+\paragraph{Quantile clipping.}
+Pointwise clipping is contractive in the Hilbert quantile model and is exactly
+what produces Theorem~\ref{thm:main}. But a clipped family of one-dimensional
+distributions need not be the Radon transform of a probability measure. The
+failure of inverse Radon transforms to preserve positivity is also the source
+of the strict gap $\ellSW>\SW$ exhibited in the source paper. Thus the clipped
+Hilbert path cannot simply replace the original geodesic.
+
+\paragraph{Particle approximation.}
+For a curve of finitely many separated atoms, the infinitesimal sliced action
+is the Euclidean particle action divided by $d$; Euclidean projection then
+does reduce length. This does not pass to arbitrary $\SW$-absolutely
+continuous curves: at diffuse measures the optimal sliced flux lives in a
+much weaker negative-Sobolev geometry and need not be of the form $v\mu$.
+Approximating it by particle curves can raise the action to the Wasserstein
+scale.
+
+\paragraph{First-exit and gap iteration.}
+Applying the convex-set estimate at a hypothetical first exit yields the
+quantitative bound \eqref{eq:main}, but no contradiction when $L>D$. The
+strict intrinsic gap provides exactly the budget for an excursion. Neither
+subsegment iteration nor the endpoint moment identities eliminate that
+budget without an additional Radon-consistent retraction or a new local
+convexity theorem for the image of probability measures in quantile space.
+
+These attempts isolate a precise obstruction. The unrestricted question is
+therefore not promoted to a full solution or counterexample.
+
+\section{Novelty audit and review recommendation}
+
+A bounded search on 11 August 2026 covered the run indexes; the exact source
+question; combinations of ``intrinsic sliced Wasserstein'', ``geodesic'',
+``support'', ``ball'', ``quantile'', and ``length gap''; Hopper's 2024
+extrinsic-geodesic paper; and Han's May 2026 deficit-rigidity paper. No located
+source states \eqref{eq:main} or resolves the general support question. This
+supports, but cannot certify, novelty.
+
+The qualitative zero-gap conclusion is close to implicit in source
+Remark~4.6, which characterizes a geodesic attaining $\SW$ slice by slice.
+Accordingly, the primary candidate-new contribution is the quantitative
+intrinsic-gap leakage estimate, not the known translation/dilation examples.
+Expert review should focus on Lemma~\ref{lem:hilbert} and the distance identity
+\eqref{eq:distC}.
+
+\begin{thebibliography}{9}
+\bibitem{PS}
+S. Park and D. Slep\v{c}ev,
+\emph{Geometry and analytic properties of the sliced Wasserstein space},
+J. Funct. Anal. \textbf{289} (2025), article 110975;
+arXiv:2311.05134.
+
+\bibitem{Hopper}
+J. S. Hopper,
+\emph{Sliced Wasserstein Geodesics and Equivalence Wasserstein and Sliced
+Wasserstein Metrics}, arXiv:2407.07219 (2024).
+
+\bibitem{Han}
+B.-X. Han,
+\emph{Rigidity and Quantitative Stability of the Sliced Wasserstein Deficit},
+arXiv:2605.25453 (2026).
+\end{thebibliography}
+
+\end{document}
+

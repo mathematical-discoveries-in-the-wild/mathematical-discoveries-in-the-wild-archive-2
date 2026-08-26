@@ -1,0 +1,313 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=0.9in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,graphicx,microtype,xcolor,mathtools}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,urlcolor=blue!60!black,citecolor=blue!50!black]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\V}{\mathcal V}
+\newcommand{\W}{\widehat W}
+\newcommand{\nuA}{\nu_\alpha}
+\newcommand{\dmA}{m_\alpha}
+\title{Weak type $(1,1)$ for variation of the Laguerre heat semigroup\\
+\large A full answer to the endpoint question in arXiv:2110.03493}
+\author{Autonomous mathematical discovery run \texttt{fa\_banach\_001}, lane 5}
+\date{12 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\linewidth}{\textbf{Status: candidate full, likely valid.}
+The proof is analytic.  A short exact symbolic script only audits the degrees of three explicitly displayed polynomials.}}
+\end{center}
+
+\section{Source question and answer}
+
+Betancor and de Le\'on-Contreras study variation operators for Laguerre
+polynomial expansions in \cite{source}.  On page 9, while proving their
+Poisson endpoint theorem, they state that they do not know the weak type
+$(1,1)$ bound for the variation of the transformed Laguerre heat semigroup
+$\{\W_t^\alpha\}_{t>0}$; see Figure~\ref{fig:source}.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/open_problem_crop.png}
+\caption{The endpoint question and the heat-kernel formula in the source paper \cite[p.~9]{source}.}
+\label{fig:source}
+\end{figure}
+
+Let $n\geq1$, $\alpha=(\alpha_1,\ldots,\alpha_n)\in(0,\infty)^n$, and
+\[
+ d\nuA(x)=2^n\prod_{j=1}^n\frac{x_j^{2\alpha_j+1}e^{-x_j^2}}
+ {\Gamma(\alpha_j+1)}\,dx_j .
+\]
+For $\rho>2$, write
+\[
+ \V_\rho(\{T_t\}_{t>0})f(x)=
+ \sup_{0<t_k<\cdots<t_1}
+ \left(\sum_{j=1}^{k-1}|T_{t_j}f(x)-T_{t_{j+1}}f(x)|^\rho\right)^{1/\rho}.
+\]
+
+\begin{theorem}\label{thm:main}
+For every $\rho>2$ there is $C=C(n,\alpha,\rho)$ such that, for every
+$f\in L^1((0,\infty)^n,\nuA)$ and $\lambda>0$,
+\[
+ \nuA\!\left(\left\{x:\V_\rho(\{\W_t^\alpha\}_{t>0})f(x)>\lambda\right\}\right)
+ \leq \frac{C}{\lambda}\|f\|_{L^1(\nuA)}.
+\]
+Consequently the same estimate holds for the original Laguerre polynomial
+heat semigroup on $L^1(\mu_\alpha)$, by the isometry $x\mapsto x^2$ used in
+\cite[Section 2.1]{source}.
+\end{theorem}
+
+The point is that nearly all endpoint machinery needed for the heat family is
+already present inside the source's proof for the subordinated Poisson family.
+The missing local calculation is supplied below.
+
+\section{Scalar components and bounded total variation}
+
+Put
+\[
+ A=n+\sum_{j=1}^n\alpha_j,\qquad
+ X=|x|^2,\quad Y=|y|^2,\quad Z=\sum_{j=1}^n x_jy_js_j
+\]
+and, for $r\in(0,1)$,
+\begin{equation}\label{eq:G}
+ G_{x,y,s}(r)=(1-r^2)^{-A}
+ \exp\!\left[-\frac{Xr^2+Y-2Zr}{1-r^2}\right].
+\end{equation}
+With $r=e^{-t/2}$, the source's integral representation is
+\begin{equation}\label{eq:kernel}
+ \W_t^\alpha(x,y)=e^{|y|^2}\int_{(-1,1)^n}
+ G_{x,y,s}(e^{-t/2})\Pi_\alpha(s)\,ds,
+\end{equation}
+where
+\[
+ \Pi_\alpha(s)=\prod_{j=1}^n
+ \frac{\Gamma(\alpha_j+1)}{\Gamma(\alpha_j+1/2)\sqrt\pi}
+ (1-s_j^2)^{\alpha_j-1/2}.
+\]
+
+We use the elementary fact that if a differentiable real function has at most
+$d$ critical points, then its total variation is at most
+$2(d+1)$ times its supremum norm.  The same conclusion holds when the
+derivative numerator below is identically zero.
+
+\begin{lemma}[Uniform critical-point bounds]\label{lem:critical}
+For fixed $x,y,s$, off the kernel diagonal,
+\begin{align}
+ \operatorname{Var}_{0<r<1}G_{x,y,s}(r)&\leq 8\sup_{0<r<1}G_{x,y,s}(r),\label{eq:tvG}\\
+ \operatorname{Var}_{0<r<1}\partial_{x_i}G_{x,y,s}(r)
+ &\leq 12\sup_{0<r<1}|\partial_{x_i}G_{x,y,s}(r)|,\label{eq:tvx}\\
+ \operatorname{Var}_{0<r<1}\partial_{y_i}G_{x,y,s}(r)
+ &\leq 10\sup_{0<r<1}|\partial_{y_i}G_{x,y,s}(r)|.\label{eq:tvy}
+\end{align}
+These are also the total variations under the monotone parametrization
+$r=e^{-t/2}$, $t\in(0,\infty)$.
+\end{lemma}
+
+\begin{proof}
+Logarithmic differentiation of \eqref{eq:G} gives
+\begin{equation}\label{eq:P0}
+ \frac{dG}{dr}=\frac{2G}{(1-r^2)^2}P_0(r),\qquad
+ P_0(r)=Z+(A-X-Y)r+Zr^2-Ar^3.
+\end{equation}
+Thus $G'$ has at most three zeros unless $P_0\equiv0$, proving
+\eqref{eq:tvG}.  Moreover
+\begin{equation}\label{eq:spatial}
+ \partial_{x_i}G=-\frac{2(r^2x_i-ry_is_i)}{1-r^2}G,\qquad
+ \partial_{y_i}G=-\frac{2(y_i-rx_is_i)}{1-r^2}G.
+\end{equation}
+After differentiating these expressions in $r$ and multiplying by the positive
+factor $(1-r^2)^3/G$, the two derivative numerators are polynomials of degrees
+at most five and four, respectively.  Hence they have at most five and four
+zeros unless identically zero.  The total-variation observation proves
+\eqref{eq:tvx}--\eqref{eq:tvy}.  The exact expanded polynomials and degree
+checks are reproduced by \texttt{code/verify\_derivative\_degrees.py}.
+\end{proof}
+
+Since $\rho\geq1$, every differentiable scalar function $h$ satisfies
+\begin{equation}\label{eq:EbyTV}
+ \|h\|_{E_\rho}\leq\int_0^\infty|h'(t)|\,dt.
+\end{equation}
+Lemma~\ref{lem:critical} turns this crude bound into sharp enough kernel
+estimates.
+
+\section{Global part}
+
+We use exactly the source's cutoff.  Let
+\[
+ q_\pm(x,y,s)=|x|^2+|y|^2\pm2\sum_{j=1}^nx_jy_js_j
+\]
+and choose a smooth $0\leq\varphi\leq1$ which equals $1$ on
+\[
+ N_1=\left\{q_-(x,y,s)^{1/2}\leq
+ \frac{C_0}{1+|x|+|y|}\right\}
+\]
+and vanishes outside the corresponding enlarged region $N_2$.  Decompose
+$\W_t^\alpha=\W_{t,\mathrm{loc}}^\alpha+
+\W_{t,\mathrm{glob}}^\alpha$ by inserting $\varphi$ and $1-\varphi$ into
+\eqref{eq:kernel}.
+
+The proof of Lemma 2.1 in \cite{source} establishes, before any Poisson-specific
+step is used, the following estimate for the heat kernel components:
+\begin{equation}\label{eq:globaldom}
+ \int_0^\infty|\partial_t\W_{t,\mathrm{glob}}^\alpha f(x)|\,dt
+ \leq \mathbb K_\alpha(|f|)(x).
+\end{equation}
+Indeed, \eqref{eq:tvG} bounds the time integral by a fixed multiple of
+$\sup_tG_{x,y,s}(e^{-t/2})$.  On the support of $1-\varphi$, the source proves
+\begin{equation}\label{eq:K}
+ \sup_tG_{x,y,s}(e^{-t/2})\lesssim K_\alpha(x,y,s):=
+ \begin{cases}
+ e^{-|y|^2},&Z\leq0,\\[2mm]
+ \left(\dfrac{q_+}{q_-}\right)^{A/2}
+ \exp\!\left[-\dfrac{|y|^2-|x|^2}{2}
+ -\dfrac{\sqrt{q_+q_-}}2\right],&Z>0.
+ \end{cases}
+\end{equation}
+The positive integral operator formed from $K_\alpha(1-\varphi)$ against
+$d\dmA(y)=e^{|y|^2}d\nuA(y)$ is $\mathbb K_\alpha$.  By the Sasso estimates
+invoked and reproduced in \cite[Lemma 2.1]{source}, it is weak type $(1,1)$
+and strong type $(p,p)$ for $1<p<\infty$ with respect to $\nuA$.
+
+Combining \eqref{eq:EbyTV} and \eqref{eq:globaldom},
+\begin{equation}\label{eq:globalweak}
+ \V_\rho(\{\W_{t,\mathrm{glob}}^\alpha\}_{t>0})f
+ \leq\mathbb K_\alpha(|f|),
+\end{equation}
+so the global variation is weak $(1,1)$ and strong $L^2$.
+
+\section{Local vector-valued Calder\'on--Zygmund estimate}
+
+Let $H_t^\alpha(x,y)$ be the local kernel, now viewed against the doubling
+measure $\dmA$:
+\[
+ H_t^\alpha(x,y)=\int_{(-1,1)^n}
+ G_{x,y,s}(e^{-t/2})\varphi(x,y,s)\Pi_\alpha(s)\,ds.
+\]
+The standard local comparison estimate used in \cite[Lemma 2.2]{source}
+implies, on $N_2$,
+\begin{align}
+ \sup_tG_{x,y,s}(e^{-t/2})&\lesssim q_-(x,y,s)^{-A},\label{eq:sup0}\\
+ \sup_t\big(|\nabla_xG_{x,y,s}(e^{-t/2})|+
+ |\nabla_yG_{x,y,s}(e^{-t/2})|\big)
+ &\lesssim q_-(x,y,s)^{-A-1/2}.\label{eq:sup1}
+\end{align}
+For completeness, \eqref{eq:sup0} follows by comparing
+$q_-(rx,y,s)$ with $q_-(x,y,s)$ and maximizing
+$u^{-A}e^{-cq_-/u}$.  For \eqref{eq:sup1}, use
+$|rx_i-y_is_i|\leq q_-(rx,y,s)^{1/2}$ (and the analogous $y$ estimate),
+absorb the square root into half of the exponential, and maximize once more.
+
+Equations \eqref{eq:EbyTV}, \eqref{eq:tvG}--\eqref{eq:tvy},
+\eqref{eq:sup0}--\eqref{eq:sup1}, and
+$|\nabla\varphi|\lesssim q_-^{-1/2}$ give
+\begin{align}
+ \|H^\alpha(x,y)\|_{E_\rho}
+ &\lesssim \int_{(-1,1)^n}q_-(x,y,s)^{-A}\Pi_\alpha(s)\,ds
+ \lesssim \frac1{\dmA(B(x,|x-y|))},\label{eq:CZ0}\\
+ \|\nabla_xH^\alpha(x,y)\|_{E_\rho}+
+ \|\nabla_yH^\alpha(x,y)\|_{E_\rho}
+ &\lesssim \int_{(-1,1)^n}q_-(x,y,s)^{-A-1/2}\Pi_\alpha(s)\,ds\notag\\
+ &\lesssim\frac1{|x-y|\,\dmA(B(x,|x-y|))}.\label{eq:CZ1}
+\end{align}
+The final integral estimates are precisely the Bessel-kernel estimates used in
+\cite[Lemma 2.2]{source}.  Thus the local heat kernel satisfies the same
+$E_\rho$-valued Calder\'on--Zygmund bounds as the source's Poisson kernel.
+
+It remains to supply an $L^2$ input.  The family $\{\W_t^\alpha\}$ is a Stein
+symmetric diffusion semigroup, so the strong variation theorem of Le Merdy and
+Xu \cite[Corollary 6.1]{lemx} yields
+\[
+ \|\V_\rho(\{\W_t^\alpha\})f\|_{L^2(\nuA)}\lesssim\|f\|_{L^2(\nuA)}.
+\]
+The global part is strong $L^2$ by \eqref{eq:globalweak}; hence the local part
+is strong $L^2$ as well.
+
+Now repeat the source's measure-transfer and vector-valued
+Calder\'on--Zygmund argument (its Lemma 2.3 and the paragraph following it).
+The local support of $\varphi$ transfers the $L^2$ estimate between $\nuA$ and
+the doubling measure $\dmA$.  Bounds \eqref{eq:CZ0}--\eqref{eq:CZ1} then give
+weak $(1,1)$ on $\dmA$, uniformly for variation restricted to
+$t\in[1/N,N]$.  The same local transfer gives weak $(1,1)$ on $\nuA$.
+Letting $N\to\infty$ by monotone convergence proves
+\begin{equation}\label{eq:localweak}
+ \V_\rho(\{\W_{t,\mathrm{loc}}^\alpha\}_{t>0}):
+ L^1(\nuA)\longrightarrow L^{1,\infty}(\nuA).
+\end{equation}
+Combining \eqref{eq:globalweak} and \eqref{eq:localweak} proves
+Theorem~\ref{thm:main}.
+
+\section{Audit, novelty boundary, and limitations}
+
+Run the exact algebra audit from the repository root:
+\begin{verbatim}
+conda run --no-capture-output -n sandbox python \
+  runs/fa_banach_001/solutions/full/\
+  2110.03493_laguerre_heat_variation_weak_11/code/\
+  verify_derivative_degrees.py
+\end{verbatim}
+Its captured output is included beside the script.  The computation is not a
+numerical experiment: it expands formal derivatives and asserts exact
+polynomial identities.
+
+A bounded novelty search on 12 August 2026 covered the run indexes; the exact
+arXiv id and question sentence; combinations of ``Laguerre heat semigroup,''
+``variation,'' and ``weak type $(1,1)$''; and later endpoint papers citing the
+source.  The 2012 Laguerre variation paper \cite{bct} gives strong-$L^p$ and
+Hardy-space results in related Laguerre settings.  The 2024 endpoint paper
+\cite{endpoint} gives $H^1\to L^1$ and $L^\infty\to\mathrm{BMO}$ estimates.
+Neither states this $L^1\to L^{1,\infty}$ heat-variation theorem.  Later
+Ornstein--Uhlenbeck work proves analogous Gaussian results but does not cover
+arbitrary Laguerre parameters.  No exact prior answer was found; keyword and
+citation searches remain incomplete, so novelty requires expert review.
+
+The proof claims only $\rho>2$ and $\alpha\in(0,\infty)^n$, exactly the range
+in which the source develops the needed global Sasso estimate.  It makes no
+claim at $\rho=2$, for negative Laguerre parameters, or for dimension-free
+constants.  The main review-sensitive point is that the local spatial-gradient
+total variations, not merely the scalar-kernel variation, are required;
+Lemma~\ref{lem:critical} supplies this missing step explicitly.
+
+\paragraph{Human-review recommendation.}
+Check the factorization in \eqref{eq:P0} and the two degree bounds following
+\eqref{eq:spatial}; then compare \eqref{eq:globaldom}--\eqref{eq:K} and
+\eqref{eq:sup0}--\eqref{eq:CZ1} line by line with Lemmas 2.1--2.3 of the source.
+Those checks isolate every nonstandard ingredient.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+J. J. Betancor and M. de Le\'on-Contreras,
+\emph{Variation inequalities for Riesz transforms and Poisson semigroups associated with Laguerre polynomial expansions},
+arXiv:2110.03493v2 (2022); Anal. Appl. 22 (2024), 1--56.
+\url{https://arxiv.org/abs/2110.03493}.
+
+\bibitem{lemx}
+C. Le Merdy and Q. Xu,
+\emph{Strong $q$-variation inequalities for analytic semigroups},
+Ann. Inst. Fourier (Grenoble) 62 (2012), 2069--2097.
+
+\bibitem{sasso04}
+E. Sasso,
+\emph{Spectral multipliers of Laplace transform type for the Laguerre operator},
+Bull. Austral. Math. Soc. 69 (2004), 255--266.
+
+\bibitem{sasso07}
+E. Sasso,
+\emph{Weak type estimates for Riesz--Laguerre transforms},
+Bull. Austral. Math. Soc. 75 (2007), 397--408.
+
+\bibitem{bct}
+J. J. Betancor, R. Crescimbeni, and J. L. Torrea,
+\emph{Oscillation and variation of the Laguerre heat and Poisson semigroups and Riesz transforms},
+Acta Math. Sci. Ser. B 32 (2012), 907--928.
+
+\bibitem{endpoint}
+J. J. Betancor, E. Dalmasso, P. Quijano, and R. Scotto,
+\emph{Endpoint estimates for harmonic analysis operators associated with Laguerre polynomial expansions},
+Math. Nachr. 297 (2024), 2365--2389; arXiv:2210.14394.
+\end{thebibliography}
+
+\end{document}

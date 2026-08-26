@@ -1,0 +1,231 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx,microtype,xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\newcommand{\A}{\mathcal A}
+\newcommand{\T}{\mathcal T}
+\newcommand{\DI}{C_{\mathrm{DI}}}
+
+\title{An Index Obstruction to Renorming Weighted Bicyclic Algebras}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 7}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{\textbf{Status.} Full solution, likely valid,
+pending human review.  The source's renorming question has a negative answer:
+for its weighted bicyclic algebra $\A_x$, every equivalent unital
+Banach-algebra norm has $\DI\ge e^{2x}$.  The original weighted norm attains
+equality.}}
+\end{center}
+
+\section{Source question and result}
+
+Let $BC=\langle p,q:pq=e\rangle$ be the bicyclic monoid.  Every element has a
+unique reduced form $q^\alpha p^\beta$, $\alpha,\beta\ge0$.  For $x>0$, Daws
+and Horv\'ath define the weight
+\[
+ \omega_x(s)=
+ \begin{cases}
+ 1,&s=e\text{ or }s=qp,\\
+ e^{x(\alpha+\beta)},&s=q^\alpha p^\beta\notin\{e,qp\},
+ \end{cases}
+\]
+and the unital Banach algebra $\A_x=\ell^1(BC,\omega_x)$.  For a unital
+Banach algebra $A$ they set
+\[
+ \DI(A)=\inf\{\|a\|\|b\|:ab=1,\ ba\ne1\}.
+\]
+They prove that the standard witnesses $\delta_p,\delta_q$ stay large under
+every equivalent norm, but leave open whether some other witnesses can make
+$\DI(\A_x)$ equal to $1$, or bounded by an absolute constant
+\cite[p.~18]{DH2021}:
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/open_question_crop.png}
+\caption{The renorming question in \cite[p.~18]{DH2021}.}
+\end{figure}
+
+\begin{theorem}[Renorming obstruction]\label{thm:main}
+Let $x>0$.  If $\|\cdot\|_0$ is any norm equivalent to the original norm of
+$\A_x$ for which $(\A_x,\|\cdot\|_0)$ is a unital Banach algebra with
+$\|1\|_0=1$, then
+\begin{equation}\label{eq:main}
+                  \boxed{\DI(\A_x,\|\cdot\|_0)\ge e^{2x}.}
+\end{equation}
+For the original weighted norm, equality holds.  Hence there is no absolute
+constant $K$ such that every Dedekind-infinite Banach algebra admits an
+equivalent unital Banach-algebra norm with $\DI\le K$.
+\end{theorem}
+
+The proof combines annular characters with the Fredholm index of a Toeplitz
+operator.  The index forces every possible one-sided inverse witness---not
+only the displayed generators---to wind nontrivially around the annulus.
+
+\section{Annular characters}
+
+For $z$ in the closed annulus
+\[
+       \mathbb A_x=\{z\in\mathbb C:e^{-x}\le|z|\le e^x\},
+\]
+define on the monoid basis
+\begin{equation}\label{eq:character}
+ \chi_z(\delta_{q^\alpha p^\beta})=z^{\alpha-\beta}.
+\end{equation}
+The degree $\alpha-\beta$ is additive under multiplication in $BC$, so
+$\chi_z$ is multiplicative.  Moreover
+\[
+ |z^{\alpha-\beta}|
+ \le e^{x|\alpha-\beta|}
+ \le\omega_x(q^\alpha p^\beta);
+\]
+the exceptional elements $e,qp$ both have degree zero.  Thus \eqref{eq:character}
+extends to a continuous character of $\A_x$.
+
+For $a\in\A_x$ write $\widehat a(z)=\chi_z(a)$.  The defining series converges
+uniformly on $\mathbb A_x$ and normally in its interior, so $\widehat a$ is
+continuous on the closed annulus and holomorphic inside.  Since equivalent
+Banach-algebra norms do not change invertibility or spectra,
+\begin{equation}\label{eq:spectral}
+ \|a\|_0\ge r_{\A_x}(a)\ge
+ \sup_{z\in\mathbb A_x}|\widehat a(z)|.
+\end{equation}
+
+\section{Every one-sided inverse has nonzero index}
+
+Let $S$ be the unilateral shift on $\ell^2(\mathbb N_0)$ and define
+\begin{equation}\label{eq:toeplitzrep}
+ \pi(\delta_q)=S,\qquad \pi(\delta_p)=S^*.
+\end{equation}
+Because $S^*S=I$, this is a contractive representation of the bicyclic monoid
+and extends continuously to $\A_x$.  Its image lies in the Toeplitz algebra
+$\T=C^*(S)$, and the Toeplitz symbol of $\pi(a)$ is
+\begin{equation}\label{eq:symbol}
+             \sigma(\pi(a))(\zeta)=\widehat a(\zeta),
+             \qquad |\zeta|=1.
+\end{equation}
+
+We record that $\pi$ is faithful.  Indeed, suppose
+$a=\sum_{\alpha,\beta}c_{\alpha\beta}
+\delta_{q^\alpha p^\beta}$ and $\pi(a)=0$.  Fix an integer
+$d=\alpha-\beta$.  Along the $d$th matrix diagonal, the entry beginning at
+column $j$ is the absolutely convergent partial sum
+\[
+ \sum_{\substack{\beta\le j\\\beta+d\ge0}}c_{\beta+d,\beta}.
+\]
+All these sums vanish; taking successive differences gives
+$c_{\beta+d,\beta}=0$ for every admissible $\beta$.  Varying $d$ recovers all
+coefficients.
+
+Now take arbitrary $a,b\in\A_x$ with
+\begin{equation}\label{eq:onesided}
+                         ab=1,\qquad ba\ne1.
+\end{equation}
+Set $A=\pi(a)$ and $B=\pi(b)$.  Then $AB=I$, while faithfulness gives
+$BA\ne I$.  Hence $A$ is surjective but not injective.  On the other hand,
+\[
+                     \widehat a(z)\widehat b(z)=1
+                     \quad(z\in\mathbb A_x),
+\]
+so the Toeplitz symbol of $A$ is nowhere zero on the unit circle.  Therefore
+$A$ is Fredholm, and
+\[
+ \operatorname{ind}A=\dim\ker A>0.
+\]
+The Toeplitz index theorem \cite[Chapter 7]{Douglas1972} gives
+\begin{equation}\label{eq:index}
+ \operatorname{ind}A=-\operatorname{wind}
+       (\widehat a|_{\mathbb T},0).
+\end{equation}
+In particular the integer
+$k=\operatorname{wind}(\widehat a|_{\mathbb T},0)$ is nonzero.
+
+\section{Winding forces a large annular condition number}
+
+\begin{lemma}[Annular oscillation]\label{lem:annulus}
+Let $f$ be continuous and nonvanishing on $\mathbb A_x$, holomorphic in its
+interior, and let its winding number around zero be $k$.  Then
+\begin{equation}\label{eq:annulus}
+ \left(\sup_{\mathbb A_x}|f|\right)
+ \left(\sup_{\mathbb A_x}|f|^{-1}\right)
+ \ge e^{2x|k|}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The function $z^{-k}f(z)$ has winding zero and hence admits a holomorphic
+logarithm $g$ on the open annulus.  Thus
+\[
+                 \log|f(re^{it})|=k\log r+\Re g(re^{it}).
+\]
+The circular mean of $\Re g(re^{it})$ is independent of $r$: this follows
+from the Laurent expansion of $g$, whose nonconstant terms have mean zero.
+Consequently the circular means of $\log|f|$ on the circles of radii $e^x$
+and $e^{-x}$ differ by $2kx$.  If
+$M=\max_{\mathbb A_x}\log|f|$ and
+$m=\min_{\mathbb A_x}\log|f|$, then
+$M-m\ge2x|k|$.  Exponentiation gives \eqref{eq:annulus}.
+\end{proof}
+
+Apply Lemma~\ref{lem:annulus} to $f=\widehat a$.  Since
+$\widehat b=1/\widehat a$, equations \eqref{eq:spectral} and
+\eqref{eq:index} yield
+\[
+ \|a\|_0\|b\|_0
+ \ge\left(\sup_{\mathbb A_x}|\widehat a|\right)
+      \left(\sup_{\mathbb A_x}|\widehat b|\right)
+ \ge e^{2x|k|}\ge e^{2x}.
+\]
+This holds for every pair in \eqref{eq:onesided}; taking the infimum proves
+\eqref{eq:main}.  In the original weighted norm,
+$\delta_p\delta_q=1$ and $\delta_q\delta_p\ne1$, while
+\[
+ \|\delta_p\|_{\omega_x}=\|\delta_q\|_{\omega_x}=e^x.
+\]
+Thus $\DI(\A_x,\|\cdot\|_{\omega_x})=e^{2x}$, completing the proof of
+Theorem~\ref{thm:main}. \qed
+
+\section{Verification, scope, and novelty boundary}
+
+The proof uses only the algebra and weight defined in the source plus the
+standard Toeplitz index theorem.  The two points that close the authors'
+stated gap are faithfulness of the shift representation and the fact that a
+nonzero index enforces annular, rather than merely unit-circle, oscillation.
+The conclusion is invariant under arbitrary equivalent unital
+Banach-algebra norms because it is expressed through characters and spectral
+radii.
+
+The result answers both formulations in the quoted passage: $\DI$ cannot be
+renormed to $1$, and no absolute bound independent of $x$ exists.  It also
+determines the exact value in the original norm, improving the source's lower
+estimate $(e^x/86)^{1/3}$ for this family.
+
+The run indexes, exact arXiv id and title, and arXiv searches for the
+Dedekind-infinite renorming terminology were checked.  No later answer or
+duplicate packet was found.  Novelty confidence is moderate: the individual
+Toeplitz and annulus ingredients are classical, but their use to control
+every $\DI$ witness in this weighted algebra was not located.  Human review
+should focus on the faithful extension of \eqref{eq:toeplitzrep} and the
+application of the Toeplitz index theorem to arbitrary elements of $\A_x$.
+
+\begin{thebibliography}{9}
+\bibitem{DH2021}
+M. Daws and B. Horv\'ath,
+\emph{Ring-theoretic (in)finiteness in reduced products of Banach algebras},
+Canad. J. Math. 73 (2021), 1423--1458; arXiv:1912.07108.
+
+\bibitem{Douglas1972}
+R. G. Douglas,
+\emph{Banach Algebra Techniques in Operator Theory},
+Academic Press, 1972.
+\end{thebibliography}
+
+\end{document}

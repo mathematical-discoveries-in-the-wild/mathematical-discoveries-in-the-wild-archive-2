@@ -1,0 +1,202 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[margin=0.76in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newcommand{\R}{\mathbb R}
+\newcommand{\B}{\mathcal B}
+\newcommand{\U}{\mathcal U}
+\newcommand{\ip}[2]{\langle #1,#2\rangle}
+
+\title{Euclidean group sparsity does not force\\
+an \(N\)-term vector-valued RKBS representer}
+\author{New partial obstruction for arXiv:2509.26371}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\paragraph{Status.}
+\textbf{New partial result; the source's structural characterization remains
+open.}  For every \(N\ge2\), we construct a finite integral vector-valued
+RKBS with output space \(\R^2\) and a regularized least-squares problem on
+\(N\) data sites whose unique minimizer requires exactly \(2N-1\) kernel
+sites.  Its RKBS norm is the standard group-\(\ell_2\) penalty.  Thus this
+basic form of groupwise sparsity alone cannot improve the source's \(Nd\)
+bound to \(N\); when \(d=2\), the example misses the \(2N\) bound by only one.
+
+\section*{Source question}
+Dummer, Heeringa, and Iglesias [1] prove representer theorems for
+integral and neural vv-RKBSs which, for \(N\) measurements in \(\R^d\), give
+at most \(Nd\) terms.  In their future-work section they ask what additional
+structure ensures at most \(N\) terms, and suggest that groupwise sparsity
+could play a central role.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+\noindent\emph{Source evidence: arXiv:2509.26371, p.~33, equation (7.4) and
+the following open question.}
+
+\section*{Proof intuition}
+In a finite discrete integral vv-RKBS, the total-variation norm of a vector
+measure is exactly a sum of Euclidean coefficient norms.  This is ordinary
+group lasso, one output vector per kernel site.  We expose a large flat face
+of that norm with a dual matrix \(G\).  Each of \(2N-1\) atoms lies on the
+face because \(G^Ta_j\) is its unit output direction.  The atoms' prediction
+matrices \(a_js_j^T\) are linearly independent.  Consequently equality in
+the dual bound first pins every coefficient to its prescribed nonnegative
+ray and then pins every ray scale to one.  A squared loss is centered so that
+this exposed point satisfies the exact optimality equations.
+
+Finally, we complete the training feature matrix to an invertible square
+matrix on the whole finite domain.  This removes a possible loophole: the
+same minimizer cannot secretly have a shorter kernel expansion away from the
+training data.
+
+\begin{theorem}[a \(2N-1\)-site group-\(\ell_2\) obstruction]\label{thm:main}
+For every integer \(N\ge2\), there exist finite sets \(X,\Omega\), a scalar
+feature map \(\phi:X\times\Omega\to\R\), an integral vv-RKBS
+\(\B\subseteq\{f:X\to\R^2\}\) with kernel sections
+\[
+ K_{\U}(x,w)u=\phi(x,w)u,
+\]
+\(N\) distinct training sites \(x_1,\ldots,x_N\), and targets
+\(t_i\in\R^2\) such that
+\begin{equation}\label{eq:objective}
+ \min_{f\in\B}\left\{
+ \frac1{2N}\sum_{i=1}^N\|f(x_i)-t_i\|_2^2
+ +\frac1N\|f\|_{\B}\right\}
+\end{equation}
+has a unique minimizer.  Every kernel expansion of that minimizer uses
+exactly \(2N-1\) distinct sites of \(\Omega\), and
+\(\|f\|_{\B}\) is the group-\(\ell_2\) coefficient norm.
+\end{theorem}
+
+\begin{proof}
+Put \(m=2N-1\).  Let \(e_1,\ldots,e_N\) be the standard basis of \(\R^N\),
+and let \(G\in\R^{N\times2}\) have first row \((1,0)\), second row
+\((0,1)\), and all other rows zero.  We specify \(m\) feature columns
+\(a_j\in\R^N\) and unit directions \(s_j\in\R^2\).  The first three are
+\[
+ \begin{array}{c|ccc}
+ j&1&2&3\\ \hline
+ a_j&e_1&e_2&(e_1+e_2)/\sqrt2\\
+ s_j&(1,0)&(0,1)&(1,1)/\sqrt2 .
+ \end{array}
+\]
+For each \(k=3,\ldots,N\), add two more pairs
+\[
+ (a_{k,0},s_{k,0})=(e_1+e_k,(1,0)),\qquad
+ (a_{k,1},s_{k,1})=(e_2+e_k,(0,1)).
+\]
+There are \(3+2(N-2)=m\) pairs, and every one satisfies
+\begin{equation}\label{eq:expose}
+ G^Ta_j=s_j,\qquad \|s_j\|_2=1.
+\end{equation}
+
+The matrices \(b_j=a_js_j^T\in\R^{N\times2}\) are linearly independent.
+Indeed, for each \(k\ge3\), row \(k\) of a linear relation separately forces
+the coefficients of \(b_{k,0}\) and \(b_{k,1}\) to vanish.  Among the first
+three matrices, the off-diagonal entries force the coefficient of \(b_3\)
+to vanish, and the two diagonal entries then dispose of \(b_1,b_2\).
+Also the matrix \(A=[a_1\ \cdots\ a_m]\in\R^{N\times m}\) has rank \(N\):
+besides \(e_1,e_2\), its column span contains
+\(a_{k,0}-a_1=e_k\).
+
+Choose an \((m-N)\times m\) matrix \(C\) so that
+\(F=\begin{bmatrix}A\\C\end{bmatrix}\) is invertible.  Take
+\(X=\{x_1,\ldots,x_m\}\),
+\(\Omega=\{w_1,\ldots,w_m\}\), and
+\(\phi(x_i,w_j)=F_{ij}\).  These finite sets are discrete and compact, so
+all features are continuous.  Define
+\[
+ f_c(x)=\sum_{j=1}^m\phi(x,w_j)c_j,
+ \qquad
+ \|f_c\|_{\B}=\sum_{j=1}^m\|c_j\|_2 .
+\]
+This is the finite discrete integral vv-RKBS obtained from vector measures on
+\(\Omega\).  Invertibility of \(F\) makes the coefficient tuple
+\(c=(c_1,\ldots,c_m)\) unique, so the displayed formula really is its RKBS
+norm.
+
+Let the candidate coefficients be \(c_j^0=s_j\).  Its training prediction
+matrix, with one output row per training point, is
+\[
+ Y_0=Ac^0=\sum_{j=1}^m a_js_j^T=\sum_{j=1}^m b_j.
+\]
+Set the target matrix to \(T=Y_0+G\).  In coefficient form,
+\eqref{eq:objective} is the convex objective
+\begin{equation}\label{eq:finite-objective}
+ J(c)=\frac1{2N}\|Ac-T\|_F^2
+      +\frac1N\sum_{j=1}^m\|c_j\|_2.
+\end{equation}
+At \(c^0\), the residual is \(-G\).  Since no \(s_j\) is zero, the rowwise
+optimality equation is, by \eqref{eq:expose},
+\[
+ \frac1N a_j^T(-G)+\frac1N s_j=0.
+\]
+Hence \(c^0\) minimizes \(J\).
+
+It remains to prove uniqueness and the support claim.  Strict convexity of
+the squared loss in the prediction \(Ac\), together with convexity of the
+norm, implies that every minimizer has prediction \(Y_0\).  For any
+\(c\) satisfying \(Ac=Y_0\), the same matrix \(G\) is a dual certificate:
+\begin{align*}
+ \sum_{j=1}^m\|c_j\|_2
+ &\ge \sum_{j=1}^m\ip{s_j}{c_j}
+  =\ip{G}{Ac}_F
+  =\ip{G}{Y_0}_F\\
+ &=\sum_{j=1}^m\ip{G^Ta_j}{s_j}
+  =m.
+\end{align*}
+The candidate attains equality.  Equality term by term in the first
+inequality forces \(c_j=r_js_j\) with \(r_j\ge0\).  The prediction identity
+then becomes
+\[
+ \sum_{j=1}^m r_jb_j=\sum_{j=1}^m b_j.
+\]
+Linear independence of the \(b_j\)'s forces every \(r_j=1\).  Thus \(c^0\)
+is the unique minimizer and all its \(m=2N-1\) coefficients are nonzero.
+Since \(F\) is invertible, every expansion of the resulting function has
+this same coefficient tuple (after combining repeated sites).  No expansion
+on fewer distinct kernel sites exists.
+\end{proof}
+
+\small
+\section*{What this answers---and what it does not}
+Taking the measurement operator to be the identity on \(\U=\R^2\) gives
+\(d=2\) in the source's setup.  Theorem~\ref{thm:main} therefore supplies,
+for every sample size, an example requiring \(2N-1>N\) terms.  It disproves
+the sufficiency of the most direct interpretation of the suggested route:
+the standard Euclidean group-\(\ell_2\) norm by itself.  It also nearly
+saturates the general \(Nd=2N\) guarantee.
+
+The theorem does \emph{not} say that stronger structured group penalties are
+ineffective, and it does not characterize the additional geometry needed for
+an \(N\)-term theorem.  Those parts of the source question remain open.
+Three focused upgrade attempts progressed from a three-site \(N=2\) example,
+to an \(N+1\)-site polygon family, and finally to the \(2N-1\)-site exposed
+face above.  The last construction reaches the dimension of the natural
+rank-two exposed-face span; no credible route to \(2N\) under the same smooth
+Euclidean certificate remained.
+
+The bundled script independently checks ranks, the exposing identities, the
+optimality equations, the invertible completion, the equality-case linear
+system, and random perturbations for \(2\le N\le12\).  These are sanity checks
+only; the general result is proved symbolically above.  Exact-title,
+exact-question, vv-RKBS representer, group-lasso active-set, and
+\(2N-1\)-support searches through 13 August 2026 found no later source with
+this construction or an answer to the stated structural question.  This was
+a bounded search, not a systematic bibliographic review.
+
+\subsection*{Reference}
+\noindent [1] S. Dummer, T. J. Heeringa, and J. A. Iglesias,
+\emph{Vector-Valued Reproducing Kernel Banach Spaces for Neural Networks and
+Operators}, arXiv:2509.26371, v3 (2026), especially Section~7.
+
+\end{document}

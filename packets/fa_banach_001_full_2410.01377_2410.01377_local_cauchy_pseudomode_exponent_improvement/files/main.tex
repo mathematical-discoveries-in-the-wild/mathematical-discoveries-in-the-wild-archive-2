@@ -1,0 +1,283 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!60!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\A}{\mathbf A}
+\newcommand{\B}{\mathbf B}
+\newcommand{\Lop}{\mathcal L}
+\newcommand{\C}{\mathbb C}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+
+\title{A Centered-Cauchy Upgrade of Complex-Magnetic\\Pseudomodes from $h^{-1/7}$ to $h^{-1/4}$}
+\author{Automated mathematics run \texttt{fa\_banach\_001}\\Lane 0 --- candidate for human review}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Candidate full solution, likely valid.  Under exactly the hypotheses of source
+Theorem~1.5, the residual improves from
+$\exp(-C h^{-1/7})$ to $\exp(-C h^{-1/4})$.  This fully answers the literal
+question whether the power $1/7$ is optimal: it is not.  No claim is made that
+$1/4$ is the final sharp power.}}
+\end{center}
+
+\section{Source question and result}
+
+Krej\v{c}i\v{r}'ik, Nguyen Duc, and Raymond construct WKB pseudomodes for a
+two-dimensional Laplacian with a smooth complex magnetic potential.  If
+$x^0$ belongs to their noncritical set $\Gamma$ and the magnetic field $\B$ is
+real analytic at $x^0$, their Theorem~1.5 gives
+\[
+ \norm{(\Lop_{h,\A}-h\B(x^0))u_h}
+ \leq \exp(-C h^{-1/7})\norm{u_h}.
+\]
+They explicitly ask whether the power $1/7$ is optimal
+\cite[p.~69 and Theorem~1.5]{Source}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_question_crop.png}
+  \caption{Source PDF page~69 (arXiv PDF page~4): the exact optimality
+  question and its connection to the transport estimate.}
+\end{figure}
+
+\begin{theorem}\label{thm:main}
+Under the hypotheses of source Theorem~1.5, there are $C,h_0>0$ and
+$u_h\in C_c^\infty(\mathbb R^2)$, $0<h\leq h_0$, such that
+\[
+ \norm{(\Lop_{h,\A}-h\B(x^0))u_h}
+ \leq \exp(-C h^{-1/4})\norm{u_h}.
+\]
+Consequently the source power $1/7$ is not optimal.
+\end{theorem}
+
+The WKB construction itself is unchanged.  The improvement comes from a local
+Cauchy estimate centered at each evaluation point of the transport recursion.
+
+\section{The source recursion and the lost powers}
+
+Translate $x^0$ to zero.  Source Theorem~3.2 constructs a phase $P$ and
+real-analytic amplitudes $(a_j)_{j\geq0}$ on one neighborhood, with
+$a_0(0)=1$ and $a_j(0)=0$ for $j\geq1$.  The uniform radii fixed in the proof
+of source Lemma~3.9, especially (3.19), put all their holomorphic
+complexifications on one common polydisc.  In the complex variables $(z,w)$,
+write $\widetilde a_j$ for those complexifications and relabel the source
+characteristic curve as $w=\omega(z)$.
+
+The exact source recursion (3.13) has the form
+\begin{equation}\label{eq:recursion}
+\begin{split}
+ \widetilde a_{j+1}(z,w)
+ &=J(z,w)\int_{\omega(z)}^w
+   \frac{T_j(z,u)}{2J(z,u)V(z,u)}\,du\\
+ &\quad+\widetilde a_0(z,w)\int_0^z
+   \frac{G_j(u)}{\mathcal A_0(u)}\,du,
+\end{split}
+\end{equation}
+where
+\[
+ T_j(z,w)=\int_0^1
+ \partial_w^2\partial_z\widetilde a_j
+   (z,\omega(z)+t(w-\omega(z)))\,dt,
+\]
+and $G_j$ is a bounded analytic linear combination, evaluated at
+$(u,\omega(u))$, of
+\begin{equation}\label{eq:multiindices}
+ \partial_z\partial_w^2\widetilde a_j,
+ \qquad
+ \partial_z^2\partial_w^2\widetilde a_j,
+ \qquad
+ \partial_z\partial_w^3\widetilde a_j.
+\end{equation}
+All the other factors in \eqref{eq:recursion} are fixed holomorphic functions;
+the source has already shrunk the neighborhood so that the required
+denominators do not vanish.
+
+The derivative multi-orders in \eqref{eq:multiindices} have total orders
+$3,4,4$.  The source instead uses Cauchy contours centered at the origin.
+Their denominators carry one extra power in each variable, and the proof then
+takes the largest separate $z$- and $w$-losses simultaneously, producing
+$(R_1-|z|)^{-3}(R_2-|w|)^{-4}$ and hence $j^7$ per step.  The following local
+form of Cauchy's estimate retains the actual total derivative order.
+
+\begin{lemma}[Centered Cauchy estimate]\label{lem:cauchy}
+Let $f$ be holomorphic on the polydisc
+$\mathcal P(r_1,r_2)=\{|z|<r_1,|w|<r_2\}$.  Suppose
+$(z,w)$ has coordinate margins at least $\delta_1,\delta_2>0$.  Then, for
+$\alpha,\beta\in\mathbb N_0$,
+\[
+ |\partial_z^\alpha\partial_w^\beta f(z,w)|
+ \leq C_{\alpha,\beta}\,
+ \delta_1^{-\alpha}\delta_2^{-\beta}
+ \norm{f}_{r_1,r_2},
+\]
+where $\norm{f}_{r_1,r_2}=\sup_{\mathcal P(r_1,r_2)}|f|$.
+\end{lemma}
+
+\begin{proof}
+Apply the two-variable Cauchy formula on circles centered at $(z,w)$ with
+radii arbitrarily close to $(\delta_1,\delta_2)$.  Differentiating the Cauchy
+kernels gives the stated powers (and the harmless factorial constant).
+\end{proof}
+
+\section{Improved transport growth}
+
+\begin{lemma}\label{lem:transport}
+There are $M,\delta_0>0$ such that for every $j\geq1$ and
+$x\in D(0,\delta_0)\subset\mathbb R^2$,
+\begin{equation}\label{eq:transport-bound}
+ |a_j(x)|+|\nabla a_j(x)|+|\Delta a_j(x)|
+ \leq M^{j+1}j^{4j}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Choose $R_1,R_2>0$ so that the closed polydisc with radii
+$(2R_1,2R_2)$ lies in the common holomorphic neighborhood of all data in
+\eqref{eq:recursion}.  As in the source proof, after shrinking we have
+\begin{equation}\label{eq:curve}
+ |\omega(z)|\leq C_0|z|,
+ \qquad C_0R_1<R_2,
+\end{equation}
+and every fixed coefficient in \eqref{eq:recursion} is uniformly bounded.
+
+Fix $n\geq1$.  For $k=0,\ldots,n$, set
+\[
+ r_{1,k}=\left(2-\frac{k}{n}\right)R_1,
+ \qquad
+ r_{2,k}=\left(2-\frac{k}{n}\right)R_2.
+\]
+The coordinate gaps between consecutive polydiscs are exactly
+$R_1/n$ and $R_2/n$.
+
+Take $(z,w)\in\mathcal P(r_{1,k+1},r_{2,k+1})$.  Both endpoints
+$\omega(z)$ and $w$ lie in the $w$-disc of radius $r_{2,k+1}$, by
+\eqref{eq:curve}; hence their entire joining segment does too.  If $u$ lies
+on the segment from $0$ to $z$, then
+\[
+ |u|\leq |z|<r_{1,k+1},
+ \qquad |\omega(u)|\leq C_0|u|<r_{2,k+1}.
+\]
+Thus every point where a derivative of $\widetilde a_k$ is evaluated in
+\eqref{eq:recursion} lies in the $(k+1)$-st polydisc and has margins at least
+$R_1/n,R_2/n$ inside the $k$-th polydisc.
+
+Lemma~\ref{lem:cauchy} and the exhaustive derivative list
+\eqref{eq:multiindices} now give
+\[
+ \norm{T_k}_{r_{1,k+1},r_{2,k+1}}
+ \leq C n^3\norm{\widetilde a_k}_{r_{1,k},r_{2,k}},
+ \qquad
+ \sup|G_k|\leq C n^4\norm{\widetilde a_k}_{r_{1,k},r_{2,k}}.
+\]
+The two path lengths in \eqref{eq:recursion} and all fixed coefficients are
+bounded independently of $k,n$.  Therefore
+\[
+ \norm{\widetilde a_{k+1}}_{r_{1,k+1},r_{2,k+1}}
+ \leq C n^4\norm{\widetilde a_k}_{r_{1,k},r_{2,k}}.
+\]
+Multiplication for $k=0,\ldots,n-1$ yields
+\[
+ \norm{\widetilde a_n}_{R_1,R_2}
+ \leq (Cn^4)^n\norm{\widetilde a_0}_{2R_1,2R_2}.
+\]
+A final application of Lemma~\ref{lem:cauchy} across the fixed margins from
+$(R_1,R_2)$ to $(R_1/2,R_2/2)$ gives the same growth for the first derivatives
+and for $4\partial_z\partial_w\widetilde a_n=\widetilde{\Delta a_n}$.
+Enlarging one constant and restricting to a fixed real disk proves
+\eqref{eq:transport-bound}.
+\end{proof}
+
+\section{Optimal truncation and proof of Theorem~\ref{thm:main}}
+
+Let $M$ be as in Lemma~\ref{lem:transport}, and for small $h>0$ put
+\[
+ N(h)=\left\lfloor(eMh)^{-1/4}\right\rfloor.
+\]
+For $1\leq j\leq N(h)$,
+\[
+ Mh j^4\leq e^{-1},
+ \qquad
+ h^jM^{j+1}j^{4j}\leq M e^{-j}.
+\]
+Consequently the truncated amplitude and its first derivatives are uniformly
+bounded.  Since $a_j(0)=0$ for $j\geq1$, integration of the gradient along
+$[0,x]$ also gives
+\[
+ \sum_{j=1}^{N(h)}h^j|a_j(x)|\leq C|x|.
+\]
+Together with $a_0(0)=1$, this supplies a uniform lower bound on the amplitude
+near zero.
+
+Use the source phase $P$ and a fixed cutoff $\chi$ supported in the disk where
+\eqref{eq:transport-bound} holds:
+\[
+ u_h=\chi e^{-P/h}\sum_{j=0}^{N(h)}h^ja_j.
+\]
+The positive-definite quadratic expansion of $\operatorname{Re}P$ implies
+\begin{equation}\label{eq:norm-lower}
+ \norm{u_h}\geq c h^{1/2};
+\end{equation}
+indeed, integrate on a real ball of radius comparable to $\sqrt h$.
+
+The source transport identities cancel every interior power through
+$h^{N(h)+1}$.  Lemma~\ref{lem:transport} bounds the remaining coefficient by
+\begin{align*}
+ h^{N+2}|\Delta a_N|
+ &\leq Mh^2(MhN^4)^N\\
+ &\leq Mh^2e^{-N}
+ \leq \exp(-c h^{-1/4})
+\end{align*}
+after decreasing $c$ and $h_0$.  Its Gaussian $L^2$ norm is $O(h^{1/2})$,
+which matches \eqref{eq:norm-lower}.  On the support of $\nabla\chi$,
+$\operatorname{Re}P$ has a fixed positive lower bound; the unchanged
+commutator term is therefore $O(e^{-c_0/h})$ up to polynomial factors.
+After division by \eqref{eq:norm-lower}, this is smaller than
+$e^{-c h^{-1/4}}$.  We have used the source's gauge-restored identity (3.14),
+whose phase is already $P=S+i\theta$, so no additional gauge factor has to be
+estimated here.  Combining the two remainders proves
+Theorem~\ref{thm:main}.
+
+\section{Verification, novelty, and scope}
+
+The proof was checked in nine independent pieces: common analyticity,
+characteristic-curve geometry, centered Cauchy margins, exhaustive derivative
+orders, the one-step recursion, iteration, fixed-margin derivative recovery,
+optimal truncation, and relative $L^2$ normalization.  A deterministic script
+independently verifies the multi-index and truncation bookkeeping.
+
+A bounded search on 11 August 2026 covered the local run and full-source
+indexes, the exact title/id and $h^{1/7}$ wording, close official arXiv searches
+for a $1/4$ improvement and local-Cauchy WKB estimates, the September 2025
+arXiv revision, and the January 2026 publication record.  No prior exponent
+improvement was found.  The argument proves only that $1/7$ is not optimal;
+whether $1/4$ can be improved, possibly all the way to $1$, remains open here.
+
+\paragraph{Human review focus.}
+Verify the path-containment paragraph in Lemma~\ref{lem:transport}, compare
+\eqref{eq:multiindices} term by term with source equation~(3.13), and check
+that the final Gaussian norm comparison is performed before polynomial factors
+are absorbed into the exponential.
+
+\begin{thebibliography}{9}
+\bibitem{Source}
+D.~Krej\v{c}i\v{r}'ik, T.~Nguyen Duc, and N.~Raymond,
+\emph{The Laplacian with complex magnetic fields},
+SIAM J. Math. Anal. 58 (2026), 66--91;
+\href{https://doi.org/10.1137/24M1703628}{doi:10.1137/24M1703628};
+\href{https://arxiv.org/abs/2410.01377}{arXiv:2410.01377}.
+\end{thebibliography}
+
+\end{document}

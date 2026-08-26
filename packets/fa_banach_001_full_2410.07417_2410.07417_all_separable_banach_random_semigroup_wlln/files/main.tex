@@ -1,0 +1,284 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\Lcal}{\mathcal L}
+
+\title{A Weak Law for Random Semigroup Products\\
+on Every Separable Banach Space}
+\author{Candidate full solution to Conjecture 2.5 of arXiv:2410.07417}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\linewidth}{\textbf{Status.} Candidate full solution,
+likely valid pending expert review.  Under the standard random-element meaning
+of i.i.d., the proof gives uniform-in-time $L^1$, hence in-probability, strong
+operator convergence on every separable Banach space.}}
+\end{center}
+
+\section{Source problem}
+
+Dzhenzher and Sakbaev study weakly measurable random generators on
+$\ell_p$, $1\leq p\leq2$, whose operator norms are uniformly bounded.  Their
+Theorem 2.4 proves convergence in the strong topology of $\ell_2$.  On page 4
+they formulate the following conjecture \cite{DS24}:
+
+\begin{quote}
+Under the assumptions of Theorem 2.4,
+$e^{A_1t/n}\cdots e^{A_nt/n}$ converges in probability in SOT of $\ell_p$ to
+$e^{(\E A)t}$ uniformly for $t$ in any compact interval.
+\end{quote}
+
+Their precise meaning is that for every $x\in\ell_p$, $T>0$, and
+$\varepsilon>0$,
+\[
+ \Pp\!\left\{\sup_{0\leq t\leq T}
+ \left\|\left(e^{A_1t/n}\cdots e^{A_nt/n}-e^{(\E A)t}\right)x\right\|_p
+ >\varepsilon\right\}\longrightarrow0.
+\]
+The relevant source passage is reproduced below.
+
+\begin{center}
+\includegraphics[width=0.96\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section{Proof intuition}
+
+At scale $t/n$, replacing each exponential by $I+tA_i/n$ costs only
+$O(n^{-2})$ per factor and therefore $O(n^{-1})$ for the whole product.
+The resulting Euler product has an exact expansion by ordered subsets:
+\[
+ \prod_{i=1}^n\left(I+\frac tn A_i\right)x
+ =\sum_{k=0}^n t^k\,\frac1{n^k}
+   \sum_{i_1<\cdots<i_k}A_{i_1}\cdots A_{i_k}x.
+\]
+For each fixed $k$, the coefficient is a nonsymmetric Banach-valued
+$U$-statistic.  A direct simple-function argument shows that it converges in
+$L^1$ to $(\E A)^kx/k!$ on \emph{any} separable Banach space: disjoint index
+tuples are independent, and only $O(n^{2k-1})$ pairs overlap.  Finally,
+boundedness supplies the uniform factorial majorant
+$\rho^k\|x\|/k!$.  Thus fixed-order convergence can be summed over every
+$k$, uniformly for $t$ in a compact interval.  This bypasses all type,
+smoothness, and Hilbert-space variance estimates.
+
+\section{An ordered $U$-statistic lemma}
+
+\begin{lemma}\label{lem:ustat}
+Let $S$ be a measurable space, let $\xi_1,\xi_2,\ldots$ be i.i.d.
+$S$-valued random elements with law $\mu$, and let $X$ be a separable Banach
+space.  If $h:S^k\to X$ is Bochner integrable, then
+\begin{equation}\label{eq:ustat}
+ \frac1{n^k}\sum_{1\leq i_1<\cdots<i_k\leq n}
+ h(\xi_{i_1},\ldots,\xi_{i_k})
+ \xrightarrow[n\to\infty]{L^1(X)}
+ \frac1{k!}\int_{S^k}h\,d\mu^k.
+\end{equation}
+No symmetry of $h$ is required.
+\end{lemma}
+
+\begin{proof}
+First take $h=\mathbf1_D$ for a measurable $D\subseteq S^k$.  The
+expectation of the left side is
+$n^{-k}\binom nk\mu^k(D)$, which tends to $\mu^k(D)/k!$.  Two summands
+whose index sets are disjoint are independent.  Among the
+$\binom nk^2=O(n^{2k})$ ordered pairs of increasing $k$-tuples, only
+$O_k(n^{2k-1})$ pairs have an intersecting index set.  Since every covariance
+has absolute value at most one, the variance of the normalized sum is
+$O_k(n^{-1})$.  Hence \eqref{eq:ustat} holds in $L^2$, and therefore in
+$L^1$, for indicator kernels.  By linearity and the triangle inequality it
+holds for finite simple $X$-valued kernels.
+
+For general $h$, choose finite simple $g$ with
+$\int\|h-g\|\,d\mu^k<\delta$.  If $U_n(h)$ denotes the left side of
+\eqref{eq:ustat}, then
+\[
+ \E\|U_n(h)-U_n(g)\|
+ \leq \frac{\binom nk}{n^k}\int\|h-g\|\,d\mu^k
+ \leq\frac{\delta}{k!}.
+\]
+The distance between the two proposed limits is also at most $\delta/k!$.
+Let first $n\to\infty$ and then $\delta\downarrow0$.
+\end{proof}
+
+\section{Full theorem}
+
+We use the following standard measurable formulation.  On the norm ball
+\[
+ \mathcal B_\rho=\{T\in\Lcal(X):\|T\|\leq\rho\}
+\]
+put the strong operator topology and its Borel $\sigma$-field.  When $X$ is
+separable this topology is metrizable on $\mathcal B_\rho$ by evaluating on
+a countable dense subset of $X$.
+
+\begin{theorem}[all-separable-space weak law]\label{thm:main}
+Let $X$ be a separable real or complex Banach space.  Let
+$A,A_1,A_2,\ldots$ be i.i.d. $\mathcal B_\rho$-valued random elements for
+the strong-operator Borel $\sigma$-field.  Define $B\in\Lcal(X)$ by
+\[
+ Bx=\E(Ax),\qquad x\in X.
+\]
+Then for every $x\in X$ and $T>0$,
+\begin{equation}\label{eq:L1}
+ \E\sup_{0\leq t\leq T}
+ \left\|e^{A_1t/n}\cdots e^{A_nt/n}x-e^{Bt}x\right\|
+ \longrightarrow0.
+\end{equation}
+Consequently the convergence is uniform on $[0,T]$ in probability in SOT.
+\end{theorem}
+
+\begin{proof}
+Fix $x$ and $T$.  Write $h=t/n$.  Taylor's formula and
+$\|A_i\|\leq\rho$ give
+\[
+ \|e^{hA_i}-(I+hA_i)\|
+ \leq \frac{\rho^2h^2}{2}e^{\rho h},
+ \qquad
+ \|e^{hA_i}\|,\ \|I+hA_i\|\leq e^{\rho h}.
+\]
+A telescoping product estimate therefore yields, deterministically and
+uniformly for $0\leq t\leq T$,
+\begin{equation}\label{eq:euler-error}
+ \left\|\prod_{i=1}^ne^{tA_i/n}x-
+ \prod_{i=1}^n\left(I+\frac tnA_i\right)x\right\|
+ \leq \frac{\rho^2T^2e^{\rho T}}{2n}\|x\|.
+\end{equation}
+
+Expand the Euler product without commuting its factors:
+\begin{equation}\label{eq:expand}
+ \prod_{i=1}^n\left(I+\frac tnA_i\right)x
+ =\sum_{k=0}^n t^k C_{n,k}(x),\qquad
+ C_{n,k}(x)=\frac1{n^k}\sum_{i_1<\cdots<i_k}
+ A_{i_1}\cdots A_{i_k}x.
+\end{equation}
+For fixed $k$, apply Lemma~\ref{lem:ustat} to
+$h_k(T_1,\ldots,T_k)=T_1\cdots T_kx$.  This kernel is strongly measurable:
+on $\mathcal B_\rho^k$, multiplication followed by evaluation at $x$ is
+continuous for the product SOT, because all operators have the common norm
+bound $\rho$.  It is bounded by $\rho^k\|x\|$.  Iterated Bochner integration
+gives
+\[
+ \int h_k\,d\mu^k=B^kx,
+\]
+so
+\begin{equation}\label{eq:coeff}
+ C_{n,k}(x)\xrightarrow{L^1(X)}\frac1{k!}B^kx.
+\end{equation}
+
+Moreover, for every outcome,
+\begin{equation}\label{eq:maj}
+ \|C_{n,k}(x)\|
+ \leq\frac{\binom nk}{n^k}\rho^k\|x\|
+ \leq\frac{\rho^k\|x\|}{k!},
+ \qquad
+ \left\|\frac{B^kx}{k!}\right\|
+ \leq\frac{\rho^k\|x\|}{k!}.
+\end{equation}
+For an integer $K$, equations \eqref{eq:coeff}--\eqref{eq:maj} imply
+\begin{align*}
+ &\E\sup_{0\leq t\leq T}
+ \left\|\sum_{k=0}^nt^kC_{n,k}(x)-e^{tB}x\right\|\\
+ &\quad\leq
+ \sum_{k=0}^KT^k\E\left\|C_{n,k}(x)-\frac{B^kx}{k!}\right\|
+ +2\|x\|\sum_{k>K}\frac{(\rho T)^k}{k!}.
+\end{align*}
+For fixed $K$ the first term tends to zero; the second tends to zero as
+$K\to\infty$, uniformly in $n$.  This proves the Euler-product version of
+\eqref{eq:L1}.  Combining it with \eqref{eq:euler-error} proves
+\eqref{eq:L1}.  Markov's inequality gives the asserted convergence in
+probability.  The displayed supremum is measurable because the paths are
+continuous and the supremum may be taken over rational $t\in[0,T]$.
+\end{proof}
+
+\begin{corollary}[source conjecture]\label{cor:source}
+Let $1\leq p<\infty$.  If the weakly measurable, uniformly bounded
+operators in Conjecture 2.5 are i.i.d. in the standard random-element sense
+for the $\ell_p$ strong-operator Borel $\sigma$-field, then the conjecture
+holds.  In fact, its convergence is uniform-in-time $L^1$ as in
+\eqref{eq:L1}.
+\end{corollary}
+
+\begin{proof}
+Because $\ell_p$ is separable, weak measurability of $A$ implies strong
+measurability of every $Ax$ by Pettis's measurability theorem.  On a fixed
+operator-norm ball, a countable dense set of vectors metrizes SOT; hence $A$
+is a Borel random element for that topology.  The Pettis mean used in
+\cite{DS24} agrees pointwise with the Bochner integrals $\E(Ax)$.  Apply
+Theorem~\ref{thm:main}.
+\end{proof}
+
+\section{Conventions, limitations, and verification}
+
+\paragraph{Independence convention.}
+The proof uses ordinary independence of the operator random elements, or
+equivalently independence of the $\sigma$-fields generated by all SOT
+evaluations.  This is the standard meaning of ``i.i.d. random generators''
+and is the meaning adopted explicitly in the authors' later paper
+\cite{DS25}.  The 2024 source also gives a bespoke sentence defining
+independence by requiring one scalar rank-one observation
+$\langle f_i,A_ix_i\rangle$ from each operator to be independent.  Taken
+literally, that sentence does not visibly imply independence of the full
+evaluation $\sigma$-fields, because the class of rank-one observations is not
+closed under finite joint cylinders.  Thus a reviewer should either confirm
+that the sentence was intended as shorthand for standard random-element
+independence, or regard Corollary~\ref{cor:source} as a precise correction of
+that convention.  No geometric assumption on $X$ is hidden in the proof.
+
+\paragraph{Computational check.}
+The accompanying script tests noncommuting finite-dimensional examples.  It
+compares exact exponential products, Euler products, and $e^{t\E A}$ on a
+time grid, and separately checks the first three ordered coefficients.
+Observed mean errors decrease with $n$.  This is a sanity check only; the
+proof above is analytic and dimension-free.
+
+\section{Literature and novelty check}
+
+A bounded search completed on 17 August 2026 used the run's registry,
+solution, attempt, and proof-gap indexes; the local arXiv corpus; exact-title
+and author queries for arXiv:2410.07417; and close variants of ``random
+semigroup weak law'', ``Banach-valued ordered U-statistic'', and ``strong
+operator law of large numbers''.  The principal later match is the same
+authors' 2025 preprint \cite{DS25}.  It proves almost-sure SOT convergence on
+uniformly smooth Banach spaces (hence $\ell_p$, $1<p<\infty$), proves an
+all-Banach WOT theorem, and states an $\ell_1$ consequence via Schur's
+theorem.  Its random operators, however, are Bochner measurable as elements
+of the \emph{operator-norm} Banach space.  That is a stricter measurability
+hypothesis than the weak/SOT-measurable hypothesis of \cite{DS24} and of
+Corollary~\ref{cor:source}.  No source was located that states the
+all-separable-space uniform $L^1$ theorem above or proves the original weakly
+measurable formulation by this ordered-$U$-statistic argument.  Novelty
+confidence is moderate pending a specialist search.
+
+\section{Human review recommendation}
+
+The decisive points to audit are: (i) the $L^1$ simple-kernel approximation
+in Lemma~\ref{lem:ustat}; (ii) continuity and measurability of the ordered
+composition kernel on a common SOT norm ball; and (iii) whether the source's
+use of ``i.i.d.'' is intended in the standard random-element sense.  The
+Euler estimate and factorial-tail resummation are deterministic.  If (iii)
+is accepted, the packet is a full solution of Conjecture 2.5 and a strict
+space-class strengthening.
+
+\begin{thebibliography}{9}
+\bibitem{DS24}
+S. Dzhenzher and V. Sakbaev,
+\emph{Quantum law of large numbers for Banach spaces},
+arXiv:2410.07417 (2024), Conjecture 2.5 on p.~4.
+
+\bibitem{DS25}
+S. Dzhenzher and V. Sakbaev,
+\emph{The Strong Law of Large Numbers for random semigroups on uniformly
+smooth Banach spaces}, arXiv:2507.07658 (2025), Theorems 2.1 and 2.2.
+\end{thebibliography}
+
+\end{document}

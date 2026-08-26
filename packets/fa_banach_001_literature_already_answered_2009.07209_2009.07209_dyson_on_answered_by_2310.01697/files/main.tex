@@ -1,0 +1,222 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathrsfs}
+\usepackage[T1]{fontenc}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.65em}
+\setlength{\emergencystretch}{4em}
+
+\newtheorem*{theorem}{Audited answer}
+\newcommand{\Sph}{\mathbb S}
+\newcommand{\cL}{\mathscr L}
+
+\title{The Long-Range \(O(N)\) Question in arXiv:2009.07209\\
+\large Directly answered by arXiv:2310.01697}
+\author{Literature-status identification and proof audit}
+\date{August 17, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status and exact source question}
+
+The status is \textbf{literature\_already\_answered}.  The resolving work is a
+2023 preprint, and the exact implication needed by the source can also be checked
+directly from the corrected version of Kloeckner's coupling theorem.
+
+In the final paragraph of Example 4.2 of Cioletti--Melo--Ruviaro--Silva,
+\emph{On the dimension of the space of harmonic functions on transitive shift
+spaces}, arXiv:2009.07209 (published in \emph{Advances in Mathematics} 385
+(2021), 107758), the authors consider
+\[
+ X=(\Sph^{N-1})^{\mathbb N},\qquad
+ f(x)=\sum_{n=1}^{\infty}J(n)\langle x_1,x_{n+1}\rangle,
+ \qquad |J(n)|=O(n^{-2-\varepsilon}),\quad \varepsilon>2.
+ \tag{2}
+\]
+They explain that their functional central limit theorem (FCLT) argument would
+extend from scalar spins to this uncountable alphabet if one could prove, for
+centered observables in the relevant logarithmic Hölder class,
+\[
+ \|\cL_{\bar f}^{\,n}\varphi\|_\infty\le D n^{1-\varepsilon}.
+ \tag{3}
+\]
+They identify the missing ingredient as an uncountable-alphabet extension of the
+optimal-transport method of Kloeckner.
+
+\section*{Direct later answer}
+
+Silva--Mesquita--Matias, \emph{Some Probabilistic Properties of General
+Topological Markov Chains}, arXiv:2310.01697 (2023), explicitly cites the 2021
+paper and revisits this task.  Its Section 5 first formulates the natural coupling
+for general alphabets, then proves polynomial decay for compact metric alphabets,
+and finally applies the result to a long-range \(O(N)\) model.  For the canonical
+interaction
+\[
+ f(x)=\sum_{n=1}^{\infty}
+      \frac{\langle x_1,x_{n+1}\rangle}{n^{2+\varepsilon}},
+\]
+the paper obtains (3), constructs a solution of the Poisson equation, and
+concludes the FCLT.  Thus this is a separate later-paper answer, not a same-paper
+resolution.
+
+The later paper writes the canonical coefficients in its model subsection, while
+the original question permits every sequence satisfying the bound in (2).  The
+proof below verifies that the same argument covers that full coefficient class.
+It also makes explicit two formula-level corrections: a coordinate projection is
+not uniformly Lipschitz for the product metric, and the decay estimate is
+proportional to an observable norm, not to a potential norm.
+
+\section*{Audited form of the answer}
+
+Endow \(X\) with
+\[
+ d(x,y)=\sum_{k=1}^{\infty}2^{-k}
+        \min\{\|x_k-y_k\|,1\}.
+ \tag{4}
+\]
+For \(\gamma>0\), write
+\[
+ \omega_\gamma(r)=\bigl(\log(r_0/r)\bigr)^{-\gamma}
+\]
+near zero, extended in the standard way to a modulus of continuity on the
+diameter of \(X\).  Denote the corresponding logarithmic Hölder space by
+\(C^{\gamma\log}(X)\).
+
+Let \(p\) be the a priori probability on \(\Sph^{N-1}\) and let
+\[
+ \cL_f u(x)=\int_{\Sph^{N-1}}e^{f(ax)}u(ax)\,dp(a).
+\]
+The equilibrium measure and normalized potential below are those furnished by
+the Ruelle--Perron--Frobenius normalization.
+
+\begin{theorem}
+Assume (2).  There are a positive eigenfunction \(h\), an eigenvalue \(\rho>0\),
+and the normalized potential
+\[
+ \bar f=f+\log h-\log h\circ\sigma-\log\rho
+\]
+such that, for every \(\varphi\in C^{(\varepsilon-1)\log}(X)\) satisfying
+\(\int_X\varphi\,d\mu_f=0\),
+\[
+ \|\cL_{\bar f}^{\,n}\varphi\|_\infty
+ \le C n^{-(\varepsilon-1)}
+       \|\varphi\|_{(\varepsilon-1)\log},\qquad n\ge1.
+ \tag{5}
+\]
+In particular the Poisson series converges and the FCLT criterion used in
+arXiv:2009.07209 applies.
+\end{theorem}
+
+\begin{proof}
+Put \(r=d(x,y)\).  From (4), and from the fact that two sphere points have
+distance at most \(2\),
+\[
+ \|x_k-y_k\|\le 2\min\{1,2^k r\}.
+ \tag{6}
+\]
+The inner-product difference is bounded by
+\[
+ \big|\langle x_1,x_{n+1}\rangle-
+          \langle y_1,y_{n+1}\rangle\big|
+ \le \|x_1-y_1\|+\|x_{n+1}-y_{n+1}\|.
+\]
+Using (6), the summability of \((J(n))\), and
+\(|J(n)|\le Cn^{-2-\varepsilon}\), we obtain
+\[
+ |f(x)-f(y)|
+ \le C r+C\sum_{n\ge1}n^{-2-\varepsilon}
+                  \min\{1,2^{n+1}r\}.
+ \tag{7}
+\]
+For \(0<r<1/4\), split the sum at
+\(M=\lfloor\log_2(1/r)\rfloor\).  The part \(n\le M\) is at most
+\[
+ Cr\sum_{n\le M}2^n n^{-2-\varepsilon}
+ \le C M^{-2-\varepsilon},
+\]
+whereas the tail is at most \(CM^{-1-\varepsilon}\).  Thus
+\[
+ |f(x)-f(y)|\le C\omega_{1+\varepsilon}(r).
+ \tag{8}
+\]
+In particular \(f\in C^{\varepsilon\log}(X)\).  This argument works unchanged
+for every coefficient sequence in (2).
+
+The natural synchronous coupling prepends the same random point \(a\) to both
+sequences.  It has the exact contraction
+\[
+ d(ax,ay)=\tfrac12d(x,y).
+ \tag{9}
+\]
+Along a coupled inverse path, (8) and the elementary integral comparison give,
+uniformly in its length,
+\[
+ \sum_{j\ge0}\omega_\varepsilon(2^{-j}r)
+ \le C\int_0^\infty
+       \bigl(\log(r_0/r)+t\log2\bigr)^{-\varepsilon}\,dt
+ \le C'\omega_{\varepsilon-1}(r).
+ \tag{10}
+\]
+Hence \(f\) is flat with respect to \(\omega_{\varepsilon-1}\) and the
+synchronous coupling.
+
+Kloeckner's corrected normalization theorem applies to backward transition
+kernels on arbitrary compact metric spaces; it is not restricted to finite
+fibers.  It gives the positive \(h\), \(\rho\), and a cohomologous normalized
+potential \(\bar f\) which remains flat.  The synchronous coupling is Markovian,
+non-dilating, and contracts with probability one by (9).  The corrected
+stable-decay criterion therefore gives weighted-coupling decay of polynomial
+degree \(\varepsilon-1\).  The core Wasserstein contraction theorem, followed by
+the standard observable/measure duality, is precisely (5).  Notice that this
+duality supplies \(\|\varphi\|_{(\varepsilon-1)\log}\) on the right side.
+
+Finally \(\varepsilon>2\), so
+\(\sum_n n^{-(\varepsilon-1)}<\infty\).  Therefore
+\[
+ v=\sum_{n=0}^{\infty}\cL_{\bar f}^{\,n}\varphi
+\]
+converges uniformly and hence in \(L^2(\mu_f)\); telescoping gives the Poisson
+equation \((I-\cL_{\bar f})v=\varphi\).  The FCLT theorem invoked in the source
+now applies.
+\end{proof}
+
+\section*{Scope and verification note}
+
+This packet records a full literature answer for the precise compact-sphere,
+long-range question.  It does not claim a new proof of Kloeckner's general
+coupling theorem.  The consolidated arXiv version of that theorem must be used:
+it incorporates the 2023 corrigendum by strengthening the stability hypothesis.
+Condition (9) satisfies the corrected criterion, so the corrigendum creates no
+gap here.
+
+The 2023 answer preprint contains two harmless presentational slips.  First, its
+proof of logarithmic regularity writes a coordinate estimate without the factor
+depending on the coordinate; the split estimate (6)--(8) is the correct
+replacement.  Second, one displayed uncountable-alphabet estimate has a
+potential norm where the observable norm is required; (5) is the form yielded by
+Wasserstein duality.  Neither affects the claimed \(O(N)\) FCLT.
+
+\begin{thebibliography}{9}
+\bibitem{CMRS}
+L. Cioletti, L. Melo, R. Ruviaro, and E. A. Silva,
+\emph{On the dimension of the space of harmonic functions on transitive shift
+spaces},
+arXiv:2009.07209; Adv. Math. 385 (2021), 107758.
+
+\bibitem{SMM}
+E. A. Silva, E. G. Mesquita, and E. Matias,
+\emph{Some Probabilistic Properties of General Topological Markov Chains},
+arXiv:2310.01697, 2023.
+
+\bibitem{Klo}
+B. R. Kloeckner,
+\emph{An optimal transportation approach to the decay of correlations for
+non-uniformly expanding maps},
+Ergodic Theory Dynam. Systems 40 (2020), 714--750; corrigendum, ibid. 43
+(2023), 3538--3544.
+\end{thebibliography}
+
+\end{document}

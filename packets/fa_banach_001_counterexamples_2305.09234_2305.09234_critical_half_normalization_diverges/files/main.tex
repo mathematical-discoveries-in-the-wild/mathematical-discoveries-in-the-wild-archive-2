@@ -1,0 +1,387 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\E}{\mathbb E}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Lip}{\operatorname{Lip}}
+\newcommand{\Unif}{\operatorname{Unif}}
+
+\title{The critical one-dimensional concave assignment cost is
+\(\boldsymbol{\Theta(\sqrt n\log n)}\)\\
+\large A counterexample to the finite \(\sqrt{n\log n}\)-normalization in arXiv:2305.09234}
+\author{Automated mathematical discovery run \texttt{fa\_banach\_001}\\
+Lane 9, \texttt{agent\_lane\_09}, model GPT5.6}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{black}{gray!10}{\parbox{0.91\textwidth}{
+\textbf{Status.} Candidate counterexample, likely valid, pending human review.
+For the uniform law the normalized expectation in the source tends to
+\(+\infty\).  Thus this is a negative answer to the intended \emph{finite}
+limit conjecture.  If ``limit'' is interpreted in the extended real line, the
+limit instead exists and equals \(+\infty\); that wording distinction is
+preserved throughout.
+}}
+\end{center}
+
+\begin{abstract}
+Let \(X_1,\dots,X_n,Y_1,\dots,Y_n\) be independent uniform points of
+\([0,1]\), and let
+\[
+ M_n=\min_{\sigma\in S_n}\sum_{i=1}^n |X_i-Y_{\sigma(i)}|^{1/2}.
+\]
+Goldman and Trevisan asserted \(\limsup \E M_n/\sqrt{n\log n}<\infty\),
+citing a 2020 transport estimate, and conjectured existence of the associated
+finite limit.  Bobkov and Ledoux's published 2024 correction states that the
+underlying proposition was false and replaces the critical empirical upper
+bound by \(O(\log n/\sqrt n)\) for normalized measures.  We prove the matching
+lower bound by a signed multiscale dyadic-tent witness in
+Kantorovich--Rubinstein duality.  Consequently
+\[
+ \E M_n\asymp \sqrt n\log n,
+ \qquad
+ \frac{\E M_n}{\sqrt{n\log n}}\asymp\sqrt{\log n}\longrightarrow+\infty.
+\]
+The lower bound is elementary and quantitative.
+\end{abstract}
+
+\section{Source question and correction}
+
+The source is Goldman and Trevisan, \emph{On the concave one-dimensional
+random assignment problem and Young integration theory}, arXiv:2305.09234
+\cite{GoldmanTrevisan}.  Item (2) of Section 1.3, split across printed pages 3
+and 4, is reproduced below.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop_part1.png}
+
+\smallskip
+\includegraphics[width=\textwidth]{figures/open_problem_crop_part2.png}
+\end{center}
+
+In transcription, for iid samples with common law \(\mu\), the source asserts
+\begin{equation}\label{eq:source-upper}
+ \limsup_{n\to\infty}
+ \frac{\E M_{1/2}((X_i)_{i=1}^n,(Y_i)_{i=1}^n)}{\sqrt{n\log n}}<\infty,
+\end{equation}
+then says that a natural conjecture is that the corresponding limit always
+exists.  It also proves a positive liminf for uniform \(\mu\).
+
+The citation supporting \eqref{eq:source-upper} was later corrected by its
+authors.  Bobkov and Ledoux state that their Proposition 6.1 ``is not correct''
+and that logarithmic corrections are necessary \cite{BobkovLedouxCorrection}:
+
+\begin{center}
+\includegraphics[width=0.94\textwidth]{figures/correction_notice_crop.png}
+\end{center}
+
+For \(d=1\) and \(\alpha=1/2\), equation (12) of the correction is
+\begin{equation}\label{eq:corrected-upper}
+ \E\,\zeta_{1/2}(\mu_n,\nu_n)
+ \le C\frac{\log(2n)}{\sqrt n}.
+\end{equation}
+
+\begin{center}
+\includegraphics[width=0.94\textwidth]{figures/corrected_bound_crop.png}
+\end{center}
+
+Since \(M_n=n\zeta_{1/2}(\mu_n,\nu_n)\), the corrected bound is
+\(\E M_n\le C\sqrt n\log(2n)\).  It no longer implies
+\eqref{eq:source-upper}.
+
+\section{Definitions and result}
+
+For probability measures \(\mu,\nu\) on \([0,1]\), write
+\[
+ W_d(\mu,\nu)=\inf_{\pi\in\Pi(\mu,\nu)}
+       \int d(x,y)\,d\pi(x,y),
+ \qquad d(x,y)=|x-y|^{1/2}.
+\]
+The snowflake \(d\) is a metric.  For a function \(f:[0,1]\to\R\), put
+\[
+ [f]_{1/2}=\sup_{x\ne y}\frac{|f(x)-f(y)|}{|x-y|^{1/2}}.
+\]
+Kantorovich--Rubinstein duality on the compact metric space
+\(([0,1],d)\) gives \cite[Chapter 1]{Villani}
+\begin{equation}\label{eq:KR}
+ W_d(\mu,\nu)=\sup_{[f]_{1/2}\le1}\int f\,d(\mu-\nu).
+\end{equation}
+
+\begin{theorem}[Sharp critical order and divergent source normalization]
+\label{thm:main}
+Let \(X_1,X_2,\ldots,Y_1,Y_2,\ldots\) be independent
+\(\Unif[0,1]\) random variables and
+\[
+ M_n=\min_{\sigma\in S_n}\sum_{i=1}^n|X_i-Y_{\sigma(i)}|^{1/2}.
+\]
+There are absolute constants \(c,C>0\) such that, for all sufficiently large
+\(n\),
+\begin{equation}\label{eq:main-order}
+ c\sqrt n\log n\le \E M_n\le C\sqrt n\log n.
+\end{equation}
+In particular,
+\begin{equation}\label{eq:divergence}
+ \frac{\E M_n}{\sqrt{n\log n}}\longrightarrow+\infty.
+\end{equation}
+Thus the uniform law contradicts the finite limsup assertion
+\eqref{eq:source-upper} and the intended finite-limit conjecture following it.
+More precisely, that ratio is \(\Theta(\sqrt{\log n})\).
+\end{theorem}
+
+\section{Proof intuition}
+
+The concavity of \(t^{1/2}\) makes the optimal permutation difficult to
+describe directly.  The key simplification is that this cost is also a metric.
+Duality therefore lets us lower-bound the optimal assignment by exhibiting one
+\(1/2\)-Hölder function.
+
+At every dyadic scale, place a unit tent on each cell.  After seeing the two
+samples, choose each tent's sign to agree with the corresponding empirical
+discrepancy, and multiply all level-\(j\) tents by \(2^{-j/2}\).  This is the
+critical coefficient: arbitrary signs and arbitrarily many levels still give
+a uniformly \(1/2\)-Hölder sum.  A tent on a cell of length \(h\) sees a
+discrepancy of expected size at least a constant times \(\sqrt{nh}\).  There
+are \(h^{-1}\) cells and the coefficient is \(\sqrt h\), so each level
+contributes order \(\sqrt n\).  The levels from scale one through scale
+\(1/n\) then add, producing the missing \(\log n\).
+
+\section{The multiscale lower bound}
+
+Let
+\[
+ \mu_n=\frac1n\sum_{i=1}^n\delta_{X_i},\qquad
+ \nu_n=\frac1n\sum_{i=1}^n\delta_{Y_i}.
+\]
+The finite transport linear program has an optimal permutation (equivalently,
+use the Birkhoff--von Neumann theorem), so \eqref{eq:KR} yields, pointwise in
+the samples,
+\begin{equation}\label{eq:assignment-dual}
+ M_n=nW_d(\mu_n,\nu_n)
+ =\sup_{[f]_{1/2}\le1}\sum_{i=1}^n(f(X_i)-f(Y_i)).
+\end{equation}
+
+For \(j\ge0\) and \(0\le k<2^j\), let
+\[
+ I_{j,k}=[k2^{-j},(k+1)2^{-j}]
+\]
+and define the unit tent
+\[
+ \phi_{j,k}(x)=
+ \max\!\left\{1-2^{j+1}\left|x-(k+\tfrac12)2^{-j}\right|,0\right\}.
+\]
+These are the usual dyadic Faber--Schauder tents \cite{Schauder}.  At a fixed
+level their interiors are disjoint and they vanish at the cell endpoints.
+
+\begin{lemma}[Uniform signed Hölder bound]\label{lem:holder}
+For every integer \(J\ge1\) and every choice
+\(\varepsilon_{j,k}\in\{-1,1\}\),
+\[
+ f_J(x)=\sum_{j=0}^{J-1}2^{-j/2}
+          \sum_{k=0}^{2^j-1}\varepsilon_{j,k}\phi_{j,k}(x)
+\]
+satisfies \([f_J]_{1/2}<14\).
+\end{lemma}
+
+\begin{proof}
+Write the level-\(j\) summand as \(g_j\).  Disjointness within a level gives
+\(\|g_j\|_\infty\le2^{-j/2}\), while its continuous piecewise-affine graph
+has slopes of absolute value at most \(2^{j/2+1}\).  Hence, for
+\(r=|x-y|\),
+\begin{equation}\label{eq:level-bound}
+ |g_j(x)-g_j(y)|
+ \le\min\{2\,2^{-j/2},\,2^{j/2+1}r\}.
+\end{equation}
+If \(0<r\le1\), choose \(m\ge0\) so that
+\(2^{-(m+1)}<r\le2^{-m}\).  Using the slope bound for \(j\le m\) and the
+amplitude bound for \(j>m\), and harmlessly extending both finite sums to the
+corresponding infinite ones, gives
+\begin{align*}
+ |f_J(x)-f_J(y)|
+ &\le 2r\sum_{j=0}^{m}2^{j/2}
+      +2\sum_{j=m+1}^{\infty}2^{-j/2}\\
+ &<\left(\frac{2\sqrt2}{\sqrt2-1}
+       +\frac{2}{1-2^{-1/2}}\right)\sqrt r
+ <14\sqrt r.
+\end{align*}
+Here \(r2^{m/2}\le\sqrt r\) and
+\(2^{-(m+1)/2}<\sqrt r\).  This proves the claim.
+\end{proof}
+
+For each cell define the empirical tent discrepancy
+\[
+ S_{j,k}=\sum_{i=1}^n\phi_{j,k}(X_i)
+          -\sum_{i=1}^n\phi_{j,k}(Y_i).
+\]
+Choose \(\varepsilon_{j,k}=\operatorname{sgn}(S_{j,k})\), with either sign
+when \(S_{j,k}=0\).  The test function \(f_J/14\) is admissible in
+\eqref{eq:assignment-dual}; crucially, dependence on the realized samples is
+legitimate because the supremum is evaluated separately for every realization.
+Thus
+\begin{equation}\label{eq:dual-lower}
+ M_n\ge\frac1{14}\sum_{j=0}^{J-1}2^{-j/2}
+             \sum_{k=0}^{2^j-1}|S_{j,k}|.
+\end{equation}
+
+\begin{lemma}[One-cell discrepancy]\label{lem:cell}
+There is an absolute constant \(c_0>0\) such that, for any dyadic cell of
+length \(h\) and its unit tent \(\phi\),
+\[
+ \E\left|\sum_{i=1}^n(\phi(X_i)-\phi(Y_i))\right|
+ \ge c_0\sqrt{nh}
+\]
+whenever \(nh\ge12\).  One may take \(c_0=(16\sqrt{12})^{-1}\).
+\end{lemma}
+
+\begin{proof}
+For \(U\sim\Unif[0,1]\), direct integration of the triangular function gives
+\[
+ \E\phi(U)=\frac h2,
+ \qquad
+ \E\phi(U)^2=\frac h3.
+\]
+For independent \(U,V\), put \(Z=\phi(U)-\phi(V)\).  Then \(Z\) is centered
+and symmetric, \(|Z|\le1\), and
+\[
+ v:=\E Z^2=2\left(\frac h3-\frac{h^2}{4}\right)
+ \ge\frac h6.
+\]
+For \(S=\sum_{i=1}^n Z_i\), independence and centering give
+\[
+ \E S^4=n\E Z^4+3n(n-1)v^2
+ \le nv+3n^2v^2.
+\]
+If \(nh\ge12\), then \(nv\ge2\), and therefore
+\(\E S^4\le4(nv)^2\).  Applying Paley--Zygmund to \(S^2\) at threshold
+\(\tfrac12\E S^2\) gives
+\[
+ \Pr\{S^2\ge\tfrac12nv\}\ge\frac1{16}.
+\]
+Consequently
+\[
+ \E|S|\ge\frac1{16}\sqrt{\frac{nv}{2}}
+ \ge\frac1{16\sqrt{12}}\sqrt{nh}.
+\]
+\end{proof}
+
+\begin{proof}[Proof of Theorem \ref{thm:main}]
+For \(n\ge12\), let
+\[
+ L_n=1+\left\lfloor\log_2(n/12)\right\rfloor
+\]
+and use \eqref{eq:dual-lower} with \(J=L_n\).  At every included level
+\(j\), the cell length \(h=2^{-j}\) satisfies \(nh\ge12\).  Lemma
+\ref{lem:cell} and the \(2^j\) cells yield
+\begin{align*}
+ 2^{-j/2}\sum_{k=0}^{2^j-1}\E|S_{j,k}|
+ &\ge 2^{-j/2}\,2^j c_0\sqrt{n2^{-j}}\\
+ &=c_0\sqrt n.
+\end{align*}
+Taking expectations in \eqref{eq:dual-lower} and summing levels gives
+\[
+ \E M_n\ge\frac{c_0}{14}L_n\sqrt n
+ \ge c\sqrt n\log n
+\]
+for all sufficiently large \(n\).  This proves the lower bound without any
+external asymptotic theorem.
+
+For the upper bound, apply Bobkov--Ledoux's corrected equation (12),
+\eqref{eq:corrected-upper}, to the two empirical measures.  Since
+\(M_n=n\zeta_{1/2}(\mu_n,\nu_n)\),
+\[
+ \E M_n\le C\sqrt n\log(2n),
+\]
+which is \(O(\sqrt n\log n)\).  This proves \eqref{eq:main-order}.  Dividing
+by \(\sqrt{n\log n}\) proves \eqref{eq:divergence} and the stated
+\(\Theta(\sqrt{\log n})\) refinement.
+\end{proof}
+
+\section{Verification and audit}
+
+The reusable checker \texttt{code/verify\_multiscale\_witness.py} performs
+three supplementary tests:
+\begin{enumerate}
+\item it checks the exact moment inequalities at fourteen dyadic levels;
+\item for twelve random sign systems on ten levels, it samples three million
+point pairs on a 4097-point grid and checks the Hölder ratio against 14;
+\item for twenty random instances at each of \(n=32,64,128,256\), it compares
+the normalized witness against the exact Hungarian assignment cost.
+\end{enumerate}
+The command and complete output are recorded in \texttt{verification.md}.
+These finite checks are regression evidence only; Lemmas \ref{lem:holder} and
+\ref{lem:cell} are the proof.
+
+The following proof-sensitive points were audited explicitly.
+\begin{itemize}
+\item The cost \(|x-y|^{1/2}\) is a metric, so the standard
+Kantorovich--Rubinstein duality applies; this would fail for an arbitrary
+concave cost.
+\item The witness signs may depend on the samples because duality is a
+pointwise supremum before expectation.
+\item Adjacent tents with opposite signs cause no discontinuity: every tent
+vanishes at its cell endpoints, and the global slope bound used in
+\eqref{eq:level-bound} remains valid.
+\item No independence between different dyadic cells or levels is used.
+Linearity of expectation is enough after the one-cell estimate.
+\item The supporting upper bound is cited from the 2024 correction, not from
+the invalid 2020 formulation used in the source paper.
+\end{itemize}
+
+\section{Scope, novelty search, and limitations}
+
+The theorem settles the critical order for the uniform law and therefore
+supplies a counterexample to the asserted finite limsup and intended finite
+limit.  It does not classify all common laws \(\mu\), nor does it claim that
+the normalized sequence lacks an extended-real limit.  For this example it
+has the extended-real limit \(+\infty\).
+
+A bounded novelty search was conducted through 13 August 2026 using the four
+run indexes, arXiv/web exact-title searches, citation searches around
+arXiv:2305.09234 and the 2024 correction, and combinations of the phrases
+``\(M_{1/2}\)'', ``\(\sqrt n\log n\)'', ``Zolotarev empirical measures'',
+and ``Faber--Schauder matching''.  The search found the source, the correction,
+and unrelated matching work, but no paper explicitly connecting the
+correction to the source conjecture or proving the dyadic-tent lower bound.
+This is evidence of novelty, not a guarantee.  A human should repeat the
+literature search, check the Hölder constant and fourth-moment step, and decide
+whether the source's wording warrants describing the result as a
+``counterexample'' or more narrowly as a ``sharp critical-rate correction''.
+
+\begin{thebibliography}{9}
+
+\bibitem{GoldmanTrevisan}
+M.~Goldman and D.~Trevisan,
+\emph{On the concave one-dimensional random assignment problem and Young
+integration theory}, arXiv:2305.09234 (2023).
+
+\bibitem{BobkovLedouxCorrection}
+S.~G. Bobkov and M.~Ledoux,
+\emph{Correction: Transport inequalities on Euclidean spaces for
+non-Euclidean metrics}, Journal of Fourier Analysis and Applications
+\textbf{30} (2024), article 56,
+doi:10.1007/s00041-024-10105-y.
+
+\bibitem{Villani}
+C.~Villani,
+\emph{Topics in Optimal Transportation}, Graduate Studies in Mathematics 58,
+American Mathematical Society, 2003.
+
+\bibitem{Schauder}
+J.~Schauder,
+\emph{Zur Theorie stetiger Abbildungen in Funktionalr\"aumen},
+Mathematische Zeitschrift \textbf{26} (1927), 47--65.
+
+\end{thebibliography}
+
+\end{document}

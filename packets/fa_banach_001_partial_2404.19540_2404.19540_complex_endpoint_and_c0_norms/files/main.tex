@@ -1,0 +1,389 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+
+\geometry{margin=1in}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.65em}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\1}{\mathbf 1}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newtheorem{theorem}{Theorem}
+
+\title{Exact complex endpoint and \(C_0\) norms,\\
+with strict interior phase loss}
+\author{Candidate partial result for arXiv:2404.19540}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{black}{gray!10}{\parbox{0.91\textwidth}{
+\textbf{Status: candidate partial result; verifier verdict: likely valid.}
+The result closes both \(L^p\) endpoints and the adjacent \(C_0([0,1])\)
+case for every complex order, and proves strict norm loss for every nonreal
+order in the interior range.  It does not compute the square-space norm for
+general \(1<p<\infty\).
+}}
+\end{center}
+
+\section{Source question}
+
+Alam, Chalendar, El Chami, Fricain, and Lef\`evre study the analytic
+Riemann--Liouville semigroup in \cite{source}.  For \(\xi\in\C\) with
+\(\operatorname{Re}\xi>0\), they write
+\begin{equation}\label{eq:def}
+ (V_\xi f)(x)=\frac{1}{\Gamma(\xi)}
+ \int_0^x (x-u)^{\xi-1}f(u)\,du,
+ \qquad 0\le x\le1.
+\end{equation}
+Their \(C_0([0,1])\) denotes the continuous functions on \([0,1]\) that
+vanish at \(0\).
+
+Remark~1 on PDF page~14 gives
+\[
+ \norm{V_\xi}_{\mathcal B(X)}
+ \le \frac{1}{\operatorname{Re}(\xi)|\Gamma(\xi)|},
+ \qquad X=C_0([0,1])\ \text{or}\ L^p(0,1),
+\]
+notes equality on \(L^1\) when \(\xi\) is real, and then states that the
+exact \(L^p\)-norm is not known.  The full source passage is reproduced below.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.98\textwidth]{figures/open_problem_crop.png}
+  \caption{Proposition~3.1(iv)--(vi) and Remark~1 of \cite{source}, PDF
+  page~14.  The crop retains the complete exact-norm statement.}
+  \label{fig:source}
+\end{figure}
+
+\clearpage
+\section{Proof intuition}
+
+The kernel modulus depends only on \(x-u\).  At the \(L^\infty\) endpoint,
+one may align the phase of the single row at \(x=1\), so the row's \(L^1\)
+mass is the exact norm.  At the \(L^1\) endpoint, normalized mass
+concentrating at \(u=0\) makes the output converge to the first kernel column;
+the column has the same \(L^1\) mass.  These are genuinely endpoint
+mechanisms and do not produce an exact interior \(L^p\)-norm.
+
+For the \(C_0\) restriction, the phase-aligning \(L^\infty\) function can be
+cut off continuously near both endpoints.  The lost kernel mass tends to
+zero.  More generally, the exact \(L^p\to C_0\) norm is simply the
+\(L^{p'}\)-norm of the row at \(x=1\), because H\"older gives this as an upper
+bound and evaluation at \(1\) supplies the matching lower bound.
+
+In the interior range, compactness guarantees an extremizer.  If a nonreal
+order attained the natural domination bound by its real-order counterpart,
+equality in the triangle inequality would force the oscillatory phases
+\((x-u)^{i\eta}\) to align simultaneously for almost every pair \((x,u)\).
+Two distinct input points make that impossible as \(x\) varies.  This gives a
+strict comparison, though not the still-unknown exact interior constant.
+
+\section{Exact endpoint theorem}
+
+Put \(\tau=\operatorname{Re}\xi\) and \(\eta=\operatorname{Im}\xi\).
+
+\begin{theorem}\label{thm:main}
+Let \(\xi=\tau+i\eta\in\C\) with \(\tau>0\), and let \(V_\xi\) be given by
+\eqref{eq:def}.
+
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item The exact square-space endpoint and \(C_0\) norms are
+\begin{align*}
+ \norm{V_\xi}_{L^1\to L^1}
+ &=\norm{V_\xi}_{L^\infty\to L^\infty}
+ =\norm{V_\xi}_{L^\infty\to C_0}
+ =\norm{V_\xi}_{C_0\to C_0}\\
+ &=\frac{1}{\tau|\Gamma(\xi)|}.
+\end{align*}
+
+\item Let \(1<p\le\infty\), let \(p'\) be conjugate to \(p\), and assume
+\(\tau>1/p\).  Then
+\begin{equation}\label{eq:lp-c0}
+ \norm{V_\xi}_{L^p\to C_0}
+ =\frac{1}{|\Gamma(\xi)|
+ \bigl((\tau-1)p'+1\bigr)^{1/p'}}.
+\end{equation}
+For \(p=\infty\), the convention is \(p'=1\), so \eqref{eq:lp-c0}
+reduces to \(1/(\tau|\Gamma(\xi)|)\).
+
+\item The map \(V_\xi:L^1(0,1)\to C_0([0,1])\) is bounded if and only if
+\(\tau\ge1\).  In that case
+\begin{equation}\label{eq:l1-c0}
+ \norm{V_\xi}_{L^1\to C_0}=\frac{1}{|\Gamma(\xi)|}.
+\end{equation}
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+For \(0<x\le1\), write the kernel row as
+\[
+ k_x(u)=\frac{\1_{(0,x)}(u)(x-u)^{\xi-1}}{\Gamma(\xi)}.
+\]
+Its modulus is
+\begin{equation}\label{eq:modulus}
+ |k_x(u)|=\frac{\1_{(0,x)}(u)(x-u)^{\tau-1}}
+ {|\Gamma(\xi)|}.
+\end{equation}
+
+\emph{The \(L^p\to C_0\) row norm.}
+Assume first that \(1<p\le\infty\) and \(\tau>1/p\).  H\"older's inequality
+and \eqref{eq:modulus} give
+\begin{align}
+ |V_\xi f(x)|
+ &\le \norm{k_x}_{p'}\norm{f}_p,\label{eq:holder}\\
+ \norm{k_x}_{p'}
+ &=\frac{x^{\tau-1/p}}
+ {|\Gamma(\xi)|\bigl((\tau-1)p'+1\bigr)^{1/p'}}.
+ \label{eq:row}
+\end{align}
+The exponent \(\tau-1/p\) is positive, so the right side is largest at
+\(x=1\).  This proves the upper bound in \eqref{eq:lp-c0}.  Conversely,
+evaluation at \(x=1\) shows that the operator norm is at least the norm of the
+functional \(f\mapsto\int_0^1 k_1(u)f(u)\,du\), namely
+\(\norm{k_1}_{p'}\).  Thus equality holds.
+
+For completeness, the image really lies in the source's \(C_0\).  Extend
+\(f\) and \(s\mapsto\1_{(0,1)}(s)s^{\xi-1}/\Gamma(\xi)\) by zero to \(\R\).
+For finite \(p\), translation continuity of \(f\) in \(L^p(\R)\), followed
+by H\"older, makes the convolution continuous.  For \(p=\infty\), use
+translation continuity of the kernel in \(L^1(\R)\).  Its value at \(0\) is
+zero by the Volterra support.
+
+The same row argument at \(p=1\) uses the \(L^\infty\)-norm of \(k_x\).
+It is uniformly finite exactly when \(\tau\ge1\), and then
+\[
+ \sup_{0<x\le1}\norm{k_x}_\infty=\frac1{|\Gamma(\xi)|}.
+\]
+This proves \eqref{eq:l1-c0}.  If \(\tau<1\), the functional associated to
+\(k_1\) is unbounded on \(L^1\); inputs supported on intervals approaching
+\(u=1\) give an explicit unbounded sequence.  When \(\tau\ge1\), continuity
+of the output follows by translating the zero extension of \(f\) in
+\(L^1(\R)\) against the bounded kernel.  This also covers the boundary
+\(\tau=1\), even when \(\eta\ne0\).
+
+\emph{The square \(L^1\)-norm.}
+Tonelli's theorem yields, for every \(f\in L^1(0,1)\),
+\begin{align*}
+ \norm{V_\xi f}_1
+ &\le\frac1{|\Gamma(\xi)|}
+ \int_0^1 |f(u)|\int_u^1(x-u)^{\tau-1}\,dx\,du\\
+ &=\frac1{\tau|\Gamma(\xi)|}
+ \int_0^1(1-u)^\tau|f(u)|\,du\\
+ &\le\frac1{\tau|\Gamma(\xi)|}\norm{f}_1.
+\end{align*}
+To obtain the reverse inequality, set
+\[
+ h(s)=\frac{\1_{(0,1)}(s)s^{\xi-1}}{\Gamma(\xi)}
+ \quad(s\in\R),
+ \qquad
+ f_\varepsilon=\varepsilon^{-1}\1_{(0,\varepsilon)}.
+\]
+Then \(h\in L^1(\R)\), \(\norm{f_\varepsilon}_1=1\), and on \((0,1)\)
+\[
+ V_\xi f_\varepsilon
+ =\frac1\varepsilon\int_0^\varepsilon h(\,\cdot-u\,)\,du.
+\]
+Translation continuity in \(L^1(\R)\) therefore gives
+\(V_\xi f_\varepsilon\to h\) in \(L^1(0,1)\).  Consequently
+\[
+ \norm{V_\xi}_{L^1\to L^1}
+ \ge\norm{h}_{L^1(0,1)}
+ =\frac1{\tau|\Gamma(\xi)|},
+\]
+which proves the exact \(L^1\)-norm.
+
+\emph{The \(L^\infty\) and \(C_0\) square norms.}
+Taking \(p=\infty\) in the already proved row formula gives both
+\[
+ \norm{V_\xi}_{L^\infty\to C_0}
+ =\norm{V_\xi}_{L^\infty\to L^\infty}
+ =\frac1{\tau|\Gamma(\xi)|}.
+\]
+Restriction of the domain gives the same number as an upper bound on
+\(C_0\to C_0\).  For the lower bound, choose continuous functions
+\(0\le\chi_n\le1\), supported in \((0,1)\), with
+\(\chi_n(u)\to1\) for every \(u\in(0,1)\), and define
+\[
+ f_n(u)=\chi_n(u)\frac{\Gamma(\xi)}{|\Gamma(\xi)|}
+ (1-u)^{-i\eta}\quad(0\le u<1),
+ \qquad f_n(1)=0.
+\]
+Because \(\chi_n\) vanishes near both endpoints, \(f_n\in C_0([0,1])\)
+and \(\norm{f_n}_\infty\le1\).  The phases align at \(x=1\), so
+\[
+ V_\xi f_n(1)
+ =\frac1{|\Gamma(\xi)|}
+ \int_0^1(1-u)^{\tau-1}\chi_n(u)\,du
+ \longrightarrow\frac1{\tau|\Gamma(\xi)|}
+\]
+by dominated convergence.  This is the matching lower bound on
+\(C_0\to C_0\) and completes the proof.
+\end{proof}
+
+\section{Strict interior phase loss}
+
+The full exact interior norm remains out of reach, but complex orders admit a
+strict comparison with the corresponding positive real-order operator.
+
+\begin{theorem}[Strict complex-to-real comparison]\label{thm:strict}
+Let \(1<p<\infty\), \(\tau>0\), and \(\eta\in\R\setminus\{0\}\).  Then
+\begin{equation}\label{eq:strict-comparison}
+ \norm{V_{\tau+i\eta}}_{L^p\to L^p}
+ <\frac{\Gamma(\tau)}{|\Gamma(\tau+i\eta)|}
+ \norm{V_\tau}_{L^p\to L^p}.
+\end{equation}
+Moreover, for every \(\xi\in\C\) with \(\operatorname{Re}\xi=\tau>0\),
+\begin{equation}\label{eq:strict-young}
+ \norm{V_\xi}_{L^p\to L^p}
+ <\frac1{\tau|\Gamma(\xi)|}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+We first record compactness.  Extend
+\[
+ h_\xi(s)=\frac{\1_{(0,1)}(s)s^{\xi-1}}{\Gamma(\xi)}
+\]
+by zero to \(\R\).  Approximate \(h_\xi\) in \(L^1(\R)\) by continuous
+kernels supported away from \(0\).  The corresponding integral operators on
+\([0,1]\) have continuous kernels and are norm limits of finite-rank
+operators, hence are compact.  Young's inequality transfers the
+\(L^1\)-kernel approximation to operator norm.  Thus \(V_\xi\) is compact on
+\(L^p(0,1)\).  Since \(L^p\) is reflexive, \(V_\xi\) attains its norm.
+
+Pointwise domination gives
+\begin{equation}\label{eq:pointwise-domination}
+ |V_{\tau+i\eta}f(x)|
+ \le \frac{\Gamma(\tau)}{|\Gamma(\tau+i\eta)|}
+ V_\tau(|f|)(x).
+\end{equation}
+Suppose equality held in \eqref{eq:strict-comparison}, and let
+\(f\in L^p\), \(\norm{f}_p=1\), attain the norm of
+\(V_{\tau+i\eta}\).  Both inequalities in
+\[
+ \norm{V_{\tau+i\eta}f}_p
+ \le\frac{\Gamma(\tau)}{|\Gamma(\tau+i\eta)|}
+ \norm{V_\tau|f|}_p
+ \le\frac{\Gamma(\tau)}{|\Gamma(\tau+i\eta)|}
+ \norm{V_\tau}_{p\to p}
+\]
+would then be equalities.  In particular, equality holds in
+\eqref{eq:pointwise-domination} for almost every \(x\).
+
+Let \(E=\{u:f(u)\ne0\}\), which has positive measure, and write
+\(\zeta(u)=f(u)/|f(u)|\) on \(E\).  Equality in the triangle inequality for
+the defining integral implies that, for almost every \(x\), there is a
+unimodular number \(\omega(x)\) such that
+\begin{equation}\label{eq:phase-alignment}
+ e^{i\eta\log(x-u)}\zeta(u)=\omega(x)
+\end{equation}
+for almost every \(u\in E\cap(0,x)\).  By Fubini, for almost every pair
+\((u,v)\in E^2\) and almost every \(x>\max\{u,v\}\),
+\[
+ e^{i\eta[\log(x-u)-\log(x-v)]}=\frac{\zeta(v)}{\zeta(u)}.
+\]
+Choose such a pair with \(u\ne v\).  The left side is continuous in \(x\),
+so equality almost everywhere on \((\max\{u,v\},1)\) makes it constant there.
+Its logarithmic derivative is
+\[
+ i\eta\left(\frac1{x-u}-\frac1{x-v}\right),
+\]
+which is nonzero.  This contradiction proves
+\eqref{eq:strict-comparison}.
+
+It remains to prove \eqref{eq:strict-young} for real order.  The convolution
+bound gives \(\norm{V_\tau}_{p\to p}\le1/\Gamma(\tau+1)\).  If equality
+held, compactness would give a norming \(g\ge0\) with \(\norm g_p=1\).  Set
+\[
+ (S_sg)(x)=\1_{(s,1)}(x)g(x-s).
+\]
+Minkowski's inequality would give
+\begin{align*}
+ \norm{V_\tau g}_p
+ &\le\frac1{\Gamma(\tau)}
+ \int_0^1s^{\tau-1}\norm{S_sg}_p\,ds,\\
+ \norm{S_sg}_p^p&=\int_0^{1-s}|g(u)|^p\,du.
+\end{align*}
+For \(s\) sufficiently close to \(1\), the latter norm is strictly less than
+one.  Since the weight is positive, the integral is strictly less than
+\(1/\Gamma(\tau+1)\), a contradiction.  Hence the real-order Young bound is
+strict.  For nonreal order, combine this bound with
+\eqref{eq:strict-comparison}; \eqref{eq:strict-young} follows in all cases.
+\end{proof}
+
+\section{What remains open}
+
+Theorem~\ref{thm:main} settles the exact square norm for \(p=1,\infty\) and
+the complete \(C_0\) analogue.  It also turns the source's
+\(L^p\to C_0\) estimates into equalities.  The general exact value of
+\(\norm{V_\xi}_{L^p\to L^p}\) for \(1<p<\infty\) remains open.
+
+Theorem~\ref{thm:strict} shows that the imaginary part cannot be removed by a
+phase choice: nonreal orders incur a strict loss relative to the real-order
+domination constant.  It also proves that the elementary kernel bound is
+never sharp in the interior.  But the positive real-order norm
+\(\norm{V_\tau}_{L^p\to L^p}\) is itself unknown for general \(\tau\), so the
+strict comparison does not yield an exact numerical value.
+
+The endpoint constant cannot be extended to interior \(p\) merely by
+interpolation: for the classical Volterra operator \(V_1\) on \(L^2(0,1)\),
+the exact norm is \(2/\pi\), whereas
+\(1/(\operatorname{Re}(1)|\Gamma(1)|)=1\).
+
+\section{Verification and novelty status}
+
+The proofs were checked line by line against the main likely failure points:
+the complex phase in the \(L^1\) column limit, continuity into \(C_0\) at
+\(\tau=1\), the endpoint cutoffs in the \(C_0\) lower bound, compactness and
+norm attainment in the interior, and the Fubini phase-rigidity step.  All
+checks pass.  The companion scripts numerically evaluate the explicit lower
+bound families and a discretized strict-comparison example; they are only
+sanity checks, not part of the proof.  Run them with
+\begin{verbatim}
+conda run --no-capture-output -n sandbox python \
+  code/check_endpoint_norms.py
+conda run --no-capture-output -n sandbox python \
+  code/check_strict_phase_loss.py
+\end{verbatim}
+
+A bounded search covered the run indexes; the local parsed source series
+arXiv:2108.02291, 2112.02669, 2408.10180, and 2410.00830; and arXiv/DOI web
+queries for complex-order endpoint norms.  Carvalho-Neto and Fehlberg J\'unior
+record the real-order \(L^1\) and \(L^\infty\) endpoint formula in
+\cite{bochner}.  No complex-order endpoint or \(C_0\) formula was found.
+The search also included strict complex-to-real norm comparison and
+imaginary-order phase-loss phrases, with no exact match found.
+Novelty confidence remains moderate because the proof is elementary and the
+claim may be folklore.
+
+\textbf{Human-review recommendation.}  Verify the endpoint norm-saturating
+arguments and the Fubini phase-rigidity step, then perform a specialist
+literature check before making any external originality claim.
+
+\begin{thebibliography}{9}
+
+\bibitem{source}
+I.~Alam, I.~Chalendar, F.~El Chami, E.~Fricain, and P.~Lef\`evre,
+\emph{Eventual Ideal Properties of the Riemann--Liouville Analytic Semigroup},
+arXiv:2404.19540v2, 2026; Remark~1, p.~14.
+
+\bibitem{bochner}
+P.~M.~Carvalho-Neto and R.~Fehlberg J\'unior,
+\emph{The Riemann--Liouville fractional integral in Bochner--Lebesgue spaces I},
+arXiv:2108.02291v2, 2021; Theorem~4.1.
+
+\end{thebibliography}
+
+\end{document}

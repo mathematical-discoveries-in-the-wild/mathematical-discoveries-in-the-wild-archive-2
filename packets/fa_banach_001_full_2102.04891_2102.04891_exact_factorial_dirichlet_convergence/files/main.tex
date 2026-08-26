@@ -1,0 +1,317 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Log}{\operatorname{Log}}
+\newcommand{\B}{\operatorname{B}}
+\setlength{\emergencystretch}{2em}
+
+\title{An exact convergence criterion for the Binet factorial expansion}
+\author{Candidate full solution to the question in arXiv:2102.04891}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\paragraph{Status.}
+Candidate full answer, subject to expert review.  The answer is exact but is
+necessarily expressed through an associated ordinary Dirichlet series.  A
+germ-bijection below proves that arbitrary Dirichlet coefficient behavior can
+occur.  In particular, the original Taylor radius alone cannot decide
+convergence.
+
+\section{Source question}
+
+The source is P.~Van Mieghem, \emph{Binet's factorial series and extensions to
+Laplace transforms}, arXiv:2102.04891 \cite{source}.  Section~8.4, ``Open
+question,'' on source PDF page~38 asks:
+
+\begin{quote}
+Given the Taylor series
+$f(t)=\sum_{k=0}^{\infty}f_k t^k$ with radius of convergence $R_f$, when does
+a factorial series (90) of the Laplace transform $\varphi(z)$ converge?
+\end{quote}
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The source fixes $\beta>0$ and $\alpha\in\C$.  With
+$w=\beta z+\alpha$, its factorial series (90) can be written
+\begin{equation}\label{eq:factorial}
+ \mathcal S_{\alpha,\beta}f(z)
+ =\beta\sum_{m=0}^{\infty}
+   a_m\frac{m!}{\prod_{k=0}^{m}(w+k)}
+ =\beta\sum_{m=0}^{\infty}a_m\B(m+1,w),
+\end{equation}
+where
+\begin{equation}\label{eq:G}
+ G_{\alpha,\beta}(u)
+ =(1-u)^{-\alpha}f\bigl(-\beta\Log(1-u)\bigr)
+ =\sum_{m=0}^{\infty}a_m u^m
+\end{equation}
+as an analytic germ at zero.  Thus $a_m$ is exactly the source coefficient
+$\phi_m(\alpha,\beta)$, and it is explicitly computable from the given
+Taylor coefficients $f_k$ by the Stirling-number transform in the source.
+
+\section{Proof intuition}
+
+The beta factor in the $m$th factorial-series term is only a smoothly varying
+perturbation of a Dirichlet weight:
+\[
+ \B(m+1,w)=\Gamma(w)m^{-w}\bigl(1+O_w(m^{-1})\bigr).
+\]
+The perturbing sequence has summable first differences.  Multiplication by
+such a sequence preserves even conditional convergence, in both directions.
+Consequently the exact convergence question is the ordinary Dirichlet-series
+question for the transformed Taylor coefficients $a_m$.
+
+This also yields a sharp radius trichotomy for the series in
+\eqref{eq:G}.  A radius above one gives exponential coefficient decay; a
+radius below one gives exponential growth along a subsequence and hence
+termwise divergence; radius one is precisely the nontrivial Dirichlet case.
+Finally, the Binet change of variables is a bijection on analytic germs, so
+arbitrary Dirichlet coefficients can arise.  The reduction is therefore
+optimal, rather than an artifact of the proof.
+
+\section{Exact criterion}
+
+All powers $m^{-w}$ below use the real logarithm of the positive integer $m$.
+
+\begin{theorem}[Factorial--Dirichlet equivalence]\label{thm:main}
+Fix $\beta>0$, $\alpha\in\C$, and a germ $f$ analytic at zero.  Let $a_m$ be
+defined by \eqref{eq:G}, let $w=\beta z+\alpha$, and suppose
+$\operatorname{Re}w>0$.
+
+Then the factorial series \eqref{eq:factorial} converges if and only if
+\begin{equation}\label{eq:dirichlet}
+ \sum_{m=1}^{\infty}a_m m^{-w}
+\end{equation}
+converges.  The same equivalence holds for absolute convergence.  The
+$m=0$ term in \eqref{eq:factorial} is the harmless finite term $\beta a_0/w$.
+\end{theorem}
+
+\begin{lemma}[Bounded-variation multiplier]\label{lem:bv}
+Suppose $c_m\to c\ne0$ and
+$\sum_m|c_{m+1}-c_m|<\infty$.  Then $\sum b_m$ converges if and only if
+$\sum c_m b_m$ converges.
+\end{lemma}
+
+\begin{proof}
+If $\sum b_m$ converges, summation by parts applied to its bounded partial
+sums and the summable differences of $c_m$ proves convergence of
+$\sum c_m b_m$.  Since $c_m$ is bounded away from zero for all sufficiently
+large $m$, the sequence $1/c_m$ also converges to $1/c$ and
+\[
+ \left|\frac1{c_{m+1}}-\frac1{c_m}\right|
+ \leq C|c_{m+1}-c_m|.
+\]
+The same argument with multiplier $1/c_m$ proves the converse.  Finitely many
+initial terms do not matter.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Euler's beta identity gives
+\begin{equation}\label{eq:beta}
+ \B(m+1,w)=\frac{\Gamma(m+1)\Gamma(w)}{\Gamma(m+1+w)}
+ =\Gamma(w)m^{-w}c_m(w),
+ \qquad
+ c_m(w)=\frac{m^w\Gamma(m+1)}{\Gamma(m+1+w)}.
+\end{equation}
+The fixed-parameter gamma-quotient expansion (equivalently, Stirling's
+formula with one further term) gives
+\begin{equation}\label{eq:quotient}
+ c_m(w)=1+O_w(m^{-1}),
+ \qquad c_{m+1}(w)-c_m(w)=O_w(m^{-2}).
+\end{equation}
+Thus $c_m(w)$ satisfies Lemma~\ref{lem:bv}.  Apply the lemma to
+$b_m=a_m m^{-w}$ in \eqref{eq:beta}; multiplication by the fixed nonzero
+factor $\beta\Gamma(w)$ is irrelevant.  This proves ordinary convergence in
+both directions.  Moreover $|c_m(w)|$ is bounded above and away from zero
+eventually, which proves the absolute-convergence equivalence.
+\end{proof}
+
+\begin{corollary}[Sharp transformed-radius trichotomy]\label{cor:radius}
+Let $R_G$ be the radius of convergence of \eqref{eq:G}.
+\begin{enumerate}
+\item If $R_G>1$, \eqref{eq:factorial} converges absolutely for every
+      $z$ with $\operatorname{Re}(\beta z+\alpha)>0$.
+\item If $R_G<1$, \eqref{eq:factorial} diverges for every such fixed $z$;
+      in fact its terms fail to tend to zero.
+\item If $R_G=1$, its convergence and absolute convergence regions are
+      exactly those of \eqref{eq:dirichlet}.  Hence they are governed by the
+      usual convergence and absolute-convergence abscissae, with the usual
+      possibility of exceptional behavior on the boundary lines.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+If $R_G>1$, Cauchy's estimate on a circle of any radius
+$1<r<R_G$ gives $|a_m|\leq C_r r^{-m}$, so \eqref{eq:dirichlet} is absolutely
+convergent for every $w$.  If $R_G<1$, Cauchy--Hadamard gives
+\[
+ \limsup_{m\to\infty}|a_m|^{1/m}=R_G^{-1}>1.
+\]
+The beta factor in \eqref{eq:beta} has $m$th-root limit one, so the terms of
+\eqref{eq:factorial} cannot tend to zero.  The final assertion follows
+directly from Theorem~\ref{thm:main} and the elementary half-plane theorem for
+ordinary Dirichlet series.
+\end{proof}
+
+\section{When the sum is the Laplace transform}
+
+The exact convergence statement above concerns the numerical factorial
+series.  The following records a clean condition under which it also
+represents the intended Laplace transform, without concealing an interchange
+of a sum and an improper integral.
+
+\begin{theorem}[Absolute representation]\label{thm:representation}
+Suppose the chosen continuation of $f$ along $[0,\infty)$ agrees with
+\eqref{eq:G} for $0\leq u<1$.  If $\operatorname{Re}w>0$ and
+\eqref{eq:factorial} converges absolutely, then the Laplace integral is
+absolutely convergent at $z$ and
+\begin{equation}\label{eq:representation}
+ \int_0^\infty e^{-zt}f(t)\,dt
+ =\beta\sum_{m=0}^{\infty}a_m\B(m+1,w).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By Theorem~\ref{thm:main}, absolute convergence is equivalent to
+$\sum|a_m|m^{-\operatorname{Re}w}<\infty$.  The positive-real beta factors
+are comparable to these powers, so
+\[
+ \sum_{m=0}^{\infty}|a_m|\B(m+1,\operatorname{Re}w)<\infty.
+\]
+Since
+\[
+ \B(m+1,\operatorname{Re}w)
+ =\int_0^1 u^m(1-u)^{\operatorname{Re}w-1}\,du,
+\]
+Tonelli's theorem permits absolute termwise integration.  Binet's substitution
+$t=-\beta\log(1-u)$ then gives
+\begin{align*}
+ \int_0^\infty e^{-zt}f(t)\,dt
+ &=\beta\int_0^1(1-u)^{\beta z-1}
+       f\bigl(-\beta\log(1-u)\bigr)\,du\\
+ &=\beta\int_0^1(1-u)^{w-1}G_{\alpha,\beta}(u)\,du\\
+ &=\beta\sum_{m=0}^{\infty}a_m\B(m+1,w).
+\end{align*}
+The same majorant proves absolute convergence of the first integral.
+\end{proof}
+
+No unconditional claim is made here that mere conditional convergence of
+\eqref{eq:factorial} justifies \eqref{eq:representation}; that requires an
+additional boundary summability hypothesis.
+
+\section{Optimality and a same-radius separation}
+
+\begin{theorem}[Universality of the transformed coefficients]\label{thm:germ}
+For fixed $\alpha\in\C$ and $\beta>0$, the transformation
+\[
+ f(t)\longmapsto
+ (1-u)^{-\alpha}f\bigl(-\beta\Log(1-u)\bigr)
+\]
+is a linear bijection between analytic germs at $t=0$ and analytic germs at
+$u=0$.  Its inverse is
+\begin{equation}\label{eq:inverse}
+ f(t)=e^{-\alpha t/\beta}G\bigl(1-e^{-t/\beta}\bigr).
+\end{equation}
+Thus arbitrary power-series coefficients $a_m$ can occur in
+\eqref{eq:G}; in the unrestricted generality of the source question, the
+Dirichlet criterion of Theorem~\ref{thm:main} cannot be replaced by a simpler
+universal coefficient phenomenon.
+\end{theorem}
+
+\begin{proof}
+Both substitutions are analytic near their origins and are inverse there:
+$u=1-e^{-t/\beta}$ if and only if $t=-\beta\Log(1-u)$.  Since
+$(1-u)^\alpha=e^{-\alpha t/\beta}$ under this substitution, direct composition
+proves both inverse identities.
+\end{proof}
+
+The next explicit pair shows more concretely that even the complete value of
+the original radius $R_f$ carries too little information.
+
+\begin{theorem}[Equal $R_f$, opposite convergence]\label{thm:examples}
+Take $\alpha=0$, $\beta=1$, $q=5/2$, and $R=\log q$.  Define for $t\geq0$
+\[
+ f_A(t)=\frac1{q-e^{-t}},
+ \qquad
+ f_B(t)=\frac1{1+(t/R)^2}.
+\]
+Both Laplace transforms converge for $\operatorname{Re}z>0$, and the Taylor
+series of both functions at zero has radius exactly $R$.  Nevertheless, the
+factorial expansion for $f_A$ converges absolutely for every
+$\operatorname{Re}z>0$, whereas that for $f_B$ diverges for every fixed $z$.
+\end{theorem}
+
+\begin{proof}
+The singularities of $f_A$ are
+$-\log q-2\pi i k$, $k\in\mathbb Z$, so its nearest singularity is $-R$.
+The nearest singularities of $f_B$ are $\pm iR$.  Both Taylor radii are
+therefore $R$.  On the positive real axis, $f_A$ is bounded and $f_B(t)$ is
+$O(t^{-2})$, so both Laplace integrals converge when
+$\operatorname{Re}z>0$.
+
+Their transformed germs are
+\[
+ G_A(u)=f_A(-\Log(1-u))=\frac1{q-1+u},
+\]
+whose radius is $q-1=3/2>1$, and
+\[
+ G_B(u)=\frac1{1+\bigl(-\Log(1-u)/R\bigr)^2}.
+\]
+The latter has poles at $u=1-e^{\mp iR}$, of modulus
+$2\sin(R/2)$.  Since
+\[
+ e^{\pi/3}>1+\frac\pi3+\frac12\left(\frac\pi3\right)^2>\frac52,
+\]
+we have $R=\log(5/2)<\pi/3$, and hence
+$2\sin(R/2)<2\sin(\pi/6)=1$.  Thus $G_B$ has radius below one.
+Corollary~\ref{cor:radius} gives the two opposite conclusions.
+\end{proof}
+
+\section{Scope, verification, and novelty}
+
+The theorem answers convergence at every parameter point in the source
+half-plane $\operatorname{Re}(\beta z+\alpha)>0$.  It also gives an absolute
+criterion ensuring equality with the Laplace integral.  It deliberately does
+not infer equality from conditional convergence alone.
+
+The gamma multiplier, both branches of the germ inverse, the two example
+radii, and the Tonelli step were audited independently in the accompanying
+verification report.  No numerical computation is used as proof.
+
+The four lightweight run indexes had no entry for this arXiv id or problem.
+A bounded primary-arXiv search on 13 August 2026 used the exact title and close
+phrases involving factorial series, Laplace transforms, Taylor coefficients,
+and convergence; it found the source but no later solution.  The source itself
+already points out a classical $\beta=1$ comparison with a Dirichlet series,
+citing Lauwerier and Temme.  That comparison is not claimed as new.  The
+candidate contribution is the rigorous all-parameter equivalence including
+conditional convergence, the sharp transformed-radius trichotomy, the
+germ-universality/optimality theorem, and the equal-$R_f$ separation.  Novelty
+confidence is therefore moderate rather than high pending a specialist check
+of the classical factorial-series literature.
+
+\paragraph{Human-review recommendation.}
+Review as a candidate full answer.  The highest-value checks are
+Theorem~\ref{thm:main}'s two-way conditional-convergence argument and whether
+an equivalent universality/radius formulation already occurs in the older
+literature cited by the source.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+\raggedright P. Van Mieghem,
+\emph{Binet's factorial series and extensions to Laplace transforms},
+arXiv:2102.04891v7 (2023).\par
+\end{thebibliography}
+
+\end{document}

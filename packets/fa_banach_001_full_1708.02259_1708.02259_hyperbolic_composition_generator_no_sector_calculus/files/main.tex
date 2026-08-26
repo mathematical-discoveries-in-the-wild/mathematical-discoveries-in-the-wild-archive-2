@@ -1,0 +1,252 @@
+\documentclass[10pt]{article}
+\usepackage[a4paper,margin=20mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\D}{\mathbb D}
+\newcommand{\Hbeta}{\mathcal H^2(\beta)}
+\newcommand{\Lin}{\mathcal L}
+\newcommand{\Dom}{\mathcal D}
+\newcommand{\C}{\mathbb C}
+
+\title{The Hyperbolic Composition Generator Is Never Bounded\\
+\large and never has an $H^\infty$ calculus on a proper sector}
+\author{Candidate full result for the Section 3 question in arXiv:1708.02259}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\linewidth}{\textbf{Status: candidate full proof, likely valid.}
+The literal source question has a negative answer for every positive weight
+sequence.  Under the natural alternative reading suggested by the surrounding
+discussion, every admissible weight sequence gives the requested failure of a
+proper-sector calculus.  Novelty remains subject to expert literature review.}}
+\end{center}
+
+\section{Source question and the two readings}
+
+Let $\beta=(\beta_n)_{n\geq0}$ be positive and let
+\[
+ \Hbeta=\left\{f(z)=\sum_{n\geq0}a_nz^n:
+       \sum_{n\geq0}|a_n|^2\beta_n^2<\infty\right\},
+ \qquad \|z^n\|=\beta_n.
+\]
+As in the source, assume that this is a Hilbert space of holomorphic functions
+satisfying
+$\mathcal O(\overline\D)\hookrightarrow\Hbeta\hookrightarrow
+\operatorname{Hol}(\D)$ continuously.  Put
+\[
+ \alpha_r(z)=\frac{z+r}{1+rz},\qquad
+ \phi_t=\alpha_{\tanh t},\qquad T(t)=C_{\phi_t}.
+\]
+The displayed question on source PDF p.~7 is reproduced below \cite{GY}.
+
+\begin{center}
+\includegraphics[width=0.98\linewidth]{figures/source_question_crop.png}
+\end{center}
+
+\noindent\textbf{Exact transcription.}
+``Do there exist weights $\{\beta_n\}$ such that the generator of the
+semigroup $\{C_{\alpha_{\tanh t}}\}$ on $\mathcal H^2(\beta)$ is bounded,
+but does not admit an $H^\infty$ calculus in a sector
+$|\arg(z_0-z)|<\theta$, where $\theta\in(0,\pi/2)$?  The same can be asked
+for an arbitrary bounded composition semigroup on $\mathcal H^2(\beta)$.''
+
+Taken literally, the generator is required to be a bounded operator.  The
+surrounding paragraphs instead contrast bounded composition operators with
+quasicontractivity, so a plausible intended reading is that the
+\emph{semigroup consists of bounded operators} while its generator lacks the
+proper-sector calculus.  Theorem~\ref{thm:main} resolves both readings.
+Here ``bounded composition semigroup'' is used in the source's pointwise
+sense: each $T(t)$ is a bounded operator, not necessarily
+$\sup_{t\geq0}\|T(t)\|<\infty$.
+
+\subsection*{Proof Intuition}
+
+The weight sequence can make one of the two shifts in
+$(1-z^2)d/dz$ small, but not both.  On two adjacent normalized monomials,
+the relevant shift coefficients are reciprocal up to the factor $n(n+1)$;
+their product therefore diverges independently of the weights.  This rules
+out a bounded generator.
+
+For the functional-calculus statement, the hyperbolic maps form a group, not
+merely a one-sided flow.  Reflection in the origin turns every positive-time
+composition operator into its negative-time counterpart.  A proper-sector
+$H^\infty$ calculus would make the semigroup analytic.  But an analytic
+semigroup that also extends to a $C_0$-group has bounded generator, because
+positive time maps the whole space into the generator domain and negative
+time inverts that map.  The monomial obstruction then gives the contradiction.
+
+\section{The weight-independent monomial obstruction}
+
+The derivative of the flow at zero is
+\[
+ \left.\frac{d}{dt}\phi_t(z)\right|_{t=0}=1-z^2.
+\]
+Under the hypotheses above, the source's generator-domain formula gives
+\begin{equation}\label{eq:generator}
+ Af=(1-z^2)f',\qquad
+ \Dom(A)=\{f\in\Hbeta:(1-z^2)f'\in\Hbeta\}.
+\end{equation}
+In particular every polynomial belongs to $\Dom(A)$.
+
+\begin{lemma}[Adjacent-monomial obstruction]\label{lem:unbounded}
+For every positive sequence $\beta$, the operator in
+\eqref{eq:generator} is unbounded on $\Hbeta$.
+\end{lemma}
+
+\begin{proof}
+Let $e_n=z^n/\beta_n$.  These are unit vectors, and for $n\geq1$,
+\begin{equation}\label{eq:matrix}
+ Ae_n=n\frac{\beta_{n-1}}{\beta_n}e_{n-1}
+      -n\frac{\beta_{n+1}}{\beta_n}e_{n+1}.
+\end{equation}
+Orthogonality gives
+\[
+ \|Ae_n\|\geq n\frac{\beta_{n+1}}{\beta_n},\qquad
+ \|Ae_{n+1}\|\geq(n+1)\frac{\beta_n}{\beta_{n+1}}.
+\]
+The product of the right-hand sides is $n(n+1)$.  Hence
+\begin{equation}\label{eq:lower}
+ \max\{\|Ae_n\|,\|Ae_{n+1}\|\}\geq\sqrt{n(n+1)}
+ \longrightarrow\infty.
+\end{equation}
+Thus $A$ is unbounded on its domain, for every choice of positive weights.
+\end{proof}
+
+The use of adjacent inputs is essential.  Looking only at $Ae_n$ permits the
+ratio $\beta_{n+1}/\beta_n$ to suppress its forward coefficient; the backward
+coefficient on $Ae_{n+1}$ is then forced to grow by the reciprocal amount.
+
+\section{The group and proper-sector obstruction}
+
+\begin{lemma}[The positive flow automatically extends to a group]
+Suppose $T(t)=C_{\phi_t}$, $t\geq0$, is a $C_0$-semigroup on $\Hbeta$.
+Then the same formula for $t\in\mathbb R$ defines a $C_0$-group.
+\end{lemma}
+
+\begin{proof}
+Let $\rho(z)=-z$ and $R=C_\rho$.  Since the monomials are orthogonal, $R$ is
+unitary on $\Hbeta$.  Direct calculation gives
+\[
+ \rho\circ\alpha_r\circ\rho=\alpha_{-r},
+ \qquad C_{\alpha_{-r}}=R C_{\alpha_r}R.
+\]
+Thus all negative-time operators are bounded and are conjugates by the fixed
+unitary $R$.  Strong continuity for negative times follows from strong
+continuity for positive times, and
+$\phi_{t+s}=\phi_t\circ\phi_s$ gives the group law.
+\end{proof}
+
+\begin{lemma}[An analytic $C_0$-group has bounded generator]
+If a $C_0$-group on a Banach space is analytic for positive time, then its
+generator is bounded.
+\end{lemma}
+
+\begin{proof}
+Fix $s>0$.  Analyticity implies
+$T(s)X\subset\Dom(A)$ and $AT(s)\in\Lin(X)$.  Since $T(-s)$ is bounded and
+$T(s)T(-s)=I$, every $x\in X$ belongs to $\Dom(A)$ and
+\[
+ A=(AT(s))T(-s)\in\Lin(X).
+\]
+\end{proof}
+
+For $z_0\in\mathbb C$ and $0<\theta<\pi$, write
+\[
+ S_\theta(z_0)=\{z_0-w:w\neq0,\ |\arg w|<\theta\}.
+\]
+We use the standard meaning of a bounded $H^\infty$ calculus on this shifted
+left sector.  Such a calculus for $A$ makes $B=z_0-A$ sectorial of angle at
+most $\theta$.  If $\theta<\pi/2$, the sectorial generation theorem makes
+$e^{-tB}$ analytic, and therefore makes
+$T(t)=e^{tz_0}e^{-tB}$ analytic as well \cite{Haase}.
+
+\begin{theorem}[Full resolution for the hyperbolic flow]\label{thm:main}
+Let $\beta$ be any positive weight sequence satisfying the source
+hypotheses, and suppose $T(t)=C_{\alpha_{\tanh t}}$ is a $C_0$-semigroup on
+$\Hbeta$.  Its generator $A$ has the following properties.
+\begin{enumerate}
+\item $A$ is unbounded.
+\item For no $z_0\in\mathbb C$ and no $0<\theta<\pi/2$ does $A$ admit a
+bounded $H^\infty$ calculus on $S_\theta(z_0)$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Part (1) is Lemma~\ref{lem:unbounded}.  If the calculus in (2) existed, the
+preceding sectorial generation argument would make $T$ analytic.  The group
+extension and the analytic-group lemma would then make $A$ bounded,
+contradicting (1).
+\end{proof}
+
+\begin{corollary}[Answers to the two readings]
+The literal existence question has answer \emph{no}: the stated generator is
+never bounded.  If ``bounded'' was intended to modify the composition
+semigroup, in the source's sense that every member is bounded, then every
+admissible choice of weights has the asserted failure of all proper-sector
+calculi.  In particular the classical choice $\beta_n=1$ is an example.
+\end{corollary}
+
+This does not contradict the half-plane statement immediately preceding the
+question: the boundary angle $\pi/2$ is allowed there, while the theorem
+excludes exactly the strict range $0<\theta<\pi/2$.
+
+\section{Verification, limitations, and novelty}
+
+The accompanying verifier checks the flow and reflection identities and the
+adjacent-monomial lower bound for constant, alternating, polynomial,
+geometric, and pseudorandom positive weights.  The checks pass through
+$n=500$; they are sanity checks for the exact algebraic proof, not a
+substitute for it.
+
+\textbf{Adversarial checks.}
+No regularity of the ratios $\beta_{n+1}/\beta_n$ is assumed.  The proof uses
+two adjacent normalized monomials precisely to prevent extreme ratios from
+evading the estimate.  Polynomials belong to the generator domain by
+\eqref{eq:generator}.  The proper-sector conclusion uses bounded
+$H^\infty$ calculus in the standard sectorial sense; a half-plane calculus
+at angle $\pi/2$ remains possible.  The group argument does not assume
+uniform boundedness in time.
+
+\textbf{Scope limitation.}
+The theorem fully resolves the fixed hyperbolic-flow question, including its
+wording ambiguity.  It does not classify $H^\infty$ calculi for arbitrary
+noninvertible composition semiflows, nor does it claim that every
+composition-semigroup generator is unbounded.
+
+\textbf{Bounded novelty audit.}
+The four run indexes and focused primary-source searches through
+13 August 2026 were checked using arXiv:1708.02259 and combinations of
+``weighted Hardy'', ``hyperbolic composition'', ``generator'',
+``sectorial'', and ``$H^\infty$ calculus''.  No later paper explicitly
+answering the displayed question was found.  Novelty is plausible, not
+certified.
+
+\textbf{Human-review recommendation:} send to an operator-semigroup or
+composition-operator expert.  The highest-value review points are the
+interpretation of ``bounded'' in the source wording and the standard
+implication from a proper-sector bounded $H^\infty$ calculus to analyticity.
+
+\begin{thebibliography}{9}
+\bibitem{GY}
+E.~A. Gallardo-Guti\'errez and D.~V. Yakubovich,
+\emph{On generators of $C_0$-semigroups of composition operators},
+Israel J. Math. \textbf{229} (2019), 487--500;
+arXiv:1708.02259.
+
+\bibitem{Haase}
+M.~Haase,
+\emph{The Functional Calculus for Sectorial Operators},
+Operator Theory: Advances and Applications 169, Birkh\"auser, 2006.
+\end{thebibliography}
+
+\end{document}

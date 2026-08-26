@@ -1,0 +1,245 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx,microtype,enumitem,xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\newcommand{\D}{\mathbb D}
+\newcommand{\T}{\mathcal T}
+
+\title{Four-Step Gap Rigidity for the Toeplitz Commutant\\of $T_{z^2+\bar z^2}$}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 7}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.} Substantial partial result,
+likely valid, pending human review.  The theorem removes the source paper's
+global Fourier cutoff for two natural classes of symbols with genuinely
+infinite angular spectra.  It does not settle the unrestricted bounded-symbol
+problem.}}
+\end{center}
+
+\section{Source question}
+
+Let $A^2(\D)$ be the Bergman space of the unit disk and let $T_f$ denote the
+Toeplitz operator with bounded symbol $f$.  Axler, \v{C}u\v{c}kovi\'c and Rao
+asked whether, for every bounded harmonic $g$ which is neither analytic nor
+anti-analytic,
+\[
+ [T_f,T_g]=0 \quad\Longrightarrow\quad f=\alpha g+\beta
+\]
+for every bounded $f$.  Alsabi and Louhichi quote the question on PDF page 2
+of \cite{AlsabiLouhichi2017}:
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{The open problem as quoted in \cite[p.~2]{AlsabiLouhichi2017}.}
+\end{figure}
+
+For the fixed symbol
+\[
+                         h(z)=z^2+\bar z^2,
+\]
+their main theorem proves the desired conclusion when the polar Fourier
+expansion of $f$ is right-terminating.  The result below permits infinitely
+many positive and negative modes.
+
+For $f\in L^\infty(\D)$ write
+\[
+ f(re^{i\theta})=\sum_{k\in\mathbb Z}e^{ik\theta}f_k(r)
+ \quad\text{in }L^2(\D),
+\]
+and let
+\[
+ S(f)=\{k\in\mathbb Z:f_k\ne0\text{ in }L^2([0,1],r\,dr)\}.
+\]
+In each residue class modulo $4$, regard consecutive integers at distance
+$4$ as adjacent.  A \emph{four-step support component} is a connected
+component of $S(f)$ in this graph.
+
+\begin{theorem}[Four-step gap rigidity]\label{thm:main}
+Let $f\in L^\infty(\D)$ and suppose
+\[
+                         [T_f,T_{z^2+\bar z^2}]=0.
+\]
+Each of the following hypotheses implies that, almost everywhere on $\D$,
+\[
+                         \boxed{f=\alpha(z^2+\bar z^2)+\beta}
+\]
+for some $\alpha,\beta\in\mathbb C$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item Every four-step support component of $f$ is finite.
+\item The angular Fourier series is Wiener-summable,
+\[
+                         \sum_{k\in\mathbb Z}\|f_k\|_\infty<\infty,
+\]
+and, in every residue class $q\pmod4$, there are arbitrarily large
+$k\equiv q\pmod4$ for which $f_k=0$.
+\end{enumerate}
+\end{theorem}
+
+Thus (i) covers sparse symbols with infinitely many modes in both directions,
+while (ii) needs gaps only in the positive direction.  Equivalently, under
+the Wiener hypothesis a non-affine commuting symbol, if one exists, must have
+an eventually gapless positive ray in at least one residue class modulo $4$.
+
+\section{Proof intuition}
+
+Rotations split every Toeplitz operator into homogeneous pieces.  Commuting
+with $T_{z^2+\bar z^2}$ couples the piece of angular degree $k$ only to the
+piece of degree $k+4$.  A missing Fourier mode is therefore an exact cut in
+the recurrence, not merely a small error.  Every support block between two
+such cuts is itself the symbol of a Toeplitz operator commuting with
+$T_{z^2+\bar z^2}$.
+
+Finite blocks are bounded right-terminating symbols, so the source theorem
+says that each block is affine in $z^2+\bar z^2$.  Under Wiener summability,
+the one possible block extending to $-\infty$ also converges in
+$L^\infty$ and is right-terminating, so the same theorem applies.  Finally,
+the residue-class support of an affine symbol is so small that only the
+constant block and the block containing both degrees $-2$ and $2$ can remain.
+
+\section{Homogeneous commutator decomposition}
+
+Let $U_t$ be the rotation unitary on $A^2(\D)$.  An operator $X$ is
+homogeneous of degree $k$ when
+\[
+                         U_tXU_t^*=e^{ikt}X.
+\]
+The weak-operator Fourier coefficient
+\[
+                 \Phi_k(X)=\frac1{2\pi}\int_0^{2\pi}
+                 e^{-ikt}U_tXU_t^*\,dt
+\]
+is a bounded homogeneous operator.  Rotation covariance of Bergman Toeplitz
+operators gives
+\[
+                  \Phi_k(T_f)=T_{e^{ik\theta}f_k(r)}=:T_k.
+\]
+The two summands $T_{z^2}$ and $T_{\bar z^2}$ have degrees $2$ and $-2$.
+Taking the degree $k+2$ coefficient of the zero commutator yields, for every
+$k\in\mathbb Z$,
+\begin{equation}\label{eq:chain}
+             [T_k,T_{z^2}]+[T_{k+4},T_{\bar z^2}]=0.
+\end{equation}
+
+\begin{lemma}[Block separation]\label{lem:block}
+Let $B$ be a four-step support component.  Suppose the symbol
+\[
+                         f_B=\sum_{k\in B}e^{ik\theta}f_k(r)
+\]
+defines a bounded Toeplitz operator, with the sum interpreted in
+$L^\infty$ when $B$ is infinite.  Then
+\[
+                         [T_{f_B},T_{z^2+\bar z^2}]=0.
+\]
+\end{lemma}
+
+\begin{proof}
+Inside $B$, equation \eqref{eq:chain} is exactly the corresponding
+homogeneous coefficient of $[T_{f_B},T_{z^2+\bar z^2}]$.  At either endpoint,
+the adjacent degree outside $B$ is a missing Fourier mode, hence its operator
+is zero, and \eqref{eq:chain} again gives the endpoint coefficient.  All
+other homogeneous coefficients vanish trivially.  If $B$ is infinite and
+the stated series converges in $L^\infty$, the operator series converges in
+norm, so the same coefficient argument passes to the sum.  Therefore every
+homogeneous coefficient of the block commutator is zero.  A bounded operator
+whose weak rotation Fourier coefficients all vanish is zero, proving the
+claim.
+\end{proof}
+
+\section{Proof of Theorem~\ref{thm:main}}
+
+We use the main theorem of Alsabi and Louhichi
+\cite[Section~3]{AlsabiLouhichi2017}: if a bounded symbol $u$ is
+right-terminating and $T_u$ commutes with $T_{z^2+\bar z^2}$, then
+\begin{equation}\label{eq:source}
+                         u=c(z^2+\bar z^2)+c_0
+\end{equation}
+almost everywhere.
+
+Assume first (i).  For every support component $B$, the sum defining $f_B$
+is finite, hence $f_B\in L^\infty$, and Lemma~\ref{lem:block} shows that its
+Toeplitz operator commutes with $T_{z^2+\bar z^2}$.  It is right-terminating,
+so \eqref{eq:source} applies.
+
+But $B$ lies in one residue class modulo $4$, whereas the only Fourier degrees
+in \eqref{eq:source} are $-2,0,2$.  A block in residue class $1$ or $3$ must
+therefore be zero.  A block in residue class $0$ must be zero unless it
+contains degree $0$, in which case it is constant.  A block in residue class
+$2$ must be zero unless it contains both adjacent degrees $-2$ and $2$, in
+which case it is a scalar multiple of $z^2+\bar z^2$.  Consequently every
+Fourier coefficient of $f$ other than these three vanishes, and uniqueness of
+the $L^2$ Fourier expansion proves the claimed formula.
+
+Now assume (ii).  In a fixed residue class, the hypothesis of arbitrarily
+large missing indices implies that every support component is bounded above.
+All such components are finite except possibly one component extending to
+$-\infty$.  Finite components are handled as above.  For a lower-infinite
+component $B$, the Wiener assumption gives
+\[
+                  \sum_{k\in B}\|e^{ik\theta}f_k(r)\|_\infty<\infty.
+\]
+Hence $f_B$ converges in $L^\infty$, is bounded and right-terminating, and
+Lemma~\ref{lem:block} and \eqref{eq:source} apply.  The same residue-support
+argument eliminates every block except the possible constant and
+$z^2+\bar z^2$ blocks.  This proves (ii). \qed
+
+\section{Verification, limitations, and upgrade audit}
+
+The proof is analytic and has no computational dependency.  The two points
+most worth checking are the indices in \eqref{eq:chain} and the passage from a
+lower-infinite block to a bounded symbol in part (ii).  Both are explicit:
+commutation degrees are $(k)+2$ and $(k+4)-2$, and absolute convergence in
+$L^\infty$ gives norm convergence of the corresponding Toeplitz operators.
+
+The theorem does not settle the fixed-symbol problem for arbitrary bounded
+$f$.  Eight focused upgrade attempts tested later literature, the Jacobi
+spectral commutant, compact commuting remainders, smooth boundary
+asymptotics, and quantitative tail decay before isolating the exact block
+mechanism and its Wiener upgrade.  The remaining case contains an eventually
+gapless positive four-step tail.  Replacing an exact gap by smallness would
+require a uniform stability estimate for the Mellin-transform recurrence;
+the source proof is qualitative and no such estimate was obtained.
+
+\section{Literature and novelty boundary}
+
+A bounded search on 17 August 2026 covered the run's cheap indexes, the exact
+source title and arXiv id, the citation neighborhood of the source and the
+original problem, Le and Tikaradze's later right-terminating theorem
+\cite{LeTikaradze2017}, and the 2024 finite quasihomogeneous-sum result
+\cite{AlsabiLouhichi2024}.  Those located results retain right-termination or
+finite-sum restrictions.  No explicit statement of Theorem~\ref{thm:main}
+was found.  Novelty confidence is moderate: the block argument is short once
+the source theorem and the four-step recurrence are placed together.
+
+Human review is recommended, concentrating on Lemma~\ref{lem:block}, the
+support-component classification, and the precise hypotheses of the source
+right-terminating theorem.
+
+\sloppy
+\begin{thebibliography}{9}
+\bibitem{AlsabiLouhichi2017}
+H. Alsabi and I. Louhichi,
+\emph{On the commutativity of a certain class of Toeplitz operators},
+arXiv:1704.04757; published in Operators and Matrices 12 (2018), 863--879.
+
+\bibitem{LeTikaradze2017}
+T. Le and A. Tikaradze,
+\emph{Commutants of Toeplitz operators with harmonic symbols},
+New York J. Math. 23 (2017), 1723--1731; arXiv:1706.01510.
+
+\bibitem{AlsabiLouhichi2024}
+H. Alsabi and I. Louhichi,
+\emph{Commutants of the sum of two quasihomogeneous Toeplitz operators},
+Concr. Oper. 11 (2024); arXiv:2409.14361.
+\end{thebibliography}
+
+\end{document}

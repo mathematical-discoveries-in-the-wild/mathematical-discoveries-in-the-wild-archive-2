@@ -1,0 +1,136 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1.9cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{ink}{HTML}{172033}
+\definecolor{accent}{HTML}{5C3566}
+\definecolor{soft}{HTML}{F6F0F8}
+\color{ink}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\FBL}{\operatorname{FBL}_{\mathbb C}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\epsf}{\varepsilon}
+
+\title{Fourier evaluation proves spectral inclusion for free complex Banach lattices}
+\author{Solution packet for arXiv:2207.08090}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{accent}{soft}{\parbox{0.91\textwidth}{
+\textbf{Outcome.} For every complex Banach space $E$ and every bounded operator $T:E\to E$, the induced lattice homomorphism $\overline T:\FBL[E]\to\FBL[E]$ satisfies
+\[
+ \sigma(T)\subseteq\sigma(\overline T).
+\]
+The missing complex phase is recovered by the first Fourier coefficient of the circle of evaluation functionals associated with an eigenfunctional of $T^*$.}}
+\end{center}
+
+\section*{Source question}
+The source constructs $\FBL[E]$ as a complexification of a real free Banach lattice.  Its canonical embedding $\delta_E:E\to\FBL[E]$ obeys
+\[
+ \delta_E(x)(\operatorname{Re}z^*)=z^*(x),\qquad x\in E,\ z^*\in E^*.
+\]
+For $T:E\to E$, the universal property produces $\overline T$ with
+$\overline T\delta_E=\delta_ET$.  In the functional model,
+\begin{equation}\label{eq:composition}
+ (\overline T f)(\operatorname{Re}w^*)
+ =f(\operatorname{Re}T^*w^*).
+\end{equation}
+
+The source proves inclusion of approximate point spectra, handles positive residual spectral values, and asks whether the full spectrum is always included.  It obtains only $|\lambda|\in\sigma(\overline T)$ for a general $\lambda\in\sigma(T)$.
+
+\begin{center}
+\includegraphics[width=0.72\textwidth]{figures/open_question_crop.png}
+\end{center}
+
+\section*{The Fourier-evaluation functional}
+
+\begin{lemma}\label{lem:fourier}
+Suppose $z^*\in E^*\setminus\{0\}$ and
+$T^*z^*=\lambda z^*$.  Then $\lambda$ is an eigenvalue of $\overline T^*$.
+\end{lemma}
+
+\begin{proof}
+Write $\lambda=re^{i\theta}$ with $r\geq0$; when $r=0$, choose $\theta=0$.  For $t\in\R$, let
+\[
+ \epsf_t(f)=f(\operatorname{Re}(e^{it}z^*)),
+ \qquad f\in\FBL[E].
+\]
+These evaluations are uniformly bounded: $\|\epsf_t\|\leq\|z^*\|$.  Moreover $t\mapsto\epsf_t(f)$ is continuous, by the functional representation of $\FBL[E]$.  Hence
+\begin{equation}\label{eq:Phi}
+ \Phi(f)=\frac1{2\pi}\int_0^{2\pi}e^{-it}
+ f(\operatorname{Re}(e^{it}z^*))\,dt
+\end{equation}
+defines a bounded linear functional.
+
+It is nonzero.  Indeed, the canonical-evaluation identity gives, for every $x\in E$,
+\[
+ \Phi(\delta_E x)
+ =\frac1{2\pi}\int_0^{2\pi}e^{-it}(e^{it}z^*)(x)\,dt
+ =z^*(x).
+\]
+Choose $x$ with $z^*(x)\neq0$.
+
+Using \eqref{eq:composition}, complex linearity of $T^*$, and positive homogeneity of every free-lattice function under the real scalar $r$, we obtain
+\begin{align*}
+ \Phi(\overline T f)
+ &=\frac1{2\pi}\int_0^{2\pi}e^{-it}
+ f(\operatorname{Re}T^*(e^{it}z^*))\,dt\\
+ &=\frac r{2\pi}\int_0^{2\pi}e^{-it}
+ f(\operatorname{Re}(e^{i(t+\theta)}z^*))\,dt\\
+ &=re^{i\theta}\Phi(f)=\lambda\Phi(f).
+\end{align*}
+The last substitution is $s=t+\theta$, using periodicity.  Thus
+$\overline T^*\Phi=\lambda\Phi$ with $\Phi\neq0$.
+\end{proof}
+
+\section*{Full spectral inclusion}
+
+\begin{theorem}\label{thm:main}
+For every complex Banach space $E$ and every bounded operator $T:E\to E$,
+\[
+ \sigma(T)\subseteq\sigma(\overline T).
+\]
+\end{theorem}
+
+\begin{proof}
+Fix $\lambda\in\sigma(T)$.  If $\lambda\in\sigma_a(T)$, take unit vectors $x_k$ with $(\lambda-T)x_k\to0$.  Since $\delta_E$ is an isometry and intertwines $T$ with $\overline T$,
+\[
+ \|(\lambda-\overline T)\delta_E x_k\|
+ =\|\delta_E((\lambda-T)x_k)\|\longrightarrow0.
+\]
+Thus $\lambda\in\sigma_a(\overline T)\subseteq\sigma(\overline T)$.
+
+Now suppose $\lambda\notin\sigma_a(T)$.  Then $\lambda-T$ is bounded below, so its range is closed.  It is not onto because $\lambda\in\sigma(T)$; hence its range is a proper closed subspace.  Hahn--Banach supplies $z^*\in E^*\setminus\{0\}$ annihilating $(\lambda-T)E$.  Equivalently,
+$T^*z^*=\lambda z^*$.  Lemma~\ref{lem:fourier} gives
+$\lambda\in\sigma_p(\overline T^*)$, which implies
+$\lambda\in\sigma(\overline T)$.
+\end{proof}
+
+\section*{Why the averaging is the missing step}
+A single evaluation at $\operatorname{Re}z^*$ detects $T^*z^*=\lambda z^*$ only when $\lambda\geq0$, because free-lattice functions are merely positively homogeneous on the real dual.  Rotating $z^*$ around its circle and taking the first Fourier coefficient projects precisely onto the complex-linear component: on $\delta_E(E)$ it equals $z^*$, while $T^*$ rotates the circle by $\arg\lambda$ and dilates it by $|\lambda|$.  This restores the full multiplier $\lambda$, rather than only its modulus.
+
+\section*{Audit notes}
+\begin{itemize}[leftmargin=1.4em,itemsep=2pt]
+\item The integral in \eqref{eq:Phi} is a scalar integral of uniformly bounded continuous functions; it defines a bounded complex-linear functional.
+\item The factor $e^{-it}$, not $e^{it}$, is essential: after shifting $t$ by $\theta$ it produces $e^{i\theta}$.
+\item An eigenvalue of $\overline T^*$ is sufficient for membership in $\sigma(\overline T)$; no claim about the point spectrum of $\overline T$ is made.
+\item The argument covers $\lambda=0$ as well.  Then $T^*z^*=0$ and the Fourier functional is annihilated by $\overline T^*$.
+\item This packet does not address the separate real-scalar question whether nonisomorphic $E,F$ can have lattice-isomorphic $\operatorname{FBL}[E],\operatorname{FBL}[F]$.
+\end{itemize}
+
+\section*{Source}
+D. de Hevia and P. Tradacete, \emph{Free complex Banach lattices}, arXiv:2207.08090 (2022).
+
+\end{document}

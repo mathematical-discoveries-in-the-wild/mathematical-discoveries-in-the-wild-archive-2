@@ -1,0 +1,228 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=0.88in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,graphicx,microtype,xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\smin}{s_{\min}}
+\newcommand{\sharpw}{\mathbin{\sharp}}
+
+\title{A counterexample to a weighted-geometric-mean\\log-majorization conjecture}
+\author{Candidate counterexample for arXiv:2105.13356}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\fbox{\parbox{0.95\linewidth}{\textbf{Status.}
+Candidate counterexample, likely valid, requiring human review.  Exact integer
+positive-definite matrices disprove Conjecture 1.1 of Ghabries--Abbas--Mourad--Assi.
+The decisive numerical inequality is certified by exact rational ball arithmetic.}}
+
+\section{Source conjecture}
+
+For positive-definite matrices $A,B$, their weighted geometric mean is
+\[
+ A\sharpw_t B=A^{1/2}(A^{-1/2}BA^{-1/2})^tA^{1/2},\qquad 0\le t\le1.
+\]
+Writing $s_1(Y)\ge\cdots\ge s_n(Y)$ for the singular values of $Y$, one says
+$s(X)\prec_{\log}s(Y)$ when
+\[
+ \prod_{j=1}^k s_j(X)\le \prod_{j=1}^k s_j(Y)\quad(1\le k<n),
+ \qquad |\det X|=|\det Y|.
+\]
+Conjecture 1.1 in Ghabries--Abbas--Mourad--Assi~\cite{GAMA} asks whether
+\begin{equation}\label{eq:conjecture}
+ s\!\left(A^t(A\sharpw_tB)B^{1-t}\right)\prec_{\log}s(AB)
+ \qquad(0\le t\le1)
+\end{equation}
+for all positive semidefinite $A,B$.  It originates in work of Lemos and
+Soares~\cite{LS}.  The source statement is reproduced below.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.91\linewidth]{figures/open_problem_crop.png}
+\caption{Conjecture 1.1 in the source PDF~\cite[p.~3]{GAMA}.}
+\end{figure}
+
+\section{Idea of the proof}
+
+The determinant in \eqref{eq:conjecture} always agrees on the two sides.
+Consequently, in dimension four its third prefix-product inequality says
+exactly that the smallest singular value of the left-hand matrix is at least
+the smallest singular value of $AB$.  This dual endpoint is where the
+conjecture fails.
+
+The example below makes one matrix diagonal and uses a rational value
+$t=15/16$, so all fractional powers can be built from four successive positive
+square roots.  Exact $LDL^{\mathsf T}$ arithmetic proves a lower bound for
+$\smin(AB)$.  Repeated rational matrix balls enclose the square roots and give
+an upper bound for the other smallest singular value.  The two certified
+bounds are separated by more than $0.08$.
+
+\section{The counterexample}
+
+\begin{theorem}\label{thm:counterexample}
+Let $t=15/16$ and let
+\[
+A=\begin{pmatrix}
+17825066&0&0&0\\
+0&83&0&0\\
+0&0&24&0\\
+0&0&0&10
+\end{pmatrix},
+\qquad
+B=\begin{pmatrix}
+117567&-99513&2310&-38624\\
+-99513&131686&572&24611\\
+2310&572&190&-1191\\
+-38624&24611&-1191&14107
+\end{pmatrix}.
+\]
+Then $A$ and $B$ are positive definite, but
+\[
+s\!\left(A^t(A\sharpw_tB)B^{1-t}\right)
+\not\prec_{\log}s(AB).
+\]
+More precisely, if $X=A^t(A\sharpw_tB)B^{1-t}$, then
+\begin{equation}\label{eq:gap}
+ \smin(X)<235.715744<235.8<\smin(AB).
+\end{equation}
+Numerically, the violated third-prefix ratio is
+\[
+ \frac{\prod_{j=1}^3s_j(X)}{\prod_{j=1}^3s_j(AB)}
+ =1.0009342385069400\ldots>1.
+\]
+\end{theorem}
+
+\begin{proof}
+The positivity of $A$ is immediate.  The four leading principal minors of $B$
+are
+\[
+117567,\quad 5579090793,\quad 55894510422,\quad 2308323855975,
+\]
+so $B>0$ by Sylvester's criterion.
+
+For arbitrary positive-definite $A,B$,
+\[
+ \det(A\sharpw_tB)=(\det A)^{1-t}(\det B)^t.
+\]
+It follows that
+\begin{equation}\label{eq:det}
+ \det X=(\det A)^t\det(A\sharpw_tB)(\det B)^{1-t}
+ =\det A\det B=\det(AB).
+\end{equation}
+Because all singular values are positive, \eqref{eq:det} gives
+\[
+ \frac{\prod_{j=1}^3s_j(X)}{\prod_{j=1}^3s_j(AB)}
+ =\frac{\smin(AB)}{\smin(X)}.
+\]
+Thus it remains only to prove \eqref{eq:gap}.
+
+Set $q=1179/5=235.8$.  Exact integer multiplication gives that
+\[
+ D=25(AB)^{\mathsf T}(AB)-1179^2I_4
+\]
+has leading principal minors
+\begin{align*}
+\Delta_1&=109792626457520745575173084,\\
+\Delta_2&=42609956693745032985833310177535659834256,\\
+\Delta_3&=2228978970825693898612895858077918124109611904,\\
+\Delta_4&=182721114621736343069686961423087938455547419076911.
+\end{align*}
+All are positive.  Hence $D>0$ and therefore
+$(AB)^{\mathsf T}(AB)>q^2I_4$, proving $\smin(AB)>q$.
+
+We now certify the other half of \eqref{eq:gap}.  The included verifier uses
+operator-norm balls with exact rational centers and radii.  Its square-root
+step rests on the following elementary bound.  If $S,R>0$, then
+\begin{equation}\label{eq:sqrtbound}
+ \|R-S^{1/2}\|_F
+ \le
+ \frac{\|R^2-S\|_F}{\lambda_{\min}(R)+\sqrt{\lambda_{\min}(S)}}.
+\end{equation}
+Indeed, for $E=R-S^{1/2}$ one has
+$RE+ES^{1/2}=R^2-S$; the Sylvester operator on the left has least singular
+value at least
+$\lambda_{\min}(R)+\sqrt{\lambda_{\min}(S)}$ in the Frobenius norm.
+
+Starting from the exact matrices $A,B$, four applications of
+\eqref{eq:sqrtbound} enclose the $1/16$ powers of $A$, $B$, and
+$A^{-1/2}BA^{-1/2}$.  Products and inverses use the standard norm-ball rules
+\[
+ e_{UV}\le\|U_0\|e_V+\|V_0\|e_U+e_Ue_V,
+ \qquad
+ e_{U^{-1}}\le
+ \frac{\|U_0^{-1}\|^2e_U}{1-\|U_0^{-1}\|e_U}.
+\]
+All displayed norms are bounded above by exact rational Frobenius bounds, and
+all eigenvalue lower bounds use exact rational inverses and $LDL^{\mathsf T}$
+pivots.  The resulting ball for $X$ has radius less than
+$2.546\times10^{-42}$.  An exact rational trial vector $v$ then gives
+\[
+ \smin(X)\le \frac{\|Xv\|}{\|v\|}<235.715744.
+\]
+Every comparison in this last paragraph is executed as an exact rational
+inequality by \path{code/certify_counterexample.py}; floating point is used
+only to select the rational centers and trial vector.  This proves
+\eqref{eq:gap}, hence the third prefix inequality is reversed and
+\eqref{eq:conjecture} is false.
+\end{proof}
+
+\section{Verification and scope}
+
+Running
+\begin{quote}\ttfamily\small
+conda run --no-capture-output -n sandbox python
+code/certify\_counterexample.py
+\end{quote}
+reproduces the rational certificate.  Its high-precision centers give
+\[
+\smin(X)=235.715743188457775258697\ldots,
+\quad
+\smin(AB)=235.935957912436422532775\ldots.
+\]
+The separate search script records the heuristic discovery route; it is not
+used in the proof.
+
+The counterexample is strict, so continuity yields an open interval of failing
+parameters around $15/16$.  No claim is made that dimension four is minimal,
+and the source's other conjectures are not decided here.
+
+\paragraph{Bounded novelty check.}
+The run's registry, solution, attempt, and proof-gap indexes; exact expressions;
+the source title, authors, and DOI; weighted geometric-mean and
+log-majorization keywords; and the source's citing works were searched through
+11 August 2026.  Gan and Kim reproduce the exact conjecture and call it still
+open~\cite[Sec.~3]{GK}.  The three indexed citing papers through that date do
+not state a decision of this conjecture, and no prior counterexample was found.
+This is a bounded audit, not a definitive priority claim.
+
+\paragraph{Human-review recommendation.}
+First audit the exact matrix transcription and the determinant reduction
+\eqref{eq:det}.  Then inspect the square-root enclosure
+\eqref{eq:sqrtbound}, the propagation of ball radii, and the final exact
+rational assertions in the verifier.  These are the only computer-assisted
+parts of the proof.
+
+\begin{thebibliography}{9}
+\bibitem{GAMA}
+M.~M. Ghabries, H.~Abbas, B.~Mourad, and A.~Assi,
+\emph{New log-majorization results concerning eigenvalues and singular values
+and a complement of a norm inequality}, Linear Multilinear Algebra 71 (2023),
+1228--1243; arXiv:2105.13356.
+
+\bibitem{LS}
+R.~Lemos and G.~Soares,
+\emph{Some log-majorizations and an extension of a determinantal inequality},
+Linear Algebra Appl. 547 (2018), 19--31.
+
+\bibitem{GK}
+L.~Gan and S.~Kim,
+\emph{Weak log-majorization between the geometric and Wasserstein means},
+J. Math. Anal. Appl. 530 (2024), 127711; arXiv:2301.07934.
+\end{thebibliography}
+
+\end{document}

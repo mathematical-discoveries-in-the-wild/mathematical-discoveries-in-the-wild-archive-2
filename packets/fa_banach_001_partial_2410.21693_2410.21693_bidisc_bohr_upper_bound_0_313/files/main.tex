@@ -1,0 +1,257 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\D}{\mathbb D}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Bmass}{\mathcal B}
+
+\title{A strict upper bound for the bidisc Bohr radius:\\
+an exact asymmetric rational-inner certificate}
+\author{Automated mathematical-discovery run \texttt{fa\_banach\_001}, lane 11}
+\date{12 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Candidate substantial partial result, likely valid, pending human review.
+The packet proves a new explicit upper bound, but it does not determine the
+exact value of the bidisc Bohr radius.}}
+\end{center}
+
+\section{Source question and result}
+
+Let
+\[
+ f(z,w)=\sum_{m,n\geq0}c_{mn}z^mw^n\in H^\infty(\D^2),
+ \qquad
+ \Bmass_r(f):=\sum_{m,n\geq0}|c_{mn}|r^{m+n}.
+\]
+The bidisc Bohr radius is
+\[
+ K_2:=\sup\{r>0:\Bmass_r(f)\leq1
+       \text{ whenever }\|f\|_{H^\infty(\D^2)}\leq1\}.
+\]
+Knese's paper \cite{Knese} proves $K_2\geq0.3006$ and, on PDF page 4
+immediately after Corollary 1.2, records the lack of a nontrivial upper bound
+beyond $K_2\leq K_1=1/3$:
+
+\begin{center}
+\includegraphics[width=0.97\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+A later paper of Baran, Pikul, Woerdeman, and Wojtylak \cite{BaranEtAl}
+gave $K_2<0.3177$.  The result below improves that bound.
+
+\begin{theorem}\label{thm:main}
+The two-dimensional Bohr radius satisfies
+\[
+ \boxed{\quad 0.3006\leq K_2<\frac{313}{1000}=0.313.\quad}
+\]
+More specifically, there is an explicit rational inner function
+$F\in H^\infty(\D^2)$ with $\|F\|_\infty=1$ and
+$\Bmass_{313/1000}(F)>1$.
+\end{theorem}
+
+\section{Proof intuition}
+
+The one-variable extremizers are disk automorphisms applied to the coordinate
+function.  On the bidisc, composing an automorphism with a \emph{symmetric}
+rational inner function still approaches the one-variable threshold from the
+safe side.  The useful move is to break the symmetry.  Reflect the stable
+linear polynomial $1-xz-(1-x)w$ to obtain a degree-$(1,1)$ rational inner
+function $\psi_x$.  At $x=1/6$, the coefficients of the resolvent
+$\psi_x/(1-a\psi_x)$ have enough cancellation before absolute values are
+taken that their absolute sum is unusually large.  With the exact rational
+choice $a=999/1000$, only the terms through total degree eight already force
+the Bohr sum above one at $r=313/1000$.
+
+Two elementary identities make the certificate rigorous.  A sum-of-squares
+identity proves directly that $\psi_x$ maps the bidisc to the unit disk.  A
+four-term denominator recurrence then computes every coefficient in exact
+rational arithmetic; the final strict inequality is an integer comparison.
+
+\section{The Schur function}
+
+Fix $0<x<1$, put $y=1-x$, and define
+\begin{equation}\label{eq:psi}
+ p(z,w)=1-xz-yw,
+ \qquad
+ \widetilde p(z,w)=zw-xw-yz,
+ \qquad
+ \psi_x=\frac{\widetilde p}{p}.
+\end{equation}
+
+\begin{lemma}\label{lem:schur}
+The denominator $p$ has no zeros in $\D^2$, and $|\psi_x(z,w)|<1$ for
+$(z,w)\in\D^2$.  Thus $\psi_x$ belongs to the bidisc Schur class.  Its
+radial boundary values have modulus one almost everywhere, so
+$\|\psi_x\|_\infty=1$.
+\end{lemma}
+
+\begin{proof}
+If $|z|,|w|<1$, then $|xz+yw|<x+y=1$, so $p(z,w)\neq0$.
+A direct expansion gives
+\begin{equation}\label{eq:sos}
+ |p(z,w)|^2-|\widetilde p(z,w)|^2
+ =x(1-|w|^2)|1-z|^2+y(1-|z|^2)|1-w|^2.
+\end{equation}
+The right side is strictly positive in $\D^2$, proving $|\psi_x|<1$.
+When $|z|=|w|=1$, it vanishes and $|\widetilde p|=|p|$ wherever the
+quotient is defined.  Radial limits therefore have modulus one almost
+everywhere, and the supremum norm is one.
+\end{proof}
+
+For $0<a<1$, let
+\begin{equation}\label{eq:F}
+ F_{a,x}(z,w)=\frac{a-\psi_x(z,w)}{1-a\psi_x(z,w)}.
+\end{equation}
+The scalar map $\zeta\mapsto(a-\zeta)/(1-a\zeta)$ is a disk automorphism.
+Lemma~\ref{lem:schur} therefore shows that $F_{a,x}$ is rational inner and
+$\|F_{a,x}\|_\infty=1$.
+
+\section{Exact coefficient certificate}
+
+Take from now on
+\[
+ x=\frac16,\qquad y=\frac56,\qquad
+ a=\frac{999}{1000},\qquad r=\frac{313}{1000}.
+\]
+Write
+\[
+ Q:=\frac{\psi_x}{1-a\psi_x}
+   =\frac{\widetilde p}{p-a\widetilde p}
+   =\sum_{m,n\geq0}q_{mn}z^mw^n.
+\]
+Since $q_{00}=0$, equation~\eqref{eq:F} becomes
+\begin{equation}\label{eq:FQ}
+ F_{a,x}=a-(1-a^2)Q.
+\end{equation}
+The denominator of $Q$ is
+\begin{equation}\label{eq:D}
+ D(z,w)=1+\frac{799}{1200}z-\frac{4001}{6000}w
+              -\frac{999}{1000}zw.
+\end{equation}
+Let $n_{11}=1$, $n_{01}=-1/6$, $n_{10}=-5/6$, and let every other
+$n_{mn}$ be zero.  Comparing coefficients in $DQ=\widetilde p$ yields,
+with $q_{ij}=0$ when either index is negative,
+\begin{equation}\label{eq:rec}
+ q_{mn}=n_{mn}-\frac{799}{1200}q_{m-1,n}
+                    +\frac{4001}{6000}q_{m,n-1}
+                    +\frac{999}{1000}q_{m-1,n-1}.
+\end{equation}
+Define the finite layer norms
+\[
+ T_k:=\sum_{m+n=k}|q_{mn}|.
+\]
+Exact application of~\eqref{eq:rec} gives
+\begin{center}
+\small
+\begin{tabular}{c|c}
+$k$ & $T_k$\\ \hline
+1 & $1$\\
+2 & $21983/18000$\\
+3 & $18642677/12000000$\\
+4 & $950105595503/648000000000$\\
+5 & $4751192992371613/3888000000000000$\\
+6 & $39242182643309639173/23328000000000000000$\\
+7 & $2191652817952769393981/1093500000000000000000$\\
+8 & $1463094271925643860042526233/
+       839808000000000000000000000$
+\end{tabular}
+\end{center}
+Consequently,
+\begin{align}
+ S_8&:=\sum_{k=1}^{8}T_kr^k\notag\\
+ &=\frac{420207945895146052725713514433991908771800854450393}
+ {839808000000000000000000000000000000000000000000000}.
+ \label{eq:S8}
+\end{align}
+The relevant threshold is $1/(1+a)=1000/1999$, and exact subtraction gives
+\begin{align}
+ S_8-\frac{1000}{1999}
+ &=\frac{187683844396959398701315353549825634829908046335607}
+ {1678776192000000000000000000000000000000000000000000000}
+ >0. \label{eq:strict}
+\end{align}
+
+By~\eqref{eq:FQ}, positivity of every omitted absolute-value term, and
+~\eqref{eq:strict},
+\begin{align*}
+ \Bmass_r(F_{a,x})
+ &\geq a+(1-a^2)\sum_{1\leq m+n\leq8}|q_{mn}|r^{m+n}\\
+ &=a+(1-a^2)S_8
+ >a+\frac{1-a^2}{1+a}=1.
+\end{align*}
+Thus the defining Bohr inequality fails at $r=313/1000$.  Since the finite
+subsum depends continuously on $r$ and is strictly greater than one there,
+it also fails on a left neighborhood of $313/1000$.  Hence
+$K_2<313/1000$, proving Theorem~\ref{thm:main}. \qed
+
+\section{Verification}
+
+The included script in the \texttt{code} directory uses only Python's
+standard-library exact rational-arithmetic class.  It:
+\begin{enumerate}
+\item recomputes all $q_{mn}$ with $1\leq m+n\leq8$ from
+      recurrence~\eqref{eq:rec};
+\item independently checks every coefficient residual in $DQ=\widetilde p$;
+\item checks all eight displayed $T_k$ values;
+\item checks~\eqref{eq:S8}, the strict threshold inequality, and the final
+      positive Bohr-mass margin.
+\end{enumerate}
+The command is
+\begin{verbatim}
+conda run --no-capture-output -n sandbox python code/verify_certificate.py
+\end{verbatim}
+The verifier prints \texttt{PASS}.  Because all inputs and operations are
+rational, this computation is an exact finite proof certificate rather than
+a floating-point assumption.  Identity~\eqref{eq:sos} was also checked by
+direct symbolic expansion and is short enough to audit by hand.
+
+\section{Scope, novelty check, and reviewer focus}
+
+The exact value of $K_2$ remains open; this theorem only narrows the interval
+from the best bounds found in the search to
+\[
+ 0.3006\leq K_2<0.313.
+\]
+On 12 August 2026, bounded searches covered the exact source title and arXiv
+id, the phrases ``bidisc Bohr radius'', ``$K_2$ Bohr radius polydisk'',
+``non-trivial upper bounds on $K_2$'', and ``asymmetric rational inner Bohr
+radius bidisk'', together with the citations and later papers visible from
+the source.  The separate post-source improvement found was
+Baran--Pikul--Woerdeman--Wojtylak \cite[Theorem 6.4]{BaranEtAl}, which proves
+$K_2<0.3177$ using a different numerically optimized degree-$(1,1)$
+rational inner function and an exact degree-twelve coefficient check.
+No searched source states $K_2<0.313$ or uses the one-parameter family
+\eqref{eq:psi}.  The novelty assessment is therefore \emph{plausible, not
+certified}; a specialist should conduct a broader bibliographic review.
+
+The most useful human checks are: (i) expand the elementary identity
+\eqref{eq:sos}; (ii) verify the sign convention in recurrence~\eqref{eq:rec};
+and (iii) rerun the exact certificate.  No claim depends on the numerical scan
+that suggested $x=1/6$.
+
+\begin{thebibliography}{9}
+\bibitem{Knese}
+G. Knese,
+\emph{Three radii associated to Schur functions on the polydisk},
+arXiv:2410.21693v3 (2025).
+
+\bibitem{BaranEtAl}
+R. Baran, P. Pikul, H. J. Woerdeman, and M. Wojtylak,
+\emph{Contractive realization theory for the annulus and other intersections
+of discs on the Riemann sphere},
+arXiv:2504.03236 (2025), Theorem 6.4.
+\end{thebibliography}
+
+\end{document}

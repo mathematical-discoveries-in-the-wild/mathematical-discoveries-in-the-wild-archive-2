@@ -1,0 +1,209 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=0.82in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{enumitem,microtype}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\setlist{nosep,leftmargin=*}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newcommand{\Hh}{\mathcal H}
+\newcommand{\ran}{\operatorname{ran}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\eps}{\varepsilon}
+\title{What is missing for primal-frame approximation?\\
+\large A Gram-pseudoinverse criterion and a near-Parseval obstruction}
+\author{Autonomous solve-first investigation, lane 12}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Petersen and Raslan prove sparse approximation rates using the canonical dual
+of a hybrid shearlet--wavelet frame and ask for the corresponding rates using
+the primal frame.  We identify the exact coefficient-level gap.  If $T$ is
+the analysis operator and $G=TT^*$ is the Gramian, then canonical-dual
+analysis is $G^\dagger T$, where $G^\dagger$ is the Moore--Penrose inverse.
+Thus weak-$\ell^p$ boundedness of $G^\dagger$ transfers the proved
+coefficient sparsity to primal $N$-term rates.  We also prove this cannot be
+deduced from frame bounds, even near tightness: for every $0<\eps<1$ there is
+a Riesz basis with frame bounds $1-\eps,1+\eps$ and a vector with one nonzero
+primal analysis coefficient, yet its best primal $N$-term error decays only
+as $(\log N)^{-1/2}$.  The remaining hybrid-specific problem is therefore a
+localization theorem for the pseudoinverse Gramian, not another frame-bound
+estimate.
+\end{abstract}
+
+\section{The source question}
+
+Let $\Phi=(\phi_n)_{n\ge1}$ be a frame for a Hilbert space $\Hh$, with
+analysis operator
+\[
+ Tu=(\langle u,\phi_n\rangle)_n,
+\]
+synthesis operator $T^*$, frame operator $S=T^*T$, and canonical dual
+$\widetilde\Phi=(S^{-1}\phi_n)_n$.  Petersen--Raslan \cite{PR} prove decay
+of $Tu$ for a class of functions with cartoon-like derivatives.  Consequently
+they obtain fast $N$-term reconstruction by the \emph{dual} atoms:
+\[
+ u_N=\sum_{n\in E_N}\langle u,\phi_n\rangle S^{-1}\phi_n.
+\]
+Their Outlook asks for the analogous best $N$-term rate with respect to the
+primal atoms $\phi_n$, as required by their adaptive solver program.
+
+For a sequence $a$, let $(a_n^*)$ be the nonincreasing rearrangement of its
+moduli and, for $0<p<2$, put
+\[
+ \|a\|_{p,\infty}=\sup_{n\ge1}n^{1/p}a_n^*.
+\]
+Write $G=TT^*$ for the Gramian and $G^\dagger$ for its Moore--Penrose inverse.
+
+\section{The exact transfer operator}
+
+\begin{theorem}[Gram-pseudoinverse transfer]\label{thm:transfer}
+Let $\Phi$ have upper frame bound $B$, let $0<p<2$, and let $u\in\Hh$.
+Put $c=Tu$.  Then the canonical-dual analysis sequence $d$ of $u$ satisfies
+\begin{equation}\label{eq:key}
+ d=(\langle u,S^{-1}\phi_n\rangle)_n=G^\dagger c.
+\end{equation}
+If $d\in\ell^{p,\infty}$, then
+\begin{equation}\label{eq:rate}
+ \sigma_N(u;\Phi)
+ \le \sqrt{B}\left(\frac{p}{2-p}\right)^{1/2}
+       \|d\|_{p,\infty}N^{\frac12-\frac1p},
+\end{equation}
+where $\sigma_N(u;\Phi)$ is the best error using at most $N$ primal atoms.
+Consequently, a uniform implication
+\[
+ Tu\in\ell^{p,\infty}\Longrightarrow
+ \sigma_N(u;\Phi)=O(N^{\frac12-\frac1p})
+\]
+follows whenever $G^\dagger$ is bounded on
+$\ran(T)\cap\ell^{p,\infty}$ in the weak-$\ell^p$ norm.
+\end{theorem}
+
+\begin{proof}
+The standard formula for the Moore--Penrose inverse of $TT^*$ is
+\begin{equation}\label{eq:mp}
+ G^\dagger=TS^{-2}T^*.
+\end{equation}
+Indeed, it is zero on $\ker T^*$ and, for $c=Tx\in\ran T$,
+\[
+ TS^{-2}T^*c=TS^{-2}T^*Tx=TS^{-1}x.
+\]
+Since $S$ is self-adjoint, the last sequence is precisely the analysis of
+$x$ by $(S^{-1}\phi_n)_n$.  This proves \eqref{eq:key}.
+
+The primal reconstruction is $u=T^*d$.  Let $E_N$ index the $N$ largest
+entries of $d$.  Boundedness of synthesis and the weak-$\ell^p$ estimate give
+\begin{align*}
+ \left\|u-\sum_{n\in E_N}d_n\phi_n\right\|
+ &\le \sqrt B\left(\sum_{n>N}(d_n^*)^2\right)^{1/2}\\
+ &\le \sqrt B\,\|d\|_{p,\infty}
+       \left(\sum_{n>N}n^{-2/p}\right)^{1/2}\\
+ &\le \sqrt B\left(\frac{p}{2-p}\right)^{1/2}
+       \|d\|_{p,\infty}N^{\frac12-\frac1p}.
+\end{align*}
+Taking the best primal approximation proves \eqref{eq:rate}.
+\end{proof}
+
+The same argument works for Lorentz--Zygmund sequence classes, preserving the
+logarithmic factors appearing in \cite{PR}.  Thus the source's precise rate
+reduces to preservation of its coefficient class by $G^\dagger$.
+
+\section{Near-tight frame bounds do not suffice}
+
+\begin{theorem}[arbitrarily near-Parseval obstruction]\label{thm:no-go}
+For every $0<\eps<1$ there are a Riesz basis $\Phi$ for $\ell^2(\mathbb N)$
+with frame bounds $1-\eps$ and $1+\eps$, and a vector $u$, such that
+\[
+ Tu=e_1,
+\]
+so dual-frame reconstruction is exact with one atom, but
+\begin{equation}\label{eq:slow}
+ \sigma_N(u;\Phi)\ge c_\eps(\log(N+2))^{-1/2}
+ \qquad(N\ge2).
+\end{equation}
+In particular, the primal error is not $O(N^{-s})$ for any $s>0$.
+\end{theorem}
+
+\begin{proof}
+Choose a unit vector $w\perp e_1$ whose coordinates, for $n\ge2$, are
+\[
+ w_n=\frac{C}{\sqrt n\log(n+1)}.
+\]
+The normalizing constant $C$ exists because
+$\sum_{n\ge2}(n\log^2(n+1))^{-1}<\infty$.  Put
+\[
+ K=e_1\otimes w+w\otimes e_1,
+ \qquad G=I+\eps K,
+ \qquad U=G^{1/2},
+ \qquad \phi_n=Ue_n.
+\]
+On $\operatorname{span}\{e_1,w\}$, $K$ has eigenvalues $1,-1$, and it
+vanishes on the orthogonal complement.  Hence $G$ is positive with spectrum
+in $[1-\eps,1+\eps]$, so $(Ue_n)$ is a Riesz basis with the asserted frame
+bounds.
+
+Let $u=U^{-1}e_1$, the first canonical-dual atom.  Since $U$ is
+self-adjoint,
+\[
+ \langle u,Ue_n\rangle=\langle e_1,e_n\rangle,
+\]
+and therefore $Tu=e_1$.  On the other hand, the unique coefficient sequence
+for expansion by the primal Riesz basis is
+\begin{equation}\label{eq:d}
+ d=U^{-1}u=G^{-1}e_1
+   =\frac{1}{1-\eps^2}(e_1-\eps w).
+\end{equation}
+For any sequence $a$ supported on at most $N$ indices, the lower Riesz bound
+gives
+\[
+ \|u-T^*a\|=\|U(d-a)\|\ge\sqrt{1-\eps}\,\|d-a\|_2.
+\]
+The best such $a$ retains the $N$ largest entries of $d$.  By the integral
+test,
+\[
+ \sum_{n>N}|w_n|^2\asymp\frac{1}{\log(N+2)}.
+\]
+Together with \eqref{eq:d}, this proves \eqref{eq:slow}.
+\end{proof}
+
+This also exhibits the failure of every weak-$\ell^p$ transfer with $p<2$:
+$e_1$ lies in all those spaces, whereas $G^{-1}e_1$ does not lie in any of
+them.
+
+\section{Consequence for the hybrid-frame program}
+
+Theorem~\ref{thm:no-go} shows that controllable frame bounds, even with a
+ratio arbitrarily close to one, cannot close the source's primal/dual gap.
+What remains is a structural estimate.  Two equivalent-looking routes are:
+\begin{enumerate}
+\item prove that the hybrid Gramian belongs to an inverse-closed localized
+matrix algebra acting on the relevant weak sequence class, so its
+pseudoinverse has the same boundedness;
+\item prove that the hybrid frame operator and its inverse preserve the
+cartoon-derivative model class, since the dual atoms are $S^{-1}\phi_n$.
+\end{enumerate}
+The source's compact-support and Fourier-decay hypotheses provide local
+correlation estimates, but the packet does not establish the required global
+mixed shearlet/wavelet pseudoinverse bound.  Thus no primal rate for the
+specific hybrid frame is claimed.
+
+Eight upgrade routes were tested, including localized matrix algebras,
+explicit dualizable full-plane shearlets, frame-operator invariance, and PDE
+stiffness-matrix compressibility.  Each returns to the same missing
+off-diagonal inverse estimate.  Bounded exact-title and citation searches on
+13 August 2026 found no later resolution of the bounded-domain hybrid
+primal-rate question.  Novelty is plausible, not certified.
+
+\begin{thebibliography}{9}
+\bibitem{PR}
+P. Petersen and M. Raslan,
+\emph{Approximation properties of hybrid shearlet--wavelet frames for
+Sobolev spaces}, Adv. Comput. Math. 45 (2019), 1581--1606;
+arXiv:1712.01047.
+\end{thebibliography}
+
+\end{document}

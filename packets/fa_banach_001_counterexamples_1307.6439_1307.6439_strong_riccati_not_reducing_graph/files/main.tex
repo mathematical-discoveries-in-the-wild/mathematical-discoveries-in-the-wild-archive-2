@@ -1,0 +1,268 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\cD}{\mathcal D}
+\newcommand{\cG}{\mathcal G}
+\newcommand{\cH}{\mathcal H}
+\newcommand{\Dom}{\operatorname{Dom}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\spec}{\operatorname{spec}}
+
+\title{A Strong Operator Riccati Solution\\whose Graph Is Not Reducing}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 1}
+\date{August 9, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.9\textwidth}{\textbf{Status.}
+Candidate counterexample, likely valid, pending expert review.  Under the
+exact hypotheses of Makarov--Schmitz--Seelmann, strong solvability of the
+operator Riccati equation does not imply that the associated graph subspace
+is reducing.}}
+\end{center}
+
+\section{Source problem}
+
+Makarov, Schmitz, and Seelmann~\cite{MSS13} consider
+\[
+ A=\begin{pmatrix}A_0&0\\0&A_1\end{pmatrix},\qquad
+ V=\begin{pmatrix}0&W\\W^*&0\end{pmatrix},\qquad
+ Y=\begin{pmatrix}0&-X^*\\X&0\end{pmatrix},
+\]
+where $A_0,A_1$ are self-adjoint, $X$ is bounded,
+$\Dom(W)\supset\Dom(A_1)$, and $\Dom(W^*)\supset\Dom(A_0)$.  They compare
+
+\begin{enumerate}[label=(\roman*)]
+\item $\cG(\cH_0,X)$ is reducing for $A+V$;
+\item $Y$ is a strong solution of
+\begin{equation}\label{eq:riccati}
+ AY-YA-YVY+V=0.
+\end{equation}
+\end{enumerate}
+
+On page 3 they state that they have no counterexample in which only one of
+these requirements holds, and ask whether the two are equivalent or
+logically independent.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{The open problem in the introduction of~\cite[p.~3]{MSS13}.}
+  \label{fig:problem}
+\end{figure}
+
+The associated graph is
+$\cG(\cH_0,X)=\{f\oplus Xf:f\in\cH_0\}$.  ``Reducing'' includes both
+invariance of this graph and its orthogonal complement and the domain
+splitting by their intersections with $\Dom(A+V)$.  ``Strong'' means that
+$Y\Dom(A)\subset\Dom(A)$ and \eqref{eq:riccati} holds throughout
+$\Dom(A)$.
+
+\section{Proof intuition}
+
+Domain preservation by a bounded operator need not pass to its bounded
+inverse when the domain carries a much stronger graph norm.  We exploit that
+gap with a Toeplitz operator $X$ which has Hilbert-space norm at most $1/20$
+but whose realization on a rapidly weighted domain has $i$ in its spectrum.
+Thus $X$ preserves the domain while $(I+X^2)^{-1}$ does not.  The first fact
+is exactly the domain part of strong Riccati solvability; the second obstructs
+the domain splitting required for a reducing graph.
+
+It remains to choose the off-diagonal operator.  Writing
+$C=AX-XA$, the Riccati equation reduces to
+$W+XWX=C$.  Because $X$ is tiny in the Hilbert norm even though it is large
+in the graph norm, the alternating series
+$\sum_{n\ge0}(-1)^nX^nCX^n$ converges on the weighted domain, telescopes to
+the required identity, and is skew-symmetric.  This supplies $W$ and $W^*$
+with exactly the domains required by the source hypotheses.
+
+\section{Counterexample theorem}
+
+\begin{theorem}\label{thm:main}
+There are separable Hilbert spaces $\cH_0=\cH_1$, self-adjoint operators
+$A_0=A_1$, a densely defined operator $W$ satisfying
+\[
+ \Dom(W)\supset\Dom(A_1),\qquad
+ \Dom(W^*)\supset\Dom(A_0),
+\]
+and a bounded positive self-adjoint $X:\cH_0\to\cH_1$ such that the operator
+$Y$ above is a strong solution of \eqref{eq:riccati}, but
+$\cG(\cH_0,X)$ is not reducing for $A+V$.
+
+Consequently requirement \emph{(ii)} in the source problem does not imply
+requirement \emph{(i)}, and the two requirements are not equivalent in the
+generality of Hypotheses 2.1--2.2 of~\cite{MSS13}.
+\end{theorem}
+
+\begin{proof}
+Let $K=\ell^2(\mathbb N_0)$, with standard basis $(e_n)_{n\ge0}$, and let
+$S e_n=e_{n+1}$ be the unilateral shift.  Define
+\[
+ A e_n=200^n e_n,
+ \qquad
+ \cD:=\Dom(A)
+ =\left\{u=(u_n):\sum_{n\ge0}200^{2n}|u_n|^2<\infty\right\}.
+\]
+Then $A$ is self-adjoint, $A\ge I$, and $A:\cD\to K$ is an isometric
+isomorphism when $\cD$ is given the norm $\|u\|_{\cD}=\|Au\|$.
+
+Put
+\begin{equation}\label{eq:X}
+ X=\frac3{100}I+\frac1{100}(S+S^*).
+\end{equation}
+Since $-2I\le S+S^*\le2I$, the operator $X$ is positive and
+\begin{equation}\label{eq:q}
+ \|X\|\le\frac1{20}=:q.
+\end{equation}
+Both $S$ and $S^*$ preserve $\cD$, so $X\cD\subset\cD$.  Conjugating its
+restriction to the graph-norm space gives the bounded operator
+\begin{equation}\label{eq:Z}
+ Z:=AXA^{-1}
+ =\frac3{100}I+2S+\frac1{20000}S^*,
+ \qquad
+ \|Z\|\le\frac{40601}{20000}=:M.
+\end{equation}
+
+We first prove the crucial failure
+\begin{equation}\label{eq:failure}
+ (I+X^2)^{-1}\cD\not\subset\cD.
+\end{equation}
+Indeed, consider the quadratic polynomial
+\[
+ p(z)=2z^2+\left(\frac3{100}+i\right)z+\frac1{20000}.
+\]
+On $|z|=1$,
+\[
+ \left|\left(\frac3{100}+i\right)z+\frac1{20000}\right|
+ \le \sqrt{1+\frac9{10000}}+\frac1{20000}<2=|2z^2|.
+\]
+Rouch\'e's theorem puts both roots of $p$ in the open unit disk.  Set
+$v_{-1}=0$, $v_0=1$, and recursively
+\[
+ 2v_{n+1}+\left(\frac3{100}+i\right)v_n
+   +\frac1{20000}v_{n-1}=0.
+\]
+Since both characteristic roots are in the open disk, the nonzero sequence
+$v=(v_n)$ belongs to $\ell^2(\mathbb N_0)$.  Formula \eqref{eq:Z} gives
+$(Z^*+i)v=0$, whence $i\in\spec(Z)$.  By polynomial spectral mapping,
+$I+Z^2$ is not invertible.
+
+If $R:=(I+X^2)^{-1}$ mapped $\cD$ into itself, then its restriction on the
+Banach space $\cD$ would be bounded by the closed graph theorem: convergence
+in $\cD$ implies convergence in $K$, where $R$ is bounded.  Hence
+$ARA^{-1}$ would be a bounded two-sided inverse of $I+Z^2$, because
+$AX^2A^{-1}=Z^2$.  This contradiction proves \eqref{eq:failure}.
+
+Now define on $\cD$
+\[
+ C:=AX-XA,
+ \qquad
+ W:=\sum_{n=0}^{\infty}(-1)^nX^nCX^n.
+\]
+This series converges in $K$ for every $u\in\cD$.  In fact,
+\begin{align*}
+ \|X^nCX^nu\|
+ &\le q^n\bigl(\|AX^{n+1}u\|+q\|AX^nu\|\bigr)\\
+ &\le (M+q)(qM)^n\|Au\|,
+\end{align*}
+and
+\[
+ qM=\frac{40601}{400000}<1.
+\]
+Thus $W:\cD\to K$ is well-defined and graph-norm bounded.  The operator
+$C$ is skew-symmetric on $\cD$, and so is every $X^nCX^n$; absolute
+convergence of the scalar products shows that $W$ is skew-symmetric.  In
+particular $W$ is densely defined and
+\begin{equation}\label{eq:adjoint}
+ \cD\subset\Dom(W^*),\qquad W^*u=-Wu\quad(u\in\cD).
+\end{equation}
+Moreover, adding the two convergent series and shifting the index yields the
+telescoping identity
+\begin{equation}\label{eq:stein}
+ W+XWX=C=AX-XA\quad\hbox{on }\cD.
+\end{equation}
+
+Take $\cH_0=\cH_1=K$, $A_0=A_1=A$, and $\Dom(W)=\cD$, and form
+\[
+ \mathbf A=\begin{pmatrix}A&0\\0&A\end{pmatrix},\quad
+ V=\begin{pmatrix}0&W\\W^*&0\end{pmatrix},\quad
+ Y=\begin{pmatrix}0&-X\\X&0\end{pmatrix}.
+\]
+The domain hypotheses on $W$ follow from \eqref{eq:adjoint}.  Since
+$X\cD\subset\cD$, the operator $Y$ maps
+$\Dom(\mathbf A)=\cD\oplus\cD$ into itself.  The two off-diagonal block
+equations in \eqref{eq:riccati} both reduce, using \eqref{eq:adjoint}, to
+\[
+ AX-XA-XWX-W=0,
+\]
+which is exactly \eqref{eq:stein}.  Hence $Y$ is a strong Riccati solution.
+
+It remains to disprove reduction.  The Riccati identity already makes
+$\cG(K,X)$ and $\cG(K,-X)$ invariant for $\mathbf A+V$.  Their domain
+intersections sum to
+\[
+ T(\cD\oplus\cD),\qquad
+ T=I+Y=\begin{pmatrix}I&-X\\X&I\end{pmatrix}.
+\]
+Because $X=X^*$,
+\[
+ T^{-1}=
+ \begin{pmatrix}R&XR\\-XR&R\end{pmatrix},
+ \qquad R=(I+X^2)^{-1}.
+\]
+By \eqref{eq:failure}, some $f\in\cD$ has $Rf\notin\cD$.  Therefore
+$T^{-1}(f\oplus0)\notin\cD\oplus\cD$, so
+$T(\cD\oplus\cD)\ne\cD\oplus\cD$.  The domain does not split along the
+two invariant graphs, and $\cG(K,X)$ is not reducing.
+\end{proof}
+
+\section{Verification, scope, and novelty}
+
+The proof is exact.  The deterministic script
+\path{code/check_parameters.py} verifies the rational contraction and
+geometric-series bounds, the strict Rouch\'e inequality, and the two
+characteristic roots.  It is an illustration rather than a substitute for
+the operator proof.  A separate sign-by-sign block multiplication and the
+domain-transfer argument are recorded in \path{VERIFICATION.md}.
+
+This example completely disproves the implication ``strong solution
+$\Rightarrow$ reducing graph'' and therefore disproves general equivalence.
+It does not disprove the converse implication.  Thus, if ``logical
+independence'' is reserved for failure of both implications, one half of that
+stronger statement remains open.
+
+The local run indexes were searched for arXiv:1307.6439, the exact title, and
+the core Riccati/graph terms.  Bounded web searches on August 9, 2026 used the
+exact open-problem sentence, the exact title and authors, and combinations of
+``strong solution,'' ``reducing graph,'' and ``counterexample.''  They found
+the source paper and the authors' later paper~\cite{MSS16}, which still calls
+the corresponding domain-splitting/domain-invariance question open, but no
+later resolution or this construction.  Novelty confidence is positive but
+conservative pending expert literature review.
+
+Human review is strongly recommended.  The decisive checks are the passage
+from $i\in\spec(Z)$ to failure of domain preservation, convergence and skew
+symmetry of the series defining $W$, and the signs in the two Riccati blocks.
+
+\begin{thebibliography}{9}
+\bibitem{MSS13}
+K. A. Makarov, S. Schmitz, and A. Seelmann,
+\emph{Reducing graph subspaces and strong solutions to operator Riccati
+equations}, unpublished preprint, arXiv:1307.6439 (2013).
+
+\bibitem{MSS16}
+K. A. Makarov, S. Schmitz, and A. Seelmann,
+\emph{On invariant graph subspaces}, Integral Equations Operator Theory
+\textbf{85} (2016), 399--425; arXiv:1509.07984.
+\end{thebibliography}
+
+\end{document}

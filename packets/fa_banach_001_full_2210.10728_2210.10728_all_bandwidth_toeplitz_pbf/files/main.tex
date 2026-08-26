@@ -1,0 +1,210 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+
+\title{Positive bidiagonal factorization for every\\finite-band oscillatory Toeplitz--Hessenberg matrix}
+\author{Candidate full solution to the question in arXiv:2210.10728}
+\date{12 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.} Candidate full solution, pending expert review.
+
+\medskip
+\noindent\textbf{Source.} A.~Branquinho, A.~Foulquié-Moreno, and M.~Mañas,
+\emph{Positive bidiagonal factorization of tetradiagonal Hessenberg
+matrices}~\cite{source}, question on printed page~21.
+
+\section{The question}
+For a lower Hessenberg matrix with $r$ subdiagonals, a \emph{positive
+bidiagonal factorization} (PBF) has the ordered form
+\[
+                         T=L_1L_2\cdots L_rU,                 \tag{1}\label{eq:pbf}
+\]
+where each $L_j$ is unit lower bidiagonal with strictly positive
+subdiagonal, while $U$ is upper bidiagonal with unit superdiagonal and
+strictly positive diagonal.  The source proves the Toeplitz case for $r=2$
+and asks in its conclusion:
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{The exact question in the original paper, printed page~21.  This is
+a full-width crop rendered from the archived source PDF.}
+\end{figure}
+
+\paragraph{Transcription.}
+``Similar questions open for the constant Toeplitz matrix, do a oscillatory
+pentadiagonal Toeplitz matrix always admit a PBF?''
+
+The answer is yes.  In fact, the number of subdiagonals is arbitrary.
+
+\section{Proof intuition}
+The Edrei--Schoenberg classification turns total nonnegativity of a banded
+Toeplitz matrix into a factorization of a polynomial:
+\[
+       1+e_1z+\cdots+e_{r+1}z^{r+1}
+       =\prod_{j=1}^{r+1}(1+\beta_jz),\qquad \beta_j>0.
+\]
+Writing $S$ for the unilateral lower shift immediately factors the matrix as
+one upper factor followed by $r$ lower factors.  This is exactly the wrong
+order for \eqref{eq:pbf}.
+
+The upper factor can nevertheless be moved rightward, one lower factor at a
+time, without losing positivity.  After the first $m$ roots have been
+absorbed, its $n$th diagonal entry is
+\[
+ q_n^{(m)}=\frac{h_{n+1}(\beta_1,\ldots,\beta_m)}
+                  {h_n(\beta_1,\ldots,\beta_m)},
+\]
+where $h_n$ is the complete homogeneous symmetric polynomial.  The elementary
+recurrence for $h_n$ is precisely the quotient--difference identity needed
+to exchange an upper and a lower bidiagonal factor.  All $h_n$ are positive,
+so every new factor is positive.  Iterating gives the requested order.
+
+\section{Statement and proof}
+Index rows and columns by $\N_0$.  Let $S$ be the unilateral lower shift,
+$S_{n,n-1}=1$ for $n\ge1$; thus $S^*S=I$.  For $r\ge1$ consider
+\[
+ T=S^*+e_1I+e_2S+\cdots+e_{r+1}S^r.             \tag{2}\label{eq:T}
+\]
+This is a Toeplitz--Hessenberg matrix with $r+2$ nonzero diagonals.
+
+\begin{theorem}\label{thm:all}
+For every $r\ge1$, an oscillatory Toeplitz--Hessenberg matrix
+\eqref{eq:T} admits a PBF \eqref{eq:pbf}.  More explicitly, if
+\[
+ 1+e_1z+\cdots+e_{r+1}z^{r+1}
+       =\prod_{j=1}^{r+1}(1+\beta_jz),\qquad \beta_j>0,       \tag{3}\label{eq:edrei}
+\]
+then the entries of all factors are given by positive quotients of complete
+homogeneous polynomials, as in \eqref{eq:lambda} below.
+\end{theorem}
+
+\begin{proof}
+The Edrei--Schoenberg theorem~\cite{edrei,schoenberg}, applied exactly as in
+the source's tetradiagonal Toeplitz argument, says that oscillation of
+\eqref{eq:T} yields \eqref{eq:edrei}; positivity of the outermost
+subdiagonal makes every $\beta_j$ strictly positive.
+
+For $m\in\{1,\ldots,r+1\}$ and $n\ge0$, set
+\[
+ H_n^{(m)}:=h_n(\beta_1,\ldots,\beta_m),
+ \qquad q_n^{(m)}:=\frac{H_{n+1}^{(m)}}{H_n^{(m)}}.
+\]
+Here $H_0^{(m)}=1$, and every $H_n^{(m)}>0$.  Let $U^{(m)}$ be the upper
+bidiagonal matrix with diagonal $(q_n^{(m)})_{n\ge0}$ and unit
+superdiagonal.  In particular,
+$U^{(1)}=S^*+\beta_1I$.  Write $L(\beta)=I+\beta S$.
+
+For $m\ge2$, define a unit lower bidiagonal matrix $B_{m-1}$ by
+\[
+ (B_{m-1})_{n,n-1}=\lambda_n^{(m)}
+ :=\frac{\beta_m q_n^{(m-1)}}{q_{n-1}^{(m)}}>0,
+ \qquad n\ge1.                                      \tag{4}\label{eq:lambda}
+\]
+We claim the local exchange identity
+\[
+                 U^{(m-1)}L(\beta_m)=B_{m-1}U^{(m)}. \tag{5}\label{eq:exchange}
+\]
+Both sides have unit superdiagonal and no entries below the first
+subdiagonal.  Their $(n,n-1)$ entries agree by \eqref{eq:lambda}.  At $n=0$,
+the diagonal equality is
+$q_0^{(m)}=q_0^{(m-1)}+\beta_m$.  For $n\ge1$, use
+\[
+ H_n^{(m)}-\beta_mH_{n-1}^{(m)}=H_n^{(m-1)},
+ \qquad
+ H_{n+1}^{(m)}=H_{n+1}^{(m-1)}+\beta_mH_n^{(m)}.    \tag{6}\label{eq:hrec}
+\]
+Indeed,
+\begin{align*}
+ q_n^{(m-1)}+\beta_m-\lambda_n^{(m)}
+ &=\frac{H_{n+1}^{(m-1)}}{H_n^{(m-1)}}
+   \left(1-\frac{\beta_mH_{n-1}^{(m)}}{H_n^{(m)}}\right)+\beta_m\\
+ &=\frac{H_{n+1}^{(m-1)}}{H_n^{(m)}}+\beta_m
+  =\frac{H_{n+1}^{(m)}}{H_n^{(m)}}=q_n^{(m)}.
+\end{align*}
+This proves \eqref{eq:exchange}, including strict positivity of its new
+lower factor.
+
+Finally, $S^*S^k=S^{k-1}$ for $k\ge1$, so expansion of \eqref{eq:edrei}
+gives the exact initial factorization
+\[
+ T=U^{(1)}L(\beta_2)L(\beta_3)\cdots L(\beta_{r+1}). \tag{7}\label{eq:wrong}
+\]
+Apply \eqref{eq:exchange} successively for $m=2,3,\ldots,r+1$:
+\[
+ T=B_1U^{(2)}L(\beta_3)\cdots L(\beta_{r+1})
+   =\cdots=B_1B_2\cdots B_rU^{(r+1)}.
+\]
+Every subdiagonal entry of every $B_j$ and every diagonal entry of
+$U^{(r+1)}$ is strictly positive.  This is the required PBF.
+\end{proof}
+
+\begin{corollary}[answer to the source question]
+Every oscillatory pentadiagonal Toeplitz--Hessenberg matrix admits a positive
+bidiagonal factorization with three unit lower bidiagonal factors followed by
+one positive upper bidiagonal factor.
+\end{corollary}
+
+\begin{proof}
+Take $r=3$ in Theorem~\ref{thm:all}.
+\end{proof}
+
+\section{Verification, scope, and novelty}
+The exact-arithmetic script \texttt{code/verify\_pbf.py} constructs the
+factors from \eqref{eq:lambda} and compares their product entrywise with
+twelve-by-twelve leading Toeplitz sections.  It checks five cases from one
+through five subdiagonals, including repeated roots.  All checks pass.  This
+is a normalization check only; equations \eqref{eq:hrec}--\eqref{eq:wrong}
+constitute the proof.
+
+The result concerns the source's one-superdiagonal Toeplitz--Hessenberg
+setting.  It does not answer the source's broader final question about
+matrices having several superdiagonals as well as several subdiagonals, nor
+does it claim that arbitrary non-Toeplitz oscillatory Hessenberg matrices have
+a PBF.
+
+\paragraph{Novelty check.}
+On 12 August 2026, bounded arXiv and run-index searches used the exact title
+and source question together with ``pentadiagonal Toeplitz PBF'', ``banded
+Toeplitz bidiagonal factorization'', ``quotient--difference'', ``complete
+homogeneous'', and ``branched continued fractions''.  Later
+arXiv:2412.03694 and arXiv:2603.21345 develop broad MOP/branched
+factorizations, but source inspection and exact searches found neither the
+Toeplitz theorem nor formula \eqref{eq:lambda}.  Novelty confidence is
+moderate rather than definitive.
+
+\paragraph{Human-review recommendation.}
+Prioritize review.  The main checks are the orientation of the source's PBF
+convention and the general finite-polynomial Edrei--Schoenberg invocation;
+the quotient--difference calculation itself is elementary and exact.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+A.~Branquinho, A.~Foulquié-Moreno, and M.~Mañas,
+\emph{Positive bidiagonal factorization of tetradiagonal Hessenberg
+matrices}, arXiv:2210.10728 (2022).
+
+\bibitem{edrei}
+A.~Edrei, \emph{Proof of a conjecture of Schoenberg on the generating
+function of a totally positive sequence}, Canad. J. Math. \textbf{5} (1953),
+86--94.
+
+\bibitem{schoenberg}
+I.~J. Schoenberg, \emph{Some analytical aspects of the problem of smoothing},
+in \emph{Studies and Essays Presented to R. Courant on His 60th Anniversary},
+Interscience, 1948, 351--370.
+\end{thebibliography}
+
+\end{document}

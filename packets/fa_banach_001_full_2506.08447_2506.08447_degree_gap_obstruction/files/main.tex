@@ -1,0 +1,260 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\Nzero}{\mathbb Z_{+}}
+\newcommand{\D}{\Delta}
+
+\title{A degree-gap obstruction to joint complete monotonicity}
+\author{Solution packet for arXiv:2506.08447v2}
+\date{12 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+Candidate full solution, likely valid, awaiting human review.
+
+\section{Source question and answer}
+
+Khasnis and Sholapurkar study when
+\begin{equation}\label{eq:beta-polynomial}
+ \beta(m,n)=\frac{1}{b(m)+a(m)n},\qquad m,n\in\Nzero,
+\end{equation}
+is jointly completely monotone \cite{KhasnisSholapurkar}.  In their
+Question~4.6 they take
+\begin{equation}\label{eq:source-family}
+ a(x)=a_0(x+a_1),\qquad
+ b(x)=b_0(x+b_1)(x+b_2)(x+b_3)
+\end{equation}
+with positive parameters satisfying
+$0<b_1<a_1<b_2<b_3$, and ask whether the answer is yes.  The current arXiv
+version still poses the question on source PDF page~10:
+
+\begin{center}
+ \includegraphics[width=0.94\textwidth]{figures/question_4_6_crop.png}
+\end{center}
+
+The answer is \emph{no for every choice} in \eqref{eq:source-family}.  More
+generally, a polynomial degree gap at least two always rules out joint
+complete monotonicity.  The proof comes from an exact reduction to
+one-variable Hausdorff moment sequences.
+
+\section{Definitions and the explicit vertical measure}
+
+For a sequence $u=(u_m)_{m\ge0}$, write
+$\D u_m=u_{m+1}-u_m$.  It is a Hausdorff moment sequence precisely when
+\[
+ (-1)^k\D^ku_m\ge0\qquad(m,k\in\Nzero),
+\]
+equivalently when $u_m=\int_0^1s^m\,d\eta(s)$ for a finite positive measure
+$\eta$ on $[0,1]$.  The two-variable analogue says that a net is jointly
+completely monotone precisely when it is the moment net of a finite positive
+measure on $[0,1]^2$ \cite[Proposition~4.6.11]{BergChristensenRessel}; this is
+also recalled at the start of the source paper.
+
+The following observation is the key.  It is stated for arbitrary positive
+sequences, so no polynomial structure is used.  Put
+\[
+ a_m>0,\qquad b_m>0,\qquad r_m=\frac{b_m}{a_m},
+ \qquad
+ h_m(t)=\frac1{a_m}t^{r_m-1}\quad(0<t<1).
+\]
+Then
+\begin{equation}\label{eq:vertical-integral}
+ \int_0^1t^nh_m(t)\,dt
+ =\frac1{a_m(n+r_m)}
+ =\frac1{b_m+a_mn}.
+\end{equation}
+
+\section{An exact slice characterization}
+
+\begin{theorem}[Vertical-slice criterion]\label{thm:slice}
+For positive sequences $(a_m)$ and $(b_m)$, the net
+\[
+ \beta(m,n)=\frac1{b_m+a_mn},\qquad m,n\in\Nzero,
+\]
+is jointly completely monotone if and only if, for every $t\in(0,1)$, the
+sequence $(h_m(t))_{m\ge0}$ is a Hausdorff moment sequence.
+\end{theorem}
+
+\begin{proof}
+Suppose first that $\beta$ is jointly completely monotone, and let $\mu$ be
+its representing measure on $[0,1]^2$.  For every $m$, define a measure on
+$[0,1]$ by
+\[
+ \nu_m(E)=\int_{[0,1]\times E}s^m\,d\mu(s,t).
+\]
+Its $n$th moment is $\beta(m,n)$.  By \eqref{eq:vertical-integral}, the
+measure $h_m(t)\,dt$ has exactly the same moments.  Hausdorff moment measures
+are unique: equality on monomials gives equality on polynomials, and
+Weierstrass approximation gives equality on every continuous function.
+Hence
+\begin{equation}\label{eq:density-identification}
+ d\nu_m(t)=h_m(t)\,dt.
+\end{equation}
+
+For $m,k\ge0$, the measure
+\[
+ \sum_{j=0}^k(-1)^j\binom{k}{j}\nu_{m+j}(E)
+ =\int_{[0,1]\times E}s^m(1-s)^k\,d\mu(s,t)
+\]
+is positive.  By \eqref{eq:density-identification}, its Lebesgue density is
+$(-1)^k\D^kh_m(t)$, so that density is nonnegative almost everywhere.  It is
+continuous on $(0,1)$; therefore it is nonnegative everywhere.  This holds
+for all $m,k$, proving that $(h_m(t))_m$ is a Hausdorff moment sequence for
+every $t\in(0,1)$.
+
+Conversely, assume the stated one-variable condition.  Let $\eta_t$ be the
+unique positive measure on $[0,1]$ whose moments are $h_m(t)$.  We briefly
+justify that these measures can be integrated without invoking a measurable
+selection theorem.  For every polynomial $P$, the map
+$t\mapsto\int P\,d\eta_t$ is a finite linear combination of the continuous
+functions $h_m(t)$.  Uniform polynomial approximation then makes
+$t\mapsto\int f\,d\eta_t$ measurable for every $f\in C[0,1]$.  Indeed, the
+approximation error is bounded by
+$\lVert P-f\rVert_\infty\eta_t([0,1])
+=\lVert P-f\rVert_\infty h_0(t)$.
+
+For $F\in C([0,1]^2)$ define
+\[
+ L(F)=\int_0^1\left(\int_0^1F(s,t)\,d\eta_t(s)\right)dt.
+\]
+Finite sums of products $f(s)g(t)$ approximate $F$ uniformly, which proves
+measurability of the inner integral.  Moreover,
+\[
+ \int_0^1h_0(t)\,dt=\frac1{b_0}<\infty,
+\]
+so $L$ is a bounded positive linear functional.  The Riesz representation
+theorem gives a finite positive measure $\mu$ on $[0,1]^2$ representing $L$.
+Finally,
+\[
+ \int_{[0,1]^2}s^mt^n\,d\mu(s,t)
+ =\int_0^1t^nh_m(t)\,dt
+ =\beta(m,n)
+\]
+by \eqref{eq:vertical-integral}.  Thus $\beta$ is jointly completely
+monotone.
+\end{proof}
+
+\section{The degree-gap theorem}
+
+\begin{lemma}[Two necessary concavity conditions]\label{lem:concavity}
+If the net in Theorem~\ref{thm:slice} is jointly completely monotone, then,
+for every $m\ge0$,
+\begin{equation}\label{eq:necessary}
+ \D^2r_m\le0,
+ \qquad
+ a_{m+1}^2\ge a_ma_{m+2}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+A Hausdorff moment sequence is log-convex by Cauchy--Schwarz.  Applying this
+to $(h_m(t))_m$ from Theorem~\ref{thm:slice} gives
+\[
+ h_{m+1}(t)^2\le h_m(t)h_{m+2}(t),
+\]
+or equivalently
+\begin{equation}\label{eq:ratio}
+ \frac{a_ma_{m+2}}{a_{m+1}^2}
+ t^{-\D^2r_m}\le1\qquad(0<t<1).
+\end{equation}
+If $\D^2r_m>0$, the left side tends to infinity as $t\downarrow0$, a
+contradiction.  Thus $\D^2r_m\le0$.  Letting $t\uparrow1$ in
+\eqref{eq:ratio} gives the second inequality in \eqref{eq:necessary}.
+\end{proof}
+
+\begin{theorem}[Polynomial degree-gap obstruction]\label{thm:gap}
+Let $a,b$ be real polynomials which are positive on $\Nzero$ and have
+positive leading coefficients.  If
+\[
+ \deg b-\deg a\ge2,
+\]
+then the net in \eqref{eq:beta-polynomial} is not jointly completely
+monotone.
+\end{theorem}
+
+\begin{proof}
+Let $d=\deg b-\deg a\ge2$ and let $c>0$ be the ratio of the leading
+coefficients.  The rational function $r(x)=b(x)/a(x)$ satisfies
+\[
+ r''(x)=c\,d(d-1)x^{d-2}+O(x^{d-3})>0
+\]
+for all sufficiently large $x$.  (This follows directly by differentiating
+the asymptotic expansion $r(x)=cx^d(1+O(x^{-1}))$.)  For every sufficiently
+large integer $m$,
+\[
+ \D^2r_m
+ =r(m+2)-2r(m+1)+r(m)
+ =\int_0^1\!\int_0^1r''(m+u+v)\,du\,dv>0.
+\]
+This contradicts Lemma~\ref{lem:concavity}.
+\end{proof}
+
+\begin{corollary}[Full answer to Question 4.6]
+For every positive $a_0,a_1,b_0,b_1,b_2,b_3$---in particular, for every
+choice satisfying $0<b_1<a_1<b_2<b_3$---the net obtained from
+\eqref{eq:source-family} is not jointly completely monotone.
+\end{corollary}
+
+\begin{proof}
+Here $\deg b=3$ and $\deg a=1$, so Theorem~\ref{thm:gap} applies.  The root
+ordering is immaterial.
+\end{proof}
+
+\section{Scope, checks, and novelty}
+
+The result completely answers the concrete ordered-root question and proves
+a stronger coefficient-free theorem for every polynomial degree gap at least
+two.  The exact slice criterion also identifies what remains in degree gaps
+zero and one, but it is not presented as a root-by-root solution of the
+paper's much broader Problem~1.1.
+
+The sign mechanism is robust: convexity of $r=b/a$ produces
+$t^{-\D^2r_m}$ in \eqref{eq:ratio}, which diverges at zero and cannot be
+cancelled by the fixed positive coefficient involving $a$.  Thus the proof
+does not depend on a low-order numerical counterexample or on the ordering of
+the roots.
+
+A bounded literature check through 12 August 2026 examined the current arXiv
+v2 record and full text, exact title/id/question/order searches, related
+rational-function work, and Bhattacharjee--Nailwal's characterization of
+completely alternating functions \cite{BhattacharjeeNailwal}.  The latter
+handles the unprefactored net $1/(\psi(m)+n)$, whereas the present problem has
+the variable factor $1/a(m)$.  No later answer to Question~4.6 or statement of
+Theorem~\ref{thm:gap} was found.  This is a bounded novelty screen, not an
+exhaustive bibliographic guarantee.
+
+\medskip
+\noindent\textbf{Human-review recommendation.}
+High priority.  Recheck the converse half of Theorem~\ref{thm:slice} and the
+exponent sign in \eqref{eq:ratio}; these are the only substantive proof
+points beyond standard Hausdorff theory.
+
+\begin{thebibliography}{9}
+\bibitem{KhasnisSholapurkar}
+M.~N. Khasnis and V.~M. Sholapurkar,
+\emph{Joint Complete Monotonicity of reciprocal of a polynomial in two
+variables}, arXiv:2506.08447v2 [math.FA], 17 October 2025.
+
+\bibitem{BergChristensenRessel}
+C.~Berg, J.~P.~R. Christensen, and P.~Ressel,
+\emph{Harmonic Analysis on Semigroups: Theory of Positive Definite and
+Related Functions}, Graduate Texts in Mathematics 100, Springer, 1984.
+
+\bibitem{BhattacharjeeNailwal}
+M.~Bhattacharjee and R.~Nailwal,
+\emph{A characterization of completely alternating functions}, Journal of
+Approximation Theory 313 (2026), 106230,
+\href{https://doi.org/10.1016/j.jat.2025.106230}{doi:10.1016/j.jat.2025.106230}.
+\end{thebibliography}
+
+\end{document}

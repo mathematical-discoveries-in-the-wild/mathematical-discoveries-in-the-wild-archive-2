@@ -1,0 +1,240 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\newcommand{\C}{\mathbb C}
+\newcommand{\T}{\mathbb T}
+\newcommand{\R}{\mathcal R}
+
+\title{The Fixed-Point Converse in Remark 5.3 Is False\\
+\large A four-element counterexample with nontrivial character}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 8}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{black}{gray!8}{\parbox{0.9\linewidth}{
+\textbf{Status.} Candidate counterexample, likely valid, pending human review.
+The construction answers the literal two-sided wording of Remark~5.3.  It does
+not settle the repaired one-sided question obtained by replacing
+``$\varphi$-amenable'' with ``left $\varphi$-amenable.''
+}}
+\end{center}
+
+\section{Source question}
+
+Jabbari, Ebadian, and Eshaghi Gordji introduce $\varphi$-amenability for
+topological semigroups in \cite{JEG}.  For a continuous character
+$\varphi:S\to\T$, they write
+\[
+ P(\varphi)=\{s\in S:\varphi(s)=1\}.
+\]
+Corollary~5.2(ii) is the assertion that every continuous affine action of
+$P(\varphi)$ on a nonempty compact convex subset of a locally convex space has
+a common fixed point.  Remark~5.3 asks whether this condition implies that
+$S$ is $\varphi$-amenable.  The source defines $\varphi$-amenability to mean
+\emph{both} left and right $\varphi$-amenability.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/corollary_5_2_crop.png}
+\caption{The complete fixed-point condition in Corollary~5.2, source page 17.}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{Remark~5.3 and its immediate context, source page 18.}
+\end{figure}
+
+\section{Idea of the proof}
+
+The fixed-point condition is one-sided.  A right-zero semigroup
+$\R=\{0,1\}$, whose product is $ij=j$, has exactly the required affine
+fixed-point property: a fixed point of either one of the action maps is
+automatically fixed by both.  On the opposite side, however, right
+translations by the two idempotents collapse $\R$ onto two different fibers.
+No normalized invariant functional can survive both collapses.
+
+To make the character nontrivial, attach a cyclic sign coordinate.  Thus
+$S=C_2\times\R$ and $\varphi$ is the sign character on $C_2$.  Its kernel
+$P(\varphi)$ is precisely the right-zero factor.  A short quotient-module
+argument derives the needed invariant functional directly from the definition
+of right $\varphi$-amenability; two indicator functions then give the
+contradiction.
+
+\section{A necessary functional for right $\varphi$-amenability}
+
+For $s\in S$, let $R_s$ denote right translation on $C(S)$,
+\[
+ (R_sf)(t)=f(ts).
+\]
+The next finite-dimensional lemma is included so that the counterexample does
+not rely on a separate mean-characterization theorem from the source.
+
+\begin{lemma}\label{lem:mean}
+Let $S$ be a finite discrete semigroup and let $\varphi:S\to\T$ be a
+character.  If $S$ is right $\varphi$-amenable in the sense of \cite{JEG},
+then there is $m\in C(S)^*$ such that
+\begin{equation}\label{eq:mean}
+ m(\varphi)=1,
+ \qquad m(R_sf)=\varphi(s)m(f)
+ \quad(s\in S,\ f\in C(S)).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Put $E=C(S)$ and make it an $S$-bimodule by
+\[
+ (s\cdot f)(t)=f(ts),
+ \qquad (f\cdot s)(t)=\varphi(s)f(t).
+\]
+The line $\C\varphi$ is an $S$-submodule, because
+$s\cdot\varphi=\varphi\cdot s=\varphi(s)\varphi$.  Hence
+$X=E/\C\varphi$ is a Banach $S$-bimodule whose right action is
+$x\cdot s=\varphi(s)x$, exactly as required in the definition of right
+$\varphi$-amenability.  Identify
+\[
+ X^*=Y=\{F\in E^*:F(\varphi)=0\}.
+\]
+
+Choose $F_0\in E^*$ with $F_0(\varphi)=1$.  With the usual dual module
+actions, define
+\[
+ D(s)=s\cdot F_0-F_0\cdot s.
+\]
+This is an inner derivation in $E^*$ and it takes values in $Y$, since its two
+terms have the same value $\varphi(s)$ on $\varphi$.  Because $S$ is finite
+and discrete, $D$ is bounded and continuous.  Right $\varphi$-amenability
+therefore supplies $F\in Y$ such that
+\[
+ D(s)=s\cdot F-F\cdot s\qquad(s\in S).
+\]
+Set $m=F_0-F$.  Then $m(\varphi)=1$ and $s\cdot m=m\cdot s$.  Evaluating this
+identity at $f\in E$ gives
+\[
+ \varphi(s)m(f)=m(f\cdot s)=(s\cdot m)(f)
+ =(m\cdot s)(f)=m(s\cdot f)=m(R_sf),
+\]
+which is \eqref{eq:mean}.
+\end{proof}
+
+\section{Counterexample}
+
+\begin{theorem}\label{thm:main}
+The converse asked for in Remark~5.3 of \cite{JEG} is false, even when $S$ is
+a four-element discrete semigroup and $\varphi$ is nontrivial.
+\end{theorem}
+
+\begin{proof}
+Let $C_2=\{0,1\}$ with addition modulo two and let
+$\R=\{0,1\}$ be the right-zero semigroup, so $ij=j$.  On
+\[
+ S=C_2\times\R
+\]
+the direct-product multiplication is
+\begin{equation}\label{eq:product}
+ (\varepsilon,i)(\delta,j)=(\varepsilon+\delta\!\!\pmod 2,j).
+\end{equation}
+Give $S$ the discrete topology and define
+\[
+ \varphi(\varepsilon,i)=(-1)^\varepsilon.
+\]
+Associativity follows from the direct-product construction, and
+\eqref{eq:product} immediately gives
+$\varphi(xy)=\varphi(x)\varphi(y)$.  Thus $\varphi$ is a continuous nontrivial
+character.  Moreover,
+\[
+ P(\varphi)=\{p_0,p_1\},
+ \qquad p_i=(0,i),
+ \qquad p_ip_j=p_j.
+\]
+
+We first verify Corollary~5.2(ii).  Let $T_p$ be any continuous affine action
+of $P(\varphi)$ on a nonempty compact convex set $K$ in a locally convex
+space.  By the Schauder--Tychonoff fixed-point theorem \cite{Tychonoff}, the
+map $T_{p_0}$ has a fixed point $y\in K$.  For either $p\in P(\varphi)$,
+\[
+ T_py=T_pT_{p_0}y=T_{pp_0}y=T_{p_0}y=y,
+\]
+because $pp_0=p_0$.  Hence $y$ is a common fixed point, and condition (ii)
+holds.
+
+It remains to show that $S$ is not $\varphi$-amenable.  Suppose instead that
+$S$ were right $\varphi$-amenable.  Lemma~\ref{lem:mean} would give a
+functional $m$ satisfying \eqref{eq:mean}.  For $i=0,1$, let
+\[
+ u_i(\varepsilon,j)=\begin{cases}1,&j=i,\\0,&j\ne i.\end{cases}
+\]
+Right multiplication by $p_i$ sends $(\varepsilon,j)$ to
+$(\varepsilon,i)$.  Consequently
+\[
+ R_{p_i}(\varphi u_{1-i})=0.
+\]
+Since $\varphi(p_i)=1$, equation \eqref{eq:mean} implies
+\[
+ m(\varphi u_{1-i})=m(R_{p_i}(\varphi u_{1-i}))=0.
+\]
+Using $i=0$ and $i=1$ yields
+$m(\varphi u_0)=m(\varphi u_1)=0$.  But $u_0+u_1=1$, so
+\[
+ 1=m(\varphi)=m(\varphi u_0)+m(\varphi u_1)=0,
+\]
+a contradiction.  Thus $S$ is not right $\varphi$-amenable and therefore is
+not $\varphi$-amenable.  This disproves the converse.
+\end{proof}
+
+\begin{remark}[A two-element version]
+If the trivial character is allowed, take $S=\R$ itself and
+$\varphi\equiv1$.  The same fixed-point proof applies.  If a functional from
+Lemma~\ref{lem:mean} existed, right translation by $i$ would annihilate
+$u_{1-i}$, forcing $m(u_0)=m(u_1)=0$ and contradicting $m(1)=1$.  Thus two
+elements already suffice for the literal question; Theorem~\ref{thm:main}
+shows that triviality of the character is not the issue.
+\end{remark}
+
+\section{Verification, scope, and novelty}
+
+The proof is exact and finite-dimensional.  The accompanying verifier checks
+all $64$ associativity triples, all $16$ character identities, the right-zero
+kernel, and the complete invariant-functional system over the rational
+numbers.  That system has coefficient rank $4$ and augmented rank $5$.
+
+The left/right distinction is essential.  Corollary~5.2(ii) is a one-sided
+fixed-point property of $P(\varphi)$, whereas the source's unqualified term
+``$\varphi$-amenable'' is explicitly two-sided.  The theorem completely
+answers Remark~5.3 as written.  It does not resolve the repaired question
+whether condition (ii) forces \emph{left} $\varphi$-amenability.
+
+The run indexes contained no matching result, attempt, or proof-gap packet.
+Bounded web/arXiv searches on 9 August 2026 used the exact Remark~5.3 wording,
+the title, DOI and authors, and combinations of $P(\varphi)$, fixed points,
+right-zero semigroups, and character amenability.  They found the source and
+bibliographic records but no later answer, correction, or matching
+counterexample.  This is not an exhaustive novelty claim.
+
+\begin{thebibliography}{9}
+\bibitem{JEG}
+A. Jabbari, A. Ebadian, and M. Eshaghi Gordji,
+\emph{A Weak Form of Amenability of Topological Semigroups and its
+Applications in Ergodic and Fixed Point Theories},
+arXiv:2005.08089 (2020); Collect. Math. \textbf{74} (2023), 149--171,
+\href{https://doi.org/10.1007/s13348-021-00340-7}{doi:10.1007/s13348-021-00340-7}.
+
+\bibitem{Tychonoff}
+A. Tychonoff,
+\emph{Ein Fixpunktsatz},
+Math. Ann. \textbf{111} (1935), 767--776.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,344 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,graphicx,microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\cL}{\mathcal L}
+
+\title{Critical Vicsek super-Riesz endpoint:\\
+one-cut stability and a finite-horizon estimate}
+\author{Candidate partial result for arXiv:2606.05475}
+\date{12 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Candidate partial result, likely valid.  This packet does not claim to decide
+the full critical inequality.  It proves that all one-edge cut tests are
+uniformly harmless at the critical exponent and proves a logarithmic
+finite-horizon bound.}}
+\end{center}
+
+\section{Source question}
+
+The source is Joseph Feneuil, \emph{Reverse inequalities for super-Riesz
+transforms on graphs with a slow diffusion}, arXiv:2606.05475v2
+\cite{Feneuil}.  On a $D$-dimensional Vicsek graph it proves that
+\[
+ (R_{p,\gamma})\qquad
+ \|\,|\nabla f|\,\|_p\leq C\|\Delta^\gamma f\|_p
+\]
+holds below
+\[
+ \gamma^*(p)=\frac1{D+1}+\frac{D-1}{(D+1)p}
+\]
+and fails above it, leaving equality open.  The reverse inequality is
+\[
+ (RR_{p,\gamma})\qquad
+ \|\Delta^\gamma f\|_p\leq C\|\,|\nabla f|\,\|_p.
+\]
+On a tree, the source's primitive and duality arguments pair the critical
+Riesz inequality at $p$ with the critical reverse inequality at $p'$.  Thus
+understanding either family at equality is directly relevant to the question.
+
+Figure~\ref{fig:question} reproduces the abstract's exact statement that the
+critical exponent remains open.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{The open endpoint statement on page 1 of arXiv:2606.05475v2.}
+\label{fig:question}
+\end{figure}
+
+\section{Setting and notation}
+
+Let $(G,\mu)$ be an infinite weighted tree satisfying the assumptions used in
+the source: uniform laziness/non-degeneracy (LB), $D$-Ahlfors regularity, and
+the sub-Gaussian upper estimate $(UE)_\beta$.  Thus
+\[
+ V(x,r)\asymp (1+r)^D
+\]
+and, with harmless indexing changes,
+\[
+ p_k(x,y)\leq \frac{C}{V(x,k^{1/\beta})}
+ \exp\!\left[-c\left(\frac{d(x,y)^\beta}{k}\right)^{1/(\beta-1)}\right].
+ \tag{2.1}
+\]
+For a Vicsek graph $\beta=D+1$.  We write $P$ for the Markov operator and
+$\Delta=I-P$.
+
+If $e=\{a,b\}$ is a non-loop edge, deleting $e$ gives two components.  Let
+$A_e$ be either one and put $h_e=\mathbf 1_{A_e}$.  Finally set
+\[
+ \rho_e(x)=1+\min\{d(x,a),d(x,b)\}.
+\]
+
+\section{Idea of the proof}
+
+A one-edge cut has the smallest possible gradient: it is supported only at
+the cut.  Fractional powers are nonlocal, however, so this test could in
+principle still destroy the endpoint.  The binomial formula for
+$(I-P)^\gamma$ turns its value at $x$ into a weighted sum of probabilities
+that the random walk crosses the cut.  Before time comparable with
+$\rho_e(x)^\beta$, the sub-Gaussian estimate makes that probability
+exponentially small; afterward the fractional coefficient tail is exactly
+$\rho_e(x)^{-\beta\gamma}$.  Ahlfors shell summation then gives the sharp
+integrability threshold $p\beta\gamma>D$.
+
+At the critical exponent, the source's Poincar\'e exponent is exactly
+$s=\beta\gamma^*(p)$.  Its tent-space lemma remains valid with the local
+exponent $q=p$; what fails in the published strong-type proof is summation
+over infinitely many diffusion times.  Truncating at $K$ and applying
+Minkowski in $L^{p/2}$ costs only the square root of the harmonic sum
+$\sum_{k\leq K}k^{-1}$.
+
+The full endpoint remains open because neither argument controls coherent
+superpositions of cuts over unboundedly many self-similar scales.
+
+\section{Uniform stability of one-edge cuts}
+
+\begin{theorem}[one-edge cut estimate]\label{thm:cut}
+Let $0<\gamma<1$.  Uniformly in the edge $e$ and in the choice of component,
+\[
+ |\Delta^\gamma h_e(x)|\leq C_\gamma\rho_e(x)^{-\beta\gamma}
+ \qquad (x\in G).
+ \tag{4.1}
+\]
+Consequently
+\[
+ \Delta^\gamma h_e\in L^p(G)
+ \quad\text{and}\quad
+ \|\Delta^\gamma h_e\|_p\leq C_{p,\gamma}
+ \tag{4.2}
+\]
+whenever $p\beta\gamma>D$.  Moreover
+$\|\,|\nabla h_e|\,\|_p\asymp1$, uniformly in $e$.
+\end{theorem}
+
+\begin{proof}
+For $0<\gamma<1$, the absolutely convergent scalar binomial identity on
+$[-1,1]$ is
+\[
+ (1-z)^\gamma=\sum_{k=1}^\infty b_k(1-z^k),\qquad
+ b_k=(-1)^{k+1}\binom{\gamma}{k}>0,
+ \quad b_k\asymp_\gamma k^{-1-\gamma}.
+ \tag{4.3}
+\]
+It applies pointwise to the bounded function $h_e$ and gives
+\[
+ \Delta^\gamma h_e(x)=\sum_{k=1}^\infty
+ b_k\bigl(h_e(x)-P^kh_e(x)\bigr).
+ \tag{4.4}
+\]
+
+Suppose first that $x\in A_e$.  Since every path from $x$ to $A_e^c$ crosses
+$e$, every $y\in A_e^c$ has $d(x,y)\geq \rho_e(x)-1$.  Annular summation in
+(2.1), using Ahlfors regularity, gives constants $C,c'>0$ such that
+\[
+ 0\leq 1-P^kh_e(x)
+ =\sum_{y\in A_e^c}p_k(x,y)m(y)
+ \leq C\exp\!\left[-c'
+ \left(\frac{\rho_e(x)^\beta}{k}\right)^{1/(\beta-1)}\right]
+ \tag{4.5}
+\]
+when $k\leq\rho_e(x)^\beta$, while the trivial upper bound is $1$ for all
+$k$.  The same argument, with the two components exchanged, applies when
+$x\notin A_e$.
+
+Write $R=\rho_e(x)^\beta$.  Equations (4.3)--(4.5), split at $k=R$, imply
+\begin{align*}
+ |\Delta^\gamma h_e(x)|
+ &\leq C\sum_{k\leq R} k^{-1-\gamma}
+     e^{-c'(R/k)^{1/(\beta-1)}}
+   +C\sum_{k>R}k^{-1-\gamma}\\
+ &\leq C R^{-\gamma}=C\rho_e(x)^{-\beta\gamma}.
+\end{align*}
+The first sum is estimated by the change of scale $u=k/R$ (or by dyadic
+blocks), and the second is an integral tail.  This proves (4.1).
+
+For $j\geq0$, Ahlfors regularity bounds the measure of
+$\{x:2^j\leq\rho_e(x)<2^{j+1}\}$ by $C2^{jD}$.  Therefore
+\[
+ \|\Delta^\gamma h_e\|_p^p
+ \leq C\sum_{j\geq0}2^{j(D-p\beta\gamma)},
+\]
+which converges precisely under the asserted strict inequality.  Finally,
+$\nabla h_e$ vanishes away from the two orientations of $e$; (LB), Ahlfors
+regularity at bounded radius, and uniform local finiteness make its $L^p$
+norm comparable with $1$.
+\end{proof}
+
+\begin{corollary}[critical cut stability]\label{cor:critical}
+On a $D$-dimensional Vicsek graph, for every $1<p<\infty$,
+\[
+ \sup_e\|\Delta^{\gamma^*(p)}h_e\|_p<\infty.
+\]
+Indeed,
+\[
+ p\beta\gamma^*(p)=p+D-1>D.
+\]
+Thus a counterexample at equality cannot consist of a single bottleneck cut.
+\end{corollary}
+
+\section{A logarithmic finite-horizon endpoint bound}
+
+For $K\geq1$, define the truncated Lusin area functional
+\[
+ \cL_{\gamma,K}f(x)^2=
+ \sum_{k=1}^K\ \sum_{d(x,y)^\beta<k}
+ \frac{k^{1-2\gamma}m(y)}{V(x,k^{1/\beta})}
+ |\Delta P^{k-1}f(y)|^2.
+ \tag{5.1}
+\]
+The source proves that the corresponding full functional is equivalent in
+$L^p$ to $\Delta^\gamma f$ (via its horizontal and conical Littlewood--Paley
+theorems).
+
+\begin{theorem}[finite-horizon critical estimate]\label{thm:log}
+Let $2\leq p<\infty$, $\beta=D+1$, and
+$\gamma=\gamma^*(p)$.  For every compactly supported $f$ and every $K\geq2$,
+\[
+ \|\cL_{\gamma,K}f\|_p
+ \leq C_p\sqrt{1+\log K}\,\|\,|\nabla f|\,\|_p.
+ \tag{5.2}
+\]
+The constant is independent of $K$ and $f$.
+\end{theorem}
+
+\begin{proof}
+Put $s=1+(D-1)/p=\beta\gamma$.  The source's Vicsek Poincar\'e theorem gives
+$(P_p)_s$.  Its area-functional estimate preceding the proof of the main
+reverse theorem is valid with local exponent $q=p$; the later restriction
+$q<p$ is used only to obtain a strong maximal-function estimate.  Apply that
+area estimate to the collection $f_k=f$ for $k\leq K$ and $f_k=0$ afterward.
+Because $s/\beta=\gamma$, it gives
+\[
+ \|\cL_{\gamma,K}f\|_p
+ \leq C_p\left\|\mathcal A^p
+  (\{\mathbf1_{k\leq K}|\nabla f|\}_{k\geq1})\right\|_p.
+ \tag{5.3}
+\]
+
+Set $g=|\nabla f|$ and $r_k=k^{1/\beta}$.  From the definition of
+$\mathcal A^p$, its square has the form
+\[
+ \sum_{k=1}^K\frac1k H_k(x),
+\quad
+ H_k(x)=\frac1{V(x,r_k)}\sum_{y\in B(x,r_k)}m(y)
+ \left(\frac1{V(y,r_k)}\sum_{z\in B(y,r_k)}|g(z)|^p m(z)
+ \right)^{2/p}.
+ \tag{5.4}
+\]
+Doubling, Jensen, and Fubini imply
+\[
+ \|H_k\|_{p/2}\leq C\|g\|_p^2
+ \tag{5.5}
+\]
+uniformly in $k$.  (For $p=2$ this is just preservation of mass up to the
+doubling constant; for $p>2$, apply Jensen to the exponent $2/p\leq1$ and
+then use the same Fubini estimate.)  Since $p/2\geq1$, Minkowski yields
+\begin{align*}
+ \|\mathcal A^p(\{\mathbf1_{k\leq K}g\})\|_p^2
+ &=\left\|\sum_{k=1}^K k^{-1}H_k\right\|_{p/2}\\
+ &\leq\sum_{k=1}^K k^{-1}\|H_k\|_{p/2}
+ \leq C(1+\log K)\|g\|_p^2.
+\end{align*}
+Combining this with (5.3) proves (5.2).
+\end{proof}
+
+\begin{remark}
+At $p=2$, the exact identity
+$\|\Delta^{1/2}f\|_2=\|\,|\nabla f|\,\|_2$ removes the logarithm.  For
+$p>2$, Theorem~\ref{thm:log} is not claimed sharp.  Since
+$\cL_{\gamma,K}\uparrow\cL_{\gamma,\infty}$, a uniform version of (5.2)
+would prove the reverse critical inequality.  The theorem shows precisely
+that the published method loses no power of the spatial radius: its remaining
+loss is harmonic accumulation over diffusion scales.
+\end{remark}
+
+\section{Computational stress test and full-upgrade attempts}
+
+The canonical finite Vicsek tree was built recursively from five copies of an
+X-tree.  With the lazy normalized Laplacian, the induced norm of
+$\Delta^{\gamma^*(4)}T:\ell^4(E)\to L^4(V)$ was optimized, where $T$ is the
+rooted tree primitive.  Dense diagonalization was used through level four;
+levels five and six used the Balakrishnan integral with sparse shifted solves.
+
+\begin{center}
+\begin{tabular}{@{}cccc@{}}
+\toprule
+level $n$ & vertices & critical reverse norm & norm$/ (n+1)^{1/4}$\\
+\midrule
+0 & 5     & 0.8907 & 0.891\\
+1 & 21    & 1.0861 & 0.913\\
+2 & 101   & 1.2299 & 0.935\\
+3 & 501   & 1.3361 & 0.945\\
+4 & 2501  & 1.41905& 0.949\\
+5 & 12501 & 1.49025& 0.952\\
+6 & 62501 & 1.54647& 0.951\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The normalization is strikingly stable and predicts the multiscale law
+$(n+1)^{1/2-1/p}$ at $p=4$.  The conjugate and opposite-direction probes show
+the analogous growth.  A fixed level-four witness embedded into levels five
+and six stabilizes instead; growth appears only after re-optimization.  Hence
+the effect is not a boundary tail of one local cut but a hierarchy that changes
+with the number of available scales.
+
+This is not a proof of divergence.  Eight focused upgrade attempts were made:
+(1) audit the endpoint in the source proof; (2) dense finite approximants;
+(3) Hardy/BMO interpolation; (4) comparison above and below the line;
+(5) critical Besov versus square-function analysis; (6) hierarchical
+extremizer decomposition; (7) sparse tail embeddings; and (8) sparse
+optimization through level six.  The remaining credible route is a uniform
+cell-block lemma giving matching infinite-volume lower bounds.  It was not
+proved here.
+
+\section{Verification, limitations, and review recommendation}
+
+\begin{itemize}
+\item Theorem~\ref{thm:cut} uses only (LB), Ahlfors regularity, $(UE)_\beta$,
+and the tree cut property, so it applies to the source's broadened definition
+of a Vicsek graph, not only the self-similar example.
+\item The strict condition $p\beta\gamma>D$ is essential to the shell argument.
+At the source endpoint it has margin $p-1$, so no equality ambiguity is hidden
+in Corollary~\ref{cor:critical}.
+\item Theorem~\ref{thm:log} is proved only for $p\geq2$, where Minkowski in
+$L^{p/2}$ is available.  It is a truncated area-functional statement, not the
+full reverse inequality.
+\item The computations in \texttt{code/} are reproducibility evidence only.
+They use finite Neumann-type approximants and floating-point quadrature; no
+numerical value is used in either proof.
+\item Cheap run indexes and the locally ingested corpus were searched for the
+arXiv id, the critical formula, and Vicsek endpoint terminology.  No duplicate
+result packet or later full answer was found.  This was not an exhaustive
+external novelty search, so novelty confidence is moderate.
+\end{itemize}
+
+\noindent\textbf{Human-review recommendation.}
+Promote the two proved estimates as a substantial partial result after checking
+the use of the $q=p$ instance of the source's area lemma and the Poisson-kernel
+annular summation in (4.5).  Do not promote the numerical full-failure
+conjecture without the missing uniform cell-block lower bound.
+
+\begin{thebibliography}{9}
+\bibitem{Feneuil}
+J. Feneuil,
+\emph{Reverse inequalities for super-Riesz transforms on graphs with a slow
+diffusion}, arXiv:2606.05475v2, 2026.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,207 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx,microtype,xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\newcommand{\T}{\mathbb T}
+\newcommand{\Hd}{\mathcal H}
+
+\title{Hausdorff Isolation and a Stopping-Scale Barrier\\
+for Rajchman Multiplier Norms}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 7}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{\textbf{Status.} Substantial partial result,
+likely valid, pending human review.  The isolation lemma asked about in arXiv
+v1 extends completely from Minkowski to Hausdorff dimension.  For the stronger
+question in the live arXiv v2, the mountain--river estimate extends to
+variable-depth Hausdorff stopping covers.  The unresolved step is to
+synchronize their good vertices at one physical scale.}}
+\end{center}
+
+\section{Version-sensitive source question}
+
+Ohrysko, Wojciechowski, and Zawalski's cached arXiv v1 asks whether their
+measure-isolation lemma can use Hausdorff rather than Minkowski dimension
+\cite{OWZv1}.  The live arXiv v2, posted 9 August 2026 under a revised title,
+substantially strengthens that question: it asks whether lower Minkowski
+dimension can be replaced by Hausdorff dimension in the full multiplier-norm
+theorem \cite[Open Problem 4]{OWZv2}:
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.94\textwidth]{figures/open_problem_crop.png}
+\caption{The current Hausdorff-dimension question in arXiv v2, PDF p.~29.}
+\end{figure}
+
+For $0<\beta\le d$ and a finite positive Borel measure $\nu$ on $\T^d$, put
+\[
+ h_\beta(\nu)=\sup\{\nu(E): E\subset\T^d\text{ Borel and }
+                         \Hd^\beta(E)=0\}.
+\]
+Using $\Hd^\beta(E)=0$ includes every $E$ with
+$\dim_H E<\beta$ and gives the natural endpoint formulation.
+
+\section{Hausdorff isolation lemma}
+
+For a set $U\subset\T^d$, write
+$U^{(\delta)}=\{x:\operatorname{dist}_\infty(x,U)<\delta\}$.
+
+\begin{theorem}[Hausdorff isolation]\label{thm:isolation}
+Let $\nu,\eta$ be mutually singular finite positive Borel measures on
+$\T^d$.  For every $\tau>0$ and $\delta_0>0$ there are
+$0<\delta<\delta_0$ and a finite family $\mathcal D$ of dyadic cubes such
+that, with $U_{\mathcal D}=\bigcup_{Q\in\mathcal D}Q$,
+\begin{align*}
+ \ell(Q)&<\delta &&(Q\in\mathcal D),\\
+ \sum_{Q\in\mathcal D}\ell(Q)^\beta&<1,\\
+ \nu(U_{\mathcal D})&>h_\beta(\nu)-\tau,\\
+ \eta(U_{\mathcal D}^{(\delta)})&<\tau.
+\end{align*}
+In particular, the v1 isolation question has an affirmative answer.
+\end{theorem}
+
+\begin{proof}
+Choose a Borel $E$ with $\Hd^\beta(E)=0$ and
+$\nu(E)>h_\beta(\nu)-\tau/3$.  Mutual singularity supplies a Borel set $S$
+with $\nu(\T^d\setminus S)=0$ and $\eta(S)=0$.  By inner regularity choose
+a compact
+\[
+ K\subset E\cap S,\qquad \nu(K)>h_\beta(\nu)-2\tau/3.
+\]
+Then $\Hd^\beta(K)=0$ and $\eta(K)=0$.  Outer regularity gives an open
+$O\supset K$ with $\eta(O)<\tau$.
+
+We use the elementary equivalence of ordinary and dyadic Hausdorff content.
+Indeed, a cube of side $r$ can be covered by at most $C_d$ dyadic cubes of
+side at most $2r$.  Since $\Hd^\beta(K)=0$, for every $\varepsilon>0$ and
+every scale bound there is therefore a finite dyadic cover $\mathcal D$ of
+$K$, as fine as desired, with
+\[
+                 \sum_{Q\in\mathcal D}\ell(Q)^\beta<\varepsilon.
+\]
+Take $\varepsilon<1$.  Compactness of $K\subset O$ gives
+$r=\operatorname{dist}_\infty(K,\T^d\setminus O)>0$ (with the evident
+interpretation if $O=\T^d$).  Choose the cover so fine that every cube lies
+in $K^{(r/4)}$ and has side less than
+$\min(\delta_0/2,r/8)$.  Now select $\delta$ strictly larger than all side
+lengths and smaller than $\min(\delta_0,r/2)$.  After making the preliminary
+cover finer if necessary, its $\delta$-enlargement lies in $O$.  Hence the
+last displayed $\eta$-bound holds, while the cover of $K$ gives the required
+$\nu$-bound.  The content and scale bounds hold by construction.
+\end{proof}
+
+The proof uses only Hausdorff content and regularity.  Thus the v2 obstruction
+does not occur in separating a thin one-signed component from the mutually
+singular remainder.
+
+\section{Mountain--river combinatorics on a Hausdorff stopping cover}
+
+The next statement shows that the other combinatorial heart of the source
+also survives variable scales.  Consider the rooted $2^d$-ary dyadic tree.
+For a positive measure let $m(Q)$ be the mass below a vertex $Q$.  Fix
+$-d<\alpha<0$ and call $Q$ \emph{turbulent} if every child $Q'$ satisfies
+$m(Q')<2^\alpha m(Q)$.
+
+\begin{lemma}[Variable-depth terminal estimate]\label{lem:stopping}
+Let $\mathcal L$ be a finite dyadic antichain whose union carries a positive
+measure of total mass $M$, and suppose every $R\in\mathcal L$ has depth
+$|R|\ge K$.  Fix $0<\rho<1$ and put $\gamma=-\alpha\rho$.  If
+$\gamma>\beta$, then the total mass of leaves $R$ whose root-to-$R$ path
+contains at least $\rho|R|$ turbulent vertices is at most
+\begin{equation}\label{eq:bad}
+ M\,2^{-(\gamma-\beta)K}
+       \sum_{R\in\mathcal L}2^{-\beta|R|}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+If $S(R)$ is the number of turbulent ancestors of $R$, monotonicity at all
+other steps and the turbulent inequality give
+\[
+                    m(R)\le M,2^{\alpha S(R)}.
+\]
+For a leaf counted on the left of \eqref{eq:bad}, this is at most
+$M2^{-\gamma|R|}$.  Consequently
+\[
+ \sum_{R\ \mathrm{bad}}m(R)
+ \le M\sum_{R\ \mathrm{bad}}2^{-\gamma|R|}
+ \le M2^{-(\gamma-\beta)K}
+            \sum_{R\in\mathcal L}2^{-\beta|R|},
+\]
+as claimed.
+\end{proof}
+
+The numerical condition $\gamma>\beta$ is exactly
+$\alpha\rho+\beta<0$, the condition in the source's fixed-generation
+mountain--river lemma.  Since a compact $\Hd^\beta$-null set has arbitrarily
+fine stopping covers with arbitrarily small
+$\sum_R2^{-\beta|R|}$, Lemma~\ref{lem:stopping} says that almost all of its
+mass travels through many non-turbulent vertices.  Thus both the isolation
+and high-turbulence estimates admit Hausdorff versions.
+
+\section{The remaining synchronization gap}
+
+The v2 proof next selects one generation $n$ at which a positive fraction of
+the mass is non-turbulent.  It then uses a single translated Hardy atom of
+side $2^{-n}$, simultaneously testing every selected cube.  A Hausdorff
+stopping cover provides terminal depths $|R|$ with no bounded ratio.  The
+good ancestors supplied by Lemma~\ref{lem:stopping} can therefore be spread
+over arbitrarily many generations.  A large measure-weighted total number of
+good vertices does not imply that any one generation carries a fixed
+fraction of $M$.
+
+Summing one normalized Hardy atom for each active scale pays the $\ell^1$
+sum of its atomic coefficients.  Square-function organization improves this
+only to an $\ell^2$ aggregation, still losing when the captured mass is spread
+over many scales.  Refining all stopping cubes to one generation is equally
+insufficient: a cube of depth $j$ creates $2^{d(k-j)}$ descendants at depth
+$k$, whereas Hausdorff content controls only $2^{-\beta j}$.
+
+Eight focused proof/counterexample attempts were made.  Besides the two
+proved statements above, the most concrete negative route is conditional:
+if a singular Hausdorff-thin probability $\sigma$ induced a compact map
+$T_\sigma:H^1\to L^1$, then generic small translations would give
+$\sigma\perp\tau_h\sigma$ but
+\[
+ \|T_{\sigma-\tau_h\sigma}\|
+   =\|(I-\tau_h)T_\sigma\|\longrightarrow0,
+\]
+contradicting any Hausdorff lower bound.  Existence of such a compact thin
+convolution operator was not established.  Conversely, no multiscale atom
+with scale-independent $H^1$ cost was found.  These are genuine remaining
+tasks, so the current v2 question is not claimed solved.
+
+\section{Novelty and verification boundary}
+
+The exact question, arXiv id and titles, run indexes, and arXiv searches for
+Hausdorff-dimension Rajchman multiplier results were checked on 17 August
+2026.  The live v2 itself, posted eight days earlier, still lists the stronger
+question as open; no later answer was located.  Theorem~\ref{thm:isolation}
+is elementary but closes the precise v1 question.  Lemma~\ref{lem:stopping}
+is the substantive partial advance for v2 and sharply identifies the missing
+scale-synchronization step.  Human review should focus on the dyadic-content
+conversion in Theorem~\ref{thm:isolation} and on whether a known stopping-time
+$H^1$ construction can overcome the final gap.
+
+\begin{thebibliography}{9}
+\bibitem{OWZv1}
+P. Ohrysko, M. Wojciechowski, and B. Zawalski,
+\emph{On the Wiener--Pitt phenomenon for algebra of Rajchman multipliers on
+Hardy space}, arXiv:2206.06958v1, 2022.
+
+\bibitem{OWZv2}
+P. Ohrysko, M. Wojciechowski, and B. Zawalski,
+\emph{The $H^1(\T^d)$-multiplier norm of Rajchman measures, Zafran-type
+phenomena, and Walsh--Stieltjes series}, arXiv:2206.06958v2, 2026.
+\end{thebibliography}
+
+\end{document}

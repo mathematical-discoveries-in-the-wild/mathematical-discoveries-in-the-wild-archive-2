@@ -1,0 +1,248 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{xcolor}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\newcommand{\cL}{\mathcal L}
+\newcommand{\cD}{\mathcal D}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\Id}{\mathrm I}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+
+\title{Log-free trace-norm sparsification of arbitrary quantum channels}
+\author{Agent-generated partial-result packet for arXiv:1711.00697}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status: substantial partial result, likely valid, subject to expert review.}
+The theorem below removes the logarithmic Kraus-rank loss for uniform output trace-norm approximation of every finite-dimensional quantum channel.  It does not prove the stronger two-sided operator-order approximation in Theorem 3.1 of the source paper.}}
+\end{center}
+
+\section{Source question and scope}
+
+The source is C.~Lancien and A.~Winter, \emph{Approximating quantum channels by completely positive maps with small Kraus rank}, arXiv:1711.00697 \cite{LW}.  On PDF page 6, after proving that order $\max(\dim A,\dim B)$ Kraus operators can be necessary, the authors ask whether their extra $\log \dim E$ factor can be removed for a general channel.  Their Theorem 3.1 gives a stronger two-sided operator-order approximation, and consequently uniform output trace-norm approximation by a channel with $O(d\log d/\varepsilon^2)$ Kraus operators, where $d=\max(\dim A,\dim B)$.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.98\textwidth]{figures/open_problem_crop.png}
+\caption{The source question on PDF page 6, together with the source's log-free theorem for sufficiently mixed outputs.}
+\end{figure}
+
+The result here completely resolves the weaker, operational trace-norm version: the logarithm is unnecessary, with no mixed-output hypothesis.  Since the source gives examples requiring at least $d$ Kraus operators for fixed error, the dimension dependence below is optimal up to the universal constant and the dependence on $\varepsilon$.
+
+\section{Proof intuition}
+
+Fix a Stinespring isometry $V:A\to B\otimes E$ for the channel.  A standard complex Gaussian vector $g\in E$ contracts the environment leg and produces a random Kraus operator
+\[
+L_g=(\Id_B\otimes\langle g|)V:A\longrightarrow B.
+\]
+Averaging $m$ independent maps $X\mapsto L_gXL_g^*$ has expectation equal to the original channel and uses only $m$ Kraus operators.
+
+For a fixed pure input $x$, the vectors $L_{g_i}x$ are Gaussian in $B$ with covariance $\mathcal N(xx^*)$.  Thus the random output is an empirical covariance matrix.  Its expected trace-norm error is $O(\sqrt{\dim B/m})$, and Gaussian concentration gives a tail $\exp(-cm t^2)$.  A \emph{constant} net of the input sphere is enough: the unknown global Hermitian $1\to1$ error norm controls its own interpolation error away from the net.  This avoids the fine net responsible for the logarithm in the source's stronger relative operator-order estimate.  Finally, a small multiplicative correction of the sampled Kraus operators makes the map exactly trace preserving.
+
+\section{Statement}
+
+For a Hermiticity-preserving map $T:\cL(A)\to\cL(B)$, write
+\[
+\|T\|_{1\to1}^{\mathrm h}
+ :=\sup_{\rho\in\cD(A)}\|T(\rho)\|_1.
+\]
+By convexity, the supremum may be restricted to pure states.
+
+\begin{theorem}[Log-free uniform trace-norm approximation]\label{thm:main}
+There is a universal constant $C>0$ with the following property.  Let
+$\mathcal N:\cL(A)\to\cL(B)$ be a completely positive trace-preserving map, put
+$a=\dim A$ and $b=\dim B$, and let $0<\varepsilon<1$.  Then there is a completely positive trace-preserving map $\widehat{\mathcal N}:\cL(A)\to\cL(B)$ such that
+\[
+r_K(\widehat{\mathcal N})\leq C\frac{a+b}{\varepsilon^2}
+\qquad\text{and}\qquad
+\sup_{\rho\in\cD(A)}
+\|\widehat{\mathcal N}(\rho)-\mathcal N(\rho)\|_1\leq\varepsilon.
+\]
+In particular $r_K(\widehat{\mathcal N})\leq 2C\max(a,b)/\varepsilon^2$.
+\end{theorem}
+
+\section{A fixed-covariance lemma}
+
+We use standard complex Gaussian vectors, normalized so that $\E gg^*=\Id$.
+
+\begin{lemma}[Trace-norm empirical covariance]\label{lem:cov}
+There are universal constants $C_0,c_0>0$ such that the following holds.  If $\sigma\in\cD(\mathbb C^b)$ and $z_1,\ldots,z_m$ are independent centered complex Gaussian vectors with covariance $\sigma$, then, for $0<t<1$,
+\[
+\Pp\!\left\{
+\left\|\frac1m\sum_{i=1}^m z_i z_i^*-\sigma\right\|_1
+> C_0\sqrt{\frac bm}+t
+\right\}
+\leq 2e^{-c_0mt^2}.
+\]
+\end{lemma}
+
+\begin{proof}
+Set $\Delta=m^{-1}\sum_i z_i z_i^*-\sigma$.  Since $\|H\|_1\leq\sqrt b\,\|H\|_2$,
+\[
+\E\|\Delta\|_1
+\leq \sqrt b\,(\E\|\Delta\|_2^2)^{1/2}.
+\]
+For one sample $z$, the complex Gaussian fourth-moment identity gives
+\[
+\E\|z\|^4=(\Tr\sigma)^2+\Tr(\sigma^2),
+\qquad
+\E\|zz^*-\sigma\|_2^2=(\Tr\sigma)^2=1.
+\]
+Independence therefore yields $\E\|\Delta\|_2^2=1/m$, and hence
+\begin{equation}\label{eq:mean}
+\E\|\Delta\|_1\leq\sqrt{b/m}.
+\end{equation}
+
+For completeness, we record the standard truncation argument that upgrades
+\eqref{eq:mean} to the asserted tail.  Write $z_i=\sigma^{1/2}g_i$ and let
+$G$ be the matrix with columns $g_i$, $Z=\sigma^{1/2}G$.  On the event
+$\Omega=\{\|Z\|_2\leq2\sqrt m\}$, where here $\|\cdot\|_2$ is the Frobenius norm, the function
+\[
+F(G)=\left\|m^{-1}ZZ^*-\sigma\right\|_1
+\]
+is $4/\sqrt m$-Lipschitz.  Indeed, for $Z,W$ in this event,
+\[
+\|ZZ^*-WW^*\|_1
+\leq(\|Z\|_2+\|W\|_2)\|Z-W\|_2,
+\]
+and $\|\sigma^{1/2}(G-H)\|_2\leq\|G-H\|_2$.
+Also $\Pp(\Omega^c)\leq e^{-cm}$ by the exponential-moment bound for the weighted sum
+$\|Z\|_2^2=\sum_{i,k}\lambda_k|g_{ki}|^2$, where $\sum_k\lambda_k=1$ and $0\leq\lambda_k\leq1$.
+
+Extend $F|_\Omega$ to a globally $4/\sqrt m$-Lipschitz function $\widetilde F$.  Markov's inequality gives $\Pp\{F>4\sqrt{b/m}\}\leq1/4$.  Hence
+$\Pp\{\widetilde F>4\sqrt{b/m}\}\leq1/4+\Pp(\Omega^c)<1/2$ (enlarging harmless constants for the finitely many small $m$), so a median of $\widetilde F$ is at most $4\sqrt{b/m}$.  The standard Gaussian concentration inequality for Lipschitz functions \cite[Chapter 5]{BLM}, followed by adding $\Pp(\Omega^c)$, gives
+\[
+\Pp\{F>C_0\sqrt{b/m}+t\}
+\leq e^{-cmt^2}+e^{-cm}.
+\]
+For $0<t<1$ the second term is absorbed into the first after changing universal constants.
+\end{proof}
+
+\section{Proof of Theorem \ref{thm:main}}
+
+Choose a Stinespring isometry $V:A\to B\otimes E$ such that
+\[
+\mathcal N(X)=\Tr_E(VXV^*).
+\]
+Let $g_1,\ldots,g_m$ be independent standard complex Gaussian vectors in $E$ and define
+\[
+L_i=\frac1{\sqrt m}(\Id_B\otimes\langle g_i|)V,
+\qquad
+\mathcal N_m(X)=\sum_{i=1}^mL_iXL_i^*.
+\]
+Then $\mathcal N_m$ is completely positive, has Kraus rank at most $m$, and $\E\mathcal N_m=\mathcal N$.
+
+Fix a unit vector $x\in A$ and set
+\[
+z_i=(\Id_B\otimes\langle g_i|)Vx.
+\]
+These are independent centered Gaussian vectors in $B$ with covariance
+\[
+\E z_i z_i^*=\Tr_E(Vxx^*V^*)=\mathcal N(xx^*).
+\]
+Consequently Lemma \ref{lem:cov} applies to
+\[
+\mathcal N_m(xx^*)=\frac1m\sum_{i=1}^m z_i z_i^*.
+\]
+
+Let $0<\delta<1/2$, and choose a $1/8$-net $\mathcal A$ in the unit sphere of $A$.  It may be chosen with
+$|\mathcal A|\leq24^{2a}$.  Lemma \ref{lem:cov}, a union bound, and a sufficiently large universal constant show that if
+\begin{equation}\label{eq:mchoice}
+m\geq C_1\frac{a+b}{\delta^2},
+\end{equation}
+then with positive probability
+\begin{equation}\label{eq:net}
+\|\mathcal N_m(xx^*)-\mathcal N(xx^*)\|_1\leq\delta/2
+\qquad(x\in\mathcal A).
+\end{equation}
+Fix a realization satisfying \eqref{eq:net}, put $T=\mathcal N_m-\mathcal N$, and write
+\[
+M=\sup_{\rho\in\cD(A)}\|T(\rho)\|_1
+=\sup_{\|x\|=1}\|T(xx^*)\|_1.
+\]
+For every Hermitian $H$, its positive and negative parts show that
+\begin{equation}\label{eq:induced}
+\|T(H)\|_1\leq M\|H\|_1.
+\end{equation}
+Given a unit $x$, choose $x_0\in\mathcal A$ with $\|x-x_0\|\leq1/8$.  Since
+$\|xx^*-x_0x_0^*\|_1\leq2\|x-x_0\|$, equations \eqref{eq:net} and \eqref{eq:induced} give
+\[
+\|T(xx^*)\|_1\leq\delta/2+M/4.
+\]
+Taking the supremum yields $M\leq2\delta/3<\delta$.  Thus the sampled CP map already satisfies
+\begin{equation}\label{eq:almost}
+\sup_{\rho\in\cD(A)}
+\|\mathcal N_m(\rho)-\mathcal N(\rho)\|_1\leq\delta.
+\end{equation}
+
+It remains to make the map trace preserving.  Let
+\[
+S=\sum_{i=1}^mL_i^*L_i=\mathcal N_m^*(\Id_B).
+\]
+For every unit $x$,
+\[
+|\langle x,(S-\Id_A)x\rangle|
+=|\Tr(T(xx^*))|
+\leq\|T(xx^*)\|_1\leq\delta,
+\]
+so $\|S-\Id_A\|_\infty\leq\delta$ and $S$ is invertible.  Define
+\[
+K_i=L_iS^{-1/2},
+\qquad
+\widehat{\mathcal N}(X)=\sum_{i=1}^mK_iXK_i^*.
+\]
+Then $\widehat{\mathcal N}$ is CPTP and has Kraus rank at most $m$.  If $R=S^{1/2}$, then
+$\mathcal N_m(X)=\widehat{\mathcal N}(RXR)$.  Since CPTP maps contract the trace norm on Hermitian inputs,
+\[
+\|\widehat{\mathcal N}(\rho)-\mathcal N_m(\rho)\|_1
+\leq\|\rho-R\rho R\|_1
+\leq(1+\|R\|_\infty)\|R-\Id_A\|_\infty
+\leq\frac52\delta,
+\]
+where the last inequality uses $\delta<1/2$ and the scalar square-root bounds on $[1-\delta,1+\delta]$.  Combining this with \eqref{eq:almost} gives total error at most $7\delta/2$.  Taking $\delta=\varepsilon/4$ proves the theorem after changing the universal constant in \eqref{eq:mchoice}.
+\qed
+
+\section{Verification notes and unresolved upgrade}
+
+\begin{itemize}
+\item The proof is dimensionally uniform and does not depend on the original Kraus rank $\dim E$.
+\item The only external probabilistic input is the standard Gaussian concentration inequality for Lipschitz functions; the empirical-covariance mean and the required truncation/Lipschitz estimates are written out above.
+\item The source's $\Omega(d)$ lower examples for fixed approximation error apply already to trace-norm approximation, so the $O(d)$ dimension order is sharp.
+\item This proof does \emph{not} give the source's stronger inequality
+\[
+-\varepsilon\bigl(\mathcal N(\rho)+\Id_B/b\bigr)
+\leq\widehat{\mathcal N}(\rho)-\mathcal N(\rho)
+\leq\varepsilon\bigl(\mathcal N(\rho)+\Id_B/b\bigr).
+\]
+For a fixed input, Gaussian covariance concentration gives such a relative estimate with $O(b/\varepsilon^2)$ samples.  The upgrade obstruction is uniformity in the input: after whitening by $(\mathcal N(xx^*)+\Id_B/b)^{-1/2}$, a constant net is no longer stable near output probabilities of order $1/b$.  A fine elementary net recreates the logarithm.  A proof of an appropriate localized Gaussian-width bound, or a counterexample to it, would be the next decisive step.
+\end{itemize}
+
+\section{Novelty check and review recommendation}
+
+A bounded search through 11 August 2026 used the exact source title and arXiv id, together with the phrases ``quantum channel sparsification'', ``small Kraus rank'', ``remove logarithmic factor'', and close variants in the run's local arXiv corpus and targeted arXiv web search.  It found the source paper and work on different notions of sparse channel learning, but no later theorem removing the logarithm for uniform trace-norm approximation of arbitrary channels.  This is not a definitive bibliographic review.
+
+\textbf{Recommended expert focus:} verify the fixed-covariance concentration lemma's truncation-to-median step and the constant-net self-bounding step; then check the literature specifically for Gaussian empirical-covariance proofs of channel compression.  If those pass, the packet should be regarded as a complete solution of the trace-norm variant and a substantial partial answer to the stronger source question.
+
+\begin{thebibliography}{9}
+\bibitem{LW}
+C.~Lancien and A.~Winter,
+\emph{Approximating quantum channels by completely positive maps with small Kraus rank},
+Quantum \textbf{8} (2024), 1449; arXiv:1711.00697.
+
+\bibitem{BLM}
+S.~Boucheron, G.~Lugosi, and P.~Massart,
+\emph{Concentration Inequalities: A Nonasymptotic Theory of Independence},
+Oxford University Press, 2013.
+\end{thebibliography}
+
+\end{document}

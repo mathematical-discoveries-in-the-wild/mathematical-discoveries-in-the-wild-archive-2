@@ -1,0 +1,339 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=0.92in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\VF}{\operatorname{VF}}
+\newcommand{\CVF}{\operatorname{CVF}}
+\newcommand{\Lip}{\operatorname{Lip}}
+\newcommand{\ran}{\operatorname{ran}}
+
+\title{Exact Conservative-Field Projection Constants\\[0.35em]
+\large Cycles, cacti, complete graphs, and complete bipartite graphs\\[-0.05em]
+\large for arXiv:2309.09313}
+\author{Automated Mathematics Run \texttt{fa\_banach\_001}, lane 0}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\linewidth}{\textbf{Status.}
+Candidate partial result, likely valid.  The unrestricted finite-graph
+question remains open, but the optimal constant is computed exactly for
+weighted cycles, weighted cacti, unweighted complete graphs, unweighted
+complete bipartite graphs, and every graph assembled from these pieces at
+cut vertices.}}
+\end{center}
+
+\section{Source question and normalization}
+
+Schlumprecht asks for the smallest norm of an extension of the integral
+operator from conservative vector fields on a finite weighted graph to all
+vector fields \cite{Schlumprecht}.  The exact source passage is reproduced
+below.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.99\linewidth]{figures/source_question.png}
+  \caption{The question on page 33 of arXiv:2309.09313v1.}
+\end{figure}
+
+Fix one orientation of each edge.  Write
+\(\VF(G)=\ell_\infty(E(G))\), and identify \(\CVF(G)\) with the
+subspace of fields whose weighted integral around every cycle is zero.
+Define the relative projection constant
+\[
+ \lambda(G)=\inf\{\|P\|_\infty:P^2=P,\ \ran P=\CVF(G)\}.
+\]
+This is exactly the constant in the source question.  Indeed, if
+\(\widetilde I:\VF(G)\to\Lip_0(V(G))\) extends integration, then
+\(P=\nabla\widetilde I\) is a projection onto \(\CVF(G)\) with the same
+norm.  Conversely, \(I P\) is an extension whenever \(P\) is such a
+projection.  Both norm equalities follow because
+\(\nabla:\Lip_0(V(G))\to\CVF(G)\) and its inverse \(I\) are isometries.
+
+\section{Results}
+
+For a weighted cycle \(C\), let its positive edge lengths be
+\(a_1,\dots,a_r\), and put \(A=\sum_i a_i\).  Since the edge lengths come
+from a geodesic graph metric, \(a_i\leq A/2\).
+
+\begin{theorem}[Weighted cycle]\label{thm:cycle}
+If some \(a_i=A/2\), then \(\lambda(C)=1\).  Otherwise
+\begin{equation}\label{eq:cycle}
+ \boxed{\displaystyle
+ \lambda(C)=1+
+ \left(\sum_{i=1}^r\frac{a_i}{A-2a_i}\right)^{-1}.}
+\end{equation}
+In particular, for the unweighted cycle \(C_r\),
+\[
+ \lambda(C_r)=2-\frac2r.
+\]
+\end{theorem}
+
+A cactus is a connected graph in which every edge lies in at most one
+simple cycle.
+
+\begin{corollary}[Weighted cactus]\label{cor:cactus}
+For a weighted cactus \(G\),
+\[
+ \lambda(G)=\max\bigl(\{1\}\cup\{\lambda(C):C\text{ is a simple cycle of }G\}\bigr),
+\]
+where each cycle constant is given by Theorem~\ref{thm:cycle}.  Thus trees
+have constant one.
+\end{corollary}
+
+\begin{theorem}[Two overlapping-cycle families]\label{thm:dense}
+For the unweighted complete graph and complete bipartite graph,
+\begin{align}
+ \lambda(K_n)&=2-\frac2n,\label{eq:kn}\\
+ \lambda(K_{p,q})&=3-\frac2p-\frac2q+\frac{2}{pq}.
+ \label{eq:kpq}
+\end{align}
+Formula \eqref{eq:kpq} also gives one when \(p=1\) or \(q=1\), as it
+should for a tree.
+\end{theorem}
+
+Recall that the blocks of a connected graph are its maximal
+2-connected subgraphs together with its bridges.  Each edge belongs to one
+block, and each cycle is contained in one block.
+
+\begin{theorem}[Cut-vertex gluing]\label{thm:blocks}
+For every connected weighted graph,
+\begin{equation}\label{eq:blockmax}
+ \lambda(G)=\max_{B\text{ a block of }G}\lambda(B).
+\end{equation}
+Consequently, the preceding formulas give the exact answer for any graph
+whose non-bridge blocks are weighted cycles, unweighted complete graphs, or
+unweighted complete bipartite graphs.
+\end{theorem}
+
+Thus the result includes weighted cacti, clique trees, biclique trees, and
+arbitrary cut-vertex mixtures of these classes.  The complete bipartite
+case is important because its cycle constraints overlap heavily; the
+answer is not merely a consequence of separating edge-disjoint cycles.
+
+\section{Proof intuition}
+
+There are three mechanisms.  A weighted cycle has only one constraint, so
+its conservative fields form a hyperplane in \(\ell_\infty^r\).  Every
+projection onto a hyperplane has a rank-one defect, reducing the full
+operator optimization to distributing one unit of mass among the edges.
+The cheapest distribution gives \eqref{eq:cycle}.
+
+For a highly symmetric graph, average an arbitrary projection over its
+automorphism group.  On \(K_n\), symmetry forces the averaged map to be the
+divergence projection.  On \(K_{p,q}\), it forces the familiar two-way
+additive projection: row mean plus column mean minus grand mean.  Since
+averaging cannot increase the norm, explicit row sums give both upper and
+lower bounds.
+
+Finally, blocks have disjoint edge coordinates and every cycle stays
+inside a single block.  Conservativity therefore becomes an
+\(\ell_\infty\)-direct sum condition, for which the optimal constant is the
+largest block constant.
+
+\section{The weighted-cycle computation}
+
+Orient the cycle consistently.  Its conservative fields are
+\[
+ H=\ker\varphi,\qquad \varphi(x)=\sum_{i=1}^r a_i x_i.
+\]
+Every projection from \(\ell_\infty^r\) onto \(H\) has the form
+\[
+ P=I-u\otimes\varphi,\qquad \varphi(u)=1.
+\]
+Indeed, \(I-P\) vanishes on the codimension-one space \(\ker\varphi\), so
+it factors through \(\varphi\); idempotence fixes the normalization.
+
+Put \(t_i=a_i u_i\) and \(c_i=(A-a_i)/a_i\).  The \(i\)-th row sum of
+\(P\) is
+\begin{equation}\label{eq:rowsum}
+ R_i=|1-t_i|+c_i|t_i|,
+ \qquad \sum_i t_i=1.
+\end{equation}
+This argument works over both the real and complex scalar fields.  If
+\(a_i<A/2\), then \(c_i>1\), and the triangle inequality gives
+\[
+ R_i\geq 1+(c_i-1)|t_i|.
+\]
+Consequently, if all \(R_i\leq L\), then
+\[
+ 1=\left|\sum_i t_i\right|
+ \leq\sum_i|t_i|
+ \leq(L-1)\sum_i\frac1{c_i-1}
+ =(L-1)\sum_i\frac{a_i}{A-2a_i}.
+\]
+This proves the lower bound in \eqref{eq:cycle}.  Equality is attained by
+the positive choice
+\[
+ t_i=\frac{a_i/(A-2a_i)}{\sum_j a_j/(A-2a_j)},
+ \qquad u_i=\frac{t_i}{a_i},
+\]
+because then every row sum in \eqref{eq:rowsum} has the claimed value.
+If \(a_k=A/2\), take \(t_k=1\) and all other \(t_i=0\).  Every row sum is
+one, proving the endpoint.  The unweighted specialization follows by
+substituting \(a_i=1\) and \(A=r\).
+
+\section{Symmetry computations}
+
+\subsection{Complete graphs}
+
+Represent an edge field on \(K_n\) antisymmetrically:
+\(f_{ij}=-f_{ji}\).  Put
+\[
+ d_i=\sum_k f_{ik}.
+\]
+The canonical projection onto gradients is
+\begin{equation}\label{eq:completeP}
+ (Pf)_{ij}=\frac{d_i-d_j}{n}.
+\end{equation}
+It is a projection because for a gradient \(f_{ij}=x_j-x_i\), one has
+\(d_i=n(\bar x-x_i)\), and \eqref{eq:completeP} returns \(f\).
+
+For a fixed output edge \((i,j)\), the input edge \((i,j)\) has coefficient
+\(2/n\), and the \(2(n-2)\) other edges incident with \(i\) or \(j\) have
+coefficient of absolute value \(1/n\).  Hence
+\[
+ \|P\|_\infty=\frac{2+2(n-2)}n=2-\frac2n.
+\]
+
+For optimality, average any projection over the vertex-permutation group
+\(S_n\).  The average has no larger norm.  Compose it with the isometric
+inverse gradient to obtain an equivariant map \(T\) from edge fields to
+mean-zero vertex potentials.  The stabilizer of a vertex \(i\) forces
+\(T_i(f)\) to have one common coefficient on all outgoing incident edges.
+Edges not incident with \(i\) have coefficient zero: swapping their two
+endpoints fixes \(i\) and reverses their sign.  Thus
+\(T_i(f)=c\sum_k f_{ik}=c d_i\).  The identity on gradients forces
+\(c=-1/n\), so the averaged projection is uniquely \eqref{eq:completeP}.
+Its norm is therefore a lower bound for every projection, proving
+\eqref{eq:kn}.
+
+\subsection{Complete bipartite graphs}
+
+Write a field on \(K_{p,q}\) as a \(p\)-by-\(q\) matrix \(x=(x_{ij})\),
+orienting every edge from the first part to the second.  Gradients are
+exactly the additive matrices
+\[
+ \mathcal A=\{x:x_{ij}=a_i+b_j\}.
+\]
+The two-way additive projection is
+\begin{equation}\label{eq:anova}
+ (Qx)_{ij}=\frac1q\sum_{\ell}x_{i\ell}
+ +\frac1p\sum_kx_{kj}
+ -\frac1{pq}\sum_{k,\ell}x_{k\ell}.
+\end{equation}
+It fixes \(\mathcal A\).  The absolute row sum of \eqref{eq:anova} is
+\begin{align*}
+ &\frac{p+q-1}{pq}
+ +(q-1)\frac{p-1}{pq}
+ +(p-1)\frac{q-1}{pq}
+ +(p-1)(q-1)\frac1{pq}\\
+ &\hspace{35mm}=3-\frac2p-\frac2q+\frac{2}{pq}.
+\end{align*}
+
+It remains to prove minimality.  Average any projection over
+\(S_p\times S_q\).  Let
+\(\mathcal Z\) be the matrices with every row sum and every column sum
+zero.  Then the whole matrix space is \(\mathcal A\oplus\mathcal Z\), and
+\eqref{eq:anova} is the associated projection.  If \(R\) is any invariant
+projection onto \(\mathcal A\) and \(z\in\mathcal Z\), invariance under
+the stabilizer of an entry \((i,j)\) shows that \((Rz)_{ij}\) is a linear
+combination of four orbit sums: the entry itself, the rest of its row, the
+rest of its column, and all remaining entries.  On \(\mathcal Z\), these
+four sums are respectively \(z_{ij},-z_{ij},-z_{ij},z_{ij}\).  Transitivity
+therefore gives \(Rz=c z\) for a scalar \(c\).  But \(Rz\in\mathcal A\),
+while \(z\in\mathcal Z\) and \(\mathcal A\cap\mathcal Z=\{0\}\); hence
+\(c=0\).  Thus the invariant projection is unique and equals \(Q\).
+Averaging proves its minimality and establishes \eqref{eq:kpq}.
+
+\section{Block gluing}
+
+The edge sets of the blocks partition \(E(G)\), so
+\[
+ \VF(G)=\bigoplus_{B}^{\ell_\infty}\VF(B).
+\]
+Every cycle of a graph is contained in one block.  Therefore a field is
+conservative on \(G\) exactly when its restriction to every block is
+conservative, and
+\[
+ \CVF(G)=\bigoplus_B^{\ell_\infty}\CVF(B).
+\]
+Choosing optimal block projections gives
+\(\lambda(G)\leq\max_B\lambda(B)\).  Conversely, if \(P\) is any global
+projection, inject fields supported on one block \(B\), apply \(P\), and
+restrict the output back to \(B\).  The resulting map is a projection onto
+\(\CVF(B)\) of norm at most \(\|P\|\).  Taking the infimum over \(P\) and
+then the maximum over blocks proves \eqref{eq:blockmax}.
+
+\section{Verification, novelty, and remaining obstruction}
+
+The companion script \texttt{code/verify\_projection\_constants.py}
+performed exact rational checks of idempotence, range constraints, and row
+norms on 36 weighted cycles, \(K_n\) for \(2\leq n\leq8\), seven
+complete-bipartite cases, and mixed block sums.  Independently formulated
+linear programs recovered the claimed optima in all 36 cycle cases, for
+\(K_n\) with \(2\leq n\leq5\), and for six small bicliques.  The script
+reported 190 exact assertions and 46 independent LP optimum assertions.
+
+The general link between invariant projections, graph cycle/cut spaces,
+and transportation cost spaces is established in
+Dilworth--Kutzarova--Ostrovskii \cite{DKO2023,DKO2018}.  Their work also
+warns that invariant projections need not be unique in less rigid graph
+families.  Bohnenblust's classical codimension-one bound and its equality
+theory are discussed by Kobos \cite{Kobos}; the weighted-cycle formula here
+is therefore best viewed as an explicit hyperplane calculation, not as a
+claim of a new general projection theorem.  Rieffel gives a broader
+extension/projection correspondence \cite{Rieffel}.
+
+Bounded exact-phrase, title/id, cut-space, weighted-hyperplane, complete,
+and complete-bipartite searches through 11 August 2026 did not locate the
+full collection of formulas and block synthesis stated here.  Some network
+literature does record the norm \(2(n-1)/n\) of the standard cut projection
+for uniform rings and complete graphs.  Accordingly, this packet claims a
+verified exact answer for the listed families, but makes no priority claim.
+
+For a general 2-connected graph, several independent cycle equations
+overlap, and the conservative subspace is no longer a single hyperplane or
+a disjoint coordinate sum.  Symmetry averaging still produces a minimal
+invariant projection, but that projection can lie in a nontrivial family;
+uniqueness arguments used for \(K_n\) and \(K_{p,q}\) then fail.  Resolving
+that optimization uniformly is the remaining obstruction to the source's
+full question.
+
+\begin{thebibliography}{9}
+\bibitem{Schlumprecht}
+T.~Schlumprecht,
+\emph{Transportation cost spaces and their embeddings into $L_1$, a survey},
+arXiv:2309.09313 (2023).
+
+\bibitem{DKO2023}
+S.~J. Dilworth, D.~Kutzarova, and M.~I. Ostrovskii,
+\emph{Cycle spaces: invariant projections and applications to transportation cost},
+arXiv:2305.12582 (2023).
+
+\bibitem{DKO2018}
+S.~J. Dilworth, D.~Kutzarova, and M.~I. Ostrovskii,
+\emph{Lipschitz free spaces on finite metric spaces},
+arXiv:1807.03814 (2018).
+
+\bibitem{Kobos}
+T.~Kobos,
+\emph{Hyperplanes of finite-dimensional normed spaces with the maximal relative projection constant},
+Bull. Aust. Math. Soc. 91 (2015), 447--463; arXiv:1411.6214.
+
+\bibitem{Rieffel}
+M.~A. Rieffel,
+\emph{Lipschitz extension constants equal projection constants},
+Contemp. Math. 414 (2006), 147--162; arXiv:math/0508097.
+\end{thebibliography}
+
+\end{document}

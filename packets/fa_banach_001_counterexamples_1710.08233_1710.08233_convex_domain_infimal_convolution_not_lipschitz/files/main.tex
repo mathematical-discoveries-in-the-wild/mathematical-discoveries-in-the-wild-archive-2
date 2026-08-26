@@ -1,0 +1,170 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.85in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\domn}{\operatorname{dom}}
+\newcommand{\ic}{\mathbin{\square}}
+
+\title{A disk-lens counterexample to Lipschitz regularity\\
+under infimal convolution}
+\author{Candidate solution packet for arXiv:1710.08233}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\paragraph{Status.}
+Candidate counterexample, likely valid, pending human review.
+
+\paragraph{Source.}
+Simon Zugmeyer, \emph{Sharp trace Gagliardo--Nirenberg--Sobolev inequalities
+for convex cones, and convex domains}, arXiv:1710.08233 \cite{Zugmeyer},
+Section~2.2, source PDF page~10.  For extended-real functions, the source uses
+\[
+ (f\ic g)(x)=\inf_{y\in\R^n}\{f(y)+g(x-y)\},\qquad
+ \domn f=\{x:f(x)<+\infty\}.
+\]
+After a nonconvex, empty-interior example, it conjectures that Lipschitz
+functions on convex domain(s) with nonempty interior have a Lipschitz infimal
+convolution.
+
+\begin{center}
+\includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Proof intuition}
+
+For two unit disks, the feasible decompositions of a point $x$ form the lens
+$D\cap(x-D)$.  Near the boundary of $D+D$, this lens closes tangentially:
+its vertical radius is proportional to the square root of the distance to the
+boundary.  An affine function that reads the vertical coordinate makes the
+infimal convolution select the bottom of the lens.  The resulting value
+function therefore has a square-root cusp, even though both input functions
+are Lipschitz on the same smooth compact convex domain.
+
+\section*{Counterexample}
+
+Let
+\[
+ D=\{(u_1,u_2)\in\R^2:u_1^2+u_2^2\leq 1\}
+\]
+and define $f,g:\R^2\to\R\cup\{+\infty\}$ by
+\[
+ f(u_1,u_2)=
+ \begin{cases}1+u_2,&(u_1,u_2)\in D,\\+\infty,&\text{otherwise},\end{cases}
+ \qquad
+ g(u_1,u_2)=
+ \begin{cases}0,&(u_1,u_2)\in D,\\+\infty,&\text{otherwise}.
+ \end{cases}
+\]
+
+\begin{theorem}
+The functions $f$ and $g$ have the same compact convex domain $D$, whose
+interior is nonempty.  Their restrictions to $D$ are respectively
+$1$-Lipschitz and $0$-Lipschitz.  Both extended-real functions are proper,
+lower semicontinuous, convex, and nonnegative, and $f\ic g$ is exact.
+Nevertheless, $f\ic g$ is not Lipschitz on its domain $D+D=2D$; in fact it is
+not locally Lipschitz at $(2,0)$ relative to $2D$.
+\end{theorem}
+
+\begin{proof}
+All input claims are immediate: $f$ is an affine function plus the convex
+indicator of the closed disk, while $g$ is that indicator.  Compactness of
+the feasible set gives exactness at every point of $2D$.
+
+For $0\leq t\leq2$, write $x_t=(t,0)$.  A decomposition
+$x_t=a+b$ with $a,b\in D$ is equivalent, on writing $a=(s,r)$, to
+\begin{equation}\label{eq:constraints}
+ s^2+r^2\leq1,
+ \qquad
+ (t-s)^2+r^2\leq1.
+\end{equation}
+Thus
+\begin{align*}
+ (f\ic g)(x_t)
+ &=1+\min\{r:(s,r)\text{ satisfies \eqref{eq:constraints}}\}\\
+ &=1-\sqrt{1-\min_{s\in\R}\max\{s^2,(t-s)^2\}}.
+\end{align*}
+The scalar minimax is exact.  Indeed,
+\[
+ t\leq |s|+|t-s|\leq2\max\{|s|,|t-s|\},
+\]
+so $\max\{s^2,(t-s)^2\}\geq t^2/4$, with equality for $s=t/2$.
+Consequently
+\begin{equation}\label{eq:formula}
+ (f\ic g)(x_t)=1-\sqrt{1-\frac{t^2}{4}}
+ \qquad(0\leq t\leq2).
+\end{equation}
+
+For $0<\varepsilon<2$, formula \eqref{eq:formula} gives
+\[
+ \frac{|(f\ic g)(x_2)-(f\ic g)(x_{2-\varepsilon})|}
+      {\|x_2-x_{2-\varepsilon}\|_2}
+ =\frac{\sqrt{\varepsilon-\varepsilon^2/4}}{\varepsilon}
+ =\sqrt{\frac1\varepsilon-\frac14}\longrightarrow+\infty.
+\]
+No finite Lipschitz constant exists, even in any relative neighborhood of
+$(2,0)$ in $2D$.
+\end{proof}
+
+\section*{Wording variants and scope}
+
+\begin{remark}[Open domains]
+If ``domain'' was intended to mean an open convex set, replace $D$ by its
+open unit disk.  Formula \eqref{eq:formula} holds for $0\leq t<2$.  Both
+$x_{2-\varepsilon}$ and $x_{2-2\varepsilon}$ are interior points, while
+\[
+ \frac{|(f\ic g)(x_{2-\varepsilon})-(f\ic g)(x_{2-2\varepsilon})|}
+ {\varepsilon}
+ =\frac{\sqrt{2\varepsilon-\varepsilon^2}
+ -\sqrt{\varepsilon-\varepsilon^2/4}}{\varepsilon}
+ \sim\frac{\sqrt2-1}{\sqrt\varepsilon}.
+\]
+Hence the convolution is still not globally Lipschitz on its open domain.
+\end{remark}
+
+The example refutes the printed global-Lipschitz conjecture.  It does not
+refute the weaker assertion that the convolution is locally Lipschitz at each
+point of $\operatorname{int}(D+D)$; the closed-disk failure occurs at the
+boundary, and the open-disk function is locally Lipschitz at each fixed point
+on the displayed diameter.  If a factor is finite and globally $L$-Lipschitz
+on all of $\R^n$, then its infimal convolution with any function is
+$L$-Lipschitz whenever finite, so the extended-domain interpretation is the
+only nontrivial one in the source context.
+
+\section*{Verification and novelty}
+
+The proof is exact and uses no computation.  The bundled checker tests the
+scalar minimax inequality with rational arithmetic on 151,151 grid pairs and
+prints the divergent quotients for closed and open disks.  All tests pass.
+
+A bounded search on 17 August 2026 covered the four lightweight run indexes,
+the exact arXiv id and title, the exact conjecture sentence, the author name,
+and close arXiv/web queries combining ``infimal convolution'', ``convex
+domain'', ``nonempty interior'', and ``Lipschitz''.  The exact-phrase hit was
+the published version of the source itself.  No later answer or matching disk
+counterexample was found.  Novelty confidence is moderate: an elementary
+example may exist as folklore or under different terminology.
+
+\paragraph{Human-review recommendation.}
+Check that the source's ``Lipschitz continuous'' is read globally on the
+essential domain, as its wording and surrounding extended-real definitions
+indicate.  The formal construction and lens computation are otherwise
+elementary.
+
+\begin{thebibliography}{9}
+\bibitem{Zugmeyer}
+S. Zugmeyer,
+\emph{Sharp trace Gagliardo--Nirenberg--Sobolev inequalities for convex
+cones, and convex domains},
+Ann. Inst. H. Poincar\'e Anal. Non Lin\'eaire 36 (2019), no.~3, 861--885;
+arXiv:1710.08233.
+\end{thebibliography}
+
+\end{document}

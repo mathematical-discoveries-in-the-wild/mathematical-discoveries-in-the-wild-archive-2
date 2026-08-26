@@ -1,0 +1,288 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,margin=0.88in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\D}{\mathbb D}
+\newcommand{\C}{\mathbb C}
+\newcommand{\cH}{\mathcal H}
+\newcommand{\Sn}{\mathfrak S_n}
+\newcommand{\diagpt}[1]{\boldsymbol d(#1)}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.48em}
+
+\title{The Trivial and Sign Weighted Bergman Modules\\Are Never Similar}
+\author{Run \texttt{fa\_banach\_001} -- lane 1}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{
+\textbf{Status: candidate full negative solution.}
+For every $n\geq2$ and every $\lambda\geq1$, the trivial and sign reducing
+submodules of $\mathbb A^{(\lambda)}(\D^n)$ are not similar over
+$\C[z_1,\ldots,z_n]^{\Sn}$.  Multiplication by the Vandermonde is also never
+onto.  This settles the general questions posed in Section~4.3 and
+Remark~4.22 of arXiv:2409.11101.
+}}
+\end{center}
+
+\section{Source question and scope}
+
+Biswas, Ghosh, Narayanan, and Shyam Roy ask in Section~4.3 of
+\emph{Contractive Hilbert modules on quotient domains}, arXiv:2409.11101
+\cite{source}, whether the trivial and sign submodules
+$\mathbb A_{\mathrm{triv}}^{(\lambda)}(\D^n)$ and
+$\mathbb A_{\mathrm{sign}}^{(\lambda)}(\D^n)$ are similar over the symmetric
+polynomial ring.  They prove non-similarity only for $n=2$ and
+$\lambda=1,2$.
+
+\begin{center}
+\includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+On PDF page~21, Remark~4.22 asks the corresponding general division question
+for the Vandermonde $V_n$ and again records only the case $n=2$,
+$\lambda=1,2$.
+
+\begin{center}
+\includegraphics[width=0.96\textwidth]{figures/division_question_crop.png}
+\end{center}
+
+We answer both questions for all $n\geq2$ and $\lambda\geq1$.  In fact, the
+kernel argument below works for every $\lambda>0$ for which the RKHS with the
+displayed kernel is considered.
+
+\section{Definitions and proof intuition}
+
+Let $\cH=\mathbb A^{(\lambda)}(\D^n)$ be the reproducing-kernel Hilbert space
+with kernel
+\[
+ K_\lambda(z,w)=\prod_{j=1}^n(1-z_j\overline{w_j})^{-\lambda}.
+\]
+Let $\cH_+$ and $\cH_-$ denote its symmetric and anti-symmetric subspaces.
+They are the trivial and sign reducing submodules for the action of $\Sn$.
+Put
+\[
+ \Delta(z)=\prod_{1\leq i<j\leq n}(z_i-z_j),
+ \qquad N=\frac{n(n-1)}2.
+\]
+Every anti-symmetric holomorphic function is divisible by $\Delta$, with a
+symmetric holomorphic quotient.  We therefore introduce
+\[
+ \widetilde{\cH}_-
+ =\{g\text{ symmetric and holomorphic}:\Delta g\in\cH_-\},
+ \qquad \|g\|_{\widetilde{\cH}_-}=\|\Delta g\|_{\cH}.
+\]
+Multiplication by $\Delta$ is a unitary from $\widetilde{\cH}_-$ onto
+$\cH_-$ and respects multiplication by symmetric polynomials.
+
+\subsection*{Proof intuition}
+
+The two divided modules have dramatically different point-evaluation sizes
+near the boundary of the full diagonal.  At
+$\diagpt a=(a,\ldots,a)$, the kernel norm in $\widetilde{\cH}_-$ exceeds the
+one in $\cH_+$ by the exact factor
+$(1-|a|^2)^{-N}$, up to a fixed constant.  A module similarity must be
+multiplication by a holomorphic function $\psi$, and its inverse must be
+multiplication by $h=1/\psi$.  Kernel-vector estimates then force
+$|h(\diagpt a)|\lesssim(1-|a|^2)^N$ uniformly in the argument of $a$.
+Maximum modulus says that the holomorphic function $a\mapsto h(a,\ldots,a)$
+must be zero, contradicting $h\psi=1$.
+
+\section{The diagonal kernel calculation}
+
+Let $L_+$ and $L_-$ be the reproducing kernels of $\cH_+$ and
+$\widetilde{\cH}_-$, respectively.
+
+\begin{lemma}\label{kernel-lemma}
+For $a\in\D$,
+\begin{align*}
+ L_+(\diagpt a,\diagpt a)
+   &=(1-|a|^2)^{-n\lambda},\\
+ L_-(\diagpt a,\diagpt a)
+   &=c_{n,\lambda}(1-|a|^2)^{-n\lambda-2N},
+\end{align*}
+where
+\[
+ c_{n,\lambda}
+ =\frac1{n!}\prod_{j=0}^{n-1}\frac{(\lambda)_j}{j!}>0.
+\]
+Consequently,
+\[
+ \left(\frac{L_-(\diagpt a,\diagpt a)}
+ {L_+(\diagpt a,\diagpt a)}\right)^{1/2}
+ =\sqrt{c_{n,\lambda}}(1-|a|^2)^{-N}.
+\]
+\end{lemma}
+
+\begin{proof}
+The symmetric and anti-symmetric projection formulas give
+\begin{align}
+ L_+(z,w)
+ &=\frac1{n!}\operatorname{per}
+    \big[(1-z_i\overline{w_j})^{-\lambda}\big]_{i,j=1}^n,
+ \label{plus-kernel}\\
+ L_-(z,w)
+ &=\frac1{n!}\frac{\det
+    \big[(1-z_i\overline{w_j})^{-\lambda}\big]_{i,j=1}^n}
+    {\Delta(z)\overline{\Delta(w)}}.
+ \label{minus-kernel}
+\end{align}
+The quotient in \eqref{minus-kernel} extends holomorphically across the
+collision sets because the numerator is alternating separately in $z$ and
+$\overline w$.  At $w=\diagpt a$, every summand of
+\eqref{plus-kernel} agrees, which gives the first formula.
+
+For the second formula, first coalesce all variables at zero.  The power
+series
+\[
+ (1-zu)^{-\lambda}=\sum_{k\geq0}
+ \frac{(\lambda)_k}{k!}z^ku^k
+\]
+and the Cauchy--Binet expansion show that the lowest nonzero alternating
+bidegree of the determinant uses $k=0,1,\ldots,n-1$.  Dividing by the two
+Vandermondes and letting all variables tend to zero yields
+\[
+ \prod_{j=0}^{n-1}\frac{(\lambda)_j}{j!}.
+\]
+
+For a general $a$, apply the disc automorphism
+$\phi_a(z)=(z-a)/(1-\overline a z)$ to every coordinate.  The identities
+\[
+ 1-\phi_a(z)\overline{\phi_a(w)}
+ =\frac{(1-|a|^2)(1-z\overline w)}
+ {(1-\overline a z)(1-a\overline w)}
+\]
+and
+\[
+ \phi_a(z_i)-\phi_a(z_j)
+ =\frac{(1-|a|^2)(z_i-z_j)}
+ {(1-\overline a z_i)(1-\overline a z_j)}
+\]
+transform the coalesced determinant quotient at zero into
+$(1-|a|^2)^{-n\lambda-2N}$ times the same constant.  The factor $1/n!$ in
+\eqref{minus-kernel} completes the proof.
+\end{proof}
+
+\section{No module similarity}
+
+\begin{theorem}\label{main-theorem}
+For every $n\geq2$ and $\lambda\geq1$, the Hilbert modules
+$\mathbb A_{\mathrm{triv}}^{(\lambda)}(\D^n)$ and
+$\mathbb A_{\mathrm{sign}}^{(\lambda)}(\D^n)$ are not similar over
+$\C[z_1,\ldots,z_n]^{\Sn}$.
+\end{theorem}
+
+\begin{proof}
+Via division by $\Delta$, it suffices to rule out a bounded invertible module
+map $X:\cH_+\to\widetilde{\cH}_-$.  Symmetric polynomials are dense in
+$\cH_+$, so $1$ is cyclic.  They are also dense in
+$\widetilde{\cH}_-$: anti-symmetric polynomials are dense in $\cH_-$, and
+every such polynomial is $\Delta$ times a symmetric polynomial.
+
+Set $\psi=X1$.  For every symmetric polynomial $p$, the module relation gives
+$Xp=p\psi$.  Density and continuity of point evaluations extend this identity
+to every $f\in\cH_+$, so $X=M_\psi$.  Applying the same argument to
+$Y=X^{-1}$ gives $Y=M_h$ for a symmetric holomorphic $h$.  Hence
+\[
+ h\psi=1.
+\]
+
+Let $k_w^+$ and $k_w^-$ be the kernel vectors of $\cH_+$ and
+$\widetilde{\cH}_-$.  Adjointing the two multiplier identities gives
+\[
+ M_\psi^*k_w^-=\overline{\psi(w)}k_w^+,
+ \qquad
+ M_h^*k_w^+=\overline{h(w)}k_w^-.
+\]
+Therefore, with
+$q(w)=\sqrt{L_-(w,w)/L_+(w,w)}$,
+\[
+ \frac{q(w)}{\|Y\|}\leq |\psi(w)|\leq \|X\|q(w).
+\]
+Put $w=\diagpt a$ and use Lemma~\ref{kernel-lemma}.  Since $h=1/\psi$,
+\[
+ |h(a,\ldots,a)|
+ \leq \frac{\|Y\|}{\sqrt{c_{n,\lambda}}}(1-|a|^2)^N.
+\]
+The function $g(a)=h(a,\ldots,a)$ is holomorphic on $\D$.  For every
+$0<r<1$, the preceding estimate holds uniformly on $|a|=r$, and its
+right-hand side tends to zero as $r\uparrow1$.  By the maximum-modulus
+principle, $g$ vanishes identically.  This contradicts $h\psi=1$ on the full
+diagonal.
+\end{proof}
+
+\begin{corollary}\label{division-corollary}
+For every $n\geq2$ and $\lambda\geq1$, multiplication by $\Delta$ from
+$\cH_+$ to $\cH_-$ is not onto.  Equivalently, there exists
+$f\in\mathbb A^{(\lambda)}(\D^n)$ such that $f/\Delta$ is holomorphic on
+$\D^n$ but $f/\Delta\notin\mathbb A^{(\lambda)}(\D^n)$.
+\end{corollary}
+
+\begin{proof}
+In the divided model, multiplication by $\Delta$ becomes the identity map
+$J:\cH_+\to\widetilde{\cH}_-$.  It is bounded because $\Delta$ is a
+polynomial multiplier.  If it were onto, the open mapping theorem would make
+$J^{-1}$ bounded.  Applying $(J^{-1})^*$ to kernel vectors would force
+$L_-(w,w)\leq\|J^{-1}\|^2L_+(w,w)$, contrary to Lemma~\ref{kernel-lemma}
+as $w=\diagpt a$ and $|a|\uparrow1$.  Finally, every anti-symmetric
+holomorphic function is holomorphically divisible by $\Delta$, so failure of
+surjectivity has exactly the stated division interpretation.
+\end{proof}
+
+\section{Verification, limitations, and novelty}
+
+The accompanying script forms the mixed-derivative confluent matrix of
+$(1-zu)^{-\lambda}$ and verifies the determinant formula in
+Lemma~\ref{kernel-lemma} for eleven exact cases with $2\leq n\leq5$ and
+$\lambda\in\{1,2,5/2\}$.  This audits the constant and exponent; it is not
+used as a proof.
+
+The conclusion concerns the trivial and sign representations of $\Sn$ and
+the full parameter range in the source question.  It does not classify
+similarity among higher-dimensional irreducible-representation summands or
+among modules for other reflection groups.
+
+A bounded novelty search on 17 August 2026 used arXiv, the local full-source
+corpus, exact title/author searches, the phrases ``trivial sign weighted
+Bergman similarity'', ``Vandermonde division polydisc'', and citation searches
+for arXiv:2409.11101.  It found the source paper and earlier unitary
+inequivalence work, but no all-parameter similarity or division answer.  Of
+particular significance, Sarkar's December 2025 survey
+\cite{survey} still presents Vandermonde surjectivity/division on $\D^n$ as
+an open problem.  Thus the packet should receive expert review as a plausible
+new full result.
+
+\section*{Human-review recommendation}
+
+\textbf{High priority.}  Check (i) the normalization and covariance in
+Lemma~\ref{kernel-lemma}, and (ii) the claim that every bounded module
+isomorphism is a multiplier after the Vandermonde division.  These are the
+only substantive hinges; the final maximum-modulus contradiction is then
+immediate.
+
+\small
+\begin{thebibliography}{9}
+\bibitem{source}
+S. Biswas, G. Ghosh, E. K. Narayanan, and S. Shyam Roy,
+\emph{Contractive Hilbert modules on quotient domains},
+arXiv:2409.11101 (2024).
+
+\bibitem{survey}
+J. Sarkar,
+\emph{A compendium of research in operator algebras and operator theory},
+arXiv:2512.20979 (2025), Section~1, ``On similarity.''
+\end{thebibliography}
+
+\end{document}
+

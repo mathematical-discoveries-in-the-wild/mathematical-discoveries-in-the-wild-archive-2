@@ -1,0 +1,312 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\newcommand{\Lp}[2]{L^{#1,#2}}
+\newcommand{\Sspace}{\mathcal S}
+\newcommand{\Tspace}{\mathcal T}
+
+\title{The canonical four-corner mixed-norm sum has the Fatou property}
+\author{Candidate full solution packet for arXiv:2006.01083}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\textbf{Status: candidate full solution, likely valid pending expert review.}
+\end{center}
+
+\begin{abstract}
+For arbitrary sigma-finite measure spaces $X$ and $Y$, consider
+\[
+ \Sspace
+ =L^1(X\times Y)+L^\infty(X\times Y)
+  +\Lp{1}{\infty}(X\times Y)+\Lp{\infty}{1}(X\times Y)
+\]
+with its canonical infimal-sum norm.  Holighaus and Voigtlaender proved that
+this norm is equivalent to a Fatou norm, but left open whether the canonical
+norm itself has the Fatou property.  We prove that it does.  The proof also
+shows that the infimum defining the canonical norm is attained for every
+element of $\Sspace$.
+\end{abstract}
+
+\section{Source question}
+
+The source is N.~Holighaus and F.~Voigtlaender, \emph{Schur-type Banach
+modules of integral kernels acting on mixed-norm Lebesgue spaces},
+arXiv:2006.01083v2 (2020), later published in the \emph{Journal of Functional
+Analysis} \cite{HV}.  On page 30, in the unnumbered remark following
+Proposition A.7, the authors state that the canonical norm has the weak Fatou
+property, but that they ``could not confirm whether it actually satisfies the
+Fatou property as well.''
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{The open statement on page 30 of arXiv:2006.01083v2.}
+\end{figure}
+
+Let $(X,\mathcal F,\mu)$ and $(Y,\mathcal G,\nu)$ be sigma-finite measure
+spaces.  Following the source, for a measurable $F:X\times Y\to\mathbb C$ put
+\[
+ \|F\|_{p,q}
+ =\left\|y\longmapsto \|F(\mathord\cdot,y)\|_{L^p(\mu)}
+   \right\|_{L^q(\nu)},
+ \qquad p,q\in\{1,\infty\}.
+\]
+Thus $L^{1,1}=L^1$ and $L^{\infty,\infty}=L^\infty$.  The canonical norm in
+question is
+\begin{equation}\label{eq:sum-norm}
+ \|F\|_{\Sspace}
+ =\inf_{F=F_{11}+F_{\infty\infty}+F_{1\infty}+F_{\infty1}}
+ \bigl(
+   \|F_{11}\|_{1,1}+\|F_{\infty\infty}\|_{\infty,\infty}
+   +\|F_{1\infty}\|_{1,\infty}+\|F_{\infty1}\|_{\infty,1}
+ \bigr).
+\end{equation}
+
+\section{Proof intuition}
+
+For $0\leq F_n\uparrow F$, choose almost optimal four-way decompositions of
+each $F_n$.  Solidity lets us make all four pieces positive, so every piece is
+bounded pointwise by $F$.  After division by $1+F$, the resulting vector of
+four pieces is bounded in a single Hilbert space $L^2$ built from an equivalent
+finite measure.  Hilbert-space Cesaro compactness then produces almost
+everywhere limits for all four pieces simultaneously.  The Fatou lemma in
+each of the four mixed-norm spaces preserves the four norm budgets, while the
+sums of the Cesaro means converge to $F$.  Consequently the limiting pieces
+decompose $F$ at cost no larger than $\lim\|F_n\|_{\Sspace}$.
+
+The only preliminary issue is that $F$ might initially take the value infinity.
+Sigma-finiteness supplies bounded, strictly positive integrable functions on
+$X$ and $Y$.  Their tensor product belongs to all four associate spaces, so a
+duality estimate and monotone convergence force $F$ to be finite almost
+everywhere.
+
+\section{The result}
+
+\begin{theorem}\label{thm:main}
+Let $(X,\mathcal F,\mu)$ and $(Y,\mathcal G,\nu)$ be sigma-finite measure
+spaces.  The canonical norm \eqref{eq:sum-norm} has the Fatou property.  More
+precisely, if $0\leq F_n\uparrow F$ almost everywhere, then
+\[
+ \|F_n\|_{\Sspace}\uparrow\|F\|_{\Sspace},
+\]
+with the convention that both sides may be infinite.
+
+Moreover, for every $F\in\Sspace$ there are
+\[
+ F_{11}\in L^1,\quad F_{\infty\infty}\in L^\infty,\quad
+ F_{1\infty}\in L^{1,\infty},\quad
+ F_{\infty1}\in L^{\infty,1}
+\]
+whose sum is $F$ and for which the infimum in \eqref{eq:sum-norm} is attained.
+\end{theorem}
+
+We isolate two elementary compactness facts.
+
+\begin{lemma}[positive decompositions]\label{lem:positive}
+If $G\geq0$ belongs to $\Sspace$, then the infimum in
+\eqref{eq:sum-norm} can be computed using only decompositions into four
+nonnegative functions.  The sum norm is solid, and
+$\|F\|_{\Sspace}=\||F|\|_{\Sspace}$.
+\end{lemma}
+
+\begin{proof}
+Suppose $G=\sum_{i=1}^4 U_i$ is any complex-valued decomposition and put
+$R=\sum_i|U_i|$.  On $\{R>0\}$ define
+\[
+ V_i=G\frac{|U_i|}{R},
+\]
+and put $V_i=0$ on $\{R=0\}$.  Since $G=|\sum_iU_i|\leq R$, we have
+$0\leq V_i\leq|U_i|$ and $\sum_iV_i=G$.  Solidity of each of the four
+component spaces shows that this replacement cannot increase any component
+norm.  Taking infima proves the first assertion.  Multiplying a positive
+decomposition of $|F|$ by the measurable phase of $F$ proves the reverse
+comparison and hence $\|F\|_{\Sspace}=\||F|\|_{\Sspace}$.  The same argument
+with $0\leq G\leq H$ proves solidity of the sum norm.
+\end{proof}
+
+\begin{lemma}[simultaneous Cesaro extraction]\label{lem:cesaro}
+Let $(\Omega,\mathcal A,\mathbb P)$ be a probability space and let
+$(U_n)$ be bounded in $L^2(\mathbb P;\mathbb R^m)$, where $m<\infty$.  There
+is a subsequence $(U_{n_k})$ such that the Cesaro means
+\[
+ A_N=\frac1N\sum_{k=1}^N U_{n_k}
+\]
+have a subsequence converging almost everywhere.
+\end{lemma}
+
+\begin{proof}
+The closed linear span of $(U_n)$ is a separable Hilbert space.  A diagonal
+argument against an orthonormal basis gives a weakly convergent subsequence.
+After subtracting its weak limit, choose a further subsequence $(W_k)$ with
+$|\langle W_j,W_k\rangle|\leq2^{-k}$ for $j<k$.  Expanding the square shows
+that the norms of $N^{-1}\sum_{k\leq N}W_k$ tend to zero.  Thus the Cesaro
+means converge in $L^2$.  Choosing a subsequence for which the squared
+$L^2$ errors are summable and applying Chebyshev's inequality followed by
+Borel--Cantelli gives almost everywhere convergence.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+The assertion is immediate when
+$L:=\sup_n\|F_n\|_{\Sspace}=\infty$, so assume $L<\infty$.
+If $\mu\otimes\nu$ is the zero measure, there is nothing to prove, so assume
+that it is nonzero.
+
+\smallskip
+\noindent\emph{Step 1: a strictly positive common dual test.}
+Sigma-finiteness gives bounded functions
+$a:X\to(0,\infty)$ and $b:Y\to(0,\infty)$ with
+$a\in L^1(\mu)$ and $b\in L^1(\nu)$.  (For example, use disjoint
+finite-measure exhaustions and summable positive coefficients.)  Set
+$H(x,y)=a(x)b(y)$.  Then $H>0$ almost everywhere, $H\in L^1$, and
+\begin{align*}
+ \|H\|_{1,1}&=\|a\|_1\|b\|_1,&
+ \|H\|_{\infty,\infty}&=\|a\|_\infty\|b\|_\infty,\\
+ \|H\|_{1,\infty}&=\|a\|_1\|b\|_\infty,&
+ \|H\|_{\infty,1}&=\|a\|_\infty\|b\|_1.
+\end{align*}
+Mixed-norm Holder inequalities therefore give a constant $C_H<\infty$ such
+that
+\begin{equation}\label{eq:dual-test}
+ \int_{X\times Y}|G|H\,d(\mu\otimes\nu)
+ \leq C_H\|G\|_{\Sspace}
+ \qquad(G\in\Sspace).
+\end{equation}
+Indeed, pair the four summands respectively with
+$L^\infty,L^1,L^{\infty,1},L^{1,\infty}$ and take the infimum over all
+decompositions.  By monotone convergence,
+\[
+ \int FH=\lim_n\int F_nH\leq C_HL.
+\]
+Since $H>0$ almost everywhere, $F<\infty$ almost everywhere.
+
+\smallskip
+\noindent\emph{Step 2: almost optimal positive decompositions.}
+For each $n$, Lemma~\ref{lem:positive} yields nonnegative functions
+$G_{i,n}$ in the four component spaces $E_i$, in the order
+\[
+ (E_1,E_2,E_3,E_4)
+ =(L^1,L^\infty,L^{1,\infty},L^{\infty,1}),
+\]
+such that
+\begin{equation}\label{eq:near-opt}
+ F_n=\sum_{i=1}^4G_{i,n},
+ \qquad
+ \|F_n\|_{\Sspace}
+ \leq\sum_{i=1}^4\|G_{i,n}\|_{E_i}
+ \leq\|F_n\|_{\Sspace}+\frac1n.
+\end{equation}
+In particular $0\leq G_{i,n}\leq F_n\leq F$.  Passing to a subsequence, we
+may assume simultaneously that
+\[
+ \|G_{i,n}\|_{E_i}\longrightarrow\alpha_i
+ \quad(1\leq i\leq4).
+\]
+Since $\|F_n\|_{\Sspace}\uparrow L$, \eqref{eq:near-opt} gives
+\begin{equation}\label{eq:budget}
+ \sum_{i=1}^4\alpha_i=L.
+\end{equation}
+
+Normalize $H$ so that $H\,d(\mu\otimes\nu)$ is a probability measure
+$\mathbb P$, and define
+\[
+ U_n=\frac{(G_{1,n},G_{2,n},G_{3,n},G_{4,n})}{1+F}.
+\]
+Every coordinate of $U_n$ lies between zero and one, so $(U_n)$ is bounded
+in $L^2(\mathbb P;\mathbb R^4)$.  Lemma~\ref{lem:cesaro}, followed if
+necessary by a further subsequence, supplies integers $N_j\to\infty$ for
+which the Cesaro means
+\[
+ A_{i,N_j}:=\frac1{N_j}\sum_{k=1}^{N_j}G_{i,n_k}
+\]
+converge almost everywhere to nonnegative functions $G_i$.
+
+Because $F_{n_k}\to F$ pointwise,
+\[
+ \sum_{i=1}^4G_i
+ =\lim_{j\to\infty}\frac1{N_j}\sum_{k=1}^{N_j}F_{n_k}
+ =F
+ \qquad\text{almost everywhere}.
+\]
+Each $E_i$ has the Fatou property: this is the usual Fatou lemma, applied
+first in the inner variable and then in the outer variable for the two mixed
+spaces.  Hence
+\begin{align*}
+ \|G_i\|_{E_i}
+ &\leq\liminf_{j\to\infty}\|A_{i,N_j}\|_{E_i}\\
+ &\leq\lim_{j\to\infty}
+       \frac1{N_j}\sum_{k=1}^{N_j}\|G_{i,n_k}\|_{E_i}
+ =\alpha_i.
+\end{align*}
+Together with \eqref{eq:budget}, this yields
+\[
+ \|F\|_{\Sspace}\leq\sum_{i=1}^4\|G_i\|_{E_i}
+ \leq\sum_{i=1}^4\alpha_i=L.
+\]
+Solidity gives $\|F_n\|_{\Sspace}\leq\|F\|_{\Sspace}$, so the reverse
+inequality $L\leq\|F\|_{\Sspace}$ follows.  This proves the Fatou property.
+
+Finally, fix $F\in\Sspace$ and apply exactly the same extraction to a sequence
+of positive decompositions of $|F|$ whose total costs decrease to
+$\|F\|_{\Sspace}$.  Here the dominating function is simply $|F|$.  The
+limiting four pieces have total norm at most $\|F\|_{\Sspace}$, hence exactly
+that value by the definition of the infimum.  Multiplication by the phase of
+$F$ gives an attaining decomposition of $F$.
+\end{proof}
+
+\section{Verification and scope}
+
+The proof is computation-free.  The following points were checked separately.
+\begin{itemize}
+\item The passage to positive decompositions loses no norm and gives the
+      crucial domination $G_{i,n}\leq F$.
+\item The tensor $H=a\otimes b$ belongs to all four associate endpoint spaces,
+      so \eqref{eq:dual-test} rules out an infinite-valued limit before the
+      normalization by $1+F$.
+\item Only four component norm budgets are present; a subsequence can make all
+      of them converge, and Cesaro averaging preserves their limiting total.
+\item The simultaneous extraction occurs in one $\mathbb R^4$-valued Hilbert
+      space, so no incompatible componentwise subsequences are used.
+\item The argument does not address arbitrary infinite lattice sums.  Its
+      finite-component compactness is essential.
+\end{itemize}
+
+The bounded novelty check searched the run indexes, the exact sentence from
+the source remark, the source title and arXiv id, and close variants combining
+the four-corner sum with ``Fatou property.''  It also checked the metadata and
+scope of the Banach-lattice-sum paper cited by the source \cite{MSP}.  No later
+answer to this exact question was found as of 9 August 2026.  Novelty confidence
+is moderate pending a specialist review.
+
+\paragraph{Human review recommendation.}
+Review the positive-decomposition lemma, the construction and use of the
+strictly positive dual tensor $H$, and the normalization/Cesaro extraction in
+Step 2.  Those are the only nonformal points.  If they pass, the proof gives a
+full affirmative answer to the source remark and the additional norm-attainment
+statement.
+
+\begin{thebibliography}{9}
+\bibitem{HV}
+N.~Holighaus and F.~Voigtlaender,
+\emph{Schur-type Banach modules of integral kernels acting on mixed-norm
+Lebesgue spaces}, J. Funct. Anal. 281 (2021), no.~9, 109197;
+arXiv:2006.01083v2.
+
+\bibitem{MSP}
+M.~Masty\l o and E.~A. S\'anchez-P\'erez,
+\emph{Banach lattice sums with hereditary Fatou properties},
+Funct. Approx. Comment. Math. 50 (2014), no.~2, 271--282.
+\end{thebibliography}
+
+\end{document}

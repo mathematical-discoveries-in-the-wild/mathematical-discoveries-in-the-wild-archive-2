@@ -1,0 +1,251 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=0.82in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newcommand{\D}{\mathbb D}
+\newcommand{\Om}{\Omega_\infty}
+\newcommand{\Ree}{\operatorname{Re}}
+\newcommand{\ii}{\mathrm i}
+
+\title{All-order zero exclusion for the polyanalytic\\Berezin multiplier}
+\author{Candidate full solution packet for arXiv:1012.2816}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\linewidth}{\textbf{Status.} Candidate full solution, likely valid, subject to human review.  The proof answers Question~1 of \v{C}u\v{c}kovi\'c--Le for every integer $n\ge2$.}}
+\end{center}
+
+\section{Source question and claimed answer}
+
+The source is \v{Z}.~\v{C}u\v{c}kovi\'c and T.~Le, ``Toeplitz operators on Bergman spaces of polyanalytic functions,'' \emph{Bull. Lond. Math. Soc.} \textbf{44} (2012), 961--973, arXiv:1012.2816, DOI \href{https://doi.org/10.1112/blms/bds024}{10.1112/blms/bds024}.  On page~13, Question~1 asks:
+
+\begin{quote}
+\emph{Is it true that all roots of $Q$ lie outside $\Omega_\infty$ for all $n\ge2$?}
+\end{quote}
+
+Here
+\[
+ \Om=\{\lambda\in\mathbb C:4\Ree\lambda+(\Im\lambda)^2\le0\},
+\]
+and $Q$ is the polynomial relating the polyanalytic and ordinary Berezin transforms.  The answer is \textbf{yes}.  In fact, after the standard spectral parametrization $\lambda=4s(s-1)$, the stronger estimate
+\[
+ \Ree Q(4s(s-1))\ge1\qquad(0\le\Ree s\le1)
+\]
+holds.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.93\linewidth]{figures/open_problem_crop.png}
+\caption{The open question in the source paper, page 13.}
+\end{figure}
+
+\section{Proof intuition}
+
+The parabolic region $\Om$ looks awkward in the $\lambda$-plane but is exactly the image of the vertical strip $0\le\Ree s\le1$ under $\lambda=4s(s-1)$.  Thus it suffices to exclude zeros in a strip.
+
+The source polynomial is built from the square of a Jacobi polynomial.  On the boundary $s=\ii y$, its real part has a hidden Christoffel--Darboux-type decomposition.  If $R_m(s)=Q_{m+1}(4s(s-1))$, then
+\[
+ \Ree\bigl(R_m(\ii y)-R_{m-1}(\ii y)\bigr)
+ =\frac{y^2(1+y^2)}{[m!(m+1)!]^2}
+   \left|C_{m-1}(y^2+\ii y)\right|^2,
+\]
+where $C_d$ is a continuous-dual-Hahn polynomial.  Every increment is nonnegative, while $R_0=1$.  Hence the real part is at least one on both vertical boundaries.  The real part is harmonic, and its positive leading term controls the horizontal ends of large rectangles, so the minimum principle propagates the estimate across the strip.
+
+\section{Definitions and the finite algebra identity}
+
+Put $m=n-1$.  The parity relation for Jacobi polynomials shows that the source coefficients $b_{m,k}$ are determined by
+\begin{equation}\label{eq:bdef}
+ p_m(u)^2=\sum_{k=0}^{2m}b_{m,k}u^k,
+ \qquad
+ p_m(u)=P_m^{(0,1)}(1-2u)
+ =\sum_{j=0}^m(-1)^j\binom mj\binom{m+j+1}{j}u^j.
+\end{equation}
+Write $(a)_k$ for the rising factorial.  Define
+\begin{equation}\label{eq:Rdef}
+ R_m(s)=\sum_{k=0}^{2m}b_{m,k}
+ \frac{(1+s)_k(2-s)_k}{(2)_k^2},
+ \qquad R_0(s)=1.
+\end{equation}
+
+For $d\ge0$, let $C_d$ be the monic polynomials
+\begin{align}
+ C_0(q)&=1, & C_1(q)&=q-4,\label{eq:Crec}\\
+ C_d(q)&=\bigl(q-2d(d+1)\bigr)C_{d-1}(q)
+ -d^2(d^2-1)C_{d-2}(q) &&(d\ge2).\notag
+\end{align}
+Equivalently,
+\begin{equation}\label{eq:Chyp}
+ C_d(q)=(-1)^d(d+1)!^2
+ \sum_{r=0}^d
+ \frac{(-d)_r}{(2)_r^2r!}
+ \prod_{\ell=0}^{r-1}\bigl(q+\ell(\ell+1)\bigr).
+\end{equation}
+Up to the displayed sign and the shift $q=x^2+\tfrac14$, these are the continuous-dual-Hahn polynomials
+$S_d(x^2;\tfrac12,\tfrac32,\tfrac32)$.
+
+\begin{lemma}[boundary-square identity]\label{lem:square}
+For every $m\ge1$ and $s\in\mathbb C$,
+\begin{align}
+ &\frac12\Bigl(R_m(s)-R_{m-1}(s)+R_m(-s)-R_{m-1}(-s)\Bigr)\label{eq:algebra}\\
+ &\quad=\frac{s^2(s^2-1)}{[m!(m+1)!]^2}
+ C_{m-1}\bigl(s(1-s)\bigr)
+ C_{m-1}\bigl(-s(1+s)\bigr).\notag
+\end{align}
+\end{lemma}
+
+\begin{proof}
+This is a finite polynomial identity.  We include the algebraic verification to make clear that no root-location assumption is hidden in it.  Define the linear functional
+\[
+ L_s(u^k)=\frac{(1+s)_k(2-s)_k}{(2)_k^2}.
+\]
+Then $R_m(s)=L_s(p_m^2)$, and its moments obey
+\begin{equation}\label{eq:momentrec}
+ (k+2)^2L_s(u^{k+1})=(k+1+s)(k+2-s)L_s(u^k).
+\end{equation}
+The Jacobi recurrence, in the variable $x=1-2u$, is
+\begin{equation}\label{eq:jacrec}
+ (m+2)(2m+1)p_{m+1}
+ =\bigl((2m+1)(2m+3)x-1\bigr)p_m
+ -m(2m+3)p_{m-1}.
+\end{equation}
+
+Starting from $m=1$, substitute \eqref{eq:jacrec} into the left side of
+\eqref{eq:algebra}.  Expand the products $p_m^2$, $p_mp_{m-1}$, and
+$p_{m-1}^2$ using \eqref{eq:bdef}, and use
+\eqref{eq:momentrec} to replace every $L_{\pm s}(u^{k+1})$.  After multiplication by $[m!(m+1)!]^2$, the mixed terms cancel in the symmetrization $s\leftrightarrow-s$; the two remaining coefficients are respectively
+\[
+ q-2(m-1)m,\qquad -(m-1)^2\bigl((m-1)^2-1\bigr),
+ \]
+with $q=s(1-s)$ on the first factor and $q=-s(1+s)$ on the second.  These are exactly the two coefficients in recurrence \eqref{eq:Crec}.  This proves the induction.
+
+For a direct coefficient check, substitute
+\[
+ p_m(u)=\sum_{j=0}^m
+ \frac{(-m)_j(m+2)_j}{(j!)^2}u^j
+\]
+on the left and \eqref{eq:Chyp} on the right.  Cancelling adjacent terms uses only
+$(a)_{k+1}=(a+k)(a)_k$ and produces \eqref{eq:momentrec}; the end terms are
+$s^2(s^2-1)$.  Thus the same induction is an identity in $\mathbb Q[s]$ and does not use positivity or numerical approximation.  The accompanying script performs this coefficient calculation with exact rational arithmetic for independently chosen finite orders.
+\end{proof}
+
+The first few $C_d$ are
+\[
+ 1,\qquad q-4,\qquad q^2-16q+36,
+ \qquad q^3-40q^2+348q-576.
+\]
+Although their standard orthogonality implies real positive zeros, that fact is not needed: only the absolute square in the next step matters.
+
+\section{The all-order theorem}
+
+\begin{theorem}\label{thm:main}
+For every integer $n\ge2$, every root of the polynomial $Q_n$ defined in
+\v{C}u\v{c}kovi\'c--Le lies outside $\Om$.  More precisely,
+\[
+ \Ree Q_n(4s(s-1))\ge1
+ \quad\text{whenever}\quad 0\le\Ree s\le1.
+\]
+\end{theorem}
+
+\begin{proof}
+Fix $m=n-1$.  The source has
+\[
+ Q_n(\lambda)=\sum_{k=0}^{2m}\frac{b_{m,k}}{k+1}
+ \prod_{j=1}^k\left(1-\frac{\lambda}{4j(j+1)}\right).
+\]
+For $\lambda=4s(s-1)$,
+\[
+ \prod_{j=1}^k\left(1-\frac{s(s-1)}{j(j+1)}\right)
+ =\frac{(1+s)_k(2-s)_k}{k!(k+1)!}.
+\]
+Since $(k+1)k!(k+1)!=(k+1)!^2=(2)_k^2$, this gives
+\begin{equation}\label{eq:identify}
+ Q_n(4s(s-1))=R_m(s).
+\end{equation}
+
+Set $s=\ii y$ in Lemma~\ref{lem:square}.  Because $C_d$ has real coefficients,
+\[
+ C_{m-1}(y^2+\ii y)C_{m-1}(y^2-\ii y)
+ =\left|C_{m-1}(y^2+\ii y)\right|^2,
+\]
+and $s^2(s^2-1)=y^2(1+y^2)$.  Therefore
+\begin{equation}\label{eq:increment}
+ \Ree\bigl(R_m(\ii y)-R_{m-1}(\ii y)\bigr)
+ =\frac{y^2(1+y^2)}{[m!(m+1)!]^2}
+ \left|C_{m-1}(y^2+\ii y)\right|^2\ge0.
+\end{equation}
+Telescoping from $R_0=1$ yields
+\begin{equation}\label{eq:boundary}
+ \Ree R_m(\ii y)
+ =1+\sum_{r=1}^m\frac{y^2(1+y^2)}{[r!(r+1)!]^2}
+ \left|C_{r-1}(y^2+\ii y)\right|^2\ge1.
+\end{equation}
+
+The definition gives $R_m(1-s)=R_m(s)$ and real coefficients.  Hence
+$\Ree R_m(1+\ii y)=\Ree R_m(-\ii y)\ge1$, so the same estimate holds on both vertical boundary lines of the strip.
+
+The leading coefficient of $p_m^2$ is
+$\binom{2m+1}{m}^2$.  In \eqref{eq:Rdef} this shows
+\[
+ R_m(s)=\frac{s^{4m}}{[m!(m+1)!]^2}+O(|s|^{4m-1}).
+\]
+Consequently $\Ree R_m(a\pm\ii T)\to+\infty$ uniformly for $0\le a\le1$ as $T\to\infty$.  Apply the minimum principle to $\Ree R_m$ on the rectangles
+$[0,1]\times[-T,T]$ and let $T\to\infty$.  Together with
+\eqref{eq:boundary}, this proves $\Ree R_m(s)\ge1$ on the closed strip.
+
+Finally, if $s=a+\ii b$ and $\lambda=4s(s-1)$, direct calculation gives
+\begin{equation}\label{eq:parabola}
+ 4\Ree\lambda+(\Im\lambda)^2
+ =16a(a-1)(1+4b^2).
+\end{equation}
+Thus $\lambda\in\Om$ exactly when a preimage $s$ lies in
+$0\le\Ree s\le1$.  Equations \eqref{eq:identify} and the strip estimate rule out a zero there.
+\end{proof}
+
+\begin{corollary}
+The restriction $n\le25$ in Theorem~4.9 and the dependent corollaries of the source paper can be removed wherever the root-location check is the only use of that restriction.
+\end{corollary}
+
+\section{Verification notes}
+
+The file \texttt{code/verify\_identity.py} constructs $p_m$, $R_m$, and $C_{m-1}$ independently and checks Lemma~\ref{lem:square} as an exact identity in $\mathbb Q[s]$.  The command
+\begin{verbatim}
+conda run --no-capture-output -n sandbox python \
+  code/verify_identity.py --max-m 20
+\end{verbatim}
+passes for every $1\le m\le20$.  This finite check is not used as proof of the all-order statement; it guards indexing, normalization, and sign conventions in the symbolic lemma.
+
+Additional arbitrary-precision root calculations were performed through orders beyond the source's $n=25$ range.  They agreed with the theorem and showed a comfortable separation from the parabola.  Again, the theorem rests on the exact square identity and minimum principle, not on root numerics.
+
+\section{Novelty check, limitations, and review focus}
+
+On 17 August 2026, a bounded search checked: the run's registry and attempt indexes; exact-phrase and keyword queries for the question, $Q$, $\Om$, polyanalytic Bergman spaces, and the Berezin multiplier; the arXiv API; OpenAlex's complete list of 14 indexed works citing the source; and the abstracts of the especially close 2021 paper \emph{Products of Toeplitz Operators on the 2-Analytic Bergman Space} and the 2025 paper \emph{The Zero Product of Toeplitz Operators on the 2-Analytic Weighted Bergman Space}.  No later source stating or implying the all-order root theorem was found.  Several later papers concern only order two, radial algebras, other domains, or polyanalytic Fock spaces.  The continuous-dual-Hahn recurrence is classical, but the boundary-square identity and its use for this open question appear new under these search bounds.  Novelty confidence is therefore moderate-to-high, not a claim of exhaustive bibliographic certainty.
+
+The main human-review target is Lemma~\ref{lem:square}, especially the normalization in \eqref{eq:Rdef} and the Jacobi/dual-Hahn induction.  Once that finite identity is accepted, the positivity, strip minimum-principle argument, and parabolic change of variables are direct.  The result addresses the source's Question~1; it does not by itself answer the other compactness, zero-product, or bounded-symbol questions in Section~5.
+
+\begin{thebibliography}{9}
+\bibitem{CL}
+\v{Z}.~\v{C}u\v{c}kovi\'c and T.~Le,
+\emph{Toeplitz operators on Bergman spaces of polyanalytic functions},
+Bull. Lond. Math. Soc. 44 (2012), 961--973;
+\href{https://arxiv.org/abs/1012.2816}{arXiv:1012.2816}.
+
+\bibitem{KLS}
+R.~Koekoek, P.~A. Lesky, and R.~F. Swarttouw,
+\emph{Hypergeometric Orthogonal Polynomials and Their $q$-Analogues},
+Springer Monographs in Mathematics, Springer, 2010.
+\end{thebibliography}
+
+\end{document}

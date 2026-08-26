@@ -1,0 +1,290 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Mc}{\mathcal M_c}
+
+\title{The General Eberlein--Grothendieck/\\Hemicompactness Equivalence}
+\author{Candidate full solution for arXiv:2206.10684}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\linewidth}{\textbf{Status.}
+Candidate full solution, likely valid; human review required.  The theorem
+below removes the first-countability hypothesis from the result of
+K\k{a}kol--Leiderman.  Novelty is provisional pending specialist review.}}
+\end{center}
+
+\section{Source problem}
+
+K\k{a}kol and Leiderman study, for a Tychonoff space $X$, the locally convex
+space $C_k(X)$ of real-valued continuous functions with the compact-open
+topology.  They write $w$ for its weak topology and ask the following in
+Problem~2.6 of \cite{source} (PDF p.~5):
+
+\begin{quote}
+Is $(C_k(X),w)$ Eberlein--Grothendieck if and only if $X$ is hemicompact?
+\end{quote}
+
+Here a space is Eberlein--Grothendieck if it embeds into $C_p(L)$ for some
+compact $L$, and $X$ is \emph{hemicompact} if it has a sequence of compact
+subsets cofinal among all compact subsets.  The source proves the equivalence
+when $X$ is first countable.  Its exact statement and scope are shown below.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\linewidth]{figures/open_problem_crop.png}
+\caption{Problem~2.6 in \cite{source}, together with the source's
+first-countable scope.}
+\end{figure}
+
+\section{Proof intuition}
+
+The source reduces the Eberlein--Grothendieck condition to weak-star
+$\sigma$-compactness of the dual.  Its dual elements are compactly supported
+Radon measures.  The key new observation is that the supports of a weak-star
+compact family cannot collectively escape along the level sets of a continuous
+function: if they did, support-localized test functions in disjoint high
+bands could be weighted and summed to form one continuous function on which
+the compact family has unbounded evaluations.
+
+Thus every compact piece of the dual has functionally bounded total support.
+The Eberlein--Grothendieck hypothesis already forces $X$ itself to be
+$\sigma$-compact.  Such a Tychonoff space is a paracompact $\mu$-space, so a
+functionally bounded subset has compact closure.  An increasing compact cover
+of the dual therefore gives increasing compact support envelopes $H_n$ in
+$X$.
+
+The remaining issue is cofinality, not coverage.  If a compact $K$ escaped
+every $H_n$, choose $x_n\in K\setminus H_n$ and form the positive measure
+$\sum 2^{-n}\delta_{x_n}$.  It belongs to some fixed dual-cover piece, forcing
+all its atoms into that piece's support envelope.  Monotonicity says that all
+sufficiently late atoms lie outside the same envelope, a contradiction.
+
+\section{Preliminaries}
+
+We use three results recorded in the source \cite{source}.
+
+\begin{enumerate}
+\item For a locally convex space $E$, $(E,w)$ is
+Eberlein--Grothendieck exactly when $(E^*,w^*)$ is $\sigma$-compact
+(Proposition~2.1).
+\item Every $\phi\in C_k(X)^*$ is represented by a unique Radon measure
+$\mu$ on the Hewitt realcompactification $\nu X$ whose support is a compact
+subset of $X$ (Theorem~2.7, quoted from \cite{schmets}).  We identify
+$C_k(X)^*$ with this measure space $\Mc(X)$.
+\item The Dirac map $x\mapsto\delta_x$ is a homeomorphic closed embedding of
+$X$ into the weak-star dual
+\[
+ (\Mc(X),\sigma(\Mc(X),C(X)))
+\]
+(Proposition~2.8).
+\end{enumerate}
+
+We also use the support-localization clause of the measure representation:
+if $U\subset\nu X$ is open and meets $\supp\mu$, there is $g\in C(X)$ that
+vanishes on $\nu X\setminus U$ and satisfies $\mu(g)=1$.
+
+Recall that $B\subset X$ is \emph{functionally bounded} if every member of
+$C(X)$ is bounded on $B$.
+
+\begin{lemma}[Paracompact $\mu$-space fact]\label{lem:mu-space}
+If $X$ is paracompact Hausdorff, then the closure of every functionally
+bounded subset of $X$ is compact.
+\end{lemma}
+
+\begin{proof}
+Let $B$ be functionally bounded and put $F=\overline B^X$.  If $F$ were
+noncompact, then the paracompact Hausdorff space $F$ would not be
+pseudocompact: a paracompact pseudocompact Hausdorff space is compact.
+Consequently some $h\in C(F)$ would be unbounded.  The ambient space $X$ is
+normal, and the real-valued Tietze extension theorem extends $h$ to a member
+of $C(X)$.  Since $B$ is dense in $F$, continuity makes $h$ unbounded already
+on $B$, contrary to functional boundedness.  Hence $F$ is compact.
+\end{proof}
+
+\clearpage
+\section{The support-envelope lemma}
+
+\begin{lemma}\label{lem:support}
+Let $X$ be Tychonoff and let $A$ be a weak-star compact subset of $C_k(X)^*$.
+Then
+\[
+ S_A:=\bigcup_{\mu\in A}\supp\mu
+\]
+is functionally bounded in $X$.
+\end{lemma}
+
+\begin{proof}
+Suppose not.  Choose $u\in C(X)$ such that $|u|$ is unbounded on $S_A$, and
+let $q=|\widetilde u|\in C(\nu X)$, where $\widetilde u$ is the extension of
+$u$ to the Hewitt realcompactification.
+
+We inductively choose measures $\mu_n\in A$, points
+$x_n\in\supp\mu_n$, and pairwise disjoint open bands
+\[
+ U_n=\{y\in\nu X:a_n<q(y)<b_n\}.
+\]
+At stage $n$, all earlier supports are compact, so $q$ is bounded on their
+finite union.  Since $q$ is unbounded on $S_A$, choose $x_n$ so high that the
+interval $(a_n,b_n)$ containing $q(x_n)$ has its lower endpoint above the
+previous bands, above the maximum of $q$ on every earlier support, and above
+$n$.  Choose $\mu_n\in A$ with $x_n\in\supp\mu_n$.  At the next stage also
+place the new lower endpoint above $\max_{\supp\mu_n}q$.  It follows that
+\begin{equation}\label{eq:triangular}
+ U_j\cap\supp\mu_i=\varnothing \qquad(j>i).
+\end{equation}
+The lower endpoints tend to infinity, so $(U_n)$ is locally finite.
+
+By support localization, for every $n$ there is $g_n\in C(X)$ vanishing off
+$U_n$ and satisfying $\mu_n(g_n)=1$.  Choose real numbers $c_n$ recursively.
+After $c_1,\ldots,c_{n-1}$ are fixed, take
+\[
+ c_n=n-\sum_{j<n}c_j\mu_n(g_j).
+\]
+Because the bands are locally finite,
+\[
+ g:=\sum_{n=1}^{\infty}c_ng_n
+\]
+is a well-defined continuous function on $X$.  By
+\eqref{eq:triangular}, every term $g_j$ with $j>n$ vanishes on
+$\supp\mu_n$.  Hence
+\[
+ \mu_n(g)=\sum_{j\le n}c_j\mu_n(g_j)=n.
+\]
+On the other hand, evaluation at $g$ is a continuous real-valued function on
+the weak-star compact space $A$, so it must be bounded.  This contradiction
+proves the lemma.
+\end{proof}
+
+\begin{remark}
+Lemma~\ref{lem:support} deliberately concludes only functional boundedness.
+Without additional hypotheses on $X$, compactness of
+$\overline{S_A}^{,X}$ can fail; this is why the $\sigma$-compactness forced
+by the Eberlein--Grothendieck assumption is used separately below.
+\end{remark}
+
+\section{Full solution}
+
+\begin{theorem}\label{thm:main}
+For every Tychonoff space $X$, the following are equivalent:
+\begin{enumerate}
+\item $(C_k(X),w)$ is Eberlein--Grothendieck;
+\item $X$ is hemicompact.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Assume first that $(C_k(X),w)$ is Eberlein--Grothendieck.  By the source's
+Proposition~2.1, the weak-star dual $\Mc(X)$ is $\sigma$-compact.  Choose
+compact sets whose union is $\Mc(X)$ and replace them by their finite unions;
+we obtain an increasing compact cover
+\[
+ A_1\subset A_2\subset\cdots,\qquad \Mc(X)=\bigcup_{n=1}^{\infty}A_n.
+\]
+
+The closed Dirac embedding of $X$ into $\Mc(X)$ shows that $X$ is
+$\sigma$-compact.  A Tychonoff $\sigma$-compact space is Lindel\"of and hence
+paracompact.  For every $n$, define
+\[
+ H_n=\overline{\bigcup_{\mu\in A_n}\supp\mu}^{,X}.
+\]
+Lemma~\ref{lem:support} and Lemma~\ref{lem:mu-space} show that each $H_n$ is
+compact.  Moreover $(H_n)$ is increasing.
+
+We claim that $(H_n)$ is cofinal among the compact subsets of $X$.  If not,
+there is a compact $K\subset X$ with $K\nsubseteq H_n$ for every $n$.  Choose
+\[
+ x_n\in K\setminus H_n
+\]
+and consider the positive atomic measure
+\[
+ \mu=\sum_{n=1}^{\infty}2^{-n}\delta_{x_n}.
+\]
+This is a Radon probability supported in $K$.  For every $f\in C(X)$,
+\[
+ |\mu(f)|\leq \sup_{x\in K}|f(x)|,
+\]
+so $\mu$ is a continuous linear functional on $C_k(X)$, that is,
+$\mu\in\Mc(X)$.  Choose $N$ with $\mu\in A_N$.  By definition of $H_N$,
+\[
+ \supp\mu\subset H_N.
+\]
+Every $x_n$ is a positive atom of $\mu$, so $x_n\in\supp\mu$.  But if
+$n\geq N$, then $H_N\subset H_n$ and $x_n\notin H_n$, hence
+$x_n\notin H_N$.  This is a contradiction.  Therefore $(H_n)$ is cofinal and
+$X$ is hemicompact.
+
+Conversely, if $X$ is hemicompact, then $C_k(X)$ is metrizable
+\cite[Theorem~5.8.5]{narici}.  Every metrizable locally convex space endowed
+with its weak topology is Eberlein--Grothendieck
+\cite[Corollary~2.3]{source}.  Hence $(C_k(X),w)$ is
+Eberlein--Grothendieck.
+\end{proof}
+
+\section{Verification, scope, and novelty}
+
+The proof uses no first-countability, sequentiality, separability, or local
+compactness.  The potentially delicate points are as follows.
+
+\begin{itemize}
+\item The support bands in Lemma~\ref{lem:support} are locally finite because
+their lower levels tend to infinity; arbitrary coefficients therefore do not
+endanger continuity of their sum.
+\item The induction gives a triangular vanishing relation, so future
+summands vanish on each earlier compact support.  There is no interchange of
+an uncontrolled infinite sum and a signed measure.
+\item The diagonal measure is positive.  Thus every chosen point is an atom
+in its support; no compact set is assumed to carry a measure of full support.
+\item Functional boundedness is upgraded to compact closure only after the EG
+hypothesis forces $X$ to be $\sigma$-compact and paracompact.
+\end{itemize}
+
+The run's lightweight indexes contained no earlier result for arXiv:2206.10684.
+Bounded exact-title, exact-problem, notation, author, hemicompactness, and
+weak-star-support searches through 13 August 2026 found the source, a
+conference presentation repeating the first-countable result, and later
+citations, but no explicit resolution of Problem~2.6.  The argument should
+therefore be treated as plausibly new, not as definitively novel, until an
+expert literature review is completed.
+
+\section{Human-review recommendation}
+
+The candidate should be reviewed as a full solution.  The highest-value checks
+are: (i) the support-localization theorem in the precise form used in
+Lemma~\ref{lem:support}; (ii) the paracompact $\mu$-space fact; and (iii) the
+support inclusion and monotonicity in the final atomic diagonal.  No
+computational verification is relevant.
+
+\begin{thebibliography}{9}
+\raggedright
+
+\bibitem{source}
+J. K\k{a}kol and A. Leiderman,
+\emph{When is a locally convex space Eberlein--Grothendieck?},
+arXiv:2206.10684 (2022).
+
+\bibitem{narici}
+L. Narici and E. Beckenstein,
+\emph{Topological Vector Spaces}, 2nd ed., Chapman and Hall/CRC, 2010.
+
+\bibitem{schmets}
+J. Schmets,
+\emph{Espaces de fonctions continues},
+Lecture Notes in Mathematics 519, Springer, 1976.
+
+\end{thebibliography}
+
+\end{document}

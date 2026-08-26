@@ -1,0 +1,278 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newcommand{\K}{\mathbb K}
+\newcommand{\I}{\mathcal I}
+\newcommand{\Sp}[1]{\widehat{\otimes}^{#1,s}_{\pi_s}}
+\newcommand{\Tp}{\widehat{\otimes}_{\pi}}
+
+\title{Symmetric tensor stability implies tensor stability}
+\author{Candidate full solution for arXiv:1603.00246}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\linewidth}{\textbf{Status.} Candidate full proof, likely
+valid, requiring human review. The answer to the source question is
+affirmative. In fact, stability under symmetric squares alone implies full
+tensor stability.}}
+\end{center}
+
+\section{Source question}
+
+Let $0<p\le1$ and let $(\I,\|\cdot\|_{\I})$ be a $p$-normed operator ideal
+over $\K=\mathbb R$ or $\mathbb C$. Botelho and Torres call $\I$
+\emph{symmetrically tensorstable} (or \emph{s-tensorstable}) if, for every
+$m\in\mathbb N$, there is $C_m>0$ such that
+\[
+ \otimes^{m,s}u\in
+ \I\bigl(\Sp{m}E;\Sp{m}F\bigr),\qquad
+ \|\otimes^{m,s}u\|_{\I}\le C_m\|u\|_{\I}^{m}
+\]
+for all Banach spaces $E,F$ and $u\in\I(E;F)$.
+
+They call $\I$ \emph{tensorstable} if there are constants $D_m>0$ such that
+for every $u_j\in\I(E_j;F_j)$,
+\[
+ u_1\otimes\cdots\otimes u_m\in
+ \I(E_1\Tp\cdots\Tp E_m;F_1\Tp\cdots\Tp F_m)
+\]
+and
+\[
+ \|u_1\otimes\cdots\otimes u_m\|_{\I}
+ \le D_m\prod_{j=1}^m\|u_j\|_{\I}.
+\]
+After proving the converse implication, they ask at the end of the paper:
+\begin{quote}
+``We do not know if every s-tensorstable operator ideal is tensorstable.''
+\end{quote}
+This is the open question on PDF page 27 (printed page 26) of
+\cite{BT2018}.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\linewidth]{figures/open_problem_crop.png}
+\caption{The complete open question in \cite[p.~27]{BT2018}, rendered and
+cropped from the local source-paper PDF.}
+\end{figure}
+
+\section{Proof intuition}
+
+Put two ideal operators on the diagonal of one operator between finite
+$\ell_1$-sums. The symmetric square of this diagonal operator has three
+coordinate types: the square of the first block, the square of the second
+block, and the mixed block. That mixed block is exactly the ordinary
+projective tensor product of the two original operators.
+
+There are uniformly bounded maps which insert an ordinary tensor into this
+mixed symmetric block and extract it again. Thus symmetric-square stability
+of the diagonal operator forces the ordinary tensor product to belong to the
+ideal. Normalizing the two diagonal blocks before adding them converts the
+$p$-triangle estimate into the required product bound. Once the
+two-operator estimate is available, associativity gives arbitrary finite
+tensor products by iteration.
+
+\section{The mixed component of a symmetric square}
+
+For a Banach space $X$, write
+\[
+ z\vee z'=\frac12(z\otimes z'+z'\otimes z)\in\Sp{2}X.
+\]
+This is the symmetrization convention used in \cite[Proposition~7.12]{BT2018}.
+
+\begin{lemma}\label{lem:mixed}
+Let $E,G,F,H$ be Banach spaces. Put $X=E\oplus_1G$ and $Y=F\oplus_1H$,
+with canonical coordinate injections $i_E,i_G,i_F,i_H$ and projections
+$q_E,q_G,q_F,q_H$. There are bounded operators
+\[
+ J:E\Tp G\longrightarrow\Sp{2}X,
+ \qquad
+ Q:\Sp{2}Y\longrightarrow F\Tp H
+\]
+such that
+\[
+ J(x\otimes g)=i_E(x)\vee i_G(g),\qquad
+ Q(i_F(f)\vee i_H(h))=f\otimes h,
+\]
+and $\|J\|\le2$, $\|Q\|\le2$.
+\end{lemma}
+
+\begin{proof}
+Let $S_X^2:X\times X\to\Sp{2}X$ be the symmetrization map
+$S_X^2(z,z')=z\vee z'$. Its linearization on $X\Tp X$ has norm equal to
+the second polarization constant, which is at most $2$; this is precisely
+the estimate used in \cite[Proposition~7.12]{BT2018}. Therefore
+\[
+ J=(S_X^2)_L\circ(i_E\otimes i_G)
+\]
+has norm at most $2$ and has the required action on elementary tensors.
+
+For completeness, the same bound follows directly without identifying any
+two tensor norms. The polarization identity
+\[
+ z\vee z'=\frac14\bigl((z+z')^{\otimes2}-(z-z')^{\otimes2}\bigr)
+\]
+and replacement of $(z,z')$ by $(tz,t^{-1}z')$, followed by minimization over
+$t>0$, give
+\[
+             \pi_s(z\vee z')\le2\|z\|\,\|z'\|.
+\]
+The universal property of $\Tp$ then yields the asserted extension of $J$.
+
+Let
+\[
+ \iota_Y^2:\Sp{2}Y\longrightarrow Y\Tp Y
+\]
+be the canonical norm-one inclusion used in
+\cite[Proposition~7.12]{BT2018}, and define
+\[
+                 Q=2(q_F\otimes q_H)\circ\iota_Y^2.
+\]
+Then $\|Q\|\le2$. Moreover,
+\[
+ \iota_Y^2(i_F(f)\vee i_H(h))
+ =\frac12\bigl(i_F(f)\otimes i_H(h)+i_H(h)\otimes i_F(f)\bigr).
+\]
+The coordinate tensor projection $q_F\otimes q_H$ keeps the first term and
+annihilates the second, so the factor $2$ gives
+$Q(i_F(f)\vee i_H(h))=f\otimes h$.
+\end{proof}
+
+\section{Affirmative solution}
+
+\begin{theorem}\label{thm:main}
+Let $0<p\le1$. Every s-tensorstable $p$-normed operator ideal is
+tensorstable. More precisely, suppose only that symmetric squares satisfy
+\[
+ \otimes^{2,s}w\in\I(\Sp{2}X;\Sp{2}Y),\qquad
+ \|\otimes^{2,s}w\|_{\I}\le C_2\|w\|_{\I}^{2}
+\]
+for all $w\in\I(X;Y)$. Then, for all $u\in\I(E;F)$ and
+$v\in\I(G;H)$,
+\begin{equation}\label{eq:pair-bound}
+ \|u\otimes v\|_{\I}
+ \le K\|u\|_{\I}\|v\|_{\I},
+ \qquad K=2^{,2+2/p}C_2.
+\end{equation}
+Consequently one may take $D_m=K^{m-1}$ in the definition of
+tensorstability.
+\end{theorem}
+
+\begin{proof}
+The conclusion is immediate if $u=0$ or $v=0$, so suppose both are nonzero
+and set
+\[
+                         a=\|u\|_{\I},\qquad b=\|v\|_{\I}.
+\]
+Use the spaces and coordinate maps of Lemma~\ref{lem:mixed} and define the
+block-diagonal operator
+\[
+ W=i_F\frac{u}{a}q_E+i_H\frac{v}{b}q_G:X\longrightarrow Y.
+\]
+The ideal property puts both summands in $\I(X;Y)$ with ideal $p$-norm at
+most one. Since $\I$ is $p$-normed,
+\begin{equation}\label{eq:W-bound}
+                    \|W\|_{\I}^{p}\le1+1=2,
+ \qquad\text{hence}\qquad \|W\|_{\I}^{2}\le2^{2/p}.
+\end{equation}
+
+The defining formula for $\otimes^{2,s}W$ on pure squares, polarized, gives
+\begin{equation}\label{eq:polarized-action}
+ (\otimes^{2,s}W)(z\vee z')=Wz\vee Wz'
+ \qquad(z,z'\in X).
+\end{equation}
+Thus, for $x\in E$ and $g\in G$, Lemma~\ref{lem:mixed} and the diagonal
+form of $W$ yield
+\begin{align*}
+ Q(\otimes^{2,s}W)J(x\otimes g)
+ &=Q\left(i_F\frac{u(x)}a\vee i_H\frac{v(g)}b\right)\\
+ &=\frac{u(x)}a\otimes\frac{v(g)}b.
+\end{align*}
+By density of elementary tensors,
+\begin{equation}\label{eq:factorization}
+ Q\circ(\otimes^{2,s}W)\circ J
+ =\frac{u}{a}\otimes\frac{v}{b}.
+\end{equation}
+
+Symmetric-square stability, the operator-ideal property,
+Lemma~\ref{lem:mixed}, and \eqref{eq:W-bound} now give
+\begin{align*}
+ \left\|\frac{u}{a}\otimes\frac{v}{b}\right\|_{\I}
+ &\le\|Q\|\,\|\otimes^{2,s}W\|_{\I}\,\|J\|\\
+ &\le 2\,C_2\|W\|_{\I}^{2}\,2\\
+ &\le 2^{,2+2/p}C_2=K.
+\end{align*}
+Multiplication by $ab$ proves \eqref{eq:pair-bound}.
+
+Finally apply \eqref{eq:pair-bound} repeatedly. Identifying iterated
+projective tensor products through their canonical isometric associativity
+maps, induction gives
+\[
+ \|u_1\otimes\cdots\otimes u_m\|_{\I}
+ \le K^{m-1}\prod_{j=1}^m\|u_j\|_{\I},
+\]
+and membership in $\I$ at each step. Hence $\I$ is tensorstable.
+\end{proof}
+
+\begin{corollary}
+For a $p$-normed operator ideal, s-tensorstability and tensorstability are
+equivalent. Consequently condition (c) of
+\cite[Theorem~7.8]{BT2018} may equivalently be replaced by tensorstability.
+\end{corollary}
+
+\begin{proof}
+Theorem~\ref{thm:main} proves the previously open implication. The converse
+is \cite[Proposition~7.12]{BT2018}.
+\end{proof}
+
+\section{Verification, scope, and novelty}
+
+The proof is noncomputational. Its load-bearing points are the $p$-triangle
+estimate \eqref{eq:W-bound}, the two uniform mixed-component maps of
+Lemma~\ref{lem:mixed}, and the exact intertwining identity
+\eqref{eq:factorization}. The accompanying \texttt{verification.md} checks
+these steps separately, including conventions, scalar fields, completions,
+and iteration. The constant is intentionally safe and is not asserted to be
+optimal.
+
+\paragraph{Bounded novelty check.}
+On 11 August 2026, the local run indexes and the downloaded arXiv source
+corpus were searched by arXiv id, title, authors, and the exact phrases
+``s-tensorstable'', ``symmetrically tensorstable'', and the verbatim open
+question. The terminology occurred only in the source paper in the local
+corpus. External exact-phrase and title/author searches likewise found the
+source but no separate answer. OpenAlex metadata listed nine works citing
+the journal article; their titles and available records did not identify an
+answer. A directly relevant open 2020 dissertation on associativity of
+projective and injective tensor products was downloaded and text-searched and
+contained none of the exact terminology. No prior statement of
+Theorem~\ref{thm:main} or of this block-diagonal mixed-component proof was
+found. Novelty confidence is moderate rather than definitive; specialist
+review of non-indexed literature is recommended.
+
+\paragraph{Human-review recommendation.}
+Check the averaged convention for $\vee$ and hence the factor $2$ in $Q$;
+check that the source's norm-one map $\iota_Y^2$ has the stated direction;
+and check whether later operator-ideal literature records this equivalence
+under different terminology. No unresolved mathematical dependency is known.
+
+\begin{thebibliography}{9}
+\bibitem{BT2018}
+G. Botelho and E. R. Torres,
+\emph{Two-sided polynomial ideals on Banach spaces},
+J. Math. Anal. Appl. \textbf{462} (2018), 900--914,
+\href{https://doi.org/10.1016/j.jmaa.2017.12.054}{doi:10.1016/j.jmaa.2017.12.054};
+circulated as \emph{Polynomial ideals from a nonlinear viewpoint},
+\href{https://arxiv.org/abs/1603.00246}{arXiv:1603.00246}.
+\end{thebibliography}
+
+\end{document}

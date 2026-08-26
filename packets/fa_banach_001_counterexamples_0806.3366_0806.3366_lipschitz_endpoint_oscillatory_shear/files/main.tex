@@ -1,0 +1,204 @@
+\documentclass[10pt]{article}
+\usepackage[margin=1.02in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Lip}{\operatorname{Lip}}
+\newcommand{\pa}{\mathrm{PA}_{\mathrm{fin}}}
+
+\definecolor{statusred}{RGB}{151,37,32}
+
+\title{An Oscillatory Shear Excludes the\\
+Lipschitz Approximation Endpoint}
+\author{fa\_banach\_001 / agent\_lane\_14}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent
+\fcolorbox{statusred}{statusred!6}{%
+  \begin{minipage}{0.92\textwidth}
+  \textbf{Status: candidate full counterexample, likely valid; human review
+  needed.}  The endpoint $1$ does not belong to the approximation set
+  $B(1,1)$ of Bellido--Mora-Corral.  In fact, one explicit bi-Lipschitz shear
+  stays Lipschitz distance at least one from every map affine on a finite
+  triangulation.  Together with the source theorem, this gives
+  $B(1,1)=(0,1)$.
+  \end{minipage}}
+
+\section{Source question}
+
+Bellido and Mora-Corral study approximation of planar H\"older
+homeomorphisms by piecewise affine homeomorphisms over Euclidean finite
+complexes \cite{BMC}.  For $0<\alpha,\widetilde\alpha\leq1$, they let
+$B(\alpha,\widetilde\alpha)$ be the set of exponents $0<\beta\leq1$ for
+which, on every closed polygon $\Omega$, piecewise affine homeomorphisms are
+dense in
+\[
+ \bigl\{h\in C^\alpha(\Omega,\R^2):h\text{ is a homeomorphism and }
+ h^{-1}\in C^{\widetilde\alpha}(h(\Omega),\R^2)\bigr\}
+\]
+in the $C^\beta$ norm.  Their Theorem~7.6 implies
+$\sup B(1,1)=1$.  On PDF page~45 they ask whether the endpoint belongs:
+\[
+ 1\stackrel{?}{\in}B(1,1).
+\]
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{The endpoint question on PDF page~45 of arXiv:0806.3366.}
+\end{figure}
+
+\section{Definitions}
+
+For a map $F$ on the unit square $Q=[0,1]^2$, write
+\[
+ |F|_1=\sup_{p\neq q\in Q}\frac{|F(p)-F(q)|}{|p-q|},
+ \qquad \|F\|_1=\|F\|_\infty+|F|_1.
+\]
+This is the source's exponent-one H\"older norm.  Let $\pa(Q,\R^2)$
+denote all maps affine on the triangles of some finite triangulation of $Q$;
+injectivity is not imposed in this larger class.
+
+\section{Proof intuition}
+
+The endpoint norm detects slopes rather than only function values.  A finite
+piecewise affine map has only finitely many slopes along each boundary edge,
+so near a corner its boundary slope is constant.  We build a horizontal
+shear whose boundary slope continues to alternate between $-1$ and $+1$ at
+arbitrarily small scales.  The shear and its inverse remain Lipschitz because
+the slope is bounded.  No constant can be within less than one of both
+$-1$ and $+1$, which yields a uniform gap from every finite piecewise affine
+map.
+
+\section{Counterexample and exact endpoint}
+
+Define $g:[0,1]\to\R$ by
+\[
+ g(0)=0,\qquad g(t)=t^2\sin(1/t)\quad(t>0),
+\]
+and define
+\begin{equation}
+ h:Q\longrightarrow\R^2,\qquad h(x,y)=(x+g(y),y).
+ \label{eq:shear}
+\end{equation}
+
+\begin{theorem}
+\label{thm:gap}
+The map $h$ in \eqref{eq:shear} is a bi-Lipschitz homeomorphism from $Q$
+onto $h(Q)$.  Moreover, for every $f\in\pa(Q,\R^2)$,
+\begin{equation}
+ \|h-f\|_1\geq |h-f|_1\geq1.
+ \label{eq:gap}
+\end{equation}
+Consequently, $1\notin B(1,1)$.
+\end{theorem}
+
+\begin{proof}
+For $t>0$,
+\begin{equation}
+ g'(t)=2t\sin(1/t)-\cos(1/t),
+ \label{eq:derivative}
+\end{equation}
+so $|g'(t)|\leq3$ on $(0,1]$.  Also $g'(0)=0$ directly from the
+difference quotient.  Thus $g$ is Lipschitz.  The shear is injective because
+it preserves the second coordinate, and its inverse on $h(Q)$ is
+\[
+ h^{-1}(u,v)=(u-g(v),v).
+\]
+The triangle inequality and the Lipschitz bound for $g$ show that both maps
+are Lipschitz.  Hence $h$ satisfies the defining regularity hypotheses for
+$B(1,1)$.
+
+Fix $f\in\pa(Q,\R^2)$ and restrict it to the left edge
+$E=\{(0,t):0\leq t\leq1\}$.  Intersecting a finite triangulation with $E$
+gives a finite subdivision of $E$, so there are $\delta>0$ and $a,c\in\R$
+such that
+\[
+ \pi_1 f(0,t)=a+ct\qquad(0\leq t\leq\delta).
+\]
+The first coordinate of $(h-f)(0,t)$ on this interval is therefore
+$d(t)=g(t)-a-ct$.  For all sufficiently large $n$, both
+\[
+ t_n=\frac1{2\pi n},\qquad s_n=\frac1{(2n+1)\pi}
+\]
+belong to $(0,\delta)$.  Equation \eqref{eq:derivative} gives exactly
+\[
+ g'(t_n)=-1,\qquad g'(s_n)=1.
+\]
+The absolute value of a derivative at any differentiability point is bounded
+by the Lipschitz seminorm.  Consequently,
+\begin{align*}
+ |h-f|_1
+ &\geq \Lip(d;[0,\delta])\\
+ &\geq \max\{|{-1-c}|,|{1-c}|\}
+  =1+|c|\geq1,
+\end{align*}
+which proves \eqref{eq:gap}.  Since this excludes approximation even by the
+larger class $\pa(Q,\R^2)$, it certainly excludes finite piecewise affine
+homeomorphisms.  The square is a closed polygon, so the universal density
+property defining $1\in B(1,1)$ fails.
+\end{proof}
+
+\begin{corollary}
+The source approximation set is exactly
+\[
+ B(1,1)=(0,1).
+\]
+\end{corollary}
+
+\begin{proof}
+For $\alpha=\widetilde\alpha=1$, source Theorem~7.6 gives approximation in
+every exponent $0<\beta<1$, hence $(0,1)\subseteq B(1,1)$.  Theorem
+\ref{thm:gap} excludes the only remaining endpoint.
+\end{proof}
+
+\section{Verification, scope, and novelty}
+
+The included script \texttt{code/verify\_shear.py} checks 3,500 instances of
+the two exact slope sequences against seven affine slopes and verifies the
+shear/inverse identities on a $101\times101$ grid.  This is only a numerical
+sanity check; the proof is the elementary calculation above.  Details are in
+\texttt{verification.md}.
+
+The counterexample settles precisely the source's $B(1,1)$ endpoint.  It is
+stronger than needed because the lower bound holds for noninjective finite
+piecewise affine maps as well.  It makes no assertion about approximation by
+countably piecewise affine maps with subdivisions accumulating at the corner,
+nor about stronger quantitative bi-Lipschitz approximation questions.
+
+Cheap run indexes, the parsed local corpus, and bounded web/arXiv searches
+through 13 August 2026 used the exact endpoint phrase, title and authors,
+$B(1,1)$, finite piecewise affine density, Lipschitz-norm approximation, and
+oscillatory-shear terms.  They found the source and later Sobolev and
+bi-Lipschitz approximation literature, but no explicit answer to this exact
+endpoint question.  See \texttt{novelty\_search.md}.  This is not an
+exhaustive priority claim.
+
+\section{Human-review recommendation}
+
+The highest-value check is the finite-complex convention: the restriction of
+a map affine on a finite triangulation to a polygon edge must have a first
+affine interval.  A reviewer should also confirm that the source's
+$\|\cdot\|_1$ is the ordinary Lipschitz norm.  Once those definitions are
+matched, the explicit inverse and the two derivative sequences make the
+counterexample immediate.
+
+\begin{thebibliography}{9}
+
+\bibitem{BMC}
+J. C. Bellido and C. Mora-Corral,
+\emph{Approximation of H\"older continuous homeomorphisms by piecewise affine
+homeomorphisms}, arXiv:0806.3366 (2008).
+
+\end{thebibliography}
+
+\end{document}

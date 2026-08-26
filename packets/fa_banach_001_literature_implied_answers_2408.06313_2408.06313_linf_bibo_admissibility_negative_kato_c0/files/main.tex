@@ -1,0 +1,242 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem*{sourcequestion}{Source question (Remark 5.9)}
+\newtheorem*{answer}{Literature-implied answer}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\T}{\mathbb T}
+\newcommand{\Lin}{\mathcal L}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+
+\title{A Literature-Implied Counterexample to\\
+$L^\infty$-BIBO/Admissibility Equivalence}
+\author{Run \texttt{fa\_banach\_001} --- lane 7}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.9\textwidth}{
+\textbf{Status: full negative literature-implied answer.}
+Kato's diagonal semigroup on $c_0$, recorded in Example~2.3 of
+arXiv:2008.00459, makes the identity-output system $L^\infty$-BIBO stable
+although its control operator is not $L^\infty$-admissible.  This answers
+Remark~5.9 of arXiv:2408.06313 negatively.  The construction itself is
+known literature; the relation to the later question is the identification
+recorded here.
+}}
+\end{center}
+
+\section{Question and answer}
+
+Let $A$ generate a $C_0$-semigroup on a Banach space $X$, let
+$B\in\Lin(U,X_{-1})$, and consider the identity-output system node
+\[
+ \Sigma_B=\Sigma\bigl(A,B,I,(\,\cdot\, I-A)^{-1}B\bigr).
+\]
+Schwenninger and Wierzba prove in Proposition~5.8 of \cite{source} that
+$\Sigma_B$ is $C^\infty$-BIBO stable if and only if $B$ is infinite-time
+$C$-control-admissible.  On arXiv PDF page~12 they ask:
+
+\begin{sourcequestion}
+Does the analogous equivalence hold for $L^\infty$ inputs?
+\end{sourcequestion}
+
+\begin{answer}
+No.  There is an exponentially stable positive diagonal semigroup on $c_0$
+and a positive control operator $B$ for which $\Sigma_B$ is
+$L^\infty$-BIBO stable with constant one, while $B$ is not even finite-time
+$L^\infty$-control-admissible.
+\end{answer}
+
+\section{The Kato system}
+
+Let $X=U=c_0(\N)$ and define
+\[
+ (T(t)x)_n=e^{-nt}x_n,\qquad
+ (Ax)_n=-n x_n,
+\]
+with
+\[
+ D(A)=\{x\in c_0:(n x_n)_{n\ge1}\in c_0\}.
+\]
+Then $(T(t))_{t\ge0}$ is a positive exponentially stable $C_0$-semigroup.
+Using $0\in\rho(A)$ to norm the extrapolation space,
+\[
+ X_{-1}=\{z=(z_n):(z_n/n)\in c_0\},
+ \qquad \|z\|_{-1}=\sup_n\frac{|z_n|}{n}.
+\]
+Set $B=-A_{-1}|_X$, so $(Bu)_n=n u_n$.  This is a bounded positive map
+$c_0\to X_{-1}$.  Also
+\[
+ \bigl((\lambda I-A)^{-1}Bu\bigr)_n
+ =\frac{n}{\lambda+n}u_n\in c_0,
+\]
+so $\Sigma_B$ is a legitimate system node with output space $c_0$.
+Its combined observation/feedthrough operator is the identity: for every
+admissible pair $(x,u)$,
+\[
+ (C\&D)\binom xu
+ =x-(\lambda I-A)^{-1}Bu+(\lambda I-A)^{-1}Bu=x.
+\]
+Consequently its distributional output is the state itself.
+
+For $u\in L^\infty_{\mathrm{loc}}([0,\infty);c_0)$ and zero initial state,
+the extrapolation-space state has coordinates
+\begin{equation}\label{eq:state}
+ x_n(t)=n\int_0^t e^{-n(t-s)}u_n(s)\,ds.
+\end{equation}
+
+\section{$L^\infty$-BIBO stability}
+
+The following elementary verification makes the system-node identification
+with the maximal-regularity statement in \cite{support} explicit.
+
+\begin{proposition}\label{prop:bibo}
+For every $u\in L^\infty_{\mathrm{loc}}([0,\infty);c_0)$, the state in
+\eqref{eq:state} has a $c_0$-valued strongly measurable representative and,
+for every $\tau>0$,
+\[
+ \|x\|_{L^\infty([0,\tau];c_0)}
+ \le \|u\|_{L^\infty([0,\tau];c_0)}.
+\]
+Thus $\Sigma_B$ is $L^\infty$-BIBO stable.
+\end{proposition}
+
+\begin{proof}
+The coordinate estimate from \eqref{eq:state} gives, for almost every
+$t\le\tau$,
+\[
+ |x_n(t)|\le (1-e^{-nt})
+ \|u\|_{L^\infty([0,t];c_0)}
+ \le \|u\|_{L^\infty([0,\tau];c_0)}.
+\]
+It remains to prove that $x_n(t)\to0$ for almost every $t$.  Extend $u$ by
+zero to negative times and take a Lebesgue point $t$ of the Bochner function
+$u$.  Writing $r=t-s$ gives
+\[
+ x_n(t)=(1-e^{-nt})u_n(t)
+ +n\int_0^t e^{-nr}\bigl(u_n(t-r)-u_n(t)\bigr)\,dr.
+\]
+The first term tends to zero because $u(t)\in c_0$.  The absolute value of
+the second is bounded by
+\[
+ n\int_0^t e^{-nr}\|u(t-r)-u(t)\|_{c_0}\,dr,
+\]
+which tends to zero because $(n e^{-nr})_{n\ge1}$ is a one-sided approximate
+identity and $t$ is a Lebesgue point.  Hence $x(t)\in c_0$ for almost every
+$t$.
+
+Each coordinate is measurable.  On the full-measure set just obtained,
+finite-coordinate truncations converge pointwise in $c_0$ norm to $x(t)$;
+therefore $x$ has a strongly measurable $c_0$-valued representative.  The
+coordinate estimate then proves the asserted essential-supremum bound.
+\end{proof}
+
+The supporting paper states the same regularity fact in its original
+language: immediately after Example~2.3, it records that Kato's semigroup has
+$L^\infty$-maximal regularity.  Since $B=-A_{-1}$, that assertion is exactly
+the a.e. $c_0$-valued boundedness of the state above.
+
+\section{Failure of endpoint admissibility}
+\enlargethispage{7\baselineskip}
+
+Fix $\tau>0$.  Example~2.3 of \cite{support}, on arXiv PDF pages~7--8,
+uses the strongly measurable input $u\in L^\infty([0,\tau];c_0)$ given by
+\[
+ u_n(s)=
+ \begin{cases}
+ 1,&s\in[\tau-1/n,\,\tau-1/(2n)]\text{ and }1/n<\tau,\\
+ 0,&\text{otherwise}.
+ \end{cases}
+\]
+For each fixed $s$, only finitely many coordinates are nonzero, so
+$u(s)\in c_0$, and $\|u\|_{L^\infty}=1$.  But at the endpoint,
+\[
+ x_n(\tau)
+ =\int_{1/(2n)}^{1/n} n e^{-nr}\,dr
+ =e^{-1/2}-e^{-1}>\frac15
+\]
+for every sufficiently large $n$.  Thus $x(\tau)\notin c_0$.  The endpoint
+input map
+\[
+ \Phi_\tau u=\int_0^\tau T_{-1}(\tau-s)Bu(s)\,ds
+\]
+does not have range in $X$, so $B$ is not $L^\infty$-control-admissible.
+Together with Proposition~\ref{prop:bibo}, this is the desired counterexample.
+
+The mechanism is sharp: BIBO stability only sees the output as an almost-
+everywhere equivalence class, whereas control admissibility requires the state
+to lie in $X$ at the specified endpoint.  Kato's input creates a single
+non-$c_0$ endpoint without violating the a.e. BIBO estimate.
+
+\section{Reflexive-state boundary}
+
+The endpoint defect cannot occur on reflexive state spaces.
+
+\begin{proposition}\label{prop:reflexive}
+If $X$ is reflexive, then for the identity-output system $\Sigma_B$,
+$L^\infty$-BIBO stability is equivalent to infinite-time
+$L^\infty$-control-admissibility.
+\end{proposition}
+
+\begin{proof}
+Only the forward implication needs comment.  Fix $\tau>0$ and
+$u\in L^\infty([0,\tau];U)$, extended by zero after $\tau$.  Let $x$ be the
+zero-state trajectory.  BIBO stability gives $x(t)\in X$ for almost every
+$t<\tau$ and $\|x(t)\|_X\le c\|u\|_\infty$.  Choose $t_k\uparrow\tau$ from
+this full-measure set.  Reflexivity gives a subsequence converging weakly in
+$X$ to some $z\in X$.  The canonical embedding $X\hookrightarrow X_{-1}$ is
+continuous, while the generalized state is continuous in $X_{-1}$; hence the
+same subsequence converges in $X_{-1}$ norm to $x(\tau)$.  Uniqueness of weak
+limits in $X_{-1}$ gives $x(\tau)=z\in X$, with
+$\|x(\tau)\|_X\le c\|u\|_\infty$.  The constant is independent of $\tau$,
+which is infinite-time admissibility.  The converse follows directly from
+the state formula and the identity output.
+\end{proof}
+
+This addendum is not needed for the negative answer, but it isolates the role
+of the nonreflexive space $c_0$.
+
+\section{Provenance and remaining scope}
+
+The semigroup, the operator $B=-A_{-1}$, the explicit bad input, the
+$L^\infty$-maximal-regularity property, and the failure of
+$L^\infty$-admissibility are all contained in Example~2.3 and the following
+paragraph of \cite{support}.  The present packet makes the direct translation
+to Remark~5.9 of \cite{source}; no new counterexample is claimed.
+
+This does not settle the broader Outlook question in \cite{source} asking
+whether $C^\infty$-, $C$-, and $L^\infty$-BIBO stability are equivalent for
+arbitrary system nodes.  In the Kato identity-output example all three BIBO
+properties hold; what fails is endpoint $L^\infty$ control admissibility.
+
+\small
+\begin{thebibliography}{9}
+\bibitem{source}
+F. L. Schwenninger and A. A. Wierzba,
+\emph{A dual notion to BIBO stability},
+J. Math. Anal. Appl. \textbf{545} (2025), 129156;
+arXiv:2408.06313.
+
+\bibitem{support}
+B. Jacob, F. L. Schwenninger, and J. Wintermayr,
+\emph{A refinement of Baillon's theorem on maximal regularity},
+Stud. Math. \textbf{263} (2022), 141--158;
+arXiv:2008.00459.
+\end{thebibliography}
+
+\end{document}

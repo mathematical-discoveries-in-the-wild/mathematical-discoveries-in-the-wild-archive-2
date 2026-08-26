@@ -1,0 +1,331 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.92in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\cX}{\mathcal X}
+\newcommand{\cH}{\mathcal H}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\clos}[1]{\overline{#1}}
+\newcommand{\hot}{\widehat\otimes_2}
+\newcommand{\HT}{\mathop{\widehat\bigotimes}\limits}
+
+\title{Sobolev Tensors Always Belong to the Tensor Product\\
+of Their Minimal Subspaces}
+\author{Candidate full resolution for arXiv:1809.11001}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{black}{gray!8}{\parbox{0.88\linewidth}{
+\textbf{Status: candidate full solution, likely valid pending human review.}
+The conclusion of Proposition 3.7 of the source holds without Assumption 3.5;
+therefore the counterexamples conjectured in Remark 3.6 do not exist.}}
+\end{center}
+
+\section{The source conjecture and the result}
+
+Let $\Omega=\prod_{j=1}^d\Omega_j$.  Ali and Nouy identify
+\[
+ H^1(\Omega)=\bigcap_{k=1}^d
+ \left(H^1(\Omega_k)\hot\HT_{j\ne k}L^2(\Omega_j)\right),
+ \tag{1}
+\]
+with an equivalent intersection norm.  For $u\in H^1(\Omega)$, they define
+$U_j^{\min}(u)$ as the $H^1(\Omega_j)$-closure of all contractions of $u$
+against $L^2$ functionals in the other variables.  Proposition 3.7 proves
+\[
+ u\in\clos{\bigotimes_{j=1}^d{}^{a}U_j^{\min}(u)}^{\,H^1(\Omega)}
+ \tag{2}
+\]
+under Assumption 3.5: the $H^1$-orthogonal projection onto every
+$U_j^{\min}(u)$ must be bounded in $L^2$.  Remark 3.6 conjectures that (2)
+can fail when this assumption fails \cite{AN1}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{The definition, Assumption 3.5, conjecture, and conditional
+  proposition in arXiv:1809.11001, PDF page 9.}
+\end{figure}
+
+The conjecture is false: (2) always holds.  The source projection need not
+extend to $L^2$.  Instead, one spectrally truncates the inclusion of the
+minimal subspace into its $L^2$ closure.  The truncated projections are
+simultaneously contractive in both norms, and their ranges have equivalent
+$H^1$ and $L^2$ norms.  This makes finite tensors dense after truncation;
+letting the spectral threshold tend to zero proves (2).
+
+We first prove the mechanism for arbitrary Hilbert pairs.  This also makes
+clear that compactness of the Sobolev embedding is unnecessary.
+
+\section{A simultaneous spectral-cutoff lemma}
+
+\begin{lemma}[two-norm cutoffs]\label{lem:cutoff}
+Let $U$ and $M$ be Hilbert spaces and let $J:U\to M$ be continuous,
+injective, and have dense range.  There are closed subspaces
+$S_\varepsilon\subset U$ and operators $E_\varepsilon:U\to U$,
+$\widetilde E_\varepsilon:M\to M$ for $\varepsilon>0$ such that:
+\begin{enumerate}
+\item $E_\varepsilon$ and $\widetilde E_\varepsilon$ are orthogonal
+projections in $U$ and $M$, respectively, and
+$\widetilde E_\varepsilon J=JE_\varepsilon$;
+\item both projections are contractions in their own Hilbert norms;
+\item on $S_\varepsilon=\Ran E_\varepsilon$,
+\[
+ \sqrt\varepsilon\,\|x\|_U\leq\|Jx\|_M
+ \leq\|J\|\,\|x\|_U;
+ \tag{3}
+\]
+\item $E_\varepsilon\to I_U$ strongly in $U$, and
+$\widetilde E_\varepsilon\to I_M$ strongly in $M$, as
+$\varepsilon\downarrow0$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Put $K=J^*J$.  This is a bounded positive self-adjoint operator on $U$ and
+$\ker K=\ker J=\{0\}$.  By the spectral theorem, set
+\[
+ E_\varepsilon=\mathbf 1_{[\varepsilon,\infty)}(K),
+ \qquad S_\varepsilon=\Ran E_\varepsilon.
+ \tag{4}
+\]
+It is an orthogonal projection in $U$, and for $x\in U$,
+\[
+ \|JE_\varepsilon x\|_M^2
+ =\langle KE_\varepsilon x,E_\varepsilon x\rangle_U
+ \leq \langle Kx,x\rangle_U=\|Jx\|_M^2.
+ \tag{5}
+\]
+Furthermore, if $x\in S_\varepsilon$, spectral localization gives
+$\|Jx\|_M^2\geq\varepsilon\|x\|_U^2$, proving (3).
+
+The range $J(S_\varepsilon)$ is closed in $M$: an $M$-Cauchy sequence in
+that range is $U$-Cauchy by (3), and its $U$-limit remains in the closed
+subspace $S_\varepsilon$.  Since $E_\varepsilon$ commutes with $K$,
+\[
+ \langle JE_\varepsilon x,Jy\rangle_M
+ =\langle K E_\varepsilon x,y\rangle_U
+ =\langle Jx,J E_\varepsilon y\rangle_M.
+ \tag{6}
+\]
+Thus (5) lets $JE_\varepsilon J^{-1}$ extend from the dense subspace
+$J(U)$ to the $M$-orthogonal projection $\widetilde E_\varepsilon$ onto
+$J(S_\varepsilon)$.
+
+Because $K$ has no spectral mass at zero,
+$E_\varepsilon x\to x$ in $U$ for every $x\in U$.  The continuous inclusion
+then gives convergence in $M$ on the dense set $J(U)$; the contraction bound
+and density extend it to every element of $M$.
+\end{proof}
+
+\section{The abstract intersection theorem}
+
+Let $A_j\hookrightarrow H_j$ be continuous injective dense embeddings of
+Hilbert spaces, $1\leq j\leq d$.  All tensor products below are canonical
+Hilbert tensor products.  Inside
+$\cH=\HT_{j=1}^d H_j$, set
+\[
+ X_k=A_k\hot\HT_{j\ne k}H_j,
+ \qquad
+ \cX=\bigcap_{k=1}^dX_k,
+ \qquad
+ \|v\|_{\cX}=\max_k\|v\|_{X_k}.
+ \tag{7}
+\]
+For $u\in\cX$, let $H_{[j]}=\HT_{i\ne j}H_i$ and define
+\[
+ U_j=\clos{\{(I_{A_j}\otimes\ell)u:
+                \ell\in H_{[j]}^*\}}^{\,A_j}.
+ \tag{8}
+\]
+It is equivalent in (8) to use only finite linear combinations of
+decomposable functionals, since these are dense in $H_{[j]}^*$ and the
+contraction map $H_{[j]}^*\to A_j$ is continuous.
+
+\begin{theorem}[minimal subspaces in a Hilbert intersection]\label{thm:abstract}
+In the setting above, every $u\in\cX$ satisfies
+\[
+ u\in\clos{\bigotimes_{j=1}^d{}^{a}U_j}^{\,\cX}.
+ \tag{9}
+\]
+\end{theorem}
+
+\begin{proof}
+We split the proof into three steps.
+
+\medskip\noindent
+\textbf{Step 1: put all passive factors into their $H$-closures.}
+Let
+\[
+ M_j=\clos{U_j}^{\,H_j}.
+ \tag{10}
+\]
+Viewing $u$ in $X_k=A_k\hot H_{[k]}$, the usual Hilbert-tensor minimality
+argument gives
+\[
+ u\in U_k\hot H_{[k]}.
+ \tag{11}
+\]
+For completeness, if $P_k$ is the $A_k$-orthogonal projection onto $U_k$,
+then every contraction of $((I-P_k)\otimes I)u$ against an element of
+$H_{[k]}^*$ vanishes by (8); hence the tensor itself vanishes, proving (11).
+
+Let $Q_j$ be the $H_j$-orthogonal projection onto $M_j$.  The same
+contraction argument in $\cH$ shows $(Q_j\otimes I)u=u$ for every $j$, so
+\[
+ u\in\HT_{j=1}^dM_j.
+ \tag{12}
+\]
+Fix $k$.  For $j\ne k$, $Q_j$ acts contractively on the corresponding
+$H_j$ factor of $U_k\hot H_{[k]}$.  Applying their tensor product to (11),
+and using (12), gives
+\[
+ u\in Y_k:=U_k\hot\HT_{j\ne k}M_j
+ \quad (1\leq k\leq d).
+ \tag{13}
+\]
+Equality first holds in the common ambient space $\cH$ and therefore in
+$X_k$, whose embedding into $\cH$ is injective.
+
+\medskip\noindent
+\textbf{Step 2: construct one cutoff that converges in every directional
+norm.}
+Apply Lemma~\ref{lem:cutoff} to the inclusion
+$J_j:U_j\hookrightarrow M_j$.  Denote the resulting projections by
+$E_{j,\varepsilon}$ on $U_j$ and $\widetilde E_{j,\varepsilon}$ on $M_j$,
+and their common range by $S_{j,\varepsilon}\subset U_j$.
+On $Y_k$ define
+\[
+ T_{k,\varepsilon}
+ =E_{k,\varepsilon}\hot
+  \HT_{j\ne k}\widetilde E_{j,\varepsilon}.
+ \tag{14}
+\]
+It is a contraction: the active factor is contractive in $A_k$, and every
+passive factor is contractive in $H_j$.  Strong convergence of finite Hilbert
+tensor products and (13) yield
+\[
+ T_{k,\varepsilon}u\longrightarrow u
+ \quad\text{in }X_k.
+ \tag{15}
+\]
+The tensors in (14) are all restrictions of the same $H$-orthogonal product
+projection $\HT_j\widetilde E_{j,\varepsilon}$ on $\HT_jM_j$.
+Consequently their values at $u$ agree in $\cH$; call this common value
+$u_\varepsilon$.  Since there are finitely many $k$, (15) gives
+\[
+ \|u_\varepsilon-u\|_{\cX}\longrightarrow0.
+ \tag{16}
+\]
+
+\medskip\noindent
+\textbf{Step 3: approximate each cutoff by finite tensors.}
+For fixed $\varepsilon$, Lemma~\ref{lem:cutoff} says that the $A_j$ and
+$H_j$ norms are equivalent on $S_{j,\varepsilon}$.  Hence the $d$ Hilbert
+tensor norms
+\[
+ S_{k,\varepsilon}^{A_k}\hot
+ \HT_{j\ne k}S_{j,\varepsilon}^{H_j},
+ \qquad 1\leq k\leq d,
+ \tag{17}
+\]
+are mutually equivalent on the algebraic tensor product
+$\bigotimes_j^a S_{j,\varepsilon}$.  Their completions therefore coincide,
+with equivalent norms.  By (14), $u_\varepsilon$ belongs to that common
+completion.  It can thus be approximated simultaneously in every $X_k$ norm
+by finite tensors from
+\[
+ \bigotimes_{j=1}^d{}^aS_{j,\varepsilon}
+ \subseteq\bigotimes_{j=1}^d{}^aU_j.
+ \tag{18}
+\]
+Choose $\varepsilon_n\downarrow0$ and, using (18), choose $v_n$ with
+$\|v_n-u_{\varepsilon_n}\|_{\cX}<1/n$.  Equation (16) then gives
+$v_n\to u$ in $\cX$, which is (9).
+\end{proof}
+
+\section{Resolution of the Sobolev conjecture}
+
+\begin{corollary}[unconditional form of Proposition 3.7]\label{cor:sob}
+In the setting of arXiv:1809.11001, let
+$\Omega=\prod_{j=1}^d\Omega_j$ and $u\in H^1(\Omega)$.  Then
+\[
+ u\in\clos{\bigotimes_{j=1}^d{}^aU_j^{\min}(u)}^{\,H^1(\Omega)}.
+ \tag{19}
+\]
+No $L^2$-boundedness assumption on the $H^1$-orthogonal projections is
+required.
+\end{corollary}
+
+\begin{proof}
+Take $A_j=H^1(\Omega_j)$ and $H_j=L^2(\Omega_j)$.  The source's
+identification (1) is precisely (7), up to an equivalent intersection norm.
+The source defines $U_j^{\min}(u)$ using decomposable $L^2$ functionals in
+the other factors.  As observed after (8), completing those functionals gives
+the same $A_j$-closed subspace.  Theorem~\ref{thm:abstract} now gives (19).
+\end{proof}
+
+Thus the membership statement conjectured to fail in Remark 3.6 is in fact
+universal.  This does not say that Assumption 3.5 itself is automatic: the
+full $H^1$-orthogonal projection onto $U_j^{\min}(u)$ can still be unbounded
+in $L^2$.  The proof only constructs an increasing family of two-norm-bounded
+spectral cutoffs, which is enough for approximation of the single tensor $u$.
+
+\section{Checks, scope, and novelty}
+
+The proof does not use compactness of $H^1(\Omega_j)\hookrightarrow
+L^2(\Omega_j)$, eigenfunction expansions, or a uniform bound as
+$\varepsilon\downarrow0$.  Continuous spectrum causes no problem: strong
+convergence in Lemma~\ref{lem:cutoff} follows from $\ker(J_j^*J_j)=0$.
+The only structural inputs are the finite intersection (1), Hilbert tensor
+products, and continuous injective component embeddings.
+
+Part II repeats that membership was known only under conditions and says the
+authors did not believe it held generally \cite{AN2}.  The earlier work of
+Falc\'o and Hackbusch proves density of the algebraic product of the full
+component Sobolev spaces in the Sobolev intersection \cite{FH}.  That density
+does not put the factors into the tensor-dependent minimal subspaces; the
+spectral cutoff in this packet supplies exactly that missing localization.
+A bounded search through 13 August 2026 found the two source papers and the
+general minimal-subspace literature, but no later paper giving (19) or the
+abstract cutoff theorem above.  This is bounded evidence, not an exhaustive
+novelty claim.
+
+Human review should focus on three points: (i) the refinement (13) in the
+common $L^2$ ambient tensor product; (ii) the $M$-orthogonal extension in
+Lemma~\ref{lem:cutoff}; and (iii) the identification of the completions in
+(17).  Each is proved explicitly above.
+
+\begin{thebibliography}{9}
+
+\bibitem{AN1}
+M.~Ali and A.~Nouy,
+\emph{Singular Value Decomposition in Sobolev Spaces: Part I},
+arXiv:1809.11001v3 (2020).
+
+\bibitem{AN2}
+M.~Ali and A.~Nouy,
+\emph{Singular Value Decomposition in Sobolev Spaces: Part II},
+arXiv:1912.11293 (2019).
+
+\bibitem{FH}
+A.~Falc\'o and W.~Hackbusch,
+\emph{On minimal subspaces in tensor representations},
+Foundations of Computational Mathematics \textbf{12} (2012), 765--803.
+
+\end{thebibliography}
+
+\end{document}

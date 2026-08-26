@@ -1,0 +1,294 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\Lcal}{\mathcal L}
+\newcommand{\Dom}{\operatorname{Dom}}
+\newcommand{\R}{\mathbb R}
+
+\title{The subcritical M\'etivier Schr\"odinger potential is essentially self-adjoint}
+\author{Candidate solution packet for arXiv:1610.09850}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\linewidth}{\textbf{Status.} Candidate full affirmative
+answer to Remark 4.8, likely valid, awaiting specialist review.}}
+\end{center}
+
+\section{Source question}
+
+Bruno and Calzi ask in Remark 4.8 of \cite{BC}, on PDF page 12, whether the
+Schr\"odinger operator associated with their weighted sub-Laplacian is
+essentially self-adjoint in the range $0<\alpha<2$.
+
+\begin{center}
+\includegraphics[width=\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+We answer yes throughout the open range.  The negative part of the potential
+is compactly supported and strictly milder than the homogeneous inverse-square
+scale.  A quantitative resolvent estimate therefore turns the Kato inequality
+already proved in the source into a strict contraction of the deficiency
+space.
+
+\section{A general criterion}
+
+Let $G$ be a stratified group of homogeneous dimension $Q\geq4$, let
+$\Lcal=-\sum_jX_j^2$ be its positive sub-Laplacian, and let Haar measure be
+fixed.  We use the self-adjoint closure of $(\Lcal,C_c^\infty(G))$.
+
+\begin{theorem}\label{thm:criterion}
+Let $V\colon G\to\R$ belong to $L^2_{\mathrm{loc}}(G)$.  If its negative
+part $W=V_-:=\max\{-V,0\}$ belongs to $L^p(G)$ for some $p>Q/2$, then
+\[
+ (\Lcal+V,C_c^\infty(G))
+\]
+is essentially self-adjoint on $L^2(G)$.
+\end{theorem}
+
+The global $L^p$ hypothesis is convenient rather than optimal.  In the
+application below $W$ is compactly supported.
+
+\section{Proof intuition}
+
+The source proves essential self-adjointness when $V$ is bounded below by
+applying Kato's inequality to a deficiency vector.  Here $V$ tends to
+$-\infty$ at the identity, so that argument cannot discard the term $V_-|f|$.
+Instead, apply the free resolvent $R_\lambda=(\Lcal+\lambda)^{-1}$.  Heat-kernel
+scaling gives
+\[
+ \|W R_\lambda\|_{2\to2}
+ \leq C\|W\|_p\lambda^{-1+Q/(2p)}=o(1).
+\]
+Because $p>Q/2$, this norm is strictly less than one for large $\lambda$.
+Kato's inequality says that a deficiency vector satisfies
+$(\Lcal+\lambda)|f|\leq W|f|$.  Testing against $R_\lambda\psi$ then yields
+$\|f\|_2\leq\|W R_\lambda\|_{2\to2}\|f\|_2$, forcing $f=0$.
+
+\section{Resolvent estimate}
+
+\begin{lemma}\label{lem:resolvent}
+If $p>Q/2$ and $W\in L^p(G)$, then, for $\lambda>0$,
+\begin{equation}\label{eq:resolvent}
+ \|W(\Lcal+\lambda)^{-1}\|_{2\to2}
+ \leq C_{G,p}\|W\|_p\lambda^{-1+Q/(2p)}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Put $r=2p/(p-2)$, so that $1/2=1/p+1/r$.  The sub-Laplacian heat kernel has
+the homogeneous scaling
+\[
+ h_t(x)=t^{-Q/2}h_1(\delta_{t^{-1/2}}x).
+\]
+Young's convolution inequality consequently gives
+\[
+ \|e^{-t\Lcal}\|_{2\to r}
+ \leq C t^{-\frac Q2(\frac12-\frac1r)}
+ =C t^{-Q/(2p)}.
+\]
+Using the semigroup representation of the resolvent,
+\[
+ \|(\Lcal+\lambda)^{-1}\|_{2\to r}
+ \leq C\int_0^\infty e^{-\lambda t}t^{-Q/(2p)}\,dt
+ =C_{G,p}\lambda^{-1+Q/(2p)}.
+\]
+H\"older's inequality for multiplication by $W$ proves
+\eqref{eq:resolvent}.  The integral is finite precisely because $p>Q/2$.
+\end{proof}
+
+\section{Proof of the criterion}
+
+First, the first-order homogeneous Sobolev inequality and interpolation imply,
+for $s=2p/(p-1)<2Q/(Q-2)$ and every $\eta>0$,
+\[
+ \|u\|_s^2
+ \leq \eta\|\Lcal^{1/2}u\|_2^2+C_\eta\|u\|_2^2,
+ \qquad u\in C_c^\infty(G).
+\]
+Thus
+\[
+ \int_G W|u|^2
+ \leq\|W\|_p\|u\|_s^2
+ \leq \eta\|W\|_p\|\Lcal^{1/2}u\|_2^2
+      +C_\eta\|W\|_p\|u\|_2^2.
+\]
+It follows that the symmetric operator
+$T=(\Lcal+V,C_c^\infty(G))$ is bounded from below.
+
+Choose $\lambda>0$ so large that $-\lambda$ lies below this lower bound and
+also
+\begin{equation}\label{eq:small}
+ c_\lambda:=\|W(\Lcal+\lambda)^{-1}\|_{2\to2}<1.
+\end{equation}
+It is enough, by the semibounded deficiency criterion, to show that
+$\ker(T^*+\lambda)=\{0\}$.
+
+Take $f$ in this kernel.  Distributionally,
+\[
+ \Lcal f+Vf+\lambda f=0.
+\]
+Since $V\in L^2_{\mathrm{loc}}$ and $f\in L^2$, both $Vf$ and $\Lcal f$
+belong to $L^1_{\mathrm{loc}}$.  The sub-Laplacian Kato inequality proved in
+\cite[Proposition 1.3]{BC} gives
+\begin{equation}\label{eq:kato}
+ (\Lcal+\lambda)|f|\leq W|f|
+\end{equation}
+in the sense of distributions.
+
+Let $0\leq\psi\in C_c^\infty(G)$ and put
+$g=(\Lcal+\lambda)^{-1}\psi$.  Positivity of the heat semigroup gives
+$g\geq0$; moreover $g\in\Dom(\Lcal)$, $\nabla_{\mathcal H}g\in L^2$, and
+hypoellipticity makes $g$ smooth.  To justify testing \eqref{eq:kato} against
+$g$, let $\chi_R$ be the standard nonnegative exhausting cutoffs with
+\[
+ \chi_R\to1,\qquad
+ \|\nabla_{\mathcal H}\chi_R\|_\infty\leq C/R,
+ \qquad \|\Lcal\chi_R\|_\infty\leq C/R^2.
+\]
+Test against $\chi_Rg$ and expand
+\[
+ (\Lcal+\lambda)(\chi_Rg)
+ =\chi_R\psi+(\Lcal\chi_R)g
+  -2\nabla_{\mathcal H}\chi_R\cdot\nabla_{\mathcal H}g.
+\]
+The last two terms vanish after pairing with $|f|$ as $R\to\infty$, by
+Cauchy--Schwarz and the displayed cutoff bounds.  On the right,
+$Wg\in L^2$ by Lemma~\ref{lem:resolvent}, so dominated convergence is also
+legitimate.  Hence
+\[
+ \langle |f|,\psi\rangle
+ \leq\langle |f|,W(\Lcal+\lambda)^{-1}\psi\rangle
+ \leq c_\lambda\|f\|_2\|\psi\|_2.
+\]
+Taking the supremum over nonnegative unit vectors in the dense cone
+$C_c^\infty(G)_+$ gives
+\[
+ \|f\|_2\leq c_\lambda\|f\|_2.
+\]
+By \eqref{eq:small}, $f=0$.  This proves
+Theorem~\ref{thm:criterion}.
+
+\section{Application to the source potential}
+
+Let $G$ now be a M\'etivier group, written as
+$\R^{2n}\times\R^m$, with homogeneous dimension $Q=2n+2m\geq4$, and let
+\[
+ N(x,t)=\bigl(|x|^4+16|t|^2\bigr)^{1/4}.
+\]
+For $w_\alpha=e^{-N^\alpha}$, let $V_\alpha$ be the potential in \cite{BC}.
+
+\begin{corollary}\label{cor:source}
+For every $0<\alpha<2$, the operator
+\[
+ (\Lcal+V_\alpha,C_c^\infty(G))
+\]
+is essentially self-adjoint.  Consequently the weighted form operator
+$\Lcal^{w_\alpha}$ is unitarily equivalent, under
+$U_\alpha f=f\sqrt{w_\alpha}$, to the closure of this Schr\"odinger operator.
+Thus Remark 4.8 has an affirmative answer in its full stated range.
+\end{corollary}
+
+\begin{proof}
+Lemma 4.5 of \cite{BC} supplies positive constants $c_{\alpha,1}$ and
+$c_{\alpha,2}$ such that, off the identity,
+\begin{equation}\label{eq:source-lower}
+ V_\alpha(x,t)\geq
+ N^{2\alpha-4}|x|^2
+ \left(c_{\alpha,1}-\frac{c_{\alpha,2}}{N^\alpha}\right).
+\end{equation}
+Choose $R$ so that the bracket is nonnegative for $N\geq R$.  Then
+$W_\alpha=(V_\alpha)_-$ is supported in $\{N\leq R\}$ and
+\begin{equation}\label{eq:negative}
+ 0\leq W_\alpha(x,t)
+ \leq c_{\alpha,2}N^{\alpha-4}|x|^2
+ \leq C N^{\alpha-2}.
+\end{equation}
+Since homogeneous balls have volume $Cr^Q$, \eqref{eq:negative} gives
+\[
+ W_\alpha\in L^p(G)quad\text{whenever}\quad p(2-\alpha)<Q.
+\]
+The interval
+\[
+ \frac Q2<p<\frac{Q}{2-\alpha}
+\]
+is nonempty exactly because $\alpha>0$.  Furthermore, the exact derivative
+bounds in the proof of source Lemma 4.5 give locally
+\[
+ |V_\alpha|\leq C\bigl(N^{2\alpha-2}+N^{\alpha-2}\bigr).
+\]
+This belongs to $L^2_{\mathrm{loc}}$ because
+$2(2-\alpha)<Q$.  Theorem~\ref{thm:criterion} proves essential
+self-adjointness.
+
+It remains only to record the unitary statement, since the weight is not
+smooth at the identity.  Put $h=\sqrt{w_\alpha}$.  For
+$\phi\in C_c^\infty(G)$,
+\[
+ h\nabla_{\mathcal H}(h^{-1}\phi)
+ =\nabla_{\mathcal H}\phi
+  +\frac\alpha2\phi N^{\alpha-1}\nabla_{\mathcal H}N\in L^2.
+\]
+The last inclusion follows from $Q\geq4$ and $\alpha>0$.  The distributional
+product rule, first off the identity and then across it by local
+integrability, yields
+\[
+ \Lcal^{w_\alpha}_1(h^{-1}\phi)
+ =h^{-1}(\Lcal+V_\alpha)\phi\in L^2(w_\alpha).
+\]
+The domain characterization in \cite[Theorem 2.3]{BC} therefore shows that
+$h^{-1}\phi\in\Dom(\Lcal^{w_\alpha})$.  Hence
+$U_\alpha\Lcal^{w_\alpha}U_\alpha^{-1}$ is a self-adjoint extension of
+$(\Lcal+V_\alpha,C_c^\infty)$.  Essential self-adjointness forces it to equal
+the closure, completing the proof.
+\end{proof}
+
+\section{Verification and novelty}
+
+The exponent-window script checks the strict inequalities, radial
+integrability exponent, resolvent decay exponent, and local $L^2$ condition
+for the critical dimension $Q=4$ and several higher dimensions.  It is a
+sanity check; the proof above is analytic.
+
+A bounded search through 13 August 2026 covered the run indexes, the exact
+open phrase, arXiv:1610.09850, the paper title, M\'etivier Schr\"odinger
+potentials, and essential self-adjointness.  It found the source and later
+papers citing it, but no explicit answer to Remark 4.8.  This is not an
+exhaustive priority search.
+
+\paragraph{Human-review recommendation.}
+Check first the cutoff passage from \eqref{eq:kato} to the resolvent test, and
+then the distributional conjugation across the identity in the final
+paragraph.  All exponent inequalities are strict for every $\alpha>0$.
+
+\begin{thebibliography}{9}
+\bibitem{BC}
+T. Bruno and M. Calzi,
+\emph{Weighted sub-Laplacians on M\'etivier groups: essential
+self-adjointness and spectrum},
+Proc. Amer. Math. Soc. 145 (2017), 3579--3594;
+arXiv:1610.09850.
+
+\bibitem{Folland}
+G. B. Folland,
+\emph{Subelliptic estimates and function spaces on nilpotent Lie groups},
+Ark. Mat. 13 (1975), 161--207.
+
+\bibitem{RS}
+M. Reed and B. Simon,
+\emph{Methods of Modern Mathematical Physics II: Fourier Analysis,
+Self-Adjointness}, Academic Press, 1975.
+\end{thebibliography}
+
+\end{document}

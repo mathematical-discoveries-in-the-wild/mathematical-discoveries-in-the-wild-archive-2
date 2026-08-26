@@ -1,0 +1,283 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,margin=0.88in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\cube}{\{-1,1\}^n}
+\newcommand{\E}{\mathbb E}
+\newcommand{\ip}[2]{\langle #1,#2\rangle}
+\newcommand{\tr}{\operatorname{tr}}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.52em}
+
+\title{The Tensor-Power Scale in the Hypergraph Matrix Lemma\\
+Is Optimal}
+\author{Run \texttt{fa\_banach\_001} --- lane 16}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{
+\textbf{Status: candidate full solution, likely valid, to the first question
+in Remark~2.3 of arXiv:1711.05624.}
+For the tensor-power lift used in Lemma~2.2, any uniform representation with
+bounded matrix norm already requires
+$m=\Omega_r(n^{1-1/r})$, even for a hypergraph with one $2r$-edge.  Hence the
+source choice $m=C_r n^{1-1/r}$ is optimal up to constants.  A second theorem
+gives a polynomial dimension obstruction for the remark's more general
+nonlinear embedding, but does not settle that broader question.
+}}
+\end{center}
+
+\section{Source and exact question}
+
+Jop Bri\"et and Sivakanth Gopi, \emph{Gaussian width bounds with applications
+to arithmetic progressions in random settings}, arXiv:1711.05624v3
+\cite{source}, associate to a $2r$-uniform hypergraph $H=([n],E)$ the polynomial
+\[
+ p_H(x)=\sum_{S\in E}\prod_{i\in S}x_i.
+\]
+Their Lemma~2.2 constructs, for
+$m=C_r n^{1-1/r}$ and $N=n^m$, a matrix $A\in\mathbb R^{N\times N}$ satisfying
+\[
+ \|A\|\lesssim_r\Delta(H),\qquad
+ p_H(x)=\frac{n}{c_rN}\ip{Ax^{\otimes m}}{x^{\otimes m}}
+ \quad(x\in\cube).
+\]
+Remark~2.3 asks whether the value of $m$ is optimal, then raises a more general
+question allowing an arbitrary common map into $\mathbb R^N$.
+
+\begin{center}
+\includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+Here $x^{\otimes m}$ is indexed by words $u=(u_1,\ldots,u_m)\in[n]^m$ and has
+coordinate $\prod_{j=1}^m x_{u_j}$.
+
+\section{Results}
+
+\begin{theorem}[Optimal tensor-power length]
+\label{th:main}
+Fix $r\geq1$ and positive constants $a_r,K_r$.  Let $S\subset[n]$ have
+$|S|=2r$, let $m\geq1$, and put $N=n^m$.  Suppose that a real matrix
+$A\in\mathbb R^{N\times N}$ satisfies $\|A\|\leq K_r$ and
+\begin{equation}
+\label{eq:representation}
+ \prod_{i\in S}x_i
+ =\frac{n}{a_rN}\ip{Ax^{\otimes m}}{x^{\otimes m}}
+ \qquad\text{for every }x\in\cube.
+\end{equation}
+Then
+\[
+ m\geq c(r,a_r,K_r)n^{1-1/r}.
+\]
+\end{theorem}
+
+\begin{corollary}[Answer to Remark~2.3, first sentence]
+The exponent and asymptotic order of $m=C_rn^{1-1/r}$ in the source's
+Lemma~2.2 are optimal.  This remains true even if the adjacency-matrix
+requirement is discarded and arbitrary real matrices of norm $O_r(1)$ are
+allowed.
+\end{corollary}
+
+The deeper upgrade gives a necessary dimension for the common nonlinear map
+proposed in the second sentence of the remark.
+
+\begin{theorem}[A dimension floor for arbitrary common lifts]
+\label{th:general}
+Fix $r,a_r,K_r$ as above.  Suppose one map
+$f:\cube\to\mathbb R^N$, with $\|f(x)\|_2\leq\sqrt N$, and matrices
+$A_S$ with $\|A_S\|\leq K_r$ satisfy
+\[
+ \prod_{i\in S}x_i
+ =\frac{n}{a_rN}\ip{A_Sf(x)}{f(x)}
+\]
+for every $x\in\cube$ and every $S\in\binom{[n]}{2r}$.  Then
+\[
+ N\geq c(r,a_r,K_r)n^{2r-2}.
+\]
+\end{theorem}
+
+\section{Proof intuition}
+
+Tensor coordinates remember only which symbols occur an odd number of times.
+Extracting the Fourier coefficient belonging to one edge $S$ therefore
+produces a matrix that connects two word-parity classes precisely when they
+differ by $S$.  Its trace norm, normalized by $N$, is the Hellinger affinity
+between the parity law of a random word and the law shifted by $S$.
+
+Hellinger affinity can only increase when all coordinates outside $S$ are
+forgotten.  A word hits $S$ only about $2rm/n$ times.  A parity pattern of
+weight $h$ and its bitwise complement require at least $h$ and $2r-h$ hits,
+respectively; binomial factorial moments make the resulting affinity
+$O_r((m/n)^r)$.  The source normalization demands a Fourier coefficient of
+order $N/n$, forcing $(m/n)^r\gtrsim_r1/n$.
+
+For a completely arbitrary common lift, the parity description disappears.
+Instead, Fourier Parseval applied entrywise to $f(x)f(x)^{\mathsf T}$ gives a
+weaker but still nontrivial polynomial dimension lower bound.
+
+\section{Parity-affinity bound}
+
+For a word $u\in[n]^m$, let $\pi(u)\subset[n]$ be the set of symbols occurring
+an odd number of times.  If $U$ is uniform on $[n]^m$, write
+\[
+ \mu(\alpha)=\Pr[\pi(U)=\alpha].
+\]
+For $S\subset[n]$, define the $N\times N$ zero-one matrix
+\[
+ P_S(u,v)=\mathbf 1_{\{\pi(u)\triangle\pi(v)=S\}}.
+\]
+
+\begin{lemma}[Trace norm as parity affinity]
+\label{lem:trace}
+For every $S$,
+\[
+ \frac{\|P_S\|_*}{N}
+ =\sum_{\alpha\subset[n]}
+   \sqrt{\mu(\alpha)\mu(\alpha\triangle S)}.
+\]
+If $|S|=2r$ and $m\leq n/(4r)$, the right-hand side is at most
+$C_r(m/n)^r$.
+\end{lemma}
+
+\begin{proof}
+Let $c_\alpha=N\mu(\alpha)$ be the number of words with parity $\alpha$.
+After rows and columns are grouped by parity, $P_S$ has, for each $\alpha$,
+one all-ones block of size $c_\alpha\times c_{\alpha\triangle S}$, and these
+blocks have disjoint row and column sets.  Each block has its unique nonzero
+singular value $\sqrt{c_\alpha c_{\alpha\triangle S}}$.  Summing proves the
+identity.
+
+The displayed sum is the Hellinger affinity between $\mu$ and its translate by
+$S$.  Group its terms according to the restriction
+$z=\alpha\cap S$.  Cauchy--Schwarz within every group shows that forgetting
+coordinates outside $S$ can only increase affinity.  Thus it is at most
+\begin{equation}
+\label{eq:marginal}
+ \sum_{z\subset S}\sqrt{\Pr[Z=z]\Pr[Z=S\setminus z]},
+\end{equation}
+where $Z=\pi(U)\cap S$.
+
+Let $L$ count positions of $U$ whose symbol lies in $S$.  Then
+$L\sim\operatorname{Bin}(m,2r/n)$.  If $|z|=h$, the event $Z=z$ requires
+$L\geq h$, while $Z=S\setminus z$ requires $L\geq2r-h$.  For every integer
+$j\geq1$, the factorial-moment bound gives
+\[
+ \Pr[L\geq j]
+ \leq\E\binom Lj
+ =\binom mj(2r/n)^j
+ \leq\frac{(2rm/n)^j}{j!};
+\]
+the corresponding bound for $j=0$ is $1$.  Hence every summand in
+\eqref{eq:marginal} is at most $C_r(m/n)^r$.  There are only $2^{2r}$
+summands, completing the proof.
+\end{proof}
+
+\section{Proof of tensor optimality}
+
+\begin{proof}[Proof of Theorem~\ref{th:main}]
+Replacing $A$ by its symmetric part changes neither the quadratic form nor the
+norm bound.  Put
+$q_A(x)=\ip{Ax^{\otimes m}}{x^{\otimes m}}$.  Fourier orthogonality on
+$\cube$ gives
+\begin{align*}
+ \widehat q_A(S)
+ &=2^{-n}\sum_{x\in\cube}q_A(x)\prod_{i\in S}x_i\\
+ &=\sum_{u,v\in[n]^m}A_{uv}
+   \mathbf1_{\{\pi(u)\triangle\pi(v)=S\}}
+ =\tr(A^{\mathsf T}P_S).
+\end{align*}
+By operator/trace-norm duality and Lemma~\ref{lem:trace},
+\begin{equation}
+\label{eq:uppercoef}
+ |\widehat q_A(S)|\leq\|A\|\,\|P_S\|_*
+ \leq K_rC_rN(m/n)^r
+\end{equation}
+whenever $m\leq n/(4r)$.
+
+On the other hand, \eqref{eq:representation} says
+$q_A=(a_rN/n)\prod_{i\in S}x_i$, so
+$|\widehat q_A(S)|=a_rN/n$.  Comparing with \eqref{eq:uppercoef} yields
+\[
+ m^r\geq\frac{a_r}{K_rC_r}n^{r-1}.
+\]
+If $m>n/(4r)$, the desired lower bound is immediate after decreasing the
+constant.  This proves the theorem in all cases.
+\end{proof}
+
+\section{The arbitrary-lift dimension bound}
+
+\begin{proof}[Proof of Theorem~\ref{th:general}]
+Set $F(x)=f(x)f(x)^{\mathsf T}$ and define its matrix-valued Fourier
+coefficients by
+\[
+ \widehat F(T)=2^{-n}\sum_{x\in\cube}
+ \left(\prod_{i\in T}x_i\right)F(x).
+\]
+The assumed representation gives
+\[
+ \tr(A_S^{\mathsf T}\widehat F(S))=a_rN/n.
+\]
+Schatten duality followed by $\|M\|_*\leq\sqrt N\|M\|_F$ therefore implies
+\[
+ \|\widehat F(S)\|_F^2
+ \geq\frac{a_r^2N}{K_r^2n^2}.
+\]
+Entrywise Fourier Parseval and $\|F(x)\|_F=\|f(x)\|_2^2$ give
+\[
+ \sum_{T\subset[n]}\|\widehat F(T)\|_F^2
+ =\E\|F(x)\|_F^2
+ =\E\|f(x)\|_2^4\leq N^2.
+\]
+Summing the preceding lower bound over all
+$\binom n{2r}$ choices of $S$ yields
+\[
+ N\geq\frac{a_r^2}{K_r^2n^2}\binom n{2r}
+ \geq c(r,a_r,K_r)n^{2r-2}
+\]
+for all sufficiently large $n$; finitely many smaller $n$ are absorbed into
+the constant.
+\end{proof}
+
+\section{Scope, verification, and novelty}
+
+The first theorem answers the tensor-power optimality question at the natural
+asymptotic-order level.  It does not optimize the constants $C_r,c_r$.  The
+second theorem does not rule out the $N=o(n^m)$ lift contemplated in the more
+general sentence of Remark~2.3, since its lower bound is only polynomial.
+Consequently, the improved Gaussian-width exponent and the linked coding and
+arithmetic-progression conjectures remain open.
+
+The proof was checked independently through its Fourier normalization, block
+singular values, Hellinger marginalization direction, factorial-moment tails,
+and Parseval constants.  The supplied script performs small exact parity-count
+and numerical trace-norm spot checks.
+
+Bounded searches used the source arXiv id and title, the exact Remark~2.3
+wording, ``matrix lemma'', tensor-power/parity/Hellinger terms, Gaussian-width
+improvements, and later work on three-query locally decodable codes.  They
+found the source and continuing broader LDC work, but no claimed answer to the
+isolated $m$-optimality question.  Novelty confidence is moderate; independent
+expert literature review and proof verification are required.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+J. Bri\"et and S. Gopi,
+\emph{Gaussian width bounds with applications to arithmetic progressions in
+random settings}, International Mathematics Research Notices 2020, no.~22,
+8673--8698; arXiv:1711.05624v3.
+\end{thebibliography}
+
+\end{document}
+

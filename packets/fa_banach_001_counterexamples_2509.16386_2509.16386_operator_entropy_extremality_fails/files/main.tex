@@ -1,0 +1,130 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.82in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,graphicx,microtype}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newcommand{\dd}{\mathop{\mathrm d}}
+\newcommand{\De}{\mathfrak d_\varepsilon}
+\title{A Local Counterexample to Operator-Level\\
+Entropy Extremality for Stokes' Theorem}
+\author{Automatic math-discovery run \texttt{fa\_banach\_001}}
+\date{August 11, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source assertion}
+Daniel Lazarev, \emph{Stokes' theorem as an entropy-extremizing duality},
+arXiv:2509.16386v2, closes by considering alternative derivative operators
+$\mathfrak d$ satisfying the Stokes integral relation and reports preliminary
+evidence that entropy is uniquely maximized at $\mathfrak d=\dd$.
+
+\begin{center}
+\includegraphics[width=0.94\textwidth]{figures/operator_claim.jpg}
+\end{center}
+
+\section*{Precise interpretation and verdict}
+The source defines $S^*(\alpha,M)$ for a top form $\alpha$, but does not
+separately define entropy of an operator.  The direct extension is therefore
+to compare
+\[
+ S^*(\mathfrak d\omega,M).
+\]
+Under this natural formulation the assertion is false, even for smooth local
+first-order linear operators satisfying Stokes' identity for \emph{every}
+smooth input.  If a different operator entropy is intended, it must first be
+defined.
+
+\begin{theorem}[Smooth local counterexample]\label{thm:counterexample}
+Let $M=[0,1]$ with its standard orientation.  For every
+$0<\varepsilon<1$ there is a local first-order linear operator
+\[
+ \De:C^\infty([0,1])\longrightarrow\Omega^1([0,1])
+\]
+such that
+\[
+ \int_M\De g=g(1)-g(0)=\int_{\partial M}g
+ \qquad\text{for every }g\in C^\infty([0,1]), \tag{1}
+\]
+but, for $\omega(x)=x$,
+\[
+ S^*(\De\omega,M)>S^*(\dd\omega,M)=0. \tag{2}
+\]
+Consequently the exterior derivative is not an entropy maximizer in the
+announced competitor class.
+\end{theorem}
+
+\begin{proof}
+For $x>0$ set
+\[
+ a_\varepsilon(x)=1+\varepsilon
+ \frac{1-\cos(2\pi x)}{2\pi x},
+ \qquad a_\varepsilon(0)=1,
+\]
+and define
+\[
+ \De g=\dd(a_\varepsilon g)
+ =\bigl(a_\varepsilon g'+a_\varepsilon'g\bigr)\,\dd x. \tag{3}
+\]
+The Taylor series of $1-\cos(2\pi x)$ shows that $a_\varepsilon$ extends
+smoothly at zero.  Moreover
+$a_\varepsilon(0)=a_\varepsilon(1)=1$.  The fundamental theorem of calculus
+now gives (1), so this is a globally Stokes-compatible operator, not merely
+one tailored to a single $\omega$.
+
+For $\omega(x)=x$, direct differentiation gives
+\[
+ \De\omega
+ =\dd\!\left(x+\varepsilon\frac{1-\cos(2\pi x)}{2\pi}\right)
+ =\bigl(1+\varepsilon\sin(2\pi x)\bigr)\,\dd x. \tag{4}
+\]
+Its density is
+$\rho_\varepsilon(x)=1+\varepsilon\sin(2\pi x)>0$ and its source
+normalization is $C=\|\rho_\varepsilon\|_\infty=1+\varepsilon$.  Hence
+\[
+ S^*(\De\omega,M)=
+ \int_0^1\rho_\varepsilon(x)
+ \log\frac{1+\varepsilon}{\rho_\varepsilon(x)}\,\dd x>0. \tag{5}
+\]
+Indeed the integrand is nonnegative everywhere and positive except on the
+measure-zero set where $\sin(2\pi x)=1$.  On the other hand
+$\dd\omega=\dd x$ has constant density one and $C=1$, so its entropy is
+zero.  This proves (2).  Notice that nonnegativity of $S^*$ makes $\dd$ a
+minimum, not a maximum, for this example.
+\end{proof}
+
+\section*{What extra axioms can rescue the claim?}
+The construction (3) is already local and first order.  Thus locality alone
+does not remove the obstruction.  The natural stronger axiom is the Leibniz
+rule.
+
+\begin{proposition}[Derivation rigidity]
+Suppose a scalar local first-order operator on $[0,1]$ is a derivation and
+satisfies (1) for every smooth input.  Then it equals $\dd$.
+\end{proposition}
+
+\begin{proof}
+Every such derivation has the form $Dg=a(x)g'(x)\,\dd x$.  For a compactly
+supported test function $g$, (1) gives $\int_0^1a g'=0$; distributional
+integration by parts yields $a'=0$.  Thus $a$ is constant.  Taking $g(x)=x$
+in (1) then gives $a=1$.
+\end{proof}
+
+This produces a sharp dichotomy.  In the broad linear or local first-order
+class announced in the source, Theorem~\ref{thm:counterexample} disproves
+entropy maximality.  In the derivation class, Stokes compatibility already
+forces the sole competitor to be $\dd$, so uniqueness is algebraic and the
+entropy variational principle is vacuous.
+
+\section*{Verification and scope}
+The accompanying script symbolically checks the endpoint values of
+$a_\varepsilon$, (4), and the Stokes integral, and numerically evaluates (5)
+at $\varepsilon=1/2$ with 50-digit precision.  A bounded search of the run
+indexes, exact source wording, arXiv, and current web results found no later
+formulation or proof of the operator assertion.  Specialist review should
+focus on whether the author intended additional competitor axioms or a
+different entropy functional.
+
+\end{document}

@@ -1,0 +1,272 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\hypersetup{hidelinks}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\T}{\mathbb T}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+
+\title{The endpoint Orlicz loss persists for every exchangeable selector}
+\author{Run \texttt{fa\_banach\_001}, lane 19}
+\date{August 11, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Burstein proves an upper bound with loss
+$(\log\log n)^{\alpha/2}$ when selecting
+$n/(e\log^{\alpha+1}n)$ functions from a bounded orthogonal system, and
+shows that independent Bernoulli selection cannot improve this loss.  We
+extend the obstruction from Bernoulli thinning to every exchangeable
+(permutation-invariant) random selector that returns at least the target
+cardinality.  Along an explicit sequence of dimensions, the trigonometric
+system incurs the full loss with probability tending to one.  The proof uses
+sampling without replacement, negative correlation of disjoint full-block
+events, a second-moment inequality, and a Dirichlet-kernel lower bound in the
+Luxemburg norm.  This is a substantial randomized-selection subcase; it does
+not resolve the unrestricted deterministic existence question.
+\end{abstract}
+
+\section{Source question}
+
+The source is Will Burstein, \emph{$\Lambda_p$ Style Bounds in Orlicz Spaces
+Close to $L^2$}, arXiv:2505.00155v2 \cite{Burstein}.  On page 13, after
+Theorem 2.10 and in Remark 2.11, the paper states that the optimality of its
+equation (2.4) remains open.  The relevant source passage is reproduced below.
+
+\begin{center}
+\includegraphics[width=0.98\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+Fix $\alpha>0$.  Let $\Phi$ be the Young function used in the source:
+for fixed constants $u_0\ge e$ and $c(\alpha)>0$,
+\[
+ \Phi(u)=u^2\log^\alpha u\quad (u\ge u_0),
+ \qquad
+ \Phi(u)=c(\alpha)u^2\quad (u<u_0).
+\]
+For $J\subseteq[n]$, define the Fourier synthesis norm
+\[
+ \mathcal N_\Phi(J)
+ =\sup_{\|a\|_2\le1}
+ \left\|\sum_{j\in J}a_j e^{2\pi i jx}\right\|_{L^\Phi(\T)},
+\]
+where the Orlicz space has its Luxemburg norm.  The source proves a matching
+lower bound for an independent Bernoulli set.  The open question asks whether
+the logarithmic loss is necessary for the existence of a subset, without
+restricting how that subset is chosen.
+
+\section{Proof intuition}
+
+The Bernoulli lower bound in the source partitions the frequency interval into
+short consecutive blocks.  If a random set contains one complete block, then
+the normalized Dirichlet kernel on that block has Orlicz norm of order
+$(\log\log n)^{\alpha/2}$.  Independence makes a full block likely.
+
+Independence is not essential.  If one samples a fixed number of indices
+without replacement, disjoint full-block events are negatively correlated.
+Their expected number tends to infinity on a suitable dimension subsequence,
+and the elementary second-moment inequality then makes a full block occur
+with probability tending to one.  An exchangeable selector is uniform after
+conditioning on its cardinality.  Monotonicity therefore transfers the same
+obstruction to every exchangeable selector with at least the target size.
+
+What remains open is precisely the non-exchangeable, label-dependent choice:
+a specially constructed deterministic subset may avoid every full consecutive
+block, so this proof does not establish deterministic optimality.
+
+\section{The partial theorem}
+
+Recall that a random subset $J\subseteq[n]$ is \emph{exchangeable} if its law
+is invariant under every permutation of $[n]$.
+
+\begin{theorem}\label{thm:main}
+Fix $\alpha>0$ and put $\rho=\alpha+1$ and
+$C=2(\rho+1)$.  For integers $m\ge2$, set
+\[
+ q_m=\lceil Cm\rceil,\qquad
+ B_m=m^{q_m},\qquad
+ n_m=mB_m,
+\]
+and
+\[
+ k_m=\left\lceil
+ \frac{n_m}{e(\log n_m)^\rho}
+ \right\rceil.
+\]
+For each $m$, let $J_m\subseteq[n_m]$ have an arbitrary exchangeable law
+satisfying $|J_m|\ge k_m$ almost surely.  Then there is a constant
+$c_\alpha>0$ such that
+\[
+ \Pp\left\{
+ \mathcal N_\Phi(J_m)
+ \ge c_\alpha(\log\log n_m)^{\alpha/2}
+ \right\}\longrightarrow1
+ \qquad(m\to\infty).
+\]
+In particular, no exchangeable random selection rule at the source
+cardinality can replace the factor $(\log\log n)^{\alpha/2}$ by
+$o((\log\log n)^{\alpha/2})$, even along all sufficiently large members of
+this explicit dimension subsequence.
+\end{theorem}
+
+We separate the analytic and probabilistic ingredients.
+
+\begin{lemma}[A complete consecutive block is bad]\label{lem:dirichlet}
+There are $c_\alpha>0$ and $m_0(\alpha)$ such that, whenever
+$m\ge m_0(\alpha)$ and $J$ contains $m$ consecutive integers,
+\[
+ \mathcal N_\Phi(J)\ge c_\alpha(\log m)^{\alpha/2}.
+\]
+\end{lemma}
+
+\begin{proof}
+Let the block be $\{r+1,\ldots,r+m\}$ and take coefficients $m^{-1/2}$
+on the block and zero elsewhere.  Multiplication by $e^{2\pi irx}$ does not
+change the absolute value.  For $0\le x\le1/(8m)$, every real part in
+$\sum_{j=1}^m e^{2\pi ijx}$ is at least $1/\sqrt2$.  Hence the normalized
+sum $f$ satisfies
+\[
+ |f(x)|\ge\sqrt{m/2}
+ \quad\text{on a set of measure }\frac1{8m}.
+\]
+
+Set $w=c(\log m)^{\alpha/2}$, where $c>0$ will be fixed sufficiently small.
+For large $m$, $\sqrt{m/2}/w\ge u_0$ and
+\[
+ \log\left(\frac{\sqrt{m/2}}w\right)\ge\frac13\log m.
+\]
+Therefore the Luxemburg modular at scale $w$ is bounded below by
+\begin{align*}
+ \int_\T \Phi(|f|/w),dx
+ &\ge \frac1{8m}\frac{m}{2w^2}
+ \log^\alpha\left(\frac{\sqrt{m/2}}w\right)\\
+ &\ge \frac{1}{16\,3^\alpha c^2}.
+\end{align*}
+Choose $c=c_\alpha$ so that the last expression is greater than $1$.
+The definition of the Luxemburg norm gives $\|f\|_\Phi\ge w$.
+\end{proof}
+
+\begin{lemma}[A uniform target-size set contains a full block]\label{lem:block}
+Partition $[n_m]$ into the $B_m$ consecutive blocks of size $m$.  If
+$U_m$ is uniform among the $k_m$-element subsets of $[n_m]$, then
+\[
+ \Pp\{U_m\text{ contains at least one complete block}\}\longrightarrow1.
+\]
+\end{lemma}
+
+\begin{proof}
+Write $n=n_m$, $k=k_m$, and $B=B_m$.  If $X_t$ is the indicator that the
+$t$-th block is contained in $U_m$, then
+\[
+ p_m:=\E X_t
+ =\frac{(k)_m}{(n)_m},
+ \qquad
+ \lambda_m:=\E\sum_{t=1}^B X_t=Bp_m,
+\]
+where $(r)_m=r(r-1)\cdots(r-m+1)$.
+
+Put $\delta_m=1/[e(\log n_m)^\rho]$.  Since $k_m/n_m=\delta_m(1+o(1))$
+and $m^2/k_m\to0$, expansion of the product gives
+\[
+ \log p_m=m\log\delta_m+o(1).
+\]
+Also
+\[
+ \log n_m=(q_m+1)\log m,
+ \quad
+ \log\log n_m=\log m+\log\log m+O(1).
+\]
+Consequently,
+\begin{align*}
+ \log\lambda_m
+ &=q_m\log m-m-m\rho\log\log n_m+o(m)\\
+ &=(C-\rho)m\log m-\rho m\log\log m+O(m)
+ \longrightarrow+\infty,
+\end{align*}
+because $C>\rho$.  Thus $\lambda_m\to\infty$.
+
+For two distinct blocks, sampling without replacement gives
+\[
+ \E(X_sX_t)=\frac{(k)_{2m}}{(n)_{2m}}\le p_m^2.
+\]
+Indeed, conditional on containing the first block, the probability of
+containing the second is $(k-m)_m/(n-m)_m$, and each factor satisfies
+\[
+ \frac{k-m-j}{n-m-j}\le\frac{k-j}{n-j}
+ \qquad(0\le j<m).
+\]
+For $X=\sum_tX_t$, it follows that
+\[
+ \E X^2\le\lambda_m+\lambda_m^2.
+\]
+Cauchy--Schwarz applied to $X\mathbf1_{\{X>0\}}$ yields
+\[
+ \Pp(X>0)\ge\frac{(\E X)^2}{\E X^2}
+ \ge\frac{\lambda_m}{1+\lambda_m}\longrightarrow1.
+\]
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Condition on $|J_m|=s$.  Exchangeability makes $J_m$ uniform among the
+$s$-element subsets of $[n_m]$.  For $s\ge k_m$, a uniform $s$-element set
+can be coupled to contain a uniform $k_m$-element set: first sample the
+$s$-element set and then choose $k_m$ of its elements uniformly.  Hence the
+probability of containing a complete block is at least the probability in
+Lemma~\ref{lem:block}, uniformly for every $s\ge k_m$.
+
+On that event, Lemma~\ref{lem:dirichlet} gives
+\[
+ \mathcal N_\Phi(J_m)\ge c_\alpha(\log m)^{\alpha/2}.
+\]
+Finally, $\log m\sim\log\log n_m$.  Absorb the asymptotic comparison into
+$c_\alpha$ and apply Lemma~\ref{lem:block}.
+\end{proof}
+
+\section{Verification and novelty notes}
+
+The proof uses no computation and no unproved external theorem.  The
+second-moment inequality is proved in line, as are the negative-correlation
+comparison and the Luxemburg lower bound.  The main quantifier to check is
+that the exchangeable law may vary arbitrarily with $m$; conditioning on its
+cardinality removes that dependence.
+
+A bounded novelty check on August 11, 2026 searched the run indexes for
+arXiv:2505.00155 and the core endpoint-Orlicz terms, then searched arXiv for
+the exact title and for combinations of ``exchangeable selection'', ``uniform
+fixed-cardinality'', ``sampling without replacement'', Orlicz, and bounded
+orthogonal systems.  The search found the source paper and background papers
+on $\Lambda(\Phi)$ sets and Orlicz sampling, but no later resolution of the
+source question and no matching exchangeable-selector theorem.
+
+\section{Limitations and human-review recommendation}
+
+This packet does not prove that every deterministic subset of size $k_m$ is
+bad.  The full-block event is avoidable by a label-dependent choice, so the
+source's unrestricted optimality question remains open.  The theorem instead
+shows that replacing independent Bernoulli sampling by any other
+permutation-invariant random cardinality rule cannot remove the loss.
+
+The result is recommended for expert review as a likely valid substantial
+partial theorem.  The most useful checks are: (i) the asymptotic lower bound
+for $Bp_m$, (ii) the negative-correlation inequality for two disjoint blocks,
+and (iii) the distinction between exchangeable randomized selection and an
+unrestricted deterministic subset.
+
+\begin{thebibliography}{9}
+\bibitem{Burstein}
+W. Burstein,
+\emph{$\Lambda_p$ Style Bounds in Orlicz Spaces Close to $L^2$},
+arXiv:2505.00155v2, 2025.
+\end{thebibliography}
+
+\end{document}

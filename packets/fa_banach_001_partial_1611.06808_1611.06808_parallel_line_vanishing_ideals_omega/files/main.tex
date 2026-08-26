@@ -1,0 +1,213 @@
+\documentclass[10pt]{article}
+\usepackage[margin=0.8in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\I}{\mathcal I}
+\newcommand{\E}{\mathcal E}
+\newcommand{\Om}{(\Omega)}
+\newcommand{\Cin}{C^\infty}
+\newcommand{\ran}{\operatorname{ran}}
+
+\title{Property \(\Om\) for Compacta on Finitely Many Parallel Lines\\
+\large A higher-dimensional partial result for Conjecture 2.3 of arXiv:1611.06808}
+\author{Automated proof attempt\\
+\texttt{agent\_lane\_03} \quad model: GPT5.6}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{blue!45!black}{blue!4}{\parbox{0.92\linewidth}{
+\textbf{Status: partial result, likely valid, pending human verification.}
+The source proves \(\Om\) for vanishing ideals on the real line and
+conjectures it for arbitrary compact subsets of \(\R^d\).  Here the conjecture
+is proved in every dimension for arbitrary compact sets supported on finitely
+many parallel affine lines.}}
+\end{center}
+
+\section*{Source question}
+
+The excerpt is Conjecture 2.3 on printed page 6 of the source paper.
+
+\begin{center}
+\includegraphics[width=0.96\linewidth]{question_crop.png}
+\end{center}
+
+For a compact \(K\subset\R^d\), let
+\[
+ \I_K=\{f\in\Cin(\R^d): f|_K=0\}.
+\]
+The source proves that every closed ideal of \(\Cin(\R)\) has property
+\(\Om\) \cite[Theorem 2.1]{FJW}.  The following transfers that theorem to a
+genuinely higher-dimensional, geometrically broad class.
+
+\begin{theorem}[Parallel-line case of Conjecture 2.3]
+\label{thm:main}
+Let \(d\ge2\), let \(v\in\R^d\) be a unit vector, and let
+\(b_1,\ldots,b_q\in v^\perp\) be distinct.  Put
+\[
+ M=\bigcup_{i=1}^q(b_i+\R v).
+\]
+For every compact set \(K\subset M\), with no regularity or density
+assumption on its line slices, the vanishing ideal \(\I_K\) in
+\(\Cin(\R^d)\) has property \(\Om\).
+\end{theorem}
+
+\section*{Proof intuition}
+
+Restriction to the carrier \(M\) has a very explicit continuous linear right
+inverse: interpolate only in the transverse variable.  This splits all smooth
+functions into a function vanishing on every carrier line plus independently
+chosen smooth functions along the lines.  Imposing zero values on
+\(K\) then acts only on those one-dimensional components.  The ambient ideal
+therefore becomes a topological direct sum of a complemented smooth-function
+subspace and finitely many one-dimensional vanishing ideals.  Property
+\(\Om\) is stable under exactly these operations.
+
+\section*{Proof}
+
+We first record the two standard permanence inputs, including their short
+proofs so that the argument does not depend on an unstated functional-analytic
+fact.
+
+\begin{lemma}\label{lem:permanence}
+The Fr\'echet space \(\Cin(\R^d)\) has \(\Om\).  A complemented subspace of a
+Fr\'echet space with \(\Om\) has \(\Om\), and a finite direct sum of spaces
+with \(\Om\) has \(\Om\).
+\end{lemma}
+
+\begin{proof}
+Use the seminorms
+\[
+ p_n(f)=\max_{|\alpha|\le n,\,|x|\le n}|\partial^\alpha f(x)|.
+\]
+Fix \(n\), choose a smooth cutoff \(\psi\) equal to one on a neighborhood
+of the closed ball of radius \(n\) and supported in the ball of radius
+\(m=n+1\), and let \(\rho_\delta\) be a standard mollifier at scale
+\(0<\delta<\delta_0\), with \(\delta_0\) small enough for the chosen
+neighborhood.  If \(p_m(f)\le1\), put
+\(y=\rho_\delta*(\psi f)\).  Taylor's formula and the convolution estimates
+give, for every \(k\ge m\),
+\[
+ p_n(f-y)\le C_n\delta,
+ \qquad p_k(y)\le C_{n,k}\delta^{-k}.
+\]
+Taking \(\delta\) proportional to \(\varepsilon\) for
+\(0<\varepsilon<1\), and \(y=0\) for \(\varepsilon\ge1\), is precisely the
+approximation formulation of \(\Om\) recalled in the source immediately
+before its Theorem 2.1.
+
+If \(P:X\to Y\) is a continuous projection, apply an \(\Om\)-decomposition
+in \(X\) to an element of \(Y\) and then apply \(P\) to both summands;
+continuity merely shifts the seminorm indices and constants.  This proves
+the complemented-subspace assertion.  Applying the defining estimates in
+each coordinate, taking the maximum of the finitely many indices and
+constants, proves the finite-direct-sum assertion.
+\end{proof}
+
+Write every \(x\in\R^d\) uniquely as \(x=tv+y\), where
+\(t=\langle x,v\rangle\) and \(y\in v^\perp\).  Choose
+\(\chi_1,\ldots,\chi_q\in\Cin(v^\perp)\) such that
+\[
+ \chi_i(b_j)=\delta_{ij}.
+\]
+For example, disjoint transverse bump functions suffice.  Define
+\[
+ R:\Cin(\R^d)\longrightarrow\bigoplus_{i=1}^q\Cin(\R),
+ \qquad Rf=\bigl(t\mapsto f(tv+b_i)\bigr)_{i=1}^q,
+\]
+and
+\[
+ E:\bigoplus_{i=1}^q\Cin(\R)\longrightarrow\Cin(\R^d),
+ \qquad E(g_1,\ldots,g_q)(tv+y)=\sum_{i=1}^q\chi_i(y)g_i(t).
+\]
+Both maps are continuous for the usual smooth compact-open Fr\'echet
+topologies, and \(RE=I\).  Hence \(P=ER\) is a continuous projection,
+\(\ker P=\ker R=\I_M\), and
+\begin{equation}
+ \Cin(\R^d)=\I_M\oplus E\!\left(\bigoplus_{i=1}^q\Cin(\R)\right)
+ \label{eq:ambient-split}
+\end{equation}
+as a topological direct sum.
+
+For each line define the compact slice
+\[
+ K_i=\{t\in\R:tv+b_i\in K\},
+ \qquad J_i=\{g\in\Cin(\R):g|_{K_i}=0\}.
+\]
+Take the unique decomposition \(f=h+E(g_1,\ldots,g_q)\) from
+\eqref{eq:ambient-split}.  Since \(h\) vanishes on every line and
+\(E(g)|_{b_i+\R v}=g_i\), we have
+\[
+ f|_K=0 \quad\Longleftrightarrow\quad
+ g_i|_{K_i}=0\ \text{ for every }i.
+\]
+Consequently,
+\begin{equation}
+ \I_K=\I_M\oplus E\!\left(\bigoplus_{i=1}^qJ_i\right)
+ \label{eq:ideal-split}
+\end{equation}
+topologically.
+
+It remains only to read \eqref{eq:ideal-split}.  By
+Lemma~\ref{lem:permanence}, the complemented subspace \(\I_M\) of
+\(\Cin(\R^d)\) has \(\Om\).  Each \(J_i\) is a closed ideal of
+\(\Cin(\R)\), so it has
+\(\Om\) by the source theorem \cite[Theorem 2.1]{FJW}.  Property \(\Om\)
+is invariant under topological isomorphism.  The finite-sum part of
+Lemma~\ref{lem:permanence} therefore shows that both summands in
+\eqref{eq:ideal-split}, and hence \(\I_K\), have \(\Om\). \qed
+
+\section*{Why this is only partial}
+
+The proof works whenever the compact set lies in a carrier whose restriction
+map has a continuous linear section and whose intrinsic vanishing ideal is
+known to have \(\Om\).  Arbitrary compact subsets of \(\R^d\) need not admit
+such a one-dimensional carrier.  A direct neighborhood cutoff does not close
+the gap: zero values on \(K\) do not control normal derivatives, so cutting a
+function off near \(K\) can fail even in \(C^1\).
+
+The source's separate question about stability of the smooth extension
+property under unions also remains open.  A naive fiber-product proof would
+require a controlled decomposition of functions vanishing on \(K\cap L\)
+into \(\I_K+\I_L\), and that algebraic equality can fail at accumulating
+intersections.  The durable attempt note records eight distinct full-upgrade
+routes and their obstructions.
+
+\section*{Reproducible check and literature boundary}
+
+The script \path{code/verify_parallel_line_splitting.py} constructs exact
+transverse Lagrange functions for three lines, verifies \(RE=I\), and checks
+the restriction identities on 303 samples.  This tests the explicit splitting,
+not the abstract \(\Om\) stability facts.
+
+No duplicate was found in the run indexes.  Exact-phrase searches and the
+later citations of the published source were checked through 11 August 2026.
+The only later citation returned by Semantic Scholar was a 2025 survey of
+Whitney-jet spaces, which does not settle Conjecture 2.3.  This is a bounded
+novelty check, not an exhaustive priority claim.
+
+\begin{thebibliography}{9}
+\bibitem{FJW}
+L. Frerick, E. Jord\'a, and J. Wengenroth,
+\emph{Extension operators for smooth functions on compact subsets of the
+reals}, Math. Z. 295 (2020), 1537--1552; arXiv:1611.06808.
+Included as \texttt{source\_paper.pdf}.
+
+\bibitem{Vogt}
+D. Vogt, \emph{Splitting of exact sequences of Fr\'echet spaces in the
+absence of continuous norms}, J. Math. Anal. Appl. 297 (2004), 812--832.
+Included under \texttt{references/} for the surrounding invariant and
+splitting framework; the permanence facts used above are proved directly.
+\end{thebibliography}
+
+\end{document}

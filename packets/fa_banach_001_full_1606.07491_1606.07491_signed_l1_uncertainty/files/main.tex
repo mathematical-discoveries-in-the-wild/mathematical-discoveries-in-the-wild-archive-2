@@ -1,0 +1,312 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\Q}{\{-1,1\}}
+\newcommand{\E}{\mathbb E}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\ip}[2]{\langle #1,#2\rangle}
+\DeclareMathOperator{\supp}{supp}
+
+\title{A finite-dimensional signed $L^1$ uncertainty inequality\\
+on the Boolean cube}
+\author{Run \texttt{fa\_banach\_001}, lane 18
+  (\texttt{agent\_lane\_18})}
+\date{12 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Polyanskiy and Samorodnitsky conjectured that their sharp asymptotic
+$L^1$ uncertainty estimate for nonnegative low-degree functions on the
+Boolean cube remains true for arbitrary real functions.  We prove the
+stronger finite-dimensional inequality
+\[
+ \|f\|_\infty\le
+ \sqrt{\frac{\binom{2n}{d}}{\binom{2n}{n}}}
+ \sum_{x\in\Q^n}|f(x)|,
+ \qquad \deg f\le d.
+\]
+Its logarithm is
+$-n[\log 2-h(d/(2n))]+O(\log n)$, exactly the conjectured exponent.
+The proof translates a maximizer to the all-ones vertex, symmetrizes over
+coordinates, and uses the exact Christoffel function
+$K_d(0,0)=\binom{2n}{d}$ for the squared binomial (Hahn) measure.
+\end{abstract}
+
+\section{Source conjecture}
+
+Let $h(t)=-t\log t-(1-t)\log(1-t)$ be binary entropy in natural units.
+After proving an $L^2$ uncertainty principle, Polyanskiy and
+Samorodnitsky compare it with a result for nonnegative functions and state
+the following conjecture on page 20 of the published manuscript
+\cite{PS}:
+
+\begin{center}
+\includegraphics[width=.91\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+In exact mathematical form, their equation (70) says that, for
+$f\ge0$ of Fourier--Walsh degree at most $\delta n$,
+\begin{equation}\label{source-estimate}
+ \max_{x\in\Q^n}|f(x)|
+ \le \exp\!\left(-n\left[\log2-h\left(\frac\delta2\right)\right]
+        +o(n)\right)
+ \sum_{x\in\Q^n}|f(x)|.
+\end{equation}
+The immediately following sentence is:
+\begin{quote}
+``We conjecture that (70) holds for all
+$f:\{\pm1\}^n\to\mathbb R$ of degree $\le\delta n$.''
+\end{quote}
+The result below proves this statement and replaces the unspecified $o(n)$
+by an explicit $O(\log n)$ remainder.
+
+\section{Definitions and proof intuition}
+
+Write $\chi_S(x)=\prod_{i\in S}x_i$.  The Fourier--Walsh degree of
+$f:\Q^n\to\R$ is the largest $|S|$ for which the coefficient of
+$\chi_S$ is nonzero.  All $L^1$ norms in the theorem use counting measure:
+\[
+ \|f\|_{\ell^1}=\sum_{x\in\Q^n}|f(x)|,
+ \qquad \|f\|_\infty=\max_{x\in\Q^n}|f(x)|.
+\]
+
+The proof has two independent ideas.  First, translate a point attaining
+$\|f\|_\infty$ to $(1,\ldots,1)$ and average over all coordinate
+permutations.  Translation preserves Fourier degree, the average keeps the
+chosen value, and convexity makes its $\ell^1$ norm no larger.  The averaged
+function depends only on the number $k$ of negative coordinates, hence is a
+univariate polynomial $P(k)$ of degree at most $d$.
+
+Second, the $k$-distribution of a uniform cube point is binomial.  Squaring
+this binomial weight produces a Hahn orthogonality measure.  Its degree-$d$
+Christoffel function at the endpoint is exactly $\binom{2n}{d}$; one
+Cauchy--Schwarz inequality then bounds $P(0)$ by the binomially weighted
+$L^1$ norm of $P$.
+
+\section{The exact theorem}
+
+\begin{theorem}[signed $L^1$ uncertainty]\label{main}
+Let $0\le d\le n$.  Every real function $f:\Q^n\to\R$ of
+Fourier--Walsh degree at most $d$ satisfies
+\begin{equation}\label{finite}
+ \boxed{\quad
+ \|f\|_\infty\le
+ \sqrt{\frac{\binom{2n}{d}}{\binom{2n}{n}}}\,
+ \|f\|_{\ell^1}.
+ \quad}
+\end{equation}
+\end{theorem}
+
+\begin{corollary}[the source conjecture]\label{asymptotic}
+Uniformly for $0\le d\le n$,
+\begin{equation}\label{stirling}
+ \sqrt{\frac{\binom{2n}{d}}{\binom{2n}{n}}}
+ =\exp\!\left(-n\left[\log2-h\left(\frac{d}{2n}\right)\right]
+       +O(\log n)\right).
+\end{equation}
+Consequently, if $d\le\delta n$, then \eqref{source-estimate} holds for
+arbitrary real $f$.
+\end{corollary}
+
+\begin{proof}
+The uniform estimate
+$\log\binom Nk=Nh(k/N)+O(\log N)$ gives \eqref{stirling}.
+For $d\le\delta n\le n$, monotonicity of $\binom{2n}{d}$ in this range
+completes the deduction from Theorem~\ref{main}.
+\end{proof}
+
+\section{The squared-binomial Christoffel identity}
+
+For $0\le k\le n$, put
+\[
+ \mu_k=2^{-n}\binom nk,
+ \qquad
+ Z=\sum_{k=0}^n\mu_k^2
+   =4^{-n}\binom{2n}{n},
+ \qquad
+ \nu_k=\frac{\mu_k^2}{Z}
+   =\frac{\binom nk^2}{\binom{2n}{n}}.
+\]
+The identity for $Z$ is Vandermonde's convolution.
+
+For a probability measure $\nu$ on $\{0,\ldots,n\}$, let
+\[
+ K_d^\nu(0,0)=
+ \sup_{0\ne P,\ \deg P\le d}
+ \frac{|P(0)|^2}{\sum_{k=0}^n\nu_k|P(k)|^2}
+\]
+be its degree-$d$ Christoffel function at zero.
+
+\begin{lemma}[endpoint Hahn identity]\label{hahn}
+For the squared-binomial probability measure above,
+\[
+ K_d^\nu(0,0)=\binom{2n}{d},\qquad 0\le d\le n.
+\]
+\end{lemma}
+
+\begin{proof}
+We record the short normalization calculation so that no asymptotic
+orthogonal-polynomial result is hidden in the proof.  With $(a)_r$ denoting
+the rising factorial, define the terminating Hahn polynomials
+\[
+ H_j(k)={}_3F_2\!\left(
+ \begin{matrix}-j,\ j-2n-1,\ -k\\-n,\ -n\end{matrix};1\right)
+ =\sum_{r=0}^j
+ \frac{(-j)_r(j-2n-1)_r(-k)_r}{(-n)_r^2r!}.
+\]
+They have degree $j$ and $H_j(0)=1$.  Expanding the terminating sums and
+applying Vandermonde's convolution (equivalently, the standard finite Hahn
+orthogonality calculation \cite[Sec.~9.5]{KLS}) gives
+\begin{equation}\label{orthogonality}
+ \sum_{k=0}^n\nu_k H_i(k)H_j(k)
+ =\frac{\mathbf1_{\{i=j\}}}
+ {\binom{2n}{j}-\binom{2n}{j-1}},
+\end{equation}
+where $\binom{2n}{-1}=0$.
+
+Thus $H_0,\ldots,H_d$ are an orthogonal basis of the polynomials of degree
+at most $d$.  The reproducing-kernel formula and $H_j(0)=1$ yield
+\[
+ K_d^\nu(0,0)
+ =\sum_{j=0}^d\frac{|H_j(0)|^2}{\|H_j\|_{L^2(\nu)}^2}
+ =\sum_{j=0}^d
+ \left[\binom{2n}{j}-\binom{2n}{j-1}\right]
+ =\binom{2n}{d}.
+\]
+This also proves the claimed normalization directly.  The accompanying
+exact-arithmetic script expands \eqref{orthogonality} for all degrees through
+$n=12$ as an independent check.
+\end{proof}
+
+\begin{lemma}[radial $L^1$ evaluation]\label{radial}
+Every real polynomial $P$ of degree at most $d\le n$ satisfies
+\begin{equation}\label{radial-bound}
+ |P(0)|\le
+ \sqrt{\frac{\binom{2n}{d}}{Z}}
+ \sum_{k=0}^n\mu_k|P(k)|.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Set $A=\sum_k\mu_k|P(k)|$.  Since all summands are nonnegative,
+\[
+ A^2\ge\sum_{k=0}^n\mu_k^2|P(k)|^2
+ =Z\|P\|_{L^2(\nu)}^2.
+\]
+The definition of the Christoffel function and Lemma~\ref{hahn} give
+\[
+ |P(0)|^2\le\binom{2n}{d}\|P\|_{L^2(\nu)}^2
+ \le\frac{\binom{2n}{d}}{Z}A^2.
+\]
+Taking square roots proves \eqref{radial-bound}.
+\end{proof}
+
+\section{Proof of the theorem}
+
+\begin{proof}[Proof of Theorem~\ref{main}]
+Choose $x^0\in\Q^n$ with $|f(x^0)|=\|f\|_\infty$ and multiply $f$ by a
+sign.  The cube translation
+\[
+ g(x)=f(x^0_1x_1,\ldots,x^0_nx_n)
+\]
+has the same Fourier degree and the same $\ell^1$ norm, and
+$g(1,\ldots,1)=\|f\|_\infty$.
+
+Average $g$ over the symmetric group:
+\[
+ \bar g(x)=\frac1{n!}\sum_{\pi\in S_n}
+ g(x_{\pi(1)},\ldots,x_{\pi(n)}).
+\]
+Then $\deg\bar g\le d$, the all-ones vertex is fixed, and Jensen's
+inequality followed by permutation invariance of counting measure gives
+\begin{equation}\label{contraction}
+ \bar g(1,\ldots,1)=\|f\|_\infty,
+ \qquad
+ \|\bar g\|_{\ell^1}\le\|g\|_{\ell^1}=\|f\|_{\ell^1}.
+\end{equation}
+
+A symmetric Fourier--Walsh polynomial of degree at most $d$ is a linear
+combination of the first $d$ Krawtchouk polynomials.  Hence
+$\bar g(x)=P(k)$, where $k=|\{i:x_i=-1\}|$ and $P$ is a univariate
+polynomial of degree at most $d$.  In particular,
+\[
+ \sum_{k=0}^n\mu_k|P(k)|
+ =2^{-n}\|\bar g\|_{\ell^1},
+ \qquad P(0)=\|f\|_\infty.
+\]
+Lemma~\ref{radial}, the value
+$Z=4^{-n}\binom{2n}{n}$, and \eqref{contraction} now give
+\begin{align*}
+ \|f\|_\infty
+ &\le
+ \sqrt{\frac{\binom{2n}{d}}
+ {4^{-n}\binom{2n}{n}}}\;2^{-n}
+ \|\bar g\|_{\ell^1}\\
+ &\le
+ \sqrt{\frac{\binom{2n}{d}}{\binom{2n}{n}}}
+ \|f\|_{\ell^1},
+\end{align*}
+which is \eqref{finite}.
+\end{proof}
+
+\section{Verification, novelty, and limitations}
+
+There are several quick checks on the exact constant.  If $d=n$, it is one
+and \eqref{finite} is the trivial inequality $\|f\|_\infty\le\|f\|_1$.
+If $d=0$, it differs from the sharp constant $2^{-n}$ only by the polynomial
+factor $4^{n/2}/\sqrt{\binom{2n}{n}}=O(n^{1/4})$, so it has the correct
+exponential scale.  Exact symbolic computation verifies the Hahn
+orthogonality, reciprocal norms, and telescoping identity for every
+$1\le n\le12$; see \texttt{verify\_hahn\_identity.py}.
+
+Targeted searches of the source, its published version, the run registry,
+Boolean-cube Nikolskii inequalities, the exact binomial-ratio constant, and
+squared-binomial Christoffel functions found no prior statement of
+Theorem~\ref{main}.  The source TeX contains an appendix-only working note
+mentioning a signed permutation-invariant estimate, and Samorodnitsky's older
+preprint \cite{Sam} develops the relevant squared-binomial/Hahn machinery.
+Those are consistent with Lemma~\ref{radial}; neither located source states the
+translation--symmetrization reduction or the finite inequality
+\eqref{finite}.  Literature novelty is nevertheless the main point requiring
+expert review.
+
+The theorem resolves only the signed $L^1$ conjecture following equation
+(70).  It does not solve the source's separate conjecture that Hamming balls
+are asymptotically worst for support-constrained hypercontractivity, nor its
+more structured uncertainty questions.
+
+\paragraph{Human review recommendation.}
+Before dissemination, verify the normalization in \eqref{orthogonality}, the
+degree preservation in the radial reduction, and novelty against the
+literature on Hahn Christoffel functions and discrete Nikolskii inequalities.
+
+\begin{thebibliography}{9}
+\bibitem{PS}
+Y.~Polyanskiy and A.~Samorodnitsky,
+\emph{Improved log-Sobolev inequalities, hypercontractivity and uncertainty
+principle on the hypercube}, J. Funct. Anal. 277 (2019), 108280;
+arXiv:1606.07491.
+
+\bibitem{KLS}
+R.~Koekoek, P.~A. Lesky, and R.~F. Swarttouw,
+\emph{Hypergeometric Orthogonal Polynomials and Their $q$-Analogues},
+Springer, 2010.
+
+\bibitem{Sam}
+A.~Samorodnitsky,
+\emph{Extremal properties of solutions for Delsarte's linear program},
+preliminary manuscript, 1998.
+\end{thebibliography}
+
+\end{document}

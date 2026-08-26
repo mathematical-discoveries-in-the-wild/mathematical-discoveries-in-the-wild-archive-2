@@ -1,0 +1,287 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\T}{\mathbb T}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\cts}{\mathrm{cts}}
+\newcommand{\Hom}{\operatorname{Hom}}
+
+\title{Globally Continuous Cohomology of Tori\\
+\large A full answer to Question 10.1 of arXiv:1305.7269}
+\author{Candidate solution packet for human review}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Austin asked whether the globally continuous bar-cochain group
+$H^3_{\cts}(\T,\T)$ is nonzero.  We prove that it is zero.  More generally,
+for the (necessarily trivial) continuous action of $\T^d$ on $\T^m$, we
+compute the whole theory:
+\[
+H^n_{\cts}(\T^d,\T^m)\cong
+\begin{cases}
+\T^m,&n=0,\\
+\operatorname{Mat}_{m\times d}(\Z),&n=1,\\
+0,&n\ge2.
+\end{cases}
+\]
+The proof avoids the unavailable long exact coefficient sequence.  A
+normalized cochain in degree at least two factors through a simply connected
+smash product, hence lifts to a real cochain.  For a cocycle the lift is a
+real cocycle, and Haar averaging supplies its primitive.
+\end{abstract}
+
+\section{The published question}
+
+Let $\T=\R/\Z$, written additively.  In Section 10.1 of
+\cite{AustinPDE}, Austin considers the cohomology $H^*_{\cts}$ of the usual
+inhomogeneous bar complex, restricted to globally continuous cochains.  The
+paper observes that this theory need not provide long exact sequences for
+general short exact sequences of topological modules, and asks:
+
+\begin{quote}
+\textbf{Question 10.1.} Is $H^3_{\cts}(\T,\T)$ non-zero?
+\end{quote}
+
+The question appears on physical page 91 of the source PDF:
+
+\begin{center}
+\includegraphics[width=0.94\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+Austin--Moore define exactly this theory as continuous maps in the ordinary
+bar resolution \cite[Section 2]{AustinMoore}.  For a topological group $G$
+acting trivially on an abelian topological group $A$, put
+$C^n_{\cts}(G,A)=C(G^n,A)$ and
+\begin{align*}
+(dc)(g_1,\ldots,g_{n+1})
+={}&c(g_2,\ldots,g_{n+1})\\
+&+\sum_{i=1}^{n}(-1)^i
+c(g_1,\ldots,g_i g_{i+1},\ldots,g_{n+1})\\
+&+(-1)^{n+1}c(g_1,\ldots,g_n).
+\end{align*}
+Then $H^n_{\cts}(G,A)=\ker d/\operatorname{im}d$ in this complex.
+
+\section{Result and proof intuition}
+
+\begin{theorem}[Full torus computation]\label{thm:main}
+Let $d,m\ge1$.  For the trivial action of $\T^d$ on $\T^m$,
+\[
+H^n_{\cts}(\T^d,\T^m)\cong
+\begin{cases}
+\T^m,&n=0,\\
+\Hom_{\cts}(\T^d,\T^m)
+ \cong\operatorname{Mat}_{m\times d}(\Z),&n=1,\\
+0,&n\ge2.
+\end{cases}
+\]
+In particular,
+\[
+\boxed{H^3_{\cts}(\T,\T)=0,}
+\]
+so the answer to Question 10.1 is no.
+\end{theorem}
+
+\paragraph{Idea of the proof.}
+Normalize the bar complex.  A normalized $n$-cochain vanishes whenever one
+input is the identity.  For $n\ge2$ it therefore factors through the smash
+product $(\T^d)^{\wedge n}$.  This smash product is simply connected, so the
+cochain has a continuous logarithm $C:(\T^d)^n\to\R^m$.  If the original
+cochain is a cocycle, $dC$ is lattice-valued.  Connectedness makes it
+constant, and normalization makes that constant zero.  Thus $C$ is an actual
+real cocycle.  Finally, averaging its last variable against Haar measure gives
+an explicit real primitive.  Reducing that primitive modulo $\Z^m$ completes
+the argument.
+
+\section{Three elementary lemmas}
+
+\begin{lemma}[Continuous normalization]\label{lem:normalization}
+The subcomplex of normalized continuous cochains
+\[
+N^n_{\cts}(G,A):=
+\{c\in C^n_{\cts}(G,A):c(g_1,\ldots,g_n)=0
+\text{ if some }g_i=e\}
+\]
+has the same cohomology as $C^*_{\cts}(G,A)$.
+\end{lemma}
+
+\begin{proof}
+This is the usual normalization theorem for the bar complex.  Algebraically,
+the bar cochains form a cosimplicial abelian group; the normalized Moore
+complex is a deformation retract, while the complementary degenerate complex
+is contracted by the codegeneracies.  In inhomogeneous coordinates those
+codegeneracies insert the identity in one coordinate.  The projection and
+contracting homotopy are finite sums of coface and codegeneracy operators.
+All of these are compositions with continuous group operations or identity
+insertions, so they preserve continuity.  Hence the standard algebraic
+normalization proof restricts verbatim to globally continuous cochains.
+\end{proof}
+
+\begin{lemma}[Normalized torus cochains lift]\label{lem:lift}
+Let $n\ge2$.  Every normalized continuous map
+$c:(\T^d)^n\to\T^m$ has a normalized continuous lift
+$C:(\T^d)^n\to\R^m$ through the quotient map
+$q:\R^m\to\T^m$.
+\end{lemma}
+
+\begin{proof}
+Let $F_n\subseteq(\T^d)^n$ be the fat wedge, the union of the sets on which
+at least one coordinate is the identity.  Since $c|_{F_n}=0$, the map $c$
+factors as a based continuous map
+\[
+\bar c:(\T^d)^n/F_n=(\T^d)^{\wedge n}\longrightarrow\T^m.
+\]
+Give $\T^d$ its standard based finite CW structure.  Every non-basepoint cell
+has dimension at least one, so every non-basepoint cell of the $n$-fold smash
+has dimension at least $n$.  For $n\ge2$ the smash product is connected and
+has no one-cells; hence it is simply connected.  The universal covering
+$q:\R^m\to\T^m$ gives a unique based lift
+$\bar C:(\T^d)^{\wedge n}\to\R^m$.  Pulling back gives $C$.  Equivalently,
+the lift restricts on the connected fat wedge to a lattice-valued map taking
+the value $0$ at the basepoint, so it is normalized.
+\end{proof}
+
+\begin{lemma}[Haar contraction]\label{lem:haar}
+Let $G$ be compact and let $V$ be a finite-dimensional real vector space with
+trivial $G$-action.  Every continuous $V$-valued cocycle in positive degree is
+a continuous coboundary.
+\end{lemma}
+
+\begin{proof}
+Let $C\in C^n_{\cts}(G,V)$ satisfy $dC=0$, with $n\ge1$, and let $\mu$ be
+normalized Haar measure.  Define
+\[
+B(g_1,\ldots,g_{n-1})
+=(-1)^n\int_G C(g_1,\ldots,g_{n-1},t)\,d\mu(t).
+\]
+The function $B$ is continuous.  Integrate the identity
+$dC(g_1,\ldots,g_n,t)=0$ in $t$.  Haar invariance changes the term containing
+$g_nt$ into the same integral defining $B(g_1,\ldots,g_{n-1})$; collecting
+the remaining terms gives $dB=C$.
+\end{proof}
+
+\section{Proof of the theorem}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+In degree zero, the action is trivial, so the invariant group is $\T^m$.
+In degree one, the cocycle identity says precisely that
+$c(x+y)=c(x)+c(y)$.  Thus the cocycles are continuous homomorphisms
+$\T^d\to\T^m$.  Degree-one boundaries vanish for a trivial action, and the
+continuous homomorphisms between these tori are exactly the integer matrices
+$\operatorname{Mat}_{m\times d}(\Z)$.
+
+Now let $n\ge2$ and let $c:(\T^d)^n\to\T^m$ be a continuous cocycle.  By
+Lemma~\ref{lem:normalization}, we may assume $c$ is normalized.  By
+Lemma~\ref{lem:lift}, choose a normalized continuous lift
+$C:(\T^d)^n\to\R^m$ with $q\circ C=c$.
+
+Since $dc=0$, the map
+\[
+dC:(\T^d)^{n+1}\longrightarrow\R^m
+\]
+takes values in the deck lattice $\Z^m$.  Its domain is connected, so $dC$ is
+constant.  At the all-identity tuple every term in $dC$ is a value of the
+normalized cochain $C$ on a tuple containing an identity; all those terms are
+zero.  Hence $dC=0$ everywhere.
+
+Lemma~\ref{lem:haar} now gives a continuous cochain
+$B:(\T^d)^{n-1}\to\R^m$ with $dB=C$.  Therefore
+\[
+c=q\circ C=d(q\circ B),
+\]
+so $c$ is a continuous coboundary.  This proves the asserted vanishing for
+all $n\ge2$.
+\end{proof}
+
+\begin{remark}[Module action]
+There is no omitted nontrivial toral action in Theorem~\ref{thm:main}.  The
+group of continuous automorphisms of $\T^m$ is
+$\operatorname{GL}(m,\Z)$ with the discrete topology.  Any continuous action
+by automorphisms corresponds to a continuous homomorphism
+$\T^d\to\operatorname{GL}(m,\Z)$, which is trivial because $\T^d$ is
+connected.
+\end{remark}
+
+\begin{remark}[Why this does not misuse a long exact sequence]
+The source emphasizes that the presentation
+$\Z^m\to\R^m\to\T^m$ need not yield a long exact sequence for globally
+continuous cochains, because a general continuous torus-valued cochain need
+not admit a global continuous lift.  The proof above makes no such assertion.
+It first normalizes a cochain of degree at least two; only then does the
+fat-wedge factorization prove that this particular cochain has a lift.  The
+cocycle equation is then checked again upstairs.  Thus the precise defect
+highlighted in \cite{AustinPDE,AustinMoore} is bypassed, not assumed away.
+\end{remark}
+
+\section{Independent winding-number audit}
+
+There is a direct degree-three check.  A map $\T^n\to\T$ has a winding vector
+in $\Z^n$.  The bar differential induces
+\[
+D_2(b_1,b_2)=(-b_1,0,b_2),\qquad
+D_3(a_1,a_2,a_3)=(0,a_2,a_2,0).
+\]
+Consequently
+\[
+\ker D_3=\{(a,0,c):a,c\in\Z\}=\operatorname{im}D_2.
+\]
+Thus every degree-three cocycle has coboundary winding, after which it lifts
+to $\R$ and the proof above applies.  The accompanying exact-arithmetic script
+checks these matrices, the bar signs, and $D_{n+1}D_n=0$ through degree eight.
+This calculation is only a sanity check; the normalized smash-product proof
+already handles all degrees and all finite-dimensional tori.
+
+\section{Scope, novelty, and review status}
+
+Theorem~\ref{thm:main} fully answers the exact Question 10.1 and strengthens
+it to all degrees and all finite-dimensional source and coefficient tori.  It
+does not complete Austin's broader program for continuous partial-difference
+equations.  Nor does it assert vanishing for measurable, locally continuous,
+smooth-local, Segal--Mitchison, or classifying-space cohomology; those are
+different theories and may be nonzero \cite{AustinMoore,WagemannWockel}.
+
+A bounded literature search on 13 August 2026 used the exact question and
+notation, close variants with ``globally continuous cohomology'', circle and
+torus coefficients, the source title/id/author, and citation searches.  The
+primary sources \cite{AustinMoore,WagemannWockel} discuss the same globally
+continuous theory but do not state this computation.  No later explicit
+answer or equivalent full characterization was found.  Novelty confidence is
+moderate: the argument may be implicit folklore under different notation,
+but the exact published question and bounded search revealed no answer.
+
+The result is marked \emph{candidate full solution, likely valid}.  Human
+review should focus on Lemmas~\ref{lem:normalization} and~\ref{lem:lift}; once
+those standard facts are accepted, the remaining proof is an explicit
+cocycle and Haar-integration calculation.
+
+\begin{thebibliography}{9}
+
+\bibitem{AustinPDE}
+T.~Austin,
+\emph{Partial difference equations over compact Abelian groups, I: modules of
+solutions}, arXiv:1305.7269, 2013; Question 10.1 on physical PDF page 91.
+
+\bibitem{AustinMoore}
+T.~Austin and C.~C.~Moore,
+\emph{Continuity properties of measurable group cohomology},
+arXiv:1004.4937, 2010.
+
+\bibitem{WagemannWockel}
+F.~Wagemann and C.~Wockel,
+\emph{A cocycle model for topological and Lie group cohomology},
+arXiv:1110.3304, 2011.
+
+\end{thebibliography}
+
+\end{document}

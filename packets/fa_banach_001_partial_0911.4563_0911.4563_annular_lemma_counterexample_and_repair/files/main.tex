@@ -1,0 +1,271 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.92in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\muM}{\mu_M}
+
+\title{A Counterexample and Repair for the Annular Lemma in\\
+\large Fractional Poincar\'e Inequalities for General Measures}
+\author{Autonomous proof packet for \texttt{fa\_banach\_001}}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+Substantial partial result, likely valid, pending human review.  The printed
+annular estimate is disproved already in the source's $L^2$ setting and the
+main $L^2$ proof is repaired.  The intended global $L^p$ comparison remains
+open for a precisely identified vector-valued reason.
+
+\section{Source statement and question}
+
+Let $Q(a,s)$ denote the cube centered at $a$ with side length $s$.  For a
+unit-scale covering cube $Q(x_j^t,\sqrt t)$, the source subtracts the
+Lebesgue mean of $f$ on $Q(x_j^t,2\sqrt t)$:
+\[
+ m^{j,t}=\frac{1}{|Q(x_j^t,2\sqrt t)|}
+ \int_{Q(x_j^t,2\sqrt t)}f(y)\,dy,
+ \qquad g^{j,t}=f-m^{j,t}.
+\]
+It then restricts $g^{j,t}$ to
+\[
+ C_k^{j,t}=Q(x_j^t,2^{k+1}\sqrt t)
+ \setminus Q(x_j^t,2^k\sqrt t),\qquad
+ g_k^{j,t}=g^{j,t}{\bf1}_{C_k^{j,t}}.
+\]
+Assertion B of Lemma 3.4 claims an estimate with the large-cube
+normalization $(2^k\sqrt t)^{-n}$.
+
+\begin{center}
+\includegraphics[width=0.93\textwidth]{figures/lemma_3_4_B_crop.png}
+
+\small Source PDF p.~11: complete statement of Lemma 3.4, including B.
+\end{center}
+
+The printed proof says only that B follows similarly from the calculation for
+the central cube.  The following paragraph asks whether an $L^p$ version of
+the resulting fractional comparison holds.
+
+\begin{center}
+\includegraphics[width=0.78\textwidth]{figures/proof_and_lp_question_crop.png}
+
+\small Source PDF p.~14: proof line and exact $L^p$ question.
+\end{center}
+
+\section{Counterexample to the printed annular estimate}
+
+\begin{theorem}[failure of Lemma 3.4(B)]\label{thm:counter}
+Assertion B of the source's Lemma 3.4 is false, even when $n=1$, $t=1$,
+and
+\[
+ d\muM(x)=M(x)\,dx=(2\pi)^{-1/2}e^{-x^2/2}\,dx.
+\]
+In fact, for the standard unit tiling and a sequence of smooth compactly
+supported functions, the left-hand side stays bounded away from zero while
+the asserted right-hand side tends to zero.
+\end{theorem}
+
+\begin{proof}
+Use the tiling centers $x_j^1=j$.  For $k\ge3$, set $R=2^k$ and choose the
+center $x_j^1=R$.  Then
+\[
+ Q(R,2^{k+1})=[0,2R],\qquad
+ C_k^{j,1}=[0,R/2]\cup[3R/2,2R],
+\]
+whereas the mean cube is $Q(R,2)=[R-1,R+1]$.
+
+Choose $f_k\in C_c^\infty(\R)$, $0\le f_k\le1$, so that
+\[
+ f_k=0\quad\hbox{on }[R-1,R+1],
+ \qquad
+ f_k=1\quad\hbox{on }[0,2R]\setminus[R-2,R+2].
+\]
+The cutoff to compact support can be placed outside $[0,2R]$.  Its subtracted
+mean is exactly zero, and $f_k=1$ on $C_k^{j,1}$.  Consequently
+\begin{equation}\label{eq:left}
+ \lVert g_k^{j,1}\rVert_{L^2(C_k^{j,1},\muM)}^2
+ \ge \muM([0,R/2])\longrightarrow\frac12.
+\end{equation}
+
+Let $B_R=[R-2,R+2]$ and write $Q_R=[0,2R]$.  If $x\in Q_R\setminus B_R$,
+then $f_k(x)=1$ and a difference can occur only for $y\in B_R$; for
+$x\in B_R$, use the crude inner bound $|Q_R|=2R$.  Thus
+\begin{align}
+ N_k&:=\int_{Q_R}\int_{Q_R}|f_k(x)-f_k(y)|^2\,dy\,d\muM(x)\notag\\
+ &\le |B_R|\muM(Q_R\setminus B_R)+2R\muM(B_R)
+ \le 4+2R\muM(B_R).
+\end{align}
+The right-hand side asserted in B, without its fixed constant, is therefore
+\begin{equation}\label{eq:right}
+ \frac{N_k}{2^k}\le \frac4R+2\muM([R-2,R+2])\longrightarrow0.
+\end{equation}
+Equations \eqref{eq:left} and \eqref{eq:right} contradict the existence of
+a uniform constant $\bar C$.
+
+Finally, the Gaussian is fully admissible in the source: for
+$V(x)=x^2/2+\tfrac12\log(2\pi)$,
+$(1-\varepsilon)|V'|^2/2-V''\to\infty$.  Thus the failure is not caused by
+leaving the paper's measure class.
+\end{proof}
+
+\section{The correct annular estimate}
+
+The problem is exactly the scale of the mean.  It is taken on the small cube,
+so no factor $2^{-kn}$ can be gained by ``arguing similarly.''
+
+\begin{proposition}[corrected B]\label{prop:correct}
+With the source's notation, for every $k\ge1$,
+\begin{align}
+ \lVert g_k^{j,t}\rVert_{L^2(C_k^{j,t},\muM)}^2
+ \le \frac{C_n}{t^{n/2}}
+ \int_{Q(x_j^t,2^{k+1}\sqrt t)}
+ \int_{Q(x_j^t,2^{k+1}\sqrt t)}
+ |f(x)-f(y)|^2\,dy\,d\muM(x).             \label{eq:correct}
+\end{align}
+The same argument gives, for $1\le p<\infty$,
+\begin{align}
+ \lVert g_k^{j,t}\rVert_{L^p(C_k^{j,t},\muM)}^p
+ &\le \frac{C_n}{t^{n/2}}
+ \int_{Q(x_j^t,2^{k+1}\sqrt t)}
+ \int_{Q(x_j^t,2^{k+1}\sqrt t)}
+ |f(x)-f(y)|^p\,dy\,d\muM(x).             \label{eq:correctp}
+\end{align}
+\end{proposition}
+
+\begin{proof}
+For $x\in C_k^{j,t}$, Jensen's inequality on the actual mean cube
+$Q_0=Q(x_j^t,2\sqrt t)$ gives
+\[
+ |g^{j,t}(x)|^p
+ \le \frac1{|Q_0|}\int_{Q_0}|f(x)-f(y)|^p\,dy
+ =\frac{C_n}{t^{n/2}}\int_{Q_0}|f(x)-f(y)|^p\,dy.
+\]
+Integrate in $x$ over $C_k^{j,t}$ and enlarge both domains to the large
+cube.  This proves \eqref{eq:correctp}; $p=2$ gives \eqref{eq:correct}.
+\end{proof}
+
+There is also a literal square-difference local $L^p$ form, valid for every
+$1\le p<\infty$:
+\[
+ \lVert g_k^{j,t}\rVert_p^p
+ \le C_nt^{-np/4}\int_{C_k^{j,t}}
+ \left(\int_{Q_0}|f(x)-f(y)|^2\,dy\right)^{p/2}d\muM(x).
+\]
+Thus the elementary local averaging step itself is not the difficulty in the
+intended global $L^p$ problem.
+
+\section{Repair of the source's main \texorpdfstring{$L^2$}{L2} proof}
+
+\begin{theorem}[the polynomial loss is harmless]\label{thm:repair}
+Replacing Assertion B by Proposition \ref{prop:correct} leaves the conclusion
+of the source's Lemma 3.3, and hence its main $L^2$ theorem, valid.
+\end{theorem}
+
+\begin{proof}
+Insert \eqref{eq:correct} into the source's $t$-integral.  For fixed $t,x,y$,
+the number of enlarged cubes of side $2^{k+1}\sqrt t$ containing both points
+is at most $C_n2^{kn}$.  Such a cube can exist only when
+$|x-y|\le C_n2^k\sqrt t$.  Therefore the $k$th annular contribution is at
+most
+\[
+ C2^{kn}\int\!\!\int |f(x)-f(y)|^2\,d\muM(x)\,dy
+ \int_{|x-y|^2/(C_n4^k)}^A t^{-1-(n+\alpha)/2}\,dt,
+\]
+and hence at most
+\begin{equation}\label{eq:loss}
+ C2^{k(2n+\alpha)}
+ \int\!\!\int_{|x-y|\le C_n2^k\sqrt A}
+ \frac{|f(x)-f(y)|^2}{|x-y|^{n+\alpha}}\,d\muM(x)\,dy.
+\end{equation}
+This deliberately safe exponent also absorbs the normalization and covering
+factor discrepancies visible in the printed equations (3.20)--(3.21).
+
+The source's resolvent estimate already multiplies the $k$th contribution by
+$e^{-c2^k}$.  Put $\beta=2n+\alpha$.  The elementary tail bound
+\[
+ \sum_{\substack{k\ge1\\ r\le C_n2^k\sqrt A}}
+ 2^{\beta k}e^{-c2^k}\le C e^{-c'r},\qquad r\ge0,
+\]
+follows by comparing the sum with its first admissible dyadic scale (enlarging
+$C$ for bounded $r$).  Summing \eqref{eq:loss} therefore gives exactly the
+exponentially damped fractional difference integral asserted in Lemma 3.3.
+No later part of the paper needs the false factor $2^{-kn}$.
+\end{proof}
+
+\section{What can and cannot yet be upgraded to \texorpdfstring{$L^p$}{Lp}}
+
+One useful part of the $L^p$ extension is automatic.  Let
+$R_t=(I+tL)^{-1}$.  It is a positive contraction on $L^1(\muM)$ and
+$L^\infty(\muM)$, while the source proves, for disjoint closed $E,F$ at
+distance $d$,
+\[
+ \|{\bf1}_FR_t{\bf1}_E\|_{2\to2}\le8e^{-C_1d/\sqrt t}.
+\]
+Riesz--Thorin interpolation yields the following.
+
+\begin{lemma}[scalar $L^p$ off-diagonal decay]\label{lem:lp}
+For $1<p<\infty$, $p'=p/(p-1)$, and
+$\theta_p=2\min\{1/p,1/p'\}$,
+\[
+ \|{\bf1}_FR_t{\bf1}_E\|_{p\to p}
+ \le8^{\theta_p}e^{-\theta_p C_1d/\sqrt t}.
+\]
+The same bound holds for $tL(I+tL)^{-1}$ between disjoint $E$ and $F$,
+because its identity term vanishes there.
+\end{lemma}
+
+What remains is not scalar off-diagonal decay.  The intended conclusion is a
+vector-valued estimate of the form
+\[
+ \left\|\left(\int_0^A t^{-1-\alpha/2}
+ |tL(I+tL)^{-1}f|^2\,dt\right)^{1/2}\right\|_{L^p(\muM)}
+ \lesssim \|D_{\alpha,c}f\|_{L^p(\muM)}.
+\]
+For $p=2$, the source squares local estimates, sums disjoint cubes, and uses
+Fubini.  For $p\ne2$, scalar interpolation does not justify the corresponding
+$L^p(L^2(dt/t))$ localized estimate.  Equivalently, one needs an appropriate
+vector-valued or $R$-bounded off-diagonal family.  The embeddings between
+$L^p(\ell^2)$ and $\ell^2(L^p)$ point in opposite directions on the two sides
+of $p=2$, so neither Minkowski shortcut covers all $p$.
+
+This packet therefore gives a full negative answer to the \emph{literal}
+printed annular assertion, a complete repair of the $L^2$ theorem, and two
+genuine $L^p$ ingredients, but it does not claim to settle the intended global
+square-function comparison.
+
+\section{Novelty, scope, and human review}
+
+A bounded run-index and web/arXiv search on 17 August 2026 used arXiv id
+0911.4563, the title and authors, ``Lemma 3.4'', the displayed annular
+normalization, and erratum/correction terms.  It found copies of the same
+statement and later adjacent nonlocal $L^p$ Poincar\'e inequalities, but no
+erratum, counterexample, or matching repair.  Novelty confidence is moderate
+to high, not conclusive.
+
+Human review should focus on three checks: the drifting-center Gaussian
+construction in Theorem \ref{thm:counter}, the corrected mean-cube
+normalization in Proposition \ref{prop:correct}, and the safe exponent
+$2n+\alpha$ in Theorem \ref{thm:repair}.  The distinct global $L^p$ question
+is explicitly left unresolved.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+C. Mouhot, E. Russ, and Y. Sire,
+\emph{Fractional Poincar\'e inequalities for general measures},
+J. Math. Pures Appl. 95 (2011), 72--84; arXiv:0911.4563.
+
+\bibitem{wang}
+J. Wang,
+\emph{A simple approach to functional inequalities for non-local Dirichlet
+forms}, ESAIM Probab. Stat. 18 (2014), 503--513.
+\end{thebibliography}
+
+\end{document}

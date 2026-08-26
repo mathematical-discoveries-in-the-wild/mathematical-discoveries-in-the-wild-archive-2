@@ -1,0 +1,246 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{remark}{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\E}{\mathbb E}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\ip}[2]{\langle #1,#2\rangle}
+
+\title{Quadratic-size discretization of bounded continuous frames\\
+with stable real phase retrieval}
+\author{Autonomous solution packet for arXiv:2109.14454}
+\date{August 11, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{
+\textbf{Status: candidate partial result, likely valid.}
+The original problem asks for $O(N)$ samples.  We prove an unconditional
+$O_{C,\beta}(N^2)$ theorem over the real field and recover $O(N)$ under a
+uniform joint small-ball hypothesis.  The complex case is not claimed.
+}}
+\end{center}
+
+\section{Problem and result}
+
+Let $H$ be a real $N$-dimensional Hilbert space and let
+$(x_t)_{t\in\Omega}$ be a continuous Parseval frame over a probability
+space:
+\[
+ \int_\Omega |\ip{x}{x_t}|^2\,d\mu(t)=\|x\|^2.
+\]
+It does $C$-stable phase retrieval if
+\[
+ \min\{\|x-y\|,\|x+y\|\}
+ \le C\left(\int_\Omega
+ \bigl(|\ip{x}{x_t}|-|\ip{y}{x_t}|\bigr)^2\,d\mu(t)\right)^{1/2}.
+                                                               \tag{SPR}
+\]
+Problem 4.5 of Freeman--Ghoreishi asks whether, under
+$\|x_t\|\le\beta\sqrt N$, one can always retain dimension-free stability
+using $M=O(N)$ equally weighted samples.  The source writes $C$ in the
+conclusion although it introduces a new constant $\kappa$; Question 7.2 of
+Freeman--Oikhberg--Pineau--Taylor (arXiv:2210.05114) confirms that $\kappa$
+is intended.
+
+\begin{theorem}[quadratic sampling]\label{thm:main}
+There is an absolute constant $K$ with the following property.  Suppose
+$N\ge2$, $(x_t)$ is a continuous Parseval frame of a real $N$-dimensional
+Hilbert space, it satisfies\/ {\rm(SPR)}, and
+$\|x_t\|\le\beta\sqrt N$ for every $t$.  Then there are
+\[
+ M\le K\beta^2C^2N^2\log(2+C^2)
+\]
+sampling points $t_1,\ldots,t_M$ (repetitions allowed) such that
+$(M^{-1/2}x_{t_j})_{j=1}^M$ is a frame and does $2C$-stable phase
+retrieval.  Its lower frame bound is at least $1/(4C^2)$ and its upper
+frame bound is at most $2$.
+\end{theorem}
+
+For fixed $C,\beta$, this is $O(N^2)$.  The immediate pointwise boundedness
+and net argument gives $O(N^2\log N)$; controlling the empirical frame
+operator first is what removes $\log N$.
+
+\section{The min-of-two-quadratics reduction}
+
+For unit vectors $u,v\in H$, define
+\[
+ q_{u,v}(t)=
+ \min\{|\ip{u}{x_t}|^2,|\ip{v}{x_t}|^2\}.
+\]
+For real scalars $a,b$,
+\[
+ \left(\frac{|a+b|-|b-a|}{2}\right)^2=\min\{a^2,b^2\}.          \tag{1}
+\]
+Apply (SPR) to $x=(u+v)/2$ and $y=(v-u)/2$.  Since
+$x-y=u$ and $x+y=v$, (1) gives
+\[
+ \int_\Omega q_{u,v}(t)\,d\mu(t)\ge c,\qquad c=C^{-2},          \tag{2}
+\]
+for every unit pair.  Also
+\[
+ 0\le q_{u,v}(t)\le B,\qquad B=\beta^2N.                       \tag{3}
+\]
+Notice that Parseval normalization implies $C\ge1$ and $\beta\ge1$.
+
+\section{Proof of Theorem \ref{thm:main}}
+
+\begin{proof}
+Choose $t_1,\ldots,t_M$ independently according to $\mu$ and put
+\[
+ S_M=\frac1M\sum_{j=1}^M x_{t_j}x_{t_j}^*.
+\]
+The matrices in the sum are positive, bounded above by $BI$, and have
+mean $I$.  Matrix Chernoff therefore gives an absolute $a>0$ such that
+\[
+ \PP\{\|S_M\|>2\}\le N\exp(-aM/B).                             \tag{4}
+\]
+
+Let $\delta=c/64$ and take a $\delta$-net $\mathcal N$ of the unit sphere
+with
+\[
+ |\mathcal N|\le(1+2/\delta)^N.
+\]
+For fixed $u_0,v_0\in\mathcal N$, write
+$Z_j=q_{u_0,v_0}(t_j)$.  By (2)--(3), $0\le Z_j\le B$ and
+$\E Z_j\ge c$.  The multiplicative scalar Bernstein inequality yields
+\[
+ \PP\left\{\frac1M\sum_{j=1}^M Z_j<\frac c2\right\}
+ \le \exp(-Mc/(8B)).                                           \tag{5}
+\]
+Taking a union bound over $\mathcal N^2$, the probability that (5) fails
+for some net pair is at most
+\[
+ (1+2/\delta)^{2N}\exp(-Mc/(8B)).                              \tag{6}
+\]
+For a sufficiently large absolute $K$, the asserted choice of $M$ makes
+the sum of (4) and (6) strictly less than one.  Fix a realization for
+which
+\[
+ S_M\le2I,\qquad
+ \frac1M\sum_{j=1}^Mq_{u_0,v_0}(t_j)\ge c/2
+ \quad(u_0,v_0\in\mathcal N).                                 \tag{7}
+\]
+
+We extend (7) from the net without paying a dimension-dependent
+Lipschitz constant.  If $u,u_0$ are unit vectors, Cauchy--Schwarz and
+$S_M\le2I$ give
+\begin{align*}
+ \frac1M\sum_j\left|
+ |\ip{u}{x_{t_j}}|^2-|\ip{u_0}{x_{t_j}}|^2\right|
+ &\le
+ \left(\frac1M\sum_j|\ip{u+u_0}{x_{t_j}}|^2\right)^{1/2}
+ \left(\frac1M\sum_j|\ip{u-u_0}{x_{t_j}}|^2\right)^{1/2}\\
+ &\le2\|u+u_0\|\,\|u-u_0\|
+ \le4\|u-u_0\|.                                                \tag{8}
+\end{align*}
+The elementary inequality
+$|\min(a,b)-\min(a',b')|\le |a-a'|+|b-b'|$, followed by (8), shows that
+replacing both members of a unit pair by nearest net points changes the
+empirical average of $q$ by at most $8\delta=c/8$.  Hence
+\[
+ \frac1M\sum_{j=1}^Mq_{u,v}(t_j)\ge c/4
+ \quad\text{for every unit }u,v.                              \tag{9}
+\]
+
+Now take arbitrary $x,y\in H$ and set $u=x-y$, $v=x+y$, and
+$s=\min\{\|u\|,\|v\|\}$.  If $s>0$, normalize $u$ and $v$ separately.
+Since both scaling factors are at least $s$, (1) and (9) imply
+\[
+ \frac1M\sum_{j=1}^M
+ \bigl(|\ip{x}{x_{t_j}}|-|\ip{y}{x_{t_j}}|\bigr)^2
+ \ge\frac{c}{4}s^2.
+\]
+Thus the sampled frame does $2C$-stable phase retrieval.  Taking $y=0$
+gives its lower frame bound $c/4$, while $S_M\le2I$ gives upper bound $2$.
+\end{proof}
+
+\section{When the desired linear bound follows}
+
+The quadratic proof loses a factor $N$ because (2) permits the expectation
+of a particular $q_{u,v}$ to be carried by an event of probability
+$O(1/N)$ and height $O(N)$.  If this behavior is excluded, the original
+linear conclusion follows.
+
+\begin{proposition}[joint small-ball criterion]\label{prop:smallball}
+Assume that there are dimension-free $\alpha,p>0$ such that
+\[
+ \mu\{t:q_{u,v}(t)\ge\alpha\}\ge p
+ \quad\text{for every unit }u,v.                              \tag{10}
+\]
+Then there are $M\le K_{\alpha,p}N$ samples for which
+$(M^{-1/2}x_{t_j})$ is a frame and does
+$\sqrt{2/(\alpha p)}$-stable phase retrieval.
+\end{proposition}
+
+\begin{proof}
+The ranges
+\[
+ \{t:|\ip{u}{x_t}|\ge\sqrt\alpha,\
+       |\ip{v}{x_t}|\ge\sqrt\alpha\}
+\]
+form a semi-algebraic range class of VC dimension at most $K_0N$.
+The VC uniform convergence theorem, applied with additive error $p/2$,
+gives $M\le K_{\alpha,p}N$ points for which every range in (10) has
+empirical frequency at least $p/2$.  Therefore every unit pair satisfies
+\[
+ \frac1M\sum_jq_{u,v}(t_j)\ge\alpha p/2.
+\]
+The normalization argument at the end of the preceding proof gives the
+claimed stability and a positive lower frame bound.  The upper frame bound
+is finite because each sampled vector has finite norm.
+\end{proof}
+
+\section{Why the full problem remains open}
+
+The source paper's bad $L_p$ discretization spaces for $p<2$ do not produce
+a counterexample here.  After $L_2$ normalization, their evaluation
+vectors have size $N^{1-p/4}$, which exceeds $\beta\sqrt N$ whenever
+$p<2$.  Sparse coordinate-pair constructions also fail: making their
+support sparse enough to obstruct every linear-size selection destroys
+dimension-free continuous phase stability.
+
+Conversely, (SPR) does not by itself visibly imply (10).  A fixed
+two-dimensional pair may receive its lower bound from a rare,
+high-amplitude component, even while other components stabilize nearby
+directions.  Such exceptional components can be selected deliberately, so
+this observation is not a counterexample.  Bridging $N^2$ to $N$ appears
+to require a structural sparsification theorem for the strong complement
+property, rather than a black-box independent-sampling estimate.
+
+The accompanying script \texttt{code/check\_scalar\_identity.py} checks
+(1) numerically.  It is a sanity check only.
+
+\begin{thebibliography}{9}
+\bibitem{FG}
+D. Freeman and D. Ghoreishi,
+\emph{Discretizing $L_p$ norms and frame theory},
+arXiv:2109.14454; J. Math. Anal. Appl. 519 (2023), 126846.
+
+\bibitem{FOPT}
+D. Freeman, T. Oikhberg, B. Pineau, and M. A. Taylor,
+\emph{Stable phase retrieval in function spaces},
+arXiv:2210.05114.
+\end{thebibliography}
+
+\clearpage
+\section*{Source context}
+
+Page 12 of the locally rendered arXiv:2109.14454 source contains Problem
+4.5 and the authors' explanation of its connection to simultaneous
+$L_1/L_2$ discretization.
+
+\begin{center}
+\includegraphics[width=0.86\textwidth]{figures/source_problem_page.png}
+\end{center}
+
+\end{document}

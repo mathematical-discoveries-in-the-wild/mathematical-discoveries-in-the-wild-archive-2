@@ -1,0 +1,245 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\Ical}{\mathcal I}
+\newcommand{\Jcal}{\mathcal I^\flat}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\Che}{D_{\mathrm{Che},\infty}}
+
+\title{The sharp \(2/D\) Cheeger bound in nonpositive generalized dimension}
+\author{Run \texttt{fa\_banach\_001}, agent lane 10}
+\date{2026-08-11}
+
+\begin{document}
+\maketitle
+
+\section*{Source and question}
+
+Milman \cite{milman} proves that a weighted manifold satisfying
+\(\mathrm{CDD}(0,N,D)\), with
+\(N\in(-\infty,0]\cup[n,\infty]\) and \(D<\infty\), has
+\[
+ \Che(M,g,\mu)
+ :=\inf_{0<v<1}\frac{\Ical(M,g,\mu)(v)}{\min(v,1-v)}
+ \ge \frac1D.
+\]
+Remark 5.20 observes that the optimal \(2/D\) bound is known when
+\(N\in[n,\infty]\), and asks whether it also holds for \(N\le0\).  The paper
+reduces the missing case to an explicit calculation for the one-dimensional
+densities \(t^{N-1}\) on \([\xi,\xi+D]\).
+
+\begin{center}
+\includegraphics[width=0.96\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Answer and proof intuition}
+
+The answer is yes.  For a decreasing density on an interval, the half-line
+Cheeger constant is the smallest reverse hazard to the right of the median.
+Writing \(\beta=-N\), scaling the upper endpoint to one, and taking the
+reciprocal turns the entire calculation into maximizing
+\[
+ \phi_\beta(x)=\frac{x(1-x^\beta)}{\beta}
+\]
+from the median to \(1\); at \(\beta=0\), its continuous limit is
+\(\phi_0(x)=x\log(1/x)\).  The median is explicit.  Comparing it with the
+unique stationary point of \(\phi_\beta\), a single tangent-line inequality
+shows that the maximum is at most half the interval length.  Inverting gives
+the desired \(2/D\).
+
+\begin{theorem}[Sharp negative-dimension Cheeger bound]\label{thm:main}
+Let \((M^n,g,\mu)\) satisfy \(\mathrm{CDD}(0,N,D)\), where \(N\le0\) and
+\(0<D<\infty\).  Then
+\[
+ \Che(M,g,\mu)\ge\frac2D.
+\]
+The constant is optimal for every such \(N\).
+\end{theorem}
+
+\section*{The one-dimensional calculation}
+
+We first record the exact calculation needed by the source's model theorem.
+
+\begin{lemma}\label{lem:model}
+For \(N\le0\), \(\xi>0\), and \(D>0\), let \(\nu\) be the probability
+measure on \([\xi,\xi+D]\) with density proportional to \(t^{N-1}\).  If
+\(\Jcal_\nu\) denotes its half-line isoperimetric profile, then
+\[
+ \inf_{0<v<1}\frac{\Jcal_\nu(v)}{\min(v,1-v)}\ge\frac2D.
+\]
+\end{lemma}
+
+\begin{proof}
+Put \(w(t)=t^{N-1}\), \(b=\xi+D\), and
+\(Z=\int_\xi^b w(t)\dd t\).  Since \(w\) is decreasing, if \(0<v\le1/2\)
+and \(x\) is determined by
+\[
+ \int_x^b w(t)\dd t=vZ,
+\]
+then the right half-line has the smaller of the two possible half-line
+boundary densities.  Hence
+\begin{equation}\label{eq:hazard}
+ \frac{\Jcal_\nu(v)}v
+ =\frac{w(x)}{\int_x^b w(t)\dd t}.
+\end{equation}
+As \(v\) ranges over \((0,1/2]\), \(x\) ranges from the median \(m\) to
+\(b\).  Symmetry of \(\Jcal_\nu\) handles \(v\ge1/2\).  It follows that the
+reciprocal of the left-hand side in the lemma is
+\begin{equation}\label{eq:residual}
+ \max_{m\le x<b}\frac{\int_x^b w(t)\dd t}{w(x)}.
+\end{equation}
+
+Dilate by \(b\), so the interval becomes \([a,1]\), where
+\(a=\xi/b\), and its length becomes \(d=1-a=D/b\).  The quantity in
+\eqref{eq:residual} scales by \(b\).  Set \(\beta=-N\ge0\), so the scaled
+density is \(x^{-\beta-1}\).  We will prove that the scaled residual quantity
+is at most \(d/2\).
+
+Assume first that \(\beta>0\).  Direct integration gives
+\begin{equation}\label{eq:phi}
+ \phi_\beta(x)
+ :=\frac{\int_x^1t^{-\beta-1}\dd t}{x^{-\beta-1}}
+ =\frac{x(1-x^\beta)}{\beta}.
+\end{equation}
+The median relation is
+\begin{equation}\label{eq:median}
+ m^\beta=\frac{2a^\beta}{1+a^\beta},
+ \qquad
+ a=A_\beta(m),\quad
+ A_\beta(x):=x(2-x^\beta)^{-1/\beta}.
+\end{equation}
+Moreover,
+\[
+ \phi_\beta'(x)=\frac{1-(\beta+1)x^\beta}{\beta},
+ \qquad
+ x_*=(\beta+1)^{-1/\beta}
+\]
+is its unique maximizer on \((0,1)\).
+
+We claim that
+\begin{equation}\label{eq:scalar}
+ 2\phi_\beta(x)\le1-A_\beta(x)
+ \qquad(x_*\le x\le1).
+\end{equation}
+Indeed, let
+\[
+ F_\beta(x)=1-A_\beta(x)-2\phi_\beta(x),\qquad u=x^\beta.
+\]
+Since
+\[
+ A_\beta'(x)=2(2-x^\beta)^{-1-1/\beta},
+\]
+we have
+\begin{equation}\label{eq:Fprime}
+ \frac12F_\beta'(x)
+ =\frac{(\beta+1)u-1}{\beta}
+  -(2-u)^{-1-1/\beta}.
+\end{equation}
+The function \(g(u)=(2-u)^{-1-1/\beta}\) is convex.  Its tangent at
+\(u=1\) is
+\[
+ g(1)+g'(1)(u-1)
+ =\frac{(\beta+1)u-1}{\beta}.
+\]
+Thus \eqref{eq:Fprime} is nonpositive for
+\(u\in[1/(\beta+1),1]\), equivalently for \(x\in[x_*,1]\).  Since
+\(F_\beta(1)=0\), this proves \eqref{eq:scalar}.
+
+If \(m\ge x_*\), then \(\phi_\beta\) decreases on \([m,1]\), and
+\eqref{eq:scalar} together with \eqref{eq:median} yields
+\[
+ 2\max_{[m,1]}\phi_\beta
+ =2\phi_\beta(m)\le1-A_\beta(m)=1-a=d.
+\]
+If \(m<x_*\), then \(A_\beta(m)<A_\beta(x_*)\), because \(A_\beta'>0\).
+Using \eqref{eq:scalar} at \(x_*\) gives
+\[
+ 2\max_{[m,1]}\phi_\beta
+ =2\phi_\beta(x_*)\le1-A_\beta(x_*)<1-a=d.
+\]
+So the desired residual bound holds for every \(\beta>0\).
+
+When \(\beta=0\), the density is \(x^{-1}\),
+\[
+ \phi_0(x)=x\log(1/x),\qquad m=\sqrt a,\qquad x_*=e^{-1}.
+\]
+Set \(A_0(x)=x^2\) and
+\[
+ F_0(x)=1-A_0(x)-2\phi_0(x)=1-x^2+2x\log x.
+\]
+For \(x\in[x_*,1]\),
+\[
+ F_0'(x)=2(1-x+\log x)\le0,
+\]
+and \(F_0(1)=0\), so \(F_0\ge0\) there.  The same two cases
+\(m\ge x_*\) and \(m<x_*\), using \(a=A_0(m)\), prove
+\(\max_{[m,1]}\phi_0\le(1-a)/2\).
+
+Undoing the dilation, \eqref{eq:residual} is at most \(D/2\).
+Equation \eqref{eq:hazard} now proves the lemma.
+\end{proof}
+
+\section*{Passage to the manifold and sharpness}
+
+For \(N\le0\), Case 3 of the source's model-space corollary gives, pointwise
+in \(v\),
+\[
+ \Ical(M,g,\mu)(v)
+ \ge\inf_{\xi>0}
+ \Jcal\bigl(t^{N-1},[\xi,\xi+D]\bigr)(v).
+\]
+Dividing by \(\min(v,1-v)\) and applying Lemma \ref{lem:model} to every
+\(\xi\) yields
+\[
+ \frac{\Ical(M,g,\mu)(v)}{\min(v,1-v)}\ge\frac2D
+\]
+for every \(v\in(0,1)\).  Taking the infimum proves Theorem
+\ref{thm:main}.
+
+The uniform probability measure on an interval of length \(D\) satisfies
+\(\mathrm{CDD}(0,N,D)\) for every \(N\le0\): its density is constant and its
+generalized Ricci tensor is zero.  Its isoperimetric profile equals \(1/D\)
+on \((0,1)\), so its linear Cheeger constant is \(2/D\), attained at
+\(v=1/2\).  The bound is therefore sharp.
+
+\section*{Verification, novelty, and scope}
+
+The scalar formula was checked independently at 80 decimal digits on 10,000
+random parameter pairs spanning twelve decades of \(\beta\); the smallest
+sampled value of \(D\) times the model Cheeger constant was
+\(2.00000000000000000000000008357\ldots\).  This computation is only a
+sanity check; the proof above is exact.
+
+On 2026-08-11, exact-phrase, exact-title, negative-dimension
+Cheeger/diameter, and citation searches found no later claimed resolution.
+The run's lightweight indexes and the local arXiv papers citing the source
+also contained no matching result.  This is a bounded novelty check, not an
+exhaustive survey of all non-arXiv literature.
+
+The theorem answers precisely the missing \(N\le0\) branch of Remark 5.20.
+Together with the already-known \(N\in[n,\infty]\) branch, it improves
+Theorem 5.19 from \(1/D\) to the sharp \(2/D\) throughout that theorem's
+entire stated dimension range.
+
+\section*{Human review recommendation}
+
+Review as a likely-valid full sharp solution.  The highest-value checks are
+the half-line-profile identity \eqref{eq:hazard}, the tangent inequality
+leading to \eqref{eq:Fprime}, and the scaling that restores \(D\).
+
+\begin{thebibliography}{9}
+\bibitem{milman}
+Emanuel Milman,
+\emph{Beyond traditional Curvature-Dimension I: new model spaces for
+isoperimetric and concentration inequalities in negative dimension},
+Transactions of the American Mathematical Society \textbf{369} (2017),
+no.~5, 3605--3637; arXiv:1409.4109.
+\end{thebibliography}
+
+\end{document}

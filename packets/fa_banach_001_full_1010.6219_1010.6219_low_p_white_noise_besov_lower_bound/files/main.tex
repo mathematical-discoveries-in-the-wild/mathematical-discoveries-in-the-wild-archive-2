@@ -1,0 +1,193 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newcommand{\T}{\mathbb T}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+
+\title{A Deterministic Critical Besov Lower Bound for White Noise When $1\le p<2$}
+\author{Run fa\_banach\_001, agent\_lane\_01}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status and source question}
+
+This is a \texttt{candidate\_full\_likely\_valid} solution to Remark~3.5(i)
+of Mark Veraar, \emph{Regularity of Gaussian white noise on the
+$d$-dimensional torus}, arXiv:1010.6219 \cite{Veraar}.  Theorem~3.4(2) of the
+source proves that for every $p\in[2,\infty)$ there is $c_{p,d}>0$ such that
+\[
+ \Pp\!\left(\|W\|_{B^{-d/2}_{p,\infty}(\T^d)}\ge c_{p,d}\right)=1.
+\]
+Remark~3.5(i), on PDF page~7, asks whether this remains true for
+$p\in[1,2)$ and notes that Hausdorff--Young is insufficient.
+
+\begin{center}
+\includegraphics[width=0.98\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Definitions and idea of the proof}
+
+Use the source's Littlewood--Paley function $\phi$, supported in
+$\{\frac12\le |\xi|\le2\}$ and equal to one when
+$2^{-1/2}\le|\xi|\le2^{1/2}$.  Put
+$\varphi_j(k)=\phi(2^{-j}k)$.  For the canonical white noise
+\[
+ W=\sum_{k\in\Z^d}\gamma_k e^{ik\cdot x},
+ \qquad
+ W_j(x)=\sum_{k\in\Z^d}\varphi_j(k)\gamma_k e^{ik\cdot x},
+\]
+where the $\gamma_k$ are independent standard complex Gaussians, the critical
+norm is
+\[
+ \|W\|_{B^{-d/2}_{p,\infty}}
+ =\sup_{j\ge0}2^{-jd/2}\|W_j\|_{L^p(\T^d)}.
+\]
+
+The source obtains its lower bound for $p\ge2$ by comparing $L^p$ with $L^2$
+and using Parseval.  That comparison reverses below two.  Instead, regard the
+normalized $L^p$ mass itself as a nonnegative random variable.  Its first
+moment stays uniformly away from zero and its second moment stays uniformly
+bounded.  Paley--Zygmund therefore gives a scale-independent positive chance
+of a fixed lower bound.  Every third dyadic block uses disjoint Gaussian
+coefficients, so Borel--Cantelli upgrades that chance to an almost-sure
+infinitely-often statement.
+
+\section*{Main result}
+
+\begin{theorem}[low-$p$ lower bound]\label{thm:main}
+Let $d\ge1$, let $W$ be a Gaussian white noise on $\T^d$, and use the
+Littlewood--Paley decomposition fixed above.  For every
+$p\in[1,\infty)$ there exists a deterministic constant $c_{p,d}>0$ such that
+\[
+ \Pp\!\left(\|W\|_{B^{-d/2}_{p,\infty}(\T^d)}\ge c_{p,d}\right)=1.
+\]
+In particular, the answer to Remark~3.5(i) is affirmative for every
+$p\in[1,2)$.
+\end{theorem}
+
+\begin{proof}
+By Lemma~3.2 and the reduction at the beginning of the proof of Theorem~3.4
+in \cite{Veraar}, the Besov norm of an arbitrary white noise has the same law
+as that of the canonical series above.  It is therefore enough to prove the
+claim for that series.
+
+Fix $p\in[1,\infty)$ and set
+\[
+ Z_j=2^{-jd/2}W_j,
+ \qquad
+ Y_j=\|Z_j\|_{L^p(\T^d)}^p.
+\]
+For every $x\in\T^d$, unitary invariance of the standard complex Gaussian
+shows that $Z_j(x)$ has the same law as $v_j^{1/2}\gamma$, where $\gamma$ is
+a standard complex Gaussian and
+\[
+ v_j=2^{-jd}\sum_{k\in\Z^d}|\varphi_j(k)|^2.
+\]
+This variance is independent of $x$.  The annulus
+\[
+ S_j=\{k\in\Z^d:2^{j-1/2}<|k|\le2^{j+1/2}\}
+\]
+lies where $\varphi_j=1$, while $\varphi_j$ is supported in
+$\{k:2^{j-1}\le|k|\le2^{j+1}\}$.  Elementary lattice counting therefore
+gives constants $a_d,b_d>0$ and $j_0$ such that
+\begin{equation}\label{eq:variance}
+ 0<a_d\le v_j\le b_d<\infty \qquad (j\ge j_0).
+\end{equation}
+
+Let $V_d=|\T^d|=(2\pi)^d$ and $m_r=\E|\gamma|^r$.  Tonelli's theorem and
+Gaussian scaling give
+\begin{equation}\label{eq:first}
+ \E Y_j
+ =\int_{\T^d}\E|Z_j(x)|^p\,dx
+ =V_d m_p v_j^{p/2}
+ \ge V_dm_pa_d^{p/2}=:A_{p,d}>0.
+\end{equation}
+For the second moment, Cauchy--Schwarz in probability gives, for all $x,y$,
+\[
+ \E\bigl(|Z_j(x)|^p|Z_j(y)|^p\bigr)
+ \le \bigl(\E|Z_j(x)|^{2p}\,\E|Z_j(y)|^{2p}\bigr)^{1/2}
+ =m_{2p}v_j^p.
+\]
+After integration and \eqref{eq:variance},
+\begin{equation}\label{eq:second}
+ \E Y_j^2\le V_d^2m_{2p}b_d^p=:B_{p,d}<\infty.
+\end{equation}
+No independence between the values at $x$ and $y$ has been used.
+
+Paley--Zygmund, \eqref{eq:first}, and \eqref{eq:second} imply
+\begin{align*}
+ \Pp\!\left(Y_j\ge\frac{A_{p,d}}2\right)
+ &\ge \Pp\!\left(Y_j\ge\frac12\E Y_j\right) \\
+ &\ge \frac{(\E Y_j)^2}{4\E Y_j^2}
+ \ge \frac{A_{p,d}^2}{4B_{p,d}}=:\delta_{p,d}>0
+ \qquad(j\ge j_0).
+\end{align*}
+
+It remains to turn this uniform probability into probability one.  The
+Fourier supports of $\varphi_{3n}$ are pairwise disjoint: the support for
+$3n$ is contained in
+$[2^{3n-1},2^{3n+1}]$ in radial frequency, whereas the next begins at
+$2^{3n+2}$.  Hence the random fields $(Z_{3n})_n$, and therefore the events
+\[
+ E_n=\left\{Y_{3n}\ge A_{p,d}/2\right\},
+\]
+are independent.  Since $\Pp(E_n)\ge\delta_{p,d}$ for all large $n$, the
+second Borel--Cantelli lemma gives $\Pp(E_n\ \text{infinitely often})=1$.
+On that event,
+\[
+ \|W\|_{B^{-d/2}_{p,\infty}}
+ =\sup_{j\ge0}\|Z_j\|_p
+ \ge \left(\frac{A_{p,d}}2\right)^{1/p}.
+\]
+Thus one may take $c_{p,d}=(A_{p,d}/2)^{1/p}>0$.  Equality in distribution
+transfers the conclusion to every Gaussian white noise.
+\end{proof}
+
+\section*{Verification, scope, and novelty status}
+
+The proof needs no numerical experiment.  The accompanying verification
+report separately audits the pointwise Gaussian law, the two moment bounds,
+the direction of Paley--Zygmund, disjointness of the $3n$ supports, and the
+equidistribution reduction.  In particular, the endpoint $p=1$ causes no
+loss: all positive Gaussian moments are finite.
+
+The constant displayed here is not claimed sharp.  It depends on the fixed
+cutoff through the lower lattice-count constant; equivalence of admissible
+Besov norms transfers the qualitative deterministic lower bound to any other
+standard cutoff.
+
+Eight focused attempts are recorded in the attempt note.  The decisive
+upgrade was to replace the failed deterministic $L^2$ comparison by a
+two-moment small-ball argument, then recover almost sure behavior on an
+independent shell subsequence.
+
+Cheap run indexes and bounded web/arXiv searches on 17 August 2026 used the
+exact Remark~3.5(i) sentence, the paper title and author, and the phrases
+\emph{low $p$ critical Besov white noise lower bound} and
+\emph{Paley--Zygmund dyadic white noise Besov}.  They found the source and its
+published version but no explicit later resolution.  Novelty confidence is
+moderate-high, not definitive.
+
+\paragraph{Human-review recommendation.}
+Verify the multiplier-support convention for the independent $3n$
+subsequence and perform a broader specialist literature search.  The moment
+and Borel--Cantelli argument is otherwise self-contained.
+
+\begin{thebibliography}{9}
+\bibitem{Veraar}
+M.~Veraar,
+\emph{Regularity of Gaussian white noise on the $d$-dimensional torus},
+Banach Center Publ. 95 (2011), 385--398; arXiv:1010.6219.
+\end{thebibliography}
+
+\end{document}

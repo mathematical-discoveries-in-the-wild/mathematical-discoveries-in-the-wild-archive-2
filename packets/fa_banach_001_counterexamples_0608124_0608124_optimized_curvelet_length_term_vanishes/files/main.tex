@@ -1,0 +1,166 @@
+\documentclass[10pt]{article}
+\usepackage[margin=0.82in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newcommand{\ellT}{\ell_2(\Lambda;\mathbb R^M)}
+\newcommand{\blocksection}[1]{%
+  \par\addvspace{2.2ex}\noindent{\Large\bfseries #1}\par\nobreak\vspace{0.9ex}}
+
+\title{The Optimized Curvelet ``Length Term'' Vanishes:\\
+A Counterexample to the Final-Remarks Conjecture}
+\author{Run fa\_banach\_001, agent\_lane\_14}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\blocksection{Status and exact source conjecture}
+
+\textbf{Status:} \texttt{candidate\_counterexample\_likely\_valid}.
+
+Fornasier and Rauhut's 2006 paper \cite{FR} introduces coefficient vectors
+$u=(u_\lambda)_\lambda$, adaptive nonnegative weights
+$v=(v_\lambda)_\lambda$, and the term
+\begin{equation}\label{eq:Q}
+ Q_{\theta,\rho}(u,v)
+ =\sum_{\lambda\in\Lambda}
+ \theta_\lambda(\rho_\lambda-v_\lambda)^2.
+\end{equation}
+In the final remarks on PDF page~36, the paper takes
+$\omega_\lambda=\varepsilon$ and
+$\theta_\lambda=1/(4\varepsilon)$ and conjectures that \eqref{eq:Q}, after
+the adaptive minimization, estimates the length of a rectifiable curved
+discontinuity as $\varepsilon\downarrow0$.
+
+The conjectured term actually vanishes for every uniformly
+$\ell_2$-bounded coefficient family.  This follows from the source's exact
+weight update and does not depend on the choice of $\rho_\lambda$.
+
+\blocksection{Exact no-go theorem}
+
+For $1\le q\le\infty$, set
+$a_\lambda=\|u_\lambda\|_q$.  Equation~(12) of \cite{FR} states that the
+minimizer in $v_\lambda\ge0$, with $u$ fixed, is
+\begin{equation}\label{eq:v}
+ v_\lambda^*
+ =\max\left\{\rho_\lambda-
+ \frac{a_\lambda}{2\theta_\lambda},0\right\}.
+\end{equation}
+
+\begin{theorem}[collapse after optimizing the weights]\label{thm:nogo}
+Let $\Lambda$ be countable, $M<\infty$, $u\in\ellT$, and
+$\rho_\lambda\ge0$.  If $v^*$ is given by \eqref{eq:v}, then
+\begin{equation}\label{eq:generalbound}
+ Q_{\theta,\rho}(u,v^*)
+ \le \sum_{\lambda\in\Lambda}
+ \frac{\|u_\lambda\|_q^2}{4\theta_\lambda}.
+\end{equation}
+In particular, if $\theta_\lambda=1/(4\varepsilon)$, then
+\begin{equation}\label{eq:epsbound}
+ Q_{\varepsilon}(u,v^*)
+ \le C_{M,q}\varepsilon\|u\|_{\ellT}^2,
+ \qquad
+ C_{M,q}=M^{\max\{2/q-1,0\}},
+\end{equation}
+with $C_{M,\infty}=1$.  Consequently
+$Q_\varepsilon(u^\varepsilon,v^{*,\varepsilon})\to0$ for every family
+$u^\varepsilon$ bounded in $\ellT$.
+\end{theorem}
+
+\begin{proof}
+Formula \eqref{eq:v} gives the exact identity
+\[
+ \rho_\lambda-v_\lambda^*
+ =\min\left\{\rho_\lambda,
+ \frac{a_\lambda}{2\theta_\lambda}\right\}.
+\]
+Therefore, term by term,
+\[
+ \theta_\lambda(\rho_\lambda-v_\lambda^*)^2
+ \le \frac{a_\lambda^2}{4\theta_\lambda},
+\]
+and summation proves \eqref{eq:generalbound}.  Under the proposed scaling,
+the right side is $\varepsilon\sum_\lambda\|u_\lambda\|_q^2$.
+Finite-dimensional norm comparison gives
+\[
+ \|x\|_q^2\le
+ M^{\max\{2/q-1,0\}}\|x\|_2^2,
+\]
+which proves \eqref{eq:epsbound} and the limit.
+\end{proof}
+
+The estimate is pointwise in $\lambda$.  It remains true for arbitrary
+$\varepsilon$-dependent thresholds $\rho_\lambda$, and restricting the sum
+to curvelets at scales $2^{-j}\lesssim\varepsilon$ or to curvelets tangent
+to the edge only makes the left side smaller.
+
+\blocksection{Concrete rectifiable-edge counterexample}
+
+Let $D$ be a disk compactly contained in the image domain and let
+$f=\mathbf1_D$ in one channel (with the other channels zero, if $M>1$).
+Its discontinuity set is $\partial D$, a rectifiable curve with
+\[
+ \mathcal H^1(\partial D)=2\pi r>0.
+\]
+Let $u=(u_\lambda)_\lambda$ be its curvelet analysis coefficients.  Since a
+curvelet system is a frame, its upper frame bound $B$ gives
+\[
+ \sum_\lambda |u_\lambda|^2\le B\|\mathbf1_D\|_{L^2}^2<\infty.
+\]
+For every $\varepsilon>0$, choose any nonnegative thresholds
+$\rho_\lambda^\varepsilon$---including the scale laws suggested in the
+source---and optimize $v$ by \eqref{eq:v}.  Theorem~\ref{thm:nogo} yields
+\[
+ 0\le Q_\varepsilon(u,v^{*,\varepsilon})
+ \le B\varepsilon\|\mathbf1_D\|_{L^2}^2
+ \longrightarrow0,
+\]
+whereas the discontinuity length stays $2\pi r$.  Thus the proposed term
+cannot converge to the length, nor to any fixed positive multiple of it.
+
+More generally, the same conclusion applies to any stable recovery family
+whose coefficient norms stay bounded and whose limiting image has positive
+rectifiable jump length.  For example, uniform coefficient boundedness for
+identity data follows immediately by comparing a global minimizer with the
+competitor $u=0$, $v=\rho$.  If a recovery family must instead grow at least
+like $\varepsilon^{-1/2}$ merely to avoid \eqref{eq:epsbound}, it has lost the
+stability required of the proposed morphological estimator.
+
+\blocksection{Upgrade audit}
+
+The counterexample was tested against five possible repairs.
+\begin{itemize}
+\item Changing $\rho_\lambda$ cannot help because it has disappeared from
+the upper bound.
+\item Selecting only fine-scale, overlapping, or tangent curvelets cannot
+help because this passes to a sub-sum.
+\item Joint channels and all finite $q$ only alter the harmless constant
+$C_{M,q}$.
+\item Replacing a fixed signal by any uniformly bounded minimizer family
+still forces the term to zero.
+\item A nonzero perimeter limit would require a different coupling or an
+additional renormalization after eliminating $v$; that is a different
+functional, not a proof of the conjecture as stated.
+\end{itemize}
+
+Exact-phrase, title, and arXiv searches through 11 August 2026 found no later
+resolution of this particular conjecture.  The proof above uses only the
+source's equation~(12), finite-dimensional norm equivalence, and the curvelet
+frame upper bound.  The accompanying finite-sequence verifier checks the
+exact identity and both inequalities for multiple $M,q,\varepsilon$, and
+random positive thresholds.
+
+\begin{thebibliography}{9}
+\bibitem{FR}
+M. Fornasier and H. Rauhut,
+\emph{Recovery algorithms for vector valued data with joint sparsity
+constraints}, arXiv:math/0608124 (2006).
+\end{thebibliography}
+
+\end{document}

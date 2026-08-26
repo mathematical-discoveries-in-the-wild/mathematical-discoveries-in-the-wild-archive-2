@@ -1,0 +1,242 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{remark}{Remark}
+\newcommand{\sot}{\mathrm{SOT}}
+\newcommand{\1}{\mathbf 1}
+
+\title{Uniqueness Without Monotonicity:\\
+Scalar Dynamics for Spectral Transforms}
+\author{Candidate full answer to Appendix A, Problem 1 of arXiv:2508.04890}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\linewidth}{\textbf{Status.} Candidate full answer,
+likely valid, subject to human review.  The source's phrase ``order of
+spectral projections'' is not defined; the result treats both the standard
+spectral/Loewner order and the source's formally stated projection-stability
+axiom.}}
+\end{center}
+
+\section{Source problem}
+
+The target is Appendix A, Problem 1 (PDF p.~11) in Alpay--Alakkad--Alpay,
+\emph{Transfinite Operator Fixed Points on Hilbert Spaces: An Alpay Algebra
+Approach}, arXiv:2508.04890v1 \cite{source}.  It asks whether the monotonicity
+assumption is essential, requests a non-order-preserving transformation with
+a unique iterated limit, and alternatively asks for weaker hypotheses that
+guarantee uniqueness.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{Appendix A, Problem 1 in the source paper (PDF p.~11).}
+\end{figure}
+
+The source's formal definition uses a stability condition that, in
+particular, requires \(\Phi(P)=P\) for every orthogonal projection \(P\).
+Its appendix instead refers to preservation of an undefined ``order of
+spectral projections.''  We resolve both natural readings below.
+
+\section{Definitions and result}
+
+Fix a nonzero complex Hilbert space \(H\), a compact set
+\(K\subset\mathbb R\), and
+\[
+ \mathcal S_K(H)=\{A\in B(H):A=A^*,\ \sigma(A)\subseteq K\}.
+\]
+For \(f\in C(K,K)\), let \(\Phi_f(A)=f(A)\), using the continuous functional
+calculus.  Write \(f^{\circ n}\) for scalar composition.  For reference, the
+spectral order may be defined by
+\[
+ A\preccurlyeq_s B
+ \quad\Longleftrightarrow\quad
+ E_A((t,\infty))\le E_B((t,\infty))\quad(t\in\mathbb R).
+\]
+It agrees with the ordinary order on scalar multiples of the identity.
+
+\subsection*{Proof intuition}
+
+A spectral transform does not need an order structure to converge.  Every
+operator orbit is obtained by running the same one-dimensional dynamical
+system \(t\mapsto f(t)\) at each spectral value.  If the scalar orbits
+converge, the spectral theorem integrates those pointwise limits; bounded
+convergence turns them into strong operator convergence.  Thus uniqueness is
+controlled by scalar attraction, not by monotonicity.  Squaring on
+\([-1,1]\) is already nonmonotone but converges pointwise to the indicator of
+\(\{-1,1\}\).  Damping the square by \(1/2\) makes zero a uniform global
+attractor and even destroys the source's projection stability.
+
+\begin{theorem}[Scalar-orbit criterion]\label{thm:criterion}
+Let \(K\subset\mathbb R\) be compact, \(f\in C(K,K)\), and suppose that
+\[
+ f^{\circ n}(t)\longrightarrow g(t)\qquad(t\in K).
+\]
+The pointwise limit \(g\) is Borel, so \(g(A)\) is defined by the bounded
+Borel functional calculus.
+Then, for every \(A\in\mathcal S_K(H)\),
+\[
+ \Phi_f^n(A)=f^{\circ n}(A)\xrightarrow[n\to\infty]{\sot}g(A),
+ \qquad \Phi_f(g(A))=g(A).
+\]
+Consequently the orbit limit is unique and is reached at the first limit
+stage \(\omega\); no order-monotonicity assumption is needed.  If the scalar
+convergence is uniform on \(K\), the operator convergence is in norm.
+
+If all scalar orbits have one common limit \(\xi\in K\), then
+\(\Phi_f^n(A)\to\xi I\) strongly for every \(A\), and \(\xi I\) is the unique
+fixed point of \(\Phi_f\) in \(\mathcal S_K(H)\).  Conversely, convergence to
+the same scalar operator \(\xi I\) for every \(A\) forces
+\(f^{\circ n}(t)\to\xi\) for every \(t\in K\).
+\end{theorem}
+
+\begin{proof}
+Functoriality of the continuous functional calculus gives
+\(\Phi_f^n(A)=f^{\circ n}(A)\).  Let \(E_A\) be the spectral measure of \(A\)
+and \(\mu_x(\Delta)=\langle E_A(\Delta)x,x\rangle\).  Since every iterate and
+the pointwise limit take values in the bounded set \(K\), dominated
+convergence gives, for every \(x\in H\),
+\[
+ \bigl\|(f^{\circ n}(A)-g(A))x\bigr\|^2
+ =\int_K |f^{\circ n}(t)-g(t)|^2\,d\mu_x(t)
+ \longrightarrow0.
+\]
+This is strong convergence.  If the convergence on \(K\) is uniform, then
+\[
+ \|f^{\circ n}(A)-g(A)\|
+ \le \sup_{t\in K}|f^{\circ n}(t)-g(t)|\longrightarrow0.
+\]
+
+For each \(t\), continuity of \(f\) yields
+\[
+ f(g(t))=\lim_n f(f^{\circ n}(t))
+ =\lim_n f^{\circ(n+1)}(t)=g(t).
+\]
+Hence \(f\circ g=g\), and functional calculus gives
+\(\Phi_f(g(A))=g(A)\).
+
+Now suppose \(g\equiv\xi\).  The preceding argument gives the common limit
+\(\xi I\).  If \(B=f(B)\), then the continuous function \(h(t)=t-f(t)\)
+satisfies \(h(B)=0\), so \(h\) vanishes on \(\sigma(B)\).  Every
+\(t\in\sigma(B)\) is therefore a scalar fixed point.  Its scalar orbit is
+constant and also must converge to \(\xi\), whence \(t=\xi\).  Thus
+\(\sigma(B)\subseteq\{\xi\}\) and \(B=\xi I\).  Conversely, apply the claimed
+common operator convergence to the scalar operator \(A=tI\).
+\end{proof}
+
+\section{Two explicit answers to Problem 1}
+
+\begin{proposition}[The source's canonical squaring map]\label{prop:square}
+On \(\mathcal S_{[-1,1]}(H)\), define \(\Phi(A)=A^2\).  This transformation
+is neither Loewner-order nor spectral-order preserving, yet every orbit has
+the unique strong limit
+\[
+ \Phi^n(A)=A^{2^n}\xrightarrow[n\to\infty]{\sot}
+ E_A(\{-1,1\}).
+\]
+The limit is an orthogonal projection and hence is fixed by \(\Phi\).
+\end{proposition}
+
+\begin{proof}
+For \(f(t)=t^2\) on \([-1,1]\),
+\[
+ f^{\circ n}(t)=t^{2^n}\longrightarrow
+ g(t)=\1_{\{-1,1\}}(t).
+\]
+Theorem~\ref{thm:criterion} gives the stated strong limit.  It is fixed
+because its square equals itself.  Nonmonotonicity already occurs on scalar
+operators: \(-I\le0\) and \(-I\preccurlyeq_s0\), but
+\(\Phi(-I)=I\) is neither \(\le0=\Phi(0)\) nor
+\(\preccurlyeq_s0\).
+\end{proof}
+
+This also corrects the source's motivating claim: for self-adjoint
+contractions the limit is generally \(E_A(\{-1,1\})\), not only the
+projection onto \(\ker(I-A)\).  The one-dimensional case \(A=-I\) makes the
+difference immediate.
+
+\begin{proposition}[Failure of projection stability with a unique global
+fixed point]\label{prop:damped}
+On \(\mathcal S_{[-1,1]}(H)\), define
+\(\Psi(A)=\tfrac12A^2\).  Then \(\Psi\) is neither Loewner-order nor
+spectral-order preserving and violates the source's formal stability axiom:
+\(\Psi(P)=P/2\ne P\) for every nonzero orthogonal projection \(P\).
+Nevertheless
+\[
+ \Psi^n(A)=2^{1-2^n}A^{2^n},
+ \qquad
+ \|\Psi^n(A)\|\le 2^{1-2^n}\longrightarrow0.
+\]
+Thus \(0\) is the norm limit of every orbit and is the unique fixed point in
+the self-adjoint unit ball.
+\end{proposition}
+
+\begin{proof}
+The scalar identity follows by induction from \(h(t)=t^2/2\), and the norm
+estimate uses \(\|A\|\le1\).  If \(B=\Psi(B)\) and \(r=\|B\|\), then
+\(r\le r^2/2\).  For \(0<r\le1\) this is impossible, so \(r=0\) and \(B=0\).
+The projection calculation is explicit.  Finally, \(-I\le0\) (also in
+spectral order), while \(\Psi(-I)=I/2\) lies above \(\Psi(0)=0\), proving
+both order failures.
+\end{proof}
+
+Together Propositions~\ref{prop:square} and~\ref{prop:damped} answer both
+parts of Problem 1: they provide explicit non-order-preserving transforms
+with unique iterated limits, while Theorem~\ref{thm:criterion} supplies a
+weaker, purely dynamical condition guaranteeing uniqueness.
+
+\section{Verification and limitations}
+
+The proof is dimension-free and includes continuous spectrum; it does not
+assume diagonalizability.  The included script
+\texttt{code/check\_examples.py} checks the finite-spectrum limits, the exact
+damped-iterate formula through seven stages, and the scalar order failure.
+It is a sanity check, not evidence replacing the proof.
+
+There are three scope qualifications.
+\begin{enumerate}[leftmargin=*]
+\item The source never defines ``order of spectral projections.''  We use the
+standard spectral order and separately violate its formally stated
+projection-stability condition.
+\item ``Unique \(\Phi^\infty(A)\)'' is read as a uniquely determined orbit
+limit for each initial \(A\).  Proposition~\ref{prop:damped} also gives the
+stronger property of a unique global fixed point.
+\item The result is in the fixed-H, bounded self-adjoint spectral-transform
+setting.  This is a special case of the source's framework and suffices for
+the requested construction; it does not repair the paper's broader
+transfinite claims.
+\end{enumerate}
+
+\paragraph{Novelty search.}
+On 17 August 2026, bounded searches covered the run's registry, solution,
+attempt, and proof-gap indexes, plus arXiv searches by exact title, arXiv id,
+Problem 1 label, the quoted order phrase, and close uniqueness/spectral
+keywords.  Only the source paper was located; no later explicit answer or
+correction was found.  Because the proof is an elementary application of the
+spectral theorem, novelty confidence is moderate rather than high.
+
+\paragraph{Human-review recommendation.}
+Check the intended meanings of the source's undefined order phrase and
+``unique limit,'' then verify the common-attractor fixed-point argument in
+Theorem~\ref{thm:criterion}.  The mathematical computations themselves are
+short and should be reproducible directly from the spectral theorem.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+F. Alpay, H. Alakkad, and T. Alpay,
+\emph{Transfinite Operator Fixed Points on Hilbert Spaces: An Alpay Algebra
+Approach}, arXiv:2508.04890v1 (2025), Appendix A, Problem 1.
+\end{thebibliography}
+
+\end{document}

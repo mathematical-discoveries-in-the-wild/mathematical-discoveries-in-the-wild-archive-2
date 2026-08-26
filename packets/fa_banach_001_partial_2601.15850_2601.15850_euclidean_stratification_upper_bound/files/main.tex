@@ -1,0 +1,267 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=28mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\HH}{\mathbb H}
+\newcommand{\RR}{\mathbb R}
+
+\title{A Euclidean-stratification upper bound for\\Heisenberg-cylinder discrepancy}
+\author{Run \texttt{fa\_banach\_001}, lane 9\\\texttt{agent\_lane\_09}}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Candidate partial result, likely valid.  The theorem improves the known upper
+exponent in a natural Lebesgue-measure subcase; it does not determine the
+sharp exponent.}}
+\end{center}
+
+\section{Source question}
+
+Brandolini, Monguzzi, and Monti~\cite{BMM} consider
+\(\HH^n=\mathbb C^n\times\RR\), with group law
+\[
+ (z,t)\circ(w,s)=
+ \left(z+w,t+s+\tfrac12\operatorname{Im}(z\cdot\overline w)\right),
+\]
+homogeneous dimension \(Q=2n+2\), and cylinders
+\[
+ B_\rho=\{(z,t): |z|\leq \rho,\ |t|\leq\rho^2\}.
+\]
+For a probability measure \(\mu\) and points \(p_1,\ldots,p_N\), they define
+\[
+ D_N(g;\rho)=\sum_{j=1}^N\mathbf 1_{g\circ B_\rho}(p_j)
+       -N\mu(g\circ B_\rho).
+\]
+Their Theorem~2 proves
+\[
+ \int_0^1\int_{\HH^n}|D_N(g;\rho)|^2\,dg\,d\rho
+ \gtrsim N^{1-1/(Q-2)}
+\]
+for upper Ahlfors-regular \(\mu\).  They ask whether this is sharp and record,
+for suitable normalized Lebesgue measures, the general metric-space upper
+bound \(N^{1-1/Q}\).
+
+Figure~\ref{fig:question} is the question on page 3 of the source paper.
+
+\clearpage
+\begin{figure}[!ht]
+\centering
+\includegraphics[height=0.82\textheight]{figures/open_problem_crop.png}
+\caption{The sharpness question in arXiv:2601.15850, page 3.}
+\label{fig:question}
+\end{figure}
+\clearpage
+
+\section{Proof intuition}
+
+The source upper bound partitions the support using the intrinsic Heisenberg
+metric, whose dimension is \(Q\).  For Lebesgue measure, however, the ambient
+Euclidean coordinate dimension is only
+\[
+ d=2n+1=Q-1.
+\]
+Partition a cube into equal-volume cells of Euclidean diameter
+\(h\asymp N^{-1/d}\), and choose one random point in each cell.  For a fixed
+test cylinder, cells entirely inside or outside make no random error; only
+cells crossing its boundary contribute variance.  A relevant Heisenberg
+translate is an affine shear of a Euclidean ball times an interval.  On the
+bounded parameter region that can interact with the cube, these shears have
+uniformly bounded condition number, and their boundary layers have Euclidean
+volume \(O(h)\).  Thus only \(O(Nh)\) cells contribute.  Averaging over all
+translations and radii and then choosing one realization gives the result.
+
+The remaining gap is real: this argument sees ordinary Euclidean codimension
+one, not the effective horizontal dimension \(Q-2\) suggested by the lower
+bound.
+
+\section{The partial theorem}
+
+Let \(E=[-1/2,1/2]^d\subset\RR^d=\HH^n\) and let \(\mu\) be Lebesgue
+measure restricted to \(E\), so \(\mu(E)=1\).
+
+\begin{theorem}\label{thm:main}
+For every \(N\geq2\), there exist points \(p_1,\ldots,p_N\in E\) such that
+\[
+ \int_0^1\int_{\HH^n}|D_N(g;\rho)|^2\,dg\,d\rho
+ \leq C_{n,E}N^{1-1/(Q-1)}.
+\]
+Consequently, in this Lebesgue-measure subcase,
+\[
+ c_{n,E}N^{1-1/(Q-2)}
+ \leq
+ \inf_{p_1,\ldots,p_N\in E}
+ \int_0^1\int_{\HH^n}|D_N(g;\rho)|^2\,dg\,d\rho
+ \leq
+ C_{n,E}N^{1-1/(Q-1)}.
+\]
+In particular, the upper exponent \(1-1/Q\) recorded in the source improves
+to \(1-1/(Q-1)\) for this subcase.
+\end{theorem}
+
+We use two elementary lemmas.
+
+\begin{lemma}[Equal-volume Euclidean cells]\label{lem:partition}
+For every \(d\geq1\) and \(N\geq1\), the unit cube admits a measurable
+partition \(E=E_1\sqcup\cdots\sqcup E_N\) such that
+\[
+ |E_j|=N^{-1},\qquad
+ \operatorname{diam}_{\mathrm{Euc}}(E_j)\leq C_dN^{-1/d}.
+\]
+\end{lemma}
+
+\begin{proof}
+This follows by induction on \(d\).  For \(d=1\), use \(N\) equal intervals.
+For the inductive step, choose \(m\asymp N^{1/d}\) and write
+\(N=N_1+\cdots+N_m\), where all positive integers \(N_j\) are comparable to
+\(N/m\).  Divide the first coordinate into slabs of widths \(N_j/N\).  In
+the \(j\)-th slab, apply the \((d-1)\)-dimensional construction to its unit
+cross-section with \(N_j\) cells.  Every resulting box has volume \(1/N\),
+first-coordinate width \(O(N^{-1/d})\), and transverse diameter
+\(O(N_j^{-1/(d-1)})=O(N^{-1/d})\).
+\end{proof}
+
+\begin{lemma}[Uniform Euclidean boundary layers]\label{lem:layer}
+There is a compact set \(K\subset\HH^n\) and a constant \(C\) such that the
+following holds for \(0<h\leq1\), \(0\leq\rho\leq1\), and \(g\in\HH^n\).
+If the Euclidean \(2h\)-neighborhood of
+\(\partial(g\circ B_\rho)\) meets \(E\), then \(g\in K\), and
+\[
+ \left|E\cap\{x:\operatorname{dist}_{\mathrm{Euc}}
+       (x,\partial(g\circ B_\rho))\leq2h\}\right|\leq Ch.
+\]
+\end{lemma}
+
+\begin{proof}
+Write \(g=(z,t)\).  In Euclidean coordinates, left translation is the affine
+map
+\[
+ T_g(w,s)=
+ \left(z+w,t+s+\tfrac12\operatorname{Im}(z\cdot\overline w)\right).
+\]
+It has determinant one.  If a translated cylinder boundary comes within
+distance two of the fixed cube, then \(|z|\) is bounded because its horizontal
+projection is the ball \(z+\{|w|\leq\rho\}\), with \(\rho\leq1\).  The central
+coordinate \(t\) is then bounded as well, since \(|s|\leq\rho^2\) and the shear
+term is bounded.  This gives a fixed compact parameter set \(K\).  For
+\(g\in K\), the linear parts of \(T_g\) and \(T_g^{-1}\) have uniformly
+bounded operator norms.
+
+Before applying \(T_g\), the set \(B_\rho\) is the Euclidean product of a
+\(2n\)-ball of radius \(\rho\) and an interval of length \(2\rho^2\).  If
+\(\rho\geq h\), its two cap layers and its lateral layer have total volume at
+most \(C_nh\), including the edge neighborhoods.  If \(\rho<h\), the whole
+\(O(h)\)-neighborhood has volume
+\[
+ O\big((\rho+h)^{2n}(\rho^2+h)\big)=O(h^{2n+1})=O(h).
+\]
+The uniformly bounded affine maps \(T_g\) preserve this estimate up to a
+constant.  Intersecting with \(E\) can only decrease volume.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Take the partition from Lemma~\ref{lem:partition}, and put
+\(h=C_dN^{-1/d}\).  The finitely many \(N\) for which \(h>1\) are absorbed by
+enlarging the final constant, so assume \(h\leq1\).  Independently in each
+\(E_j\), choose \(X_j\) according
+to normalized Lebesgue measure on that cell.  For a fixed measurable test set
+\(R=g\circ B_\rho\), let
+\[
+ p_j=N|E_j\cap R|,
+ \qquad
+ Y_j=\mathbf 1_R(X_j)-p_j.
+\]
+Then \(\mathbb E Y_j=0\), the variables are independent, and
+\[
+ \mathbb E|D_N(g;\rho)|^2
+ =\sum_{j=1}^N p_j(1-p_j).
+\tag{1}
+\]
+If \(p_j\) is zero or one, its summand vanishes.  Otherwise the cell meets
+both \(R\) and its complement.  Since its diameter is at most \(h\), the
+whole cell lies in the Euclidean \(2h\)-neighborhood of \(\partial R\).
+Lemma~\ref{lem:layer} and the equal cell volumes therefore give
+\[
+ \#\{j:0<p_j<1\}\,N^{-1}\leq Ch,
+\]
+and hence, by (1),
+\[
+ \mathbb E|D_N(g;\rho)|^2\leq CNh.
+\tag{2}
+\]
+Moreover, a nonzero summand in (1) forces the boundary layer to meet \(E\),
+so Lemma~\ref{lem:layer} restricts \(g\) to the fixed compact set \(K\).
+Tonelli's theorem and (2) yield
+\[
+ \mathbb E\int_0^1\int_{\HH^n}|D_N(g;\rho)|^2\,dg\,d\rho
+ \leq C|K|Nh
+ \leq C'N^{1-1/d}.
+\]
+Some realization of \(X_1,\ldots,X_N\) is no larger than this expectation.
+Since \(d=Q-1\), this is the asserted upper bound.
+
+Finally, Lebesgue measure on \(E\) is upper Ahlfors regular for the Kor\'anyi
+metric because a Kor\'anyi ball of radius \(r\) has Lebesgue volume
+\(c_nr^Q\).  The source's Theorem~2 therefore supplies the displayed lower
+bound.
+\end{proof}
+
+\section{Verification, limitations, and novelty status}
+
+The proof has no numerical dependency.  It explicitly handles the two
+potential uniformity issues: small radii in Lemma~\ref{lem:layer}, and the
+unbounded translation domain via the compact active set \(K\).
+
+The result is partial in two ways.  First, it treats normalized Lebesgue
+measure on a cube (the same natural type of measure used for the source upper
+bound), not every upper Ahlfors-regular probability measure.  Second, it leaves
+the exponent gap
+\[
+ 1-\frac1{Q-2}
+ \quad\text{versus}\quad
+ 1-\frac1{Q-1}.
+\]
+An anisotropic cell count cannot close this gap because the sheared flat caps
+vary by first order in both horizontal and central cell widths.
+
+A bounded search covered the exact title and sharpness language, the source's
+references on metric discrepancy and halfspaces, the phrases ``Heisenberg
+cylinder discrepancy'' and ``quadratic discrepancy Heisenberg sharp'', and
+the June 2026 paper on multidimensional nonsmooth convex bodies
+\cite{BBM}.  No exact statement of the \(Q-1\) upper bound for this Heisenberg
+family was found through 11 August 2026.  The method is nevertheless close to
+the standard stratified-sampling argument of Brandolini et al.~\cite{BCCGT},
+so novelty confidence is moderate rather than high.
+
+\paragraph{Human-review recommendation.}
+Review the uniform affine-shear boundary-layer estimate and confirm that the
+source's intended comparison includes the Lebesgue cube subcase.  If valid,
+the packet should be retained as a substantial partial upper-bound
+improvement, not as a resolution of the conjectured sharp exponent.
+
+\begin{thebibliography}{9}
+\bibitem{BMM}
+L. Brandolini, A. Monguzzi, and M. Monti,
+\emph{Quadratic discrepancy estimates for probability measures on the
+Heisenberg group}, arXiv:2601.15850 (2026).
+
+\bibitem{BCCGT}
+L. Brandolini, W. W. L. Chen, L. Colzani, G. Gigante, and G. Travaglini,
+\emph{Discrepancy and numerical integration on metric measure spaces},
+J. Geom. Anal. 29 (2019), 328--369.
+
+\bibitem{BBM}
+R. Bramati, L. Brandolini, and A. Monguzzi,
+\emph{Discrepancy estimates for multi-dimensional non-smooth convex bodies:
+a case study}, arXiv:2606.07028 (2026).
+\end{thebibliography}
+
+\end{document}

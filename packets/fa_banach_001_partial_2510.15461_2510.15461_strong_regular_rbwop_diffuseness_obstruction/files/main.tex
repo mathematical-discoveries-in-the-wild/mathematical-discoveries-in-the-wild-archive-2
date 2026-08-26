@@ -1,0 +1,237 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage[margin=1in]{geometry}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\diameter}{\operatorname{diam}}
+\newcommand{\rBWOP}{\mathrm{r\text{-}BWOP}}
+\newcommand{\Pbar}{(\overline{\mathrm{P1}})}
+
+\title{Diffuseness and Weak-Interior Obstructions\\
+for Strong Regularity with the \texorpdfstring{$\rBWOP$}{r-BWOP}}
+\author{Run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_06}}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source Question}
+
+Lopez-Perez, Martinez Vano, and Rueda Zoca introduce the r-big weak open
+property and ask in Remark 3.3(3):
+\begin{quote}
+``A natural question, whose answer we do not know, is whether there are
+Banach spaces with the r-BWOP and being strongly regular.''
+\end{quote}
+The question is on PDF page 14 of arXiv:2510.15461 and at line 671 of the
+parsed source file
+\path{Big_weak_open_radius_versus_big_slice_diameter.tex} \cite{LMRZ}.
+
+\begin{center}
+\includegraphics[width=\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Definitions}
+
+For a bounded set $A$ in a Banach space $X$, write
+\[
+ r(A)=\inf\{t>0:A\subseteq x+tB_X\text{ for some }x\in X\}.
+\]
+The space $X$ has the \emph{r-big weak open property} (r-BWOP) when every
+nonempty relatively weakly open subset of $B_X$ has radius one
+\cite[Definition 2.3]{LMRZ}. Recall that
+\[
+ r(A)\leq \diameter(A).
+\]
+
+The space $X$ is \emph{strongly regular} when every nonempty bounded convex
+subset admits finite convex combinations of slices of arbitrarily small
+diameter. We use the standard localization of this definition: if $X$ is
+strongly regular, $W$ is a nonempty relatively weakly open subset of $B_X$,
+and $\varepsilon>0$, then there are nonempty relatively weakly open subsets
+$U_1,\ldots,U_n$ of $B_X$, all contained in $W$, and positive weights
+$\lambda_i$ summing to one such that
+\[
+ \diameter\left(\sum_{i=1}^n\lambda_iU_i\right)<\varepsilon.
+\]
+This localization is recorded, in the more general topological formulation,
+in \cite[Lemma 2.2]{LPM}.
+
+Finally, $X$ has property $\Pbar$ when, for every finite convex combination
+$C$ of slices of $B_X$ and every $x\in C$, there is a relatively weakly open
+neighborhood $V$ of $x$ in $B_X$ such that $V\subseteq\overline C$, where the
+bar denotes norm closure \cite[Definition 2.1]{BFP}.
+
+\section*{Proof Intuition}
+
+Each weak opening $U_i$ has radius one and therefore diameter at least one.
+If all other coordinates in a Minkowski convex combination are frozen, the
+combination contains a translated copy of $\lambda_iU_i$. Thus a combination
+of diameter $d$ cannot assign any constituent weight larger than $d$.
+Arbitrarily small strong-regularity witnesses must consequently spread their
+mass over arbitrarily many weak openings. Moreover, a combination of diameter
+below one cannot contain a weak opening even after norm closure, because that
+opening would have radius below one. Property $\Pbar$ forces exactly such an
+opening for every convex combination of slices, so it is incompatible with
+strong regularity and r-BWOP together. The original unrestricted existence
+question remains open.
+
+\section*{Main Partial Result}
+
+\begin{theorem}[Diffuseness and weak-interior obstruction]\label{thm:main}
+Let $X$ have the r-BWOP. Let $U_1,\ldots,U_n$ be nonempty relatively weakly
+open subsets of $B_X$, let $\lambda_1,\ldots,\lambda_n>0$ satisfy
+$\sum_i\lambda_i=1$, and put
+\[
+ C=\sum_{i=1}^n\lambda_iU_i.
+\]
+Then:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\diameter(C)\geq\max_i\lambda_i$;
+\item if $\diameter(C)<\varepsilon$, then
+      $\lambda_i<\varepsilon$ for every $i$ and $n>1/\varepsilon$;
+\item if $\diameter(C)<1$, then $\overline C$ has empty interior in the
+      relative weak topology of $B_X$.
+\end{enumerate}
+
+If, in addition, $X$ is strongly regular, then for every nonempty relatively
+weakly open $W\subseteq B_X$ and every $\varepsilon\in(0,1)$ there is such a
+combination with $U_i\subseteq W$ and diameter below $\varepsilon$; every one
+of its coefficients is below $\varepsilon$, it uses more than
+$1/\varepsilon$ terms, and its norm closure has empty relative weak interior.
+\end{theorem}
+
+\begin{proof}
+Fix $i$. For every $j\neq i$, choose a point $u_j\in U_j$. If $u,v\in U_i$,
+then both
+\[
+ \lambda_i u+\sum_{j\neq i}\lambda_j u_j
+ \quad\text{and}\quad
+ \lambda_i v+\sum_{j\neq i}\lambda_j u_j
+\]
+belong to $C$, and their distance is $\lambda_i\lVert u-v\rVert$. Hence
+\[
+ \diameter(C)\geq\lambda_i\diameter(U_i)
+ \geq\lambda_i r(U_i)=\lambda_i,
+\]
+where the last equality is the r-BWOP. Taking the maximum over $i$ proves
+\textup{(i)}.
+
+If $\diameter(C)<\varepsilon$, part \textup{(i)} gives
+$\lambda_i<\varepsilon$ for every $i$. Therefore
+\[
+ 1=\sum_{i=1}^n\lambda_i<n\varepsilon,
+\]
+which proves \textup{(ii)}.
+
+For \textup{(iii)}, suppose that a nonempty relatively weakly open subset
+$V$ of $B_X$ were contained in $\overline C$. Then
+\[
+ 1=r(V)\leq\diameter(V)\leq\diameter(\overline C)
+   =\diameter(C)<1,
+\]
+a contradiction.
+
+Now assume that $X$ is strongly regular. Apply the standard localization
+statement above inside $W$ to obtain nonempty relatively weakly open
+$U_i\subseteq W$ whose convex combination has diameter below $\varepsilon$.
+The remaining assertions follow from \textup{(ii)} and \textup{(iii)}.
+\end{proof}
+
+\begin{theorem}[A broad no-go class]\label{thm:pbar}
+No Banach space can simultaneously be strongly regular, have the r-BWOP, and
+have property $\Pbar$.
+\end{theorem}
+
+\begin{proof}
+Suppose that $X$ has all three properties. Strong regularity applied to $B_X$
+gives a finite convex combination $C$ of slices of $B_X$ with
+$\diameter(C)<1$. Choose $x\in C$. Property $\Pbar$ gives a nonempty
+relatively weakly open neighborhood $V$ of $x$ in $B_X$ with
+$V\subseteq\overline C$. Therefore
+\[
+ 1=r(V)\leq\diameter(V)\leq\diameter(\overline C)
+   =\diameter(C)<1,
+\]
+which is impossible.
+\end{proof}
+
+\begin{corollary}\label{cor:l1}
+No isometric predual of $\ell_1(\Gamma)$ can be both strongly regular and
+have the r-BWOP.
+\end{corollary}
+
+\begin{proof}
+Every isometric predual of an $\ell_1$ space has property $\Pbar$
+\cite[Corollary 2.8]{BFP}. Apply Theorem~\ref{thm:pbar}.
+\end{proof}
+
+\section*{Verification Notes}
+
+The core estimate is an exact scaled-copy argument; it does not use compactness,
+separability, attainment of the diameter, or scalar restrictions. The closure
+in Theorems~\ref{thm:main} and \ref{thm:pbar} is norm closure. Since $C$ is
+convex, its norm closure is also its weak closure, but that identification is
+not needed: only equality of diameters under norm closure is used.
+
+No computation is required. The two imported facts to check are the standard
+localization of strong regularity and the theorem that isometric
+$\ell_1$-preduals have $\Pbar$; both are cited at their source locations.
+
+\section*{Limitations and Novelty Check}
+
+This is a partial result only. It neither supplies a strongly regular r-BWOP
+space nor rules one out without an additional local-interior property. The
+direct full contradiction stops precisely because arbitrary convex combinations
+of slices need not contain relatively weakly open subsets, even up to closure.
+
+The run registry and solution indexes were searched for arXiv:2510.15461 and
+the phrases ``r-BWOP strongly regular,'' ``r-big weak open property strongly
+regular,'' and close variants. A bounded external search of arXiv and the
+June 2026 version-of-record page was also performed through 9 August 2026. No
+later answer to the exact question was found, and the version of record still
+states it as open. The $\Pbar$ obstruction is a direct new synthesis of the
+source question with the known local-interior property; novelty confidence is
+moderate, and the packet makes no claim of priority.
+
+\section*{Human Review Recommendation}
+
+Review as a likely-valid structural partial. The most useful checks are:
+\begin{enumerate}
+\item the passage from a constituent $U_i$ to the translated scaled copy
+      $\lambda_iU_i\subseteq C$;
+\item applicability of the classical localization lemma to the stated
+      definition of strong regularity;
+\item the convention that $\overline C$ in $\Pbar$ is norm closure; and
+\item the cited $\Pbar$ result for isometric $\ell_1$-preduals.
+\end{enumerate}
+
+\begin{thebibliography}{9}
+
+\bibitem{LMRZ}
+G. Lopez-Perez, E. Martinez Vano, and A. Rueda Zoca,
+\emph{Big weak open radius versus big slice diameter},
+arXiv:2510.15461; Mediterr. J. Math. \textbf{23} (2026), article 141,
+\url{https://doi.org/10.1007/s00009-026-03143-x}.
+
+\bibitem{LPM}
+G. Lopez-Perez and R. Medina,
+\emph{The equivalence between CPCP and strong regularity under Krein--Milman
+property}, arXiv:2305.18976.
+
+\bibitem{BFP}
+J. Becerra Guerrero and F. J. Fernandez-Polo,
+\emph{Relatively weakly open convex combinations of slices and scattered
+$C^*$-algebras}, arXiv:1902.09209.
+
+\end{thebibliography}
+
+\end{document}

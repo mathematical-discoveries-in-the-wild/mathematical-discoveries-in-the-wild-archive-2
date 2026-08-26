@@ -1,0 +1,195 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=0.85in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\area}{\operatorname{area}}
+
+\title{A Rectangle Counterexample to Weighted Log-Submodularity}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 16}
+\date{August 11, 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\fbox{\parbox{0.94\textwidth}{
+\textbf{Status.} Candidate counterexample, likely valid, pending expert review.
+The conjecture following equation (44) of Fradelizi--Langharst--Madiman--Zvavitch
+is false for a full-dimensional log-concave probability measure on $\R^2$ and
+three full-dimensional symmetric zonotopes.
+}}
+
+\section{Source conjecture}
+
+The current version of \cite{FLMZ} asks for which measures $\mu$ and classes
+of convex sets one has
+\begin{equation}
+ \mu(A)\mu(A+B+C)\leq \mu(A+B)\mu(A+C),
+ \label{eq:source}
+\end{equation}
+and conjectures that \eqref{eq:source} holds whenever $A,B,C$ are symmetric
+zonoids and $\mu$ is any log-concave measure.  This appears on page 27,
+immediately after equation (44).
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{The open question and conjecture in \cite[p.~27]{FLMZ}.}
+\end{figure}
+
+\section{Proof intuition}
+
+The conjecture allows the measure to be highly anisotropic.  Concentrate a
+log-concave measure in a thin parallelogram around the diagonal $x=y$.
+Horizontal enlargement alone and vertical enlargement alone barely increase
+the amount of diagonal mass captured by a centered square.  Applying both
+enlargements captures a much longer diagonal interval.  Centered rectangles
+are already zonotopes, and a width-$1/10$ parallelogram makes this mechanism
+an exact full-dimensional area computation rather than a limiting argument.
+
+\section{Counterexample}
+
+\begin{theorem}
+The conjecture following equation \emph{(44)} of \cite{FLMZ} is false as
+stated.  The failure occurs in dimension two with an absolutely continuous
+log-concave probability measure and full-dimensional symmetric zonotopes.
+\end{theorem}
+
+\begin{proof}
+Set $\delta=1/10$ and consider the invertible linear map
+\[
+ T(u,v)=(u+v,u-v).
+\]
+Let
+\[
+ P=T\bigl([-4,4]\times[-\delta,\delta]\bigr)
+\]
+and let $\mu$ be normalized two-dimensional Lebesgue measure on $P$:
+\[
+ \mu(E)=\frac{\area(E\cap P)}{\area(P)}.
+\]
+The density of $\mu$ is a positive constant times the indicator of the convex
+body $P$, hence $\mu$ is a log-concave probability measure.  Equivalently,
+this follows directly from the Brunn--Minkowski inequality applied to
+$P\cap E$ and $P\cap F$.
+
+Define the centered rectangles
+\[
+ \begin{split}
+ A&=[-1,1]\times[-1,1],\\
+ B&=[-1,1]\times[-\delta,\delta],\\
+ C&=[-\delta,\delta]\times[-1,1].
+ \end{split}
+\]
+They have nonempty interior and are origin-symmetric zonotopes, hence
+symmetric zonoids.
+
+We compute their measures and those of their Minkowski sums.  Write
+$R(s,t)=[-s,s]\times[-t,t]$.  In $(u,v)$ coordinates, membership of $T(u,v)$
+in $R(s,t)$ is equivalent to
+\begin{equation}
+ |u+v|\leq s,\qquad |u-v|\leq t.
+ \label{eq:constraints}
+\end{equation}
+The Jacobian magnitude of $T$ is $2$, and it cancels from all normalized-area
+ratios.  The support rectangle in $(u,v)$ coordinates has area $16\delta$.
+
+For $R(q,q)$, the two inequalities in \eqref{eq:constraints} are equivalent
+to $|u|+|v|\leq q$.  For the values of $q$ used below, its preimage inside the
+support has area
+\[
+ \int_{-\delta}^{\delta}2(q-|v|)\,dv
+   =4q\delta-2\delta^2.
+\]
+Consequently,
+\begin{equation}
+ \mu(R(q,q))=\frac{4q\delta-2\delta^2}{16\delta}
+ =\frac q4-\frac\delta8.
+ \label{eq:square-prob}
+\end{equation}
+
+Next, for $R(2,11/10)$ the constraint $|u+v|\leq2$ is redundant: indeed,
+$|u-v|\leq11/10$ and $|v|\leq1/10$ imply
+$|u+v|\leq13/10$.  Thus its preimage has area
+$2\delta\cdot 2(11/10)$, giving
+\begin{equation}
+ \mu(R(2,11/10))=\frac{11}{40}.
+ \label{eq:rectangle-prob}
+\end{equation}
+The same value holds for $R(11/10,2)$ by symmetry.
+
+The relevant Minkowski sums are
+\[
+ \begin{array}{c|c|c}
+ D & D\text{ as a centered rectangle} & \mu(D)\\ \hline
+ A & R(1,1) & 19/80\\
+ A+B & R(2,11/10) & 11/40\\
+ A+C & R(11/10,2) & 11/40\\
+ A+B+C & R(21/10,21/10) & 41/80.
+ \end{array}
+\]
+Here the square entries follow from \eqref{eq:square-prob} and the other two
+from \eqref{eq:rectangle-prob}.  Therefore
+\[
+ \begin{split}
+ &\mu(A)\mu(A+B+C)-\mu(A+B)\mu(A+C)\\
+ &\qquad=\frac{19}{80}\frac{41}{80}
+          -\left(\frac{11}{40}\right)^2
+ =\frac{779-484}{6400}
+ =\frac{59}{1280}>0.
+ \end{split}
+\]
+This is the strict reverse of \eqref{eq:source}, and proves the claim.
+\end{proof}
+
+\section{Robustness and limitations}
+
+The measure is already full-dimensional and absolutely continuous.  If a
+smooth, everywhere-positive density is desired, convolve $\mu$ with a
+centered nondegenerate Gaussian of variance $\varepsilon^2$.  Convolution
+preserves log-concavity \cite{Gardner}.  As $\varepsilon\downarrow0$, the four probabilities
+in the proof converge to their displayed values because rectangle boundaries
+have $\mu$-measure zero.  The defect is strictly positive, so it remains
+positive for all sufficiently small $\varepsilon$.
+
+The argument refutes the quantifier ``any log-concave measure.''  It makes no
+claim about variants restricted to radial measures, the standard Gaussian,
+or Lebesgue measure.  Those narrower questions may remain open.
+
+\section{Verification and novelty}
+
+The exact-rational script \texttt{code/check\_exact\_measures.py} reproduces
+the four entries of the table and the defect $59/1280$.  It is only a
+transcription check; the proof is the preceding area calculation.
+
+The local run indexes were searched for arXiv:2402.10314, the exact title,
+log-submodularity, symmetric zonoids, and log-concave measures.  Bounded web
+searches on August 11, 2026 used the exact title with ``counterexample,'' the
+arXiv id with ``log-submodularity conjecture,'' and the authors with the core
+terms.  They found the current v3 source and adjacent results for Lebesgue
+volume, but no later answer or this construction.  Novelty confidence is
+positive but conservative pending expert review.
+
+Human review should verify the four area ratios and confirm the literal scope
+of ``any log-concave measure.''  No lower-dimensional convention is involved:
+$P,A,B,C$ all have nonempty interior in $\R^2$.
+
+\begin{thebibliography}{9}
+\bibitem{FLMZ}
+M. Fradelizi, D. Langharst, M. Madiman, and A. Zvavitch,
+\emph{Weighted Brunn--Minkowski Theory II: Inequalities for Mixed Measures and
+Applications}, arXiv:2402.10314v3, 2026.
+
+\bibitem{Gardner}
+R. J. Gardner,
+\emph{The Brunn--Minkowski inequality},
+Bulletin of the American Mathematical Society \textbf{39} (2002), 355--405.
+\end{thebibliography}
+
+\end{document}

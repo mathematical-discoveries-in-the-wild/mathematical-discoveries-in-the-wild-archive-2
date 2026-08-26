@@ -1,0 +1,361 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\T}{\mathbb T}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\E}{\mathbb E}
+\newcommand{\orth}{\mathrm{orth}}
+
+\title{The sharp norm asymptotic of the orthogonal cycle projection\\
+\large Candidate full answer to the orthogonal branch of Question 32 in arXiv:2305.12582}
+\author{Automated Mathematics Run \texttt{fa\_banach\_001}, lane 12}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{blue!55!black}{blue!4}{\parbox{0.89\textwidth}{
+\textbf{Status.} Candidate full solution of the $P_{\orth}$ branch, subject
+to human verification.  If $P_{\orth}$ is the orthogonal projection from
+the edge space of the discrete two-dimensional torus onto its cycle space,
+then
+\[
+ \|P_{\orth}\|_{\ell_1(E_n)\to\ell_1(E_n)}
+ =\frac4\pi\log n+O(1).
+\]
+The leading constant is sharp.  The separate $P_{\min}$ branch remains open.}}
+\end{center}
+
+\section{Source and exact question}
+
+The source is S.~J.~Dilworth, D.~Kutzarova, and M.~I.~Ostrovskii,
+\emph{Cycle spaces: invariant projections and applications to transportation
+cost}~\cite{DKO}, arXiv:2305.12582.  For the graph
+$\T_n=\Z_n\times\Z_n$, let $E_n$ consist of the positively oriented
+horizontal and vertical edges, let $Z_n$ be its cycle space, and let
+$P_{\orth}:\ell_2(E_n)\to Z_n$ be the orthogonal projection, regarded also
+as an operator on $\ell_1(E_n)$.
+
+After proving only
+\[
+ a_1\sqrt{\log n}\le \|P_{\min}\|_1\le a_2\log n,
+\]
+the authors state Question 32 on source PDF page 18:
+``Find good asymptotic estimates (improving on Proposition 31) for
+$\|P_{\min}\|_1$ and/or $\|P_{\orth}\|_1$.''  Figure~\ref{fig:question}
+shows the statement and its immediate context.
+
+\begin{figure}[ht]
+ \centering
+ \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+ \caption{Question 32 on page 18 of the arXiv source~\cite{DKO}.}
+ \label{fig:question}
+\end{figure}
+
+The theorem below gives a sharp answer to the orthogonal-projection branch.
+It does not identify $P_{\min}$, which the source shows already differs from
+$P_{\orth}$ when $n=6$.
+
+\section{Idea of the proof}
+
+The orthogonal complement of the cycle space is the cut, or gradient,
+space.  Thus the complementary projection is the discrete Helmholtz
+projection
+\[
+ Q_n=I-P_{\orth}=d\Delta^\dagger d^*,
+\]
+where $d$ is the forward difference, $\Delta=d^*d$, and the dagger denotes
+the inverse on mean-zero vertex functions.  Translation and coordinate
+symmetry reduce its $\ell_1$ operator norm to the absolute sum of one
+column.  That column is a discrete dipole field: the two relevant kernels
+are second differences of the Green function.
+
+At distance $r$ from the pole, the Fourier symbol has the same singular
+part as $\xi_j\xi_1/|\xi|^2$.  Its inverse Fourier transform is
+\[
+ H_{11}(x)=-\frac{\cos(2\theta_x)}{2\pi r^2},\qquad
+ H_{21}(x)=-\frac{\sin(2\theta_x)}{2\pi r^2}.
+\]
+A singular-symbol estimate makes the error $O(r^{-3})$.  Passing from the
+infinite lattice to the finite torus periodizes $H$; square symmetry cancels
+the degree $-2$ tail, leaving a bounded scaled periodic kernel.  Hence all
+errors have bounded total $\ell_1$ mass.
+
+The main term contributes
+\[
+ \frac1{2\pi}\int_1^n\frac{dr}{r}
+ \int_0^{2\pi}(|\cos2\theta|+|\sin2\theta|)\,d\theta
+ =\frac4\pi\log n+O(1).
+\]
+Finally, a trace computation shows that replacing $Q_n$ by $P_{\orth}$
+adds exactly $n^{-2}$ to the norm.
+
+\section{Fourier kernel estimates}
+
+Write $e_1=(1,0)$, $e_2=(0,1)$ and
+\[
+ (df)_j(x)=f(x+e_j)-f(x),\qquad \Delta=d^*d.
+\]
+For $\vartheta\in(-\pi,\pi]^2$, put
+\[
+ b_j(\vartheta)=e^{i\vartheta_j}-1,\qquad
+ \lambda(\vartheta)=|b_1(\vartheta)|^2+|b_2(\vartheta)|^2,
+\]
+and, away from the origin,
+\[
+ m_j(\vartheta)=\frac{b_j(\vartheta)\overline{b_1(\vartheta)}}
+ {\lambda(\vartheta)}\qquad(j=1,2).
+\]
+The value assigned at $0$ will never matter beyond an $O(n^{-2})$ term.
+
+For $x\ne0$, define the homogeneous kernels
+\begin{equation}\label{eq:H}
+ H_j(x)=\frac1{2\pi}
+ \left(\frac{\delta_{j1}}{|x|^2}-\frac{2x_jx_1}{|x|^4}\right).
+\end{equation}
+
+\begin{lemma}[Infinite-lattice singular symbol]\label{lem:infinite}
+Let
+\[
+ \widehat m_j(a)=\frac1{(2\pi)^2}\int_{(-\pi,\pi]^2}
+ e^{ia\cdot\vartheta}m_j(\vartheta)\,d\vartheta,
+ \qquad a\in\Z^2.
+\]
+Then, uniformly for $a\ne0$,
+\[
+ \widehat m_j(a)=H_j(a)+O((1+|a|)^{-3}).
+\]
+\end{lemma}
+
+\begin{proof}
+Taylor expansion at the unique singular point gives
+\begin{equation}\label{eq:symbol-expansion}
+ m_j(\vartheta)=\frac{\vartheta_j\vartheta_1}{|\vartheta|^2}
+ +r_j(\vartheta),\qquad
+ |\partial^\alpha r_j(\vartheta)|\le C_\alpha
+ |\vartheta|^{1-|\alpha|}.
+\end{equation}
+Choose a smooth cutoff $\chi$ supported near zero and equal to one in a
+smaller neighborhood.  The part of $m_j$ away from zero is smooth on the
+Fourier torus, so repeated integration by parts makes its coefficients
+$O_N(|a|^{-N})$.
+
+The inverse Fourier transform on $\mathbb R^2$ of
+$\vartheta_j\vartheta_1/|\vartheta|^2$ is precisely $H_j$: this follows by
+differentiating the fundamental solution
+$-(2\pi)^{-1}\log|x|$ of the positive Laplacian.  Multiplication by $\chi$
+convolves $H_j$ with a Schwartz function of integral one.  Since
+$|\nabla H_j(x)|\le C|x|^{-3}$, splitting that convolution into
+$|y|\le|a|/2$ and its Schwartz tail shows that the result is
+$H_j(a)+O(|a|^{-3})$.
+
+It remains to estimate $\chi r_j$.  A smooth dyadic decomposition into
+frequency annuli of radius $\rho$ turns \eqref{eq:symbol-expansion} into
+the standard bound
+\[
+ |\mathcal F^{-1}(\chi r_j)_\rho(a)|
+ \le C_N\rho^3(1+\rho|a|)^{-N}.
+\]
+Summing separately over $\rho\le |a|^{-1}$ and
+$\rho>|a|^{-1}$ gives $O(|a|^{-3})$.  Combining the three pieces proves
+the assertion.
+\end{proof}
+
+For $x\in\T_n$, choose its representative in
+$[-n/2,n/2)^2$ and write $\rho_n(x)=|x|$.
+
+\begin{lemma}[Torus dipole kernel]\label{lem:torus}
+Define
+\begin{equation}\label{eq:Kn}
+ K_{j,n}(x)=\frac1{n^2}\sum_{k\in\Z_n^2\setminus\{0\}}
+ e^{2\pi i k\cdot x/n}m_j(2\pi k/n).
+\end{equation}
+There is an absolute constant $C$ such that
+\begin{align}
+ K_{j,n}(x)&=H_j(x)+O(\rho_n(x)^{-3}+n^{-2})
+ &&(1\le\rho_n(x)\le n/8),\label{eq:local}\\
+ |K_{j,n}(x)|&\le Cn^{-2}
+ &&(\rho_n(x)>n/8).\label{eq:far}
+\end{align}
+\end{lemma}
+
+\begin{proof}
+We include the periodization step because it is the point at which a
+non-summable absolute $|a|^{-2}$ estimate would lose the theorem.
+Fourier aliasing, first for Abel-regularized Fourier series and then by
+letting the regularization parameter tend to zero, gives
+\begin{equation}\label{eq:alias}
+ K_{j,n}(x)=\sum_{\ell\in\Z^2}^{\rm sym}
+ \widehat m_j(x+n\ell)+O(n^{-2}).
+\end{equation}
+The last term accounts for the arbitrary value of the multiplier at the
+single grid point $0$ and for the bounded change from Abel to centered-square
+summation of the homogeneous degree $-2$ term.  Lemma~\ref{lem:infinite}
+makes the periodization of its remainder absolutely convergent.
+
+For the main term, define on $\mathbb R^2\setminus\Z^2$
+\[
+ \mathcal H_j(z)=\lim_{N\to\infty}
+ \sum_{\|\ell\|_\infty\le N}H_j(z+\ell).
+\]
+This symmetric limit exists.  Indeed,
+$H_1(\ell)=(\ell_2^2-\ell_1^2)/(2\pi|\ell|^4)$, so its sum over every
+centered square of nonzero lattice points vanishes under coordinate
+interchange.  Likewise $H_2(\ell)=-\ell_1\ell_2/(\pi|\ell|^4)$, whose sum
+vanishes under either coordinate reflection.
+Consequently,
+\[
+ \mathcal H_j(z)-H_j(z)
+ =\sum_{\ell\ne0}[H_j(z+\ell)-H_j(\ell)],
+\]
+and this series converges locally uniformly because its tail is
+$O(|z||\ell|^{-3})$.  Thus $\mathcal H_j(z)-H_j(z)$ is bounded for
+$|z|\le1/8$, while $\mathcal H_j$ itself is bounded on the compact part of
+the unit torus at distance at least $1/8$ from the pole.
+
+Homogeneity now gives
+\[
+ \sum_{\ell}^{\rm sym}H_j(x+n\ell)
+ =n^{-2}\mathcal H_j(x/n).
+\]
+For $|x|\le n/8$, this is $H_j(x)+O(n^{-2})$; away from that disk it is
+$O(n^{-2})$.  The absolutely convergent error from
+Lemma~\ref{lem:infinite} is $O(|x|^{-3}+n^{-3})$ in the first region and
+$O(n^{-3})$ in the second.  Substitution in \eqref{eq:alias} proves
+\eqref{eq:local}--\eqref{eq:far}.
+\end{proof}
+
+\section{Sharp norm asymptotic}
+
+\begin{theorem}\label{thm:main}
+For the two-dimensional discrete torus $\T_n=\Z_n^2$,
+\[
+ \boxed{\displaystyle
+ \|P_{\orth}\|_{\ell_1(E_n)\to\ell_1(E_n)}
+ =\frac4\pi\log n+O(1).}
+\]
+In particular, $\|P_{\orth}\|_1=\Theta(\log n)$.
+\end{theorem}
+
+\begin{proof}
+The cycle space is $\ker d^*$ and the cut space is $\operatorname{ran}d$.
+It follows from the orthogonal decomposition of the edge space that
+\[
+ Q_n:=I-P_{\orth}=d\Delta^\dagger d^*.
+\]
+Under the discrete Fourier transform, the $2\times2$ multiplier of $Q_n$
+is
+\[
+ \left(\frac{b_j(\vartheta)\overline{b_\ell(\vartheta)}}
+ {\lambda(\vartheta)}\right)_{j,\ell=1}^2
+\]
+at nonzero frequencies and zero at frequency zero.  Hence, up to harmless
+translations caused by the edge orientation, the column of $Q_n$ at the
+horizontal edge based at zero has components $K_{1,n}$ and $K_{2,n}$.
+All columns have the same absolute sum by translation and coordinate
+symmetry, so
+\begin{equation}\label{eq:qnorm}
+ \|Q_n\|_1=\sum_{x\in\T_n}
+ (|K_{1,n}(x)|+|K_{2,n}(x)|).
+\end{equation}
+
+The contribution of $x=0$ is bounded because the multiplier matrix is an
+orthogonal projection at every frequency.  Lemma~\ref{lem:torus} shows
+that the region $\rho_n(x)>n/8$ also contributes $O(1)$, and in the
+remaining region the total difference between the summands in
+\eqref{eq:qnorm} and $|H_1(x)|+|H_2(x)|$ is bounded by
+\[
+ C\sum_{1\le|x|\le n/8}(|x|^{-3}+n^{-2})=O(1).
+\]
+Writing $x=r(\cos\theta,\sin\theta)$ in \eqref{eq:H} gives
+\[
+ |H_1(x)|+|H_2(x)|
+ =\frac{|\cos2\theta|+|\sin2\theta|}{2\pi r^2}.
+\]
+The sum of this locally Lipschitz homogeneous function over lattice points
+differs from its integral over the corresponding union of unit squares by
+$O(1)$: the error on a square at radius $r$ is $O(r^{-3})$, and those
+errors are summable over annuli.  Therefore
+\begin{align*}
+ \|Q_n\|_1
+ &=\frac1{2\pi}\int_1^{n/8}\frac{dr}{r}
+   \int_0^{2\pi}(|\cos2\theta|+|\sin2\theta|)\,d\theta+O(1)\\
+ &=\frac1{2\pi}(4+4)\log n+O(1)
+ =\frac4\pi\log n+O(1).
+\end{align*}
+
+It remains only to pass from $Q_n$ to $P_{\orth}$.  Edge transitivity and
+$\operatorname{rank}Q_n=n^2-1$ imply that every diagonal entry of $Q_n$ is
+\[
+ q_{ee}=\frac{\operatorname{trace}Q_n}{|E_n|}
+ =\frac{n^2-1}{2n^2}.
+\]
+The off-diagonal entries of $P_{\orth}=I-Q_n$ are the negatives of those
+of $Q_n$, while the two diagonal entries in the selected columns are
+positive.  Thus
+\[
+ \|P_{\orth}\|_1-\|Q_n\|_1
+ =(1-q_{ee})-q_{ee}=\frac1{n^2}.
+\]
+The asserted formula follows.
+\end{proof}
+
+\section{Verification, limitations, and novelty}
+
+\begin{enumerate}[leftmargin=*,itemsep=0.55em]
+\item \textbf{Exact finite Fourier check.}
+The script \texttt{code/verify\_fft.py} evaluates the multiplier in
+\eqref{eq:Kn}.  It reproduces the source values
+\[
+ \frac{19}{9},\quad\frac{41}{16},\quad\frac{69}{25},\quad
+ \frac{3839}{1260}
+\]
+for $n=3,4,5,6$.  For $n=64,128,256,512$, the residuals
+$\|P_{\orth}\|_1-(4/\pi)\log n$ are approximately
+$0.71556,0.71351,0.71268,0.71234$.  This computation is not used as proof.
+
+\item \textbf{Sensitive analytic point.}
+The leading lattice kernel is not absolutely summable in two dimensions.
+Lemma~\ref{lem:torus} therefore uses symmetric/Abel periodization, not a
+naive absolute periodization.  The cancellation of $H_j(\ell)$ on centered
+squares and the absolutely convergent difference
+$H_j(z+\ell)-H_j(\ell)$ are the key checks.
+
+\item \textbf{Scope.}
+The result completely determines the first-order asymptotic of
+$P_{\orth}$ and hence answers the ``and/or $P_{\orth}$'' branch of
+Question 32.  It does not determine $P_{\min}$ or its norm.
+
+\item \textbf{Bounded novelty check.}
+The run registry, solution, attempt, and proof-gap indexes were searched for
+arXiv:2305.12582 and the core projection/torus terms.  Web searches through
+9 August 2026 used the exact title and question, ``orthogonal cycle
+projection'', ``discrete torus Green function'', and the proposed
+``$4/\pi\log n$'' formula.  No later answer was found.  The published author
+offprint still contains the question as Question 32.  This supports, but
+does not certify, novelty.
+
+\item \textbf{Human-review recommendation.}
+Verify Lemma~\ref{lem:torus}, especially the Abel-regularized aliasing
+identity and the uniform boundedness of $\mathcal H_j$ away from its pole.
+Then check the Fourier orientation only up to translation; the absolute
+column sum is invariant under those shifts.
+\end{enumerate}
+
+\begin{thebibliography}{9}
+\bibitem{DKO}
+S.~J.~Dilworth, D.~Kutzarova, and M.~I.~Ostrovskii,
+\emph{Cycle spaces: invariant projections and applications to transportation
+cost}, arXiv:2305.12582 (2023), Question 32.
+\end{thebibliography}
+
+\end{document}

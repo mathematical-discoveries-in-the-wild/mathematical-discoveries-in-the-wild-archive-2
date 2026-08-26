@@ -1,0 +1,171 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+
+\newtheorem{theorem}{Theorem}
+\newcommand{\avgint}{\mathop{\rlap{\raisebox{0.15ex}{--}}\!\int}}
+
+\title{The Upper Ahlfors Bound Alone Suffices\\
+for the Rough-Operator Pointwise Estimate}
+\author{Run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_05}}
+\date{August 11, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source problem and answer}
+
+Chamorro, Marcoci, and Marcoci ask whether their estimate
+\[
+  T_K^*f(x)\le C\mathcal R_{1,\mu}g(x)
+\]
+for rough kernels can be proved assuming only the upper Ahlfors bound
+\(\mu(B(x,r))\le c_2r^\nu\).  Their proof assumes two-sided Ahlfors
+regularity and the extra restriction
+\(2^{1-\nu}c_2/c_1<1\).  The answer is \emph{yes}: neither the lower
+Ahlfors bound nor the ratio restriction is needed.  The proof below retains
+the ball-measure factor through the Poincare--Sobolev step, after which the
+scale sum is geometric because \(\nu>1\).
+
+\begin{center}
+\includegraphics[width=0.94\textwidth]{figures/source_open_problem.png}
+\end{center}
+
+\section*{The theorem}
+
+Let \((X,d,\mu)\) have \(0<\mu(B)<\infty\) for every ball and null metric
+spheres, as in the source.  Write
+\[
+ \mathcal R_{1,\mu}g(x)
+ =\int_X\frac{d(x,y)}{\mu(B(x,d(x,y)))}g(y)\,d\mu(y).
+\]
+Assume that for some \(q\ge1\), \(C_P>0\), and \(\sigma\ge1\), every
+admissible \(f\) and upper gradient \(g\) satisfy
+\begin{equation}
+ \left(\avgint_{B(x,r)}|f-f_{B(x,r)}|^q\,d\mu\right)^{1/q}
+ \le C_Pr\,\avgint_{B(x,\sigma r)}g\,d\mu .
+ \tag{PS}
+\end{equation}
+For \(q=1\), this has its literal usual meaning.
+
+\begin{theorem}[Upper-Ahlfors resolution]
+Suppose \(\nu>1\) and
+\begin{equation}
+  \mu(B(x,r))\le c_2r^\nu \qquad(x\in X,\ r>0).
+  \tag{UA}
+\end{equation}
+Let \(K:X\times X\setminus\{x=y\}\to\mathbb R\) satisfy
+\begin{align}
+ |K(x,y)|&\le C_Kd(x,y)^{-\nu},                                      \tag{K1}\\
+ \int_{\{a<d(x,y)<b\}}K(x,y)\,d\mu(y)&=0
+       \qquad(0<a<b<\infty).                                        \tag{K2}
+\end{align}
+Then, wherever the source truncations are defined,
+\[
+  T_K^*f(x)
+  :=\sup_{\varepsilon>0}\left|
+       \int_{\{\varepsilon<d(x,y)\}}K(x,y)f(y)\,d\mu(y)
+     \right|
+  \le C\mathcal R_{1,\mu}g(x),
+\]
+where \(C\) depends only on \(C_K,C_P,c_2,\nu,\sigma\).  In particular,
+the source estimate (1.12) holds under the upper Ahlfors condition alone.
+\end{theorem}
+
+\begin{proof}
+Fix \(x\), an inner truncation \(\varepsilon>0\), and first impose a finite
+outer truncation.  Choose \(k_0\) with
+\(2^{k_0-1}<\varepsilon\le2^{k_0}\), and decompose into the first partial
+annulus \(\{\varepsilon<d(x,y)\le2^{k_0}\}\) and the dyadic annuli
+\[
+ A_k=\{2^{k-1}<d(x,y)\le2^k\},\qquad k>k_0.
+\]
+Put \(B_k=B(x,2^k)\) and \(B_k^\sigma=B(x,\sigma2^k)\).  Condition (K2)
+allows the subtraction of the separate constant \(f_{B_k}\) on every
+annulus, including the first partial annulus.  Therefore (with harmless
+changes in constants)
+\begin{equation}
+ |T_{K}^{\varepsilon}f(x)|
+ \le C\sum_{k\ge k_0}2^{-k\nu}
+       \int_{A_k}|f(y)-f_{B_k}|\,d\mu(y).                              \tag{1}
+\end{equation}
+The displayed estimate can be proved first for finitely many annuli; all
+subsequent bounds are independent of the outer cutoff.
+
+Set \(\alpha=1-1/q\) when \(q>1\).  Holder's inequality, the inclusions
+\(A_k\subset B_k\subset B_k^\sigma\), and (PS) give
+\begin{align*}
+ \int_{A_k}|f-f_{B_k}|\,d\mu
+ &\le \mu(B_k)^\alpha
+       \left(\int_{B_k}|f-f_{B_k}|^q\,d\mu\right)^{1/q}\\
+ &\le C_P2^k\,
+       \frac{\mu(B_k)}{\mu(B_k^\sigma)}
+       \int_{B_k^\sigma}g\,d\mu\\
+ &\le C_P2^k\int_{B_k^\sigma}g\,d\mu .                              \tag{2}
+\end{align*}
+For \(q=1\), (2) follows directly from (PS).  This is the decisive point:
+the two powers of \(\mu(B_k)\) add to one, and the resulting volume ratio is
+at most one.  Substitution into (1) yields
+\begin{equation}
+ |T_{K}^{\varepsilon}f(x)|
+ \le C\sum_{k\in\mathbb Z}2^{k(1-\nu)}
+                 \int_{B(x,\sigma2^k)}g(y)\,d\mu(y).                  \tag{3}
+\end{equation}
+Extending the nonnegative sum to all integers only enlarges it.
+
+Tonelli's theorem and \(t=d(x,y)\) transform the right side of (3) into
+\[
+ C\int_X g(y)
+   \sum_{\{k:\,\sigma2^k\ge t\}}2^{k(1-\nu)}\,d\mu(y).
+\]
+Since \(\nu>1\), the inner series is geometric and
+\begin{equation}
+  \sum_{\{k:\,\sigma2^k\ge t\}}2^{k(1-\nu)}
+  \le C_{\nu,\sigma}t^{1-\nu}.                                      \tag{4}
+\end{equation}
+Finally, (UA) gives
+\[
+ t^{1-\nu}\le c_2\frac{t}{\mu(B(x,t))}.
+\]
+Combining this with (3)--(4) proves the desired bound, uniformly in both
+truncations.  Passing to the source truncation and taking the supremum over
+\(\varepsilon\) completes the proof.
+\end{proof}
+
+\section*{Why the source needed a lower bound, and why this proof does not}
+
+The source first replaces each annular integral by a normalized whole-ball
+term.  It then has to control
+\(\sum_k2^k\mu(B(x,\sigma2^k))^{-1}\int_{B(x,\sigma2^k)}g\), whose inner
+ball contribution is absorbed using lower Ahlfors growth and condition
+(1.11); this is the step on pp.~9--10 of the source reproduced in the packet's
+audit files.
+
+Estimate (2) avoids that larger series.  Its coefficient is instead
+\(2^{k(1-\nu)}\), already summable at large scales.  Thus the proof also
+shows that the source's numerical restriction is not merely improvable by
+choosing a larger geometric base: it is completely unnecessary.
+
+The hypothesis \(\nu>1\) is exactly what makes (4) converge and is already
+implicit in the source's use of \(\mathcal R_{1,\mu}\), defined for
+\(0<1<\nu\).  No relation such as \(q<\nu\) is used here.  This packet does
+not alter the source's separate Morrey estimate for \(\mathcal R_{s,\mu}\),
+whose proof may still require lower volume information.
+
+\section*{Verification and literature boundary}
+
+The proof was checked annulus by annulus, with a finite outer cutoff before
+Tonelli.  Its only volume comparison before the final line is
+\(\mu(B_k)/\mu(B_k^\sigma)\le1\); the final conversion uses (UA) in the
+correct direction.  Exact-id and exact-phrase searches through August 11,
+2026 found the source and no later paper resolving its stated open problem.
+
+\begin{thebibliography}{1}
+\bibitem{CMM}
+D. Chamorro, A.-N. Marcoci, and L.-G. Marcoci,
+\emph{Pointwise estimates for rough operators in a metric measure framework
+under some Ahlfors regularity conditions}, arXiv:2603.08186 (2026).
+\end{thebibliography}
+
+\end{document}

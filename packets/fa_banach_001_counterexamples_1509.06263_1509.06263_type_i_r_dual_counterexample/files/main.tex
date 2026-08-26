@@ -1,0 +1,327 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\T}{\mathbb T}
+\newcommand{\cH}{\mathcal H}
+\newcommand{\cK}{\mathcal K}
+\newcommand{\Zak}{\mathcal Z_q}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\Span}{\overline{\operatorname{span}}}
+
+\title{An Adjoint Gabor System Which Is Not an R-Dual of Type I}
+\author{Candidate counterexample for arXiv:1509.06263\\
+Run \texttt{fa\_banach\_001}, lane 6}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Candidate counterexample, likely valid, pending specialist human review.
+For every integer oversampling factor $q\ge2$, the construction gives a Gabor
+frame whose normalized adjoint system is not an R-dual of type I.}}
+\end{center}
+
+\section{Source question}
+
+Stoeva and Christensen ask whether the normalized adjoint system of every
+Gabor frame is an R-dual of type I \cite[p.~6, after Theorem~1.4]{SC}.
+With
+\[
+ (T_yf)(x)=f(x-y),\qquad (E_\xi f)(x)=e^{2\pi i\xi x}f(x),
+\]
+their question is whether, whenever
+\(\{E_{mb}T_{na}g\}_{m,n\in\Z}\) is a frame for $L^2(\R)$, the Riesz sequence
+\[
+ \left\{\frac1{\sqrt{ab}}E_{m/a}T_{n/b}g\right\}_{m,n\in\Z}
+\]
+must be an R-dual of type I.  The source records positive answers for tight
+Gabor frames and Gabor Riesz bases, but leaves the general case open.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{The open question in arXiv:1509.06263, PDF page 6.}
+  \label{fig:question}
+\end{figure}
+
+The source also gives the criterion needed below.  If $S$ is the frame
+operator of a frame and $S_\Omega$ is the frame operator of a proposed Riesz
+sequence on its closed span, then type-I R-duality requires an antiunitary
+map $\Lambda$ satisfying
+\begin{equation}\label{eq:antiunitary-necessary}
+ S_\Omega=\Lambda S\Lambda^{-1}.
+\end{equation}
+Indeed, this is the necessary direction of Lemma~1.3(iii) in \cite{SC}.
+
+\section{Proof intuition}
+
+At integer oversampling, there is a Parseval Gabor window whose normalized
+adjoint system occupies only one of $q$ Zak components.  The adjoint shifts
+act as scalar coordinate multipliers on all $q$ components.  We deform the
+Parseval window by a positive invertible multiplier $\phi$ which has simple
+spectrum on the two-dimensional Zak base.
+
+The deformation makes the primal frame operator the $q$-fold amplification
+$M_\phi\otimes I_q$, while the adjoint frame operator is the one-copy
+operator $M_\phi$.  Choosing $\phi$ essentially one-to-one makes the second
+operator cyclic.  The first operator has no cyclic vector when $q\ge2$.
+Since antiunitary equivalence preserves cyclicity, the necessary condition
+\eqref{eq:antiunitary-necessary} fails.
+
+\section{The Zak model}
+
+Fix an integer $q\ge2$ and put
+\[
+ a=1,\qquad b=\frac1q,\qquad
+ h=q^{-1/2}\one_{[0,1)}.
+\]
+
+\begin{lemma}\label{lem:base-systems}
+The Gabor system
+\[
+ \{E_{m/q}T_nh\}_{m,n\in\Z}
+\]
+is a Parseval frame for $L^2(\R)$.  Its normalized adjoint system is
+\begin{equation}\label{eq:adjoint-h}
+ \{\sqrt q\,E_mT_{qn}h\}_{m,n\in\Z}
+ =\{E_m\one_{[qn,qn+1)}\}_{m,n\in\Z},
+\end{equation}
+which is an orthonormal sequence.
+\end{lemma}
+
+\begin{proof}
+For each $n$, the atoms are supported on $[n,n+1)$.  Write $m=qk+j$ with
+$0\le j<q$.  For fixed $j$, the functions
+\[
+ e^{2\pi i(k+j/q)x}\one_{[n,n+1)}(x),\qquad k\in\Z,
+\]
+form an orthonormal basis of $L^2([n,n+1))$.  Multiplication by
+$q^{-1/2}$ and summation over the $q$ residue classes gives Parseval's
+identity.  Formula \eqref{eq:adjoint-h} follows from $ab=1/q$; within each
+unit interval it is the Fourier orthonormal basis, and the intervals indexed
+by $n$ are disjoint.
+\end{proof}
+
+Let $X=[0,1)^2$ with coordinates $(t,\theta)$, and let
+$e_0,\ldots,e_{q-1}$ be the standard basis of $\C^q$.  Define the $q$-step
+Zak transform by
+\begin{equation}\label{eq:zak}
+ (\Zak f)_r(t,\theta)
+ =\sum_{k\in\Z}f(t+r+qk)e^{-2\pi ik\theta},
+ \qquad 0\le r<q.
+\end{equation}
+Partitioning $\R$ into the sets $t+r+qk$ and applying Fourier-series
+Parseval in $k$ shows that
+\[
+ \Zak:L^2(\R)\longrightarrow L^2(X;\C^q)
+\]
+is unitary.  Direct substitution gives
+\begin{equation}\label{eq:zak-shifts}
+ \Zak E_1\Zak^{-1}=M_{e^{2\pi it}}\otimes I_q,
+ \qquad
+ \Zak T_q\Zak^{-1}=M_{e^{-2\pi i\theta}}\otimes I_q.
+\end{equation}
+Moreover,
+\begin{equation}\label{eq:zak-h}
+ \Zak h=q^{-1/2}e_0.
+\end{equation}
+Under $\Zak$, the atoms in \eqref{eq:adjoint-h} become
+\[
+ e^{2\pi imt}e^{-2\pi in\theta}e_0,
+ \qquad m,n\in\Z.
+\]
+Consequently their closed span is
+\begin{equation}\label{eq:K}
+ \cK=L^2(X)e_0\subset L^2(X;\C^q).
+\end{equation}
+
+\section{Construction of the window}
+
+We need a bounded scalar multiplier with simple spectrum.  Give each
+$t,\theta\in[0,1)$ its binary expansion which is not eventually all ones,
+\[
+ t=.t_1t_2t_3\ldots,\qquad
+ \theta=.s_1s_2s_3\ldots,
+\]
+and interleave the digits:
+\begin{equation}\label{eq:phi}
+ \psi(t,\theta)
+ =\sum_{j\ge1}\left(t_j2^{-(2j-1)}+s_j2^{-2j}\right),
+ \qquad \phi=1+\psi.
+\end{equation}
+Then $\phi:X\to[1,2)$ is a Borel injection.  Its inverse on its range is
+Borel: the odd and even binary digits recover $t$ and $\theta$.
+
+On $L^2(\R)$ define the positive invertible operator
+\begin{equation}\label{eq:A}
+ A=\Zak^{-1}(M_\phi\otimes I_q)\Zak
+\end{equation}
+and the window
+\begin{equation}\label{eq:g}
+ g=A^{1/2}h.
+\end{equation}
+Equivalently, this is the explicit Zak-coordinate prescription
+\begin{equation}\label{eq:zg}
+ \Zak g=q^{-1/2}\sqrt\phi\,e_0.
+\end{equation}
+
+The two unitaries in \eqref{eq:zak-shifts} generate all scalar multiplication
+operators on $L^2(X;\C^q)$ by their joint bounded Borel functional calculus.
+Thus $A$ belongs to the von Neumann algebra generated by $E_1$ and $T_q$.
+These two generators commute with one another.  They also commute with every
+primal-lattice shift $E_{m/q}T_n$, since
+\[
+ E_1T_n=T_nE_1,
+ \qquad
+ T_qE_{m/q}=E_{m/q}T_q
+ \quad(m,n\in\Z).
+\]
+It follows that $A$ commutes with the entire primal lattice.  Because the
+adjoint shifts are the products $E_mT_{qn}$, $A$ commutes with them as well.
+
+\begin{theorem}\label{thm:counterexample}
+For every integer $q\ge2$, the window $g$ in \eqref{eq:g} has the following
+properties:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\{E_{m/q}T_ng\}_{m,n\in\Z}$ is a Gabor frame for $L^2(\R)$;
+\item its normalized adjoint system
+\[
+ \{\sqrt q\,E_mT_{qn}g\}_{m,n\in\Z}
+\]
+is not an R-dual of type I.
+\end{enumerate}
+Thus the universal type-I R-duality question in \cite{SC} has a negative
+answer.
+\end{theorem}
+
+\begin{proof}
+Let $S_g$ be the frame operator of the primal system.  Since $A^{1/2}$
+commutes with every primal shift and the system generated by $h$ is Parseval,
+Lemma~\ref{lem:base-systems} gives
+\begin{equation}\label{eq:Sg}
+ S_g=A^{1/2}I A^{1/2}=A.
+\end{equation}
+In particular the system generated by $g$ is a frame, because
+$I\le A\le2I$.
+
+Write
+\[
+ \omega^h_{m,n}=\sqrt q\,E_mT_{qn}h,
+ \qquad
+ \omega^g_{m,n}=\sqrt q\,E_mT_{qn}g.
+\]
+Commutation with the adjoint shifts gives
+\begin{equation}\label{eq:adj-deform}
+ \omega^g_{m,n}=A^{1/2}\omega^h_{m,n}.
+\end{equation}
+The $\omega^h_{m,n}$ form an orthonormal basis of $\cK$.  Under $\Zak$,
+$A^{1/2}$ is scalar multiplication by $\sqrt\phi$ and hence maps $\cK$
+bijectively onto itself.  Therefore the closed span of the
+$\omega^g_{m,n}$ is again $\cK$, and their frame operator on $\cK$ is
+\begin{equation}\label{eq:Somega}
+ S_\Omega=A^{1/2}P_\cK A^{1/2}\big|_\cK
+ =A\big|_\cK.
+\end{equation}
+Using \eqref{eq:A}, \eqref{eq:K}, \eqref{eq:Sg}, and
+\eqref{eq:Somega}, the two operators whose antiunitary equivalence is
+required by \eqref{eq:antiunitary-necessary} are thus
+\begin{equation}\label{eq:two-operators}
+ S_g\simeq M_\phi\otimes I_q
+ \quad\text{on }L^2(X;\C^q),
+ \qquad
+ S_\Omega\simeq M_\phi
+ \quad\text{on }L^2(X).
+\end{equation}
+
+We distinguish them by cyclicity.  A vector $u$ is cyclic for a self-adjoint
+operator $B$ when the closed span of
+$\{F(B)u:F\text{ bounded Borel}\}$ is the whole Hilbert space.  Since
+$\phi$ is a Borel injection with Borel inverse on its range, every bounded
+measurable function on $X$ is a bounded Borel function of $\phi$.  Hence the
+constant function $1$ is cyclic for $M_\phi$ on $L^2(X)$.
+
+In contrast, $M_\phi\otimes I_q$ has no cyclic vector when $q\ge2$.
+Indeed, given $v\in L^2(X;\C^q)$, if $v=0$ there is nothing to prove; otherwise
+choose a nonzero measurable vector field $w\in L^2(X;\C^q)$ with
+$w(x)\perp v(x)$ almost everywhere.  For example, using the first two
+coordinates one may rotate a nonzero coordinate pair pointwise, with a
+measurable partition according to the first nonzero coordinate.  Then
+\[
+ \langle F(\phi)v,w\rangle=0
+\]
+for every bounded Borel $F$, so $v$ is not cyclic.
+
+Unitary or antiunitary equivalence of self-adjoint operators carries spectral
+projections to spectral projections and therefore preserves the existence of
+a cyclic vector.  The two operators in \eqref{eq:two-operators} cannot be
+antiunitarily equivalent.  The necessary type-I condition
+\eqref{eq:antiunitary-necessary} fails, proving (ii).
+\end{proof}
+
+\begin{remark}
+The frame is neither tight nor a Riesz basis.  It is not tight because
+$\phi$ is nonconstant.  The original Parseval frame is the union of $q$
+orthonormal bases on each translation interval and is redundant; applying
+the invertible operator $A^{1/2}$ preserves this redundancy.  Thus the
+example lies genuinely outside the two positive classes recorded in the
+source.
+\end{remark}
+
+\section{Verification, scope, and novelty}
+
+The proof is exact and has no computational dependency.  The normalization
+of both Gabor systems, the two Zak-shift formulas, all commutation relations,
+the two frame-operator identities, and the cyclicity obstruction were checked
+separately in the companion \texttt{verification.md}.  The construction uses
+only a bounded positive invertible operator and therefore produces a valid
+$L^2$ window.
+
+The theorem answers the printed universal question in the negative.  Its
+window is defined by a merely Borel Zak multiplier.  It does not decide
+whether a type-I statement might remain true under additional regularity or
+time--frequency localization hypotheses on $g$.
+
+Before promotion, the run's registry, solution, attempt, and proof-gap indexes
+were searched using arXiv:1509.06263, the title, the authors, and combinations
+of \emph{R-dual of type I}, \emph{adjoint Gabor system}, \emph{counterexample},
+\emph{Zak}, and spectral-multiplicity terms.  Focused arXiv/web searches
+through 11 August 2026 found the source, its predecessor arXiv:1404.3183, and
+the 2024 paper \cite{BDA}, but no resolution or counterexample.  The latter
+still describes the question as a famous problem and develops weak R-duality
+as a possible route.
+
+Novelty confidence is moderate to high rather than conclusive: the bounded
+search found no prior answer, but a specialist search of the broader Gabor
+and noncommutative-torus literature is recommended.  Human verification
+should focus on the joint Borel functional-calculus step and the application
+of Lemma~1.3(iii) of \cite{SC}.
+
+\begin{thebibliography}{9}
+\bibitem{SC}
+D.~T. Stoeva and O. Christensen,
+\emph{On various R-duals and the duality principle},
+Operators and Matrices 10 (2016), no.~2, 371--385;
+arXiv:1509.06263.
+\url{https://arxiv.org/abs/1509.06263}.
+
+\bibitem{BDA}
+H. Bansal, P. Devaraj, and S. Arati,
+\emph{Characterizations of weak R-duality and its application to Gabor frames},
+arXiv:2408.14952 (2024).
+\url{https://arxiv.org/abs/2408.14952}.
+\end{thebibliography}
+
+\end{document}

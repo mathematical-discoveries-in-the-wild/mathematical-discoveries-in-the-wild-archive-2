@@ -1,0 +1,252 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\e}{\mathrm{e}}
+
+\title{A finite-codimensional obstruction for the mixed-weight\\
+heat-decay question of Bonet--Lusky--Taskinen}
+\author{Automated mathematics run \texttt{fa\_banach\_001}\\
+Lane 11, model GPT5.6}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.9\linewidth}{
+\textbf{Status.} Candidate counterexample / complete negative answer, likely
+valid, pending human review.
+}}
+\end{center}
+
+\section{Source question}
+
+Bonet, Lusky, and Taskinen study Schauder bases whose finite-codimensional
+tails force arbitrarily fast decay for the heat equation \cite{BLT}.  Their
+Question $3^\circ$ asks whether their higher-dimensional conclusion can hold
+when the weight is fast in only one coordinate:
+\[
+ w(x)=\e^{|x_1|}\prod_{j=2}^{N}(1+|x_j|)^2,
+ \qquad N>1.
+\]
+The question appears on page 14 of the source PDF, as equation (4.19).
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{The source discussion and Question $3^\circ$ on page 14 of
+  arXiv:1802.01902.}
+\end{figure}
+
+More explicitly, the requested conclusion would give a Schauder basis
+$(e_n)$ of $L^1_w(\R^N)$ such that, for every $m\in\N$, some closed basis tail
+$E_m$ satisfies
+\begin{equation}\label{eq:desired}
+ \|\e^{t\Delta}f\|_\infty
+ \le C_m t^{-m}\|f\|_{1,w}
+ \qquad (f\in E_m,\ t\ge 1).
+\end{equation}
+Every such $E_m$ has finite codimension.  We prove that no
+finite-codimensional subspace can have decay faster than
+$t^{-N/2-1}$ in operator norm.
+
+\section{Proof intuition}
+
+Let $E$ have codimension $d$.  At time $t$, place $d+1$ copies of one fixed
+compactly supported bump along the $x_2$-axis, with spacing $L\sqrt t$.  Their
+supports are disjoint, and their span must meet $E$ nontrivially.  The mixed
+weight of the $j$th translated bump is only $O(j^2t)$, because the weight is
+quadratic in $x_2$.
+
+Normalize a nonzero combination in that intersection.  At the center of the
+bump having the largest coefficient after weighted normalization, its own
+heat contribution is $\asymp t^{-N/2}$.  All other contributions are smaller
+by fixed Gaussian factors $\exp(-cL^2|j-k|^2)$, so choosing $L$ large prevents
+cancellation.  Weighted normalization costs one further factor $t^{-1}$.
+This produces the unavoidable lower bound $t^{-N/2-1}$.
+
+\section{The obstruction theorem}
+
+Let
+\[
+ X=L^1_w(\R^N),\qquad
+ \|f\|_{1,w}=\int_{\R^N}|f(x)|w(x)\,dx,
+\]
+with the mixed weight above.  Write the heat kernel in the form
+\[
+ (H_tf)(x)=(\e^{t\Delta}f)(x)
+ =\gamma_N t^{-N/2}\int_{\R^N}
+   \exp\!\left(-\frac{|x-y|^2}{4t}\right)f(y)\,dy,
+\]
+where the positive normalization constant $\gamma_N$ is immaterial.
+
+\begin{theorem}\label{thm:main}
+Let $N>1$ and let $E\subset X$ be a closed subspace of finite codimension.
+There are constants $c_E>0$ and $T_E\ge1$ such that
+\[
+ \|H_t|_E\|_{X\to L^\infty(\R^N)}
+ \ge c_E t^{-N/2-1}
+ \qquad (t\ge T_E).
+\]
+Consequently, no Schauder basis of $X$ has the arbitrary tail-decay property
+\eqref{eq:desired}.  Thus Question $3^\circ$ has a negative answer.
+\end{theorem}
+
+\begin{proof}
+Fix a nonnegative, nonzero function
+$\varphi\in C_c^\infty(\R^N)$ whose support lies in the ball
+$B(0,\rho)$.  Let
+\[
+ d=\dim(X/E),\qquad D=d+1.
+\]
+Choose a constant $L>0$, to be fixed below, and for $t\ge1$ define centers
+and weighted normalizing constants by
+\[
+ z_j(t)=jL\sqrt t\,e_2,
+ \qquad
+ a_{j,t}=\int_{\R^N}\varphi(u)w(z_j(t)+u)\,du,
+ \qquad 1\le j\le D.
+\]
+Set
+\[
+ g_{j,t}(x)=\frac{\varphi(x-z_j(t))}{a_{j,t}}.
+\]
+For all sufficiently large $t$, the supports of these $D$ functions are
+pairwise disjoint, and $\|g_{j,t}\|_{1,w}=1$.
+
+The $D$-dimensional space spanned by the $g_{j,t}$ meets $E$ nontrivially,
+because $X/E$ has dimension $d<D$.  Hence there are scalars $c_1,\ldots,c_D$,
+not all zero, such that
+\[
+ f_t=\sum_{j=1}^{D}c_jg_{j,t}\in E.
+\]
+After rescaling, assume $\sum_j|c_j|=1$.  Disjointness of the supports then
+gives the exact identity
+\[
+ \|f_t\|_{1,w}=\sum_{j=1}^{D}|c_j|=1.
+\]
+
+Put $q_j=|c_j|/a_{j,t}$ and choose $k$ with
+$q_k=\max_jq_j$.  On the fixed support of $\varphi$, all weight factors other
+than the $x_2$ factor are bounded above by constants independent of $j$ and
+$t$, while
+\[
+ (1+|jL\sqrt t+u_2|)^2\le C_Lj^2t
+ \qquad (t\ge1,\ |u_2|\le\rho).
+\]
+It follows that
+\begin{equation}\label{eq:aj}
+ a_{j,t}\le Cj^2t,
+ \qquad
+ \sum_{j=1}^{D}a_{j,t}\le C_Et.
+\end{equation}
+Since $1=\sum_j|c_j|=\sum_jq_ja_{j,t}$, we obtain
+\begin{equation}\label{eq:q}
+ q_k\ge \frac{1}{\sum_{j=1}^{D}a_{j,t}}
+ \ge C_E^{-1}t^{-1}.
+\end{equation}
+
+We now evaluate $H_tf_t$ at $z_k(t)$.  The diagonal integral satisfies
+\begin{align}
+ I_{k,t}
+ &:=\gamma_Nt^{-N/2}\int
+ \exp\!\left(-\frac{|u|^2}{4t}\right)\varphi(u)\,du \notag\\
+ &\ge \gamma_N\e^{-\rho^2/4}\|\varphi\|_1t^{-N/2}
+ =:A_0t^{-N/2}.                                      \label{eq:diag}
+\end{align}
+For $j\ne k$ and all sufficiently large $t$,
+\[
+ |z_k(t)-z_j(t)-u|
+ \ge L|j-k|\sqrt t-\rho
+ \ge \frac L2|j-k|\sqrt t
+ \qquad (u\in\operatorname{supp}\varphi),
+\]
+and therefore the corresponding off-diagonal integral is at most
+\begin{equation}\label{eq:off}
+ I_{j,k,t}
+ \le \gamma_N\|\varphi\|_1t^{-N/2}
+ \exp\!\left(-\frac{L^2|j-k|^2}{16}\right).
+\end{equation}
+Choose $L$ once and for all so large that
+\[
+ 2\gamma_N\|\varphi\|_1
+ \sum_{r=1}^{\infty}\exp(-L^2r^2/16)\le \frac{A_0}{2}.
+\]
+Using $q_j\le q_k$, the reverse triangle inequality together with
+\eqref{eq:diag}--\eqref{eq:off} yields
+\begin{align*}
+ |(H_tf_t)(z_k(t))|
+ &\ge q_k I_{k,t}-\sum_{j\ne k}q_jI_{j,k,t}\\
+ &\ge \frac{A_0}{2}q_kt^{-N/2}\\
+ &\ge c_Et^{-N/2-1},
+\end{align*}
+where the last line uses \eqref{eq:q}.  Since $f_t\in E$ and
+$\|f_t\|_{1,w}=1$, this proves the operator-norm lower bound.
+
+Finally, suppose a Schauder basis had the property requested in the source.
+Choose an integer $m>N/2+1$ and let $E_m$ be its corresponding closed basis
+tail.  This tail has finite codimension, so the lower bound just proved and
+\eqref{eq:desired} would imply, for all sufficiently large $t$,
+\[
+ c_{E_m}t^{-N/2-1}\le C_mt^{-m}.
+\]
+Multiplication by $t^{N/2+1}$ and passage to $t\to\infty$ gives
+$c_{E_m}\le0$, a contradiction.  Hence the requested basis does not exist.
+\end{proof}
+
+\section{Verification notes and scope}
+
+The proof establishes more than failure of one tensor-product construction:
+it obstructs the desired estimate on every closed finite-codimensional
+subspace of $L^1_w(\R^N)$.  The exponent $N/2+1$ comes from ordinary heat
+smoothing ($N/2$) plus the quadratic transverse weight (one further power of
+$t$ at distance $\sqrt t$).
+
+The following points were checked adversarially.
+\begin{enumerate}
+\item Translation occurs only in the second coordinate, which exists because
+      $N>1$; the exponential $x_1$ factor therefore remains uniformly bounded
+      on the translated bump supports.
+\item The vector in $E$ may have arbitrary real or complex coefficients.
+      Positivity of the Gaussian and the reverse triangle inequality make the
+      diagonal-dominance estimate insensitive to their phases.
+\item The test vector may depend on $t$, as is appropriate for a lower bound
+      on the operator norm of $H_t|_E$.
+\item Constants are allowed to depend on $E$ (through $D=d+1$), but never on
+      $t$.  This is enough to contradict any faster power bound.
+\item No computational assertion or unproved auxiliary lemma enters the
+      proof.
+\end{enumerate}
+
+\section{Novelty check and limitations}
+
+A bounded search on 9 August 2026 used arXiv, exact-title searches, the author
+names, the displayed weight, and the phrases ``fast growing in one
+coordinate'' and ``Schauder basis heat equation.''  It located the arXiv
+source and author-hosted versions, including a later manuscript that proves a
+stronger higher-dimensional theorem for weights fast in every direction.  No
+paper or manuscript answering the displayed mixed-weight question was found.
+The later theorem does not apply here: the factors $(1+|x_j|)^2$ fail the
+all-orders growth assumption in the transverse directions.
+
+This is a bounded, not exhaustive, novelty review.  Human review should focus
+on the normalization estimate \eqref{eq:aj}--\eqref{eq:q} and the Gaussian
+diagonal-dominance step.  Subject to that review, the argument is a complete
+negative answer to the literal Question $3^\circ$.
+
+\begin{thebibliography}{9}
+\bibitem{BLT}
+J. Bonet, W. Lusky, and J. Taskinen,
+\emph{Schauder bases and the decay rate of the heat equation},
+arXiv:1802.01902 [math.FA], 2018, Question $3^\circ$, p.~14.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,200 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,graphicx,booktabs}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\qtilde}{\widetilde q}
+\newcommand{\CMQd}{\mathrm{CMQd}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.45em}
+
+\title{A One-Dimensional Counterexample to\\
+\texorpdfstring{$G_M=F_M$}{G M = F M} for CMQd Sets}
+\author{Run \texttt{fa\_banach\_001}, lane 10}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\textbf{Status.} Candidate full counterexample, likely valid, for expert
+review.
+
+\section{Source question}
+
+Let $E$ be a real Banach space, $B=E\times E^*$, and
+\[
+ q(x,x^*)=\langle x,x^*\rangle,\qquad
+ r=q+\tfrac12\|\cdot\|^2 .
+\]
+The source calls a subset $M\subset B$ \emph{CMQd} when it is closed,
+monotone, and quasidense, the last condition meaning
+\[
+ \inf_{m\in M}r(m-b)=0\qquad(b\in B).
+\]
+Writing $L(x,x^*)=(x^*,\widehat x)$ and
+$\qtilde(y^*,y^{**})=\langle y^*,y^{**}\rangle$, it defines, for a
+maximally monotone $M$,
+\begin{align*}
+ P_M(b)&=-\inf_{m\in M}q(m-b),\\
+ G_M(b^*)&=-\inf_{m\in M}\qtilde(Lm-b^*),\\
+ F_M(b^*)&=-\inf_{b\in B}
+   \bigl[P_M(b)+\qtilde(b^*-Lb)\bigr].
+\end{align*}
+Every CMQd set is maximally monotone
+\cite[Theorem 4.2]{Simons}.  The source proves $G_M\leq F_M$ and asks in
+Remark~11.4 whether equality holds for every CMQd set
+\cite[Remark 11.4, PDF p.~20]{Simons}.
+
+\begin{center}
+ \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section{Claimed contribution}
+
+\begin{theorem}\label{thm:main}
+Let $E=\R$ with its usual norm.  For every $\lambda>0$, the line
+\[
+ M_\lambda=\{(s,\lambda s):s\in\R\}\subset B=\R^2
+\]
+is CMQd.  Under the canonical identifications $B^*=\R^2$ and
+$L(u,v)=(v,u)$, its three source-paper functions are
+\begin{align}
+ P_{M_\lambda}(u,v)
+   &=\frac{(v-\lambda u)^2}{4\lambda},\label{eq:P}\\
+ G_{M_\lambda}(y,z)
+   &=\frac{(y-\lambda z)^2}{4\lambda},\label{eq:G}\\
+ F_{M_\lambda}(y,z)
+   &=
+   \begin{cases}
+    0,&y=\lambda z,\\
+    +\infty,&y\neq\lambda z.
+   \end{cases}\label{eq:F}
+\end{align}
+Consequently $G_{M_\lambda}\neq F_{M_\lambda}$.  In particular, for
+$\lambda=1$ and $b^*=(0,1)$,
+\[
+ G_{M_1}(0,1)=\frac14
+ \qquad\text{but}\qquad
+ F_{M_1}(0,1)=+\infty.
+\]
+Thus the conjecture in Remark~11.4 is false, already in dimension one.
+\end{theorem}
+
+\section{Proof intuition}
+
+The penalty $P_{M_\lambda}(u,v)$ controls only the transverse coordinate
+$v-\lambda u$.  In the definition of $F_M$, the remaining quadratic
+expression instead contains $(\lambda u+v)^2$.  It therefore has a null
+direction $(u,v)=(t,-\lambda t)$.  Unless the dual point lies on the line
+$y=\lambda z$, the linear part drifts to $-\infty$ along this direction,
+forcing $F_M=+\infty$.  Direct minimization over the graph defining $G_M$
+has no such escape and always gives a finite quadratic value.
+
+\section{Proof of Theorem~\ref{thm:main}}
+
+Fix $\lambda>0$.  The set $M_\lambda$ is closed.  It is monotone because
+\[
+ q\bigl((s,\lambda s)-(t,\lambda t)\bigr)
+   =\lambda(s-t)^2\geq0.
+\]
+For an arbitrary $b=(a,c)\in B$,
+\begin{align*}
+ r\bigl((s,\lambda s)-(a,c)\bigr)
+ &= (s-a)(\lambda s-c)
+    +\frac12\bigl[(s-a)^2+(\lambda s-c)^2\bigr]\\
+ &=\frac12\bigl[(1+\lambda)s-(a+c)\bigr]^2.
+\end{align*}
+Its infimum over $s\in\R$ is zero, attained at
+$s=(a+c)/(1+\lambda)$.  Hence $M_\lambda$ is quasidense and therefore
+CMQd.
+
+For $(u,v)\in B$, completing the square gives
+\begin{align*}
+ (s-u)(\lambda s-v)
+ &=
+ \lambda\left(s-\frac{v+\lambda u}{2\lambda}\right)^2
+ -\frac{(v-\lambda u)^2}{4\lambda}.
+\end{align*}
+Taking the negative infimum proves \eqref{eq:P}.
+
+Now let $b^*=(y,z)\in B^*$.  Since
+$L(s,\lambda s)=(\lambda s,s)$,
+\begin{align*}
+ (\lambda s-y)(s-z)
+ &=
+ \lambda\left(s-\frac{y+\lambda z}{2\lambda}\right)^2
+ -\frac{(y-\lambda z)^2}{4\lambda}.
+\end{align*}
+The definition of $G_M$ immediately gives \eqref{eq:G}.
+
+It remains to compute $F_M$.  For $b=(u,v)$, the expression whose
+infimum occurs in its definition is
+\begin{align}
+ J(u,v)
+ &:=
+ P_{M_\lambda}(u,v)+\qtilde\bigl((y,z)-L(u,v)\bigr)\notag\\
+ &=\frac{(v-\lambda u)^2}{4\lambda}
+   +(y-v)(z-u)\notag\\
+ &=\frac{(\lambda u+v)^2}{4\lambda}
+   -yu-zv+yz.\label{eq:J}
+\end{align}
+Along $(u,v)=(t,-\lambda t)$ this becomes
+\[
+ J(t,-\lambda t)=(\lambda z-y)t+yz.
+\]
+If $y\neq\lambda z$, this affine function is unbounded below, so
+$\inf J=-\infty$ and $F_{M_\lambda}(y,z)=+\infty$.
+
+If $y=\lambda z$, put $w=\lambda u+v$ in \eqref{eq:J}.  Then
+\[
+ J(u,v)
+ =\frac{w^2}{4\lambda}-zw+\lambda z^2
+ =\frac{(w-2\lambda z)^2}{4\lambda}.
+\]
+Its infimum is zero.  Thus $F_{M_\lambda}(y,z)=0$, proving
+\eqref{eq:F} and the theorem.
+
+\section{Stress checks and scope}
+
+The value $+\infty$ in \eqref{eq:F} is permitted by the source's stated
+codomain $F_M\colon B^*\to]-\infty,\infty]$.  No nonreflexive phenomenon,
+closure subtlety, or unattained infimum is involved.  For the displayed
+witness, one can check the divergence without any parameter algebra:
+\[
+ P_{M_1}(u,v)+(0-v)(1-u)=\frac{(u+v)^2}{4}-v.
+\]
+At $(u,v)=(-N,N)$ this equals $-N$, whereas the direct computation of
+$G_{M_1}(0,1)$ is $-\inf_s s(s-1)=1/4$.
+
+The theorem gives a complete description of $P_M,G_M,F_M$ for every
+positive scalar graph, rather than merely one isolated witness.  It does
+not attempt to characterize all CMQd subsets on which equality holds.
+
+The script \texttt{code/verify\_counterexample.py} independently checks
+every completed-square identity and the explicit witness in exact symbolic
+arithmetic.  The analytic proof above does not depend on computation.
+
+A bounded novelty check was performed on 11 August 2026.  The run's cheap
+indexes were searched by arXiv id, exact conjecture text, title, CMQd,
+quasidensity, and the pair $G_M,F_M$; the local citing corpus and targeted
+web/arXiv searches were also checked.  No later proof, counterexample, or
+matching scalar computation was located.  This is bounded negative
+evidence, not a priority claim.
+
+\textbf{Human-review recommendation.}  The result is elementary enough for
+direct line-by-line review.  The critical checks are that the source uses
+the displayed definition of $F_M$ with its leading minus sign, and that
+the codomain explicitly allows $+\infty$.
+
+\begin{thebibliography}{9}
+\small
+\bibitem{Simons}
+Stephen Simons,
+\emph{Faces of quasidensity},
+arXiv:2407.00479 (2024),
+\url{https://arxiv.org/abs/2407.00479}.
+\end{thebibliography}
+
+\end{document}

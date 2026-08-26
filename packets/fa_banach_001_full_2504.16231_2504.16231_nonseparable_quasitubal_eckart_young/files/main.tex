@@ -1,0 +1,250 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\emergencystretch=3em
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\A}{\mathcal A}
+\newcommand{\Hh}{\mathcal H}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\irank}{\operatorname{irank}}
+\newcommand{\supp}{\operatorname{supp}}
+
+\title{Quasitubal SVD and Eckart--Young Optimality\\over Arbitrary Hilbert Spaces}
+\author{A full solution of the nonseparable branch in arXiv:2504.16231}
+\date{August 11, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The separability assumption in the quasitubal construction of
+Mor--Avron is unnecessary.  For an arbitrary orthonormal-basis index set
+$I$, the correct pair is $\ell_2(I)\triangleleft\ell_\infty(I)$.  We identify
+the quasitube algebra, construct the qSVD pointwise, and prove the exact
+global Eckart--Young formula for finite matrices whose entries lie in the
+possibly nonseparable Hilbert space.  The key fact is that every individual
+$\ell_2(I)$ tensor has countable coordinate support.
+\end{abstract}
+
+\section{Source question and answer}
+
+Section 9 of Mor--Avron asks how to ``define and establish optimality results
+for non separable Hilbert spaces'' (pages 32--33 of the arXiv PDF).
+
+\begin{center}
+\includegraphics[width=.96\linewidth]{figures/open_problem_crop.png}
+\includegraphics[width=.96\linewidth]{figures/open_problem_crop_continuation.png}
+\end{center}
+
+We answer the nonseparable-Hilbert branch completely: replace the countable
+coordinate set by an arbitrary index set.  The algebraic qSVD works on all
+coordinates, while square summability automatically makes the approximation
+problem countable for each concrete tensor.  We treat complex Hilbert spaces;
+the real version is identical with orthogonal in place of unitary matrices.
+
+\section{Setup}
+
+Let $\Hh$ be an arbitrary Hilbert space, let $(e_i)_{i\in I}$ be an
+orthonormal basis, and let
+\[
+ F:\Hh\longrightarrow\ell_2(I),\qquad
+ (Fx)_i=\langle x,e_i\rangle
+\]
+be the coordinate unitary.  Here sums over arbitrary sets mean suprema of
+finite partial sums.  Define
+\[
+ x\star y=F^{-1}((Fx)(Fy)),\qquad x,y\in\Hh,
+\]
+where the product on the right is coordinatewise.  This is well-defined
+because $\ell_2(I)\ell_2(I)\subset\ell_1(I)\subset\ell_2(I)$.
+Put $\A=\ell_\infty(I)$, acting diagonally on $\ell_2(I)$ and hence on
+$\Hh$.  Thus $\Hh\cong\ell_2(I)$ is a two-sided $*$-ideal in the commutative
+unital $C^*$-algebra $\A$.
+
+For $X=(x_{ab})\in\A^{m\times p}$, write
+\[
+ X(i)=\bigl(x_{ab}(i)\bigr)_{a,b}\in\mathbb C^{m\times p}.
+\]
+The quasitubal product and adjoint are characterized by
+$(XY)(i)=X(i)Y(i)$ and $X^*(i)=X(i)^*$.  We use
+\[
+ \|X\|_{\mathrm{op}}=\sup_{i\in I}\|X(i)\|_2.
+\]
+If $X\in\Hh^{m\times p}$, its Hilbert--Frobenius norm is
+\[
+ \|X\|_{\Hh,F}^2
+ =\sum_{a,b}\|x_{ab}\|_{\Hh}^2
+ =\sum_{i\in I}\|X(i)\|_F^2.
+\]
+Finally define the implicit rank
+\[
+ \irank(Y)=\sum_{i\in I}\rank Y(i)
+\]
+as a cardinal-valued sum.  For finite $q$, $\irank(Y)\le q$ says precisely
+that only finitely many slices are nonzero and their matrix ranks have total
+at most $q$; it therefore agrees with the scalar dimension of the range of
+the induced quasitubal multiplier in the only case used below.
+
+\section{Idea of Proof}
+
+There are three short observations.
+First, module endomorphisms of $\ell_2(I)$ are diagonal: the coordinate
+idempotents force this, and boundedness makes their diagonal an element of
+$\ell_\infty(I)$.  Second, a qSVD is just an ordinary matrix SVD of every
+$X(i)$; no measurability or continuity selection is required because
+$\ell_\infty(I)$ contains all bounded families.  Third, if the entries of
+$X$ lie in $\ell_2(I)$, then
+$\sum_{i,j}s_j(i)^2<\infty$.  Hence the positive scalar singular values have
+countable support and can be sorted.  Ordinary matrix Eckart--Young on every
+slice reduces the global problem to allocating $q$ retained scalar singular
+values, whose optimum is plainly to retain the largest $q$.
+
+\section{Algebra and qSVD without separability}
+
+\begin{lemma}[The arbitrary-index quasitube algebra]
+Every $\Hh$-module endomorphism of $(\Hh,\star)$ is automatically bounded,
+and these endomorphisms form a commutative
+unital $C^*$-algebra canonically and isometrically $*$-isomorphic to
+$\ell_\infty(I)$.  Under this identification, $a\in\ell_\infty(I)$ acts by
+$M_a x=F^{-1}(aFx)$ and $\|M_a\|=\|a\|_\infty$.
+\end{lemma}
+
+\begin{proof}
+Work in $\ell_2(I)$ and denote the coordinate vector by $\delta_i$.  If $T$
+is a module map, then
+\[
+ T\delta_i=T(\delta_i^2)=\delta_iT\delta_i=a_i\delta_i.
+\]
+For arbitrary $x$, module linearity gives
+$\delta_iTx=T(\delta_i x)=a_ix_i\delta_i$; hence $Tx=(a_ix_i)_i$.
+If $(a_i)$ were unbounded, we could choose distinct $i_n$ with
+$|a_{i_n}|\ge n^2$ and take $x=\sum_{n\ge1}n^{-1}\delta_{i_n}\in\ell_2(I)$.
+Then $Tx\notin\ell_2(I)$, a contradiction.  Thus $a\in\ell_\infty(I)$.
+Conversely every bounded family
+$a$ defines such a module map, and testing on $\delta_i$ gives
+$\|M_a\|=\sup_i|a_i|$.  Composition and adjoint become coordinatewise
+multiplication and conjugation, proving the claim.
+\end{proof}
+
+\begin{lemma}[Arbitrary-index qSVD]
+Every $X\in\A^{m\times p}$ has a factorization
+\[
+ X=U\,S\,V^*,
+\]
+where $U\in\A^{m\times m}$ and $V\in\A^{p\times p}$ are unitary and
+$S\in\A^{m\times p}$ is diagonal with
+$s_1(i)\ge\cdots\ge s_r(i)\ge0$ for $r=\min(m,p)$ and every $i\in I$.
+\end{lemma}
+
+\begin{proof}
+For every $i$, choose an ordinary full matrix SVD
+$X(i)=U(i)S(i)V(i)^*$.  Every entry of a unitary matrix has modulus at most
+one, and $s_j(i)\le\|X(i)\|_2\le\|X\|_{\mathrm{op}}$.  Thus all chosen
+entries define elements of $\ell_\infty(I)$, and the pointwise identities are
+exactly the asserted identities over $\A$.
+\end{proof}
+
+\section{Global Eckart--Young theorem}
+
+\begin{theorem}[Nonseparable quasitubal Eckart--Young]
+Let $X\in\Hh^{m\times p}$ and let $s_j(i)$ be the singular values in an
+arbitrary-index qSVD.  List the positive multiset
+\[
+ \{s_j(i):i\in I,\ 1\le j\le r\}
+\]
+with multiplicity in nonincreasing order
+$\sigma_1\ge\sigma_2\ge\cdots>0$, padding by zeros if the list is finite.
+For $q\ge0$, let $X_{[q]}$ be obtained by retaining singular rank-one terms
+corresponding to the first $q$ entries.  Ties may be resolved arbitrarily,
+subject to retaining earlier singular directions within each slice.  Then
+\begin{align*}
+ \irank(X_{[q]})&\le q,\\
+ \inf_{\substack{Y\in\A^{m\times p}\\\irank(Y)\le q}}
+ \|X-Y\|_{\Hh,F}^2
+ &=\|X-X_{[q]}\|_{\Hh,F}^2
+ =\sum_{n>q}\sigma_n^2,\\
+ \|X-X_{[q]}\|_{\mathrm{op}}&=\sigma_{q+1}\longrightarrow0.
+\end{align*}
+Moreover $X_{[q]}$ has entries in the span of at most $q$ members of the
+chosen orthonormal basis of $\Hh$, so every truncation is finitely
+representable.
+\end{theorem}
+
+\begin{proof}
+Unitary invariance of the Frobenius norm in every finite slice gives
+\[
+ \sum_{i\in I}\sum_{j=1}^r s_j(i)^2
+ =\sum_{i\in I}\|X(i)\|_F^2
+ =\|X\|_{\Hh,F}^2<\infty.                                      \tag{1}
+\]
+An arbitrary square-summable family has countable support: for each $k\ge1$
+the set on which its absolute value is at least $1/k$ is finite, and the
+support is the countable union of these sets.  This proves that the displayed
+multiset is countable.  Equation (1) also implies $\sigma_n\to0$ and permits
+the nonincreasing enumeration.
+
+The construction of $X_{[q]}$ uses $q$ scalar rank-one terms, so its implicit
+rank is at most $q$ and only finitely many basis coordinates occur.  Direct
+orthogonality yields the tail identity
+\[
+ \|X-X_{[q]}\|_{\Hh,F}^2=\sum_{n>q}\sigma_n^2.                 \tag{2}
+\]
+
+Now take $Y$ with $\irank(Y)\le q$ and put $r_i=\rank Y(i)$.  Such a $Y$ has
+finite support and belongs automatically to $\Hh^{m\times p}$.  The ordinary
+matrix Eckart--Young theorem gives
+\[
+ \|X(i)-Y(i)\|_F^2\ge\sum_{j>r_i}s_j(i)^2.
+\]
+Summing in $i$, the right side deletes from (1) at most $q$ members of the
+singular-value multiset.  The largest possible deleted squared mass is
+$\sum_{n\le q}\sigma_n^2$, proving from (2) that no $Y$ improves on
+$X_{[q]}$.
+
+With the stated tie convention, the spectral norm of each residual slice is
+its largest omitted singular value.  Taking the supremum over $i$ therefore
+gives $\|X-X_{[q]}\|_{\mathrm{op}}=\sigma_{q+1}$, which tends to zero.
+\end{proof}
+
+\begin{corollary}[Separable reduction of each tensor]
+For every finite $X\in\Hh^{m\times p}$ there is a separable reducing
+subspace $\Hh_X\subseteq\Hh$, spanned by a countable subset of the fixed
+basis, containing $X$ and all its optimal finite-rank truncations.  Thus the
+nonseparable theory is globally defined on $\ell_\infty(I)$ but every
+individual Hilbert-valued approximation problem is automatically separable.
+\end{corollary}
+
+\begin{proof}
+Take the union of the coordinate supports of the finitely many entries of
+$X$.  Each support is countable, and all nonzero slice singular vectors and
+truncations remain on this union.
+\end{proof}
+
+\section{Verification, novelty, and scope}
+
+A deterministic finite-model verifier enumerates every allocation of rank
+budgets $0$ through $8$ among seven random complex matrix slices and confirms
+that the minimum slice-wise Eckart--Young tail equals the tail after globally
+sorting all scalar singular values.  It also checks the coordinate ideal and
+diagonal multiplier inequalities.  The LaTeX source, verifier output, and
+bounded novelty-search record accompany this packet.
+
+The result fully answers the nonseparable-Hilbert-space branch for the
+orthonormal-basis tubal product used by the source.  It does not address the
+source's separate suggestion concerning Banach spaces with a semidefinite
+form, nor does it optimize the choice of orthonormal basis for a given data
+set.
+
+\sloppy
+\begin{thebibliography}{9}
+\bibitem{MA}
+U. Mor and H. Avron,
+arXiv:2504.16231, 2025.
+\end{thebibliography}
+
+\end{document}

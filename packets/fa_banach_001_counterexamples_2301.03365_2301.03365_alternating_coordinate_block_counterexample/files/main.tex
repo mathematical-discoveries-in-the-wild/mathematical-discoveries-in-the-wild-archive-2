@@ -1,0 +1,178 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,graphicx,microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage[T1]{fontenc}
+
+\newtheorem{theorem}{Theorem}
+\newcommand{\N}{\mathbb N}
+\newcommand{\ellTwo}{\ell_2(\N)}
+
+\title{An Alternating Coordinate-Block Counterexample to a Banach
+Feichtinger Conjecture}
+\author{Discovery packet for arXiv:2301.03365}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\linewidth}{\textbf{Status.}
+Full counterexample, pending human review. Conjecture~2.5 is false under the
+strict diagonal-dominance formulation in Definition~2.4 and also under the
+usual Riesz-sequence reading. The construction is not localized and leaves
+the paper's Theorem~2.7 intact.}}
+\end{center}
+
+\section{Source conjecture and terminology}
+
+Krishna's \emph{Localized Bounded Below Approximate Schauder Frames are
+Finite Unions of Approximate Riesz Sequences}, arXiv:2301.03365
+\cite{Krishna}, calls a pair $(\{f_n\},\{\tau_n\})$ an approximate Schauder
+frame (ASF) when
+\[
+ Sx=\sum_{n=1}^{\infty} f_n(x)\tau_n
+\]
+defines a bounded invertible operator. It is \emph{bounded below} when
+$\inf_n|f_n(\tau_n)|>0$.
+
+Definition~2.4 asks for a finite partition
+$\N=Q_1\cup\cdots\cup Q_r$ such that every class obeys
+\begin{equation}\label{eq:dd}
+ \inf_{n\in Q_j}\left(
+ |f_n(\tau_n)|-\sum_{\substack{m\in Q_j\\m\ne n}}
+ |f_n(\tau_m)|\right)>0.
+\end{equation}
+Conjecture~2.5 states that every bounded-below ASF admits the proposed finite
+decomposition. The conjecture itself prints ``ARBs,'' which is not defined in
+the paper, while the title, abstract, section heading, Definition~2.4, and
+Theorem~2.7 use ``ARSs.'' The proof of Theorem~2.7 establishes exactly
+\eqref{eq:dd}. We therefore refute this precise displayed condition and also
+check the ordinary Riesz-sequence interpretation.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.8\linewidth]{figures/open_problem_crop.png}
+\caption{Definition~2.4 and Conjecture~2.5 on page 2 of the source paper.}
+\label{fig:source}
+\end{figure}
+
+\section{Proof intuition}
+
+An ASF only requires the \emph{ordered} rank-one series to converge to an
+invertible operator. This permits large finite cancellation patterns whose
+supports escape to infinity. On the $k$th coordinate, use an odd block of
+$2k+1$ copies of the same vector, with coefficient functionals carrying
+alternating signs. The block sum is one coordinate projection, so the full
+frame operator is the identity. But the block sizes are unbounded. Any finite
+coloring repeats a color inside some block; that same-color pair has
+off-diagonal interaction of modulus one, equal to the diagonal, and destroys
+strict diagonal dominance. The identical vectors also rule out a Riesz
+sequence independently of the source's terminology.
+
+\section{The counterexample}
+
+Let $(e_k)_{k\ge1}$ be the standard orthonormal basis of $\ellTwo$, with
+coordinate functionals $e_k^*$. Partition $\N$ into the consecutive odd
+blocks
+\[
+ I_k=\{k^2,k^2+1,\ldots,(k+1)^2-1\},\qquad |I_k|=2k+1.
+\]
+For $n\in I_k$, define
+\begin{equation}\label{eq:construction}
+ \tau_n=e_k,
+ \qquad
+ f_n=(-1)^{n-k^2}e_k^*.
+\end{equation}
+
+\begin{theorem}\label{thm:main}
+The pair in \eqref{eq:construction} is a bounded-below ASF for $\ellTwo$ with
+frame operator the identity, but no finite partition of $\N$ satisfies
+\eqref{eq:dd}. Moreover, no finite partition makes every vector subsequence
+$(\tau_n)_{n\in Q_j}$ a Riesz sequence.
+\end{theorem}
+
+\begin{proof}
+Write $P_k$ for the projection onto
+$\operatorname{span}\{e_1,\ldots,e_k\}$ and $P_0=0$. For $x\in\ellTwo$ and
+$n\in I_k$,
+\[
+ f_n(x)\tau_n=(-1)^{n-k^2}x_ke_k.
+\]
+The signs on $I_k$ are $+1,-1,+1,\ldots,-1,+1$. Consequently their total is
+one, and every initial sum within that block is either zero or one. It follows
+that every frame partial sum ending inside $I_k$ equals either $P_{k-1}x$ or
+$P_kx$. Since $P_kx\to x$ in $\ell_2$, the ordered series converges for every
+$x$ and
+\[
+ Sx=\sum_{n=1}^{\infty}f_n(x)\tau_n=x.
+\]
+Thus $S=I$ is bounded and invertible. Also
+\[
+ |f_n(\tau_n)|=1\qquad(n\in\N),
+\]
+so the ASF is bounded below with lower value one.
+
+Now consider an arbitrary partition $\N=Q_1\cup\cdots\cup Q_r$. Choose $k$
+with $2k+1>r$. By the pigeonhole principle there exist distinct
+$n,m\in I_k$ in one class, say $Q_j$. Since $\tau_n=\tau_m=e_k$,
+\[
+ |f_n(\tau_n)|=1,
+ \qquad |f_n(\tau_m)|=1.
+\]
+Therefore
+\[
+ |f_n(\tau_n)|-
+ \sum_{\substack{q\in Q_j\\q\ne n}}|f_n(\tau_q)|\le0,
+\]
+and the infimum required in \eqref{eq:dd} cannot be positive. Since the
+partition was arbitrary, no finite partition works.
+
+Finally, the same indices have identical vectors $\tau_n=\tau_m$. The
+synthesis map on their class sends the nonzero finitely supported coefficient
+vector with entries $1$ at $n$ and $-1$ at $m$ to zero. Hence that vector
+subsequence is not a Riesz sequence (or Riesz basic sequence) under the usual
+injectivity/minimality requirement. No finite partition can avoid this
+collision in all blocks.
+\end{proof}
+
+\section{Scope and adversarial checks}
+
+The example does not satisfy intrinsic localization. Indeed, within $I_k$ one
+has $|f_n(\tau_m)|=1$ for all $n,m$, while the block diameters $2k$ tend to
+infinity. Thus no fixed $A>0$ and $s>1$ can give the paper's decay bound
+$A/(1+|n-m|)^s$. This is why the counterexample refutes the general
+Conjecture~2.5 without contradicting its localized Theorem~2.7.
+
+The construction also exposes the exact role of conditional ordering. The
+partial sums are uniformly bounded coordinate projections, so the ASF
+definition is met without ambiguity, but alternating signs allow arbitrarily
+large finite redundancy. Stronger hypotheses such as unconditionality or
+factorization through an $\ell_p$ analysis space are not claimed here.
+
+The script \texttt{verify\_finite\_blocks.py} checks the block sums and partial
+sums exactly and exhausts small coloring cases. It is a sanity check; the
+general proof is the argument above.
+
+\section{Novelty and review recommendation}
+
+A bounded search on 13 August 2026 covered the local run indexes and parsed
+arXiv corpus; exact conjecture and title phrases; the ASF/ARS terminology;
+and web searches for Conjecture~2.5, arXiv:2301.03365 with
+``counterexample/refute/false,'' and bounded-below ASF counterexamples. The
+results found the target and mirrors but no prior counterexample or explicit
+resolution. This does not establish exhaustive novelty.
+
+A human reviewer should focus on (i) whether ordered convergence is indeed
+the intended ASF convention in Definition~2.1; (ii) the scope chosen in light
+of the source's `ARB' typo; and (iii) the bounded novelty search. Human review
+has not yet been completed.
+
+\begin{thebibliography}{9}
+\bibitem{Krishna}
+K. Mahesh Krishna,
+\emph{Localized Bounded Below Approximate Schauder Frames are Finite Unions
+of Approximate Riesz Sequences}, arXiv:2301.03365 (2023).
+\end{thebibliography}
+
+\end{document}

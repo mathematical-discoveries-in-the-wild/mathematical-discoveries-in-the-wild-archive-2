@@ -1,0 +1,279 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\AD}{\operatorname{AD}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\T}{\mathbb T}
+\newcommand{\1}{\mathbf 1}
+
+\title{A Dyadic-Digit Extension Showing that $\AD(0,1)$ Is Not Maximal\\
+\large Candidate full negative answer to Problem 3.9 of arXiv:2002.00590}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 15}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{black}{gray!10}{\parbox{0.91\linewidth}{
+\textbf{Status.} Candidate full negative answer, likely valid, requiring expert review.
+}}
+\end{center}
+
+\section{Source problem}
+
+Ber, Huang, Kudaybergenov, and Sukochev prove that the classical derivative
+has no dyadic-translation-invariant extension to all of $S(0,1)$ and ask
+whether the algebra of approximately differentiable functions is nevertheless
+maximal among subalgebras admitting such an extension
+\cite[Problem~3.9]{BHKS}.  Their question is:
+
+\begin{quote}
+Is the algebra $\AD(0,1)$ a maximal subalgebra in $S(0,1)$ admitting a
+translation-invariant derivation as an extension of
+$\frac{d}{dt}:D(0,1)\to S(0,1)$?
+\end{quote}
+
+The complete source statement appears on source PDF p.~13:
+
+\begin{center}
+\includegraphics[width=0.98\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section{Definitions}
+
+Identify $(0,1)$ modulo endpoints with the circle $\T=\mathbb R/\mathbb Z$,
+equipped with Lebesgue measure $\mu$.  Write $S(0,1)=L^0(\T)$ modulo almost
+everywhere equality.  The algebra $\AD(0,1)$ consists of classes with a finite
+approximate derivative almost everywhere; its derivation is denoted
+$\partial_{\!\AD}$.  It is a regular, integrally closed unital
+$*$-subalgebra of $S(0,1)$ and contains every idempotent
+\cite[Section~3]{BKS}.
+
+For a dyadic rational $r$, let
+\[
+ (\alpha_r f)(t)=f(\{t-r\}).
+\]
+The derivation $\partial_{\!\AD}$ commutes with every $\alpha_r$
+\cite{BHKS}.  An element $a\in S(0,1)$ is \emph{weakly transcendental} over
+a subalgebra $A$ if $a\ne0$ and no nonzero localization $ea$, where
+$e\leq\supp(a)$ is an idempotent, is integral over $A$.
+
+\section{Proof intuition}
+
+Dyadic rotations preserve the infinite binary tail of a point and only
+permute a finite binary prefix.  This suggests adjoining a function that
+depends strongly on every binary digit: all of its dyadic-translation
+increments will then be finite-valued, hence invisible to the approximate
+derivative.  We use
+\[
+ h(t)=\sum_{n\geq1}(3/4)^n b_n(t).
+\]
+The weights decay too slowly relative to the spatial scale $2^{-n}$.  On the
+half-set where the $n$th digit is zero, moving by $2^{-n}$ creates slope
+$(3/2)^n$.  This occurs asymptotically on half of every positive-measure set,
+so no nonzero localization of $h$ is approximately differentiable.  Integral
+closure makes $h$ weakly transcendental, and the standard extension theorem
+then permits the prescription $\delta(h)=0$.  The finite-valued translation
+increments ensure that this extension remains translation invariant.
+
+\section{The counterexample}
+
+Choose, outside the null set of ambiguous binary expansions,
+\[
+ t=.b_1(t)b_2(t)b_3(t)\ldots\quad (b_n(t)\in\{0,1\}),
+ \qquad
+ h(t)=\sum_{n=1}^{\infty}\left(\frac34\right)^n b_n(t).
+\]
+The series converges uniformly and defines a bounded real measurable
+function.  Its support equals $1$ modulo null sets.
+
+\begin{lemma}[Translation quotients of $\AD$ functions]\label{lem:measure}
+If $f\in\AD(0,1)$, then, as $s\to0$,
+\[
+ Q_s f(t):=\frac{f(t+s)-f(t)}s
+ \longrightarrow \partial_{\!\AD}f(t)
+\]
+in measure on $\T$.
+\end{lemma}
+
+\begin{proof}
+Every $f\in\AD(0,1)$ has a representation
+\[
+ f=\sum_{j\geq1}\1_{E_j}g_j,
+\]
+where $(E_j)$ is a measurable partition modulo null sets and each
+$g_j\in C^1[0,1]$ \cite[Proposition~3.4]{BKS}.  Given $\varepsilon>0$,
+choose $J$ so that $\mu(\bigcup_{j\leq J}E_j)>1-\varepsilon$.  Translation
+continuity in measure gives
+\[
+ \mu\bigl(E_j\mathbin{\triangle}(E_j-s)\bigr)\longrightarrow0
+ \qquad(j\leq J).
+\]
+Except on a set of measure at most $\varepsilon+o(1)$ (and the wrap-around
+set of measure $|s|$), a point and its translate lie in the same one of the
+first $J$ pieces.  There $Q_s f=Q_s g_j$, which converges uniformly to
+$g_j'$ for each of the finitely many $j$.  On density points of $E_j$,
+$\partial_{\!\AD}f=g_j'$.  Since $\varepsilon$ is arbitrary, the asserted
+convergence in measure follows.
+\end{proof}
+
+\begin{lemma}[No localized $\AD$ part]\label{lem:weak}
+For every measurable $E\subset\T$ with $\mu(E)>0$,
+$\1_Eh\notin\AD(0,1)$.  Consequently $h$ is weakly transcendental over
+$\AD(0,1)$.
+\end{lemma}
+
+\begin{proof}
+Put $A_n=\{t:b_n(t)=0\}$ and $s_n=2^{-n}$.  Apart from binary endpoints,
+if $t\in A_n$, adding $s_n$ changes the $n$th digit from zero to one, creates
+no carry, and leaves all other digits unchanged.  Hence
+\begin{equation}\label{eq:slope}
+ \frac{h(t+s_n)-h(t)}{s_n}
+ =\frac{(3/4)^n}{2^{-n}}=\left(\frac32\right)^n
+ \qquad(t\in A_n).
+\end{equation}
+
+Let $r_n=1-2b_n$.  The Rademacher functions $(r_n)$ are orthonormal in
+$L^2(\T)$, hence converge weakly to zero.  Therefore
+\[
+ \mu(E\cap A_n)
+ =\frac12\mu(E)+\frac12\int_E r_n\,d\mu
+ \longrightarrow \frac12\mu(E).
+\]
+Translation continuity of measurable sets also gives
+\[
+ \mu\bigl(E\cap(E-s_n)\cap A_n\bigr)
+ \longrightarrow \frac12\mu(E).
+\]
+On this last set both $t$ and $t+s_n$ lie in $E$, so by
+\eqref{eq:slope} the quotient $Q_{s_n}(\1_Eh)$ equals $(3/2)^n$.
+Thus these quotients are not tight in measure: for every fixed $M$, their
+absolute value exceeds $M$ on a set whose measure tends to $\mu(E)/2$.
+Lemma~\ref{lem:measure} rules out $\1_Eh\in\AD(0,1)$.
+
+Since $\AD(0,1)$ is integrally closed in $S(0,1)$ \cite{BKS}, any element
+integral over $\AD(0,1)$ already belongs to $\AD(0,1)$.  The preceding
+paragraph therefore says that no nonzero idempotent localization of $h$ is
+integral over $\AD(0,1)$.  Since $\supp(h)=1$, this is precisely weak
+transcendence.
+\end{proof}
+
+\begin{lemma}[Finite-valued dyadic cocycle]\label{lem:cocycle}
+For every dyadic rational $r=m/2^N$, the function
+$c_r:=\alpha_r(h)-h$ is finite-valued.  In particular,
+$c_r\in\AD(0,1)$ and $\partial_{\!\AD}c_r=0$.
+\end{lemma}
+
+\begin{proof}
+Write $t=(j+u)/2^N$, where $j\in\{0,\ldots,2^N-1\}$ and $0\leq u<1$.
+The first $N$ binary digits encode $j$, while the later digits are the binary
+digits of $u$.  Translation by $m/2^N$ replaces $j$ by $j-m$ modulo $2^N$
+and leaves $u$ unchanged.  Thus the infinite tails in $\alpha_r(h)$ and $h$
+cancel.  Their difference depends only on $j$ and has at most $2^N$ values.
+Every finite-valued measurable function belongs to $\AD(0,1)$ with
+approximate derivative zero.
+\end{proof}
+
+\begin{theorem}[Negative answer to Problem 3.9]\label{thm:main}
+The algebra $\AD(0,1)$ is not maximal among subalgebras of $S(0,1)$ admitting
+a dyadic-translation-invariant derivation extending
+$d/dt:D(0,1)\to S(0,1)$.
+\end{theorem}
+
+\begin{proof}
+Ber--Chilin--Sukochev's weak-transcendental extension theorem states the
+following.  If $A$ is a regular subalgebra of a complete commutative regular
+algebra $S$, $A$ contains every idempotent of $S$, $\partial:A\to S$ is a
+derivation, and $a\in S$ is weakly transcendental over $A$, then for every
+$z\in S$ with $\supp(z)\leq\supp(a)$ there is a derivation on $A[a]$
+extending $\partial$ and taking $a$ to $z$
+\cite[Proposition~3.7]{BCS}.
+
+Apply this with
+\[
+ S=S(0,1),\qquad A=\AD(0,1),\qquad
+ \partial=\partial_{\!\AD},\qquad a=h,\qquad z=0.
+\]
+The structural hypotheses on $A$ are recalled above, and
+Lemma~\ref{lem:weak} supplies weak transcendence.  We obtain a derivation
+\[
+ \delta:\mathcal B:=\AD(0,1)[h]\longrightarrow S(0,1),
+ \qquad \delta|_{\AD}=\partial_{\!\AD},\qquad \delta(h)=0.
+\]
+Lemma~\ref{lem:weak} also gives $h\notin\AD(0,1)$, so
+$\mathcal B\supsetneq\AD(0,1)$.  Because $h$ is real, $\mathcal B$ is a
+$*$-subalgebra.
+
+Lemma~\ref{lem:cocycle} gives $\alpha_r(h)=h+c_r$ with
+$c_r\in\AD(0,1)$, so $\alpha_r(\mathcal B)=\mathcal B$.  The two derivations
+$\delta\alpha_r$ and $\alpha_r\delta$ agree on $\AD(0,1)$ because
+$\partial_{\!\AD}$ is translation invariant.  They also agree on $h$, since
+\[
+ \delta(\alpha_rh)=\delta(h+c_r)=0+\partial_{\!\AD}c_r=0
+ =\alpha_r(\delta h).
+\]
+They consequently agree on the algebra generated by $\AD(0,1)$ and $h$.
+Thus $\delta$ commutes with every dyadic translation and extends the
+classical derivative, completing the negative answer.
+\end{proof}
+
+\section{Verification and limitations}
+
+The proof uses three independently checkable ingredients: the
+$C^1$-piece representation of $\AD$, the exact Rademacher half-density
+argument, and Proposition~3.7 of \cite{BCS}.  Exact finite binary arithmetic
+checks in \texttt{code/verifier.py} test both the slope identity and the
+finite-prefix cocycle; they are sanity checks, not proof.
+
+This construction extends the derivation only to the proper intermediate
+algebra $\AD(0,1)[h]$, not to all of $S(0,1)$.  It therefore does not
+contradict Corollary~3.8 of \cite{BHKS}.  Nor is the enlarged algebra claimed
+to satisfy the complete symmetric $\Delta$-norm hypotheses of their
+nonexistence theorem.
+
+\section{Novelty check}
+
+Bounded searches on 11 August 2026 covered the four lightweight run indexes;
+the exact Problem~3.9 sentence; the source title and arXiv id; combinations of
+``$\AD(0,1)$'', ``maximal subalgebra'', ``translation-invariant derivation'',
+``dyadic translation'', ``weakly transcendental'', and ``binary digit''; the
+2023 journal version; later citation variants; and the 2023 paper on the
+isomorphism between $S(0,1)$ and $\AD(0,1)$.  No explicit resolution or
+matching construction was found.  Novelty confidence is moderate and
+provisional.
+
+\section{Human-review recommendation}
+
+Verify Lemma~\ref{lem:measure}, especially the passage from the countable
+$C^1$ partition to convergence in measure; verify that Lemma~\ref{lem:weak}
+matches the precise definition of weak transcendence; and check the
+hypotheses of \cite[Proposition~3.7]{BCS}.  The remaining translation
+calculation is finite binary arithmetic.
+
+\small
+\begin{thebibliography}{9}
+\bibitem{BHKS}
+A.~Ber, J.~Huang, K.~Kudaybergenov, and F.~Sukochev,
+\emph{Non-existence of translation-invariant derivations on algebras of
+measurable functions}, arXiv:2002.00590v1 (2020); Quaestiones Mathematicae
+46 (2023), 909--926.
+
+\bibitem{BKS}
+A.~Ber, K.~Kudaybergenov, and F.~Sukochev,
+\emph{Notes on derivations of Murray--von Neumann algebras},
+arXiv:1906.00243v1 (2019).
+
+\bibitem{BCS}
+A.~F.~Ber, V.~I.~Chilin, and F.~A.~Sukochev,
+\emph{Non-trivial derivations on commutative regular algebras},
+Extracta Mathematicae 21 (2006), 107--147.
+\end{thebibliography}
+
+\end{document}

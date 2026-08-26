@@ -1,0 +1,225 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Rp}{\mathfrak R}
+\newcommand{\Sp}{\mathcal S}
+\newcommand{\had}{\mathbin{*}}
+\setlength{\emergencystretch}{2em}
+
+\title{The predual of bounded Schatten Schur multipliers\\
+is a Banach algebra under matrix multiplication}
+\author{Autonomous mathematical discovery run \texttt{fa\_banach\_001}}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+Candidate full affirmative answer, likely valid pending expert review.
+
+\section{Source question}
+
+Let $I$ be a set and $1\leq p<\infty$.  Arhancet defines
+$\Rp_p^I$ as the natural predual of the bounded Schur multipliers on
+$\Sp_p^I$.  Concretely, $\Rp_p^I$ is the image of
+\[
+ \Sp_p^I\widehat\otimes_\pi\Sp_{p'}^I\longrightarrow \Sp_1^I,
+ \qquad A\otimes B\longmapsto A\had B,
+\]
+with its quotient norm.  Remark~3.8 asks whether $\Rp_p^I$, equipped with
+ordinary matrix multiplication, is a Banach algebra
+\cite[Remark~3.8, PDF p.~18]{Arhancet}.
+
+\begin{center}
+\includegraphics[width=0.96\textwidth]{figures/open_question.png}
+\end{center}
+
+We answer this affirmatively, with multiplication constant one.  The point is
+that one only needs to amplify the very special tensors arising from two
+Hadamard factorizations.  A rank-one decomposition controls those tensors
+directly, even though the general Banach-space amplification used in the
+source is false.
+
+\section{Preliminaries from the source}
+
+Write $A\had B=(a_{ij}b_{ij})$.  The quotient description gives
+\begin{equation}\label{eq:norm}
+ \|C\|_{\Rp_p^I}
+ =\inf\left\{
+   \sum_n\|A_n\|_p\|B_n\|_{p'}:
+   C=\sum_n A_n\had B_n
+ \right\}.
+\end{equation}
+The series in this formula is absolutely convergent in the projective
+tensor-product sense.  The canonical inclusion $\Rp_p^I\hookrightarrow
+\Sp_1^I$ is contractive.  For $1<p<\infty$, the identity on matrices is an
+isometric identification
+\begin{equation}\label{eq:duality}
+ \Rp_p^I=\Rp_{p'}^I;
+\end{equation}
+these facts are recorded in Section~2 of \cite{Arhancet}.
+
+\section{Idea of the proof}
+
+Start with two elementary quotient representatives $A\had B$ and
+$X\had Y$.  Their ordinary matrix product is a sum over the middle index
+$k$.  For each $k$, put the corresponding column--row outer products into
+rank-one matrices $P_k$ and $Q_k$; the $k$th summand is then exactly
+$P_k\had Q_k$.  When $p\geq2$, the inclusion
+$\Sp_{p'}^I\subseteq\Sp_2^I$ turns the total projective cost of these
+rank-one factorizations into a Cauchy--Schwarz estimate with constant one.
+Summing this elementary estimate over arbitrary quotient representations
+proves submultiplicativity.  The source isometry
+$\Rp_p^I=\Rp_{p'}^I$ transfers the result to $1<p<2$, while the source's
+completely bounded endpoint theorem handles $p=1$.
+
+\section{The elementary product estimate}
+
+\begin{lemma}\label{lem:elementary}
+Let $2\leq p<\infty$.  For $A,X\in\Sp_p^I$ and
+$B,Y\in\Sp_{p'}^I$,
+\[
+ (A\had B)(X\had Y)\in\Rp_p^I
+\]
+and
+\begin{equation}\label{eq:elementary}
+ \|(A\had B)(X\had Y)\|_{\Rp_p^I}
+ \leq \|A\|_p\|B\|_{p'}\|X\|_p\|Y\|_{p'}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+For $k\in I$, define the rank-one matrices
+\[
+ P_k=(a_{ik}x_{kj})_{i,j\in I},
+ \qquad Q_k=(b_{ik}y_{kj})_{i,j\in I}.
+\]
+Thus $P_k$ is the outer product of column $k$ of $A$ and row $k$ of
+$X$, and similarly for $Q_k$.  Every Schatten norm of a rank-one matrix is
+the product of the two Euclidean norms, so, with
+\[
+ \alpha_k=\|Ae_k\|_2,\quad \gamma_k=\|X^*e_k\|_2,
+ \quad \beta_k=\|Be_k\|_2,\quad \delta_k=\|Y^*e_k\|_2,
+\]
+we have
+\[
+ \|P_k\|_p=\alpha_k\gamma_k,
+ \qquad \|Q_k\|_{p'}=\beta_k\delta_k.
+\]
+Because $p'\leq2$, the inclusion $\Sp_{p'}^I\subseteq\Sp_2^I$ is
+contractive.  Hence Cauchy--Schwarz gives
+\begin{align*}
+ \sum_k\|P_k\|_p\|Q_k\|_{p'}
+ &=\sum_k\alpha_k\gamma_k\beta_k\delta_k\\
+ &\leq \big(\sup_k\alpha_k\gamma_k\big)
+          \sum_k\beta_k\delta_k\\
+ &\leq \|A\|_\infty\|X\|_\infty
+          \|B\|_2\|Y\|_2\\
+ &\leq \|A\|_p\|X\|_p\|B\|_{p'}\|Y\|_{p'}.
+\end{align*}
+Therefore $\sum_kP_k\otimes Q_k$ is absolutely convergent in
+$\Sp_p^I\widehat\otimes_\pi\Sp_{p'}^I$.  Applying the Hadamard-product
+quotient map and comparing entries yields
+\[
+ \sum_kP_k\had Q_k
+ =\left(\sum_k a_{ik}b_{ik}x_{kj}y_{kj}\right)_{i,j}
+ =(A\had B)(X\had Y).
+\]
+The norm formula \eqref{eq:norm} now gives \eqref{eq:elementary}.
+\end{proof}
+
+\section{Full answer}
+
+\begin{theorem}\label{thm:main}
+For every set $I$ and every $1\leq p<\infty$, $\Rp_p^I$ is a
+contractive Banach algebra under ordinary matrix multiplication.  Explicitly,
+for all $C,D\in\Rp_p^I$,
+\begin{equation}\label{eq:main}
+ CD\in\Rp_p^I,
+ \qquad \|CD\|_{\Rp_p^I}\leq
+ \|C\|_{\Rp_p^I}\|D\|_{\Rp_p^I}.
+\end{equation}
+Moreover, for every $i,j\in I$, the net
+$\sum_{k\in J}c_{ik}d_{kj}$ over finite subsets $J\subset I$ converges
+absolutely to $(CD)_{ij}$.
+\end{theorem}
+
+\begin{proof}
+First suppose $2\leq p<\infty$.  Choose representations
+\[
+ C=\sum_nA_n\had B_n,
+ \qquad D=\sum_mX_m\had Y_m
+\]
+as in \eqref{eq:norm}.  Lemma~\ref{lem:elementary} shows that the double
+series
+\[
+ \sum_{n,m}(A_n\had B_n)(X_m\had Y_m)
+\]
+converges absolutely in $\Rp_p^I$, with norm at most
+\[
+ \left(\sum_n\|A_n\|_p\|B_n\|_{p'}\right)
+ \left(\sum_m\|X_m\|_p\|Y_m\|_{p'}\right).
+\]
+The inclusion $\Rp_p^I\hookrightarrow\Sp_1^I$ is contractive, and
+$\Sp_1^I$ is a Banach algebra under operator composition.  Consequently the
+sum is exactly $CD$.  Taking infima over the two representations proves
+\eqref{eq:main}.
+
+If $1<p<2$, then $p'>2$ and the isometry \eqref{eq:duality} transfers the
+already proved estimate from $\Rp_{p'}^I$ to $\Rp_p^I$.  For $p=1$, the
+source records $\Rp_1^I=\Rp_{1,cb}^I$ isometrically, and its Theorem~3.7
+already proves the contractive multiplication estimate.  This completes all
+values of $p$.
+
+Finally, since $C,D\in\Sp_1^I\subset\Sp_2^I$, every row of $C$ and every
+column of $D$ lies in $\ell_2(I)$.  Thus
+\[
+ \sum_k|c_{ik}d_{kj}|
+ \leq \left(\sum_k|c_{ik}|^2\right)^{1/2}
+      \left(\sum_k|d_{kj}|^2\right)^{1/2}<\infty,
+\]
+which proves the stated coordinate convergence.
+\end{proof}
+
+\section{Scope, verification, and novelty}
+
+Theorem~\ref{thm:main} fully answers the first question in Remark~3.8 for
+all exponents and all index sets.  It does not settle the companion question
+whether every bounded Schur multiplier on $\Sp_p$ is completely bounded.
+The proof deliberately avoids that stronger conjecture.
+
+The accompanying script in \texttt{code/verify\_factorization.py} verifies,
+on random finite matrices and several
+exponents, the rank-one identity and every numerical inequality in
+Lemma~\ref{lem:elementary}.  These computations are regression checks; the
+proof itself is exact and dimension-free.
+
+A bounded novelty search, refreshed on 21 August 2026, covered the four run indexes,
+exact title and arXiv-id searches, exact phrases from Remark~3.8, and later
+work on the complete bounds of Schatten Schur multipliers.  No later answer
+to the $\Rp_p$ matrix-product question was found.  The later literature found
+continues to study the distinct companion equality
+$\mathfrak M_p=\mathfrak M_{p,cb}$.
+
+\paragraph{Human review recommendation.}
+Check the four-factor rank-one decomposition in Lemma~\ref{lem:elementary},
+especially the use of $\Sp_{p'}\subset\Sp_2$ for $p\geq2$, and then check
+that the projective representations pass to the operator product through the
+contractive inclusion $\Rp_p^I\hookrightarrow\Sp_1^I$.
+
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{Arhancet}
+C. Arhancet,
+\emph{Noncommutative Fig\`a-Talamanca--Herz algebras for Schur multipliers},
+Integral Equations Operator Theory \textbf{70} (2011), 485--510;
+arXiv:0911.4304v2.
+\end{thebibliography}
+
+\end{document}

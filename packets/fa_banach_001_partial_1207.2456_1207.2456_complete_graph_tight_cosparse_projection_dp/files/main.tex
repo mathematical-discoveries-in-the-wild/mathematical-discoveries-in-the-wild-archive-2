@@ -1,0 +1,260 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\one}{\mathbf{1}}
+\newcommand{\dist}{\operatorname{dist}}
+
+\title{Exact Cosparse Projection for a Complete-Graph Tight Frame\\
+\large A partial result for arXiv:1207.2456}
+\author{FA/Banach run \texttt{fa\_banach\_001}, lane 7}
+\date{August 13, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+\texttt{candidate partial result --- likely valid pending human review}.
+This packet gives a new exact polynomial-time projection algorithm for a
+structured incidence operator and for a full-rank redundant tight-frame
+completion. It does not settle projection or approximation for arbitrary
+analysis operators.
+
+\section{Source question}
+
+Giryes, Nam, Elad, Gribonval, and Davies study greedy-like algorithms for the
+cosparse analysis model \cite{GiryesEtAl}. Their convergence theorems assume an
+optimal or near-optimal cosupport-selection oracle. In the conclusion, PDF
+page 26, they ask for which structured operators such an efficient oracle
+exists and single out tight-frame operators for special attention.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{The source paper's open projection question and tight-frame
+  direction, arXiv:1207.2456, PDF page 26.}
+\end{figure}
+
+The source defines an $\ell$-cosparse vector by requiring at least $\ell$
+zero coefficients in $\Omega x$. A cosupport selector has constant $C_\ell$
+if its squared projection error is at most $C_\ell$ times the optimal squared
+error. Exact projection means $C_\ell=1$.
+
+\section{Candidate theorem}
+
+Let $B\in\R^{\binom n2\times n}$ be an oriented edge--vertex incidence
+matrix of the complete graph $K_n$: the row indexed by $i<j$ is
+$e_i^T-e_j^T$. Set
+\[
+ Z_B(x):=\#\{(i,j):1\le i<j\le n,\ x_i=x_j\}
+\]
+and, for $0\le r\le\binom n2$,
+\[
+ F_r(z):=\min\{\|z-x\|_2^2: Z_B(x)\ge r\}.
+\]
+
+\begin{theorem}[Complete-graph incidence projection]\label{thm:incidence}
+For every $z\in\R^n$ and every $r$, the value $F_r(z)$ and a minimizing
+vector can be computed exactly using $O(n^2\binom n2)=O(n^4)$ arithmetic
+operations and $O(n\binom n2)=O(n^3)$ storage. The algorithm also returns a
+cosupport $\Lambda$ such that the minimizer is $Q_\Lambda z$. Hence its
+near-optimality constant is $C_r=1$.
+\end{theorem}
+
+Now append one row:
+\[
+ \Omega=\begin{bmatrix}B\\ \one^T\end{bmatrix}.
+\]
+Since $B^TB=nI-\one\one^T$, this is a full-rank redundant tight-frame
+analysis operator:
+\[
+ \Omega^T\Omega=nI.
+\]
+Equivalently, $n^{-1/2}\Omega$ is Parseval; this common nonzero row scaling
+does not change any zero coefficient or cosupport subspace.
+Let
+\[
+ G_r(z):=\min\{\|z-x\|_2^2:\#\{k:(\Omega x)_k=0\}\ge r\}.
+\]
+
+\begin{theorem}[Tight completion]\label{thm:tight}
+Write $\bar z=n^{-1}\one^Tz$, put $F_{-1}(z)=0$, and regard
+$F_r(z)=+\infty$ when $r>\binom n2$. Then $G_0(z)=0$ and, for
+$1\le r\le\binom n2+1$,
+\[
+ \boxed{\quad G_r(z)=\min\big\{F_r(z),\ F_{r-1}(z)+n\bar z^2\big\}.\quad}
+\]
+Both branches, a minimizing vector, and an exact cosupport are computed by
+the dynamic program of Theorem~\ref{thm:incidence}. Thus the tight-frame
+operator has an efficient exact projection oracle with $C_r=1$ for every
+target cosparsity.
+\end{theorem}
+
+\section{Proof intuition}
+
+For $K_n$, every zero analysis coefficient says that two coordinates agree.
+Thus a candidate vector is described by a partition of the coordinates into
+equality blocks, and a block of size $s$ contributes $\binom{s}{2}$ zeros.
+For a fixed partition, the closest vector replaces the data on each block by
+their mean. The key one-dimensional observation is that after sorting the
+data, an optimal partition with any prescribed multiset of block sizes can be
+taken to consist of consecutive intervals. The projection problem therefore
+becomes a finite segmentation dynamic program with an extra state recording
+the accumulated number of equal pairs.
+
+The appended all-ones row creates only two cases. If it is nonzero, at least
+$r$ pair-difference rows must vanish. If it is zero, only $r-1$ pair rows are
+needed, and the projected vector must have mean zero. Enforcing mean zero
+shifts every block mean by the same global mean and adds exactly
+$n\bar z^2$ to the squared error.
+
+\section{Proofs}
+
+\begin{lemma}[Contiguous blocks]\label{lem:contiguous}
+Let $y_1\le\cdots\le y_n$ and fix positive block sizes
+$s_1,\ldots,s_m$ summing to $n$. Among all partitions of the data into
+blocks with this multiset of sizes, one minimizing the within-block sum of
+squares can be chosen so that every block is a consecutive interval in the
+sorted order.
+\end{lemma}
+
+\begin{proof}
+Take an optimal partition, let its block means be
+$\mu_1\le\cdots\le\mu_m$, and relabel the corresponding sizes in that
+order. Temporarily keep these means fixed. Assigning the sorted data to means
+with capacities $s_j$ has cost matrix
+$c_{ij}=(y_i-\mu_j)^2$. For $i<i'$ and $j<j'$,
+\[
+ c_{ij}+c_{i'j'}\le c_{ij'}+c_{i'j},
+\]
+because the right side minus the left side is
+$2(y_{i'}-y_i)(\mu_{j'}-\mu_j)\ge0$. Hence crossing assignments may be
+uncrossed without increasing cost. Repeated uncrossing gives the consecutive
+capacity-respecting assignment. Replacing each fixed mean by the mean of its
+new block can only decrease the cost. The original partition was optimal, so
+the resulting consecutive partition is also optimal and has the same block
+sizes.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:incidence}]
+Any $x$ determines equality blocks. Replacing its value on each block by the
+mean of the corresponding entries of $z$ cannot increase the error and cannot
+decrease the number of zero pair differences; coincident new means merely
+merge blocks. By Lemma~\ref{lem:contiguous}, an optimum can therefore be
+chosen as consecutive blocks after sorting $z$.
+
+Let $y_1\le\cdots\le y_n$ be the sorted data and define the interval cost
+\[
+ E(a,b)=\sum_{i=a}^b(y_i-\bar y_{a:b})^2.
+\]
+Prefix sums of $y_i$ and $y_i^2$ evaluate every $E(a,b)$ in constant time.
+Let $D(i,q)$ be the minimum cost of partitioning $y_1,\ldots,y_i$ into
+consecutive blocks contributing exactly $q$ equal pairs. Initialize
+$D(0,0)=0$ and all other states to $+\infty$. The recurrence is
+\[
+ D(i,q)=\min_{0\le j<i}\left\{
+ D\!\left(j,q-\binom{i-j}{2}\right)+E(j+1,i)
+ \right\},
+\]
+where states with an invalid second index are omitted. Therefore
+\[
+ F_r(z)=\min_{q\ge r}D(n,q).
+\]
+There are $O(n\binom n2)$ states and at most $n$ transitions per state.
+Backpointers recover the intervals and their means. Taking every within-block
+edge as $\Lambda$ gives precisely the subspace of block-constant vectors, so
+the recovered minimizer equals $Q_\Lambda z$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:tight}]
+The Gram identity follows from the complete-graph Laplacian:
+$B^TB=nI-\one\one^T$. Moreover,
+\[
+ \#\{k:(\Omega x)_k=0\}=Z_B(x)+\mathbf 1_{\{\one^Tx=0\}}.
+\]
+Thus the feasible set at level $r\ge1$ is the union of the level-$r$
+incidence set and the intersection of the level-$(r-1)$ incidence set with
+$\one^\perp$.
+
+For a fixed equality partition, its block-constant subspace contains
+$\one$. The unconstrained projection uses block means and preserves the
+global sum of $z$. Its projection onto the additional hyperplane
+$\one^\perp$ subtracts $\bar z\one$. Orthogonality gives the extra squared
+cost $\|\bar z\one\|_2^2=n\bar z^2$, independent of the partition. Minimizing
+the two branches gives the displayed formula. The second branch is recovered
+from an optimal level-$(r-1)$ incidence partition followed by subtraction of
+$\bar z\one$; the equality pattern is unchanged.
+\end{proof}
+
+\begin{corollary}[Clique unions and the source algorithms]
+For an incidence operator of a disjoint union of cliques, compute a local
+table on each clique and convolve the tables over the total cosparsity budget.
+Appending the component-sum row on each clique gives the analogous tight
+completion locally; nonzero componentwise row scaling normalizes the block
+frame bounds without changing any cosupport. These projections remain
+polynomial-time and exact.
+
+In particular, for the single-clique tight operator in
+Theorem~\ref{thm:tight}, every projection constant assumed in the source
+paper's AIHT, AHTP, ACoSaMP, and ASP theorems is algorithmically available
+with value one. Their recovery conclusions therefore apply under their
+original $\Omega$-RIP and noise hypotheses without an unavailable projection
+oracle.
+\end{corollary}
+
+\section{Exact verification}
+
+The included script
+\texttt{code/verify\_complete\_graph\_projection.py} implements both
+dynamic programs using rational arithmetic and compares them with exhaustive
+enumeration of all set partitions. The default run checks every vector in
+$\{-1,0,1\}^n$ for $1\le n\le6$ and 80 deterministic random vectors in
+dimensions seven and eight, at every admissible incidence and tight-frame
+cosparsity. It checked 1,172 vector instances and 35,318 optimum/projection
+comparisons with no failure. This is not a proof; it checks the recurrence,
+reconstruction, zero counts, tight-frame branch, repeated-value cases, and
+zero-mean cases against an independent exhaustive specification.
+
+\section{Novelty check and limitations}
+
+Tillmann, Gribonval, and Pfetsch prove strong NP-hardness of general cosparse
+projection and exclude an FPTAS unless $\mathsf P=\mathsf{NP}$
+\cite{TillmannEtAl}. They explicitly cite the source oracle assumption and
+leave general practical approximation and further structured cases open.
+The source and that supporting paper already record unitary, one-dimensional
+finite-difference, and fused-Lasso tractable cases.
+
+The run indexes and bounded arXiv/web searches through August 13, 2026 used
+combinations of complete graphs, incidence operators, graph cosparsity, tight
+frames, and dynamic programming. No statement of the result in this packet was
+found. Novelty confidence is moderate rather than exhaustive.
+
+This packet does not give a general-operator approximation, does not address
+all tight frames, and does not prove new $\Omega$-RIP bounds. Human review
+should focus on Lemma~\ref{lem:contiguous}, the exact zero-count state, and
+the zero-DC union formula in Theorem~\ref{thm:tight}.
+
+\begin{thebibliography}{9}
+
+\bibitem{GiryesEtAl}
+R. Giryes, S. Nam, M. Elad, R. Gribonval, and M. E. Davies,
+\emph{Greedy-Like Algorithms for the Cosparse Analysis Model},
+arXiv:1207.2456.
+
+\bibitem{TillmannEtAl}
+A. M. Tillmann, R. Gribonval, and M. E. Pfetsch,
+\emph{Projection onto the Cosparse Set is NP-Hard},
+arXiv:1303.5305.
+
+\end{thebibliography}
+
+\end{document}

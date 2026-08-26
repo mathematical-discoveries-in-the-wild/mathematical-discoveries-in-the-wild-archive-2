@@ -1,0 +1,243 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\id}{\mathrm{id}}
+
+\title{The Markov Group Conjecture for Triangular Countable-State Processes}
+\author{Candidate partial result for arXiv:2004.05995}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.} Candidate partial result, likely valid. This note
+proves the triangular, or one-way acyclic, subcase and does not resolve the
+full Markov group conjecture.
+
+\section{Source conjecture}
+
+Glueck restates the Markov group conjecture as Conjecture 1.1 of
+\cite{glueck2020}, PDF page 1:
+
+\begin{quote}
+Let $T=(T_t)_{t\in[0,\infty)}$ be a Markovian $C_0$-semigroup on $\ell^1$
+and assume that $T_1:\ell^1\to\ell^1$ is bijective (i.e., $T$ extends to a
+$C_0$-group). Then $T$ has bounded generator.
+\end{quote}
+
+Here Markovian means that every $T_t$ is positive and norm-preserving on the
+positive cone. Figure~\ref{fig:conjecture} is a crop of the source page.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{Conjecture 1.1 in \cite[p.~1]{glueck2020}.}
+  \label{fig:conjecture}
+\end{figure}
+
+The source proves the conjecture for direct sums of finite-dimensional
+processes, with a dimension-free bound, but explicitly leaves open the passage
+from those decoupled systems to a general process.
+
+\section{Triangular Markov semigroups}
+
+Let $(e_j)_{j\in\N}$ be the canonical basis of $\ell^1(\N)$. A Markov
+operator $T$ has a nonnegative column-stochastic matrix
+\[
+  p_{ij}=\langle Te_j,e_i^*\rangle,
+  \qquad \sum_i p_{ij}=1.
+\]
+We call a Markov semigroup $(T_t)$ \emph{triangular} if, for every $t\ge0$,
+\begin{equation}\label{eq:triangular}
+  p_{ij}(t)=0 \qquad\text{whenever }i<j.
+\end{equation}
+Thus mass can move from state $j$ only to states $i\ge j$. A simultaneous
+permutation of the states merely replaces the displayed order by another
+fixed enumeration.
+
+This class includes pure-birth and more general one-way processes with jumps
+of arbitrary length. It need not decompose into finite invariant blocks.
+
+\section{Idea of the proof}
+
+For a triangular process, a path that starts at state $j$ and is at $j$ at a
+later time could not have visited a larger state and returned. Algebraically,
+the semigroup product has only one contribution to its $(j,j)$ entry. Hence
+the diagonal probabilities are exponentials $e^{-q_jt}$.
+
+The inverse bound at time one controls these exponentials. Indeed, the first
+$j$ coordinate functionals form a finite-dimensional invariant subspace of
+$T_1^*$, and its triangular matrix has $p_{jj}(1)$ as an eigenvalue. Thus
+$p_{jj}(1)\ge\|T_1^{-1}\|^{-1}$ uniformly in $j$. This bounds all $q_j$.
+Finally, the distance between a probability column and its starting basis
+vector is exactly twice the mass that left the diagonal. Taking the supremum
+over columns gives norm continuity at zero.
+
+\section{Partial theorem and proof}
+
+\begin{theorem}\label{thm:main}
+Let $(T_t)_{t\ge0}$ be a triangular Markovian $C_0$-semigroup on
+$\ell^1(\N)$. Suppose that $T_1$ is bijective, and put
+\[
+  M=\|T_1^{-1}\|.
+\]
+Then, for every $t\ge0$,
+\begin{equation}\label{eq:normbound}
+  \|T_t-\id\|\le 2(1-M^{-t}).
+\end{equation}
+In particular the generator $A$ of $(T_t)$ is bounded and
+\begin{equation}\label{eq:generatorbound}
+  \|A\|\le2\log M.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Write $p_{ij}(t)=\langle T_te_j,e_i^*\rangle$. Positivity and preservation of
+the $\ell^1$ norm on the positive cone give
+\[
+  p_{ij}(t)\ge0,
+  \qquad \sum_i p_{ij}(t)=1.
+\]
+Fix $j$. By the semigroup law,
+\[
+  p_{jj}(t+s)=\sum_{k\in\N}p_{jk}(t)p_{kj}(s).
+\]
+Triangularity says that a nonzero factor $p_{kj}(s)$ requires $k\ge j$,
+whereas a nonzero factor $p_{jk}(t)$ requires $j\ge k$. Thus only $k=j$
+contributes, and
+\begin{equation}\label{eq:multiplicative}
+  p_{jj}(t+s)=p_{jj}(t)p_{jj}(s).
+\end{equation}
+Strong continuity gives $p_{jj}(0)=1$ and continuity in $t$. Consequently
+there is a number $q_j\ge0$ such that
+\begin{equation}\label{eq:diagonalexp}
+  p_{jj}(t)=e^{-q_jt}\qquad(t\ge0).
+\end{equation}
+
+We next use bijectivity at time one. For $j\in\N$, let
+\[
+  F_j=\operatorname{span}\{e_1^*,\ldots,e_j^*\}\subset\ell^\infty.
+\]
+The subspace $F_j$ is invariant under $T_1^*$. Indeed, if $f\in F_j$ and
+$k>j$, then
+\[
+  (T_1^*f)_k=\sum_i p_{ik}(1)f_i=0,
+\]
+because triangularity forces every potentially nonzero term to have
+$i\ge k>j$, while $f_i=0$ there. In the displayed ordered basis, the
+finite-dimensional restriction $T_1^*|_{F_j}$ is triangular and has diagonal
+entries $p_{11}(1),\ldots,p_{jj}(1)$. Therefore $p_{jj}(1)$ is an eigenvalue
+of $T_1^*$: choose a corresponding nonzero eigenvector $v\in F_j$.
+
+Since $T_1^*$ is invertible and
+$\|(T_1^*)^{-1}\|=\|T_1^{-1}\|=M$, the eigenvalue equation gives
+\[
+  \|v\|=\|(T_1^*)^{-1}p_{jj}(1)v\|
+  \le M p_{jj}(1)\|v\|.
+\]
+Hence $p_{jj}(1)\ge M^{-1}$. By \eqref{eq:diagonalexp},
+\begin{equation}\label{eq:qbound}
+  q_j\le\log M\qquad(j\in\N).
+\end{equation}
+
+For each stochastic column, positivity and the column-sum identity yield
+\begin{align*}
+  \|(T_t-\id)e_j\|_1
+  &=|p_{jj}(t)-1|+\sum_{i\ne j}p_{ij}(t)\\
+  &=2(1-p_{jj}(t)).
+\end{align*}
+The norm of a matrix operator on $\ell^1$ is the supremum of the $\ell^1$
+norms of its columns. Combining this fact with \eqref{eq:diagonalexp} and
+\eqref{eq:qbound} gives
+\[
+  \|T_t-\id\|
+  =\sup_j2(1-e^{-q_jt})
+  \le2(1-e^{-t\log M})
+  =2(1-M^{-t}),
+\]
+which is \eqref{eq:normbound}.
+
+In particular $\|T_t-\id\|\to0$ as $t\downarrow0$. A $C_0$-semigroup that
+is norm-continuous at zero has a bounded generator, and
+\[
+  A=\lim_{t\downarrow0}\frac{T_t-\id}{t}
+\]
+in operator norm \cite[Chapter~I]{engelnagel}. Dividing
+\eqref{eq:normbound} by $t$ and passing to the limit proves
+\eqref{eq:generatorbound}.
+\end{proof}
+
+\begin{corollary}
+The Markov group conjecture is true for every countable-state process whose
+transition semigroup becomes triangular after one fixed relabeling of the
+states. If $\|T_1^{-1}\|=1$, then $T_t=\id$ for every $t\ge0$.
+\end{corollary}
+
+\begin{proof}
+The first assertion is Theorem~\ref{thm:main}. For the second,
+\eqref{eq:normbound} has right-hand side zero.
+\end{proof}
+
+\section{Verification notes}
+
+\begin{itemize}
+  \item No domain assumption on the basis vectors is made. The proof first
+  obtains an operator-norm estimate and only then invokes the bounded-generator
+  criterion.
+  \item The eigenvalue argument occurs inside the genuinely invariant,
+  finite-dimensional subspace $F_j$. It does not rely on a general claim that
+  every diagonal entry of an infinite triangular operator lies in its
+  spectrum.
+  \item The triangular orientation is consistent throughout:
+  $p_{ij}=0$ for $i<j$ means transitions $j\to i$ only with $i\ge j$.
+  \item The exact column identity uses both positivity and conservation of
+  mass. It would fail for merely substochastic semigroups.
+  \item No numerical or symbolic computation is used.
+\end{itemize}
+
+\noindent\textbf{Verifier verdict:} likely valid. The most useful human
+checks are the invariance of $F_j$ under $T_1^*$ and the equality
+$\|T_t-\id\|=\sup_j2(1-p_{jj}(t))$.
+
+\section{Scope and novelty status}
+
+Cycles are the precise limitation: without triangularity, the $(j,j)$ entry
+of $T_{t+s}$ includes paths that leave $j$ and later return, so
+\eqref{eq:multiplicative} fails. The proof gives no control in that setting,
+and the full Markov group conjecture remains open here.
+
+On 11 August 2026, the local lightweight indexes and parsed arXiv corpus were
+searched for the exact id, conjecture, and triangular, acyclic, and pure-birth
+variants. Bounded official-arXiv searches used the same terms and found no
+exact statement of this quantitative subcase. Novelty confidence is modest:
+the argument is elementary, and older Markov-chain literature outside arXiv
+may contain a comparable observation.
+
+\section{Human review recommendation}
+
+Verify the two points in the verdict. If accepted, retain this as a
+quantitative partial result for triangular countable-state processes. It must
+not be described as settling the full Markov group conjecture.
+
+\begin{thebibliography}{9}
+\bibitem{glueck2020}
+Jochen Glueck,
+\emph{On the decoupled Markov group conjecture},
+arXiv:2004.05995, 2020.
+\url{https://arxiv.org/abs/2004.05995}
+
+\bibitem{engelnagel}
+Klaus-Jochen Engel and Rainer Nagel,
+\emph{One-Parameter Semigroups for Linear Evolution Equations},
+Springer, 2000.
+\end{thebibliography}
+
+\end{document}
+

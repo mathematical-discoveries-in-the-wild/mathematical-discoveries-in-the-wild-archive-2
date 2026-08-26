@@ -1,0 +1,212 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1.85cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{ink}{HTML}{172033}
+\definecolor{accent}{HTML}{385B7A}
+\definecolor{soft}{HTML}{EEF5FA}
+\color{ink}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\lip}{\operatorname{lip}}
+\newcommand{\I}{\mathcal I}
+
+\title{A fractional-dimensional Moser--Trudinger inequality for real curvature dimension}
+\author{Solution packet for the question in arXiv:2506.15621}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{accent}{soft}{\parbox{0.91\textwidth}{
+\textbf{Positive answer in the source's geometric regime.}
+For every real $N>1$, there is a natural Moser--Trudinger inequality on infinite-volume $\mathrm{CD}(K,N)$ spaces with positive unit-ball volume and positive Cheeger constant.  The critical exponent is $N/(N-1)$, and the exponential is truncated after precisely the powers that need not be controlled by $L^N$.  The proof is an isoperimetric rearrangement followed by Moser's one-dimensional lemma; neither step requires $N$ to be an integer.}}
+\end{center}
+
+\section*{The question and the natural fractional formulation}
+Bronstein defines $(MT)^n_\alpha$ for integer $n\geq2$ and asks whether $\mathrm{CD}(K,N)$ spaces with non-integer $N$ admit a finer version \cite{Source}.
+
+\begin{center}
+\includegraphics[width=0.88\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+Fix a real $p>1$ and put
+\[
+ q=\frac{p}{p-1},\qquad k_p=\lceil p-1\rceil,\qquad
+ \mathcal E_p(t)=e^t-\sum_{j=0}^{k_p-1}\frac{t^j}{j!}.
+\]
+When $p=n$ is an integer, $k_p=n-1$ and $\mathcal E_p=e^t-P_n(t)$ exactly as in the source.  The truncation is also minimal for non-integer $p$: the first surviving term after substitution $t=\alpha|u|^q$ has power $|u|^{qk_p}$, and
+\[
+ qk_p\geq p,\qquad q(k_p-1)<p.
+\]
+Thus $W^{1,p}\subset L^p$ controls the surviving small values, while deleting one fewer term would in general require an unavailable $L^r$ estimate with $r<p$.
+
+\section*{An isoperimetric theorem for every real exponent}
+Let $\I$ be the isoperimetric profile of an infinite-volume metric measure space.
+
+\begin{theorem}\label{thm:profile}
+Let $p>1$.  Suppose $(X,d,\mu)$ is locally compact and geodesic and there are $c,h,s_0>0$ such that
+\begin{equation}\label{eq:profile}
+ \I(s)\geq c\,s^{1-1/p}\quad(0<s\leq s_0),
+ \qquad
+ \I(s)\geq h\,s\quad(s\geq s_0).
+\end{equation}
+Then there is a constant $C=C(p,c,h,s_0)$ such that every $u\in W^{1,p}(X)$ satisfying
+\[
+ \int_X \lip(u)^p\,d\mu\leq1
+\]
+also satisfies
+\begin{equation}\label{eq:mt}
+ \int_X\mathcal E_p\!\left(\alpha |u|^q\right)d\mu\leq C
+ \qquad\text{for every }0<\alpha\leq c^q.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Let $v=u^*:(0,\infty)\to[0,\infty)$ be the decreasing rearrangement of $|u|$ in the measure variable.  The coarea--H\"older argument used in the source gives, for every real $p>1$,
+\begin{equation}\label{eq:ps}
+ \int_0^\infty |v'(s)|^p\I(s)^p\,ds
+ \leq\int_X\lip(u)^p\,d\mu\leq1.
+\end{equation}
+Approximation gives the same statement for general $W^{1,p}$ functions.  Equimeasurability reduces \eqref{eq:mt} to an integral involving $v$.
+
+The two bounds in \eqref{eq:profile} together give the global linear estimate
+$\I(s)\geq \bar h s$, where
+\[
+ \bar h=\min\{h,c s_0^{-1/p}\}.
+\]
+Thus the standard Cheeger--Poincar\'e estimate gives
+\[
+ \|v\|_{L^p(0,\infty)}=\|u\|_{L^p(X)}
+ \leq\frac{p}{\bar h}\|\lip(u)\|_{L^p(X)}\leq\frac p{\bar h}.
+\]
+In particular, $v$ is uniformly bounded on $[s_0,\infty)$.  Since $\mathcal E_p(t)=O(t^{k_p})$ at zero and $qk_p\geq p$, it follows that
+\begin{equation}\label{eq:large}
+ \int_{s_0}^\infty\mathcal E_p(c^qv(s)^q)\,ds\leq C_1(p,c,h,s_0).
+\end{equation}
+
+It remains to treat $0<s<s_0$ at the endpoint.  Set $B=v(s_0)$ and
+\begin{align*}
+ e_0&=c^p\int_0^{s_0}|v'(s)|^ps^{p-1}\,ds,\\
+ e_1&=h^p\int_{s_0}^{\infty}|v'(s)|^ps^p\,ds.
+\end{align*}
+By \eqref{eq:profile}--\eqref{eq:ps}, $e_0+e_1\leq1$.  Since $v(s)\to0$ as $s\to\infty$, weighted H\"older gives
+\begin{equation}\label{eq:tail}
+ (cB)^p\leq
+ D e_1,\qquad
+ D=\frac{c^p}{h^p}\frac{(p-1)^{p-1}}{s_0}.
+\end{equation}
+Indeed, integrate $-v'$ from $s_0$ to infinity and use
+$\int_{s_0}^\infty s^{-q}ds=(p-1)s_0^{-1/(p-1)}$.
+
+Use the logarithmic coordinate $t=\log(s_0/s)$ and define
+\[
+ w(t)=c\bigl(v(s_0e^{-t})-B\bigr),\qquad a=cB.
+\]
+Then $w(0)=0$, $w$ is nondecreasing, and
+\[
+ \int_0^\infty |w'(t)|^pdt=e_0,\qquad
+ a^p\leq D(1-e_0).
+\]
+We use the following shifted form of Moser's one-dimensional lemma.
+
+\begin{lemma}\label{lem:shift}
+For $p>1$, $q=p/(p-1)$ and $D>0$, there is $M(p,D)<\infty$ such that
+\[
+ \int_0^\infty e^{(w(t)+a)^q-t}\,dt\leq M(p,D)
+\]
+whenever $w(0)=0$, $w'\geq0$, $\int|w'|^p=\rho\leq1$, and $a^p\leq D(1-\rho)$.
+\end{lemma}
+
+To check the lemma, if $0<\rho<1$ put $z=\rho^{-1/p}w$.  The elementary maximization over $x\geq0$ gives
+\begin{equation}\label{eq:algebra}
+ (\rho^{1/p}x+a)^q-x^q
+ \leq\left(\frac{a^p}{1-\rho}\right)^{1/(p-1)}
+ \leq D^{1/(p-1)}.
+\end{equation}
+Moser's one-dimensional lemma
+\[
+ \sup_{\substack{z(0)=0,\ z'\geq0\\\int_0^\infty|z'|^p\leq1}}
+ \int_0^\infty e^{z(t)^q-t}\,dt<\infty
+\]
+then proves the claim.  The cases $\rho=0$ and $\rho=1$ follow directly (for $\rho=1$, the hypothesis forces $a=0$).  The classical proof uses only H\"older's inequality and is valid for every real $p>1$ \cite{Moser}.
+
+Finally, $ds=s_0e^{-t}dt$ and Lemma~\ref{lem:shift} imply
+\[
+ \int_0^{s_0}\mathcal E_p(c^qv(s)^q)\,ds
+ \leq s_0\int_0^\infty e^{(w(t)+a)^q-t}dt
+ \leq s_0M(p,D).
+\]
+Together with \eqref{eq:large}, this proves the endpoint $\alpha=c^q$; smaller $\alpha$ follow by monotonicity.
+\end{proof}
+
+\section*{The non-integer curvature-dimension corollary}
+\begin{theorem}\label{thm:cd}
+Let $N>1$ be real, and let $(X,d,\mu)$ be an infinite-volume, locally compact, geodesic, essentially nonbranching $\mathrm{CD}(K,N)$ space.  Assume
+\[
+ \inf_{x\in X}\mu(B(x,1))>0
+ \quad\text{and}\quad
+ h(X)>0.
+\]
+Then there are $\alpha_N,C_N>0$ such that, for every $u\in W^{1,N}(X)$,
+\[
+ \int_X\lip(u)^N\,d\mu\leq1
+ \quad\Longrightarrow\quad
+ \int_X\left[
+ e^{\alpha_N|u|^{N/(N-1)}}-
+ \sum_{j=0}^{\lceil N-1\rceil-1}
+ \frac{\alpha_N^j|u|^{jN/(N-1)}}{j!}
+ \right]d\mu\leq C_N.
+\]
+\end{theorem}
+
+\begin{proof}
+The small-volume isoperimetric theorem quoted and used in the source is valid for real curvature parameter $N$: the unit-ball lower bound supplies $c,s_0>0$ with
+\[
+ \I(s)\geq c\,s^{1-1/N}\qquad(0<s\leq s_0).
+\]
+The positive Cheeger constant supplies $\I(s)\geq h(X)s$.  Apply Theorem~\ref{thm:profile} with $p=N$ and $\alpha_N=c^{N/(N-1)}$.
+\end{proof}
+
+This answers the source's question affirmatively under precisely the two geometric nondegeneracy hypotheses used for its integer-dimensional positive theorem.  No fractional differential operator is introduced: fractional dimension refers to the real curvature-dimension parameter and the corresponding real Sobolev exponent.
+
+\section*{Deep upgrade checks and scope}
+\begin{enumerate}[leftmargin=2em]
+\item The first proof attempt gave only $\alpha<c^q$ by the crude estimate $v(s)\lesssim(\log(1/s))^{1/q}$.  The tail-energy estimate \eqref{eq:tail} and the exact algebraic bound \eqref{eq:algebra} upgrade this to the endpoint $\alpha=c^q$.
+\item The ceiling in $\mathcal E_p$ is forced, not cosmetic: it is the unique minimal truncation that makes the first remainder power at least $p$.
+\item The argument needs a small-ball lower bound and a positive Cheeger constant.  The source itself shows why analogous hypotheses are necessary in its integer formulation; the result does not claim that every $\mathrm{CD}(K,N)$ space satisfies a global inequality.
+\item The constant $c$ is any uniform coefficient in the small-volume isoperimetric inequality.  Identifying the sharp largest coefficient from a mere liminf profile may require additional regularity and is not asserted here.
+\end{enumerate}
+
+\section*{Bounded novelty check}
+On 11 August 2026, non-integer $\mathrm{CD}(K,N)$ Moser--Trudinger inequalities, fractional-dimensional weighted Sobolev inequalities, real-dimensional radial measures, and isoperimetric-profile proofs were checked in the run indexes and by bounded web/arXiv search.  Weighted one-dimensional fractional-dimension inequalities are known \cite{OliveiraDoO}, but no direct answer to the source's $\mathrm{CD}(K,N)$ question or the profile theorem above was located.  This is evidence for novelty, not a definitive guarantee.
+
+\begin{thebibliography}{9}
+\bibitem{Source}
+S. Bronstein,
+\emph{Dominating manifolds by radial spaces},
+arXiv:2506.15621.
+
+\bibitem{Moser}
+J. Moser,
+\emph{A sharp form of an inequality by N. Trudinger},
+Indiana Univ. Math. J. \textbf{20} (1971), 1077--1092.
+
+\bibitem{OliveiraDoO}
+J. F. de Oliveira and J. M. do \'O,
+\emph{Equivalence of critical and subcritical sharp Trudinger--Moser inequalities in fractional dimensions and extremal functions},
+Rev. Mat. Iberoam. \textbf{39} (2023), 1073--1096.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,244 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.78in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Leb}{\mathcal L^d}
+
+\title{Fourier-Frame Self-Affine Measures Are Self-Affine Tiles}
+\author{fa\_banach\_001 / agent\_lane\_00}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+\vspace{-1.1em}
+
+\noindent\textbf{Status: candidate full affirmative resolution of Q2 under
+the paper's standard equal-weight, common-matrix convention.}
+
+\section{The question and the precise result}
+
+Lai proves that a compactly supported absolutely continuous probability
+measure $d\mu=\varphi\,dx$ admits a Fourier frame exactly when its density is
+bounded above and bounded away from zero almost everywhere on its support
+\cite[Theorem~1.1]{Lai}.  After applying this criterion to equal-weight
+self-similar measures on the line, the paper asks whether the analogous
+conclusion holds for self-affine measures on $\R^d$ \cite[p.~13, Q2]{Lai}.
+
+\begin{center}
+\includegraphics[width=0.95\textwidth]{figures/question_q2.png}
+\end{center}
+
+We use the natural higher-dimensional version of the class treated in the
+paper.  Let $R$ be an expansive invertible real $d\times d$ matrix, let
+$B\subset\R^d$ consist of $N$ distinct digits, and set
+\[
+ \tau_b(x)=R^{-1}(x+b) \qquad (b\in B).
+\]
+Let $K$ be the attractor and $\mu$ the equal-weight invariant probability:
+\begin{equation}\label{eq:invariance}
+ K=\bigcup_{b\in B}\tau_b(K),
+ \qquad
+ \mu(E)=\frac1N\sum_{b\in B}\mu(\tau_b^{-1}E).
+\end{equation}
+Write $q=|\det R|$.
+
+\begin{theorem}\label{thm:main}
+Suppose that $\mu$ is absolutely continuous and that $L^2(K,d\mu)$ admits a
+Fourier frame.  Then
+\[
+ q=N,
+ \qquad
+ \mu=\frac{1}{\Leb(K)}\,\Leb\!\restriction_K,
+\]
+and the sets $\{\tau_b(K):b\in B\}$ partition $K$ up to null sets.
+Consequently $RK=K+B$ is a self-affine tile in the standard sense of
+Lagarias--Wang \cite{LW}; in particular, $K$ tiles $\R^d$ by translations.
+Thus Q2 has an affirmative answer in this class, with the harmless
+probability-normalization correction that the density is
+$\Leb(K)^{-1}\chi_K$, not literally $\chi_K$ unless $\Leb(K)=1$.
+\end{theorem}
+
+\section{Proof intuition}
+
+Positive Lebesgue measure first gives the easy volume inequality $q\leq N$.
+For the reverse inequality, choose a generic linear functional.  At every
+digit level it selects a unique minimizing digit, producing one address
+whose point $x_*$ is exposed not merely in $K$, but in a unique cylinder at
+every depth.  Near $x_*$, the iterated density equation therefore has only
+one surviving summand.  Each refinement multiplies that summand by $q/N$.
+The Fourier-frame criterion bounds the density above and below, so this
+factor cannot decay through arbitrarily many refinements; hence $q\geq N$.
+Equality forces no overlap in measure, and uniqueness of the invariant
+probability then identifies $\mu$ with normalized Lebesgue measure on $K$.
+
+\section{A cylinder isolated at every depth}
+
+Every point of $K$ has an address and
+\begin{equation}\label{eq:address}
+ K=\left\{\sum_{j=1}^{\infty}R^{-j}c_j:c_j\in B\right\}.
+\end{equation}
+For a word $w=(c_1,\ldots,c_n)$ write
+$\tau_w=\tau_{c_1}\circ\cdots\circ\tau_{c_n}$ and
+$K_w=\tau_w(K)$.
+
+\begin{lemma}\label{lem:exposed}
+There are digits $b_1,b_2,\ldots$ and a point
+$x_*=\sum_{j\geq1}R^{-j}b_j\in K$ such that, for every $n$,
+\[
+ x_*\in K_{(b_1,\ldots,b_n)}
+ \quad\text{and}\quad
+ x_*\notin K_w\quad\text{for every other word }w\in B^n.
+\]
+Consequently, for every $n$ there is $r_n>0$ such that
+\begin{equation}\label{eq:isolation}
+ K\cap B(x_*,r_n)\subset K_{(b_1,\ldots,b_n)}
+ \setminus\bigcup_{w\ne(b_1,\ldots,b_n)}K_w.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Choose $u\in\R^d$ outside the countable union of proper hyperplanes
+\[
+ \bigcup_{j\geq1}\ \bigcup_{b\ne b'}
+ \{u:\langle u,R^{-j}(b-b')\rangle=0\}.
+\]
+For each $j$, let $b_j$ be the unique digit minimizing
+$\langle u,R^{-j}b\rangle$ over $b\in B$.  The series defining $x_*$
+converges because $R$ is expansive.  If $(c_j)$ is any other address, then
+term by term
+\[
+ \langle u,R^{-j}(c_j-b_j)\rangle\geq0,
+\]
+and the inequality is strict at the first index where $c_j\ne b_j$.
+The absolutely convergent sum is therefore strictly positive.  Hence $x_*$
+is the unique minimizer of $x\mapsto\langle u,x\rangle$ on $K$.
+
+More is true.  If a depth-$n$ word $w$ differs from
+$(b_1,\ldots,b_n)$, then every address beginning with $w$ has a strict
+positive contribution at one of its first $n$ levels and nonnegative
+contributions thereafter.  Thus $x_*\notin K_w$.  The union of the finitely
+many other compact cylinders is compact and omits $x_*$, so its distance
+from $x_*$ is positive.  A sufficiently small ball gives
+\eqref{eq:isolation}.
+\end{proof}
+
+\section{Proof of the theorem}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+By Lai's Fourier-frame criterion there are constants $0<m\leq M<\infty$
+such that, after extending the density by zero off $K$,
+\begin{equation}\label{eq:bounds}
+ m\leq\varphi(x)\leq M
+ \quad\text{for almost every }x\in K.
+\end{equation}
+In particular $\Leb(K)>0$.  Taking Lebesgue measure in
+$K=\bigcup_{b\in B}\tau_b(K)$ gives
+\[
+ \Leb(K)\leq\sum_{b\in B}\Leb(\tau_b(K))
+ =\frac{N}{q}\Leb(K),
+\]
+and hence
+\begin{equation}\label{eq:qleN}
+ q\leq N.
+\end{equation}
+
+Changing variables in \eqref{eq:invariance} gives the density refinement
+identity
+\begin{equation}\label{eq:refinement}
+ \varphi(x)=\frac qN\sum_{b\in B}\varphi(Rx-b)
+ \quad\text{for almost every }x\in\R^d.
+\end{equation}
+Its $n$-fold iterate is
+\begin{equation}\label{eq:iterate}
+ \varphi(x)=\left(\frac qN\right)^n
+ \sum_{w\in B^n}\varphi(\tau_w^{-1}x)
+ \quad\text{for almost every }x.
+\end{equation}
+
+Fix $n$ and use Lemma~\ref{lem:exposed}.  Put
+$E_n=K\cap B(x_*,r_n)$.  Since every positive-weight IFS measure has support
+equal to its attractor, $x_*\in\operatorname{supp}\mu$ and
+$\mu(E_n)>0$.  Absolute continuity then implies $\Leb(E_n)>0$.
+For $x\in E_n$, only the selected cylinder can contribute to
+\eqref{eq:iterate}; all other inverse images lie outside $K$.  Combining
+\eqref{eq:bounds} and \eqref{eq:iterate}, and discarding the union of the
+relevant null exceptional sets, yields on a positive-measure subset of
+$E_n$
+\[
+ m\leq\varphi(x)
+ =\left(\frac qN\right)^n
+   \varphi(\tau_{(b_1,\ldots,b_n)}^{-1}x)
+ \leq\left(\frac qN\right)^n M.
+\]
+This holds for every $n$.  If $q<N$, the right side is eventually smaller
+than $m$, a contradiction.  Thus $q\geq N$, which together with
+\eqref{eq:qleN} proves $q=N$.
+
+Now the finite cover in \eqref{eq:invariance} satisfies
+\[
+ \Leb(K)=\sum_{b\in B}\Leb(\tau_b(K)).
+\]
+Therefore its pieces overlap only on a null set.  Define normalized
+Lebesgue measure on $K$ by
+$\nu(E)=\Leb(E\cap K)/\Leb(K)$.  For every Borel set $E$,
+\begin{align*}
+ \frac1N\sum_{b\in B}\nu(\tau_b^{-1}E)
+ &=\frac{q}{N\Leb(K)}
+   \sum_{b\in B}\Leb(E\cap\tau_b(K))\\
+ &=\frac{\Leb(E\cap K)}{\Leb(K)}=\nu(E),
+\end{align*}
+where the second equality uses $q=N$ and the almost-everywhere partition.
+Thus $\nu$ satisfies the same invariant equation as $\mu$.  Uniqueness of
+the invariant probability for a contractive IFS gives $\mu=\nu$.
+
+Finally $RK=K+B$, $K$ has positive measure, and $B$ has
+$N=q=|\det R|$ digits.  This is precisely the self-affine-tile condition of
+Lagarias--Wang; their tiling theorem supplies a translation tiling of
+$\R^d$.  This completes the proof.
+\end{proof}
+
+\section*{Checks, novelty, and scope}
+
+The exposed-address argument does not assume an open set condition, a lattice
+digit set, diagonalizability, or any ordering of $\R^d$.  Its only geometric
+input is that an expansive matrix makes \eqref{eq:address} converge.  The
+measure-theoretic step is also insensitive to boundary points: support gives
+$\mu(E_n)>0$, and absolute continuity gives $\Leb(E_n)>0$.
+
+The word ``self-affine measure'' is not separately defined around Q2.  This
+packet therefore retains the equal weights and common linear part of the
+self-similar class explicitly treated immediately before the question, while
+allowing a general expansive matrix and arbitrary dimension.  Unequal
+weights or an IFS with varying linear parts are not claimed here; in those
+broader conventions, the factor along the isolated address is no longer
+$(q/N)^n$, so a genuinely new argument would be needed.
+
+A bounded literature search used the run indexes and arXiv/web queries for
+the source identifier, exact question, self-affine Fourier frames, bounded
+self-affine densities, and the exposed-address/determinant mechanism.  It
+found later work on uniformity and frame-spectral self-affine measures, but
+no paper stating this resolution of Q2.  The tile terminology and final
+tiling implication are classical \cite{LW}.  Novelty is therefore
+provisional pending expert review.
+
+\begin{thebibliography}{9}
+\bibitem{Lai}
+C.-K. Lai,
+\emph{On Fourier frame of absolutely continuous measures},
+Journal of Functional Analysis 261 (2011), 2877--2889;
+arXiv:1103.4691v2.
+
+\bibitem{LW}
+J. C. Lagarias and Y. Wang,
+\emph{Self-Affine Tiles in $\R^n$},
+Advances in Mathematics 121 (1996), 21--49.
+\end{thebibliography}
+
+\end{document}

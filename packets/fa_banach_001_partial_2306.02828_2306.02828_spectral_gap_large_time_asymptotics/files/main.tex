@@ -1,0 +1,336 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=0.78in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx,microtype,enumitem,xcolor,hyperref}
+\hypersetup{colorlinks=true,hypertexnames=false,linkcolor=blue!45!black,urlcolor=blue!55!black,citecolor=blue!45!black}
+\setlist{nosep,leftmargin=1.6em}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\cE}{\exp L^p}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\ip}[2]{\left\langle #1,#2\right\rangle}
+\definecolor{answer}{RGB}{62,75,145}
+
+\title{Spectral-gap decay and the ground-state asymptotic\\
+\large A substantial answer to the decay-range question in arXiv:2306.02828}
+\author{Automated mathematical discovery run \texttt{fa\_banach\_001}, lane 9}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{answer}{answer!6}{\parbox{0.91\linewidth}{
+\textbf{Candidate substantial partial result.}
+For the small-data global solution constructed in the source paper, the
+reported polynomial decay is never the true large-time scale.  After a
+possibly smaller smallness threshold, the solution decays in every
+\(L^a(\R^d)\), \(p\leq a\leq\infty\), and in \(\exp L^p\), at every
+exponential rate below \(d^\beta\).  More precisely, in \(L^2\) it equals a
+multiple of the harmonic-oscillator ground state times
+\(e^{-d^\beta t}\), up to a remainder with every rate below
+\(\min\{(d+2)^\beta,m d^\beta\}\).
+}}
+\end{center}
+
+\section*{Source question and transcription}
+The source studies
+\[
+ \partial_tu+H^\beta u=f(u),\qquad
+ H=-\Delta+|x|^2,\qquad 0<\beta\leq1,
+\]
+with small initial data in \(\exp L^p(\R^d)\) and a nonlinearity satisfying
+\begin{equation}
+ |f(s)-f(t)|\leq C|s-t|
+ \bigl(|s|^{m-1}e^{\lambda|s|^p}
+      +|t|^{m-1}e^{\lambda|t|^p}\bigr).                 \tag{S}
+\end{equation}
+Its Theorem 1.2 constructs a global weak-mild solution with uniform Orlicz
+control and a polynomial \(L^a\)-estimate for a restricted range of
+exponents.  Remark 1.2(iii) asks, verbatim: ``A natural question arises as
+to whether the range of \(a\) required for (1.5) is optimal.''
+
+This packet completely determines the large-time mechanism, but does not
+settle the source's separate short-time endpoint restrictions.
+
+\section*{Original source image}
+\begin{center}
+\includegraphics[width=0.97\textwidth]{assets/source_question_crop.png}
+\end{center}
+\noindent\footnotesize Source: Bhimani--Majdoub--Manna,
+arXiv:2306.02828v3, PDF p.~4, Remark 1.2.  This is a direct crop from
+\texttt{source\_paper.pdf}.
+\normalsize
+
+\section*{Definitions and source input}
+The Luxemburg norm on \(\cE(\R^d)\) is
+\[
+ \norm{v}_{\cE}
+ =\inf\left\{A>0:
+ \int_{\R^d}\left(e^{|v(x)|^p/A^p}-1\right)dx\leq1\right\}.
+\]
+The source fixed-point argument supplies at least one admissible exponent
+\(a_0>p\), numbers \(M,\sigma_0>0\), and a global solution satisfying
+\begin{equation}
+ \sup_{t>0}\norm{u(t)}_{\cE}\leq M,
+ \qquad \norm{u(t)}_{a_0}\leq M t^{-\sigma_0}.          \tag{1}
+\end{equation}
+The small-data threshold can be decreased so that \(M\) is as small as
+needed below.  We use two estimates already recorded in the source:
+\begin{align}
+ \norm{v}_q&\leq C_{p,q}\norm{v}_{\cE},
+       &&p\leq q<\infty,                                \tag{2}\\
+ \norm{e^{-tH^\beta}g}_q
+ &\leq C e^{-d^\beta t}\norm{g}_r,
+       &&t\geq1,\quad 1\leq r,q\leq\infty,             \tag{3}\\
+ \norm{e^{-tH^\beta}g}_q
+ &\leq C t^{-\frac d{2\beta}|1/r-1/q|}\norm{g}_r,
+       &&0<t\leq1.                                      \tag{4}
+\end{align}
+Here and below, endpoint estimates are available because \(0<\beta\leq1\).
+
+\section*{Idea / proof intuition}
+The restricted exponent \(a_0\) is only a bootstrap seed.  Its polynomial
+decay, together with uniform Orlicz moments, makes \(f(u(t))\) decay in a
+sufficiently high \(L^r\).  Restarting the mild equation one time unit in
+the past then forces \(u(t)\to0\) in \(L^\infty\).  Once this happens,
+(S) becomes
+\(|f(u)|\leq\kappa\delta^{m-1}|u|\), where \(\delta\) can be made
+arbitrarily small by moving the restart time.  The spectral gap in (3)
+therefore dominates the nonlinearity and yields exponential decay in
+\(L^p\cap L^\infty\).
+
+Finally, the discrete spectrum
+\(d^\beta,(d+2)^\beta,\ldots\) separates the ground state from all higher
+modes.  The nonlinear forcing is of order \(e^{-m\omega t}\), so a scalar
+variation-of-constants formula gives the leading ground-state coefficient,
+while the orthogonal complement decays at the minimum of the next spectral
+rate and the nonlinear rate.
+
+\section*{Main result}
+Let \(\phi_0(x)=\pi^{-d/4}e^{-|x|^2/2}\), normalized in \(L^2\), and put
+\[
+ \lambda_0=d^\beta,\qquad \lambda_1=(d+2)^\beta.
+\]
+
+\begin{theorem}[Large-time range and asymptotic profile]
+Assume the hypotheses of the source's global-existence theorem:
+\(1<p\leq d(m-1)/(2\beta)\), \(m\geq p\), \(0<\beta\leq1\), and (S),
+with \(f(0)=0\).  After possibly decreasing its small-data constant, the
+global solution constructed there has the following properties.
+
+\begin{enumerate}[label=(\roman*),topsep=3pt,itemsep=2pt]
+\item For every \(a\in[p,\infty]\) and every \(0<\omega<\lambda_0\),
+there are \(T_\omega,C_{a,\omega}>0\) such that
+\[
+ \norm{u(t)}_a+\norm{u(t)}_{\cE}
+ \leq C_{a,\omega}e^{-\omega t},\qquad t\geq T_\omega. \tag{5}
+\]
+\item There is a scalar \(c\) such that, for every
+\(0<\mu<\min\{\lambda_1,m\lambda_0\}\),
+\[
+ \norm{u(t)-c e^{-\lambda_0t}\phi_0}_2
+ \leq C_\mu e^{-\mu t}                                \tag{6}
+\]
+for all sufficiently large \(t\).
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+We divide the argument into four steps.
+
+\paragraph{Step 1: a decaying forcing norm.}
+Choose
+\[
+ r>\max\left\{\frac d{2\beta},\frac{a_0}{m}\right\}.
+\]
+By decreasing the source smallness threshold, assume that the uniform bound
+in (1) is small enough that
+\(2r\lambda(2M)^p\leq1\).  The Luxemburg definition and
+\((e^x-1)^{2r}\leq e^{2rx}-1\) give
+\begin{equation}
+ \sup_{t>0}\norm{e^{\lambda|u(t)|^p}-1}_{2r}\leq C.    \tag{7}
+\end{equation}
+The Orlicz embedding (2) uniformly bounds every finite \(L^q\)-norm.
+Since \(a_0<mr<2mr<4mr\), interpolation between the decaying
+\(L^{a_0}\)-norm and the bounded \(L^{4mr}\)-norm gives positive numbers
+\(\theta_1,\theta_2\) such that
+\begin{align*}
+ \norm{u(t)}_{mr}&\leq C(1+t)^{-\theta_1\sigma_0},\\
+ \norm{u(t)}_{2mr}&\leq C(1+t)^{-\theta_2\sigma_0}.
+\end{align*}
+Putting the second scalar argument equal to zero in (S) yields
+\(|f(v)|\leq C|v|^m e^{\lambda|v|^p}\).  Hence, by (7),
+\begin{align}
+ \norm{f(u(t))}_r
+ &\leq C\norm{u(t)}_{mr}^m
+ +C\norm{u(t)}_{2mr}^m
+       \norm{e^{\lambda|u(t)|^p}-1}_{2r}
+ \leq C(1+t)^{-\eta}                                  \tag{8}
+\end{align}
+for some \(\eta>0\).
+
+\paragraph{Step 2: entry into a small \(L^\infty\)-ball.}
+For \(t\geq2\), restart the mild equation at \(t-1\):
+\[
+ u(t)=e^{-H^\beta}u(t-1)
+ +\int_{t-1}^t e^{-(t-s)H^\beta}f(u(s))\,ds.           \tag{9}
+\]
+The fixed-time \(L^{a_0}\)-to-\(L^\infty\) estimate and (1) make the
+first term tend to zero.  For the integral, (4), (8), and
+\(\gamma=d/(2\beta r)<1\) give
+\[
+ \left\lVert\int_{t-1}^t e^{-(t-s)H^\beta}f(u(s))\,ds
+ \right\rVert_\infty
+ \leq C(1+t)^{-\eta}\int_0^1\tau^{-\gamma}\,d\tau
+ \longrightarrow0.                                    \tag{10}
+\]
+Thus \(\norm{u(t)}_\infty\to0\).
+
+\paragraph{Step 3: spectral-gap bootstrap.}
+Fix \(0<\omega<\lambda_0\) and choose
+\(\omega<\nu<\lambda_0\).  Combining the short- and long-time parts of
+(3)--(4), for \(q=p,\infty\) there is \(A\) such that
+\begin{equation}
+ \norm{e^{-tH^\beta}}_{L^q\to L^q}\leq A e^{-\nu t},
+ \qquad t\geq0.                                        \tag{11}
+\end{equation}
+Choose \(\delta>0\) so small that
+\(A C e^{\lambda\delta^p}\delta^{m-1}<\nu-\omega\), and then choose
+\(T\) so that \(\norm{u(t)}_\infty\leq\delta\) for \(t\geq T\).
+Condition (S) gives pointwise
+\[
+ |f(u(t,x))|\leq C e^{\lambda\delta^p}\delta^{m-1}|u(t,x)|.
+\]
+Taking the sum norm on \(B=L^p\cap L^\infty\), (9) restarted at \(T\)
+and (11) imply
+\[
+ \norm{u(t)}_B\leq A e^{-\nu(t-T)}\norm{u(T)}_B
+ +A\kappa_\delta\int_T^t e^{-\nu(t-s)}\norm{u(s)}_B\,ds,
+\]
+where \(\kappa_\delta=C e^{\lambda\delta^p}\delta^{m-1}\).
+Weighted Gronwall therefore gives
+\begin{equation}
+ \norm{u(t)}_p+\norm{u(t)}_\infty\leq C_\omega e^{-\omega t}.
+                                                               \tag{12}
+\end{equation}
+Interpolation proves (5) for every \(p\leq a\leq\infty\).  The source
+inclusion
+\(L^p\cap L^\infty\hookrightarrow\exp L^p\), with
+\(\norm{v}_{\cE}\leq C(\norm{v}_p+\norm{v}_\infty)\), proves the Orlicz
+part of (5).
+
+\paragraph{Step 4: the ground-state coefficient.}
+At a sufficiently large positive time \(T_2\), the solution belongs to
+\(L^2\).  Indeed, choose \(T_2\) so that the already proved
+\(L^\infty\)-smallness holds on \([T_2-1,T_2]\).  In the one-unit restart
+formula the linear term is in \(L^2\) by fixed-time smoothing from \(L^p\).
+On the last unit interval, (S) and boundedness give
+\(|f(u)|\leq C|u|^m\), while interpolation between \(L^p\) and
+\(L^\infty\) gives \(u\in L^{2m}\); hence the forcing is in \(L^2\).
+Thus (9) is an \(L^2\) identity from \(T_2\) onward.
+
+Let \(P_0v=\ip{v}{\phi_0}\phi_0\) and \(Q=I-P_0\).  Fix
+\(\mu<\min\{\lambda_1,m\lambda_0\}\), and choose
+\(\alpha<\lambda_0\) so close to \(\lambda_0\) that
+\(m\alpha>\max\{\mu,\lambda_0\}\).
+By (12), interpolation, and \(2m\geq p\),
+\[
+ \norm{f(u(t))}_2
+ \leq C\norm{u(t)}_{2m}^m
+ \leq C e^{-m\alpha t}.                                \tag{13}
+\]
+The scalar ground-state equation gives
+\[
+ e^{\lambda_0t}\ip{u(t)}{\phi_0}
+ =e^{\lambda_0T_2}\ip{u(T_2)}{\phi_0}
+ +\int_{T_2}^t e^{\lambda_0s}\ip{f(u(s))}{\phi_0}\,ds.
+\]
+The integral converges by (13).  Define
+\begin{equation}
+ c=e^{\lambda_0T_2}\ip{u(T_2)}{\phi_0}
+ +\int_{T_2}^\infty e^{\lambda_0s}
+     \ip{f(u(s))}{\phi_0}\,ds.                         \tag{14}
+\end{equation}
+The omitted tail is \(O(e^{-m\alpha t})\) after restoring the factor
+\(e^{-\lambda_0t}\).  On the orthogonal complement, the spectral theorem
+and (13) yield
+\[
+ \norm{Qu(t)}_2
+ \leq e^{-\lambda_1(t-T_2)}\norm{Qu(T_2)}_2
+ +C\int_{T_2}^t e^{-\lambda_1(t-s)}e^{-m\alpha s}\,ds
+ \leq C_\mu e^{-\mu t}.
+\]
+Together with the ground-state tail, this is (6).
+\end{proof}
+
+\section*{Consequences and sharpness}
+If the coefficient \(c\) in (14) is nonzero, (6) shows that the exact
+large-time exponent is \(d^\beta\); no faster uniform estimate can hold for
+that solution.  If \(c=0\), the solution decays faster, with the next
+possible obstruction coming from either the first excited spectral level
+or the order-\(m\) nonlinear forcing.  Thus the source's polynomial bound
+is useful at short time and as a bootstrap seed, but is far from optimal at
+large time.
+
+For example, when \(f\equiv0\) and \(u_0=\varepsilon\phi_0\), one has
+exactly \(u(t)=\varepsilon e^{-d^\beta t}\phi_0\), so the spectral rate is
+attained within the source hypotheses.
+
+\section*{Verification, novelty, and scope}
+\begin{itemize}
+\item Every integrability exponent used in Step 1 is finite and larger than
+the decaying seed exponent; the uniform high moments come directly from the
+Orlicz bound.
+\item The near-time singularity in Step 2 is integrable precisely because
+\(r>d/(2\beta)\).
+\item The perturbative constant in Step 3 tends to zero with
+\(\norm{u(t)}_\infty\); this is why every rate below, rather than merely one
+unspecified rate below, \(d^\beta\) is obtained.
+\item The \(L^2\) asymptotic does not assume \(u_0\in L^2\); fixed-time
+harmonic-oscillator smoothing supplies \(L^2\) membership.
+\item Formula (14) explicitly identifies the leading coefficient and the
+remainder estimate separates the next spectral and nonlinear rates.
+\end{itemize}
+
+\paragraph{Novelty audit.}
+Cheap run indexes were searched for arXiv:2306.02828 and the terms
+``optimal range'', ``spectral gap'', ``ground-state asymptotic'', and
+``Orlicz exponential nonlinearity''.  Bounded arXiv/primary-source searches
+through 17 August 2026 found work on exponential nonlinearities and recent
+sharp decay estimates for other oscillator equations, but no source giving
+this all-\(a\) large-time theorem or the coefficient formula (14) in the
+present Orlicz setting.  Novelty confidence is moderate, not definitive.
+
+\paragraph{Limitations.}
+The theorem answers the large-time part of the source question and gives
+the precise asymptotic scale.  It does not enlarge the source's admissible
+range in its exact all-time estimate (1.5), whose power of \(t\) also
+encodes the singular behavior as \(t\downarrow0\).  It applies to the
+small-data solution constructed by the source after a possibly smaller
+threshold, not to arbitrary large-data solutions.  The coefficient \(c\)
+may vanish for special data.
+
+\paragraph{Human review.}
+Pending.  Priority checks are the passage from the source weak-mild
+representative to the one-unit restart identity in Lebesgue spaces, and the
+uniform exponential-moment choice after shrinking the source smallness
+constant.
+
+\section*{References}
+\begin{enumerate}[label={[\arabic*]}]
+\item D. G. Bhimani, M. Majdoub, and R. Manna,
+\emph{Heat equations associated to harmonic oscillator with exponential
+nonlinearity}, arXiv:2306.02828v3, especially Theorem 1.2, Remark 1.2, and
+Theorem 2.1.
+\item D. G. Bhimani, R. Manna, F. Nicola, S. Thangavelu, and
+S. I. Trapasso, \emph{On heat equations associated with fractional harmonic
+oscillators}, Fract. Calc. Appl. Anal. 26 (2023), 2470--2492.
+\item M. Majdoub and S. Tayachi, \emph{Global existence and decay estimates
+for the heat equation with exponential nonlinearity}, Funkcial. Ekvac. 64
+(2021), 237--259.
+\end{enumerate}
+
+\end{document}

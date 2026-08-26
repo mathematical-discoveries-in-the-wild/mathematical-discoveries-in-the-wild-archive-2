@@ -1,0 +1,197 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Hh}{\mathcal H}
+
+\title{A Quasiperiodic Product of Countably Many\\
+Orthogonal Projections Need Not Converge in Norm}
+\author{Automatic mathematics run \texttt{fa\_banach\_001}}
+\date{11 August 2026}
+
+\begin{document}
+\setlength{\emergencystretch}{3em}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{
+\textbf{Status.} Candidate counterexample, likely valid, for human review.
+It gives a negative answer to the countably infinite quasiperiodic-family
+question recorded in arXiv:1809.05858.
+}}
+\end{center}
+
+\section{Source question and answer}
+
+Let $(M_j)$ be closed subspaces of a Hilbert space, let $P_j$ be their
+orthogonal projections, and set
+\[
+ x_n=P_{\sigma(n)}x_{n-1}.
+\]
+For a finite family, Sakai proved norm convergence when $\sigma$ is
+\emph{quasiperiodic}: every index occurs infinitely often and the gaps
+between successive occurrences of each fixed index are bounded.
+
+On printed page 16 of Ginat's dissertation \cite{source}, the following
+question is attributed to Sakai:
+\begin{quote}
+Does norm convergence still hold when the family is countably infinite and
+the index sequence is quasiperiodic?
+\end{quote}
+
+\begin{theorem}\label{thm:main}
+There are a countable family $(M_j)_{j\geq1}$ of closed subspaces of
+$\ell_2$, a quasiperiodic map $\sigma:\N\to\N$, and $x_0\in\ell_2$ such
+that the sequence
+\[
+ x_n=P_{\sigma(n)}\cdots P_{\sigma(1)}x_0
+\]
+does not converge in norm.  In fact, $x_n\rightharpoonup0$,
+$\lim_n\|x_n\|>0$, and $\bigcap_jM_j=\{0\}$.
+\end{theorem}
+
+\section{Idea of the proof}
+
+Move a unit vector from $e_m$ to $e_{m+1}$ in very many tiny planar
+rotations.  The sum of the squared angles is finite, so projecting through
+the hyperplane implementing each rotation loses only a positive finite
+factor.  Nevertheless, the unit directions escape to infinity and converge
+weakly to zero.
+
+Each hyperplane is initially used exactly when its rotation is needed.  It is
+then withheld until the path has left the two coordinates supporting its
+normal vector.  After that time it may be repeated forever without changing
+the orbit.  Exact $2$-adic valuation classes provide a disjoint bounded-gap
+recurrence schedule for all the old hyperplanes simultaneously.  This makes
+the complete index sequence quasiperiodic while preserving the one-pass
+nonconvergent orbit exactly.
+
+\section{The slowly rotating path}
+
+Let $(e_m)_{m\geq1}$ be the canonical orthonormal basis of
+$\Hh=\ell_2$.  Put
+\[
+ N_m=2^m,
+ \qquad
+ \theta_m=\frac{\pi}{2N_m}.
+\]
+Starting at $v_0=e_1$, join $e_m$ to $e_{m+1}$ by the $N_m$ unit vectors
+at successive angles $\theta_m,2\theta_m,\ldots,N_m\theta_m$:
+\[
+ \cos(r\theta_m)e_m+\sin(r\theta_m)e_{m+1},
+ \qquad 1\leq r\leq N_m.
+\]
+Concatenating these finite strings defines $(v_k)_{k\geq0}$.  Every
+$v_k$ is a unit vector, and consecutive vectors lying in stage $m$ satisfy
+\[
+ \langle v_{k-1},v_k\rangle=\cos\theta_m=:c_k>0.
+\]
+Moreover $v_k\rightharpoonup0$, since the two coordinates supporting $v_k$
+tend to infinity.  At the end of stage $m$ the path equals $e_{m+1}$, so it
+does not converge in norm.
+
+For every $k\geq1$, define
+\[
+ u_k=\frac{v_{k-1}-c_kv_k}{\sqrt{1-c_k^2}},
+ \qquad
+ Q_k=I-u_k\otimes u_k.
+\]
+Thus $u_k$ is a unit vector orthogonal to $v_k$, $Q_k$ is the orthogonal
+projection onto $u_k^\perp$, and
+\begin{equation}\label{eq:rotation}
+ Q_kv_{k-1}=c_kv_k.
+\end{equation}
+If $k$ belongs to stage $m$, then $u_k\in[e_m,e_{m+1}]$.  Consequently
+there is an integer $L_k\geq k$ (for example, the end of stage $m+1$) such
+that
+\begin{equation}\label{eq:safe}
+ v_j\perp u_k\quad\text{for every }j\geq L_k.
+\end{equation}
+
+Let $a_0=1$ and $a_k=\prod_{i=1}^kc_i$.  The infinite product has a
+strictly positive limit.  Indeed,
+\[
+ \sum_{k\geq1}(1-c_k)
+ =\sum_{m\geq1}N_m(1-\cos\theta_m)
+ \leq \frac12\sum_{m\geq1}N_m\theta_m^2
+ =\frac{\pi^2}{8}\sum_{m\geq1}\frac1{N_m}<\infty.
+\]
+Since every $c_k>0$, this gives
+\begin{equation}\label{eq:positive}
+ a_k\longrightarrow a_\infty>0.
+\end{equation}
+
+\section{A bounded-gap recurrence schedule}
+
+Write $\nu_2(n)$ for the exact exponent of $2$ dividing the positive
+integer $n$.  Let
+\[
+ P_1=I,\qquad P_{k+1}=Q_k\quad(k\geq1),
+\]
+and define $\sigma:\N\to\N$ as follows:
+\begin{enumerate}
+\item $\sigma(2k-1)=k+1$ for $k\geq1$;
+\item if $n$ is even, $\nu_2(n)=k+1$ for some $k\geq1$, and
+      $n\geq2L_k$, set $\sigma(n)=k+1$;
+\item at every remaining even integer, set $\sigma(n)=1$.
+\end{enumerate}
+
+This sequence is quasiperiodic.  Index $1$ occurs at least at every integer
+$n\equiv2\pmod4$, so its gaps are at most $4$.  For fixed $k\geq1$, index
+$k+1$ first occurs at $2k-1$.  After a finite delay it occurs at every
+sufficiently large integer satisfying $\nu_2(n)=k+1$.  Those integers form
+an arithmetic progression with common difference $2^{k+2}$.  Hence the gap
+between successive occurrences of $k+1$ is bounded (the one initial gap is
+finite as well).
+
+\section{Exact orbit and failure of norm convergence}
+
+We claim that for every $k\geq1$,
+\begin{equation}\label{eq:orbit}
+ x_{2k-1}=x_{2k}=a_kv_k.
+\end{equation}
+This follows by induction.  At odd time $2k-1$, the prescribed projection is
+$Q_k$, so \eqref{eq:rotation} sends $a_{k-1}v_{k-1}$ to $a_kv_k$.
+At even time $2k$, either the projection is $I$, or it is some $Q_i$ whose
+recurrence has been released.  In the latter case $2k\geq2L_i$, hence
+$k\geq L_i$, and \eqref{eq:safe} gives $Q_iv_k=v_k$.  Thus the even step
+does nothing, proving \eqref{eq:orbit}.
+
+Equations \eqref{eq:positive} and \eqref{eq:orbit} show that
+$\|x_n\|\to a_\infty>0$, while $v_k\rightharpoonup0$ gives
+$x_n\rightharpoonup0$.  Therefore $(x_n)$ cannot converge in norm.
+
+Finally, the common intersection is zero.  During stage $m$ there are at
+least two distinct normal vectors $u_k$ in $[e_m,e_{m+1}]$, and they span
+that two-dimensional coordinate plane.  A vector belonging to every
+$u_k^\perp$ is therefore orthogonal to $e_m$ and $e_{m+1}$ for every $m$,
+so it is zero.  This proves Theorem~\ref{thm:main}.
+
+\section{Bounded literature audit}
+
+The source itself records the countably infinite quasiperiodic case as open.
+A later paper of Eskandari and Moslehian \cite{later} proves convergence in a
+different \emph{pseudo-periodic} regime: only a finite recurrent core is used,
+and its countable tail is subject to additional structure.  That result does
+not apply here, because every one of the countably many hyperplane indices is
+recurrent with bounded gaps.  Exact-title and exact-phrase searches of arXiv
+and the run indexes found no later source containing the counterexample above.
+This is a bounded novelty check, not a claim of exhaustive priority.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+O. Ginat,
+\emph{The Method of Alternating Projections},
+arXiv:1809.05858 (2018), especially Section 3.4.3, printed p.~16.
+
+\bibitem{later}
+R. Eskandari and M. S. Moslehian,
+\emph{Convergence of Random Products of Countably Infinitely Many
+Projections}, arXiv:2405.04848 (2024).
+\end{thebibliography}
+
+\end{document}

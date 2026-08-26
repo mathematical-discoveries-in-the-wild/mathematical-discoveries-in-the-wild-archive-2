@@ -1,0 +1,215 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\C}{\mathcal C}
+
+\title{Definability of Non-Hermitian Homogeneous Matrix Pencils\\
+\large A candidate full answer to Question 3.31 of arXiv:2210.03862}
+\author{Automated mathematical discovery run \texttt{fa\_banach\_001}, lane 15}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\linewidth}{\textbf{Status.}
+Candidate full solution, likely valid, requiring expert review. The bounded
+literature search described below found no direct later answer.}}
+\end{center}
+
+\begin{abstract}
+Let $p$ be an arbitrary homogeneous linear matrix $*$-polynomial, not assumed
+Hermitian. We prove that, uniformly over all operator systems $E$, the tuples
+$X\in E_k^n$ for which $1\succeq p(X)$ form a definable set. The missing
+ingredient beyond the Hermitian case in Sinclair's Proposition 3.29 is a
+uniform projection onto the kernel of the skew-Hermitian part of the pencil.
+Since the pencil has a fixed finite scalar coefficient space, this projection
+amplifies with a norm bound independent of $E$. A final positive rescaling
+then gives the required uniform stability of the zero set.
+\end{abstract}
+
+\section{Source question}
+
+Sinclair asks whether the Hermitian-pencils result immediately preceding the
+question extends to an arbitrary homogeneous linear matrix $*$-polynomial.
+The source convention $1\succeq p(X)$ means that $1-p(X)$ belongs to the
+positive cone, so the condition itself forces $p(X)$ to be Hermitian.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.96\linewidth]{figures/open_question_crop.png}
+  \caption{Proposition 3.29 and Question 3.31 in the source PDF, p.~23.}
+\end{figure}
+
+\section{Statement}
+
+Fix the degree $d$, the tuple length $n$, and the matrix level $k$. For an
+operator system $E$, write $\C_{dk}(E)$ for the positive cone in
+$M_{dk}(E)$.
+
+\begin{theorem}\label{thm:main}
+Let $p(x_1,\ldots,x_n)$ be any homogeneous linear matrix $*$-polynomial of
+degree $d$. The uniform assignment
+\[
+ S_p(E)=\{X\in E_k^n:1_d\otimes1_k-p(X)\in\C_{dk}(E)\}
+\]
+is definable over the class of all operator systems.
+\end{theorem}
+
+The assertion is understood on every fixed product of bounded sorts, exactly
+as in the source's treatment of unbounded uniform assignments.
+
+\section{A fixed-coefficient projection lemma}
+
+For a pencil $a$, denote by $a_E$ its evaluation map on tuples over $E$.
+
+\begin{lemma}\label{lem:projection}
+Let $a$ be a fixed homogeneous Hermitian linear matrix $*$-polynomial. For
+every fixed matrix level $k$ there are real-linear maps
+\[
+ P_E:E_k^n\longrightarrow E_k^n
+\]
+and a constant $C<\infty$, independent of the operator system $E$, such that
+\[
+ a_E(P_EX)=0,
+ \qquad
+ \max_j\|(P_EX)_j-X_j\|_k\le C\|a_E(X)\|_{dk}.
+\]
+\end{lemma}
+
+\begin{proof}
+Take real and imaginary parts of every variable. The self-adjoint part of
+$M_k(E)$ is, as a real vector space, the tensor product of $E^h$ with a fixed
+finite-dimensional real scalar coefficient space. Thus there are
+finite-dimensional real spaces $V,W$ and a fixed real-linear map $T:V\to W$
+such that, under the canonical matrix-coordinate identifications,
+\[
+ a_E=T\otimes\id_{E^h}.
+\]
+Choose a complement $V_0$ of $\ker T$ in $V$. Extend the inverse of
+$T|_{V_0}:V_0\to\operatorname{ran}T$ to a real-linear map $S:W\to V$, and
+put $P=I_V-ST$. Then $TP=0$ and
+\[
+ v-Pv=STv.
+\]
+Amplify these fixed scalar-coordinate maps by $\id_{E^h}$. A linear map
+between fixed finite-dimensional matrix coefficient spaces is a finite sum of
+scalar coordinate maps; hence its amplification has a norm bounded by a
+constant depending only on that map and on $k$, not on $E$. Therefore
+$P_E=P\otimes\id_{E^h}$ has the asserted properties, with
+$C=\sup_E\|S\otimes\id_{E^h}\|<\infty$.
+\end{proof}
+
+\paragraph{Why this lemma is needed.}
+Writing a condition as the intersection of a Hermitian inequality and a
+linear equality identifies the correct set, but zero sets of definable
+predicates are not automatically definable in continuous logic. Lemma
+\ref{lem:projection} supplies the missing uniform perturbation estimate.
+
+\section{Proof of Theorem \ref{thm:main}}
+
+Define the Hermitian homogeneous pencils
+\[
+ q=\frac{p+p^*}{2},
+ \qquad
+ r=\frac{p-p^*}{2i},
+\]
+so that $p=q+ir$. Consider the definable predicate
+\[
+ f_E(X)=\dist\bigl(1-p(X),\C_{dk}(E)\bigr).
+\]
+Its zero set is exactly $S_p(E)$. By the uniform zero-set criterion stated as
+Exercise 3.23 in the source, it suffices to show on each bounded product of
+sorts that $f_E(X)\to0$ forces the distance from $X$ to $S_p(E)$ to tend to
+zero, with a modulus independent of $E$.
+
+Suppose $f_E(X)<\delta$. Up to replacing $\delta$ by an arbitrarily slightly
+larger number, choose $A\in\C_{dk}(E)$ with
+\[
+ e:=1-p(X)-A,
+ \qquad \|e\|<\delta.
+\]
+Taking skew-Hermitian and Hermitian parts gives
+\[
+ \|r(X)\|<\delta,
+ \qquad
+ \|1-q(X)-A\|<\delta.
+\]
+In particular,
+\[
+ q(X)\preceq(1+\delta)1.
+\]
+
+Apply Lemma \ref{lem:projection} to $r$ and set $Y=P_EX$. Then
+\[
+ r(Y)=0,
+ \qquad
+ \max_j\|Y_j-X_j\|\le C\delta.
+\]
+Let $L$ be a fixed Lipschitz constant for the evaluation map $q_E$, uniform
+in $E$; such a constant is obtained by summing the norms of the finitely many
+scalar coefficient matrices. It follows that
+\[
+ q(Y)\preceq \bigl(1+(1+LC)\delta\bigr)1.
+\]
+Put $K=1+LC$ and
+\[
+ Z=\frac{Y}{1+K\delta}.
+\]
+Homogeneity yields $r(Z)=0$ and $q(Z)\preceq1$. Hence
+$p(Z)=q(Z)$ and $1-p(Z)\in\C_{dk}(E)$, so $Z\in S_p(E)$.
+
+On a product of sorts with $\max_j\|X_j\|\le R$,
+\begin{align*}
+ \max_j\|Z_j-X_j\|
+ &\le C\delta+
+ \frac{K\delta}{1+K\delta}\max_j\|Y_j\|\\
+ &\le C\delta+K\delta(R+C\delta),
+\end{align*}
+which tends to zero uniformly in $E$. The zero-set criterion proves that
+$S_p$ is definable. This answers both parts of Question 3.31: no restriction
+to a smaller natural class is necessary. \qed
+
+\section{Proof intuition and failure modes}
+
+Near-positivity of $1-p(X)$ already controls two errors. Its Hermitian part
+says that the order inequality is nearly true, while its skew-Hermitian part
+says that $p(X)$ is nearly self-adjoint. Because the skew constraint is a
+fixed finite system of real-linear scalar equations, ``nearly in its kernel''
+can be repaired uniformly. Once repaired, the exact argument from the
+Hermitian case applies.
+
+Two shortcuts are unsafe. First, merely intersecting the Hermitian feasible
+set with $\{r=0\}$ does not establish definability. Second, rescaling before
+eliminating $r(X)$ never makes a nonzero skew part exactly vanish. The fixed
+coefficient projection resolves both issues.
+
+\section{Verification and novelty bounds}
+
+The accompanying script constructs random non-Hermitian pencils over finite
+matrix algebras, forms the real-linear skew map, orthogonally projects onto
+its kernel, and checks the final spectral rescaling. This is a sanity check of
+the algebraic mechanism, not a proof of the uniform amplification lemma.
+
+A bounded search on 11 August 2026 covered the run's registry, solution,
+attempt, and active-claim indexes; the exact arXiv id and question phrase;
+the current author-hosted PDF; and searches combining non-Hermitian/Hermitian
+decomposition with operator-system definability. The current PDF retains the
+question, and no direct answer was found. This is provisional novelty
+evidence only.
+
+\section*{Reference}
+
+T. Sinclair, \emph{Model Theory of Operator Systems and C$^*$-Algebras},
+arXiv:2210.03862 (2022); source PDF, Question 3.31 and Proposition 3.29.
+
+\end{document}

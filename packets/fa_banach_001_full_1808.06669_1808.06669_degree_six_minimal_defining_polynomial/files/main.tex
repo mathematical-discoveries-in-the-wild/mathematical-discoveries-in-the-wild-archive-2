@@ -1,0 +1,261 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,array}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\C}{\mathbb C}
+\newcommand{\D}{\mathcal D}
+\newcommand{\K}{\mathcal K}
+\newcommand{\Z}{\mathcal Z}
+\newcommand{\adj}{\operatorname{adj}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\tr}{\operatorname{tr}}
+
+\title{The degree-six polynomial in Helton--Klep--McCullough--Vol\v{c}i\v{c} is minimal\\
+\large An exact computer-assisted full solution of the degree-five-versus-six question}
+\author{Autonomous proof search, run \texttt{fa\_banach\_001}, lane 2}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.} Claimed full solution, likely valid, pending expert review.  The finite algebraic classification in the proof is certified exactly over $\mathbb Q(\sqrt2)$ by the included verifier; no floating-point computation is used.
+
+\section{Source question}
+
+The source is J.~W.~Helton, I.~Klep, S.~McCullough and J.~Vol\v{c}i\v{c},
+\emph{Noncommutative polynomials describing convex sets}, arXiv:1808.06669, Section~5.2, physical PDF page~24 \cite{HKMV}.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+Put $y=x^*$ and $H=x+y$.  The source defines
+\begin{align*}
+ f_1&=1-H-2H^2-2yx+H^3+2H^2yx,\\
+ s&=1-H^2,
+\end{align*}
+and
+\[
+L=\begin{pmatrix}
+1-\frac12H&-\sqrt2H&\frac12H&y\\
+-\sqrt2H&1&0&0\\
+\frac12H&0&1-\frac12H&-y\\
+x&0&-x&1
+\end{pmatrix}.
+\]
+It proves that $f=f_1s$ is Hermitian, $\D_f=\D_L$, $\deg f=6$, and every scalar Hermitian defining polynomial for this domain has degree at least five.  The exact source sentence is:
+
+\begin{quote}
+``Note that $\deg f=6$, but we do not know whether $f$ is a minimal degree defining polynomial.''
+\end{quote}
+
+Thus the missing issue is the existence or nonexistence of a degree-five scalar Hermitian polynomial defining $\D_L$.
+
+\section{Definitions and input results}
+
+We work in $\C\langle x,y\rangle$ with involution $x^*=y$, $y^*=x$.  For a scalar polynomial $q$ with $q(0)=1$, $\K_q$ is the closure of the connected component of the origin in the set of matrix tuples where $q$ is invertible.  When $q=q^*$, the same set is denoted $\D_q$.  The free singularity locus is $\Z_q$.
+
+We use the following results exactly as they are used in the source paper.
+\begin{enumerate}
+\item Lemma~5.1 of \cite{HKMV}, together with the Polynomial Singularit\"atstellensatz, says that any Hermitian $q$ with $\D_q=\D_L$ has degree at least five; moreover, a degree-five such $q$ has an atomic factor of degree four in the stable-association class of $f_1$ \cite[Theorem~4.3]{HKV}.
+\item Proposition~2.7 and Remark~2.6 of \cite{HKMV} give the minimal Fornasini--Marchesini realization, the determinant identity, the inversion formula, and the joint-nilpotence criterion for a realization to be a polynomial.
+\item The proof of Proposition~3.3 of \cite{HKMV} applies verbatim to an arbitrary normalized atom $p$ with $\Z_p=\Z_L$: a minimal realization of $p^{-1}$ can be written over the displayed pencil $L$.  Indeed, its irreducible realization pencil has the same free locus as $L$ and hence is similar to $L$ by \cite[Theorem~3.11]{KV}.
+\end{enumerate}
+
+\section{Proof intuition}
+
+The source lower bound leaves only one possible way a degree-five defining polynomial could exist: it would have to be a degree-four atom with the same free singularity locus as $f_1$, multiplied by an affine-linear factor.  Stable association means that the degree-four atom need not literally be $f_1$, so checking only $f_1t$ is insufficient.
+
+Minimal realization theory makes all stable associates finite in this example.  A degree-four atom $p$ with $\Z_p=\Z_L$ gives a rank-one matrix $M=v\alpha$ satisfying the scalar adjugate identity
+\[
+\tr(M\adj L(z,\bar z))=1.
+\]
+Coefficient comparison leaves a seven-dimensional affine space, and the rank-one minors cut it down to exactly four points.  These yield four explicit degree-four atoms (one is $f_1$).  For each atom, six coefficients of $pt-(pt)^*$ form a nonsingular linear system in the six real and imaginary parts of an affine $t$.  Hence $t=0$, contradicting a degree-five factorization.
+
+\section{Main theorem}
+
+\begin{theorem}\label{thm:main}
+Let $f_1,s,L$ be the polynomials and pencil above and set $f=f_1s$.  If $q\in\C\langle x,y\rangle$ is Hermitian, $q(0)=1$, and $\D_q=\D_L$, then $\deg q\ge 6$.  Consequently $f$ is a minimal-degree scalar Hermitian defining polynomial for $\D_L$, and the minimum degree is exactly six.
+\end{theorem}
+
+\begin{proof}
+The source paper proves $f=f^*$, $\D_f=\D_L$, and $\deg f=6$, as well as the lower bound $\deg q\ge5$ \cite[Lemma~5.1 and Section~5.2]{HKMV}.  It remains to exclude degree five.
+
+\paragraph{1. Reduction to a linear symmetrizer.}
+Suppose $q=q^*$, $\D_q=\D_L$, and $\deg q=5$.  Normalize every factor to have constant term one.  The argument of Lemma~5.1 in \cite{HKMV}, using \cite[Theorem~4.3(3)]{HKV}, gives an atomic factor $p$ of degree four with
+\[
+\Z_p=\Z_{f_1}=\Z_L.
+\]
+Degree is additive in the free algebra, so all remaining atomic factors have total degree one.  If $p$ occurs on the left, $q=pt$ for a nonzero affine-linear $t$.  If it occurs on the right, take adjoints and use $q=q^*$ to obtain the same form $q=p^*t^*$; here $p^*$ has the same free singularity locus.  Thus it suffices to prove:
+\begin{equation}\label{eq:goal}
+\text{no normalized degree-four atom $p$ with $\Z_p=\Z_L$ has $pt=(pt)^*$ for nonzero affine $t$.}
+\end{equation}
+
+\paragraph{2. Realization of every possible $p$.}
+Write
+\[
+L=I-A_xx-A_yy,
+\quad
+A_x=\begin{pmatrix}
+\frac12&\sqrt2&-\frac12&0\\
+\sqrt2&0&0&0\\
+-\frac12&0&\frac12&0\\
+-1&0&1&0
+\end{pmatrix},
+\quad A_y=A_x^{\mathsf T}.
+\]
+By the realization results recalled above, every $p$ in \eqref{eq:goal} has a minimal realization
+\[
+p^{-1}=1+\alpha L^{-1}(b_xx+b_yy),
+\]
+where $\alpha$ is a row vector.  The inversion formula says that the realization coefficients for $p$ are
+\[
+N_x=A_x-b_x\alpha,
+\qquad
+N_y=A_y-b_y\alpha.
+\]
+Since $p$ is a polynomial, $N_x,N_y$ are jointly nilpotent \cite[Remark~2.6(5)--(6)]{HKMV}.  Choose a nonzero common kernel vector $v$.  If $\alpha v=0$, then $A_xv=A_yv=0$, contradicting minimality by Remark~2.6(1) of \cite{HKMV}.  Scale $v$ so that $\alpha v=1$.  Then
+\[
+b_x=A_xv,\qquad b_y=A_yv,\qquad
+p^{-1}=\alpha L^{-1}v.
+\]
+Proposition~2.7(1) of \cite{HKMV}, evaluated at commuting scalar variables $z,\bar z$, gives $p(z,\bar z)=\det L(z,\bar z)$.  Hence
+\begin{equation}\label{eq:adj}
+\alpha\adj L(z,\bar z)v=1.
+\end{equation}
+Set $M=v\alpha$.  Then $M$ has rank one and \eqref{eq:adj} is
+\begin{equation}\label{eq:trace}
+\tr\!\left(M\adj L(z,\bar z)\right)=1.
+\end{equation}
+
+\paragraph{3. Exact rank-one classification.}
+Equating the coefficients in \eqref{eq:trace} gives every solution in the form
+\[
+M(a,b,c,d,e,r,g)=
+\begin{pmatrix}
+1-b+r/\sqrt2&e/\sqrt2+g/(2\sqrt2)-a&g-b-c-1&e\\
+a&b&-e/\sqrt2-g/(2\sqrt2)-d&r\\
+c&d&-r/\sqrt2-g&g/2\\
+e&r&g/2&g
+\end{pmatrix}.
+\]
+The lexicographic Gr\"obner basis of its $2\times2$ minors contains
+\begin{gather*}
+e, r, g, d^2, cd, c^2(c+1), c(b+c+1), d(b+1),\\
+a c+2d,\quad b^2+b-2c^2-2c,\quad ab+a-4d,\quad
+a^2+2b-2c^2-2c.
+\end{gather*}
+The complete basis is printed by the verifier.  These equations force $d=e=r=g=0$.  If $c=-1$, they give $(a,b)=(0,0)$; if $c=0$, they give $(a,b)=(0,0)$ or $(\pm\sqrt2,-1)$.  Substitution verifies that these four points satisfy all minors.  Therefore the only rank-one matrices are
+\begin{align*}
+M_1&=\begin{pmatrix}1&0&0&0\\0&0&0&0\\-1&0&0&0\\0&0&0&0\end{pmatrix},&
+M_2&=\begin{pmatrix}1&0&-1&0\\0&0&0&0\\0&0&0&0\\0&0&0&0\end{pmatrix},\\[1ex]
+M_3&=\begin{pmatrix}2&\sqrt2&0&0\\-\sqrt2&-1&0&0\\0&0&0&0\\0&0&0&0\end{pmatrix},&
+M_4&=\begin{pmatrix}2&-\sqrt2&0&0\\\sqrt2&-1&0&0\\0&0&0&0\\0&0&0&0\end{pmatrix}.
+\end{align*}
+Choose factorizations $M_i=v_i\alpha_i$ as follows:
+\[
+\begin{array}{c|c|c}
+i&v_i&\alpha_i\\ \hline
+1&(1,0,-1,0)^{\mathsf T}&(1,0,0,0)\\
+2&(1,0,0,0)^{\mathsf T}&(1,0,-1,0)\\
+3&(\sqrt2,-1,0,0)^{\mathsf T}&(\sqrt2,1,0,0)\\
+4&(\sqrt2,1,0,0)^{\mathsf T}&(\sqrt2,-1,0,0).
+\end{array}
+\]
+For $j\in\{x,y\}$ put
+\[
+N_{i,j}=A_j(I-M_i),\qquad b_{i,j}=A_jv_i,\qquad
+N_i=N_{i,x}x+N_{i,y}y.
+\]
+Direct exact multiplication gives $N_{i,w}=0$ for every word $w$ of length four.  Thus the corresponding polynomial is
+\begin{equation}\label{eq:pi}
+p_i=1-\alpha_i(I+N_i+N_i^2+N_i^3)(b_{i,x}x+b_{i,y}y).
+\end{equation}
+Each $p_i$ has degree four, and $p_2=f_1$.  Equations \eqref{eq:trace}--\eqref{eq:pi} show that every possible $p$ is one of these four.
+
+\paragraph{4. No affine symmetrizer.}
+Let
+\[
+t=u_0+u_xx+u_yy,\qquad
+u_0=u_{0r}+iu_{0i},\quad u_x=u_{xr}+iu_{xi},\quad u_y=u_{yr}+iu_{yi}.
+\]
+For each $i$, equate coefficients in $p_it-(p_it)^*=0$.  The following six coefficients already have full rank.  A word such as $xxxyx$ denotes the corresponding word in the free letters $x,y$.
+
+\begin{center}\small
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{c|l}
+\toprule
+$i$&Six coefficient equations\\
+\midrule
+1&$-2u_{yr}=0$, $2u_{yi}=0$, $2u_{xr}=0$, $2u_{xi}=0$, $-2u_{0r}+u_{xr}-u_{yr}=0$, $2u_{0i}+u_{xi}+u_{yi}=0$\\
+2&$2u_{xr}=0$, $2u_{xi}=0$, $2u_{yr}=0$, $2u_{yi}=0$, $2u_{0r}+u_{xr}-u_{yr}=0$, $2u_{0i}+u_{xi}+u_{yi}=0$\\
+3&$-2u_{yr}=0$, $2u_{yi}=0$, $2u_{xr}=0$, $2u_{xi}=0$, $4u_{0i}-u_{xi}-u_{yi}=0$, $-4u_{0r}-2u_{xr}+4u_{yr}=0$\\
+4&$-2u_{yr}=0$, $2u_{yi}=0$, $2u_{xr}=0$, $2u_{xi}=0$, $4u_{0i}+3u_{xi}+3u_{yi}=0$, $4u_{0r}-2u_{xr}+4u_{yr}=0$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For transparency, the selected words and real/imaginary parts are printed by the verifier.  The determinants of these four $6\times6$ systems are respectively
+\[
+64,\qquad64,\qquad-256,\qquad256.
+\]
+Therefore $u_0=u_x=u_y=0$ for every $i$.  This proves \eqref{eq:goal}, contradicting the nonzero affine factor in a hypothetical degree-five $q$.
+
+Hence every Hermitian defining polynomial has degree at least six.  Since the source polynomial $f=f_1s$ has degree six and defines $\D_L$, it is minimal.  \qedhere
+\end{proof}
+
+\section{Exact verification}
+
+The included script \texttt{code/verifier.py} performs the following exact checks over $\mathbb Q(\sqrt2)$:
+\begin{enumerate}
+\item $f_1s$ is Hermitian and has degree six;
+\item the affine parametrization solves \eqref{eq:trace};
+\item all $36$ rank-one minors have exactly the four solutions above, with the displayed Gr\"obner basis;
+\item all words of length four in every pair $N_{i,x},N_{i,y}$ vanish;
+\item every $p_i$ has degree four and $p_2=f_1$;
+\item the coefficient matrix for $p_it-(p_it)^*$ has rank six, with the four nonzero determinants displayed above.
+\end{enumerate}
+Run it from the repository root with
+\begin{verbatim}
+conda run --no-capture-output -n sandbox python \
+  runs/fa_banach_001/solutions/full/\
+  1808.06669_degree_six_minimal_defining_polynomial/code/verifier.py
+\end{verbatim}
+The recorded output ends with
+\begin{verbatim}
+PASS: exactly four realization candidates; no affine symmetrizer exists.
+\end{verbatim}
+The computation is part of the proof only as an exact finite polynomial calculation; it is not numerical evidence.
+
+\section{Limitations, novelty check, and review recommendation}
+
+This result concerns the single explicit scalar example in Section~5.2 of \cite{HKMV}; it does not classify minimal defining degrees for arbitrary free spectrahedra.  The proof relies on the cited realization and factorization theorems and on an exact finite Gr\"obner-basis/coefficient-rank certificate.
+
+On 11 August 2026, a bounded novelty search checked the run's registry, solution, attempt, and proof-gap indexes and searched arXiv by the exact source sentence, the phrases ``minimal degree defining polynomial'' and ``free spectrahedron,'' the title and arXiv id 1808.06669, and combinations of the authors' names with the degree-five-versus-six terminology.  Only the source paper and background factorization papers were found; no later paper explicitly resolving this example was located.  This is evidence of novelty, not a guarantee of priority.
+
+Human review should focus on two points: (i) the passage from a degree-five Hermitian defining polynomial to a degree-four atomic factor realized over $L$, and (ii) the completeness of the four-point rank-one classification.  Both are isolated explicitly above, and the second has a rerunnable exact certificate.
+
+\begin{thebibliography}{9}
+\bibitem{HKMV}
+J.~W. Helton, I. Klep, S. McCullough and J. Vol\v{c}i\v{c},
+\emph{Noncommutative polynomials describing convex sets},
+arXiv:1808.06669; J. Funct. Anal. 279 (2020), 108324.
+
+\bibitem{HKV}
+J.~W. Helton, I. Klep and J. Vol\v{c}i\v{c},
+\emph{Geometry of free loci and factorization of noncommutative polynomials},
+Adv. Math. 331 (2018), 589--626; arXiv:1708.05378.
+
+\bibitem{KV}
+I. Klep and J. Vol\v{c}i\v{c},
+\emph{Free loci of matrix pencils and domains of noncommutative rational functions},
+Comment. Math. Helv. 92 (2017), 105--130.
+\end{thebibliography}
+
+\end{document}

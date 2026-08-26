@@ -1,0 +1,324 @@
+\documentclass[10pt]{article}
+\usepackage[margin=0.76in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!55!black,urlcolor=blue!55!black,citecolor=blue!55!black}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\KS}{\mathrm{KS}}
+\title{The exact $L^1$ Besov critical exponent\newline of the classical Sierpi\'nski carpet}
+\author{Candidate full solution of the classical-carpet case of arXiv:1811.04267}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.93\linewidth}{\textbf{Status:} candidate theorem, likely valid; substantial partial answer to the broad carpet question.  For the classical planar Sierpi\'nski carpet, both the density and nontriviality critical exponents are exactly the conjectured value.  The proof combines the recently established $p>1$ critical-exponent theorem with a new endpoint $1$-capacity calculation and $p\downarrow1$ interpolation.  Generalized carpets are not claimed.}}
+\end{center}
+
+\section{Question and answer}
+
+\textbf{Source metadata.} P. Alonso Ruiz, F. Baudoin, L. Chen,
+L. G. Rogers, N. Shanmugalingam, and A. Teplyaev,
+\emph{Besov class via heat semigroup on Dirichlet spaces I: Sobolev type
+inequalities}, arXiv:1811.04267, Example~5.10 on p.~25~\cite{ABCRST1}.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.96\linewidth]{figures/open_problem_crop.png}
+\caption{The source's open statement on p.~25.}
+\end{figure}
+
+\textbf{Source question (transcribed).} ``Finding the exact value of
+$\alpha_1^\#(X)$ is, in general, an open question; in particular it is open
+for Sierpinski carpets.''
+
+Let $K\subset[0,1]^2$ be the classical carpet, let $\mu$ be its normalized
+$d_H$-Hausdorff measure, and let $d_W$ be the walk dimension of its canonical
+diffusion.  Thus
+\[
+ d_H=\frac{\log 8}{\log3}.
+\]
+For $p\geq1$ and $\lambda>0$, use the normalized metric Besov seminorm
+\begin{equation}\label{eq:KS}
+ [f]_{\KS^{\lambda,p}}^p
+ =\sup_{0<r\leq1}r^{-p\lambda}
+ \int_K\frac{1}{\mu(B(x,r))}\int_{B(x,r)}
+ |f(x)-f(y)|^p\,d\mu(y)\,d\mu(x).
+\end{equation}
+Write $\lambda_p^\#$ for the supremum of the $\lambda$ for which this space
+contains a nonconstant function, and $\lambda_p^*$ for the corresponding
+density threshold.  The heat-semigroup exponent in the source is
+$\alpha=\lambda/d_W$; the equivalence is proved in~\cite{ABCRST3}.
+
+\subsection*{Proof Intuition}
+
+For $p>1$, Murugan and Shimizu identify the critical metric smoothness with
+a renormalized discrete $p$-capacity on the cell graphs of the carpet.  A
+bounded $L^1$ Besov function is automatically a $p$-Besov function at
+smoothness divided by $p$, so the desired $L^1$ upper bound follows if the
+$p$-capacity exponent has the correct limit as $p\downarrow1$.
+
+At $p=1$, capacity is exactly a minimum cut by the coarea formula.  On a
+level-$n$ carpet graph there are $2^n$ disjoint straight corridors indexed by
+base-three words using only $0$ and $2$.  Conversely, a nested middle-third
+wall crosses precisely those same $2^n$ transverse addresses.  Hence the
+annular $1$-capacity is comparable to $2^n$.  H\"older's inequality compares
+$p$-capacity with $1$-capacity on the $O(8^n)$ edges in the annulus and
+squeezes its exponential scaling constant to $1/2$ as $p\downarrow1$.
+This makes the limiting critical metric exponent $\log4/\log3$.  The known
+indicator construction supplies the matching density lower bound.
+
+\begin{theorem}[Exact classical-carpet endpoint]\label{thm:main}
+For the classical planar Sierpi\'nski carpet,
+\begin{equation}\label{eq:main}
+ \lambda_1^*=\lambda_1^\#=\frac{\log4}{\log3}.
+\end{equation}
+Equivalently, for the heat-semigroup Besov spaces of~\cite{ABCRST1},
+\begin{equation}\label{eq:alpha}
+ \boxed{\displaystyle
+ \alpha_1^*=\alpha_1^\#=\frac{\log4}{d_W\log3}.}
+\end{equation}
+The same equalities hold for the standard unbounded blow-up
+$K^\infty=\bigcup_{j\geq0}3^jK$.
+\end{theorem}
+
+\section{The endpoint graph calculation}
+
+Let $\mathbb G_n$ be the level-$n$ cell graph used in~\cite{MS}: its
+vertices are the $8^n$ retained squares and two vertices are adjacent when
+the corresponding carpet cells meet.  Murugan--Shimizu define an annular
+capacity $\mathcal C_p(n)$ by taking the supremum, over a coarse cell $w$,
+of the discrete $p$-capacity between all level-$n$ descendants of $w$ and
+the descendants outside the coarse graph two-neighborhood of $w$; see
+\cite[Eq.~(8.3)]{MS}.  Their quasi-multiplicativity theorem gives
+\begin{equation}\label{eq:rho}
+ \rho(p)=\lim_{n\to\infty}\mathcal C_p(n)^{-1/n},\qquad
+ d_w(p)=\frac{\log(8\rho(p))}{\log3}.
+\end{equation}
+
+\begin{lemma}[The endpoint capacity]\label{lem:cap1}
+There are constants $0<c<C<\infty$, independent of $n$, such that
+\begin{equation}\label{eq:C1}
+ c,2^n\leq\mathcal C_1(n)\leq C,2^n.
+\end{equation}
+Consequently $\rho(1)=1/2$.
+\end{lemma}
+
+\begin{proof}
+First use the face-adjacency graph.  For $p=1$, truncation to $[0,1]$ and
+the discrete coarea identity
+\[
+ \sum_{uv}|f(u)-f(v)|
+ =\int_0^1|\partial\{f>t\}|\,dt
+\]
+identify capacity with the minimum cardinality of an edge cut.
+
+For the lower bound, choose a coarse cell in a straight row with at least
+three further coarse cells on one side.  At refinement depth $n$, every
+word $\eta\in\{0,2\}^n$ specifies a complete horizontal row through these
+copies: no square on that row is deleted, because a deletion requires the
+same ternary digit to be $1$ in both coordinates.  The resulting $2^n$
+paths are edge-disjoint, start in the descendants of the chosen cell, and
+end outside its two-neighborhood.  Every separating cut therefore has at
+least $2^n$ edges.  Since $\mathcal C_1(n)$ is a supremum, this proves its
+lower bound.
+
+For the upper bound, put
+\[
+ a_n=\frac{3^n-1}{2}.
+\]
+The vertical middle-third wall consists of the face edges between columns
+$a_n-1$ and $a_n$.  A transverse row crosses this wall if and only if every
+ternary digit of its row address lies in $\{0,2\}$, so the wall contains
+exactly $2^n$ edges.  The same holds after rotation.  At the coarse scale,
+the two-neighborhood of any cell has universally bounded size.  A planar
+dual curve (or, at the outer boundary, a boundary-to-boundary dual arc)
+separating the cell from the complement of that two-neighborhood uses only
+a universal number of horizontal and vertical unit-square crossings.
+Replace each crossing by the corresponding middle-third wall inside that
+coarse cell.  At turns use the union of the two rotated walls.  This yields
+a separating cut of at most $C_0 2^n$ edges, uniformly in the coarse level
+and cell.  This is the usual nested-wall proof of the standard carpet's
+$L^1$ isoperimetric scaling; compare~\cite{GP,GLC}.
+
+Finally, the graph in~\cite{MS} also joins cells meeting only at a corner.
+Every such diagonal edge has a two-edge route in the face graph, and each
+face edge participates in only boundedly many such routes.  Enlarging a
+face cut by the diagonal edges routed across it therefore changes its size
+by at most a universal factor; conversely the face graph is a subgraph.
+Thus \eqref{eq:C1} holds for the Murugan--Shimizu graph as stated.
+\end{proof}
+
+\begin{lemma}[$p\downarrow1$ continuity of the capacity exponent]
+\label{lem:continuity}
+\begin{equation}\label{eq:rholimit}
+ \lim_{p\downarrow1}\rho(p)=\frac12,\qquad
+ \lim_{p\downarrow1}d_w(p)=\frac{\log4}{\log3}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+An admissible capacity function may be truncated to $[0,1]$ and made
+constant off the relevant coarse two-neighborhood.  Only $M_n\leq C_1 8^n$
+fine edges can then carry a nonzero gradient.  On these edges,
+\[
+ \mathcal E_p(f)\leq\mathcal E_1(f),\qquad
+ \mathcal E_1(f)\leq M_n^{1-1/p}\mathcal E_p(f)^{1/p}.
+\]
+Taking infima in each annular problem and then the supremum defining
+$\mathcal C_p(n)$ gives
+\begin{equation}\label{eq:capcompare}
+ \mathcal C_p(n)\leq\mathcal C_1(n),\qquad
+ \mathcal C_p(n)\geq
+ \frac{\mathcal C_1(n)^p}{(C_1 8^n)^{p-1}}.
+\end{equation}
+Constants disappear after taking inverse $n$th roots.  Lemma~\ref{lem:cap1}
+therefore yields
+\[
+ \frac12\leq\rho(p)\leq\frac{8^{p-1}}{2^p}.
+\]
+Both endpoints tend to $1/2$ as $p\downarrow1$.  Substitution into
+\eqref{eq:rho} proves the second limit.
+\end{proof}
+
+\section{Proof of Theorem~\ref{thm:main}}
+
+Murugan and Shimizu prove for every $p>1$ that the critical Besov
+smoothness on $K$ is
+\begin{equation}\label{eq:MScrit}
+ s_p=\frac{d_w(p)}p;
+\end{equation}
+indeed their self-similar Sobolev space is exactly
+$B^{d_w(p)/p}_{p,\infty}$~\cite[Theorem~1.4]{MS}.
+
+Suppose that $f\in\KS^{\lambda,1}(K)$ is nonconstant.  Some two-sided
+truncation $g=(-M)\vee(f\wedge M)$ remains nonconstant, is bounded, and does
+not increase the $L^1$ seminorm.  For every $p>1$,
+\[
+ |g(x)-g(y)|^p\leq(2M)^{p-1}|g(x)-g(y)|.
+\]
+Equation~\eqref{eq:KS} now shows that
+$g\in B^{\lambda/p}_{p,\infty}(K)$.  Since $g$ is nonconstant,
+\eqref{eq:MScrit} implies
+\[
+ \frac\lambda p\leq\frac{d_w(p)}p,
+ \qquad\text{hence}\qquad \lambda\leq d_w(p)\quad(p>1).
+\]
+Letting $p\downarrow1$ and applying Lemma~\ref{lem:continuity} gives
+\begin{equation}\label{eq:upper}
+ \lambda_1^\#(K)\leq\frac{\log4}{\log3}.
+\end{equation}
+
+The matching lower bound is known.  Alonso Ruiz et al. state for the
+unbounded generalized-carpet setting that
+\[
+ \lambda_1^*\geq d_H-d_{tH}+1
+\]
+by constructing a topology-generating family of indicator functions with
+controlled boundary neighborhoods~\cite[Section~5.4]{ABCRST3}.  The same
+local cell-basis construction applies verbatim to compact $K$.  For the
+classical carpet,
+\[
+ d_{tH}=1+\frac{\log2}{\log3},
+ \qquad d_H-d_{tH}+1=\frac{\log4}{\log3}.
+\]
+Together with $\lambda_1^*\leq\lambda_1^\#$ and \eqref{eq:upper}, this proves
+\eqref{eq:main}.  The heat-kernel/metric characterization in~\cite{ABCRST3}
+then gives \eqref{eq:alpha}.
+
+For completeness, the compact upper bound passes to $K^\infty$ locally.
+Restriction of a global $\KS^{\lambda,1}$ function to any unit carpet cell
+has bounded compact seminorm, since the cell and ambient ball measures are
+uniformly comparable at radii at most one.  If $\lambda>\log4/\log3$, the
+compact result makes every such restriction constant.  Constants on two
+side-adjacent cells must agree: at $r=3^{-n}$, the $3^n$ opposing pairs of
+boundary cells contribute at least
+\[
+ c|c_i-c_j|\,3^n8^{-n}=c|c_i-c_j|r^{d_H-1}
+\]
+to the normalized $L^1$ oscillation.  Multiplication by $r^{-\lambda}$
+diverges because $\lambda>\log4/\log3>d_H-1$.  The unit-cell adjacency graph
+is connected, so the global function is constant.  The indicator lower-bound
+construction of~\cite{ABCRST3} was stated for the unbounded carpet, completing
+the blow-up case. \qed
+
+\section{Verification, scope, and novelty}
+
+The only new geometric input is Lemma~\ref{lem:cap1}; its two inequalities
+are independently checkable as max-flow/min-cut statements.  The included
+script constructs both the face and corner-adjacency graphs and verifies the
+predicted doubling on small refinements.  This computation is a sanity check,
+not part of the proof.  Lemma~\ref{lem:continuity} is then a direct two-line
+H\"older comparison.  The truncation step is directionally important: it
+turns a hypothetical $L^1$ function above the endpoint into a nonconstant
+$p>1$ function, where the exact critical theorem is available.
+
+\textbf{Scope.} This completely answers the classical standard carpet, in
+both compact and standard unbounded forms.  It is classified as a partial
+answer only because the source asks about Sierpi\'nski carpets broadly.  For a
+generalized carpet one would need a uniform identification of the endpoint
+annular min-cut exponent with the boundary exponent occurring in
+$d_H-d_{tH}+1$, together with the full $p>1$ critical theorem in that
+generality.  Those identifications are not asserted here.  The packet also
+does not prove the sharper weak Bakry--\'Emery conjecture; it determines the
+Besov critical exponent without it.
+
+\textbf{Bounded novelty check.} The run indexes contained no answer for
+arXiv:1811.04267.  Searches through 11 August 2026 for the exact symbols
+$\alpha_1^\#$ and $\lambda_1^\#$, the formula $\log4/\log3$, carpet BV/Besov
+criticality, $p$-walk dimension as $p\downarrow1$, and carpet min-cut scaling
+found the 2022 lower-bound/conjecture paper~\cite{ABCRST3}, the 2025 $p>1$
+critical theorem~\cite{MS}, and a January 2026 source that still calls the
+relevant carpet H\"older endpoint conjecturally non-sharp~\cite{BC}.  No source
+found states \eqref{eq:main} or the endpoint-continuity argument.  This is a
+bounded search, not an exhaustive novelty claim.
+
+\textbf{Human-review recommendation.} Review as a likely-valid full theorem
+for the classical carpet and a substantial partial answer to the broad source
+question.  The highest-value check is the uniform nested-wall upper bound in
+Lemma~\ref{lem:cap1}; after that lemma, the analytic argument is formal.
+
+\begin{thebibliography}{9}
+\bibitem{ABCRST1}
+P. Alonso Ruiz, F. Baudoin, L. Chen, L. G. Rogers,
+N. Shanmugalingam, and A. Teplyaev,
+\emph{Besov class via heat semigroup on Dirichlet spaces I: Sobolev type inequalities},
+\href{https://arxiv.org/abs/1811.04267}{arXiv:1811.04267}.
+
+\bibitem{ABCRST3}
+P. Alonso Ruiz, F. Baudoin, L. Chen, L. G. Rogers,
+N. Shanmugalingam, and A. Teplyaev,
+\emph{Besov class via heat semigroup on Dirichlet spaces III: BV functions and sub-Gaussian heat kernel estimates},
+\href{https://arxiv.org/abs/1903.10078}{arXiv:1903.10078}.
+
+\bibitem{MS}
+M. Murugan and R. Shimizu,
+\emph{First-order Sobolev spaces, self-similar energies and energy measures on the Sierpi\'nski carpet},
+Comm. Pure Appl. Math. 78 (2025), 1523--1608,
+\href{https://doi.org/10.1002/cpa.22247}{doi:10.1002/cpa.22247}.
+
+\bibitem{GP}
+L. R. Gibson and M. Pivarski,
+\emph{Isoperimetric profiles on the pre-fractal Sierpinski carpet},
+Fractals 18 (2010), 433--449,
+\href{https://doi.org/10.1142/S0218348X10005111}{doi:10.1142/S0218348X10005111}.
+
+\bibitem{GLC}
+A. Gournay and C. Le Coz,
+\emph{Separation profile, isoperimetry, growth and compression},
+Ann. Inst. Fourier 73 (2023), 1627--1675,
+\href{https://doi.org/10.5802/aif.3541}{doi:10.5802/aif.3541}.
+
+\bibitem{BC}
+F. Baudoin and L. Chen,
+\emph{H\"older regularity of harmonic functions on metric measure spaces},
+\href{https://arxiv.org/abs/2407.20789}{arXiv:2407.20789}, version of January 2026.
+\end{thebibliography}
+
+\end{document}

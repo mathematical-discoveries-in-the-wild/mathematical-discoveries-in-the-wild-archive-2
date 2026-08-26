@@ -1,0 +1,191 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.88in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage[colorlinks=true,urlcolor=blue!55!black,citecolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Hcal}{\mathcal H}
+
+\title{A normalized discrete kernel disproves the universal\\probabilistic representer conjecture}
+\author{Candidate counterexample to Conjecture 4.1 of arXiv:2409.11679}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{\textbf{Status: candidate counterexample, likely valid; full disproof as stated.}
+There is a normalized kernel on a countable discrete Polish space and a smooth,
+strictly convex cost satisfying every hypothesis of Theorem 2.6 for which the
+unique optimizer is the vector $(1/n)\in\ell^2\setminus\ell^1$.  Kernel
+embeddings of finite signed measures have exactly $\ell^1$ coefficients, so
+the optimizer has no measure representation.}}
+\end{center}
+
+\section*{Source conjecture}
+
+Chen and Wang's Conjecture 4.1 asks whether the unique optimizer $\hat f$ in
+their regularized approximation theorem must have the form
+\[
+  \hat f=\int_X\phi(x)\,d\nu(x)
+\]
+for a signed or complex measure $\nu$ supported on $\operatorname{supp}\mu$,
+provided every such measure $\xi$ satisfies
+\[
+ \int_X\|\phi(x)\|_{\Hcal(K)}\,d|\xi|(x)<\infty.
+\]
+The original statement appears on PDF page 13 of the source paper
+\cite[Conjecture 4.1]{source} and is reproduced below.
+
+\begin{center}
+\includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+Theorem 2.6 minimizes
+\begin{equation}\label{eq:sourceobjective}
+ \int_X c(f(x),g(x))\,d\mu(x)+\lambda\|f\|_{\Hcal(K)}^p,
+\end{equation}
+where $\lambda>0$, $p>1$, $c(0,g(\cdot))\in L^1(\mu)$, and
+$c(\cdot,z)$ is lower semicontinuous and convex for each $z$.  Under these
+hypotheses the optimizer exists and is unique.
+
+\section*{Proof intuition}
+
+For the delta kernel on $\N$, the RKHS is $\ell^2$ and a measure embedding is
+simply the sequence of its atomic masses.  Finite signed measures therefore
+produce only $\ell^1$ sequences, although their embeddings are dense in
+$\ell^2$.  This is exactly the nonclosed-range phenomenon behind the source's
+approximating-sequence theorem.
+
+It remains to make a vector in $\ell^2\setminus\ell^1$ occur as the unique
+optimizer without violating the source's integrability assumption.  The
+allowed cost may depend on the target value.  We encode at point $n$ a
+quadratic loss of weight $2^n$ and take the sampling mass to be $2^{-n}$.
+These factors cancel in the objective, and completing the square makes
+$(1/n)$ the unique optimizer.  A smooth global formula for the cost realizes
+this encoding, so no pathology in the first-variable convexity is involved.
+
+\section*{Counterexample}
+
+Let $X=\N=\{1,2,\ldots\}$ with the discrete topology, let
+\[
+ K(m,n)=\delta_{mn},\qquad \mu(\{n\})=2^{-n},
+\]
+and work over $\R$.  Thus $X$ is Polish,
+$\Hcal(K)=\ell^2(\N)$, and the feature map is $\phi(n)=e_n$.
+Set $p=2$ and $\lambda=1$.  For $z\in\R$ write
+\[
+ q(z)=\sqrt{1+z^2},\qquad
+ g(n)=\sqrt{n^2-1},\qquad
+ c(u,z)=2^{q(z)}\left(u-\frac{2}{q(z)}\right)^2.
+\]
+
+\begin{theorem}\label{thm:main}
+The data above satisfy all assumptions of Theorem 2.6 and of Conjecture 4.1.
+The unique optimizer of \eqref{eq:sourceobjective} is
+\[
+ \hat f=(1,1/2,1/3,\ldots)\in\ell^2.
+\]
+There is no finite signed measure $\nu$ on $X$ such that
+$\hat f=\int_X\phi\,d\nu$.  Consequently Conjecture 4.1 is false.
+\end{theorem}
+
+\begin{proof}
+The kernel is normalized because $K(n,n)=1$.  Hence for every finite signed
+measure $\xi$ on $X$,
+\[
+ \int_X\|\phi(n)\|_{\ell^2}\,d|\xi|(n)
+ =\sum_{n=1}^{\infty}|\xi(\{n\})|=|\xi|(X)<\infty.
+\]
+Also every point has positive $\mu$-mass, so
+$\operatorname{supp}\mu=X$.  This verifies the extra hypothesis of the
+conjecture.
+
+The functions $g$ and $c$ are Borel measurable.  In fact $c$ is continuous
+on $\R^2$, and $c(\cdot,z)$ is a nonnegative strictly convex quadratic for
+every $z$.  Since $q(g(n))=n$,
+\[
+ \int_X c(0,g(n))\,d\mu(n)
+ =\sum_{n=1}^{\infty}2^{-n}2^n\left(\frac2n\right)^2
+ =4\sum_{n=1}^{\infty}\frac1{n^2}<\infty.
+\]
+Thus all hypotheses of Theorem 2.6 hold.
+
+For $f=(f_n)\in\ell^2$, the objective is finite and equals
+\begin{align*}
+ J(f)
+ &=\sum_{n=1}^{\infty}2^{-n}c(f_n,g(n))
+   +\sum_{n=1}^{\infty}f_n^2\\
+ &=\sum_{n=1}^{\infty}\left[\left(f_n-\frac2n\right)^2+f_n^2\right]\\
+ &=2\sum_{n=1}^{\infty}\left(f_n-\frac1n\right)^2
+   +2\sum_{n=1}^{\infty}\frac1{n^2}.
+\end{align*}
+It follows immediately that the unique optimizer is
+$\hat f_n=1/n$.  This sequence lies in $\ell^2$.
+
+Suppose that a finite signed measure $\nu$ represented $\hat f$.  On the
+discrete space $X$, put $a_n=\nu(\{n\})$.  Finiteness of total variation gives
+\begin{equation}\label{eq:l1}
+ \sum_{n=1}^{\infty}|a_n|=|\nu|(X)<\infty.
+\end{equation}
+For every $k$, the defining identity for the Pettis integral yields
+\[
+ \left\langle\int_Xe_n\,d\nu(n),e_k\right\rangle
+ =\int_X\langle e_n,e_k\rangle\,d\nu(n)=\nu(\{k\})=a_k.
+\]
+Equality with $\hat f$ would force $a_k=1/k$ for all $k$, contradicting
+\eqref{eq:l1}.  No representing measure exists.
+\end{proof}
+
+\section*{Sharp mechanism and scope}
+
+For this normalized delta kernel, the kernel-mean map from finite signed
+measures has range exactly $\ell^1$ inside $\ell^2$.  Its closure is all of
+$\ell^2$, since finitely supported sequences are dense.  Thus the source's
+Theorem 3.2 correctly supplies the truncation measures
+\[
+ \nu_N=\sum_{n=1}^N\frac1n\delta_n,
+ \qquad \int_X\phi\,d\nu_N\longrightarrow\hat f\quad\hbox{in }\ell^2,
+\]
+but no single finite signed measure can replace the sequence.
+
+The example disproves the conjecture under its stated general cost
+hypotheses, even with a normalized kernel and a cost continuous in both
+variables and strictly convex in the prediction variable.  It does not rule
+out a strengthened representer theorem for narrower loss classes, such as a
+fixed translation-invariant loss with an integrable pointwise subgradient.
+
+\section*{Verification and novelty bounds}
+
+Every hypothesis is checked explicitly above.  The completing-square identity
+and the divergent total variation are exact; the included script checks their
+finite truncations but is not used in the proof.  The source PDF and a
+full-width crop of Conjecture 4.1 are included in this packet.
+
+On 11 August 2026, bounded searches covered the exact arXiv id and title,
+``probabilistic representer'' with RKHS and measure terms, and the broader
+nonclosed-range/kernel-mean-embedding formulation, together with all cheap
+indexes of this run.  No later paper answering Conjecture 4.1 and no instance
+of this counterexample was found.  Novelty confidence is moderate, since the
+$\ell^1\subsetneq\ell^2$ obstruction itself is elementary and may be folklore.
+
+Human review should focus on the intended convention that an
+$\mathbb F$-measure in the source is a finite signed/complex measure (as its
+total-variation notation and examples indicate), and on confirming that
+Theorem 2.6 indeed permits target-dependent weights of the form used here.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+D. Chen and K.-H. Wang,
+\emph{On the Probabilistic Approximation in Reproducing Kernel Hilbert Spaces},
+arXiv:2409.11679, Conjecture 4.1 (PDF p.~13).
+\end{thebibliography}
+
+\end{document}

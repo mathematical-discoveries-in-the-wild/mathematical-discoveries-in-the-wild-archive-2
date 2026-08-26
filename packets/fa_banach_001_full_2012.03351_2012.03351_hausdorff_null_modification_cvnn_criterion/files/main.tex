@@ -1,0 +1,311 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,margin=0.92in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\M}{\mathcal M}
+\newcommand{\NN}{\mathcal{NN}}
+\newcommand{\HH}{\mathcal H}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.52em}
+
+\title{The Deep Complex-Network Dichotomy Is Stable\\
+under Hausdorff-Null Modifications}
+\author{Run \texttt{fa\_banach\_001} --- lane 0}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{
+\textbf{Status: candidate full result, likely valid.}
+The complete fixed-depth dichotomy in arXiv:2012.03351 persists when a
+continuous activation is changed arbitrarily on a set of zero
+one-dimensional Hausdorff measure.  This is a broad natural hypothesis
+strictly weaker than continuity and resolves the source's stated future-work
+request.  It does not claim a classification of all discontinuous activations.
+}}
+\end{center}
+
+\section{Source question and result}
+
+Felix Voigtlaender's \emph{The universal approximation theorem for
+complex-valued neural networks}, arXiv:2012.03351, considers fixed-depth,
+arbitrarily wide complex-valued feedforward networks~\cite{source}.
+Write $\NN^d_{\sigma,L}$ for the scalar-output network class on $\C^d$
+with activation $\sigma:\C\to\C$ and $L$ hidden layers.
+
+The source class $\M$ consists of locally bounded activations for which the
+closure of the ordinary discontinuity set has planar Lebesgue measure zero.
+Source Theorem~1.4 proves for $L\ge2$ that $\NN^d_{\sigma,L}$ is universal
+if $\sigma\in\M$ satisfies neither
+\begin{enumerate}[label=(\alph*),leftmargin=2em]
+\item $\sigma(z)=p(z,\overline z)$ almost everywhere for some
+      $p\in\C[X,Y]$;
+\item $\sigma=g$ almost everywhere or $\sigma=\overline g$ almost
+      everywhere for an entire $g:\C\to\C$.
+\end{enumerate}
+The converse assumes $\sigma$ continuous.  Example~4.13 shows that simply
+dropping continuity is impossible.  The remark after Theorem~1.4, on arXiv
+PDF page~4, asks for natural weaker hypotheses that restore the converse.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.81\textwidth]{figures/open_problem_crop.png}
+\caption{Source Theorem~1.4 and its future-work request, arXiv PDF page~4.}
+\end{figure}
+
+\section{Full criterion}
+
+Let $\HH^1$ denote one-dimensional Hausdorff measure on $\C\cong\R^2$.
+
+\begin{theorem}[Hausdorff-null stability of the complete dichotomy]
+\label{thm:main}
+Let $h:\C\to\C$ be continuous and let $\sigma\in\M$ satisfy
+\[
+  \HH^1(E)=0,
+  \qquad E:=\{z\in\C:\sigma(z)\ne h(z)\}.
+\]
+For every $d\in\N$ and $L\ge2$, the class $\NN^d_{\sigma,L}$ has the
+universal approximation property if and only if $h$ is none of the following:
+\begin{enumerate}[label=(\roman*),leftmargin=2em]
+\item a function $z\mapsto p(z,\overline z)$ with $p\in\C[X,Y]$;
+\item an entire function;
+\item the conjugate of an entire function.
+\end{enumerate}
+
+In each excluded case, the stronger source conclusion holds: there exist
+$F\in C_c(\C^d;\R)$ and $\varepsilon>0$, depending only on the excluded
+case, $d$, and $L$, such that
+\[
+ \|F-\Phi\|_{L^1(B_1(0))}\ge\varepsilon
+ \qquad\text{for every }\Phi\in\NN^d_{\sigma,L}.
+\]
+\end{theorem}
+
+The continuous representative $h$ is unique under the hypothesis: two such
+representatives agree almost everywhere and hence, by continuity, everywhere.
+
+\subsection*{Idea of the proof}
+
+In an obstructed case, $h$ is real analytic.  Every nonconstant intermediate
+preactivation is therefore real analytic as a function of the input.  Such a
+map cannot send a positive-volume set into an $\HH^1$-null subset of the
+plane.  Hence the exceptional values of $\sigma$ are invisible almost
+everywhere along every nonconstant neuron.  A constant preactivation only
+produces a constant, even if its value lies in $E$.
+
+Replacing each nonconstant use of $\sigma$ by $h$, while retaining the actual
+constant values, produces a surrogate equal to the original network almost
+everywhere.  For polynomial $h$ the surrogate has a width-independent degree
+bound; for entire or conjugate-entire $h$ it is holomorphic or
+antiholomorphic.  The source's fixed-order polyharmonic obstruction applies
+uniformly.  The converse direction already follows from the source's
+sufficient theorem because an $\HH^1$-null set is planar-null.
+
+\section{Two lemmas}
+
+\begin{lemma}[pullback of a Hausdorff-null planar set]
+\label{lem:pullback}
+Let $U\subset\R^m$ be connected and open, let
+$A:U\to\R^2$ be a nonconstant real-analytic map, and let
+$E\subset\R^2$ satisfy $\HH^1(E)=0$.  Then $A^{-1}(E)$ has
+$m$-dimensional Lebesgue measure zero.
+\end{lemma}
+
+\begin{proof}
+Let $C=\{x\in U:DA(x)=0\}$.  Since $A$ is nonconstant, some scalar
+component $A_j$ is nonconstant, and some partial derivative of $A_j$ is a
+nonzero real-analytic function.  The zero set of a nonzero real-analytic
+function has Lebesgue measure zero~\cite{analytic}; hence $C$ is null.
+
+If $x\in U\setminus C$, then for some $j\in\{1,2\}$ we have
+$\nabla A_j(x)\ne0$.  The inverse function theorem gives a neighborhood
+$V_x$ on which $A_j$ can be used as the first coordinate of a $C^1$
+diffeomorphism.  Now
+\[
+ A^{-1}(E)\cap V_x
+ \subset A_j^{-1}(\pi_j(E))\cap V_x,
+\]
+where $\pi_j:\R^2\to\R$ is a coordinate projection.  Since $\pi_j$ is
+Lipschitz, $\HH^1(\pi_j(E))=0$, and therefore $\pi_j(E)$ has one-dimensional
+Lebesgue measure zero.  In the local coordinates above, its inverse image is
+contained in $\pi_j(E)\times\R^{m-1}$ and is null by Fubini.  A countable
+subcover of $U\setminus C$, together with the nullity of $C$, proves the
+claim.
+\end{proof}
+
+\begin{lemma}[analytic surrogate for every obstructed network]
+\label{lem:surrogate}
+Let $h$ be one of the three excluded activations in
+Theorem~\ref{thm:main}, let $\sigma:\C\to\C$ be arbitrary, and suppose
+$\HH^1(\{\sigma\ne h\})=0$.  For every
+$\Phi\in\NN^d_{\sigma,L}$ there is a function $Q:\C^d\to\C$ such that
+$\Phi=Q$ almost everywhere and:
+\begin{enumerate}[label=(\alph*),leftmargin=2em]
+\item if $h(z)=p(z,\overline z)$ and
+      $D=\max\{1,\deg p\}$, then $Q$ is a polynomial in
+      $z_1,\overline z_1,\ldots,z_d,\overline z_d$ of degree at most $D^L$;
+\item if $h$ is entire or conjugate-entire, then $Q$ is holomorphic or
+      antiholomorphic on $\C^d$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Fix network weights and use the source recursion
+\[
+ z^{(-1)}=z,\qquad
+ z^{(j)}=\sigma(b_j+A_jz^{(j-1)})\quad(0\le j<L),
+ \qquad
+ \Phi=b_L+A_Lz^{(L-1)}.
+\]
+We construct surrogate vectors $\widetilde z^{(j)}$ inductively.  Put
+$\widetilde z^{(-1)}=z$.  Given $\widetilde z^{(j-1)}$, set
+\[
+ V^{(j)}=b_j+A_j\widetilde z^{(j-1)}.
+\]
+For every component $V^{(j)}_k$, define
+\[
+ \widetilde z^{(j)}_k=
+ \begin{cases}
+ h(V^{(j)}_k),&V^{(j)}_k\text{ is nonconstant},\\
+ \sigma(c),&V^{(j)}_k\equiv c.
+ \end{cases}
+\]
+
+We prove simultaneously that $z^{(j)}=\widetilde z^{(j)}$ almost everywhere
+and that every surrogate component has the asserted analytic form.  The
+induction hypothesis makes the actual preactivation equal to $V^{(j)}$
+almost everywhere.  If $V^{(j)}_k$ is nonconstant, it is real analytic, so
+Lemma~\ref{lem:pullback} shows that
+$(V^{(j)}_k)^{-1}(E)$ is null.  Off this set and the preceding null set,
+$\sigma(V^{(j)}_k)=h(V^{(j)}_k)$.  If $V^{(j)}_k\equiv c$, the actual
+activation equals the constant $\sigma(c)$ almost everywhere.  There are
+only finitely many neurons, so the vector equality follows.
+
+If $h=p(z,\overline z)$, this recursion consists of polynomial composition,
+affine combination, and constants.  Its degree is multiplied by at most $D$
+at each hidden layer, giving degree at most $D^L$.  If $h$ is entire, all
+nonconstant components remain holomorphic.  If $h$ is conjugate-entire, their
+common orientation alternates between holomorphic and antiholomorphic at each
+hidden layer; constants have either orientation.  Affine combinations
+preserve the common orientation.  Thus
+$Q:=b_L+A_L\widetilde z^{(L-1)}$ has the claimed form and equals $\Phi$
+almost everywhere.
+\end{proof}
+
+\section{Proof of the full criterion}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Assume first that $h$ is excluded.  Apply Lemma~\ref{lem:surrogate} to every
+$\Phi\in\NN^d_{\sigma,L}$.  In the polynomial case, every surrogate $Q$
+has degree at most $D^L$, so every one-complex-dimensional slice of $Q$ is
+polyharmonic of the common order $D^L+1$.  In the entire and
+conjugate-entire cases every such slice is harmonic.  Voigtlaender's
+fixed-order polyharmonic obstruction, Lemma~4.8, supplies
+$F\in C_c(\C^d;\R)$ and $\varepsilon>0$ with
+\[
+ \|F-Q\|_{L^1(B_1(0))}\ge\varepsilon
+\]
+for every surrogate~\cite{source}.  Since $\Phi=Q$ almost everywhere, the
+same lower bound holds for $\Phi$.
+
+Conversely, suppose $h$ is not excluded.  Since $\HH^1(E)=0$, we have
+$\sigma=h$ almost everywhere.  If $\sigma$ satisfied source obstruction
+(a) or (b), continuity would upgrade the corresponding almost-everywhere
+identity for $h$ to a pointwise identity, contradicting the assumption on
+$h$.  Thus neither obstruction holds for $\sigma\in\M$, and source
+Theorem~4.11 gives universality for every $d\in\N$ and $L\ge2$.
+\end{proof}
+
+\section{Strictness and the source counterexample}
+
+\begin{proposition}
+Theorem~\ref{thm:main} includes discontinuous obstructed activations that are
+not approximately continuous everywhere.
+\end{proposition}
+
+\begin{proof}
+Let $h(z)=\operatorname{Re}z=(z+\overline z)/2$ and define
+\[
+ \sigma(z)=\begin{cases}1,&z=0,\\h(z),&z\ne0.\end{cases}
+\]
+Then $E=\{0\}$ has $\HH^1(E)=0$.  The activation $\sigma$ is bounded on
+compact sets and has the single discontinuity $0$, so $\sigma\in\M$.
+It is neither continuous nor approximately continuous at $0$, because its
+approximate limit there is $0\ne\sigma(0)$.  Nevertheless,
+Theorem~\ref{thm:main} gives the full non-universality conclusion for every
+fixed depth.  This example is not covered by the earlier
+approximate-continuity packet.
+\end{proof}
+
+In source Example~4.13, the activation equals $\operatorname{Re}z$ off the
+real axis and equals complex ReLU on the real axis.  Its actual deviation set
+from $\operatorname{Re}z$ is the negative half-line, which has positive
+$\HH^1$ measure.  The second layer can map into and read that entire curve,
+producing universality.  Thus the source counterexample lies exactly beyond
+the dimensional smallness imposed here.
+
+\section{Verification, scope, and novelty}
+
+The proof is deterministic and uses no computation.  The main review points
+are: (1) the local-coordinate proof of Lemma~\ref{lem:pullback}; (2) the
+constant-component branch in Lemma~\ref{lem:surrogate}; (3) the common degree
+bound $D^L$ independent of widths and exceptional values; and (4) applying
+the source $L^1$ obstruction to the surrogates, which is legitimate because
+each original network agrees with its surrogate almost everywhere.
+
+The theorem gives an exact universal/non-universal classification for all
+activations in $\M$ that are $\HH^1$-null modifications of a continuous
+activation.  This fully supplies the natural weaker-than-continuity condition
+requested by the source.  It does not classify modifications supported on
+sets of positive $\HH^1$ measure or every discontinuous activation in $\M$.
+
+A bounded novelty search through 9 August 2026 checked the run indexes; the
+exact source wording; arXiv/web queries for CVNNs with Hausdorff-null,
+countable, or null-set modifications; and the nearby later papers
+arXiv:2303.16813 and arXiv:2305.16910~\cite{optimal,narrow}.  Those later
+works use smooth or continuous activations.  No direct statement of the
+Hausdorff-null stability theorem was found.  Mathematical confidence is high;
+novelty confidence is moderate-high.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+F. Voigtlaender,
+\emph{The universal approximation theorem for complex-valued neural networks},
+Appl. Comput. Harmon. Anal. \textbf{64} (2023), 33--61;
+arXiv:2012.03351. doi:10.1016/j.acha.2022.12.002.
+
+\bibitem{analytic}
+S. G. Krantz and H. R. Parks,
+\emph{A Primer of Real Analytic Functions}, 2nd ed.,
+Birkh\"auser, 2002.
+
+\bibitem{optimal}
+P. Geuchen and F. Voigtlaender,
+\emph{Optimal approximation using complex-valued neural networks},
+Adv. Neural Inf. Process. Syst. \textbf{36} (2023);
+arXiv:2303.16813.
+
+\bibitem{narrow}
+P. Geuchen, T. Jahn, and H. Matt,
+\emph{Universal approximation with complex-valued deep narrow neural networks},
+arXiv:2305.16910; later published in Constructive Approximation.
+\end{thebibliography}
+
+\end{document}

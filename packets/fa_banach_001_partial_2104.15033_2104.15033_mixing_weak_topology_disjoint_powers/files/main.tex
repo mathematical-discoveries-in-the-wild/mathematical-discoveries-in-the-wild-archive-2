@@ -1,0 +1,281 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem*{sourcequestion}{Source Question 3.4}
+
+\newcommand{\K}{\mathbb K}
+\newcommand{\N}{\mathbb N}
+\newcommand{\AP}{\mathcal{AP}}
+\newcommand{\Span}{\operatorname{span}}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.5em}
+
+\title{Mixing Operators on Weak-Topology Spaces Are\\
+Disjoint Mixing Along All Finite Families of Powers}
+\author{Run \texttt{fa\_banach\_001}, lane 17 (\texttt{agent\_lane\_17})}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.9\textwidth}{
+\textbf{Status: substantial partial answer, likely valid, pending human review.}
+Question 3.4 is affirmative for every mixing operator on a topological vector
+space whose topology is weak.  The general separable Fr\'echet-space question
+remains open.
+}}
+\end{center}
+
+\section{Exact source question}
+
+Cardeccia and Muro ask in Question 3.4, arXiv PDF page 7
+of~\cite{source}:
+
+\begin{sourcequestion}
+Is every mixing linear operator on a separable Fr\'echet space necessarily
+$\AP$-hypercyclic?  Equivalently, is every mixing operator multiply recurrent?
+\end{sourcequestion}
+
+Here multiple recurrence means that for every nonempty open set $U$ and every
+$m\ge1$, there is $n\ge1$ such that
+\[
+ U\cap T^{-n}U\cap\cdots\cap T^{-mn}U\ne\varnothing.
+\]
+
+\begin{center}
+\includegraphics[width=0.94\textwidth]{figures/question_3_4_crop.png}
+\end{center}
+
+The source proves the assertion for mixing backward shifts and for operators
+satisfying the strong Kitai criterion, but leaves the general implication
+open.  We prove a different broad subcase.
+
+\section{Idea of the proof}
+
+On a weak-topology space, every basic open set imposes only finitely many
+linear-functional constraints.  Shkarin's theorem says that mixing is exactly
+the absence of nonzero finite-dimensional invariant subspaces for the dual
+operator~\cite{shkarin}.  This turns the dual into a torsion-free module over
+$\K[t]$.
+
+Given the finite-dimensional space $L$ of functionals appearing in finitely
+many open sets, the generated module $\K[t]L$ is free.  In free-module
+coordinates, elements of $L$ have uniformly bounded polynomial degree.
+Multiplication by $t^{jn}$ moves their supports into disjoint degree blocks
+when $n$ is large.  Therefore
+\[
+ L,\ (T')^nL,\ldots,(T')^{mn}L
+\]
+form a direct sum.  The corresponding finite evaluation map on the original
+space is onto, so all conditions on
+$x,T^nx,\ldots,T^{mn}x$ can be met exactly.  This proves not only multiple
+recurrence but disjoint mixing of every finite family of powers.
+
+\section{The algebraic separation lemma}
+
+\begin{lemma}\label{lem:blocks}
+Let $S$ be a linear operator on a vector space $Y$ over $\K$.  Suppose $S$ has
+no nonzero finite-dimensional invariant subspace.  Given a finite-dimensional
+subspace $L\subset Y$ and $m\ge1$, there is $N$ such that, for every $n\ge N$,
+\[
+ L\oplus S^nL\oplus\cdots\oplus S^{mn}L
+\tag{1}\label{eq:direct}
+\]
+is an algebraic direct sum.
+\end{lemma}
+
+\begin{proof}
+No nonzero polynomial $p$ can have a nonzero vector in $\ker p(S)$: otherwise
+the span of $y,Sy,\ldots,S^{d-1}y$, where $d=\deg p$, contains a nonzero
+finite-dimensional invariant subspace.  Thus the $\K[t]$-module $Y$, with
+$t\cdot y=Sy$, is torsion-free.
+
+The submodule $M:=\K[t]L$ is finitely generated and torsion-free.  Since
+$\K[t]$ is a principal ideal domain, $M$ is free of finite rank.  Choose a
+module basis.  In these coordinates, every element of $L$ is a vector of
+polynomials, and finite dimensionality gives a common degree bound $d$ for
+all its coordinate polynomials.
+
+Take $n>d$.  If $y_j\in L$ and
+$\sum_{j=0}^m S^{jn}y_j=0$, then in each free coordinate we have
+\[
+ \sum_{j=0}^m t^{jn}p_j(t)=0,
+ \qquad \deg p_j\le d.
+\]
+The polynomial supports lie in the pairwise disjoint intervals
+$[jn,jn+d]$.  Hence every $p_j$ is zero, so every $y_j$ is zero.  This proves
+\eqref{eq:direct} with $N=d+1$.
+\end{proof}
+
+\section{Weak-topology theorem}
+
+Recall that $T_1,\ldots,T_m$ are \emph{disjoint mixing} if, for every
+nonempty open $U_0,U_1,\ldots,U_m$, there is $N$ such that for every $n\ge N$
+one can find $x\in U_0$ with $T_j^nx\in U_j$ for all $j$.
+
+\begin{theorem}\label{thm:main}
+Let $X$ be a Hausdorff topological vector space over $\K$ whose topology is
+weak, and let $T:X\to X$ be continuous linear and mixing.  Then, for every
+$m\ge1$, the operators $T,T^2,\ldots,T^m$ are disjoint mixing.  In
+particular, $T$ is multiply recurrent.
+\end{theorem}
+
+\begin{proof}
+Fix nonempty open sets $U_0,\ldots,U_m$.  Because the topology is weak, for
+each $j$ we may choose $u_j\in U_j$ and a basic weak neighborhood
+\[
+ V_j=\{x\in X: |f(x-u_j)|<\varepsilon_j\text{ for every }f\in F_j\}
+ \subseteq U_j,
+\]
+where $F_j\subset X'$ is finite.  Let
+$L=\Span(\bigcup_{j=0}^m F_j)$.
+
+By Shkarin's Theorem 1.1~\cite{shkarin}, mixing of $T$ implies that the dual
+operator $T'$ has no nonzero finite-dimensional invariant subspace.  Apply
+Lemma~\ref{lem:blocks} to $S=T'$ and $L$.  For all sufficiently large $n$,
+the linear map
+\[
+ A_n:X\longrightarrow (L^*)^{m+1},\qquad
+ (A_nx)_j(f)=f(T^{jn}x)
+\tag{2}\label{eq:evaluation}
+\]
+is onto.  Indeed, its algebraic transpose sends $(g_0,\ldots,g_m)\in
+L^{m+1}$ to
+\[
+ g_0+(T')^ng_1+\cdots+(T')^{mn}g_m,
+\]
+which is injective by \eqref{eq:direct}; since the target of $A_n$ is finite
+dimensional, injectivity of the transpose is equivalent to surjectivity.
+
+For each $j$, let $\alpha_j\in L^*$ be evaluation at $u_j$:
+$\alpha_j(f)=f(u_j)$.  Surjectivity of \eqref{eq:evaluation} gives $x\in X$
+such that
+\[
+ f(T^{jn}x)=f(u_j)\qquad(f\in L,\ 0\le j\le m).
+\]
+Thus $T^{jn}x\in V_j\subseteq U_j$ for every $j$.  This holds for every
+sufficiently large $n$, proving disjoint mixing.
+
+Taking all $U_j=U$ gives multiple recurrence.
+\end{proof}
+
+\begin{corollary}\label{cor:omega}
+Every hypercyclic continuous linear operator on
+$\omega=\K^{\N}$ with its product topology is $\AP$-hypercyclic.
+\end{corollary}
+
+\begin{proof}
+The space $\omega$ is separable, complete, metrizable, and carries a weak
+topology.  Shkarin's Corollary 1.2~\cite{shkarin} says that a hypercyclic
+operator on $\omega$ satisfies the same dual condition and hence is mixing.
+Theorem~\ref{thm:main} makes it multiply recurrent.  Proposition 2.1 of the
+source~\cite{source} identifies hypercyclicity plus multiple recurrence with
+$\AP$-hypercyclicity.
+\end{proof}
+
+The supporting result used above is reproduced here for review.
+
+\begin{center}
+\includegraphics[width=0.94\textwidth]{figures/shkarin_theorem_1_1.png}
+\end{center}
+
+\section{Eight focused upgrade attempts}
+
+The following routes were checked after obtaining Theorem~\ref{thm:main}.
+They explain why the result is not promoted as a full answer.
+
+\begin{enumerate}
+\item \textbf{General dual separation.}  Separating the diagonal orbit range
+from $U^{m+1}$ produces a relation
+$\sum_{j=0}^m(T')^{jn}f_j=0$.  For a norm or seminorm ball, however, the
+$f_j$ range through an infinite-dimensional equicontinuous polar; finite
+module directness gives no uniform lower bound on these relations.
+
+\item \textbf{Weak-topology module route.}  This is the successful route
+above.  It works because a basic neighborhood has a finite-dimensional polar
+span and yields the stronger disjoint-mixing conclusion.
+
+\item \textbf{Full-sequence hypercyclicity criteria.}  The strong Kitai
+criterion synchronizes all powers and is already handled by the source.
+Mixing does not imply that criterion; known mixing counterexamples to Kitai
+therefore prevent this from settling the general question.
+
+\item \textbf{Quasi-rigidity.}  Weak mixing supplies dense one-time
+recurrence along a common sequence, but $T^{n_k}x\to x$ does not imply
+$T^{jn_k}x\to x$: the operators $T^{n_k}$ need not be uniformly bounded on
+the moving intermediate vectors.
+
+\item \textbf{Composition-operator gluing.}  Mixing runaway conditions
+provide small forward and backward images for one time.  Pasting $m$ orbit
+copies requires simultaneous control of overlaps and of pullback norms at
+$n,2n,\ldots,mn$; without bounded distortion these errors are not controlled.
+
+\item \textbf{Direct-sum counterexamples.}  Assigning a separate obstruction
+to each time $n$ is compatible with mixing at the coordinate level, but an
+open ball in a separable direct sum cannot impose a uniformly positive
+obstruction on infinitely many tail coordinates.
+
+\item \textbf{Scalar dual recurrences.}  A fixed functional relation could
+forbid a three-term return near one vector, but any polynomially annihilated
+dual vector creates a finite-dimensional invariant dual subspace and is
+incompatible with mixing in the weak-topology model.  No Banach-space
+replacement producing all-time obstructions was found.
+
+\item \textbf{Known mixing non-Kitai constructions.}  Grivaux-type and recent
+composition-operator and generalized-shift examples were inspected as counterexample
+candidates.  Failure of Kitai's criterion does not imply failure of multiple
+recurrence, and no open set excluding all arithmetic return patterns could be
+extracted from their defining estimates.
+\end{enumerate}
+
+The surviving obstruction is therefore precise: extend the finite-dimensional
+dual-block separation to the full equicontinuous polar of a Fr\'echet
+neighborhood, or build a mixing operator for which such a polar supports
+uniform near-relations that separate a diagonal orbit from $U^{m+1}$.
+
+\section{Verification, novelty, and scope}
+
+The proof is algebraic once Shkarin's characterization is accepted.  The key
+checks are: torsion-freeness of the dual module; freeness of a finitely
+generated torsion-free module over the PID $\K[t]$; disjointness of shifted
+polynomial degree blocks; and the finite-dimensional transpose criterion for
+surjectivity.  No compactness or Baire argument enters Theorem~\ref{thm:main}.
+
+A bounded search checked the run's four lightweight indexes, the parsed local
+arXiv corpus, the exact source question, Shkarin's paper, and focused
+arXiv/web queries combining mixing, multiple recurrence, $\AP$-hypercyclicity,
+weak topology, and $\omega$.  Recent linear-recurrence papers still treat
+multiple recurrence as a distinct notion; no explicit statement of the
+weak-topology/disjoint-powers theorem was found.  The module argument may be
+folklore, so novelty confidence is moderate rather than definitive.
+
+Human review should prioritize Lemma~\ref{lem:blocks}, especially the passage
+from torsion-free to free for $\K[t]L$, and the claim that injectivity of the
+transpose in \eqref{eq:evaluation} makes the finite-dimensional target map
+onto.  The general normable or arbitrary Fr\'echet case is not claimed.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+R. Cardeccia and S. Muro,
+\emph{Multiple recurrence and hypercyclicity},
+Math. Scand. \textbf{128} (2022), 517--532;
+arXiv:2104.15033.
+
+\bibitem{shkarin}
+S. Shkarin,
+\emph{Mixing operators on spaces with weak topology},
+Demonstratio Math. \textbf{46} (2013), 145--157;
+arXiv:1209.0979.
+\end{thebibliography}
+
+\end{document}

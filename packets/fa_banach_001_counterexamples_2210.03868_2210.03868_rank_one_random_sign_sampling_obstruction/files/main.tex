@@ -1,0 +1,214 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\E}{\mathbb E}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\gamtwo}{\gamma_2}
+
+\title{A rank-one obstruction to random-sign sampling of the
+Grothendieck scale}
+\author{Candidate solution packet for Question 3.7 of arXiv:2210.03868}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\linewidth}{\textbf{Status.} Candidate full negative
+answer, likely valid, awaiting specialist review.}}
+\end{center}
+
+\section{Source question}
+
+Sinclair and Vivek ask the following in Question 3.7 of
+\cite{SinclairVivek}, on page 10 of the source PDF.
+
+\begin{center}
+\includegraphics[width=\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+In symbols, if $\varepsilon_1,\ldots,\varepsilon_K$ are independent and
+uniform in $\{\pm1\}^n$, the question asks whether
+\[
+ B=(\langle A\varepsilon_i,\varepsilon_j\rangle)_{i,j=1}^K
+\]
+has Schur norm $\gamtwo(B)$ comparable, with high probability and with
+$K=O(n)$, to
+\[
+ \|A\|_{\infty\to1}
+ =\sup_{\|x\|_\infty\leq1}\|Ax\|_1.
+\]
+Here
+\[
+ \gamtwo(C)=\inf_{C_{ij}=\langle x_i,y_j\rangle}
+       \bigl(\max_i\|x_i\|_2\bigr)
+       \bigl(\max_j\|y_j\|_2\bigr).
+\]
+
+\section{Proof intuition}
+
+Uniform signs see a fixed direction only at its typical fluctuation scale.
+Choose $A$ to concentrate all of its $\ell_\infty\!\to\ell_1$ norm in the
+all-ones direction: $A=\one\one^{\mathsf T}$.  Its true norm is $n^2$,
+attained by the single sign vector $\one$.  A random sign vector has
+coordinate sum only about $\sqrt n$, however.  The sampled matrix becomes the
+rank-one outer product of these coordinate sums, whose Schur norm is exactly
+the square of their maximum.  Among only polynomially many samples this is
+$O(n\log n)$, a factor $O(\log n/n)$ below the true norm.
+
+\section{Two elementary lemmas}
+
+\begin{lemma}\label{lem:rankone}
+For $u\in\R^r$ and $v\in\R^s$,
+\[
+ \gamtwo(uv^{\mathsf T})=\|u\|_\infty\|v\|_\infty.
+\]
+\end{lemma}
+
+\begin{proof}
+The one-dimensional factorization
+$(uv^{\mathsf T})_{ij}=\langle u_i,v_j\rangle$ gives the upper bound.
+Conversely, every factorization $C_{ij}=\langle x_i,y_j\rangle$ satisfies
+\[
+ \max_{i,j}|C_{ij}|
+ \leq(\max_i\|x_i\|_2)(\max_j\|y_j\|_2).
+\]
+Taking the infimum and using
+$\max_{i,j}|u_iv_j|=\|u\|_\infty\|v\|_\infty$ proves the reverse bound.
+\end{proof}
+
+\begin{lemma}\label{lem:tail}
+If $S=\sum_{r=1}^n\varepsilon_r$ for independent uniform signs, then for
+all $t\geq0$,
+\[
+ \PP\{|S|\geq t\}\leq2\exp\!\left(-\frac{t^2}{2n}\right).
+\]
+\end{lemma}
+
+\begin{proof}
+For $\lambda>0$,
+\[
+ \E e^{\lambda S}=(\cosh\lambda)^n
+ \leq e^{n\lambda^2/2}.
+\]
+Markov's inequality and the choice $\lambda=t/n$ give
+$\PP\{S\geq t\}\leq e^{-t^2/(2n)}$.  Apply the same argument to $-S$ and
+add the two bounds.
+\end{proof}
+
+\section{Counterexample and quantitative failure}
+
+\begin{theorem}\label{thm:main}
+For each $n$, let $A_n=\one_n\one_n^{\mathsf T}$.  Given independent uniform
+$\varepsilon_1,\ldots,\varepsilon_K\in\{\pm1\}^n$, set
+\[
+ B_{ij}=\langle A_n\varepsilon_i,\varepsilon_j\rangle.
+\]
+Then, writing $S_i=\langle\one_n,\varepsilon_i\rangle$,
+\[
+ \|A_n\|_{\infty\to1}=n^2,
+ \qquad
+ \gamtwo(B)=\max_{1\leq i\leq K}|S_i|^2.
+\]
+Consequently, for every $0<\delta<1$,
+\begin{equation}\label{eq:hp}
+ \PP\left\{
+ \frac{\gamtwo(B)}{\|A_n\|_{\infty\to1}}
+ >\frac{2\log(2K/\delta)}{n}
+ \right\}\leq\delta,
+\end{equation}
+and
+\begin{equation}\label{eq:mean}
+ \E\frac{\gamtwo(B)}{\|A_n\|_{\infty\to1}}
+ \leq\frac{2(\log(2K)+1)}{n}.
+\end{equation}
+In particular, if $K\leq Cn$ then the sampled Schur norm is
+$o(\|A_n\|_{\infty\to1})$ with high probability.  More generally, the
+ratio converges to zero in probability whenever $\log K=o(n)$.
+\end{theorem}
+
+\begin{proof}
+For $\|x\|_\infty\leq1$,
+\[
+ A_nx=\langle\one_n,x\rangle\one_n,
+ \qquad
+ \|A_nx\|_1=n|\langle\one_n,x\rangle|\leq n^2,
+\]
+with equality at $x=\one_n$.  Thus $\|A_n\|_{\infty\to1}=n^2$.
+
+Next,
+\[
+ B_{ij}
+ =\langle \one_n\one_n^{\mathsf T}\varepsilon_i,
+          \varepsilon_j\rangle
+ =S_iS_j.
+\]
+Hence $B=ss^{\mathsf T}$ for $s=(S_1,\ldots,S_K)$, and
+Lemma~\ref{lem:rankone} gives $\gamtwo(B)=\|s\|_\infty^2$.
+
+By Lemma~\ref{lem:tail} and the union bound,
+\[
+ \PP\{\gamtwo(B)\geq t^2\}
+ \leq 2K e^{-t^2/(2n)}.
+\]
+Taking $t^2=2n\log(2K/\delta)$ proves \eqref{eq:hp}.  For the mean, put
+$Z=\gamtwo(B)$ and $u_0=2n\log(2K)$.  Tail integration gives
+\begin{align*}
+ \E Z
+ &=\int_0^\infty\PP\{Z\geq u\}\,du\\
+ &\leq u_0+\int_{u_0}^\infty2K e^{-u/(2n)}\,du
+ =2n\bigl(\log(2K)+1\bigr),
+\end{align*}
+which is \eqref{eq:mean} after division by $n^2$.
+
+Finally, for fixed $\eta>0$ the same union bound directly yields
+\[
+ \PP\left\{\frac{\gamtwo(B)}{n^2}\geq\eta\right\}
+ \leq2K e^{-\eta n/2}.
+\]
+This tends to zero whenever $\log K=o(n)$.
+\end{proof}
+
+\section{Interpretation, scope, and verification}
+
+Question 3.7 uses the informal phrase ``well approximate.''
+Theorem~\ref{thm:main} rules out every customary dimension-free
+multiplicative interpretation: for the positive semidefinite rank-one family
+$A_n$, the sampled-to-true norm ratio itself tends to zero.  It also shows
+that the obstruction persists for every subexponential number of samples.
+
+The packet does not answer the independent noncommutative questions in
+Section 4 of the source paper.  A companion verifier checks the exact matrix
+identity and reports seeded Monte Carlo ratios; it is a sanity check, not part
+of the proof.
+
+A bounded novelty search through 13 August 2026 covered the run registry,
+local full-text indexes, the exact wording of Question 3.7, arXiv:2210.03868,
+the title and authors, and web combinations of ``random signs,'' ``Schur
+norm,'' and ``Grothendieck norm.''  No explicit answer or this rank-one
+obstruction was found.  This is not an exhaustive priority search.
+
+\paragraph{Human-review recommendation.}
+Treat this as a likely valid full negative answer to Question 3.7.  The key
+items to verify are Lemma~\ref{lem:rankone}, the normalization
+$\|A_n\|_{\infty\to1}=n^2$, and that the source's Schur norm is the same
+$\gamtwo$ used here.
+
+\begin{thebibliography}{9}
+\bibitem{SinclairVivek}
+T. Sinclair and N. Vivek,
+\emph{Remarks on the Grothendieck norm},
+arXiv:2210.03868 (2022).
+\end{thebibliography}
+
+\end{document}

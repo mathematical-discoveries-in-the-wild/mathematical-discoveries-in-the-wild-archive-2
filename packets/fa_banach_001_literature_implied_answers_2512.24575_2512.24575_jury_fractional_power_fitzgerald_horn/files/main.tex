@@ -1,0 +1,216 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+
+\title{Finite-Difference Transfer Resolves the\\Jury Fractional-Power Question}
+\author{Automated Mathematics Run \texttt{fa\_banach\_001}, lane 2}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.9\linewidth}{\textbf{Status.}
+Likely-valid \texttt{literature\_implied\_answer} with full scope. The
+decisive external input is the classical FitzGerald--Horn theorem.}}
+\end{center}
+
+\section{Source question and supporting theorem}
+
+Mashreghi, Nasri, and Vishwakarma ask Question 8.2 on page 36 of
+arXiv:2512.24575 \cite{MNV}. For $I=(0,\rho)$, $N\ge3$, a nonintegral
+$\alpha>N-2$, and $A=(a_{mn})\in\mathbb P_N(I)$, put
+\[
+ F_A(x,y)=\sum_{m,n=0}^{N-1}a_{mn}x^my^n
+\]
+and
+\begin{equation}\label{eq:B}
+ \mathcal B(\alpha,A)_{ij}
+ =\left.\frac{\partial^{i+j}}{\partial x^i\partial y^j}
+       F_A(x,y)^\alpha\right|_{x=y=0},
+ \qquad 0\le i,j\le N-1.
+\end{equation}
+They ask whether $\mathcal B(\alpha,A)$ is always positive semidefinite.
+Their Proposition 8.3 shows that an affirmative answer completes the open
+case in their Theorem E(b).
+
+\begin{figure}[ht]
+ \centering
+ \includegraphics[width=\linewidth]{figures/open_question_crop.png}
+ \caption{Question 8.2 in the source paper, page 36.}
+\end{figure}
+
+The supporting result is the FitzGerald--Horn theorem, stated as Theorem 2.1
+on page 5 of Guillot--Khare--Rajaratnam \cite{GKR}: if $C$ is an
+$N\times N$ positive semidefinite matrix with nonnegative entries, then
+\begin{equation}\label{eq:FH}
+ C^{\circ\alpha}:=(c_{pq}^{\alpha})_{p,q}\succeq0
+ \quad\text{for}\quad
+ \alpha\in\N\cup[N-2,\infty).
+\end{equation}
+
+\begin{figure}[ht]
+ \centering
+ \includegraphics[width=\linewidth]{figures/supporting_theorem_crop.png}
+ \caption{Theorem 2.1 in the supporting paper, restating
+ FitzGerald--Horn.}
+\end{figure}
+
+\section{Identification and proof idea}
+
+The derivative matrix is a limit of congruences of ordinary entrywise
+transforms. Indeed, $F_A$ is a positive kernel:
+\[
+ F_A(x,y)=v(x)^TAv(y),
+ \qquad v(x)=(1,x,\ldots,x^{N-1})^T.
+\]
+Sample this kernel at $0,h,\ldots,(N-1)h$. The sampled matrix is a congruence
+of $A$, hence positive. Apply the entrywise transform, then take a second
+congruence by the forward-difference matrix. As $h$ tends to zero, its entries
+converge to the mixed derivatives in \eqref{eq:B}. This yields a general
+transfer principle and makes \eqref{eq:FH} apply directly.
+
+\section{A general jet-transfer theorem}
+
+\begin{theorem}[Entrywise-to-Jury jet transfer]\label{thm:transfer}
+Let $J\subset(0,\infty)$ be open, let $N\ge1$, and let
+$f\in C^{2N-2}(J)$. Suppose the entrywise map
+\[
+ C=(c_{pq})\longmapsto f[C]=(f(c_{pq}))
+\]
+maps every $N\times N$ positive semidefinite matrix with entries in $J$ to a
+positive semidefinite matrix. Let $A=(a_{mn})\succeq0$ have entries in an
+open interval $I\subset(0,\infty)$, and suppose $a_{00}\in J$. Then the jet
+matrix
+\[
+ \mathcal J_f(A)_{ij}
+ :=\left.\partial_x^i\partial_y^j f(F_A(x,y))\right|_{x=y=0},
+ \qquad 0\le i,j\le N-1,
+\]
+is positive semidefinite.
+\end{theorem}
+
+\begin{proof}
+For $h>0$, set $t_p=ph$ for $0\le p\le N-1$ and define the Vandermonde
+matrix
+\[
+ V_h=(t_p^m)_{p,m=0}^{N-1}.
+\]
+The sampled kernel matrix is
+\begin{equation}\label{eq:sample}
+ C_h=(F_A(t_p,t_q))_{p,q=0}^{N-1}=V_hAV_h^T\succeq0.
+\end{equation}
+As $h\downarrow0$, every entry of $C_h$ tends to $a_{00}\in J$; hence for
+all sufficiently small $h$, all entries lie in $J$. By hypothesis,
+$f[C_h]\succeq0$.
+
+Let $L_h$ be the lower-triangular forward-difference matrix
+\[
+ (L_h)_{ip}=
+ \begin{cases}
+ h^{-i}(-1)^{i-p}\binom{i}{p},&0\le p\le i,\\
+ 0,&p>i.
+ \end{cases}
+\]
+Congruence preserves positivity, so
+\begin{equation}\label{eq:cong}
+ L_hf[C_h]L_h^T\succeq0.
+\end{equation}
+Its $(i,j)$ entry is precisely
+\[
+ \frac{1}{h^{i+j}}
+ \sum_{p=0}^i\sum_{q=0}^j
+ (-1)^{i-p+j-q}\binom{i}{p}\binom{j}{q}
+ f(F_A(ph,qh)),
+\]
+the order-$(i,j)$ forward-difference quotient of $f(F_A(x,y))$ at the
+origin. Since $f\in C^{2N-2}$, this converges to
+$\mathcal J_f(A)_{ij}$ as $h\downarrow0$. Thus the matrices in
+\eqref{eq:cong} converge entrywise to $\mathcal J_f(A)$. The finite-dimensional
+positive semidefinite cone is closed, proving the claim.
+\end{proof}
+
+\section{Resolution and exact classification}
+
+\begin{corollary}[Affirmative answer to Question 8.2]\label{cor:answer}
+Under the hypotheses of Question 8.2,
+$\mathcal B(\alpha,A)\succeq0$ for every $A\in\mathbb P_N(I)$.
+Moreover, for $N\ge3$,
+\[
+ x^\alpha\text{ preserves positivity under the Jury transform on }
+ \mathbb P_N(I)
+ \quad\Longleftrightarrow\quad
+ \alpha\in\mathbb Z_{\ge0}\cup[N-2,\infty).
+\]
+\end{corollary}
+
+\begin{proof}
+Apply Theorem~\ref{thm:transfer} to $f(t)=t^\alpha$ and use
+FitzGerald--Horn \eqref{eq:FH}. This proves the assertion of Question 8.2.
+Proposition 8.3 of \cite{MNV} gives
+\[
+ D f_{\diamond}(A)D=\mathcal B(\alpha,A),
+ \qquad D=\operatorname{diag}(1,1,2!,\ldots,(N-1)!),
+\]
+so the Jury transform is positive as well. Nonnegative integral powers are
+also covered (or follow by repeated Jury products). Conversely, Theorem E(b)
+of \cite{MNV} proves failure for every $\alpha<N-2$ that is not a
+nonnegative integer. This gives the exact classification.
+\end{proof}
+
+\section{Provenance, verification, and scope}
+
+This is an agent-identified implication, not a later paper whose authors
+explicitly knew they were answering Question 8.2. The decisive theorem is
+from 1977 and is quoted in the source itself; the new identification is the
+finite-difference jet limit. Under the run protocol, the conservative status
+is therefore \texttt{literature\_implied\_answer (full resolution)} rather
+than an original full solution.
+
+The numerical checker computes \eqref{eq:B} by a truncated bivariate binomial
+series. It tested 390,000 random positive-entry Gram matrices for $N=3,4$ and
+eight exponents above the threshold, with ranks from one through $N$. No
+violation below a normalized tolerance of $-10^{-8}$ was found. The numerical
+test is not used in the proof.
+
+A bounded search through 9 August 2026 checked the current arXiv and journal
+versions of the source, arXiv:1311.1581, the FitzGerald--Horn article metadata,
+later Jury-product papers arXiv:2602.21056 and 2607.13251, and exact/close
+formula searches. No source recording this precise implication was found.
+No other open problems in arXiv:2512.24575 are addressed here.
+
+\paragraph{Human-review recommendation.}
+Check the indices in $L_h$ and confirm that the dimension in
+FitzGerald--Horn is exactly the number $N$ of sampled points. If those two
+points pass, Question 8.2 and the fractional-power gap in Theorem E are fully
+resolved.
+
+\begin{thebibliography}{9}
+\bibitem{MNV}
+J.~Mashreghi, M.~Nasri, and P.~K. Vishwakarma,
+\emph{Functional calculi, positivity, and convolution of matrices},
+arXiv:2512.24575 (2025); Journal of Mathematical Analysis and Applications,
+Article 130934 (2026).
+
+\bibitem{FH}
+C.~H. FitzGerald and R.~A. Horn,
+\emph{On fractional Hadamard powers of positive definite matrices},
+J. Math. Anal. Appl. \textbf{61} (1977), 633--642.
+
+\bibitem{GKR}
+D.~Guillot, A.~Khare, and B.~Rajaratnam,
+\emph{Complete characterization of Hadamard powers preserving Loewner
+positivity, monotonicity, and convexity},
+J. Math. Anal. Appl. \textbf{425} (2015), 489--507,
+arXiv:1311.1581.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,128 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\emergencystretch=3em
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
+
+\title{A Small-Parameter Obstruction to the Proposed\\
+Mixed Steklov--Dirichlet Two-Term Bound}
+\author{Run \texttt{fa\_banach\_001}}
+\date{2026-08-12}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+Candidate counterexample, likely valid, to Open Question 1.8 exactly as
+printed in arXiv:1712.00753. The conclusion concerns the all-$z>0$ reading
+used by the surrounding estimates.
+
+\section{Source question}
+Hassannezhad and Laptev study the mixed Steklov--Dirichlet eigenvalues
+$\eta_j$ of a bounded domain $\Omega\subset\mathbb R^n$ whose boundary is
+split into a free part $\mathcal F$ and a Dirichlet part. For $\gamma>0$ the
+Riesz mean is
+\[
+ R_\gamma(z)=\sum_j (z-\eta_j)_+^\gamma,\qquad z>0.
+\]
+On page 6, Open Question 1.8 asks whether there is a positive constant
+$C(\alpha,\beta)$, depending only on the two corner angles, such that
+\begin{equation}\label{proposed}
+ R_\gamma(z)\leq C_{n,\gamma}|\mathcal F|z^{n+\gamma-1}
+ -C(\alpha,\beta)z^{n+\gamma-2}.
+\end{equation}
+No lower cutoff in $z$ and no remainder term is stated \cite{HL}.
+
+\begin{center}
+\includegraphics[width=0.97\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section{Idea of the proof}
+The Riesz mean can never be negative, because it is a sum of nonnegative
+terms. But the suggested two-term polynomial is necessarily negative near
+$z=0$: the negative term has one lower power of $z$ than the positive Weyl
+term. Factoring out the common positive power makes the contradiction
+immediate.
+
+\section{Counterexample theorem}
+\begin{theorem}
+Fix $n\geq2$, $\gamma>0$, a domain with $|\mathcal F|>0$, and any proposed
+constant $C(\alpha,\beta)>0$. Then inequality \eqref{proposed} fails for some
+$z>0$. Consequently, no positive $C(\alpha,\beta)$ can make the inequality
+in Open Question 1.8 hold for every $z>0$.
+\end{theorem}
+
+\begin{proof}
+Put $A=C_{n,\gamma}|\mathcal F|>0$ and $C=C(\alpha,\beta)>0$. The right-hand
+side of \eqref{proposed} factors as
+\[
+ z^{n+\gamma-2}(Az-C).
+\]
+Choose any
+\[
+ 0<z<\frac{C}{A}.
+\]
+Because $n\geq2$ and $\gamma>0$, the factor $z^{n+\gamma-2}$ is positive,
+while $Az-C<0$. Hence the proposed right-hand side is strictly negative.
+On the other hand,
+\[
+ R_\gamma(z)=\sum_j(z-\eta_j)_+^\gamma\geq0.
+\]
+Thus \eqref{proposed} would require a nonnegative number to be at most a
+strictly negative number, a contradiction.
+\end{proof}
+
+The argument does not require a specially chosen domain or spectrum. In
+particular, if $z$ is also taken below the first mixed
+Steklov--Dirichlet eigenvalue, then $R_\gamma(z)=0$ exactly.
+
+\section{Deepening and the necessary repair}
+The obstruction shows that a global estimate with a pure negative second
+term is impossible. Any corrected version must include at least one of the
+following: a lower threshold $z\geq z_0$, a nonnegative lower-order remainder,
+or a positive-part truncation of the polynomial right-hand side.
+
+The source's immediately preceding planar estimate already displays the
+relevant repair. For right-angle John domains, Theorem 1.7 gives
+\[
+ R_1(z)\leq \frac{|\mathcal F|}{2\pi}z^2-\frac12z
+ +\frac{\pi}{2|\mathcal F|}.
+\]
+The final positive constant prevents the right-hand side from becoming
+negative near the origin. Removing it is not a harmless sharpening at small
+$z$.
+
+\begin{remark}
+The argument does not decide the charitable asymptotic reformulation: for a
+fixed domain, does there exist $z_0$ such that a bound of the displayed form
+holds for all $z\geq z_0$? Nor does it determine an optimal explicit positive
+remainder. Those are distinct repaired questions.
+\end{remark}
+
+\section{Verification and novelty check}
+The source formula and its lack of a lower cutoff were checked in the final
+arXiv PDF, page 6, Open Question 1.8. The script
+\texttt{code/verify\_sign.py} chooses $z=C/(2A)$ and verifies that the proposed
+right side is negative while the universal lower bound on the Riesz mean is
+zero.
+
+A bounded search on 2026-08-12 used the exact question wording, the source
+arXiv id, and combinations of \emph{mixed Steklov--Dirichlet}, \emph{Riesz
+mean}, and \emph{negative second term}. It found the source and adjacent later
+work on mixed Steklov eigenvalues, but no paper pointing out or repairing this
+small-$z$ obstruction. Novelty confidence is moderate; mathematical-validity
+confidence for the literal quantifier is high.
+
+\begin{thebibliography}{9}
+\bibitem{HL}
+A. Hassannezhad and A. Laptev,
+\emph{Eigenvalue bounds of mixed Steklov problems},
+arXiv:1712.00753.
+\end{thebibliography}
+\end{document}

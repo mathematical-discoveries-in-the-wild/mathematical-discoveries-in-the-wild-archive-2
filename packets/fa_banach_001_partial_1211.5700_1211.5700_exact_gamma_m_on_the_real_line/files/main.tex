@@ -1,0 +1,380 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Pm}{\mathcal P_m}
+\newcommand{\Lip}{\operatorname{Lip}}
+\newcommand{\dom}{\operatorname{dom}}
+\newcommand{\J}{J}
+
+\title{An Exact Higher-Order Jet Functional on the Real Line}
+\author{Candidate partial result for arXiv:1211.5700}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{black}{gray!8}{\parbox{0.88\linewidth}{
+\textbf{Status: candidate partial result, likely valid.}
+For every order $m\geq 1$, an explicit two-jet functional is constructed
+for scalar $m$-fields on $\R$.  It gives the exact minimum
+$\Lip(F^{(m)})$, admits an exact extension for arbitrary data sets, and
+satisfies the source paper's properties $(P_0)$--$(P_5)$.  The problem in
+dimensions $d\geq2$ remains open.}}
+\end{center}
+
+\section{Source question}
+
+For $1$-fields on $\R^d$, Le Gruyer's functional $\Gamma^1$ is the exact
+minimum Lipschitz constant of the gradient and satisfies the six structural
+properties used by Hirn and Le Gruyer.  Section 2.4.5 of their paper then
+states \cite{HL}:
+\begin{quote}
+``A similar result for $m$-fields, where $m\geq2$, is an open problem.  In
+particular, it is unknown what the correct corresponding functional
+$\Phi=\Gamma^m$ is.  It seems plausible, though, that such a functional will
+satisfy the properties $(P_0)$--$(P_5)$.''
+\end{quote}
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{The $m$-field open problem in arXiv:1211.5700v3, PDF page 10,
+  Section 2.4.5.}
+\end{figure}
+
+This packet resolves that functional problem on the one-dimensional domain
+$\R$, for all orders and arbitrary (not necessarily closed or finite) data
+sets.  It does not claim a solution in higher-dimensional domains.
+\clearpage
+
+\section{Definitions and the proposed functional}
+
+Let $\Pm$ be the real polynomials of degree at most $m$.  An $m$-field on
+$E\subset\R$ is a map $f:E\to\Pm$.  Write the jet at $x$ as
+\[
+ f(x)(a)=\sum_{k=0}^m \frac{p_k(x)}{k!}(a-x)^k,
+ \qquad p_k(x)=f(x)^{(k)}(x).
+\]
+For $F\in C^{m,1}(I)$, $\J_x^mF$ denotes its degree-$m$ Taylor polynomial
+at $x$, and
+\[
+ \Lip_I(F^{(m)})=
+ \sup_{s\ne t\in I}\frac{|F^{(m)}(s)-F^{(m)}(t)|}{|s-t|}.
+\]
+
+For $x<y$, $P,Q\in\Pm$, define the two-jet cost
+\begin{equation}\label{eq:defgamma}
+ \Gamma_m(P,Q;x,y)=
+ \min\left\{\Lip_{[x,y]}(F^{(m)}):
+ \begin{array}{l}
+ F\in C^{m,1}([x,y]),\\[-2pt]
+ \J_x^mF=P,\ \J_y^mF=Q
+ \end{array}\right\}.
+\end{equation}
+For $x>y$ use the symmetric definition, and set
+$\Gamma_m(P,P;x,x)=0$.  For a field $f$ put
+\[
+ \Gamma_m(f;x,y)=\Gamma_m(f(x),f(y);x,y),\qquad
+ \Gamma_m(f;E)=\sup_{x\ne y\in E}\Gamma_m(f;x,y),
+\]
+with the empty supremum equal to zero.
+
+The word ``minimum'' in \eqref{eq:defgamma} is justified below.  More
+importantly, the definition has an explicit finite-dimensional dual formula.
+
+\begin{proposition}[Moment and dual formulas]\label{prop:dual}
+Fix $x<y$, set $h=y-x$, and write
+\[
+ a_k=P^{(k)}(x),\qquad b_k=Q^{(k)}(y),\qquad 0\leq k\leq m.
+\]
+For $0\leq r\leq m$, define the endpoint discrepancy
+\begin{equation}\label{eq:delta}
+ d_r=b_{m-r}-\sum_{j=0}^{r}\frac{a_{m-r+j}h^j}{j!}.
+\end{equation}
+Then
+\begin{align}
+ \Gamma_m(P,Q;x,y)
+ &=\min\left\{\|w\|_{L^\infty(0,h)}:
+ d_r=\int_0^h\frac{(h-s)^r}{r!}w(s)\,ds,
+ \ 0\leq r\leq m\right\}\label{eq:moment}\\
+ &=\sup_{\lambda\in\R^{m+1}\setminus\{0\}}
+ \frac{\left|\sum_{r=0}^m\lambda_r d_r\right|}
+ {\displaystyle\int_0^h
+ \left|\sum_{r=0}^m\lambda_r\frac{(h-s)^r}{r!}\right|\,ds}.
+ \label{eq:dual}
+\end{align}
+Both extrema are attained.
+\end{proposition}
+
+\begin{proof}
+If $F$ is feasible in \eqref{eq:defgamma}, its Lipschitz function $F^{(m)}$
+has an almost-everywhere derivative
+$w(s)=F^{(m+1)}(x+s)\in L^\infty(0,h)$, and
+$\Lip(F^{(m)})=\|w\|_\infty$.  Repeated integration from $x$ gives, for
+$0\leq r\leq m$,
+\[
+ F^{(m-r)}(y)=\sum_{j=0}^{r}\frac{a_{m-r+j}h^j}{j!}
+ +\int_0^h\frac{(h-s)^r}{r!}w(s)\,ds.
+\]
+Thus the endpoint conditions are exactly the moment equations in
+\eqref{eq:moment}.  Conversely, integrating any feasible $w$ reconstructs a
+feasible $F$ with the same norm.  The moment map
+\[
+ T:L^\infty(0,h)\longrightarrow\R^{m+1},\qquad
+ (Tw)_r=\int_0^h\frac{(h-s)^r}{r!}w(s)\,ds,
+\]
+is onto: its adjoint is injective because a polynomial that vanishes almost
+everywhere on an interval is zero.  Hence all two-jet data are feasible.
+
+Formula \eqref{eq:dual} is the standard dual formula for the quotient norm
+$\inf_{Tw=d}\|w\|_\infty$, since
+\[
+ T^*\lambda(s)=\sum_{r=0}^m
+ \lambda_r\frac{(h-s)^r}{r!}
+ \quad\hbox{and}\quad
+ \|T^*\lambda\|_{L^1}
+ =\int_0^h|T^*\lambda(s)|\,ds.
+\]
+Weak-* compactness of bounded subsets of $L^\infty$ and weak-* continuity
+of $T$ give a primal minimizer.  The dual supremum is attained after
+normalizing its denominator, because the dual space is finite-dimensional.
+\end{proof}
+
+\section{Proof intuition}
+
+On a line, removing a closed data set leaves disjoint open intervals.  The
+two endpoint jets on each bounded gap impose exactly the moment constraints
+in Proposition~\ref{prop:dual}; a norm-minimizing control $w=F^{(m+1)}$
+fills that gap.  Every gap can be filled independently because neighboring
+pieces already agree through order $m$ at their common endpoint.  The
+Lipschitz constant of $F^{(m)}$ is therefore the maximum of the local costs,
+with no loss.
+
+The only issue for arbitrary data sets is compatibility at accumulation
+points.  A two-point interpolant of cost $K$ yields sharp Taylor remainders
+of order $K|x-y|^{m+1-k}$.  Those estimates force every prescribed
+derivative value to extend continuously to the closure.  They also make the
+gapwise pasting $C^m$ at every accumulation point.  This ordered-gap
+mechanism is specific to one dimension and is exactly what is unavailable
+in $\R^d$, $d\geq2$.
+
+\section{Exact extension on the real line}
+
+\begin{theorem}[Exact all-orders extension on $\R$]\label{thm:extension}
+Let $m\geq1$, let $E\subset\R$, and let $f:E\to\Pm$ be an arbitrary
+$m$-field with
+\[
+ K:=\Gamma_m(f;E)<\infty.
+\]
+Then there is $F\in C^{m,1}(\R)$ such that
+\begin{equation}\label{eq:exact}
+ \J_x^mF=f(x)\quad(x\in E),\qquad
+ \Lip_{\R}(F^{(m)})=K.
+\end{equation}
+Consequently, for every $D$ with $E\subset D\subset\R$, the field
+$U(z)=\J_z^mF$ on $D$ is an exact minimal extension:
+\[
+ \Gamma_m(U;D)=\Gamma_m(f;E).
+\]
+In particular,
+\begin{equation}\label{eq:traceidentity}
+ \Gamma_m(f;E)=
+ \min\{\Lip_{\R}(G^{(m)}):G\in C^{m,1}(\R),\ 
+ \J_x^mG=f(x)\ (x\in E)\}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+We may assume that $E$ has at least two points; the empty and one-point cases
+are obtained from a polynomial of degree at most $m$.
+
+\emph{Step 1: sharp Whitney estimates.}
+For $x<y$ in $E$, choose a minimizer in \eqref{eq:defgamma}.  Repeated
+integration, now separating the constant value at $x$ from the variation of
+the $m$th derivative, gives for every $0\leq k\leq m$
+\begin{equation}\label{eq:whitney}
+ \left|p_k(y)-\sum_{j=0}^{m-k}
+ \frac{p_{k+j}(x)(y-x)^j}{j!}\right|
+ \leq \frac{K|y-x|^{m+1-k}}{(m+1-k)!}.
+\end{equation}
+For $k=m$ this is simply
+$|p_m(y)-p_m(x)|\leq K|y-x|$.  It follows successively from
+\eqref{eq:whitney}, starting at $k=m$, that every $p_k$ is continuous on
+$E$.  Hence all $p_k$ extend uniquely and continuously to
+$C=\overline E$.  Formula \eqref{eq:dual}, viewed after affine
+normalization to $[0,1]$, is continuous in two jets at distinct points.
+Passing to limits in pairs from $E$ therefore preserves
+$\Gamma_m\leq K$ on $C$ and preserves \eqref{eq:whitney}.
+
+\emph{Step 2: fill the gaps of $C$.}
+For each bounded component $(\alpha,\beta)$ of $\R\setminus C$, choose a
+minimizer $F_{\alpha\beta}$ for the two endpoint jets.  Its cost is at most
+$K$.  On an unbounded component use the degree-$m$ polynomial determined by
+the jet at its finite endpoint.  On $C$ prescribe
+$F^{(k)}(x)=p_k(x)$.
+
+For completeness, we verify the pasting at accumulation points.  Define
+$G_k$ to equal $p_k$ on $C$ and $F_{\alpha\beta}^{(k)}$ on each gap.  If
+$t$ in a gap tends to $c\in C$, choose the endpoint $e$ of that gap lying
+between $c$ and $t$.  Then $e\to c$, and the Taylor estimate inside the
+gap, together with continuity of the $p_j$ on $C$, gives
+$G_k(t)\to p_k(c)$.  Thus every $G_k$ is continuous.  The same decomposition
+\[
+ G_k(t)-p_k(c)=\bigl(G_k(t)-p_k(e)\bigr)
+                 +\bigl(p_k(e)-p_k(c)\bigr),
+\]
+using the first-order part of the Taylor expansions at $e$ and $c$, yields
+\[
+ G_k(t)-p_k(c)=p_{k+1}(c)(t-c)+o(|t-c|)
+ \quad(0\leq k<m).
+\]
+Therefore $G_k'=G_{k+1}$ also at points of $C$.  The pasted scalar function
+$F=G_0$ belongs to $C^m(\R)$ and has the prescribed jets.
+
+It remains to check the global Lipschitz bound.  The function $G_m$ is
+$K$-Lipschitz on $C$ by \eqref{eq:whitney} and on every complementary gap
+by construction.  If $s<t$ lie in different pieces, insert the right
+endpoint of the piece containing $s$ and the left endpoint of the piece
+containing $t$.  Both inserted points lie in $C$, and the three Lipschitz
+bounds add over subintervals whose lengths sum to $t-s$.  Hence
+\[
+ |G_m(t)-G_m(s)|\leq K(t-s).
+\]
+Thus $F\in C^{m,1}(\R)$ and $\Lip(F^{(m)})\leq K$.
+
+\emph{Step 3: exactness.}
+Every global interpolant $G$ restricts on $[x,y]$ to a competitor in
+\eqref{eq:defgamma}, so
+$\Gamma_m(f;x,y)\leq\Lip(G^{(m)})$.  Taking the supremum shows that no
+global interpolant has seminorm below $K$.  The constructed $F$ therefore
+has equality in \eqref{eq:exact} and proves \eqref{eq:traceidentity}.
+
+Finally, for $U(z)=\J_z^mF$ on $D$, restriction of $F$ to every pair gives
+$\Gamma_m(U;D)\leq K$, while the old pairs in $E$ give the reverse
+inequality.  This proves exact minimal extension to every $D$.
+\end{proof}
+
+\section{The source axioms P0--P5}
+
+Equip $\Pm$ with any Euclidean coefficient metric.  The next proposition
+checks that the functional above fits the framework of \cite{HL} on the
+domain space $\R$.
+
+\begin{proposition}\label{prop:axioms}
+For scalar $m$-fields on $\R$, the functional $\Phi=\Gamma_m$ satisfies
+properties $(P_0)$--$(P_5)$ of Hirn--Le Gruyer.
+\end{proposition}
+
+\begin{proof}
+Symmetry and nonnegativity $(P_0)$ follow from time reversal in
+\eqref{eq:defgamma}; pointwise evaluation $(P_1)$ is the definition of
+$\Gamma_m(f;E)$.  The final assertion of
+Theorem~\ref{thm:extension} is exactly the minimal-extension property
+$(P_2)$.
+
+For $(P_3)$, suppose $x<y$ and $[x,y]\subset\dom(f)$.  For any
+$z\in[x,y]$, paste minimizers for the pairs $(x,z)$ and $(z,y)$.  Their jets
+through order $m$ agree at $z$, so the pasted function is in
+$C^{m,1}([x,y])$ and
+\begin{equation}\label{eq:chasles}
+ \Gamma_m(f;x,y)\leq
+ \max\{\Gamma_m(f;x,z),\Gamma_m(f;z,y)\}.
+\end{equation}
+Taking $z=(1-t)x+ty$ gives the required monotone curve and, since
+\eqref{eq:chasles} holds for every $t$, the required infimum inequality.
+
+For $(P_5)$, if $\Gamma_m(f;E)=K<\infty$, estimate
+\eqref{eq:whitney} shows first that $p_m$ is Lipschitz and then that every
+$p_k$ is continuous.  Converting centered Taylor coefficients to ordinary
+polynomial coefficients is continuous in $(x,p_0,\ldots,p_m)$, so
+$f:E\to\Pm$ is continuous.
+
+For $(P_4)$, normalize a pair of distinct points affinely to $0$ and $1$.
+On $\R^{2m+2}$, the resulting two-jet cost is a finite seminorm: homogeneity
+is clear, and subadditivity follows by adding two interpolants.  Every finite
+seminorm on a finite-dimensional space is continuous.  Undoing the affine
+normalization multiplies the cost by $|x-y|^{-(m+1)}$ and transforms jet
+coordinates continuously as long as $x\ne y$.  Property $(P_5)$ gives
+$f(z)\to f(y)$ as $z\to y$ within the domain; hence
+\[
+ \Gamma_m(f;x,z)\longrightarrow\Gamma_m(f;x,y),
+\]
+which is $(P_4)$.
+\end{proof}
+
+\begin{corollary}[One-dimensional higher-order quasi-AMLEs]
+For scalar $m$-fields on $\R$, the quasi-AMLE existence theorem of
+Hirn--Le Gruyer applies with $\Phi=\Gamma_m$ for every $m\geq1$.
+\end{corollary}
+
+\begin{proof}
+The real line has the metric hypotheses of \cite{HL}, and
+Proposition~\ref{prop:axioms} supplies $(P_0)$--$(P_5)$.  This is precisely
+the input of their main theorem.
+\end{proof}
+
+\section{Upgrade attempts, scope, and novelty check}
+
+The argument was pushed through five increasingly strong stages: finite
+ordered data; arbitrary data via closure and gap filling; an explicit
+$L^\infty$ moment problem; the finite-dimensional dual formula
+\eqref{eq:dual}; and verification of all six source axioms, yielding the
+quasi-AMLE corollary.  A further attempt to pass to $d\geq2$ did not close.
+The line proof uses the total order of $\R$: complementary components have
+two endpoints and can be filled independently.  In higher dimensions,
+two-point interpolants on different segments cannot be pasted into a
+single $C^{m,1}$ function, and no analogue of the exact gap decomposition
+was found.  General Whitney extension theory supplies extensions with
+dimension- and order-dependent constants, but that does not prove the exact
+pairwise identity required here.
+
+The result is therefore a solved one-dimensional subcase, not a solution of
+the source's unrestricted $\R^d$ question.  A bounded novelty search was
+performed on arXiv using the source id and the phrases ``$m$-fields
+$\Gamma^m$'', ``exact $C^{m,1}$ extension'', ``one-dimensional Whitney
+jets'', ``minimal Lipschitz $m$th derivative'', and ``Hermite interpolation
+$L^\infty$''.  The closest items found were general Whitney-type and
+definable extension theorems \cite{S,PR}; they provide existence or bounded
+extension results, not this exact one-dimensional pairwise functional and
+the verification of $(P_0)$--$(P_5)$.  No exact match was found.  This is a
+bounded search, so novelty confidence is moderate rather than definitive.
+
+Human review should focus on the closure-and-gap pasting in
+Theorem~\ref{thm:extension} and on whether the intended meaning of
+``correct functional'' in the source imposes any convention beyond
+pairwise dependence on the two endpoint jets.  The functional here is
+genuinely pair-local and has the explicit formula \eqref{eq:dual}; it is not
+the circular construction obtained by assigning the same global trace norm
+to every pair.
+
+\begin{thebibliography}{9}
+\bibitem{HL}
+M. J. Hirn and E. Y. Le Gruyer,
+\emph{A general theorem of existence of quasi absolutely minimal Lipschitz
+extensions}, arXiv:1211.5700v3 (2014).
+
+\bibitem{S}
+P. Shvartsman,
+\emph{Whitney-type extension theorems for jets generated by Sobolev
+functions}, arXiv:1607.01660 (2016).
+
+\bibitem{PR}
+A. Parusi\'nski and A. Rainer,
+\emph{Uniform extension of definable $C^{m,\omega}$-Whitney jets},
+arXiv:2306.09156 (2023).
+\end{thebibliography}
+
+\end{document}

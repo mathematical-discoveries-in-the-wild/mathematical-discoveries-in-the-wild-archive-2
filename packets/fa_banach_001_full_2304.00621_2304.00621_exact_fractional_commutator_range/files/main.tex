@@ -1,0 +1,361 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx,float,microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\R}{\mathbb R}
+\newcommand{\BMO}{\operatorname{BMO}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\ip}[2]{\left\langle #1,#2\right\rangle}
+
+\title{The exact fractional range for commutators along monomial curves}
+\author{Candidate full solution to Question 1.15 of arXiv:2304.00621}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+Candidate full solution, likely valid; human review is needed.  The result
+determines the half-open interval and the literal supremum asked for in the
+source.  It does not decide boundedness at the non-diagonal boundary itself,
+which is immaterial to both requested quantities.
+
+\section{Source question}
+
+Let
+\[
+ \gamma(t)=
+ \begin{cases}
+  (\eps_1|t|^{\beta_1},\ldots,\eps_n|t|^{\beta_n}),&t>0,\\
+  (\delta_1|t|^{\beta_1},\ldots,\delta_n|t|^{\beta_n}),&t<0,
+ \end{cases}
+ \qquad 0<\beta_1<\cdots<\beta_n,
+\]
+be one of the monomial curves in Oikari's source paper \cite{Oikari}, and put
+\[
+ H_\gamma f(x)=\operatorname{p.v.}\int_\R f(x-\gamma(t))\,\frac{dt}{t}.
+\]
+For $p\le q<\infty$, set
+\[
+ B:=|\beta|=\sum_{j=1}^n\beta_j,
+ \qquad \alpha=B\left(\frac1p-\frac1q\right).
+\]
+The estimate under investigation is
+\begin{equation}\label{E:pq}
+ \|[b,H_\gamma]\|_{L^p(\R^n)\to L^q(\R^n)}
+ \le C_{p,q,\gamma}\|b\|_{\BMO^{\beta,\alpha}(\R^n)}
+ \qquad\text{for every }b\in\BMO^{\beta,\alpha}.
+\end{equation}
+Question 1.15 asks for the maximal initial interval of $q$ for which
+\eqref{E:pq} holds and defines
+\[
+ p_{\max}(n,\beta)=\sup\{q\ge p:\eqref{E:pq}\text{ holds}\}.
+\]
+
+\begin{figure}[H]
+ \centering
+ \includegraphics[width=.98\textwidth]{figures/open_problem_crop.png}
+ \caption{Question 1.15 and its surrounding sharpness discussion
+ \cite[p.~5]{Oikari}.}
+\end{figure}
+
+There is a small logical issue in the question: a supremum over a disconnected
+validity set need not be the endpoint of a maximal interval.  The theorem
+below determines both notions and shows that they really do diverge for some
+parameters.
+
+\section{The answer}
+
+Define
+\[
+ p_1(n):=\frac{n(n+1)}{n^2-n+2},\qquad
+ p_2(n):=\frac{n+1}{2},
+\]
+and
+\begin{equation}\label{E:Q}
+ Q_n(p):=
+ \begin{cases}
+ \displaystyle\frac{(n-1)p}{n-p},&1<p\le p_1(n),\\[6pt]
+ \displaystyle\frac{n(n+1)p}{n(n+1)-2p},&p_1(n)\le p\le p_2(n),\\[6pt]
+ \displaystyle\frac{np}{n-1},&p\ge p_2(n).
+ \end{cases}
+\end{equation}
+At the shared endpoints the formulas agree.  When $n=2$, the middle interval
+collapses and
+\[
+ Q_2(p)=\begin{cases}p/(2-p),&1<p\le3/2,\\2p,&p\ge3/2.\end{cases}
+\]
+
+\begin{theorem}[exact range]\label{T:main}
+For every dimension $n\ge2$, every monomial exponent tuple $\beta$, every
+allowed sign pattern, and every $1<p<\infty$, the following hold.
+\begin{enumerate}
+ \item The estimate \eqref{E:pq} holds for $p\le q<Q_n(p)$.
+ \item If $q>Q_n(p)$ and $\alpha\le\beta_n$, then \eqref{E:pq} fails.
+ \item If $\alpha>\beta_n$, then $\BMO^{\beta,\alpha}(\R^n)$ consists only
+ of constants modulo null sets, and \eqref{E:pq} holds trivially.
+\end{enumerate}
+Consequently, the maximal initial half-open interval is exactly
+\[
+                         [p,Q_n(p)).
+\]
+For the literal supremum displayed in Question 1.15,
+\begin{equation}\label{E:pmax}
+ p_{\max}(n,\beta)=
+ \begin{cases}
+ Q_n(p),&p\ge B/\beta_n,\\
+ \infty,&1<p<B/\beta_n.
+ \end{cases}
+\end{equation}
+In the second case, if
+\begin{equation}\label{E:qtriv}
+ q_{\mathrm{triv}}(p,\beta):=\frac{pB}{B-p\beta_n},
+\end{equation}
+then \eqref{E:pq} fails for
+$Q_n(p)<q\le q_{\mathrm{triv}}(p,\beta)$ and holds trivially for every
+$q>q_{\mathrm{triv}}(p,\beta)$.  Thus the literal value $\infty$ does
+\emph{not} mean that $[p,\infty)$ is an interval of validity.
+\end{theorem}
+
+The theorem leaves open only whether \eqref{E:pq} holds at
+$q=Q_n(p)$.  The source asks for a half-open interval and a supremum, so this
+endpoint question does not change the answer.
+
+\section{Idea of the proof}
+
+The source proves sufficiency in the interior of a polytope $\Omega(n)$.
+Cladek and Ou proved that the same polytope is sharp for the positive
+single-scale curve average \cite[Sec.~4.2]{CladekOu}: outside $\Omega(n)$
+there are normalized inputs supported as close to the origin as desired whose
+averages blow up, with dual witnesses supported near a fixed curve arc.
+
+The key observation is that those separated supports can be encoded into the
+symbol.  Choose $b(x)=\eta(x_n)$, zero on the input neighborhood and one on
+the output neighborhood.  Then $bf=0$ and $bg=g$, so the commutator pairing
+is exactly the Hilbert-transform pairing.  If $\alpha\le\beta_n$, this
+separator is anisotropically $\alpha$-Hölder and hence belongs to
+$\BMO^{\beta,\alpha}$.  Every sharp single-scale obstruction therefore
+becomes a commutator obstruction.  This transfers all facets of
+$\Omega(n)$ at once, including the middle facet present when $n>2$.
+
+There is one genuine twist.  If $\alpha>\beta_n$, anisotropic
+$\alpha$-Hölder regularity has ordinary exponent greater than one along every
+coordinate line.  Subdividing a coordinate segment forces zero variation,
+so every symbol is constant.  This creates a trivial high-$q$ validity tail
+and explains the distinction between a maximal initial interval and the
+literal supremum in the source.
+
+\section{The improving polytope and its vertical boundary}
+
+Let $\Omega(n)$ be the closed convex hull of
+\begin{align*}
+ &(0,0),\quad (1,1),\\
+ &A_n=\left(\frac{n^2-n+2}{n(n+1)},\frac{n-1}{n+1}\right),\qquad
+ D_n=\left(\frac{2}{n+1},\frac{2(n-1)}{n(n+1)}\right).
+\end{align*}
+These are the coordinates $(1/p,1/q)$ used in the source.  In the half-plane
+$1/p\ge1/q$, its lower boundary consists of the three line segments
+\begin{equation}\label{E:facets}
+ y=\frac{n-1}{n}x,\qquad
+ y=x-\frac{2}{n(n+1)},\qquad
+ y=\frac{nx-1}{n-1}.
+\end{equation}
+Their $x$-intervals are respectively
+\[
+ \left[0,\frac{2}{n+1}\right],\quad
+ \left[\frac{2}{n+1},\frac{n^2-n+2}{n(n+1)}\right],\quad
+ \left[\frac{n^2-n+2}{n(n+1)},1\right].
+\]
+Putting $x=1/p$ and $y=1/q$ in \eqref{E:facets} gives exactly
+\eqref{E:Q}.  Hence
+\begin{equation}\label{E:vertical}
+ Q_n(p)=\sup\{q\ge p:(1/p,1/q)\in\Omega(n)\}.
+\end{equation}
+Oikari's Theorem 1.10 proves \eqref{E:pq} whenever
+$(1/p,1/q)$ is in the interior of $\Omega(n)$, as well as on the diagonal
+$q=p$ \cite{Oikari}.  This proves part 1 of Theorem~\ref{T:main}.
+
+\section{The separating symbol}
+
+Use the anisotropic quasi-distance
+\[
+ \rho_\beta(x,y)\asymp\max_{1\le j\le n}|x_j-y_j|^{1/\beta_j}.
+\]
+The source's Lemma 3.8 gives
+\begin{equation}\label{E:holderbmo}
+ \|b\|_{\BMO^{\beta,\alpha}}\asymp
+ \sup_{x\ne y}\frac{|b(x)-b(y)|}{\rho_\beta(x,y)^\alpha}
+ \qquad(\alpha>0).
+\end{equation}
+
+\begin{lemma}[separator]\label{L:separator}
+Let $0<\alpha\le\beta_n$.  There is a smooth bounded function
+$b(x)=\eta(x_n)$ which is zero on a neighborhood of the origin, one on a
+neighborhood of the positive curve arc
+\[
+ \Gamma_+=\{\gamma(t):1/2\le t\le1\},
+\]
+and belongs to $\BMO^{\beta,\alpha}(\R^n)$.
+\end{lemma}
+
+\begin{proof}
+On the positive branch, the last coordinate of $\Gamma_+$ lies in the signed
+interval with absolute values between $2^{-\beta_n}$ and $1$.  It is therefore
+separated from zero.  Choose $\eta\in C^\infty(\R)$ which is zero on a small
+interval about zero and one on a small neighborhood of that signed interval.
+
+Since $\eta$ is bounded and Lipschitz,
+\[
+ |\eta(x_n)-\eta(y_n)|\lesssim\min(1,|x_n-y_n|).
+\]
+If $\rho_\beta(x,y)\le1$, then
+$|x_n-y_n|\lesssim\rho_\beta(x,y)^{\beta_n}\le
+\rho_\beta(x,y)^\alpha$.  If $\rho_\beta(x,y)\ge1$, boundedness of $\eta$
+gives the same conclusion.  Now use \eqref{E:holderbmo}.
+\end{proof}
+
+\section{Transfer of the sharp single-scale obstruction}
+
+\begin{lemma}[separated-support transfer]\label{L:transfer}
+If $(1/p,1/q)$ lies strictly outside $\Omega(n)$ and
+$0<\alpha\le\beta_n$, then \eqref{E:pq} fails.
+\end{lemma}
+
+\begin{proof}
+For the positive single-scale operator
+\[
+ \widetilde A_1^\gamma f(x)=\int_{1/2\le t<1}
+ f(x-\gamma(t))\,dt,
+\]
+Cladek and Ou prove the following sharpness statement
+\cite[Sec.~4.2]{CladekOu}.  For every sufficiently small neighborhood $U$ of
+the origin there are nonnegative $f_k$ supported in $U$ with
+$\|f_k\|_p=1$ and
+\[
+                 \|\widetilde A_1^\gamma f_k\|_q\longrightarrow\infty.
+\]
+By duality there are nonnegative $g_k$, with $\|g_k\|_{q'}=1$, supported in
+an arbitrarily small neighborhood $V$ of $\Gamma_+$, such that the
+corresponding Hilbert-transform pairings tend to infinity.  Their support
+argument isolates the positive branch and the finitely many relevant dyadic
+scales, so in particular
+\begin{equation}\label{E:CO}
+                 \ip{H_\gamma f_k}{g_k}\longrightarrow\infty.
+\end{equation}
+
+Choose $U,V$ small enough for the symbol in Lemma~\ref{L:separator} to
+satisfy $b=0$ on $U$ and $b=1$ on $V$.  Then $bf_k=0$ and $bg_k=g_k$.
+Consequently,
+\begin{align*}
+ \ip{[b,H_\gamma]f_k}{g_k}
+ &=\ip{bH_\gamma f_k}{g_k}-\ip{H_\gamma(bf_k)}{g_k}\\
+ &=\ip{H_\gamma f_k}{g_k}\longrightarrow\infty.
+\end{align*}
+If \eqref{E:pq} held, Hölder duality and the normalizations would instead
+give
+\[
+ |\ip{[b,H_\gamma]f_k}{g_k}|
+ \le C_{p,q,\gamma}\|b\|_{\BMO^{\beta,\alpha}}
+ \quad\text{uniformly in }k,
+\]
+a contradiction.
+\end{proof}
+
+For $q>Q_n(p)$, equation \eqref{E:vertical} places $(1/p,1/q)$ strictly
+outside $\Omega(n)$.  Lemma~\ref{L:transfer} proves part 2 of
+Theorem~\ref{T:main}.
+
+\section{Collapse above the largest anisotropic exponent}
+
+\begin{lemma}[triviality]\label{L:trivial}
+If $\alpha>\beta_n$, every element of
+$\BMO^{\beta,\alpha}(\R^n)$ is constant modulo null sets.
+\end{lemma}
+
+\begin{proof}
+By \eqref{E:holderbmo}, choose the anisotropic Hölder representative of $b$.
+Along the $j$th coordinate line,
+\[
+ |b(x+he_j)-b(x)|\lesssim |h|^{\alpha/\beta_j}.
+\]
+Here $\alpha/\beta_j>1$ for every $j$.  Divide the segment from $x$ to
+$x+he_j$ into $N$ equal pieces.  The triangle inequality gives
+\[
+ |b(x+he_j)-b(x)|
+ \lesssim N\left(\frac{|h|}{N}\right)^{\alpha/\beta_j}
+ =|h|^{\alpha/\beta_j}N^{1-\alpha/\beta_j}\longrightarrow0.
+\]
+Thus $b$ is constant on every coordinate line, hence on $\R^n$.
+\end{proof}
+
+Constants commute with $H_\gamma$, proving part 3.  It remains only to
+extract \eqref{E:pmax}.  If $p\ge B/\beta_n$, then for every finite $q$,
+\[
+ \alpha=B(1/p-1/q)<B/p\le\beta_n.
+\]
+Part 2 therefore excludes every $q>Q_n(p)$, and the supremum is $Q_n(p)$.
+
+If $p<B/\beta_n$, equation $\alpha=\beta_n$ has the finite solution
+\eqref{E:qtriv}.  For $q>q_{\mathrm{triv}}$, Lemma~\ref{L:trivial} makes
+\eqref{E:pq} trivial, so the literal supremum is infinity.  Moreover,
+$q_{\mathrm{triv}}>Q_n(p)$.  Indeed, throughout $\Omega(n)$ one has
+\[
+ 0\le x-y\le\frac{2}{n(n+1)},
+\]
+and, because the exponents are strictly increasing,
+\[
+ B\frac{2}{n(n+1)}<\frac{2\beta_n}{n+1}<\beta_n.
+\]
+Thus $\alpha<\beta_n$ at the vertical lower boundary, while $\alpha$ grows
+strictly with $q$ and reaches $\beta_n$ only at $q_{\mathrm{triv}}$.
+Part 2 now gives failure on
+$Q_n(p)<q\le q_{\mathrm{triv}}$, completing the proof of
+Theorem~\ref{T:main}.
+
+\section{Verification, upgrade audit, and novelty bounds}
+
+The proof was developed through six focused routes.  A direct ball/tube test
+first recovered both facets for the parabola.  The adjoint test and a
+one-coordinate separator extended this to every planar monomial curve.  In
+higher dimensions the same test recovered only the two outer facets and
+missed the middle one.  The successful upgrade was to transfer the complete
+sharp single-scale sequence from Cladek--Ou, which supplies every facet in
+every dimension.  A separate audit of high Hölder orders found the collapse
+of the symbol space and the resulting defect in the literal supremum.  The
+remaining boundary case was checked and is not needed for the half-open
+interval or its supremum.
+
+The run indexes were searched for arXiv:2304.00621, ``monomial curve
+commutator'', ``maximal interval'', ``fractional BMO'', and the exact wording
+of Question 1.15.  Bounded primary-source web and arXiv searches through
+13 August 2026 checked the source, arXiv:1704.07810, and later curved
+commutator work including arXiv:2403.08338.  The latter completes the planar
+$p=q$ lower-bound theory, not the fractional sufficiency range.  No paper was
+found that states the theorem above or answers Question 1.15.  Novelty
+confidence is moderate because the literature search was bounded.
+
+Promote for expert review.  The most important review point is that the
+precise support localization in Cladek--Ou Section 4.2 is strong enough to
+choose one separator with $bf_k=0$ and $bg_k=g_k$ throughout the sequence.
+The second point is the distinction between the initial interval endpoint and
+the unrestricted supremum when the Campanato class becomes constant.
+
+\begin{thebibliography}{9}
+\bibitem{Oikari}
+T.~Oikari,
+\emph{On the $L^p$-to-$L^q$ boundedness and compactness of commutators along
+monomial curves}, arXiv:2304.00621 (2023).
+
+\bibitem{CladekOu}
+L.~Cladek and Y.~Ou,
+\emph{Sparse domination of Hilbert transforms along curves},
+Math. Res. Lett. 25 (2018), no.~2, 415--436; arXiv:1704.07810.
+\end{thebibliography}
+
+\end{document}

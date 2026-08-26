@@ -1,0 +1,196 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newcommand{\Cplus}{\mathbb C_+}
+\newcommand{\R}{\mathbb R}
+
+\title{Vertical Monotonicity of de Branges--Rovnyak Kernel Norms\\
+\large A full answer to Question 6.6 of arXiv:0802.0789}
+\author{Autonomous proof packet for \texttt{fa\_banach\_001}}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+Candidate full result, likely valid, pending human review.  The result answers
+the exact monotonicity question affirmatively and in the larger range
+$1<q<\infty$.
+
+\section{Source question}
+
+Let $b$ be in the closed unit ball of $H^\infty(\Cplus)$.  Its
+de Branges--Rovnyak kernel, viewed through its boundary values, is
+\[
+ k_z^b(t)=\frac{1-\overline{b(z)}b(t)}{t-\overline z},
+ \qquad z\in\Cplus,\quad t\in\R.
+\]
+Baranov, Fricain, and Mashreghi proved for inner $b$ that, for $q>1$,
+there is a constant depending only on $q$ such that
+\[
+ \lVert k_{x+iy_1}^b\rVert_q
+ \le C(q)\lVert k_{x+iy_2}^b\rVert_q
+ \qquad(x\in\R,\ 0\le y_2\le y_1),                 \tag{6.9}
+\]
+and ask in Question~6.6 whether this remains true for a general $b$
+\cite[Question~6.6, PDF pp.~27--28]{source}.
+
+\begin{center}
+\includegraphics[width=0.96\textwidth]{figures/equation_6_9_context_crop.png}
+
+\small Source PDF page 27: the inequality referred to as (6.9).
+\end{center}
+
+\begin{center}
+\includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+
+\small Source PDF page 28: complete statement of Question 6.6.
+\end{center}
+
+\section{Idea of the proof}
+
+The kernel at the higher point is exactly the lower kernel multiplied by a
+boundary contraction, plus one ordinary Cauchy kernel.  The coefficient of
+that error is $b(z_1)-b(z_2)$.  The elementary geometry of the unit disk
+bounds this coefficient by $|1-\overline{b(z_2)}b(z_1)|$.  But the latter
+quantity is precisely the value of the lower kernel at $z_1$, times
+$|z_1-\overline{z_2}|$.  A single $H^q$ point-evaluation estimate therefore
+absorbs the entire error into the lower kernel norm.  No innerness or boundary
+modulus-one property of $b$ is used.
+
+\section{The theorem}
+
+For $1<s<\infty$, put
+\[
+ A_s:=\left(\int_{\R}(1+u^2)^{-s/2}\,du\right)^{1/s}.
+\]
+
+\begin{theorem}[vertical kernel monotonicity]\label{thm:main}
+Let $b\in H^\infty(\Cplus)$ satisfy $\lVert b\rVert_\infty\le1$, let
+$1<q<\infty$, and let $q'=q/(q-1)$.  For every $x\in\R$ and
+$0<y_2\le y_1$,
+\begin{equation}\label{eq:main}
+ \lVert k_{x+iy_1}^b\rVert_{L^q(\R)}
+ \le
+ \left(1+\frac{A_qA_{q'}}{\pi}\right)
+ \lVert k_{x+iy_2}^b\rVert_{L^q(\R)}.
+\end{equation}
+The same conclusion holds for $y_2=0$ whenever the boundary kernel
+$k_x^b$ exists as an $H^q(\Cplus)$ function.  If its extended $L^q$ norm is
+infinite, the inequality is automatic.
+\end{theorem}
+
+\begin{proof}
+Write
+\[
+ z_j=x+iy_j,\qquad b_j=b(z_j),\qquad k_j=k_{z_j}^b
+ \quad(j=1,2).
+\]
+For real $t$, direct subtraction of the two kernel numerators gives
+\begin{equation}\label{eq:identity}
+ k_1(t)
+ =\frac{t-\overline{z_2}}{t-\overline{z_1}}\,k_2(t)
+  +\frac{(\overline{b_2}-\overline{b_1})b(t)}
+         {t-\overline{z_1}}.
+\end{equation}
+Because $0\le y_2\le y_1$,
+\[
+ \left|\frac{t-\overline{z_2}}{t-\overline{z_1}}\right|^2
+ =\frac{(t-x)^2+y_2^2}{(t-x)^2+y_1^2}\le1,
+\]
+and $|b(t)|\le1$ almost everywhere.  Hence
+\begin{equation}\label{eq:firstbound}
+ \lVert k_1\rVert_q
+ \le \lVert k_2\rVert_q
+ +|b_1-b_2|\left\lVert\frac1{t-\overline{z_1}}\right\rVert_q
+ =\lVert k_2\rVert_q+A_q|b_1-b_2|y_1^{1/q-1}.
+\end{equation}
+
+We next absorb the second term.  The elementary identity
+\[
+ |1-\overline a w|^2-|w-a|^2
+ =(1-|a|^2)(1-|w|^2)\ge0
+ \]
+for $a,w$ in the closed unit disk gives
+\begin{equation}\label{eq:disk}
+ |b_1-b_2|\le |1-\overline{b_2}b_1|.
+\end{equation}
+
+For completeness, the standard $H^q$ point-evaluation estimate follows
+immediately from the Cauchy formula and H\"older's inequality: if
+$f\in H^q(\Cplus)$ and $z=x+iy$, then
+\begin{equation}\label{eq:point}
+ |f(z)|
+ \le \frac1{2\pi}\lVert f\rVert_q
+       \left\lVert\frac1{t-z}\right\rVert_{q'}
+ =\frac{A_{q'}}{2\pi}y^{-1/q}\lVert f\rVert_q.
+\end{equation}
+Apply this to $f=k_2$ at $z_1$.  Since
+\[
+ k_2(z_1)=\frac{1-\overline{b_2}b_1}{z_1-\overline{z_2}},
+ \qquad |z_1-\overline{z_2}|=y_1+y_2\le2y_1,
+\]
+estimate \eqref{eq:point} yields
+\begin{equation}\label{eq:absorb}
+ |1-\overline{b_2}b_1|y_1^{1/q-1}
+ \le \frac{A_{q'}}{\pi}\lVert k_2\rVert_q.
+\end{equation}
+Combining \eqref{eq:firstbound}, \eqref{eq:disk}, and
+\eqref{eq:absorb} proves \eqref{eq:main}.
+
+When $y_2=0$ and $k_x^b\in H^q$, the same proof is literal: set
+$z_2=x$ and let $b_2=b(x)$ in the boundary-kernel definition.  The multiplier
+in \eqref{eq:identity} still has modulus at most one, and now
+$|z_1-\overline{z_2}|=y_1$.  This proves the boundary case as well.
+\end{proof}
+
+\begin{corollary}
+Question 6.6 of the source has an affirmative answer.  In particular, the
+constant is independent of $b$, $x$, $y_1$, and $y_2$, and the conclusion
+holds throughout the source's range $q\ge2$.
+\end{corollary}
+
+\section{Stress tests and scope}
+
+The proof was checked against the following edge cases.
+For a unimodular constant $b$, all kernels vanish.  For a constant
+$|b|<1$, both sides have the expected scaling $y^{1/q-1}$.  At $q=2$,
+$A_2=\sqrt\pi$, so the displayed constant is $2$, consistent with the known
+case though not asserted to be sharp.  The proof remains uniform as
+$y_2\downarrow0$ whenever a finite $H^q$ boundary kernel is present.
+
+No computational evidence is used.  Question 6.6 is solved in full, but this
+packet makes no claim about the distinct boundary-integrability Question 3.3
+in the source.  The source's Question 6.4 was answered later by
+Aleman--Malman; that separate literature fact is not used in this proof.
+
+\section{Novelty check and human review}
+
+A bounded run-index and web/arXiv search on 17 August 2026 used arXiv id
+0802.0789, the exact wording of Question 6.6, and combinations of
+``de Branges--Rovnyak'', ``vertical rays'', ``reproducing kernel'',
+``$L^q$ norm'', and ``monotonicity''.  The search found the source and
+adjacent kernel literature but no later statement of the general-$b$
+inequality or this two-kernel proof.  Novelty confidence is moderate rather
+than conclusive.
+
+Human review is recommended.  The decisive checks are the kernel identity
+\eqref{eq:identity}, the normalization in the Cauchy estimate
+\eqref{eq:point}, and the source's convention for a boundary kernel when
+$y_2=0$.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+A. Baranov, E. Fricain, and J. Mashreghi,
+\emph{Weighted norm inequalities for de Branges--Rovnyak spaces and their
+applications}, arXiv:0802.0789, 2008.
+\end{thebibliography}
+
+\end{document}

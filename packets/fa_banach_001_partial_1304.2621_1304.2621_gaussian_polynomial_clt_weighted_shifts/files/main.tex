@@ -1,0 +1,251 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\K}{\mathbb K}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\ellp}{\ell^p(\N_0;\K)}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+
+\title{Polynomial central limit theorems for the canonical Gaussian measure of a weighted backward shift}
+\author{Automated mathematics run \texttt{fa\_banach\_001}\\Lane 14, candidate partial result}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.} Candidate substantial partial result, likely valid pending expert review.  The theorem below completely answers the weighted-backward-shift half of Bayart's Question~4.6 and strengthens its hypothesis.  The parabolic-composition-operator half is not claimed.}}
+\end{center}
+
+\section{Source question and result}
+
+The source is Fr\'ed\'eric Bayart, \emph{Central limit theorems in linear dynamics}, arXiv:1304.2621, published in \emph{Annales de l'Institut Henri Poincar\'e, Probabilit\'es et Statistiques} 51 (2015), 1131--1158 \cite{Bayart}.  On page 30, after a weighted-shift corollary and a parabolic-composition-operator corollary, it asks:
+
+\begin{quote}
+\textbf{Question 4.6.} Do the above corollaries remain true if we consider polynomials instead of linear forms?
+\end{quote}
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+  \caption{Corollaries 4.4--4.5 and Question 4.6 in the source PDF, page 30.}
+\end{figure}
+
+For the weighted-shift half, the answer is affirmative under the exact summability condition that already characterizes the existence of an invariant full-support measure.  In particular, the pointwise polynomial growth condition in the source corollary is unnecessary.
+
+Let $\K\in\{\R,\mathbb C\}$ and $1\le p<\infty$.  For a bounded sequence of positive weights $\mathbf w=(w_n)_{n\ge1}$, write
+\[
+ B_{\mathbf w}(x_0,x_1,\ldots)=(w_1x_1,w_2x_2,\ldots),\qquad
+ W_0=1,\quad W_n=w_1\cdots w_n,
+\]
+and set $s_n=W_n^{-1}$.  A polynomial below is a continuous real-valued polynomial on the real Banach space underlying $\ellp$, exactly as in the source.
+
+\begin{theorem}[Polynomial CLT for the canonical Gaussian shift]\label{thm:main}
+Suppose
+\begin{equation}\label{eq:summability}
+ \sum_{n\ge0} W_n^{-p}<\infty.
+\end{equation}
+Let $(\gamma_n)_{n\ge0}$ be independent standard real Gaussians when $\K=\R$, and independent standard circular complex Gaussians when $\K=\mathbb C$.  Let $\mu$ be the law on $\ellp$ of
+\[
+ X=(s_n\gamma_n)_{n\ge0}.
+\]
+Then $\mu$ is a $B_{\mathbf w}$-invariant strongly mixing Gaussian Borel probability measure with full support.  Every continuous real polynomial $P$ belongs to $L^q(\mu)$ for all $q<\infty$.  Moreover, with
+\[
+ \overline P=P-\int P\,d\mu,
+\]
+there is a number
+\[
+ \sigma_P^2=\sum_{k\in\mathbb Z}\operatorname{Cov}
+ \bigl(\overline P(X),\overline P(B_{\mathbf w}^{,k}X)\bigr)\ge0,
+\]
+where the negative indices are interpreted in the stationary natural extension and the series is absolutely convergent, such that
+\[
+ \frac1{\sqrt N}\sum_{k=0}^{N-1}\overline P\circ B_{\mathbf w}^{,k}
+ \ \xrightarrow[N\to\infty]{\mathrm{law}}\ \mathcal N(0,\sigma_P^2).
+\]
+The Gaussian law is allowed to be degenerate.
+\end{theorem}
+
+\begin{remark}[Relation to Corollary 4.4]
+If $W_n\ge Cn^\alpha$ for some $\alpha>1/p$, then
+$\sum_nW_n^{-p}\le C^{-p}\sum_n n^{-\alpha p}<\infty$.  Thus Theorem~\ref{thm:main} answers the weighted-shift part of Question~4.6 under every hypothesis of the source corollary, and in fact under the strictly weaker condition \eqref{eq:summability}.
+\end{remark}
+
+\section{Proof intuition}
+
+The canonical Gaussian measure turns the orbit into a nonlinear Bernoulli shift:
+\[
+ P(B_{\mathbf w}^{,k}X)=P\bigl((s_n\gamma_{n+k})_{n\ge0}\bigr).
+\]
+Replacing the innovation $\gamma_0$ changes exactly one coordinate in each affected time slice.  A global Lipschitz estimate would discard this geometry and demand the false extra hypothesis $s\in\ell^1$.  Instead, expand $P$ along the changed coordinate.  The term of Taylor order $r$ contains $s_n^r$ multiplied by the diagonal coefficient $D^rP(x)[e_n,\ldots,e_n]$.
+
+The decisive deterministic fact is that the diagonal of an $r$-linear form on $\ell^p$ lies in $\ell^{p/(p-r)}$ when $r<p$.  This exponent is exactly H\"older-conjugate to $p/r$, the exponent for $(s_n^r)$.  The derivative coefficients are random Gaussian polynomials, but fixed-degree Gaussian norm equivalence makes the deterministic diagonal estimate survive in $L^2$.  Hence the physical-dependence coefficients are summable.  The central limit theorem of El Machkouri--Voln\'y--Wu \cite{EMVW} then finishes the proof.
+
+\section{Three auxiliary facts}
+
+\begin{lemma}[Block-diagonal coefficients on $\ell^p$]\label{lem:diagonal}
+Regard $\ellp$ as a real Banach space.  Let $A:(\ellp)^r\to\R$ be a continuous $r$-linear form.  For every $j\in\{1,\ldots,r\}$, let $u_n^{(j)}$ be supported in the $n$-th scalar coordinate and satisfy $\norm{u_n^{(j)}}\le1$, and put
+$a_n=A(u_n^{(1)},\ldots,u_n^{(r)})$.  If $r<p$ and $t=p/(p-r)$, then
+\[
+ \norm{(a_n)}_{\ell^t}\le C_r\norm A.
+\]
+If $r\ge p$, then $\sup_n|a_n|\le\norm A$.
+\end{lemma}
+
+\begin{proof}
+The second statement is immediate.  For the first, complexify the real Banach space and $A$; this changes the norm by a constant depending only on $r$.  For finitely supported $y=(y_n)$ choose $b_n$ with $b_n^r=y_n$.  Let $(\zeta_n)$ be independent variables uniformly distributed over the $r$-th roots of unity (for $r=1$, use ordinary duality).  Since a product of $r$ such roots has nonzero expectation only when all $r$ indices coincide,
+\[
+ \sum_n a_ny_n
+ =\E_\zeta A\left(\sum_n b_n\zeta_nu_n^{(1)},\ldots,
+                       \sum_n b_n\zeta_nu_n^{(r)}\right).
+\]
+Therefore
+\[
+ \left|\sum_n a_ny_n\right|
+ \le C_r\norm A\left(\sum_n|b_n|^p\right)^{r/p}
+ =C_r\norm A\norm y_{\ell^{p/r}}.
+\]
+Duality between $\ell^{p/r}$ and $\ell^{p/(p-r)}$ proves the claim.
+\end{proof}
+
+\begin{lemma}[Uniform Gaussian polynomial estimates]\label{lem:gaussian}
+Fix an integer $m\ge0$ and $1\le q<\infty$.  There is $C_{m,q}$ such that every real polynomial $Q$ of degree at most $m$ in an arbitrary finite or countable Gaussian family satisfies
+\begin{equation}\label{eq:normequi}
+ \norm Q_2\le C_{m,q}\norm Q_q.
+\end{equation}
+Moreover, if $G$ is one distinguished standard Gaussian and $Q(0,\widehat G)$ denotes evaluation at $G=0$, then
+\begin{equation}\label{eq:deletion}
+ \norm{Q(0,\widehat G)}_2\le C_m\norm{Q(G,\widehat G)}_2.
+\end{equation}
+The constants do not depend on the number of Gaussian variables.
+\end{lemma}
+
+\begin{proof}
+For $q\ge2$, \eqref{eq:normequi} is immediate.  For $1\le q<2$, Gaussian hypercontractivity gives
+$\norm Q_4\le3^{m/2}\norm Q_2$.  Applying Paley--Zygmund to $Q^2$ shows that $|Q|$ exceeds a fixed multiple of $\norm Q_2$ on a set of probability bounded below by a constant depending only on $m$.  This implies \eqref{eq:normequi}.
+
+For \eqref{eq:deletion}, expand in Hermite polynomials of $G$:
+\[
+ Q(G,\widehat G)=\sum_{j=0}^m c_j(\widehat G)H_j(G).
+\]
+Orthogonality gives
+$\norm Q_2^2=\sum_{j=0}^m j!\norm{c_j}_2^2$, while
+$Q(0,\widehat G)=\sum_{j=0}^mH_j(0)c_j(\widehat G)$.  Cauchy--Schwarz over this finite sum proves the uniform bound.  Countably many variables follow by the usual $L^2$ approximation.
+\end{proof}
+
+\begin{lemma}[Summable physical dependence]\label{lem:physical}
+Let $P:\ellp\to\R$ be a continuous polynomial and assume $s=(s_n)\in\ell^p$.  On a two-sided iid standard Gaussian sequence $(\gamma_j)_{j\in\mathbb Z}$ over $\K$ define
+\[
+ Y_k=P\bigl((s_n\gamma_{n+k})_{n\ge0}\bigr)-
+ \E P\bigl((s_n\gamma_n)_{n\ge0}\bigr).
+\]
+Let $Y_k^*$ be obtained by replacing only $\gamma_0$ by an independent copy and set $\delta_{k,2}=\norm{Y_k-Y_k^*}_2$.  Then
+\[
+ \Delta_2:=\sum_{k\in\mathbb Z}\delta_{k,2}<\infty.
+\]
+\end{lemma}
+
+\begin{proof}
+Write $d=\deg P$.  If $k>0$, then $Y_k$ does not use $\gamma_0$, so $\delta_{k,2}=0$.  Fix $n\ge0$ and consider $k=-n$.  Replacing $\gamma_0$ changes only coordinate $n$.  Let $\widehat X_n$ have the law of $X$ with its $n$-th coordinate set to zero, and let $g,g'$ be independent standard Gaussians, independent of $\widehat X_n$.  In the real case, the exact finite Taylor expansion from the common base point $\widehat X_n$ gives
+\[
+ P(\widehat X_n+s_ng e_n)-P(\widehat X_n+s_ng'e_n)
+ =\sum_{r=1}^d\frac{s_n^r(g^r-(g')^r)}{r!}
+ D^rP(\widehat X_n)[e_n,\ldots,e_n].
+\]
+Independence and the triangle inequality imply
+\begin{equation}\label{eq:delta}
+ \delta_{-n,2}\le\sum_{r=1}^d C_r s_n^r b_{n,r},\qquad
+ b_{n,r}:=\norm{D^rP(\widehat X_n)[e_n,\ldots,e_n]}_2.
+\end{equation}
+
+In the complex case, write a circular Gaussian in its two independent real components and expand the same real Fr\'echet derivative.  At order $r$ this produces at most $2^r$ terms, with $e_n$ in each slot replaced by either $e_n$ or $ie_n$.  The proof below applies term by term using the block-diagonal form of Lemma~\ref{lem:diagonal}; all constants still depend only on $d$ and $p$.  Thus it is enough to continue with the displayed real notation.
+
+Set $Q_{n,r}=D^rP(X)[e_n,\ldots,e_n]$ in the real notation (and use each of the finitely many mixed $e_n,ie_n$ coefficients in the complex case).  This is a Gaussian polynomial of degree at most $d-r$.  Lemma~\ref{lem:gaussian}, applied to the distinguished coordinate $\gamma_n$ (or its two real components), yields
+\begin{equation}\label{eq:bq}
+ b_{n,r}\le C_d\norm{Q_{n,r}}_2.
+\end{equation}
+Suppose first that $r<p$ and put $t=p/(p-r)$.  The norm equivalence in Lemma~\ref{lem:gaussian}, followed by Lemma~\ref{lem:diagonal} pointwise, gives
+\begin{align*}
+ \left(\sum_n\norm{Q_{n,r}}_2^t\right)^{1/t}
+ &\le C_{d,t}\left(\sum_n\norm{Q_{n,r}}_t^t\right)^{1/t}\\
+ &=C_{d,t}\left(\E\sum_n|Q_{n,r}|^t\right)^{1/t}\\
+ &\le C_{d,p,r}\left(\E\norm{D^rP(X)}^t\right)^{1/t}<\infty.
+\end{align*}
+The last moment is finite because $D^rP$ has polynomial growth and Gaussian measures have moments of every order.  Thus $(b_{n,r})\in\ell^{p/(p-r)}$.  Also $(s_n^r)\in\ell^{p/r}$, so H\"older's inequality gives
+$\sum_ns_n^rb_{n,r}<\infty$.
+
+If $r\ge p$, then
+\[
+ \sup_n\norm{Q_{n,r}}_2\le\norm{\norm{D^rP(X)}}_2<\infty,
+\]
+and \eqref{eq:bq} makes $(b_{n,r})$ bounded.  Since $s\in\ell^p$ and $r\ge p$, one has $\sum_ns_n^r<\infty$.  Summing \eqref{eq:delta} over $n$ completes the proof.
+\end{proof}
+
+\section{Proof of the main theorem}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Since
+\[
+ \E\sum_{n\ge0}|s_n\gamma_n|^p
+ =\E|\gamma_0|^p\sum_{n\ge0}s_n^p<\infty,
+\]
+$X$ belongs to $\ellp$ almost surely.  Its law is a Radon Gaussian measure.  It has full support: finite coordinate boxes have positive probability, and the Gaussian tail in $\ell^p$ can be made small with positive probability.  The identity
+$w_{n+1}s_{n+1}=s_n$ gives
+\[
+ B_{\mathbf w}X=(s_n\gamma_{n+1})_{n\ge0}\stackrel{\rm law}=X,
+\]
+so $\mu$ is invariant.  Cylinder functions of $X$ and of $B_{\mathbf w}^{,k}X$ depend on disjoint Gaussian coordinate blocks for all sufficiently large $k$.  Approximation of bounded measurable functions by cylinders proves strong mixing.
+
+A continuous polynomial has polynomial growth.  Fernique's theorem therefore implies $P\in L^q(\mu)$ for all finite $q$.
+
+The process $(Y_k)_{k\in\mathbb Z}$ from Lemma~\ref{lem:physical} is a stationary Bernoulli random field of the form treated by El Machkouri--Voln\'y--Wu \cite[Definitions 1--2]{EMVW}, and its nonnegative-time restriction has the same law as
+$(\overline P(B_{\mathbf w}^{,k}X))_{k\ge0}$.  Lemma~\ref{lem:physical} gives $\Delta_2<\infty$.  Proposition 2 of \cite{EMVW} yields absolute covariance summability and
+\[
+ \frac1N\E\left(\sum_{k=0}^{N-1}Y_k\right)^2
+ \longrightarrow \sigma_P^2
+ =\sum_{k\in\mathbb Z}\E(Y_0Y_k)\ge0.
+\]
+If $\sigma_P^2>0$, the partial-sum variance tends to infinity, so Theorem 1 of \cite{EMVW}, with the intervals $\{0,\ldots,N-1\}\subset\mathbb Z$, gives convergence to $\mathcal N(0,\sigma_P^2)$.  If $\sigma_P^2=0$, the displayed variance convergence says directly that $N^{-1/2}\sum_{k=0}^{N-1}Y_k\to0$ in $L^2$.  This is the claimed degenerate Gaussian limit.
+\end{proof}
+
+\section{Limitations, upgrade attempts, and novelty status}
+
+The proof settles the weighted-shift half of Question~4.6 but not the parabolic-composition half.  Two focused extensions were tried.  The natural Gaussian measure associated with the parabolic eigenvector field has only the source's H\"older exponent $<1/2$, which does not yield summable dependence.  The source's alternative Bernoulli coding has a summable aggregate estimate for linear forms, but individual translated coding vectors decay only like $n^{-\beta}$ with $\beta<1$.  A polynomial Taylor expansion replaces the linear cancellation by random derivative coefficients, and the argument no longer gives a summable physical-dependence series.  This is the present obstruction, not a claimed impossibility theorem.
+
+The proof was also tested against two internal hazards.  First, a global Lipschitz estimate would impose $s\in\ell^1$ and is not sharp.  Second, Taylor expansion around a vector containing the replacement Gaussian would make the scalar increment and derivative coefficient dependent.  Expanding from the coordinate-deleted vector and using Lemma~\ref{lem:gaussian} repairs that issue.
+
+On 11 August 2026, bounded searches of the run indexes and the web used arXiv id 1304.2621, the exact wording of Question~4.6, the paper title and author, and combinations of ``weighted backward shift'', ``Gaussian invariant measure'', ``polynomial'', and ``central limit theorem''.  They found the source and general CLT references, but no later resolution of Question~4.6 or statement of Theorem~\ref{thm:main}.  Novelty confidence is therefore moderate, pending specialist review and a broader citation search.
+
+\section*{Human-review recommendation}
+
+The result should receive expert review as a likely valid substantial partial.  The highest-value checks are: (i) the real-to-complex reduction in Lemma~\ref{lem:diagonal}; (ii) the uniform coordinate-deletion estimate in Lemma~\ref{lem:gaussian}; and (iii) the positive-variance versus zero-variance split in the use of \cite{EMVW}.  The parabolic half should remain explicitly outside the claim.
+
+{\small
+\begin{thebibliography}{9}
+\bibitem{Bayart}
+F.~Bayart,
+\emph{Central limit theorems in linear dynamics},
+Ann. Inst. Henri Poincar\'e Probab. Stat. \textbf{51} (2015), 1131--1158;
+arXiv:1304.2621, DOI: \href{https://doi.org/10.1214/13-AIHP585}{10.1214/13-AIHP585}.
+
+\bibitem{EMVW}
+M.~El Machkouri, D.~Voln\'y, and W.~B.~Wu,
+\emph{A central limit theorem for stationary random fields},
+Stochastic Process. Appl. \textbf{123} (2013), 1--14;
+arXiv:1109.0838, DOI: \href{https://doi.org/10.1016/j.spa.2012.08.014}{10.1016/j.spa.2012.08.014}.
+\end{thebibliography}
+}
+
+\end{document}

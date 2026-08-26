@@ -1,0 +1,232 @@
+\documentclass[10pt]{article}
+\usepackage[margin=0.78in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\one}{\mathbf 1}
+
+\title{The S-matrix conjecture in every dimension $n\ge158$}
+\author{Automated mathematics run \texttt{fa\_banach\_001}\\
+Lane 3, \texttt{agent\_lane\_03}, model GPT5.6}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{
+\textbf{Status.} Candidate partial result, likely valid.  A new projection
+estimate lowers the published cutoff from $1000$ to $158$.  The even
+dimensions $4,6,\ldots,156$ remain open.
+}}
+\end{center}
+
+\section*{Source conjecture}
+
+Let $\mathcal D_n$ be the set of real $n\times n$ matrices with entries in
+$[0,1]$.  An S-matrix is a $\{0,1\}$-matrix $A$ satisfying
+\[
+ A^T A=\frac{n+1}{4}(I+\one\one^T).
+\]
+Drnov\v{s}ek \cite{Drnovsek} restates the Sloane--Harwit conjecture on PDF
+page 2 as follows: every nonsingular $A\in\mathcal D_n$ satisfies
+\[
+ \|A^{-1}\|_F\ge \frac{2n}{n+1},
+\]
+with equality precisely for S-matrices.
+
+\begin{center}
+\includegraphics[width=0.92\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The source proves the conjecture for odd $n$, proves the sharper bound
+$\|A^{-1}\|_F\ge\sqrt2$ for $n=2$, and obtains a weaker bound for even
+$n\ge4$.  Frankel and Urschel \cite{FrankelUrschel} later prove the conjecture
+for every $n\ge1000$.  We use their structural Lemma 3.2 verbatim and replace
+their fixed-parameter final step.
+
+\section*{Result}
+
+\begin{theorem}\label{thm:main}
+If $A\in\mathcal D_n$ is nonsingular and $n\ge158$, then
+\[
+ \|A^{-1}\|_F\ge\frac{2n}{n+1}.
+\]
+For even $n$ the inequality is strict.  Consequently the S-matrix conjecture
+holds in all odd dimensions, in dimension $2$, and in every dimension
+$n\ge158$.
+\end{theorem}
+
+\section*{Proof intuition}
+
+Frankel--Urschel show that a hypothetical even-dimensional counterexample is
+almost binary.  From it one can select $t+1$ binary rows and a short vector
+$y$.  The first $t$ row pairings with $y$ must lie very close to $1/4$, while
+the last must lie close to $0$.  The selected rows have an exactly prescribed
+Gram matrix, so after orthonormalizing them, Bessel's inequality says that the
+pairings cannot fluctuate that much unless $y$ is longer than allowed.
+
+Their proof fixes $t=50$ and replaces the first two moments of the pairings by
+separate coarse bounds.  The key improvement is to keep $t$ free and write the
+completed-square error in terms of the \emph{variance}.  The $t$ forced gaps
+between a quarter and zero then contribute directly.  Optimizing the integer
+$t$ makes the contradiction work from $n=158$ onward.
+
+\section*{The upstream structural lemma}
+
+Normalize a hypothetical counterexample $B$ by $\|B\|_{\max}=1$.  For even
+$n$, integers $t\ge4$ with $n\ge4t$, Frankel--Urschel's Lemma 3.2 gives
+$m=t+1$, a matrix $C\in\{0,1\}^{m\times n}$, and $y\in\mathbb R^n$ such that
+\begin{align}
+ CC^T&=qI+p\one\one^T,&
+ q&=\left\lceil\frac n4\right\rceil,&
+ p&=\left\lfloor\frac n4\right\rfloor,\label{eq:gram}\\
+ \|y\|_2^2&\le\frac1{4(n-t)}.\label{eq:ynorm}
+\end{align}
+Writing $z=Cy$, their coordinate estimates are
+\begin{align}
+ |z_j-\frac14|&<\varepsilon_+(n,t) &&(1\le j\le t),\label{eq:zplus}\\
+ |z_m|&<\varepsilon_0(n,t),\label{eq:zzero}
+\end{align}
+where, with $s=n-t$,
+\begin{align*}
+\varepsilon_+(n,t)
+ &=\frac{n-1}{4(n-2)n}+\frac5{4s}
+   +\frac1{(8s-4)\sqrt{s}},\\
+\varepsilon_0(n,t)
+ &=\frac{2n^2-4n+1}{4(n-2)(n-1)n}+\frac5{4s}
+   +\frac1{(8s-4)\sqrt{s}}.
+\end{align*}
+
+\section*{A free-parameter projection contradiction}
+
+\begin{lemma}\label{lem:projection}
+Set $m=t+1$, $\gamma=n/q$,
+\[
+ d=\frac14-\varepsilon_+-\varepsilon_0,
+ \qquad
+ \mu_- =\frac{t(\frac14-\varepsilon_+)-\varepsilon_0}{m},
+\]
+and
+\[
+ R=\frac{n}{4m(n-t)}
+ -\gamma\frac{t d^2}{m^2}
+ -\gamma\left(1-\frac\gamma4\right)\mu_-^2.
+\]
+Assume $d>0$, $\mu_->0$, $R\ge0$, and
+\begin{equation}\label{eq:certificate}
+ \frac{\gamma\mu_-}{2}-\sqrt R-\varepsilon_0
+ >\sqrt{\frac{n}{8(n-t)}}.
+\end{equation}
+Then no $C,y$ satisfying \eqref{eq:gram}--\eqref{eq:zzero} exist.
+\end{lemma}
+
+\begin{proof}
+The row-orthonormalization used in the proof of
+\cite[Lemma 3.3]{FrankelUrschel} applies to any number $m$ of selected rows.
+Put $\alpha=\one^Ty$, and let
+\[
+ \mu=\frac1m\sum_{j=1}^m z_j,
+ \qquad
+ \nu=\frac1m\sum_{j=1}^m z_j^2.
+\]
+Bessel's inequality and \eqref{eq:ynorm} give, by the same direct Gram-matrix
+calculation,
+\[
+ \alpha^2-\gamma\mu\alpha+\gamma\nu
+ \le \frac{n}{4m(n-t)}.
+\]
+Completing the square yields
+\begin{equation}\label{eq:square}
+ \left(\alpha-\frac{\gamma\mu}{2}\right)^2
+ \le \frac{n}{4m(n-t)}
+ -\gamma\operatorname{Var}(z)
+ -\gamma\left(1-\frac\gamma4\right)\mu^2.
+\end{equation}
+Here $\gamma\le4$.  The coordinate estimates imply $\mu\ge\mu_->0$.
+Moreover,
+\[
+ \operatorname{Var}(z)
+ =\frac1{m^2}\sum_{i<j}(z_i-z_j)^2
+ \ge \frac{t d^2}{m^2},
+\]
+because each of the first $t$ coordinates differs from $z_m$ by at least $d$.
+Thus the right side of \eqref{eq:square} is at most $R$, and
+\[
+ \alpha\ge\frac{\gamma\mu_-}{2}-\sqrt R.
+\]
+
+The last row of $C$ contains $q+p=n/2$ ones by \eqref{eq:gram}.  Therefore
+\[
+ \alpha-z_m=\sum_{k:C_{m,k}=0}y_k,
+ \qquad
+ |\alpha-z_m|\le\sqrt{\frac n2}\,\|y\|_2
+ \le\sqrt{\frac{n}{8(n-t)}}.
+\]
+The lower bound for $\alpha$, \eqref{eq:zzero}, and
+\eqref{eq:certificate} give the strict reverse inequality, a contradiction.
+\end{proof}
+
+\section*{Certified parameters and proof of Theorem \ref{thm:main}}
+
+The interval checker \texttt{code/verify\_cutoff.py} evaluates the hypotheses
+of Lemma \ref{lem:projection} for every even $n$ from $158$ through $998$ and
+searches the finite range $4\le t\le\lfloor n/4\rfloor$.  It uses directed
+\texttt{mpmath.iv} arithmetic at 80 decimal digits and accepts a dimension only
+when the lower endpoint of the margin in \eqref{eq:certificate} is positive.
+All 421 dimensions are certified.  The weakest certificate occurs at
+$(n,t)=(160,23)$ and has lower margin
+\[
+ 0.0002579293062736265\ldots>0.
+\]
+The full transcript is in \texttt{verification.md}; the first choices include
+$t=26$ for $n=158$, $t=23$ for $n=160$, and $t=26$ for $n=162$.
+
+Hence the structural consequence of a counterexample is impossible for every
+even $158\le n\le998$.  Frankel--Urschel's Theorem 1.2 handles all
+$n\ge1000$, and the Drnov\v{s}ek--Cheng theorem handles odd dimensions (with
+Drnov\v{s}ek also treating $n=2$).  This proves Theorem \ref{thm:main}.
+For even $n$ equality is impossible because an S-matrix would have column
+weight $(n+1)/2$, which is not an integer.
+
+\section*{Verification, limitations, and novelty search}
+
+The code was rerun from the packet directory and checked all 421 dimensions;
+the final PDF and every rendered page were also inspected.  The proof depends
+on the correctness of Frankel--Urschel Lemma 3.2, copied as a supporting PDF,
+but the new projection lemma is proved in full above.
+
+The remaining unresolved scope is the finite list of even dimensions
+$4,6,\ldots,156$.  Seven focused upgrade routes were examined: free-parameter
+optimization, variance retention, directed-interval certification, sharpening
+the upstream constants, small-dimensional KKT/numerical analysis, dimension
+lifting, and inverse sign-pattern bounds.  The last three do not supply a
+responsible finite-case proof, and the sharper tentative cutoff was not
+promoted because it modifies multiple upstream estimates.
+
+A bounded search through 11 August 2026 used the exact conjecture name, the
+source and supporting titles/authors, citation trails, and threshold phrases.
+It found the published $n\ge1000$ theorem but no prior cutoff below $1000$.
+This supports, but does not prove, novelty.  Human review should focus on the
+general-$m$ Gram calculation in Lemma \ref{lem:projection} and rerun the
+interval checker.
+
+\begin{thebibliography}{9}
+\bibitem{Drnovsek}
+R. Drnov\v{s}ek,
+\emph{On the S-matrix conjecture},
+Linear Algebra Appl. \textbf{439} (2013), 3555--3560;
+arXiv:1306.6786v2.
+
+\bibitem{FrankelUrschel}
+E. Frankel and J. Urschel,
+\emph{On the Frobenius norm of the inverse of a non-negative matrix},
+Linear Algebra Appl. \textbf{708} (2025), 193--203;
+arXiv:2409.04354.
+\end{thebibliography}
+
+\end{document}

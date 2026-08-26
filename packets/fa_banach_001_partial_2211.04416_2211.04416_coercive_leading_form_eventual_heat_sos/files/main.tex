@@ -1,0 +1,245 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\R}{\mathbb R}
+\newcommand{\cH}{\mathcal H}
+\newcommand{\SOS}{\operatorname{SOS}}
+\newcommand{\E}{\mathbb E}
+
+\title{Eventual Sums of Squares under Heat Flow:\\
+The Coercive-Leading-Form Case}
+\author{Candidate partial result for arXiv:2211.04416}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{black}{gray!8}{\parbox{0.88\linewidth}{
+\textbf{Status: candidate partial result, likely valid pending human review.}
+The source problem remains open for degenerate leading forms.}}
+\end{center}
+
+\section{Source problem}
+
+Curto, di Dio, Korda, and Magron study the action of the polynomial heat
+semigroup on nonnegative polynomials \cite{CDKM}.  On PDF page 26 they ask:
+
+\begin{quote}
+\textbf{Open Problem 5.1.}
+Let $f\in\operatorname{Pos}(\R^2)\setminus\SOS(\R^2)$.  Is it true that
+there is always a $T=T(f)>0$ such that
+$e^{t\Delta}f\in\SOS(\R^2)$ for all $t\geq T$?
+\end{quote}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{Open Problem 5.1 and its context in arXiv:2211.04416, PDF page 26.}
+\end{figure}
+
+For $m,d\geq1$, let $\cH_{m,d}$ be the real vector space of degree-$d$
+forms in $m$ variables, and let $\Sigma_{m,2d}$ be the cone of sums of
+squares of forms in $\cH_{m,d}$.  A form is a \emph{strict sum of squares}
+if it lies in the interior of $\Sigma_{m,2d}$; equivalently, it has a
+positive-definite Gram matrix in a monomial basis of $\cH_{m,d}$.
+
+\section{Proof intuition}
+
+Parabolic scaling separates the highest homogeneous part $p$ of $f$ from
+all lower-order terms.  After homogenization in a new variable $z$, the
+normalized late-time heat orbit converges to $e^{z^2\Delta}p$.
+
+If $p$ is a strict SOS, choose a Gram factorization
+$p=\sum_jq_j^2$ in which the $q_j$ form a basis of all degree-$d$ forms.
+The Gaussian formula for heat flow writes the limit as an average of the
+squares of the translated forms
+$q_j(x+\sqrt2zG)$.  Those translations span every degree-$d$ form in the
+old variables together with $z$.  Consequently the averaged Gram matrix is
+positive definite: the limiting form is an \emph{interior} SOS point, not
+merely an SOS point.  Small lower-degree perturbations are therefore absorbed
+for all sufficiently large times.
+
+For two variables, every nonnegative binary form is SOS by Hilbert's binary
+form theorem \cite{Hilbert}.  A positive-definite binary form is an interior
+point of that cone, so the argument covers exactly the source problem's
+coercive-leading-form case.  The remaining difficulty is the boundary case
+where the leading form vanishes in a real projective direction.
+
+\section{A Gaussian interior-lifting lemma}
+
+Write $x=(x_1,\ldots,x_n)$ and let
+$\Delta_x=\sum_{i=1}^n\partial_{x_i}^2$.
+
+\begin{lemma}[Gaussian lift preserves strict SOS]\label{lem:lift}
+If $p\in\cH_{n,2d}$ is a strict sum of squares, then
+\[
+  P(x,z):=e^{z^2\Delta_x}p(x)
+\]
+is a strict sum of squares in $\cH_{n+1,2d}$.
+\end{lemma}
+
+\begin{proof}
+Let $v(x)$ be the monomial vector of $\cH_{n,d}$.  Strict SOS membership
+gives
+\[
+  p(x)=v(x)^{\mathsf T}Gv(x),\qquad G\succ0.
+\]
+Factoring $G$ shows that
+\[
+  p=\sum_{j=1}^{N}q_j^2,
+  \qquad N=\dim\cH_{n,d},
+\]
+where $q_1,\ldots,q_N$ form a basis of $\cH_{n,d}$.
+
+Let $\gamma$ be standard Gaussian measure on $\R^n$.  The Gaussian moment
+identity gives
+\begin{align*}
+ P(x,z)
+ &=\int_{\R^n}p(x+\sqrt2z\xi)\,d\gamma(\xi)\\
+ &=\int_{\R^n}\sum_{j=1}^{N}
+       q_j(x+\sqrt2z\xi)^2\,d\gamma(\xi).
+ \tag{1}
+\end{align*}
+Every integrand in (1) is the square of a form in $\cH_{n+1,d}$.  Expanding
+its coefficient vector and integrating its rank-one Gram matrix therefore
+produces a positive-semidefinite Gram matrix $A$ for $P$.
+
+It remains to show $A\succ0$.  The coefficient vectors of
+\[
+  q_j(x+z\xi),\qquad 1\leq j\leq N,quad \xi\in\R^n,
+  \tag{2}
+\]
+span $\cH_{n+1,d}$.  Since the $q_j$ form a basis, it suffices to use all
+monomials of degree $d$ in place of the $q_j$.  Given a monomial
+$x^\alpha z^k$ with $|\alpha|+k=d$, choose a multi-index $\beta$ with
+$|\beta|=k$.  Differentiating the translate of $x^{\alpha+\beta}$ gives
+\[
+ \left.\partial_\xi^\beta
+ (x+z\xi)^{\alpha+\beta}\right|_{\xi=0}
+ =\frac{(\alpha+\beta)!}{\alpha!}\,x^\alpha z^k.
+ \tag{3}
+\]
+The coefficients of a polynomial map lie in the span of its values, so (3)
+proves the spanning claim.  Thus a vector in the kernel of $A$ would be
+orthogonal to a spanning set and must vanish.  Hence $A\succ0$, proving that
+$P$ is a strict SOS.
+\end{proof}
+
+\section{Eventual SOS theorem}
+
+\begin{theorem}\label{thm:general}
+Let $f\in\R[x_1,\ldots,x_n]$ have degree $2d$, and let $p=f_{2d}$ be its
+highest homogeneous part.  If $p$ is a strict sum of squares, then there is
+$T>0$ such that
+\[
+  e^{t\Delta_x}f\in\SOS(\R^n)
+  \qquad\text{for every }t\geq T.
+\]
+No nonnegativity assumption on $f$ is required.
+\end{theorem}
+
+\begin{proof}
+Decompose $f=\sum_{k=0}^{2d}f_k$ into homogeneous parts.  For $t>0$ put
+$s=t^{-1/2}$.  Homogeneity and the finite heat-series expansion give
+\[
+ t^{-d}\bigl(e^{t\Delta_x}f\bigr)(\sqrt t\,x)
+ =\sum_{k=0}^{2d}s^{2d-k}e^{\Delta_x}f_k(x).
+ \tag{4}
+\]
+The degree-$2d$ homogenization of the right-hand side is
+\[
+ Q_s(x,z)=\sum_{k=0}^{2d}s^{2d-k}z^{2d-k}
+                 e^{z^2\Delta_x}f_k(x).
+ \tag{5}
+\]
+Consequently, as $s\downarrow0$,
+\[
+  Q_s\longrightarrow Q_0=e^{z^2\Delta_x}p
+  \quad\text{coefficientwise in }\cH_{n+1,2d}.
+ \tag{6}
+\]
+Lemma~\ref{lem:lift} places $Q_0$ in the interior of the finite-dimensional
+closed cone $\Sigma_{n+1,2d}$.  This interior is open, so (6) implies that
+$Q_s\in\Sigma_{n+1,2d}$ for every sufficiently small positive $s$.
+Dehomogenizing (5) at $z=1$ and using (4) shows that the normalized polynomial
+in (4) is SOS.  Positive scalar multiplication and the invertible scaling
+$x\mapsto\sqrt t\,x$ preserve SOS membership.  Thus
+$e^{t\Delta_x}f$ is SOS for every sufficiently large $t$.
+\end{proof}
+
+\begin{corollary}[Coercive bivariate case]\label{cor:binary}
+Let $f\in\R[x,y]$ have degree $2d$ and leading form $p$.  If
+\[
+  p(u)>0\qquad(u\in\R^2\setminus\{0\}),
+\]
+then $e^{t\Delta}f$ is SOS for all sufficiently large $t$.  In particular,
+Open Problem 5.1 has an affirmative answer whenever the nonnegative input
+polynomial has a positive-definite leading form.
+\end{corollary}
+
+\begin{proof}
+Positive-definite binary forms are precisely the interior points of the cone
+of nonnegative binary forms.  Hilbert's binary-form theorem identifies that
+cone with $\Sigma_{2,2d}$ \cite{Hilbert}.  Hence $p$ is a strict SOS, and
+Theorem~\ref{thm:general} applies.
+\end{proof}
+
+\section{Limitations and boundary obstruction}
+
+Corollary~\ref{cor:binary} does not settle the full source problem.  If the
+leading binary form $p$ has a real projective zero, then $p$ lies on the
+boundary of the binary SOS cone, and $e^{z^2\Delta}p$ lies on a proper face of
+the ternary SOS cone.  Coefficient convergence to a boundary point gives no
+neighborhood of SOS forms.  Moreover, lower homogeneous pieces can decrease
+the multiplicity at an infinity zero, so the normalized path can move through
+nested faces rather than remain in a single relative interior.  This is the
+specific obstruction left by the proof.
+
+The result nevertheless removes the generic case: among nonnegative binary
+leading forms of fixed degree, positive-definite forms constitute the interior
+of the cone.  Only the locus with a real projective zero remains.
+
+\section{Novelty check and verification}
+
+The source problem and notation were checked against arXiv:2211.04416, Open
+Problem 5.1 on PDF page 26.  A bounded search through 13 August 2026 covered
+the local run indexes, the parsed arXiv corpus, exact problem wording, the
+source title and arXiv id, and combinations of ``heat'', ``eventual sum of
+squares'', ``coercive polynomial'', and ``leading homogeneous form''.  The
+later arXiv:2506.16321 cites the source but does not answer this heat-flow
+problem.  No explicit prior statement of Theorem~\ref{thm:general} or
+Corollary~\ref{cor:binary} was located.  This is bounded evidence, not a claim
+of exhaustive novelty.
+
+The proof is exact and has no computational dependency.  Verification checked
+the powers of $t$ in (4), the homogenization exponents in (5), the Gaussian
+variance in (1), and the monomial-spanning identity (3).  Human review should
+focus on those four points and on the equivalence between strict SOS
+membership and a positive-definite Gram matrix.
+
+\begin{thebibliography}{9}
+
+\bibitem{CDKM}
+R.~E. Curto, P.~J. di Dio, M.~Korda, and V.~Magron,
+\emph{Time-dependent moments from partial differential equations and the
+time-dependent set of atoms}, arXiv:2211.04416 (2022; revised 2023).
+
+\bibitem{Hilbert}
+D.~Hilbert,
+\emph{Ueber die Darstellung definiter Formen als Summe von Formenquadraten},
+Mathematische Annalen \textbf{32} (1888), 342--350.
+
+\end{thebibliography}
+
+\end{document}
+

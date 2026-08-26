@@ -1,0 +1,190 @@
+\documentclass[11pt]{amsart}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+
+\begin{document}
+
+\title{A Strictly Enriched Kannan Map Which Is Not an Enriched Contraction}
+\author{Run fa\_banach\_001}
+\date{August 11, 2026}
+\maketitle
+\pagestyle{plain}
+
+\section*{Status}
+
+This is a candidate full answer, subject to human review, to the open problem
+in Remark 2(2) of Berinde and P\u acurar \cite{BP-contraction}: find a strictly
+enriched Kannan mapping which is not an enriched Banach contraction.
+
+\section*{Source Question}
+
+For a normed space $X$, the source paper calls $T:X\to X$ an enriched
+Banach contraction if there are $b\geq0$ and $0\leq\theta<b+1$ such that
+\begin{equation}\label{eq:enriched-banach}
+ \|b(x-y)+Tx-Ty\|\leq\theta\|x-y\| \qquad(x,y\in X).
+\end{equation}
+The companion paper \cite{BP-kannan} calls $T$ an enriched Kannan mapping
+if there are $k\geq0$ and $0\leq a<1/2$ such that
+\begin{equation}\label{eq:enriched-kannan}
+ \|k(x-y)+Tx-Ty\|
+ \leq a\bigl(\|x-Tx\|+\|y-Ty\|\bigr) \qquad(x,y\in X).
+\end{equation}
+It is \emph{strictly} enriched Kannan when it is enriched Kannan but not a
+usual Kannan mapping (the case $k=0$). The source then asks for such a map
+which is not an enriched contraction.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Proof Intuition}
+
+Start with a discontinuous Kannan map $S$.  The affine de-averaging
+$T=2S-I$ has averaged map $(I+T)/2=S$, so the Kannan inequality for $S$
+turns verbatim into the enriched Kannan inequality for $T$ with $k=1$.
+We choose $S$ piecewise constant, with its jump placed far enough from its
+fixed point that the Kannan estimate has ample slack.  On one whole branch,
+$T=-I$; evaluating the ordinary Kannan inequality at $1$ and $-1$
+forces the forbidden endpoint constant $1/2$.  Finally, $T$ retains the
+jump of $S$, while every enriched Banach contraction is Lipschitz.
+
+\section*{Construction and Full Answer}
+
+Define $S,T:\R\to\R$ by
+\[
+ S(x)=
+ \begin{cases}
+  0,&x\leq2,\\
+  -\dfrac13,&x>2,
+ \end{cases}
+ \qquad
+ T(x)=2S(x)-x=
+ \begin{cases}
+  -x,&x\leq2,\\
+  -x-\dfrac23,&x>2.
+ \end{cases}
+\]
+
+\begin{lemma}\label{lem:S}
+The map $S$ is a Kannan mapping with constant $1/7$.
+\end{lemma}
+
+\begin{proof}
+If $x,y$ lie on the same side of $2$, then $Sx=Sy$, so the Kannan
+inequality is immediate. Suppose, after interchanging $x,y$ if necessary,
+that $x\leq2<y$. Then
+\[
+ |Sx-Sy|=\frac13,
+ \]
+whereas
+\[
+ \frac17\bigl(|x-Sx|+|y-Sy|\bigr)
+ =\frac17\left(|x|+\left|y+\frac13\right|\right)
+ >\frac17\cdot\frac73=\frac13.
+\]
+Thus the Kannan inequality holds for every pair, and $1/7<1/2$.
+\end{proof}
+
+\begin{theorem}\label{thm:answer}
+The map $T:\R\to\R$ above is a $(1,1/7)$-enriched Kannan mapping, is not
+a usual Kannan mapping, and is not an enriched Banach contraction. Hence it
+solves the open problem in Remark 2(2) of \cite{BP-contraction}.
+\end{theorem}
+
+\begin{proof}
+For all $x,y\in\R$, the identity $T=2S-I$ gives
+\[
+ \bigl|(x-y)+Tx-Ty\bigr|=2|Sx-Sy|
+\]
+and
+\[
+ |x-Tx|+|y-Ty|
+ =2\bigl(|x-Sx|+|y-Sy|\bigr).
+\]
+Lemma \ref{lem:S}, multiplied by $2$, is therefore exactly
+\eqref{eq:enriched-kannan} with $k=1$ and $a=1/7$. Thus $T$ is enriched
+Kannan.
+
+It is not a usual Kannan mapping. Indeed, if the ordinary Kannan inequality
+held with some $c<1/2$, then at $x=1$ and $y=-1$ we would have
+\[
+ 2=|T1-T(-1)|
+ \leq c\bigl(|1-T1|+|-1-T(-1)|\bigr)=4c,
+\]
+which forces $c\geq1/2$, a contradiction. Consequently $T$ is strictly
+enriched Kannan.
+
+Finally, every enriched Banach contraction is Lipschitz. In fact,
+\eqref{eq:enriched-banach} implies
+\[
+ \|Tx-Ty\|
+ \leq \|b(x-y)+Tx-Ty\|+b\|x-y\|
+ \leq (\theta+b)\|x-y\|.
+\]
+But $T(2)=-2$, while
+\[
+ \lim_{x\downarrow2}T(x)=-\frac83.
+\]
+Thus $T$ is discontinuous at $2$, so it cannot be an enriched Banach
+contraction.
+\end{proof}
+
+\section*{Verification Notes}
+
+The proof has three independently checkable parts: the only nonzero case in
+the Kannan estimate for $S$ is the cross-branch case; the pair
+$(1,-1)$ proves sharp failure of the ordinary Kannan bound; and the jump at
+$2$ contradicts the elementary Lipschitz consequence of the enriched
+Banach inequality. No numerical or computer-assisted step is used.
+
+The strict inequality $y>2$ is relevant in Lemma \ref{lem:S}: it makes
+$|y+1/3|>7/3$, so the endpoint constant $1/7$ is valid even when $x=0$.
+The construction is a self-map of $\R$, which is a Banach space, and all
+parameters lie in the ranges required by the source definitions.
+
+\section*{Novelty Check and Limitations}
+
+A bounded search was performed on August 11, 2026. The local run registry,
+solution, attempt, and proof-gap indexes and the parsed arXiv corpus were
+searched for arXiv:1909.02382 and the phrases ``strictly enriched Kannan'',
+``not an enriched contraction'', and close combinations. Web searches used
+the exact open-problem sentence, the source arXiv id, and combinations of
+``enriched Kannan'', ``enriched contraction'', ``independent'', and
+``counterexample''. The searches found later work restating and extending the
+definitions, but no paper exhibiting or claiming an answer to this exact
+problem. Novelty is therefore plausible, not certified; a specialist
+bibliographic review remains appropriate.
+
+The theorem answers only the existence question asked in the source paper. It
+does not classify strictly enriched Kannan mappings or compare the two classes
+under additional regularity assumptions.
+
+\section*{Human Review Recommendation}
+
+Check the cross-branch estimate in Lemma \ref{lem:S}, then verify that the
+authors' convention for ``strictly enriched Kannan'' is precisely failure of
+the usual Kannan inequality. If those two points pass, Theorem
+\ref{thm:answer} is a complete explicit answer.
+
+\begin{thebibliography}{9}
+
+\bibitem{BP-contraction}
+V. Berinde and M. P\u acurar,
+\emph{Approximating fixed points of enriched contractions in Banach spaces},
+arXiv:1909.02382 (2019).
+
+\bibitem{BP-kannan}
+V. Berinde and M. P\u acurar,
+\emph{Fixed point theorems for Kannan type mappings with applications to split
+feasibility and variational inequality problems},
+arXiv:1909.02379 (2019).
+
+\end{thebibliography}
+
+\end{document}

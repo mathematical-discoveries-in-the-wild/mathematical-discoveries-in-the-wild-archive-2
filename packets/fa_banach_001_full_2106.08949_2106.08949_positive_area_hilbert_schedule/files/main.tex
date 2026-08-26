@@ -1,0 +1,319 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\HC}{\operatorname{HC}}
+
+\begin{document}
+
+\begin{center}
+{\Large Full solution packet for arXiv:2106.08949}\\[4pt]
+{\large A positive-area critical family is common hypercyclic}
+\end{center}
+
+\paragraph{Status.}
+\textbf{full\_solution\_likely\_valid}.  This packet gives a positive answer
+to Question 2.5 of Fernando Costa Jr.,
+\emph{Common hypercyclic algebras for families of products of backward
+shifts}, arXiv:2106.08949.
+
+\paragraph{Source problem.}
+For \(a>0\), put
+\[
+  w_s(a)=1+\frac{a}{\sqrt{s}},\qquad s\geq1,
+\]
+and let \(B_{w(a)}\) be the associated weighted backward shift.  Does there
+exist a positive-Lebesgue-measure set \(\Lambda\subset\R^2\) such that
+\[
+ \bigl(B_{w(\lambda)}\times B_{w(\mu)}\bigr)_{(\lambda,\mu)\in\Lambda}
+\]
+has a common hypercyclic vector on \(c_0\times c_0\)?  The question appears
+on page 6 of the current arXiv PDF.
+
+\begin{center}
+\includegraphics[width=.99\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Proof intuition}
+
+The logarithm of the first \(n\) weights grows like \(2a\sqrt n\).  If a
+later parameter tag moves backwards by \(\delta\), the unwanted contribution
+has exponent of the form
+\[
+ C\delta\sqrt{n_j}-c\sqrt{n_j-n_k}.
+\]
+Thus a backward move is harmless when
+\(\delta^2\lesssim(n_j-n_k)/n_j\).  This is a \emph{quadratic} cost.
+
+A Hilbert space-filling curve has exactly the matching regularity: parameter
+time \(r^2\) fills a square of side \(r\).  We partition its unit time
+interval into 4-adic pieces of length comparable to \(1/n_j\), where the
+visit times \(n_j\) form an arithmetic progression.  Their lengths have a
+divergent harmonic sum, so finitely many pieces cover the whole Hilbert
+interval.  Hilbert's \(1/2\)-Hölder estimate gives the quadratic cost above,
+while each image square has precisely the \(n_j^{-1/2}\) size required by the
+common-hypercyclicity characterization.
+
+\section*{The exact characterization}
+
+Set
+\[
+ f_n(a)=\sum_{s=1}^n\log\left(1+\frac a{\sqrt s}\right),\qquad f_0=0.
+\]
+Theorem 2.1 of Bayart--Costa--Menet~\cite{BayartCostaMenet} applies to this
+family on any compact positive interval.  Specialized to \(c_0^2\), it is
+enough to prove the following for every \(\tau>0\), \(N\geq1\), and
+\(\varepsilon>0\): there are finitely many tags
+\(\lambda_h=(a_h,b_h)\) and integers
+\[
+ N\leq n_1<n_1+N\leq n_2<\cdots<n_q
+\]
+whose rectangles of side \(\tau/\lceil\sqrt{n_h}\rceil\), ending at
+\(\lambda_h\), cover the parameter set, and such that, for each coordinate,
+\begin{align}
+ \max_h e^{-f_{n_h}(a_h)}&<\varepsilon,
+ \label{eq:direct}\\
+ \max_{j>k}
+ \exp\!\left(
+ f_{n_j+l}(a_k)-f_{n_j-n_k+l}(a_k)
+ -f_{n_j+l}(a_j)+f_l(a_j)
+ \right)&<\varepsilon
+ \label{eq:cross}
+\end{align}
+for every \(k<q\) and \(0\leq l\leq N\); the same inequalities hold with
+\(a_h\) replaced by \(b_h\).  These are exactly clauses (ii) and (iii) of
+that theorem because the displayed coefficients occupy distinct coordinates
+in \(c_0\).
+
+The hypotheses of the characterization hold with
+\(F(n)=\lceil\sqrt n\rceil\).  Indeed, on \(1\leq a,b\leq2\), differentiation
+and the mean-value theorem give
+\begin{equation}
+ \frac13\sqrt n\,|a-b|
+ \leq |f_n(a)-f_n(b)|
+ \leq2\sqrt n\,|a-b|.
+ \label{eq:lipschitz}
+\end{equation}
+The pointwise weight ratios are also uniformly bounded away from zero.
+
+\section*{A Hilbert scheduling lemma}
+
+We use a standard Hilbert map \(H:[0,1]\to[0,1]^2\).  There is an absolute
+constant \(A\geq1\) such that
+\begin{equation}
+ \|H(s)-H(t)\|_\infty^2\leq A|s-t|.
+ \label{eq:hilbert-holder}
+\end{equation}
+Moreover, every 4-adic interval of length \(4^{-m}\) maps onto one dyadic
+square of side \(2^{-m}\).
+
+\begin{lemma}[Harmonic Hilbert schedule]\label{lem:schedule}
+For every sufficiently small \(\kappa>0\), there is \(L>0\) with the
+following property.  Given \(\tau>0\), an integer gap \(G\geq1\), and a
+sufficiently large initial integer, there are finitely many arithmetic times
+\(n_h=n_0+hG\), dyadic squares \(Q_h\subset[1,1+L]^2\), and upper-right tags
+\(\lambda_h\in Q_h\) such that
+\begin{enumerate}[label=(\roman*)]
+\item the \(Q_h\) cover \([1,1+L]^2\);
+\item the side of \(Q_h\) is at most \(\tau/(2\sqrt{n_h})\);
+\item for every \(k<j\),
+\[
+ \|\lambda_j-\lambda_k\|_\infty
+ \leq\kappa\sqrt{\frac{n_j-n_k}{n_j}}.
+\]
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Choose \(L>0\) so small that \(L^2\leq\kappa^2/2\), and put
+\[
+ \beta=\min\left\{
+ \frac{\tau^2}{4L^2},
+ \frac{\kappa^2G}{16AL^2}
+ \right\}>0.
+\]
+Increase \(n_0\), if necessary, so that \(\beta/n_1<1\).  Starting at
+\(t_0=0\), let \(I_h=[t_{h-1},t_h]\) be the next 4-adic interval whose length
+\(\ell_h=4^{-m_h}\) is the largest 4-adic number satisfying
+\begin{equation}
+ \ell_h\leq\frac{\beta}{n_h}.
+ \label{eq:length-choice}
+\end{equation}
+Because \(\beta/n_h\) decreases, the exponents \(m_h\) do not decrease.
+The current endpoint is therefore aligned with the next finer 4-adic grid.
+If it is below 1, the next interval fits.  Maximality gives
+\begin{equation}
+ \frac{\beta}{4n_h}<\ell_h\leq\frac{\beta}{n_h}.
+ \label{eq:length-two-sided}
+\end{equation}
+If this procedure did not reach 1 after finitely many steps, the disjoint
+intervals would have total length at least
+\(\frac\beta4\sum_hn_h^{-1}=+\infty\), a contradiction.  Thus they form a
+finite partition of \([0,1]\).
+
+Let \(Q_h\) be the affine image in \([1,1+L]^2\) of \(H(I_h)\), and tag it
+by its upper-right corner \(\lambda_h\).  Its side is
+\(L\sqrt{\ell_h}\leq\tau/(2\sqrt{n_h})\), proving (i)--(ii).
+
+For \(k<j\), the tag points have Hilbert parameters lying in \(I_k\) and
+\(I_j\); hence, by \eqref{eq:hilbert-holder},
+\begin{equation}
+ \|\lambda_j-\lambda_k\|_\infty^2
+ \leq AL^2\sum_{h=k}^j\ell_h.
+ \label{eq:tag-sum}
+\end{equation}
+If \(n_j/n_k\leq2\), elementary comparison with an integral gives
+\[
+ \sum_{h=k}^j\frac1{n_h}
+ \leq\frac4G\frac{n_j-n_k}{n_j}.
+\]
+Equations \eqref{eq:length-choice} and \eqref{eq:tag-sum}, together with the
+definition of \(\beta\), yield (iii).  If \(n_j/n_k\geq2\), then
+\(\|\lambda_j-\lambda_k\|_\infty^2\leq L^2\), while
+\((n_j-n_k)/n_j\geq1/2\); the choice of \(L\) again yields (iii).
+\end{proof}
+
+\section*{Main result}
+
+\begin{theorem}\label{thm:main}
+There exists \(L>0\) such that, for
+\(\Lambda=[1,1+L]^2\),
+\[
+ \bigcap_{(a,b)\in\Lambda}
+ \HC\bigl(B_{w(a)}\times B_{w(b)}\bigr)\neq\varnothing
+ \qquad\text{on }c_0\times c_0.
+\]
+In particular, Question 2.5 of arXiv:2106.08949 has a positive answer with a
+parameter set of positive Lebesgue measure \(L^2\).
+\end{theorem}
+
+\begin{proof}
+On \([1,2]\), the elementary bounds
+\begin{equation}
+ f_m(a)\geq\frac13\sqrt m,
+ \qquad
+ |f_m(a)-f_m(b)|\leq2\sqrt m\,|a-b|
+ \label{eq:weight-bounds}
+\end{equation}
+hold for \(m\geq1\).  The first follows from
+\(\log(1+x)\geq x/(1+x)\), and the second from differentiation.
+
+Fix
+\[
+ 0<\kappa<\frac1{12\sqrt2},
+\]
+and let \(L\leq1\) be supplied by Lemma~\ref{lem:schedule}.  We verify the
+exact characterization for the whole square \(\Lambda\).  Fix
+\(\tau>0\), \(N\geq1\), and \(0<\varepsilon<1\).  Put
+\[
+ C_N=\max_{0\leq l\leq N,\,1\leq a\leq2} f_l(a).
+\]
+Choose an integer \(G\geq N\) so large that
+\begin{equation}
+ \exp\left(C_N-\frac16\sqrt G\right)<\varepsilon.
+ \label{eq:G-choice}
+\end{equation}
+Apply Lemma~\ref{lem:schedule}, enlarging its initial time so that
+\(n_1\geq N\) and
+\begin{equation}
+ e^{-\sqrt{n_1}/3}<\varepsilon.
+ \label{eq:n-choice}
+\end{equation}
+The rectangles ending at \(\lambda_h\) with side
+\(\tau/\lceil\sqrt{n_h}\rceil\) contain \(Q_h\), because
+\(\lceil\sqrt n\rceil\leq2\sqrt n\).  They therefore cover \(\Lambda\).
+The time gaps are \(G\geq N\), and \eqref{eq:n-choice} together with
+\eqref{eq:weight-bounds} proves \eqref{eq:direct}.
+
+It remains to check the cross terms.  Fix \(k<j\), \(0\leq l\leq N\), and
+one coordinate of the tags.  Writing that coordinate as \(a_h\), the
+logarithm in \eqref{eq:cross} is at most
+\begin{align*}
+ &2\sqrt{n_j+N}\,|a_k-a_j|
+ -\frac13\sqrt{n_j-n_k+l}+C_N\\
+ &\qquad\leq
+ 2\sqrt2\,\kappa\sqrt{n_j-n_k}
+ -\frac13\sqrt{n_j-n_k}+C_N\\
+ &\qquad\leq C_N-\frac16\sqrt{n_j-n_k}
+ \leq C_N-\frac16\sqrt G.
+\end{align*}
+Here we used \(n_j\geq N\) and clause (iii) of the scheduling lemma.  The
+choice \eqref{eq:G-choice} proves \eqref{eq:cross}; the other coordinate is
+identical.  All clauses of Theorem 2.1 of~\cite{BayartCostaMenet} hold, so the
+family has a common hypercyclic vector.
+\end{proof}
+
+\begin{corollary}
+The same square \(\Lambda\) works on
+\(\ell_p\times\ell_p\) for every \(1\leq p<\infty\).
+\end{corollary}
+
+\begin{proof}
+For clause (ii) of the characterization, the \(p\)-th powers of the direct
+coefficients are bounded by
+\(e^{-p\sqrt{n_h}/3}\), whose sum over the arithmetic progression becomes
+arbitrarily small when the initial time grows.  For clause (iii), the proof
+above bounds the \(p\)-th powers of the cross coefficients by
+\[
+ e^{pC_N}e^{-p\sqrt{(j-k)G}/6}.
+\]
+Their sum over \(j>k\) becomes arbitrarily small as \(G\to\infty\), uniformly
+in the finite truncation.  These are precisely the relevant \(\ell_p\) norms.
+\end{proof}
+
+\section*{Verification, novelty, and limitations}
+
+The proof uses only the exact characterization in
+Bayart--Costa--Menet~\cite{BayartCostaMenet} and the standard recursive
+properties of the Hilbert curve.  The two endpoint mechanisms are explicit:
+the 4-adic cells terminate because their lengths dominate a harmonic series,
+and the \(1/2\)-Hölder bound turns Hilbert time into the quadratic parameter
+jump needed by the weight ratios.  No numerical assumption is used.
+
+On 17 August 2026, the run registry, ledger, attempt index, and local arXiv
+source corpus were searched for arXiv:2106.08949 and the exact positive-area
+question.  Exact-phrase and close weighted-shift web searches found the
+source paper and unrelated common/frequent hypercyclicity work, but no later
+answer.  The closest related source located was Costa's 2024 paper on
+self-similar fractals~\cite{CostaFractals}, which concerns critical fractal
+parameter sets of zero area.  This is a bounded novelty check, not a priority
+guarantee.
+
+\paragraph{Human-review recommendation.}
+Review as a claimed full positive answer, strengthened from \(c_0\) to all
+classical \(\ell_p\) spaces.  The main points to audit are the variable-scale
+4-adic alignment in Lemma~\ref{lem:schedule} and the exact cross-ratio
+calculation in the proof of Theorem~\ref{thm:main}.
+
+{\small
+\begin{thebibliography}{9}
+\bibitem{Costa}
+F. Costa Jr.,
+\emph{Common hypercyclic algebras for families of products of backward
+shifts}, arXiv:2106.08949, Question 2.5.
+
+\bibitem{BayartCostaMenet}
+F. Bayart, F. Costa Jr., and Q. Menet,
+\emph{Common hypercyclic vectors and dimension of the parameter set},
+Indiana Univ. Math. J. \textbf{71} (2022), 1763--1795;
+arXiv:2103.13152, Theorem 2.1.
+
+\bibitem{CostaFractals}
+F. Costa Jr.,
+\emph{Self-similar fractals and common hypercyclicity},
+J. Funct. Anal. \textbf{287} (2024), 110473; arXiv:2306.16026.
+\end{thebibliography}
+}
+
+\end{document}

@@ -1,0 +1,227 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Sone}{\boldsymbol S_1}
+\newcommand{\B}{B^1_{\infty,1}(\R^2)}
+
+\title{A counterexample to the Besov adjoint-defect problem\\for almost commuting operators}
+\author{Candidate solution packet for run \texttt{fa\_banach\_001}}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.9\textwidth}{
+\textbf{Status: candidate counterexample, likely valid.}
+There are bounded self-adjoint almost commuting operators $A,B$ and a
+real-valued $\varphi\in B^1_{\infty,1}(\R^2)$ for which
+$\varphi(A,B)^*-\varphi(A,B)$ is not trace class.  This answers Problem~2 of
+Aleksandrov--Peller negatively.
+}}
+\end{center}
+
+\section{Source problem}
+
+Aleksandrov and Peller define, for bounded self-adjoint $A,B$, the ordered
+double-operator-integral calculus
+\[
+ \varphi(A,B)=\iint_{\R^2}\varphi(x,y)\,dE_A(x)\,dE_B(y).
+\]
+Their Problem~2, in Section~6 on PDF pages 18--19 of
+arXiv:1508.04702 \cite{AP}, asks whether
+\[
+ \big(\varphi(A,B)\big)^*-\overline\varphi(A,B)\in\Sone.
+\]
+for every $\varphi\in\B$, whenever $A,B$ are bounded self-adjoint and
+$[A,B]\in\Sone$.  They had proved this for the smaller projective tensor
+class $B^1_{\infty,1}(\R)\widehat\otimes B^1_{\infty,1}(\R)$.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.92\textwidth]{figures/open_problem_crop.png}
+\caption{Problem~2 in the source (PDF pages 18--19).}
+\end{figure}
+
+\section{Idea of the proof}
+
+For two spectral values in each variable, reversing the order of the two
+spectral projections detects the rectangular four-point difference of
+$\varphi$.  If both spectral gaps have size $h$, the commutator of the two
+operators costs $h^2$, whereas a $B^1_{\infty,1}$ atom at that scale can have
+a rectangular difference of order $h$.  One such block is harmless.  The
+separation appears after taking many copies: at scale $h_k\asymp2^{-k}$, use
+$k2^k$ identical blocks.  Their commutator costs sum to a convergent series,
+but their adjoint defects sum to the harmonic series.  A coefficient
+$1/k^2$ on the $k$-th Besov atom keeps the Besov norm summable.
+
+\section{Construction and proof}
+
+Put
+\[
+ P=\begin{pmatrix}1&0\\0&0\end{pmatrix},\qquad
+ Q=\frac12\begin{pmatrix}1&1\\1&1\end{pmatrix},\qquad
+ C=[Q,P]=\frac12\begin{pmatrix}0&-1\\1&0\end{pmatrix}.
+\]
+Both $P$ and $Q$ are rank-one orthogonal projections, and
+\begin{equation}
+ \|C\|_{\Sone}=1. \label{eq:C}
+\end{equation}
+
+For $k\geq1$, set
+\[
+ h_k=2^{-k-4},\qquad a_k=4h_k,\qquad N_k=k2^k,
+\]
+and define two self-adjoint $2\times2$ matrices
+\[
+ A_k=(a_k-h_k/2)I+h_kP,\qquad B_k=-h_kI/2+h_kQ.
+\]
+Their two spectral values are $a_k\pm h_k/2$ and $\pm h_k/2$, respectively,
+and
+\begin{equation}
+ [A_k,B_k]=h_k^2[P,Q],\qquad
+ \|[A_k,B_k]\|_{\Sone}=h_k^2. \label{eq:blockcomm}
+\end{equation}
+On
+\[
+ \mathcal H=\bigoplus_{k\geq1}(\mathbb C^2)^{\oplus N_k}
+\]
+let $A$ and $B$ be the direct sums of $N_k$ copies of $A_k$ and $B_k$.
+They are bounded and self-adjoint.  By \eqref{eq:blockcomm},
+\begin{equation}
+ \|[A,B]\|_{\Sone}
+ =\sum_{k\geq1}N_kh_k^2
+ =2^{-8}\sum_{k\geq1}k2^{-k}
+ =\frac1{128}<\infty. \label{eq:globalcomm}
+\end{equation}
+
+Choose a real $\eta\in C_c^\infty((-3/4,3/4))$ such that
+$\eta(-1/2)=0$ and $\eta(1/2)=1$, and put $F(u,v)=\eta(u)\eta(v)$.  Define
+\begin{equation}
+ \varphi(x,y)=\sum_{k\geq1}\frac{h_k}{k^2}
+ F\left(\frac{x-a_k}{h_k},\frac{y}{h_k}\right). \label{eq:phi}
+\end{equation}
+The $x$-supports of the summands are disjoint: the $k$-th lies in
+$((13/4)h_k,(19/4)h_k)$, while the next lies strictly to its left.
+
+\begin{lemma}
+The real function $\varphi$ in \eqref{eq:phi} belongs to $B^1_{\infty,1}(\R^2)$.
+\end{lemma}
+
+\begin{proof}
+Let $\Delta_j$ be any fixed homogeneous Littlewood--Paley resolution used to
+define $B^1_{\infty,1}$.  Translation does not change the norm.  Since
+$h_k=2^{-(k+4)}$, dyadic scaling merely shifts the Littlewood--Paley index,
+and therefore
+\[
+ \left\|h_kF\left(\frac{\,\cdot-z_k}{h_k}\right)
+ \right\|_{B^1_{\infty,1}}
+ \leq C_F,
+ \qquad z_k=(a_k,0),
+\]
+with a constant independent of $k$.  (Equivalently, the factor $h_k$ exactly
+cancels the degree-one scaling factor $h_k^{-1}$.)  Hence the $k$-th summand
+of \eqref{eq:phi} has Besov norm at most $C_F/k^2$.  The series converges in
+$B^1_{\infty,1}$ because $\sum k^{-2}<\infty$.  Its pointwise sum is the
+displayed continuous real function (the disjoint supports also make this
+identification immediate).
+\end{proof}
+
+We next record the finite-block identity.  Write $P_+=P$, $P_-=I-P$,
+$Q_+=Q$, and $Q_-=I-Q$.  Given four real numbers $t_{\varepsilon\delta}$,
+the ordered double operator integral on one block is
+\[
+ T=\sum_{\varepsilon,\delta\in\{+,-\}}
+ t_{\varepsilon\delta}P_\varepsilon Q_\delta.
+\]
+Using $P_-=I-P$ and $Q_-=I-Q$ gives
+\begin{equation}
+ T^*-T=
+ (t_{++}-t_{+-}-t_{-+}+t_{--})[Q,P]. \label{eq:blockidentity}
+\end{equation}
+
+At the four spectral pairs of $(A_k,B_k)$, all summands of \eqref{eq:phi} except the
+$k$-th vanish.  The choice of $\eta$ gives
+\[
+ \begin{array}{c|cc}
+ &h_k/2&-h_k/2\\ \hline
+ a_k+h_k/2&h_k/k^2&0\\
+ a_k-h_k/2&0&0
+ \end{array}
+\]
+for the four values of $\varphi$.  Applying \eqref{eq:blockidentity} and
+\eqref{eq:C}, the trace norm of
+the adjoint defect on every copy of the $k$-th block is exactly
+\begin{equation}
+ \left\|\varphi(A_k,B_k)^*-\varphi(A_k,B_k)\right\|_{\Sone}
+ =\frac{h_k}{k^2}. \label{eq:blockdefect}
+\end{equation}
+The common block decomposition reduces both spectral measures, so the global
+double operator integral is the direct sum of these block integrals.  Thus
+\begin{equation}
+ \begin{split}
+ \left\|\varphi(A,B)^*-\varphi(A,B)\right\|_{\Sone}
+ &=\sum_{k\geq1}N_k\frac{h_k}{k^2}\\
+ &=\frac1{16}\sum_{k\geq1}\frac1k=\infty.
+ \end{split}
+ \label{eq:globaldefect}
+\end{equation}
+Since $\varphi$ is real, $\overline\varphi(A,B)=\varphi(A,B)$.  Equations
+\eqref{eq:globalcomm} and \eqref{eq:globaldefect} prove the promised
+counterexample.
+
+\begin{theorem}
+There exist bounded self-adjoint operators $A,B$ with $[A,B]\in\Sone$ and a
+real-valued $\varphi\in B^1_{\infty,1}(\R^2)$ such that
+\[
+ \varphi(A,B)^*-\overline\varphi(A,B)\notin\Sone.
+\]
+Consequently, Problem~2 of Aleksandrov--Peller has a negative answer.
+\end{theorem}
+
+\section{Verification and novelty status}
+
+The included script \texttt{code/verify\_blocks.py} checks
+\eqref{eq:blockidentity}, including its trace norm, on 1,000 random four-point
+tables and evaluates the partial sums in \eqref{eq:globalcomm} and
+\eqref{eq:globaldefect}.  This computation is only a regression check; the
+proof above is exact.
+
+A bounded novelty search covered arXiv and exact-web queries for the paper
+title, ``Problem 2,'' the adjoint formula, ``almost multiplicative,'' and
+$B^1_{\infty,1}(\R^2)$, plus the citing literature visible from the journal
+record and Peller's 2024 survey \cite{PellerSurvey}.  It found the original
+problem and repeated accounts of the proved commutator/trace formula, but no
+later proof or counterexample to this adjoint-defect question.  Novelty is
+therefore plausible, not certified.
+
+\section{Limitations and review recommendation}
+
+This theorem completely negates Problem~2, but does not decide the separate
+product-defect question in Problem~1.  Human review
+should focus first on the degree-one dyadic scaling in the Besov lemma and on
+the order/sign in \eqref{eq:blockidentity}.  The finite-block identity is
+independently checked by the included script.
+
+\begin{thebibliography}{9}
+\bibitem{AP}
+A.~B.~Aleksandrov and V.~V.~Peller,
+\emph{Functions of almost commuting operators and an extension of the
+Helton--Howe trace formula},
+J. Funct. Anal. 271 (2016), 3300--3322;
+\href{https://arxiv.org/abs/1508.04702}{arXiv:1508.04702}.
+
+\bibitem{PellerSurvey}
+V.~V.~Peller,
+\emph{Besov spaces in operator theory},
+Russian Math. Surveys 79 (2024), 1--52.
+\end{thebibliography}
+
+\end{document}

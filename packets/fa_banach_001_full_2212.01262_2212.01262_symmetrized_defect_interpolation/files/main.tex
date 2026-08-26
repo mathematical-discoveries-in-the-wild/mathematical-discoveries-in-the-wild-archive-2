@@ -1,0 +1,348 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Dop}{D}
+\newcommand{\Qop}{Q}
+\newcommand{\Kfun}{K}
+
+\title{Symmetrizing the defect gives nonlinear real interpolation}
+\author{Full-result packet for arXiv:2212.01262}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Likely-valid full positive answer to the stated interpolation question,
+pending human review. The abstract interpolation theorem and its
+$K$-functional proof are complete. Novelty confidence is low because
+sublinear interpolation itself is classical; the key new identification is
+the symmetrized approximation defect.}}
+\end{center}
+
+\section{Source question}
+
+Gal and Niculescu ask in Section~6, p.~11, of \cite{GN}:
+\begin{quote}
+\emph{Extend the classical interpolation technique from linear continuous
+operators to sublinear, monotone and strongly translatable operators.}
+\end{quote}
+They explain that a positive answer should permit the Berens--DeVore
+interpolation method \cite{BD} to replace the weaker interior-$L^p$ estimate
+obtained by their direct Swetits--Wood argument.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+\caption{The open question and its intended quantitative application in
+the source paper \cite[p.~11]{GN}.}
+\end{figure}
+
+\section{Setting and proof intuition}
+
+A map $T$ between vector lattices is \emph{order-sublinear} if
+\[
+ T(f+g)\leq T(f)+T(g),\qquad T(\alpha f)=\alpha T(f)
+ \quad(\alpha\geq0).
+\]
+This is the notion called sublinearity in \cite{GN}. It is one-sided, so
+the approximation defect $Tf-f$ is not immediately a standard sublinear
+operator after taking absolute values.
+
+\paragraph{Proof intuition.}
+Let $A$ be the linear operator being approximated and put
+$\Dop f=Tf-Af$. Order-sublinearity gives
+$0=\Dop0\leq\Dop f+\Dop(-f)$, hence the negative part of $\Dop f$ is
+controlled by $\Dop(-f)$. Therefore
+\[
+ \Qop f=\Dop f\vee\Dop(-f)
+\]
+is nonnegative and dominates $|\Dop f|$. It is also even and subadditive,
+so it is exactly the conventional sublinear envelope needed for real
+interpolation. The $K$-functional estimate then follows from one lattice
+decomposition: if $0\leq h\leq a+b$, split
+$h=(h\wedge a)+(h-a)^+$.
+
+\section{The interpolation theorem}
+
+Let $(X_0,X_1)$ and $(Y_0,Y_1)$ be compatible couples of Banach lattices.
+Their real-interpolation spaces are denoted by
+$(X_0,X_1)_{\theta,q}$ and $(Y_0,Y_1)_{\theta,q}$, with the usual
+$K$-method normalization \cite{BL}. We use only the ideal property of
+Banach lattices: $0\leq u\leq v\in Y_i$ implies
+$u\in Y_i$ and $\|u\|_{Y_i}\leq\|v\|_{Y_i}$.
+
+\begin{theorem}[Symmetrized-defect interpolation]\label{thm:main}
+Let $T:X_0+X_1\to Y_0+Y_1$ be order-sublinear and let
+$A:X_0+X_1\to Y_0+Y_1$ be linear. Set
+\[
+ \Dop f=Tf-Af.
+\]
+Assume that for $i=0,1$,
+\begin{equation}\label{eq:endpoint}
+ \|\Dop f\|_{Y_i}\leq a_i\|f\|_{X_i}\qquad(f\in X_i),
+\end{equation}
+where $a_i>0$. Then, for $0<\theta<1$ and $1\leq q\leq\infty$,
+\begin{equation}\label{eq:interp}
+ \|Tf-Af\|_{(Y_0,Y_1)_{\theta,q}}
+ \leq
+ 2a_0^{1-\theta}a_1^{\theta}
+ \|f\|_{(X_0,X_1)_{\theta,q}}.
+\end{equation}
+Thus the usual real-interpolation technique extends to the source paper's
+class. Neither monotonicity nor strong translatability is needed for the
+interpolation step itself.
+\end{theorem}
+
+\begin{proof}
+The defect $\Dop=T-A$ is order-sublinear because $A$ is linear. Define
+\[
+ \Qop f=\Dop f\vee\Dop(-f).
+\]
+Since $0=\Dop0\leq\Dop f+\Dop(-f)$, we have
+$-\Dop f\leq\Dop(-f)$ and consequently
+\begin{equation}\label{eq:dominates}
+ 0\leq |\Dop f|\leq\Qop f.
+\end{equation}
+Also $\Qop(-f)=\Qop f$. For $\alpha\geq0$,
+$\Qop(\alpha f)=\alpha\Qop f$, and evenness gives absolute homogeneity for
+all real scalars. Finally,
+\[
+ \Dop(f+g)\leq\Dop f+\Dop g\leq\Qop f+\Qop g
+\]
+and the same inequality applied to $-(f+g)$ shows that
+\begin{equation}\label{eq:sublinearQ}
+ \Qop(f+g)\leq\Qop f+\Qop g.
+\end{equation}
+Thus $\Qop$ is a conventional nonnegative sublinear operator.
+
+Moreover,
+\[
+ \Qop f\leq |\Dop f|+|\Dop(-f)|,
+\]
+so \eqref{eq:endpoint} implies
+\begin{equation}\label{eq:Qendpoint}
+ \|\Qop f\|_{Y_i}\leq2a_i\|f\|_{X_i}.
+\end{equation}
+
+We now give the $K$-functional step explicitly. Fix a decomposition
+$f=f_0+f_1$ with $f_i\in X_i$, and write
+$h=\Qop f$, $b_i=\Qop f_i$. By \eqref{eq:sublinearQ},
+$0\leq h\leq b_0+b_1$. The Riesz decomposition
+\[
+ h_0=h\wedge b_0,\qquad h_1=h-h_0=(h-b_0)^+
+\]
+satisfies $h=h_0+h_1$, $0\leq h_0\leq b_0$, and
+$0\leq h_1\leq b_1$. Hence, by the ideal property and
+\eqref{eq:Qendpoint},
+\begin{align*}
+ \Kfun(t,\Qop f;Y_0,Y_1)
+ &\leq \|h_0\|_{Y_0}+t\|h_1\|_{Y_1}\\
+ &\leq 2a_0\|f_0\|_{X_0}+2ta_1\|f_1\|_{X_1}.
+\end{align*}
+Taking the infimum over all decompositions gives
+\begin{equation}\label{eq:Kdomination}
+ \Kfun(t,\Qop f;Y_0,Y_1)
+ \leq 2a_0\,
+ \Kfun\!\left(t\frac{a_1}{a_0},f;X_0,X_1\right).
+\end{equation}
+Multiplying by $t^{-\theta}$, using the change of variable
+$u=ta_1/a_0$, and taking the $L^q(du/u)$ norm yields
+\[
+ \|\Qop f\|_{(Y_0,Y_1)_{\theta,q}}
+ \leq2a_0^{1-\theta}a_1^\theta
+ \|f\|_{(X_0,X_1)_{\theta,q}}.
+\]
+Equation \eqref{eq:interp} follows from \eqref{eq:dominates} and the
+ideal property of the interpolated Banach lattice. If one endpoint
+constant is zero, the same conclusion follows by replacing it by a positive
+$\varepsilon$ and letting $\varepsilon\downarrow0$.
+\end{proof}
+
+\begin{corollary}[Strong-type interpolation of approximation errors]
+Suppose $T-A$ acts consistently on $L^{p_0}+L^{p_1}$ and
+\[
+ \|Tf-Af\|_{p_i}\leq a_i\|f\|_{p_i}\qquad(i=0,1),
+\]
+where $1\leq p_0<p_1\leq\infty$. If
+$1/p=(1-\theta)/p_0+\theta/p_1$, then
+\[
+ \|Tf-Af\|_p\leq C_{p_0,p,p_1}
+ a_0^{1-\theta}a_1^\theta\|f\|_p.
+\]
+In particular, endpoint approximation rates interpolate geometrically even
+though $T$ is only order-sublinear.
+\end{corollary}
+
+\begin{proof}
+Apply Theorem~\ref{thm:main} to the usual real-interpolation identities for
+Lebesgue spaces. The harmless factor $2$ is absorbed into the displayed
+constant.
+\end{proof}
+
+\section{Quantitative Korovkin consequence}
+
+We now insert the endpoint estimates already proved in \cite{GN}. Let
+$e_j(x)=x^j$ on $[0,1]$ and define, for $r=1,\infty$,
+\begin{equation}\label{eq:lambda}
+ \lambda_r(T)=\max\bigl\{
+ \|T(e_0)-e_0\|_r,
+ \|T(e_1)-e_1\|_r,
+ \|T(-e_1)+e_1\|_r,
+ \|T(e_2)-e_2\|_r\bigr\}.
+\end{equation}
+
+\begin{corollary}[Interior-$L^p$ Korovkin interpolation]\label{cor:korovkin}
+Let $T$ be one consistent monotone, order-sublinear, strongly translatable
+operator on the endpoint spaces used below, satisfying the hypotheses of
+\cite[Theorem~2]{GN}. For $1<p<\infty$, put
+\[
+ \theta=1-\frac1p,
+ \qquad
+ Z_p=(W_1^3([0,1]),W_\infty^2([0,1]))_{\theta,p},
+ \qquad
+ \eta_p=\lambda_1(T)^{1/p}
+          \lambda_\infty(T)^{1-1/p}.
+\]
+Then
+\begin{equation}\label{eq:smoothkorovkin}
+ \|Tf-f\|_p\leq C_p\eta_p\|f\|_{Z_p}
+ \qquad(f\in Z_p).
+\end{equation}
+The same bound holds with $\|Tf-f\|_p$ replaced by $\|\Qop f\|_p$.
+
+If, additionally, $T:L^p\to L^p$ is bounded with norm at most $R_p$, then
+for every $f\in L^p$,
+\begin{equation}\label{eq:allLp}
+ \|Tf-f\|_p
+ \leq (R_p+1)
+ \Kfun\!\left(\frac{C_p\eta_p}{R_p+1},
+ f;L^p,Z_p\right).
+\end{equation}
+Consequently, a uniformly $L^p$-bounded sequence $(T_n)$ with
+$\lambda_1(T_n),\lambda_\infty(T_n)\to0$ converges to the identity on all
+of $L^p$, with the quantitative rate in \eqref{eq:allLp}.
+\end{corollary}
+
+\begin{proof}
+The source estimate \cite[Theorem~2]{GN} gives
+\[
+ \|Tf-f\|_r\leq C\lambda_r(T)\|f\|_{W_\infty^2},
+ \qquad r=1,\infty.
+\]
+For the $L^1$ endpoint use the one-dimensional Sobolev embedding
+$W_1^3\hookrightarrow W_\infty^2$; for the $L^\infty$ endpoint use
+$W_\infty^2$ directly. Theorem~\ref{thm:main}, with
+$(Y_0,Y_1)=(L^1,L^\infty)$ and
+$(L^1,L^\infty)_{1-1/p,p}=L^p$, proves
+\eqref{eq:smoothkorovkin} and, by the proof of
+Theorem~\ref{thm:main}, the asserted bound for $\Qop f$.
+
+For the second claim, monotonicity gives, for every $h\in L^p$,
+\[
+ \Qop h\leq T(|h|)+|h|,
+ \qquad
+ \|\Qop h\|_p\leq(R_p+1)\|h\|_p.
+\]
+For $g\in Z_p$, subadditivity of $\Qop$ and
+\eqref{eq:smoothkorovkin} therefore imply
+\[
+ \|Tf-f\|_p
+ \leq\|\Qop(f-g)\|_p+\|\Qop g\|_p
+ \leq(R_p+1)\|f-g\|_p+C_p\eta_p\|g\|_{Z_p}.
+\]
+Taking the infimum over $g$ is exactly \eqref{eq:allLp}. Smooth functions
+belong to $Z_p$ and are dense in $L^p$, so the final convergence statement
+follows.
+\end{proof}
+
+\begin{remark}[The nonlinear Bernstein example]
+For $T_n(f)=\max\{B_n(f),B_{n+1}(f)\}$ from \cite[Example~1]{GN},
+the only nonzero test error is
+\[
+ T_n(e_2)-e_2=\frac{x(1-x)}n.
+\]
+Thus $\lambda_1(T_n)=1/(6n)$ and
+$\lambda_\infty(T_n)=1/(4n)$, so Corollary~\ref{cor:korovkin} gives
+\[
+ \|T_n f-f\|_p\leq \frac{C_p}{n}\|f\|_{Z_p}
+\]
+and an all-$L^p$ $K$-functional estimate at parameter $1/n$. This recovers,
+through one nonlinear interpolation principle, the sharper behavior that the
+source paper obtains for this example by decomposing it back into the two
+linear Bernstein operators.
+\end{remark}
+
+\section{Verification, limitations, and novelty}
+
+\paragraph{Verification.}
+The proof is algebraic except for standard Banach-lattice and real-
+interpolation identities. The critical checks are: (i) the inequality
+$-\Dop f\leq\Dop(-f)$; (ii) subadditivity of the join defining $\Qop$;
+(iii) the Riesz split $h=(h\wedge b_0)+(h-b_0)^+$; and (iv) the scaling
+$a_0^{1-\theta}a_1^\theta$ in \eqref{eq:Kdomination}. Each is displayed in
+the proof. The Bernstein test values were also recomputed directly from
+$B_n(e_2)=e_2+x(1-x)/n$.
+
+\paragraph{Scope.}
+Theorem~\ref{thm:main} fully answers the question of whether the classical
+real-interpolation mechanism extends to the stated nonlinear class. It does
+not claim that an arbitrary desired sharp Korovkin formula follows without
+work: one must still prove the endpoint bounds appropriate to that formula.
+Corollary~\ref{cor:korovkin} is the direct consequence of the endpoint bounds
+actually present in the source paper. Consistency of the same operator on
+the two endpoint spaces is essential.
+
+\paragraph{Bounded novelty search.}
+A search through 9 August 2026 used arXiv:2212.01262, its exact open-question
+sentence, the published 2024 title and DOI, and the phrases
+\emph{symmetrized defect}, \emph{order-sublinear interpolation},
+\emph{monotone strongly translatable interpolation}, and
+\emph{nonlinear Korovkin interpolation}. No explicit answer using the map
+$\Dop f\vee\Dop(-f)$ was found. The published 2024 version \cite{GN} still
+states the question. General interpolation of conventional sublinear maps
+is classical \cite{BL}, so novelty confidence is \emph{low}: the potentially
+new item is the short defect-symmetrization bridge and its Korovkin
+specialization, not the interpolation theorem after that bridge.
+
+\paragraph{Human-review recommendation.}
+Verify that the intended applications use one operator consistently defined
+on both endpoints, check the endpoint-domain choice in
+Corollary~\ref{cor:korovkin}, and search later citing papers for the same
+symmetrized-defect observation before making a novelty claim.
+
+\begin{thebibliography}{9}
+\bibitem{GN}
+S. G. Gal and C. P. Niculescu,
+\emph{Quantitative Korovkin theorems for monotone sublinear and strongly
+translatable operators in $L^p([0,1])$, $1\leq p\leq\infty$},
+Ann. Polon. Math. 132 (2024), 137--151,
+\href{https://doi.org/10.4064/ap230511-18-12}{doi:10.4064/ap230511-18-12};
+\href{https://arxiv.org/abs/2212.01262}{arXiv:2212.01262}.
+
+\bibitem{BD}
+H. Berens and R. DeVore,
+\emph{Quantitative Korovkin theorems for positive linear operators on
+$L_p$-spaces},
+Trans. Amer. Math. Soc. 245 (1978), 349--361,
+\href{https://doi.org/10.1090/S0002-9947-1978-0511414-6}
+{doi:10.1090/S0002-9947-1978-0511414-6}.
+
+\bibitem{BL}
+J. Bergh and J. L\"ofstr\"om,
+\emph{Interpolation Spaces: An Introduction},
+Springer, 1976,
+\href{https://doi.org/10.1007/978-3-642-66415-9}
+{doi:10.1007/978-3-642-66415-9}.
+\end{thebibliography}
+
+\end{document}

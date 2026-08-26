@@ -1,0 +1,417 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Remark}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\Ffin}{\mathcal F}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert_\infty}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\row}{\operatorname{row}}
+\newcommand{\Span}{\operatorname{span}}
+
+\title{A Complete Characterization of Property-\((R_1)\) Kernels in Finite-Dimensional \(\ell_\infty\)}
+\author{Automatic math-discovery run \texttt{fa\_banach\_001}, lane 14}
+\date{August 9, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Result Status}
+
+\textbf{Candidate full solution, likely valid, pending expert review.}
+The result answers the characterization problem in Remark 5.2(a) of
+Das--Paul \cite{DasPaul}.  The answer depends only on the row space of the
+given functionals: after invertible row operations, their matrix must be a
+signed coordinate-incidence matrix.
+
+\section{Source Problem}
+
+The source is Syamantak Das and Tanmoy Paul,
+\emph{On property-\((R_1)\) and relative Chebyshev centers in Banach
+spaces-II}, arXiv:2207.09623 \cite{DasPaul}.  The question appears in Remark
+5.2(a), page 17 of the arXiv PDF.
+
+\begin{center}
+\includegraphics[width=\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+In the finite-dimensional part of that remark, the problem is to characterize
+families
+\[
+ \alpha_1,\ldots,\alpha_m\in\ell_1^n
+\]
+satisfying
+\[
+ \dim\left(\ell_\infty^n\Big/\bigcap_i\ker\alpha_i\right)=m,
+\]
+for which
+\[
+ V:=\bigcap_{i=1}^m\ker\alpha_i
+\]
+has property \((R_1)\) in \(\ell_\infty^n\), with respect to all finite
+subsets.
+
+\section{Definitions}
+
+For a nonempty finite set \(E\subset\ell_\infty^n\), put
+\[
+ S_s(E):=\bigcap_{x\in E}B_\infty(x,s),
+ \qquad r(v,E):=\max_{x\in E}\norm{v-x}.
+\]
+The triplet \((\ell_\infty^n,V,\Ffin(\ell_\infty^n))\) has
+\emph{strong property \((R_1)\)} if, whenever \(v\in V\), \(r_1,r_2>0\),
+and \(E\) is finite,
+\[
+ r(v,E)\le r_1+r_2,\qquad S_{r_2}(E)\cap V\ne\varnothing,
+\]
+one has
+\[
+ V\cap B_\infty(v,r_1)\cap S_{r_2}(E)\ne\varnothing.
+\]
+Ordinary property \((R_1)\) is the corresponding approximate/open-radius
+condition stated in the source paper.
+
+For \(r\ge0\), define coordinatewise clipping by
+\[
+ (T_r x)_j:=\sgn(x_j)\min\{|x_j|,r\}.
+\]
+We identify \((\ell_\infty^n)^*=\ell_1^n\) with \(\R^n\), using the
+standard coordinate vectors \(e_1,\ldots,e_n\).
+
+\section{Proof Intuition}
+
+Intersections of equal-radius \(\ell_\infty\)-balls are precisely bounded
+axis-parallel boxes.  Property \((R_1)\) says that if such a box meets the
+subspace and also meets a cube centered at a point of the subspace, then all
+three sets meet.  Centering at zero turns this into a nearest-point statement
+for boxes.  The closest point of a box to zero is obtained by clipping any
+point in the box toward the coordinate cube.  Thus the entire metric condition
+is equivalent to the algebraic rule \(T_r(V)\subset V\).
+
+A truncation-stable linear subspace is rigid.  A nonzero vector with smallest
+support clips to a sign vector on that support.  If another vector were not a
+scalar multiple of that sign pattern on the same support, clipping a small
+perturbation would create a nonzero vector with strictly smaller support.
+Removing the resulting signed diagonal block and iterating gives the full
+decomposition.  Taking annihilators converts the decomposition into the
+promised condition on the \(\alpha_i\).
+
+\section{Main Theorem}
+
+\begin{theorem}[Complete characterization]\label{thm:main}
+Let \(\alpha_1,\ldots,\alpha_m\in\ell_1^n\) be linearly independent, let
+\(A\) be the \(m\times n\) matrix with these vectors as rows, and let
+\[
+ V=\ker A=\bigcap_{i=1}^m\ker\alpha_i\subset\ell_\infty^n.
+\]
+The following are equivalent.
+\begin{enumerate}
+\item \((\ell_\infty^n,V,\Ffin(\ell_\infty^n))\) has property \((R_1)\).
+\item The same triplet has strong property \((R_1)\).
+\item \(T_r(V)\subset V\) for every \(r\ge0\).
+\item After a permutation of coordinates, there are pairwise disjoint blocks
+      \(B_1,\ldots,B_q\), sign vectors
+      \(s^{(a)}\in\{\pm1\}^{B_a}\), a set \(Z\) of zero coordinates, and
+      a set \(J\) of free singleton coordinates such that
+      \[
+      V=\{x\in\R^n:x_j=0\ (j\in Z),\quad
+      x|_{B_a}=t_a s^{(a)}\ (t_a\in\R),\quad
+      x_j\text{ arbitrary }(j\in J)\}.
+      \]
+\item The row space \(\row(A)=V^\perp\) admits a basis whose members, after
+      individual nonzero rescaling, have one of the forms
+      \[
+      e_j,\qquad e_j+e_k,\qquad e_j-e_k\quad(j\ne k).
+      \]
+\end{enumerate}
+Consequently, condition (5) is the requested characterization of the family
+\(\alpha_1,\ldots,\alpha_m\).  Equivalently, invertible row operations turn
+\(A\) into a matrix whose rows have either one nonzero entry or two entries of
+equal absolute value.
+\end{theorem}
+
+The proof is divided into three elementary lemmas.
+
+\section{From Property \texorpdfstring{\((R_1)\)}{(R1)} to Boxes}
+
+\begin{lemma}\label{lem:strong}
+For a linear subspace \(V\subset\ell_\infty^n\), property \((R_1)\) for all
+finite subsets is equivalent to strong property \((R_1)\).
+\end{lemma}
+
+\begin{proof}
+The closed unit ball \(B_V\) is compact.  For every finite \(E\), the function
+\(y\mapsto r(y,E)\) is continuous, so it attains its minimum on \(B_V\).
+Thus \(\operatorname{Cent}_{B_V}(E)\ne\varnothing\).  The equivalence stated
+in \cite[Theorem 1.4]{DasPaul} says that strong property \((R_1)\) is
+equivalent to ordinary property \((R_1)\) together with this center-existence
+condition.  The conclusion follows.
+\end{proof}
+
+Call a product \(Q=\prod_{j=1}^n[a_j,b_j]\), with \(a_j\le b_j\), a bounded
+coordinate box.
+
+\begin{lemma}[Box reformulation]\label{lem:boxes}
+Strong property \((R_1)\) is equivalent to the following condition:
+for every bounded coordinate box \(Q\), every \(v\in V\), and every \(r>0\),
+\[
+ Q\cap V\ne\varnothing,\quad Q\cap B_\infty(v,r)\ne\varnothing
+ \quad\Longrightarrow\quad
+ Q\cap V\cap B_\infty(v,r)\ne\varnothing.
+\tag{B}
+\]
+\end{lemma}
+
+\begin{proof}
+First note that every \(S_s(E)\) is a bounded coordinate box.  Conversely,
+let \(Q=\prod_j[a_j,b_j]\).  Choose
+\[
+ s>0,\qquad 2s\ge\max_j(b_j-a_j),
+ \qquad c_j=\frac{a_j+b_j}{2}.
+\]
+For each \(j\), form two points \(p^{j,+},p^{j,-}\) by taking midpoint
+coordinates except at \(j\), and setting
+\[
+ p^{j,+}_j=a_j+s,\qquad p^{j,-}_j=b_j-s.
+\]
+For \(E=\{p^{j,+},p^{j,-}:1\le j\le n\}\), direct coordinatewise
+calculation gives \(S_s(E)=Q\).
+
+Suppose strong property \((R_1)\) holds, and let
+\(z\in Q\cap B_\infty(v,r)\).  With the representation \(Q=S_s(E)\), for
+every \(x\in E\) we have
+\[
+ \norm{v-x}\le\norm{v-z}+\norm{z-x}\le r+s.
+\]
+Together with \(Q\cap V\ne\varnothing\), strong property \((R_1)\) gives
+(B).
+
+Conversely, suppose (B) holds and the hypotheses of strong property
+\((R_1)\) are satisfied.  Put \(Q=S_{r_2}(E)\).  In coordinate \(j\),
+\[
+ Q_j=\left[\max_{x\in E}(x_j-r_2),\ 
+              \min_{x\in E}(x_j+r_2)\right].
+\]
+The inequalities \(\norm{v-x}\le r_1+r_2\), for all \(x\in E\), say exactly
+that \(Q_j\) intersects \([v_j-r_1,v_j+r_1]\) for every \(j\).  Hence
+\(Q\cap B_\infty(v,r_1)\ne\varnothing\).  Applying (B) proves strong
+property \((R_1)\).
+\end{proof}
+
+\section{Boxes Are Coordinatewise Clipping}
+
+\begin{lemma}[Clipping criterion]\label{lem:clip}
+Condition \emph{(B)} is equivalent to \(T_r(V)\subset V\) for every \(r\ge0\).
+\end{lemma}
+
+\begin{proof}
+Because \(V\) is linear, translating \(Q\) by \(-v\) shows that it is enough
+to use (B) with \(v=0\).
+
+Assume first that \(T_r(V)\subset V\).  Let \(Q\cap V\ne\varnothing\), choose
+\(x\in Q\cap V\), and suppose \(Q\cap B_\infty(0,r)\ne\varnothing\).  For
+each coordinate interval \([a_j,b_j]\) of \(Q\), the latter condition says
+\([a_j,b_j]\cap[-r,r]\ne\varnothing\).  Moving \(x_j\) toward
+\([-r,r]\) therefore stays inside \([a_j,b_j]\), so \(T_r x\in Q\).
+By assumption \(T_r x\in V\), and by definition \(T_r x\in B_\infty(0,r)\).
+Thus (B) holds.
+
+Conversely, fix \(x\in V\) and \(r\ge0\).  The cases \(r=0\) and
+\(r\ge\norm{x}\) are immediate.  Otherwise define the box
+\(Q(x,r)=\prod_j I_j\), where
+\[
+ I_j=
+ \begin{cases}
+ [r,x_j],&x_j>r,\\
+ [x_j,-r],&x_j<-r,\\
+ \{x_j\},&|x_j|\le r.
+ \end{cases}
+\]
+It contains \(x\in V\), while
+\[
+ Q(x,r)\cap B_\infty(0,r)=\{T_r x\}.
+\]
+Condition (B) forces this unique point into \(V\).  Hence \(T_r(V)\subset V\).
+\end{proof}
+
+\section{Classification of Clipping-Stable Subspaces}
+
+\begin{lemma}[Minimal-support decomposition]\label{lem:structure}
+A linear subspace \(V\subset\R^n\) is invariant under every \(T_r\) if and
+only if it has the signed-block decomposition in Theorem \ref{thm:main}(4).
+\end{lemma}
+
+\begin{proof}
+The stated block spaces are visibly clipping-stable: clipping a signed block
+\(t s\) gives \(\sgn(t)\min\{|t|,r\}s\), and clipping preserves zero and
+singleton blocks.
+
+For the converse, suppose \(V\ne\{0\}\), and choose \(x\in V\setminus\{0\}\)
+for which \(|\supp x|\) is minimal.  If
+\(0<r<\min_{j\in\supp x}|x_j|\), then
+\[
+ s:=r^{-1}T_r x\in V
+\]
+is a sign vector supported on the same set \(B:=\supp x\).
+
+We claim that for every \(y\in V\) there is a scalar \(c(y)\) such that
+\[
+ y_j=c(y)s_j\qquad(j\in B).
+\tag{1}
+\]
+Indeed, suppose the numbers \(s_jy_j\), \(j\in B\), are not all equal.
+Choose \(t>0\) so small that every coordinate of \(s+ty\) on \(B\) keeps
+the sign \(s_j\), and every coordinate off \(B\) has absolute value smaller
+than every coordinate on \(B\).  On \(B\),
+\[
+ |s_j+ty_j|=1+t s_jy_j.
+\]
+Choose a clipping level \(\rho\) strictly between two distinct values in this
+finite list, avoiding all of them.  Then
+\[
+ w:=T_\rho(s+ty)-(s+ty)\in V
+\]
+is nonzero, has no support off \(B\), and is supported on the nonempty proper
+subset of indices where \(|s_j+ty_j|>\rho\).  This contradicts the minimality
+of \(B\), proving (1).
+
+It follows that
+\[
+ V=\Span\{s\}\oplus V_0,
+ \qquad V_0:=\{y\in V:y|_B=0\}.
+\]
+The second summand is again invariant under all coordinatewise clippings and
+is supported off \(B\).  Iteration terminates after finitely many steps and
+gives disjoint signed diagonal blocks.  Coordinates never appearing in a
+support are zero on \(V\); blocks of size one are precisely free coordinate
+directions.  This is the required decomposition.
+\end{proof}
+
+\begin{proof}[Proof of Theorem \ref{thm:main}]
+Lemmas \ref{lem:strong}, \ref{lem:boxes}, \ref{lem:clip}, and
+\ref{lem:structure} prove the equivalence of (1)--(4).
+
+It remains to translate (4) into (5).  A zero coordinate \(j\in Z\) is cut
+out by the normal \(e_j\).  For each signed block \(B_a\), choose a base
+index \(j_a\in B_a\).  The block condition
+\(x|_{B_a}=t_a s^{(a)}\) is cut out by the independent normals
+\[
+ s^{(a)}_{j_a}e_{j_a}-s^{(a)}_j e_j,
+ \qquad j\in B_a\setminus\{j_a\}.
+\]
+Thus \(V^\perp\) has a basis of the form in (5).
+
+Conversely, suppose \(V^\perp\) is spanned by normals \(e_j\) and
+\(e_j\pm e_k\).  Regard every two-coordinate normal as a signed edge between
+vertices \(j,k\).  In each connected component the equations determine every
+coordinate as a fixed sign times one scalar, unless a one-coordinate equation
+or an inconsistent signed cycle pins the entire component to zero.  Isolated
+unconstrained vertices are free singleton blocks.  Hence \(V\) has the
+decomposition in (4).
+
+Finally, \(\row(A)=V^\perp\), and its dimension is \(m\).  A spanning family
+of elementary normals therefore contains an elementary-normal basis, while
+any such basis is obtained from the original rows of \(A\) by invertible row
+operations.  This proves (5) and the final formulation.
+\end{proof}
+
+\begin{corollary}[Concrete obstruction]
+The line \(V=\ker(1,2)=\Span\{(2,-1)\}\subset\ell_\infty^2\) does not have
+property \((R_1)\).
+\end{corollary}
+
+\begin{proof}
+For \(x=(2,-1)\in V\), one has \(T_1x=(1,-1)\notin V\).  Equivalently, the
+box \(Q=[1,2]\times\{-1\}\) meets \(V\) at \(x\), but its unique point in
+the unit ball is \((1,-1)\notin V\).  Lemma \ref{lem:clip} applies.
+\end{proof}
+
+\section{Relation to Earlier Literature}
+
+Miesch--Pav\'on \cite[Theorem 4.7]{MieschPavon} characterize weakly
+externally hyperconvex linear subspaces of \(\ell_\infty^n\).  Their answer is
+the same signed-coordinate class as Theorem \ref{thm:main}(4)--(5): precisely
+the intersections of hyperplanes with normals \(e_j\) or \(e_j\pm e_k\).
+Their paper does not discuss property \((R_1)\), and their theorem is not used
+in the proof above.  The coincidence supplies an independent structural
+cross-check; the box/clipping equivalence identifies property \((R_1)\) with
+that previously occurring class in finite-dimensional \(\ell_\infty\).
+
+\section{Verification Notes}
+
+The proof was audited around four possible failure points.
+\begin{enumerate}
+\item Ordinary property becomes strong property because \(B_V\) is compact;
+      this is exactly the extra hypothesis in \cite[Theorem 1.4]{DasPaul}.
+\item The common-radius representation really includes every bounded box,
+      including degenerate intervals, because \(b_j-s\le a_j+s\).
+\item In Lemma \ref{lem:structure}, \(t\) is chosen before \(\rho\), so no
+      coordinate outside the minimal support is clipped.  The clipping
+      difference is therefore supported on a strict nonempty subset of that
+      support.
+\item The criterion must concern \(\row(A)\), not each originally presented
+      \(\alpha_i\).  Property \((R_1)\) depends only on \(\ker A\), and
+      invertible row operations do not change that kernel.
+\end{enumerate}
+No numerical or computer-assisted step is used in the proof.  The example
+\(\ker(1,2)\) is a direct sanity check showing how a forbidden coefficient
+ratio produces a failed clipping.
+
+\section{Novelty Check and Limitations}
+
+Before promotion, the run's registry, solution, attempt, and proof-gap indexes
+were searched for arXiv:2207.09623, the paper title, property \((R_1)\), and
+the finite-dimensional \(\ell_\infty\) kernel problem; no duplicate result was
+found.  Targeted web searches on August 9, 2026 used the exact source sentence
+and close combinations of ``property \((R_1)\)'', ``finite dimensional'',
+``\(\ell_\infty\)'', ``kernel'', and ``characterization''.  They found the
+source paper and general Chebyshev-center literature, but no later paper
+stating this characterization.
+
+The closest primary result found was the earlier Miesch--Pav\'on theorem just
+discussed.  Because it concerns weak external hyperconvexity rather than
+property \((R_1)\), it is recorded as related literature rather than an
+existing answer.  Novelty confidence is therefore moderate, not definitive:
+an expert should check older terminology around the \(1\tfrac{1}{2}\)-ball property
+and ball-intersection subspaces for an implicit equivalent formulation.
+
+The theorem is real and finite-dimensional, exactly as in the source remark.
+No claim is made here for complex scalars or arbitrary subspaces of infinite
+\(\ell_\infty\).
+
+\section{Human Review Recommendation}
+
+Send for expert review as a candidate full solution.  The most useful review
+is to verify the equivalence between the source's ordinary and strong
+definitions, then inspect the minimal-support clipping argument.  A secondary
+literature reviewer should decide whether the new box/clipping identification
+is already implicit in the older \(1\tfrac{1}{2}\)-ball literature; this affects
+novelty classification but not the self-contained proof.
+
+\begin{thebibliography}{9}
+
+\bibitem{DasPaul}
+S.~Das and T.~Paul,
+\emph{On property-\((R_1)\) and relative Chebyshev centers in Banach
+spaces-II},
+arXiv:2207.09623; Quaestiones Mathematicae \textbf{47} (2024), 461--476.
+
+\bibitem{MieschPavon}
+B.~Miesch and M.~Pav\'on,
+\emph{Weakly externally hyperconvex subsets and hyperconvex gluings},
+arXiv:1507.07795, Theorem 4.7.
+
+\end{thebibliography}
+
+\end{document}

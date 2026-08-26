@@ -1,0 +1,287 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\newcommand{\T}{\mathbb T}
+\newcommand{\Ecal}{\mathcal E}
+\newcommand{\Dcal}{\mathcal D}
+
+\title{An interpolation family for atomic--absolutely continuous ball discrepancy}
+\author{Candidate partial answer to the sharpness question in arXiv:2310.10120}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{\raggedright\textbf{Status: candidate partial result, with a full literal-weight observation.}
+For equal weights and a probability density of fixed $L^p$ norm, the optimal
+$N$-power is $N^{-1-1/d}$ for every $1<p<2$, not the power
+$N^{-1-q/(2d)}$ in the source lower bound.  More generally, a continuum of
+rigorous lower bounds interpolates between these two endpoints.  This does
+not settle the optimal joint dependence on $N$ and $\|f\|_p$.  If the
+source theorem is read literally with arbitrary nonnegative weights, however,
+its full displayed dependence is sharp by a one-active-weight construction.}}
+\end{center}
+
+\section{The source question}
+
+Let $1<p<2$, let $q=p/(p-1)$, and let
+\[
+ \mu_N=\frac1N\sum_{j=1}^N\delta_{z_j},\qquad
+ \nu=\mu_N-f(x)\,dx,
+\]
+where $f\ge0$ and $\int_{\T^d}f=1$.  For fixed $0<a<b<1/2$, put
+\[
+ \Ecal_{a,b}(\nu)=
+ \int_a^b\int_{\T^d}|\Dcal_N(x,r)|^2\,dx\,dr.
+\]
+The Fourier computation in Brandolini--Colzani--Travaglini~\cite{source}
+gives
+\begin{equation}\label{eq:sobolev-equivalence}
+ \Ecal_{a,b}(\nu)\asymp_{a,b,d}
+ \sum_{m\in\mathbb Z^d}(1+|m|)^{-d-1}|\widehat\nu(m)|^2
+ =\|\nu\|_{H^{-(d+1)/2}(\T^d)}^2.
+\end{equation}
+Their Theorem~6 proves
+\begin{equation}\label{eq:source-bound}
+ \Ecal_{a,b}(\nu)\gtrsim
+ N^{-1-q/(2d)}\|f\|_p^{-q/d}
+\end{equation}
+in the equal-weight normalization, and asks whether this is sharp for
+$1<p<2$.  The exact statement is reproduced in Figure~\ref{fig:source}.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.92\textwidth]{figures/open_problem_crop.png}
+\caption{Theorem 6 and the sharpness question in the source preprint, p.~5.}
+\label{fig:source}
+\end{figure}
+
+\section{The interpolation theorem}
+
+For $u\in[p,2]$ define
+\[
+ \theta_u=1-\frac1u,
+ \qquad
+ \beta_u=d+1-2d\theta_u
+           =1+d\left(\frac2u-1\right).
+\]
+Notice that $\beta_u\ge1$.
+
+\begin{theorem}[Equal-weight interpolation family]\label{thm:interpolation}
+Let $f\ge0$, $\int_{\T^d}f=1$, and $F=\|f\|_p$.  For every
+$u\in[p,2]$ and every equal-weight empirical measure $\mu_N$,
+\begin{equation}\label{eq:family}
+ \Ecal_{a,b}(\mu_N-fdx)
+ \ge c_{a,b,d,p,u}\,
+ N^{-2\theta_u-q\theta_u\beta_u/d}
+ F^{-q\beta_u/d}.
+\end{equation}
+\end{theorem}
+
+At $u=2$, one has $\theta_u=1/2$ and $\beta_u=1$, so
+\eqref{eq:family} is exactly \eqref{eq:source-bound}.  At the other endpoint,
+$u=p$, it becomes
+\begin{equation}\label{eq:p-endpoint}
+ \Ecal_{a,b}(\mu_N-fdx)
+ \ge c_{a,b,d,p}
+ N^{-1-1/d}F^{-(q-2)-q/d}.
+\end{equation}
+
+\subsection*{Proof intuition}
+Smooth the empirical measure at a scale $h$.  Positivity and equal weights
+force the $L^u$ norm of the resulting sum of $N$ bumps to be at least
+$N^{-1/u'}h^{-d/u'}$, regardless of collisions among the points.  Young's
+inequality bounds the smoothed density by
+$Fh^{-d(1/p-1/u)}$.  The difference of the two exponents of $h$ is exactly
+$1/q$.  Choosing the scale at which the atomic term is twice the density
+term leaves a definite $L^u$, hence $L^2$, discrepancy.  The critical
+Sobolev multiplier costs $h^{-(d+1)}$.  Varying $u$ gives the entire family.
+
+\begin{proof}
+Choose $\phi\in C_c^\infty(\mathbb R^d)$ nonnegative, with
+$\int\phi=1$, and periodize
+\[
+ \phi_h(x)=h^{-d}\phi(x/h),\qquad 0<h<h_0.
+\]
+Put $g_h=\mu_N*\phi_h$.  Since $(\sum_j a_j)^u\ge\sum_j a_j^u$ for
+nonnegative $a_j$,
+\begin{align}
+ \|g_h\|_u^u
+ &=\int_{\T^d}\left|\frac1N\sum_{j=1}^N
+          \phi_h(x-z_j)\right|^u dx \\
+ &\ge N^{-u}\sum_{j=1}^N\|\phi_h\|_u^u
+ =c_{\phi,u}N^{1-u}h^{-d(u-1)}.
+\end{align}
+Thus
+\begin{equation}\label{eq:atomic-lu}
+ \|g_h\|_u\ge c_0N^{-\theta_u}h^{-d\theta_u}.
+\end{equation}
+
+Let $v$ be determined by
+$1+1/u=1/p+1/v$.  Young's inequality gives
+\begin{equation}\label{eq:density-lu}
+ \|f*\phi_h\|_u
+ \le \|f\|_p\|\phi_h\|_v
+ \le C_0Fh^{-d(1/p-1/u)}.
+\end{equation}
+Because
+\[
+ \theta_u-\left(\frac1p-\frac1u\right)=1-\frac1p=\frac1q,
+\]
+we may choose
+\begin{equation}\label{eq:h-choice}
+ h=c_1N^{-q\theta_u/d}F^{-q/d},
+\end{equation}
+with $c_1=c_1(d,p,u,\phi)>0$ small enough that the right-hand side of
+\eqref{eq:atomic-lu} is at least twice that of
+\eqref{eq:density-lu}.  Since $F\ge1$, the scale lies below a fixed $h_0$
+after decreasing $c_1$ if necessary.  Therefore
+\begin{equation}\label{eq:difference-lu}
+ \|(\mu_N-fdx)*\phi_h\|_u
+ \ge c_2N^{-\theta_u}h^{-d\theta_u}.
+\end{equation}
+As $u\le2$ and $|\T^d|=1$, the same lower bound holds for the $L^2$ norm.
+
+The rapid decay of $\widehat\phi$ implies, uniformly for $m\in\mathbb Z^d$,
+\[
+ |\widehat\phi(hm)|^2
+ \le C h^{-d-1}(1+|m|)^{-d-1}.
+\]
+Parseval consequently gives
+\begin{equation}\label{eq:smoothing-sobolev}
+ \|(\mu_N-fdx)*\phi_h\|_2^2
+ \le Ch^{-d-1}\|\mu_N-fdx\|_{H^{-(d+1)/2}}^2.
+\end{equation}
+Combining \eqref{eq:difference-lu}--\eqref{eq:smoothing-sobolev}, then
+substituting \eqref{eq:h-choice}, yields
+\[
+ \|\mu_N-fdx\|_{H^{-(d+1)/2}}^2
+ \ge cN^{-2\theta_u}h^{d+1-2d\theta_u}
+ =cN^{-2\theta_u-q\theta_u\beta_u/d}F^{-q\beta_u/d}.
+\]
+Equation \eqref{eq:sobolev-equivalence} finishes the proof.
+\end{proof}
+
+\section{A sharp fixed-norm consequence}
+
+\begin{corollary}[Optimal $N$-power when $F$ is fixed]\label{cor:fixed}
+Fix $F\ge1$.  Among probability densities with $\|f\|_p=F$ and equal-weight
+$N$-point measures, the best possible $N$-power in the squared averaged-ball
+discrepancy is $N^{-1-1/d}$ (with constants allowed to depend on $F$).  The
+upper bound holds for $N=H^d$ and hence already proves sharpness of the power.
+\end{corollary}
+
+\begin{proof}
+The lower bound follows from \eqref{eq:p-endpoint}.  For the upper bound,
+let $Q\subset\T^d$ be a cube of volume $F^{-q}$ and set
+$f=F^q\mathbf1_Q$, so $\int f=1$ and $\|f\|_p=F$.  If $N=H^d$, partition
+$Q$ into $N$ congruent subcubes $Q_j$ of diameter
+\[
+ \ell\asymp F^{-q/d}N^{-1/d}.
+\]
+Choose independent $X_j$ uniformly in $Q_j$.  In the Hilbert space
+$H^{-(d+1)/2}(\T^d)$ the centered random measures
+\[
+ Y_j=\delta_{X_j}-Nf\mathbf1_{Q_j}\,dx
+\]
+have vanishing cross terms.  Moreover,
+\begin{equation}\label{eq:dirac-distance}
+ \|\delta_x-\delta_y\|_{H^{-(d+1)/2}}^2\le C_d|x-y|.
+\end{equation}
+Indeed, split the defining Fourier sum at $|m|=|x-y|^{-1}$, use
+$|e^{2\pi imx}-e^{2\pi imy}|\le C|m||x-y|$ below the split, and the trivial
+bound above it.  Hence
+\[
+ \mathbb E\left\|\frac1N\sum_{j=1}^NY_j\right\|_{H^{-(d+1)/2}}^2
+ =\frac1{N^2}\sum_{j=1}^N\mathbb E\|Y_j\|_{H^{-(d+1)/2}}^2
+ \le C_d\frac{\ell}{N}.
+\]
+Some realization therefore satisfies
+\[
+ \Ecal_{a,b}(\mu_N-fdx)
+ \lesssim N^{-1-1/d}F^{-q/d},
+\]
+by \eqref{eq:sobolev-equivalence}.
+\end{proof}
+
+This fixed-norm rate is consistent with the independent May 2026 theorem of
+Colasanto--Focardi--Fornasier--Mattesini~\cite{mmd}: for the power kernel
+$-|x-y|$ and a $d$-Ahlfors regular target, their energy distance squared has
+sharp rate $N^{-1-1/d}$.  Their theorem does not cover arbitrary $L^p$
+densities or determine the dependence on $F$.
+
+\section{The literal arbitrary-weight statement is sharp}
+
+The wording surrounding the source question points to equal weights, as does
+the construction in its Theorem~7.  The displayed lower bound itself permits
+arbitrary nonnegative weights.  Under that literal reading there is a short
+complete answer.
+
+\begin{proposition}[One-active-weight sharpness]\label{prop:oneweight}
+For every $1<p\le2$, the joint powers of $N$, $\|\alpha\|$, and
+$\|f\|_p$ in the source inequality are simultaneously sharp when arbitrary
+nonnegative weights are allowed.
+\end{proposition}
+
+\begin{proof}
+Take $\alpha_1=\sqrt N$, $\alpha_2=\cdots=\alpha_N=0$ and
+$z_1=0$.  Then the normalized weight norm in the source is
+$\|\alpha\|=1$, while the atomic measure is
+$N^{-1/2}\delta_0$.  With the same approximate identity as above, set
+\[
+ f_h=N^{-1/2}\phi_h.
+\]
+Then $\|f_h\|_p\asymp N^{-1/2}h^{-d/q}$ and, as $h\downarrow0$,
+\[
+ \Ecal_{a,b}(N^{-1/2}(\delta_0-\phi_hdx))\asymp N^{-1}h.
+\]
+The last equivalence follows directly by splitting the Fourier series in
+\eqref{eq:sobolev-equivalence} at $|m|=h^{-1}$; the tail already has size
+$h$.  On the other hand, the right-hand side of the source bound equals
+\[
+ N^{-1-q/(2d)}\|\alpha\|^{2+q/d}\|f_h\|_p^{-q/d}
+ \asymp N^{-1-q/(2d)}N^{q/(2d)}h=N^{-1}h.
+\]
+Thus all displayed exponents are attained.
+\end{proof}
+
+\section{What remains open}
+
+The intended equal-weight problem asks for the optimal joint dependence on
+$N$ and $F=\|f\|_p$.  Theorem~\ref{thm:interpolation} supplies a continuous
+tradeoff, but its $u=p$ endpoint has the extra factor $F^{-(q-2)}$, while the
+source $u=2$ endpoint has the weaker $N$-power.  A natural attempt to remove
+this gap uses empty-ball or Whitney bump tests at scales adapted to the local
+$L^p$ mass.  At the critical Sobolev order each bump has exactly the right
+scale, but an arbitrary density may distribute its mass across infinitely
+many spatial scales; the resulting stopping-time sum is not controlled by
+$\|f\|_p$ alone.  No valid argument found here removes that multiscale
+obstruction, and no claim about the optimal joint exponents is made.
+
+\begin{thebibliography}{2}
+\bibitem{source}
+L.~Brandolini, L.~Colzani, and G.~Travaglini,
+\emph{Discrepancy and approximation of absolutely continuous measures with
+atomic measures}, J. Geom. Anal. \textbf{35} (2025), Paper 97;
+arXiv:2310.10120.
+
+\bibitem{mmd}
+F.~Colasanto, M.~Focardi, M.~Fornasier, and F.~Mattesini,
+\emph{Sharp Rates of MMD Empirical Estimation with Power Kernels},
+arXiv:2605.18497v2 (2026).
+\end{thebibliography}
+
+\end{document}

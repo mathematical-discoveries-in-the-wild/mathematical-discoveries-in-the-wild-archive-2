@@ -1,0 +1,375 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\K}{\mathbb K}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\cA}{\mathcal A}
+\newcommand{\ip}[2]{\langle #1,#2\rangle}
+
+\title{Expander-Sparsified Tensor Embeddings Give a\\
+Deterministic Rank-One Matrix RIP}
+\author{Discovery packet for arXiv:2310.18565\\
+\texttt{fa\_banach\_001}, lane 17, \texttt{agent\_lane\_17}}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{
+\textbf{Status.} Candidate substantial partial result, likely valid, requiring
+expert review.  It answers the source challenge for matrices of rank one, over
+both $\R$ and $\C$, with rank-one measurement matrices and
+$m=n^{1+o(1)}$.  The case of rank $r>1$ remains open.
+}}
+\end{center}
+
+\section{Source and exact challenge}
+
+The source is Simon Foucart, \emph{Linearly Embedding Sparse Vectors from
+$\ell_2$ to $\ell_1$ via Deterministic Dimension-Reducing Maps},
+arXiv:2310.18565, Section~6, page~14 \cite{Foucart}.  It asks for a
+deterministic linear map
+\[
+  \cA:\K^{n\times n}\longrightarrow \K^m
+\]
+such that, for all matrices $X$ of rank at most $r$,
+\begin{equation}\label{eq:source-rip}
+ (1-\delta)\|X\|_F\leq \|\cA(X)\|_1
+ \leq(1+\delta)\|X\|_F,
+\end{equation}
+in a regime $m\asymp n^\lambda r^\mu\ll n^2$, preferably with rank-one
+measurement matrices.  The source calls this a ``wide open question.''
+
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{The exact challenge in arXiv:2310.18565, page 14.  The image is
+  rendered from the local source PDF included with this packet.}
+\end{figure}
+\clearpage
+
+We use the Frobenius pairing $\ip{A}{X}_F=\operatorname{tr}(A^*X)$.
+An $M\times n$ matrix $B$, whose $j$th row is $b_j^*$, will be called
+\emph{$(a,b)$-flat and tight} if
+\begin{equation}\label{eq:flat}
+ B^*B=I_n,
+ \qquad
+ a\sqrt M\|x\|_2\leq \|Bx\|_1
+ \leq b\sqrt M\|x\|_2
+ \quad(x\in\K^n).
+\end{equation}
+
+\section{Result}
+
+\begin{theorem}[Rank-one subcase of the modified matrix RIP]\label{thm:main}
+Let $\K\in\{\R,\C\}$ and fix $0<\delta<1$.  There is a deterministic
+polynomial-time construction, for every sufficiently large $n$, of rank-one
+matrices $A_1,\dots,A_m\in\K^{n\times n}$ such that
+\begin{equation}\label{eq:main-rip}
+ (1-\delta)\|X\|_F
+ \leq \sum_{i=1}^m |\ip{A_i}{X}_F|
+ \leq (1+\delta)\|X\|_F
+\end{equation}
+for every matrix $X\in\K^{n\times n}$ of rank at most one.  Moreover,
+\begin{equation}\label{eq:m-bound}
+ m\leq n\exp\!\bigl(C_\delta(\log\log(n+2))^2\bigr)
+      =n^{1+o(1)}=o(n^2).
+\end{equation}
+The finitely many smaller dimensions can be covered deterministically after
+enlarging the constant depending on $\delta$.
+\end{theorem}
+
+\section{Proof intuition}
+
+An explicit almost-Euclidean subspace of $\ell_1^M$ supplies a matrix $B$
+whose vector $Bx$ has almost constant $\ell_1$-to-$\ell_2$ ratio.  The
+specific recursive extractor construction of Indyk has an additional feature:
+each stage repeats coordinates of a concatenation of orthonormal bases with
+constant multiplicity.  Hence it is an exact tight frame.  After normalization,
+$B$ obeys \eqref{eq:flat} with $b/a$ as close to one as desired and
+$M=n^{1+o(1)}$.
+
+The full tensor coordinates of a rank-one matrix $X=uv^*$ factor:
+\[
+  |\ip{b_jb_k^*}{uv^*}_F|
+       =|b_j^*u|\,|b_k^*v|.
+\]
+There is therefore no need to keep all $M^2$ pairs $(j,k)$.  Retain only the
+edges of a constant-degree spectral expander on the two coordinate sets.
+The expander mixing lemma compares the retained sum with the product of the
+two $\ell_1$ norms, and tightness controls the error by
+$\|u\|_2\|v\|_2=\|uv^*\|_F$.  Choosing the frame distortion and normalized
+second eigenvalue small enough gives any prescribed $\delta$.  For rank
+$r>1$, absolute values destroy this separability; that is exactly where the
+argument stops.
+
+\section{Two ingredients}
+
+\begin{lemma}[Explicit flat tight frames]\label{lem:flat}
+For every $0<\eta<1/4$ and $\K\in\{\R,\C\}$ there are constants
+$0<\rho_0\leq\rho_1<\infty$, independent of $n$ and $\eta$, and a
+deterministic polynomial-time construction of $B=B_{n,\eta}\in\K^{M\times n}$
+such that
+\begin{align}
+ B^*B&=I_n,\label{eq:tight}\\
+ (1-\eta)\rho\sqrt M\|x\|_2
+ &\leq \|Bx\|_1
+ \leq(1+\eta)\rho\sqrt M\|x\|_2,\label{eq:nearly-flat}
+\end{align}
+for some $\rho\in[\rho_0,\rho_1]$, and
+\begin{equation}\label{eq:flat-dim}
+ M\leq n\exp\!\bigl(C_\eta(\log\log(n+2))^2\bigr).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+We record why the standard explicit embedding can be chosen tight; this is
+the structural point used later.  Indyk's Theorem~1.1 and Corollary~5.2
+construct an explicit $\ell_2^n\to\ell_1^M$ embedding with distortion
+$1+O(\eta)$ and $M=n\exp(O_\eta((\log\log n)^2))$ by recursively applying
+extractor-based block maps \cite{Indyk}.  At one recursion level its dictionary
+$D$ is the vertical concatenation of $L$ orthonormal matrices, so
+$D^*D=LI$.  The extractor graph is left $d$-regular, and the associated map
+$F$ merely places every coordinate of $Dx$ in exactly $d$ output positions.
+Consequently
+\begin{equation}\label{eq:stage-tight}
+ F^*F=LdI.
+\end{equation}
+After division by $\sqrt{Ld}$, each recursion level is an exact isometry.
+Indyk's displayed block estimate becomes
+\begin{equation}\label{eq:block}
+ (1-O(\zeta))\sqrt b\,\|x\|_2
+ \leq\sum_{s=1}^b\|(Fx)_s\|_2
+ \leq\sqrt b\,\|x\|_2
+\end{equation}
+for the normalized map, where the output is split into $b$ blocks.
+
+Iterate \eqref{eq:block} on every block for $O(\log\log n)$ levels, taking
+$\zeta$ a sufficiently small multiple of $\eta/\log\log(n+2)$.  The product
+of the lower factors is at least $1-\eta/2$, while every level remains an
+exact isometry by \eqref{eq:stage-tight}.  At the terminal fixed block
+dimension, use a deterministic finite spherical quadrature.  Concretely, a
+sufficiently fine finite set on the sphere can be symmetrized under signed
+coordinate permutations.  Its covariance is then exactly scalar, while its
+equal-weight averages of the equicontinuous family
+$y\mapsto|\ip{x}{y}|$ approximate the rotational average uniformly in
+$x$.  Repeating points clears rational weights.  After scalar normalization,
+this terminal map is tight and has $\ell_1$ distortion at most
+$1+\eta/2$.  Its dimension depends only on $\eta$.
+
+Composing the normalized block maps with the terminal maps gives
+\eqref{eq:tight}.  The number of leaves is $M$; multiplying the $\sqrt b$
+factors in \eqref{eq:block} gives exactly $\sqrt M$ (up to the fixed terminal
+factor).  This proves \eqref{eq:nearly-flat}.  The rotational first absolute
+moment times the square root of the terminal dimension is bounded above and
+below by universal positive constants, giving $\rho_0,\rho_1$.  Indyk's
+dimension calculation gives \eqref{eq:flat-dim}.  Padding the input to the
+next admissible dictionary dimension and restricting the columns preserves
+tightness and changes only the displayed constant.
+
+The construction above is real.  To retain the same distortion over $\C$,
+apply it in real dimension $2n$ and write its row matrix as $R=[P\ Q]$.
+For $z=x+iy$, put
+\[
+ C=P-iQ,\qquad B_\C=2^{-1/2}C.
+\]
+Since $R^TR=I_{2n}$, we have
+$P^TP=Q^TQ=I_n$ and $P^TQ=Q^TP=0$, hence $C^*C=2I_n$ and
+$B_\C^*B_\C=I_n$.  If $U_\theta$ is realification of multiplication by
+$e^{i\theta}$, then, up to the harmless choice of sign of $\theta$,
+\[
+ (RU_\theta z)_j=\operatorname{Re}(e^{i\theta}(Cz)_j).
+\]
+Integrating the real flat estimate in $\theta$ and using
+\[
+ \frac1{2\pi}\int_0^{2\pi}|\operatorname{Re}(e^{i\theta}w)|\,d\theta
+   =\frac{2}{\pi}|w|
+\]
+shows that $B_\C$ has exactly the same relative $1+O(\eta)$ distortion;
+only $\rho$ is multiplied by $\pi/(2\sqrt2)$.  The dimension is
+$(2n)^{1+o(1)}$, proving the complex statement as well.
+\end{proof}
+
+\begin{lemma}[All-orders explicit expander mixing]\label{lem:expander}
+For every $\theta>0$ there is a constant $d=d(\theta)$ such that, for every
+sufficiently large $M$, one can deterministically construct in time
+polynomial in $M$ a $d$-regular bipartite graph $G=(L,R,E)$ with
+$|L|=|R|=M$ whose adjacency matrix has all singular values except the top one
+at most $\theta d$.  Thus, for all $f,g\in\R^M$,
+\begin{equation}\label{eq:mixing}
+ \left|\sum_{(j,k)\in E}f_jg_k
+ -\frac dM\left(\sum_jf_j\right)\left(\sum_kg_k\right)\right|
+ \leq \theta d\|f\|_2\|g\|_2.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Alon gives a deterministic polynomial-time construction, on exactly every
+sufficiently large number $M$ of vertices, of a $d$-regular graph with every
+nontrivial eigenvalue at most $2\sqrt{d-1}+o_d(1)$ in absolute value
+\cite{Alon}.  First choose the constant $d$ large enough and then the finite
+threshold for $M$ so that this is at most $\theta d$.  Its bipartite double
+cover has the same adjacency matrix between its two vertex classes, hence the
+required singular-value bound.  Decomposing $f$ and $g$ into their constant
+and mean-zero parts proves \eqref{eq:mixing}.
+\end{proof}
+
+\section{Proof of Theorem~\ref{thm:main}}
+
+Fix a small $\eta>0$, to be chosen from $\delta$, and take the frame in
+Lemma~\ref{lem:flat}.  Set
+\[
+ a=(1-\eta)\rho,\qquad b=(1+\eta)\rho.
+\]
+Choose $0<\theta<a^2$, and let $G$ be the graph in
+Lemma~\ref{lem:expander}.  For every edge $e=(j,k)$ define the rank-one
+measurement matrix
+\begin{equation}\label{eq:measurement}
+ A_e=b_jb_k^*.
+\end{equation}
+
+Let $X=uv^*$ have rank at most one.  (The zero case is immediate.)  With
+$f_j=|b_j^*u|$ and $g_k=|b_k^*v|$, the Frobenius pairing factors as
+\begin{equation}\label{eq:factor}
+ |\ip{A_e}{X}_F|=|b_j^*u|\,|b_k^*v|=f_jg_k.
+\end{equation}
+Tightness gives $\|f\|_2=\|u\|_2$ and $\|g\|_2=\|v\|_2$, while flatness
+gives
+\[
+ a\sqrt M\|u\|_2\leq\|f\|_1\leq b\sqrt M\|u\|_2,
+ \qquad
+ a\sqrt M\|v\|_2\leq\|g\|_1\leq b\sqrt M\|v\|_2.
+\]
+Apply \eqref{eq:mixing} to the nonnegative vectors $f,g$.  Since
+$\|uv^*\|_F=\|u\|_2\|v\|_2$, it follows that
+\begin{equation}\label{eq:raw-bounds}
+ d(a^2-\theta)\|X\|_F
+ \leq \sum_{e\in E}|\ip{A_e}{X}_F|
+ \leq d(b^2+\theta)\|X\|_F.
+\end{equation}
+Put $\alpha=d(a^2-\theta)$ and $\beta=d(b^2+\theta)$.  Multiplying every
+$A_e$ by $2/(\alpha+\beta)$ turns \eqref{eq:raw-bounds} into
+\eqref{eq:main-rip} with
+\begin{equation}\label{eq:delta-prime}
+ \delta'=\frac{\beta-\alpha}{\beta+\alpha}
+ =\frac{b^2-a^2+2\theta}{a^2+b^2}.
+\end{equation}
+First choose $\eta$ and then $\theta$ sufficiently small that
+$\delta'\leq\delta$.  The number of edges is
+$m=dM$, and $d$ depends only on $\delta$.  Lemma~\ref{lem:flat} gives
+\eqref{eq:m-bound}.  Every matrix in \eqref{eq:measurement} is rank one and
+all ingredients are deterministic and polynomial-time constructible.
+\qed
+
+\section{Why the proof does not yet extend beyond rank one}
+
+Six focused upgrade routes were checked after obtaining the rank-one theorem.
+They delimit the current result rather than form part of its proof.
+
+\begin{enumerate}[leftmargin=*,label=\textbf{Attempt \arabic*.}]
+\item \textbf{SVD plus triangle inequalities.}
+For $X=\sum_{s=1}^r\sigma_su_sv_s^*$, the upper estimate follows with
+$\|X\|_*$ and hence loses at most $\sqrt r$.  The lower estimate fails because
+the summands cancel inside each scalar measurement before the absolute value
+is taken.
+
+\item \textbf{Dense tensor coordinates first.}
+Keeping all $M^2$ entries of $BXB^*$ yields a deterministic embedding at the
+trivial quadratic scale.  One can prove a constant lower bound by applying
+the flat estimate to columns and averaging scalar projections.  This does
+not reduce the measurement count below $n^{2+o(1)}$.
+
+\item \textbf{Ordinary spectral sampling of $|BXB^*|$.}
+For rank one, this nonnegative matrix is an outer product.  For rank $r>1$,
+entrywise absolute value can have full rank.  The generic trace-norm estimate
+in the mixing error loses $\sqrt M$; compensating for it forces degree of
+order $M$ and returns to $M^2$ measurements.
+
+\item \textbf{Positive semidefinite restriction.}
+For $X\succeq0$, tight-frame quadratic measurements sum to
+$\operatorname{tr}X$.  This only gives
+$\|X\|_F\leq\operatorname{tr}X\leq\sqrt r\|X\|_F$, not a prescribed small
+RIP constant, and it does not treat indefinite or nonsymmetric matrices.
+
+\item \textbf{Phase lifting and sign-rank samplers.}
+The identity $|z|=\sup_{|\omega|=1}\operatorname{Re}(\omega z)$ introduces
+an independent phase at every sampled edge.  Those edgewise phases destroy
+the rank-$r$ factorization.  A sampler uniform over this phase-enlarged class
+would be a genuinely stronger pseudorandom object than a spectral expander.
+
+\item \textbf{Polynomial/moment approximation to the absolute value.}
+Approximating $|z|$ by polynomials in $|z|^2$ turns the problem into sampling
+higher tensor powers.  Without a uniform entry bound, the approximation is
+not relative near zero; after truncation, the known tensor designs have
+degree or size exponential in the approximation degree or in $r$.  No bound
+of the requested form $n^\lambda r^\mu$ emerges.
+\end{enumerate}
+
+Thus the surviving obstruction is precise: a graph expander samples
+separable bilinear arrays, whereas $|BXB^*|$ is no longer separable after the
+rank-one case.  A low-rank absolute-value sampler with polynomial dependence
+on $r$ would upgrade the theorem, but no such lemma has been established here.
+
+\section{Verification, novelty bounds, and review recommendation}
+
+The accompanying script \texttt{code/verify\_rank\_one\_expander.py} builds a
+finite exact flat frame from all sign vectors, a deterministic union-of-
+permutations bipartite graph, and the rank-one measurements
+\eqref{eq:measurement}.  It checks tightness, the second singular value, the
+factorization identity, the raw constants in \eqref{eq:raw-bounds}, and the
+rescaled RIP bounds on a fixed reproducible suite of real and complex samples.
+This is a regression check, not a proof; the proof is the two-lemma argument
+above.
+
+The four lightweight run indexes were searched for arXiv:2310.18565, the
+title, ``modified RIP,'' ``rank-one measurements,'' deterministic low-rank
+recovery, tensor embeddings, and expander mixing.  They contained adjacent
+records about deterministic sparse-vector RIP (arXiv:1003.2990, 1202.1234,
+and 1406.4089) but no statement of the theorem above.  A bounded primary-source
+search of arXiv and citation/phrase searches through 11 August 2026 located
+the source, Indyk's embedding, standard explicit expanders, and randomized
+rank-one matrix RIP work, but no later paper stating this expander-sparsified
+rank-one construction.  This is not an exhaustive novelty certification.
+
+The main human-review focus should be Lemma~\ref{lem:flat}: verify that the
+tight normalization is retained through the recursive block construction and
+terminal fixed-dimensional quadrature.  The expander step is then a direct
+one-line application of mixing.  The claimed status should remain
+\emph{candidate substantial partial result} until that structural extraction
+and the bounded novelty search receive independent expert review.
+
+\begin{thebibliography}{9}
+
+\bibitem{Foucart}
+S. Foucart,
+\emph{Linearly Embedding Sparse Vectors from $\ell_2$ to $\ell_1$ via
+Deterministic Dimension-Reducing Maps},
+arXiv:2310.18565 (2023), Section 6.
+
+\bibitem{Indyk}
+P. Indyk,
+\emph{Uncertainty Principles, Extractors, and Explicit Embeddings of $L_2$
+into $L_1$},
+Electronic Colloquium on Computational Complexity, Report TR06-126 (2006);
+also STOC 2007.  See Theorem 1.1 and Corollary 5.2.
+
+\bibitem{Alon}
+N. Alon,
+\emph{Explicit Expanders of Every Degree and Size},
+Combinatorica 41 (2021), 447--463; arXiv:2003.11673.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,111 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newcommand{\R}{\mathbb R}
+
+\title{The Stable-Rank Matrix Extraction in arXiv:1605.03861\\
+\large An algorithm was already supplied by arXiv:1507.02268}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 16}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Literature already answered.  Cohen--Nelson--Woodruff give a deterministic
+polynomial-time algorithm with exactly the stable-rank support size and
+additive spectral error requested in the diagonal formulation of the source.}}
+\end{center}
+
+\section{Source question}
+
+Friedland and Youssef prove that for every $A\in\R^{n\times m}$ and
+$\varepsilon>0$ there is a nonnegative diagonal matrix $D$ with at most
+$O(\operatorname{srank}(A)/\varepsilon^2)$ nonzero entries such that
+\begin{equation}\label{eq:source}
+ \|ADA^*-AA^*\|\le\varepsilon\|A\|^2,
+ \qquad
+ \operatorname{srank}(A)=\frac{\|A\|_F^2}{\|A\|^2}.
+\end{equation}
+Immediately after their Theorem 1.1 they explicitly identify this as an
+equivalent diagonal formulation of their reweighted column extraction.  In
+the introduction they note that their proof is existential and say they do
+not know how to produce an algorithm attaining it \cite{FY}.
+
+\section{Answering theorem}
+
+Cohen, Nelson, and Woodruff prove the following result in their Section 4
+\cite[Theorem 5]{CNW}.
+
+\begin{theorem}[Cohen--Nelson--Woodruff]
+Let $B\in\R^{N\times d}$ satisfy $\|B\|^2\le1$ and
+$\|B\|_F^2\le k$, and let $0<\varepsilon<1$.  There exists a diagonal
+matrix $S$ with $O(k/\varepsilon^2)$ nonzero entries such that
+\begin{equation}\label{eq:cnw}
+ \|(SB)^T(SB)-B^TB\|\le\varepsilon.
+\end{equation}
+Moreover, $S$ can be computed by a deterministic polynomial-time algorithm.
+\end{theorem}
+
+Their proof is a stable-rank extension of the Batson--Spielman--Srivastava
+barrier method.  It is constructive: the final paragraph verifies that all
+barrier invariants and step sizes can be evaluated in polynomial time.
+
+\section{One-line reduction}
+
+Assume $A\ne0$ and apply the answering theorem to
+\[
+ B=\frac{A^*}{\|A\|}\in\R^{m\times n},
+ \qquad
+ k=\left\lceil\operatorname{srank}(A)\right\rceil.
+\]
+Then $\|B\|=1$ and
+$\|B\|_F^2=\operatorname{srank}(A)\le k$.  Put $D=S^2$.
+Since $S$ is diagonal, $D$ is nonnegative diagonal with the same support,
+and \eqref{eq:cnw} becomes
+\[
+ \left\|
+ \frac{AS^2A^*}{\|A\|^2}-
+ \frac{AA^*}{\|A\|^2}
+ \right\|\le\varepsilon.
+\]
+Multiplication by $\|A\|^2$ is exactly \eqref{eq:source}.  A nonzero matrix
+has stable rank at least one, so replacing it by its ceiling changes only the
+absolute constant in the support bound.  The zero matrix is trivial.
+
+Thus the source's diagonal extraction can be produced deterministically in
+polynomial time with the same optimal-order
+$O(\operatorname{srank}(A)/\varepsilon^2)$ support.
+
+\section{Chronology and scope}
+
+The chronology is unusual.  Version 3 of the answering preprint was posted
+on 2 March 2016.  Version 1 of the source was posted on 12 May 2016.  The
+answer therefore predates the question by about ten weeks; its ICALP
+publication appeared in August 2016.
+
+The reduction resolves exactly the arbitrary nonnegative diagonal-weight
+formulation that Friedland--Youssef state as equivalent to their extraction
+conclusion.  Cohen--Nelson--Woodruff do not require the selected weights to
+be equal.  Accordingly, this packet does not claim a stronger algorithm in
+which every weight is equal or an integer multiple of a common quantum.
+
+\begin{thebibliography}{9}
+\bibitem{FY}
+O.~Friedland and P.~Youssef,
+\emph{Approximating matrices and convex bodies through Kadison--Singer},
+arXiv:1605.03861 (2016).
+
+\bibitem{CNW}
+M.~B. Cohen, J.~Nelson, and D.~P. Woodruff,
+\emph{Optimal approximate matrix product in terms of stable rank},
+43rd ICALP, LIPIcs 55 (2016), Article 11;
+arXiv:1507.02268v3.
+\end{thebibliography}
+
+\end{document}

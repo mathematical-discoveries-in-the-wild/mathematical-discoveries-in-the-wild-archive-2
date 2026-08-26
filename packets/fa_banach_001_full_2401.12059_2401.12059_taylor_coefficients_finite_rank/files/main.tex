@@ -1,0 +1,284 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\udim}{\overline{\dim}_{B}}
+
+\title{Finite Box Dimension Forces Finite-Rank\\Taylor Coefficients}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 10}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\begin{minipage}{0.88\textwidth}
+\textbf{Status.} Candidate full affirmative solution to Questions 4.4 and
+4.5 of Carando--D'Andrea--Torres--Turco, likely valid, pending human review.
+The proof gives the stronger conclusion that every homogeneous Taylor
+coefficient has finite-dimensional range, with an explicit rank bound.
+\end{minipage}}
+\end{center}
+
+\section{Source questions and answer}
+
+Let $E,F$ be complex Banach spaces, let $U\subset E$ be open, and let
+$f:U\to F$ be holomorphic.  Write
+\[
+ f(x_0+x)=\sum_{m=0}^{\infty}P_m(x)
+\]
+for its Taylor expansion at $x_0$, where $P_m=P_mf(x_0)$ is
+$m$-homogeneous.  Questions 4.4 and 4.5 of \cite{CDTT} ask whether
+\[
+ \dim_B f(x_0+\varepsilon B_E)<\infty
+\]
+forces, for every $m$, respectively
+\[
+ (e_n(P_m(B_E)))_{n\ge1}\in\ell_1
+ \quad\text{and}\quad
+ \udim P_m(B_E)<\infty.
+\]
+The printed questions write $f:U\to E$ although $F$ has just been introduced;
+as everywhere else in the paper, the well-typed formulation is $f:U\to F$.
+
+The answer to both questions is \emph{yes}.  In fact, if
+\[
+ d:=\udim f(x_0+\varepsilon B_E)<\infty,
+ \qquad r:=\left\lfloor\frac d2\right\rfloor,
+\]
+and
+\[
+ V_m:=\Span\bigl(P_1(E)\cup\cdots\cup P_m(E)\bigr),
+ \qquad V_0=\{0\},
+\]
+then
+\begin{equation}\label{quantitative}
+ \dim(V_m/V_{m-1})\le (r+m)^m,
+ \qquad
+ \dim V_m\le\sum_{k=1}^m(r+k)^k.
+\end{equation}
+
+\clearpage
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{Official arXiv:2401.12059v1 PDF page 15: the end of Proposition 4.2
+and Questions 4.4--4.5.}
+\end{figure}
+\clearpage
+
+\section{Two rank lemmas}
+
+The first observation converts metric dimension into a uniform differential
+rank bound.  Complex rank contributes twice its value to real box dimension.
+
+\begin{lemma}[box dimension bounds differential rank]\label{metricrank}
+Put $K=f(x_0+\varepsilon B_E)$ and suppose $d=\udim K<\infty$.  Then
+\[
+ \rank_{\C}Df(y)\le \left\lfloor d/2\right\rfloor
+ \qquad(y\in x_0+\varepsilon B_E).
+\]
+\end{lemma}
+
+\begin{proof}
+Suppose $Df(y)$ has rank at least $s$.  Choose $h_1,\ldots,h_s\in E$ and
+$\lambda_1,\ldots,\lambda_s\in F^*$ so that the matrix
+\[
+ \bigl(\lambda_i(Df(y)h_j)\bigr)_{i,j=1}^s
+\]
+is invertible.  On $H=\Span\{h_1,\ldots,h_s\}$ consider
+\[
+ \Phi(z)=\bigl(\lambda_1(f(y+z)),\ldots,
+                   \lambda_s(f(y+z))\bigr).
+\]
+After shrinking a neighborhood of $0$ in $H$, it stays inside the given
+ball.  The finite-dimensional holomorphic inverse theorem says that its image
+contains a nonempty open subset of $\C^s$.  Hence the Lipschitz image
+$(\lambda_1,\ldots,\lambda_s)(K)$ has upper box dimension at least $2s$.
+Lipschitz maps do not increase upper box dimension, so $2s\le d$.  Taking
+$s=\lfloor d/2\rfloor+1$ proves the claim.
+\end{proof}
+
+The second lemma is the Banach-space form of the Jacobian estimate proved in
+Section 3 of \cite{CDTT}.  We include the reduction because it is exactly what
+the Taylor argument needs.
+
+\begin{lemma}[bounded derivative rank forces finite polynomial rank]
+\label{polyrank}
+Let $P:E\to G$ be a continuous $m$-homogeneous polynomial and suppose
+\[
+ \rank DP(x)\le r\qquad(x\in E).
+\]
+Then
+\[
+ \dim\Span P(E)\le(r+m)^m.
+\]
+\end{lemma}
+
+\begin{proof}
+If $P(x_1),\ldots,P(x_N)$ are linearly independent, choose
+$\lambda_1,\ldots,\lambda_N\in G^*$ with
+$\lambda_i(P(x_j))=\delta_{ij}$.  Define $L:\C^N\to E$ by
+$L(a)=\sum_j a_jx_j$ and define the scalar $m$-homogeneous polynomials
+\[
+ p_i=\lambda_i\circ P\circ L\qquad(1\le i\le N).
+\]
+They are linearly independent because $p_i(e_j)=\delta_{ij}$.  The
+Jacobian-rank estimate of \cite[Corollary 3.3]{CDTT} gives
+\[
+ \max_{a\in\C^N}\rank D(p_1,\ldots,p_N)(a)
+ \ge N^{1/m}-m.
+\]
+On the other hand, each of these differentials factors through $DP(L(a))$,
+so its rank is at most $r$.  Thus $N\le(r+m)^m$.  If $\Span P(E)$ had larger
+dimension, one could choose more than $(r+m)^m$ independent values, a
+contradiction.
+\end{proof}
+
+For completeness, the estimate invoked above comes from a triangular
+coefficient count.  If the maximum Jacobian rank of $N$ linearly independent
+$m$-homogeneous scalar polynomials is $q$, choose a nonzero $q$-minor.  Every
+polynomial in their span satisfies the associated first-order determinantal
+equations.  After a generic linear change of variables, coefficient comparison
+in lexicographic order shows that a degree-$m$ solution is determined by the
+monomials in the first $q$ variables.  There are
+$\binom{q+m-1}{m}\le(q+m)^m$ of these.  Hence
+$N\le(q+m)^m$, which is precisely the displayed lower bound.  This also
+clarifies that only the final estimate of Corollary 3.3 is being used; no
+infinite-dimensional algebraic geometry is hidden in Lemma \ref{polyrank}.
+
+\section{Taylor filtration and the noncancellation determinant}
+
+\begin{theorem}[quantitative affirmative answer]\label{main}
+Under the hypotheses in Section 1, assume only that
+$d=\udim f(x_0+\varepsilon B_E)<\infty$.  Then every $V_m$ is finite
+dimensional and the bounds \eqref{quantitative} hold.  In particular,
+each $P_m$ has finite-dimensional range and $P_m(B_E)$ has finite upper box
+dimension.
+\end{theorem}
+
+\begin{proof}
+Set $r=\lfloor d/2\rfloor$.  We argue by induction on $m$.  Suppose
+$V_{m-1}$ is finite dimensional.  It is then closed, so the quotient
+$G_m=F/V_{m-1}$ is a Banach space.  Let
+\[
+ \pi_m:F\to G_m,
+ \qquad Q_k=\pi_m\circ P_k,
+ \qquad g=\pi_m\circ f.
+\]
+By construction, $Q_k=0$ for $k<m$.
+
+We claim that
+\begin{equation}\label{rankQ}
+ \rank DQ_m(x)\le r\qquad(x\in E).
+\end{equation}
+If not, put $s=r+1$ and choose $h_1,\ldots,h_s\in E$ and
+$\mu_1,\ldots,\mu_s\in G_m^*$ such that
+\[
+ M=\bigl(\mu_i(DQ_m(x)h_j)\bigr)_{i,j=1}^s
+ \quad\text{has}\quad \det M\ne0.
+\]
+For sufficiently small $t$, the point $x_0+tx$ lies in the prescribed ball,
+and termwise differentiation of the Taylor series gives
+\[
+ Dg(x_0+tx)h
+ =\sum_{k=m}^{\infty}t^{k-1}DQ_k(x)h.
+\]
+Therefore the analytic scalar function
+\[
+ \Delta(t)=\det\bigl(\mu_i(Dg(x_0+tx)h_j)\bigr)_{i,j=1}^s
+\]
+satisfies
+\begin{equation}\label{leading}
+ \Delta(t)=t^{s(m-1)}\det M+O\bigl(t^{s(m-1)+1}\bigr).
+\end{equation}
+It is nonzero for all sufficiently small nonzero $t$.  Consequently
+$Dg(x_0+tx)$ has rank at least $s$.  Since $Dg=\pi_m\circ Df$, this forces
+$Df(x_0+tx)$ to have rank at least $s=r+1$, contradicting Lemma
+\ref{metricrank}.  This proves \eqref{rankQ}.
+
+Lemma \ref{polyrank}, applied to $Q_m$, now gives
+\[
+ \dim\Span Q_m(E)\le(r+m)^m.
+\]
+But $\Span Q_m(E)$ is canonically $V_m/V_{m-1}$.  This proves the first
+bound in \eqref{quantitative}; summing the successive dimensions proves the
+second and closes the induction.
+
+Finally $P_m(B_E)$ is a bounded subset of the finite-dimensional complex
+space $\Span P_m(E)\subseteq V_m$.  Its upper box dimension is therefore
+finite (indeed, at most $2\dim\Span P_m(E)$).
+\end{proof}
+
+The quotient in this proof is essential.  Without it, an
+$s\times s$ minor of $Df(x_0+tx)$ may contain lower Taylor degrees, and its
+coefficient at order $s(m-1)$ can cancel the minor coming from $DP_m(x)$.
+Passing to $F/V_{m-1}$ removes every lower degree and makes the leading
+coefficient in \eqref{leading} exact.
+
+\begin{corollary}[the missing $\ell_1$ endpoint]\label{entropy}
+For every $m\ge1$,
+\[
+ \bigl(e_n(P_m(B_E))\bigr)_{n\ge1}\in\ell_1.
+\]
+Thus Questions 4.4 and 4.5 both have affirmative answers.
+\end{corollary}
+
+\begin{proof}
+Let $D_m=\dim\Span P_m(E)<\infty$.  If $D_m=0$ there is nothing to prove.
+Otherwise the standard volumetric covering estimate in the real
+$2D_m$-dimensional normed space gives, for a constant $C_m$,
+\[
+ e_n(P_m(B_E))\le C_m,2^{-n/(2D_m)}.
+\]
+The right-hand side is summable.
+\end{proof}
+
+\section{Verification, novelty, and review focus}
+
+The exact checker bundled with this packet verifies, over the integers, the
+leading exponent and leading determinant in \eqref{leading} for matrix sizes
+$1$ through $4$ and Taylor degrees $1$ through $5$.  It also checks the
+cumulative bounds for representative box dimensions.  These computations
+guard the exponent and indexing; the general proof is the determinant
+argument above.
+
+Six focused attempts are recorded in the run note.  Direct entropy and convex
+hull methods reproduce the source's $p>1$ loss; diagonal counterexample
+families cannot place infinite rank in one fixed homogeneous degree.  The
+successful route instead uses differential rank, lower-degree quotients, and
+the source's algebraic Jacobian estimate.
+
+A bounded literature search on 13 August 2026 covered the exact title,
+Questions 4.4--4.5, arXiv id, DOI, authors, and combinations of ``finite box
+dimension'', ``Taylor coefficient'', ``finite rank'', and ``entropy
+endpoint''.  It found the 2025 Mathematische Nachrichten publication and one
+indexed citing paper on generalized entropy numbers, but no claimed answer to
+either question.  Novelty confidence is moderate because citation databases
+and web search are not exhaustive.
+
+Human review should prioritize Lemma \ref{polyrank}'s reduction to Corollary
+3.3 of the source and the quotient determinant in \eqref{leading}.  The
+inverse-function and finite-dimensional entropy steps are standard.  The
+argument answers a slightly stronger hypothesis than printed: finite
+\emph{upper} box dimension suffices, whether or not the box-dimension limit
+exists.
+
+\begin{thebibliography}{9}
+\bibitem{CDTT}
+D. Carando, C. D'Andrea, L. A. Torres, and P. Turco,
+\emph{Entropy numbers and box dimension of polynomials and holomorphic
+functions}, Mathematische Nachrichten 298 (2025), 567--580;
+arXiv:2401.12059v1.
+\end{thebibliography}
+
+\end{document}

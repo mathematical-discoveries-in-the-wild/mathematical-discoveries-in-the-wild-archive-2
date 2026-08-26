@@ -1,0 +1,361 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\rinf}{\mathrm{rinf}}
+
+\title{Intrinsic and extrinsic reinforced Triebel--Lizorkin spaces on a cube\
+\large Candidate full solution of Conjecture 4.22 in arXiv:1302.3751}
+\author{Automated Mathematics Run \texttt{fa\_banach\_001}, lane 12}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{blue!55!black}{blue!4}{\parbox{0.89\textwidth}{
+\textbf{Status.} Candidate full solution, subject to human verification.
+For the entire parameter range in Conjecture 4.22,
+\[
+ F_{p,q}^{s,\rinf}(Q)=F_{p,q}^{s,\rinf}(Q)^*
+\]
+with equivalent quasi-norms.  More strongly, the proof constructs a bounded
+linear right inverse to restriction which preserves all reinforced face
+conditions simultaneously.}}
+\end{center}
+
+\section{Source and exact conjecture}
+
+The source is B.~Scharf, \emph{Wavelets in function spaces on cellular
+domains}~\cite{Scharf}, arXiv:1302.3751.  Let $Q=(0,1)^n$, $n\ge2$.
+For every open $l$-dimensional face $\Gamma$ of $Q$, put
+$k=n-l$ and $d_\Gamma(x)=\dist(x,\Gamma)$.  A face is critical when
+\[
+ r_\Gamma=s-\frac{k}{p}\in\N_0.
+\]
+For such a face the reinforced condition requires, for every multi-index
+$\alpha$ normal to $\Gamma$ with $|\alpha|=r_\Gamma$,
+\begin{equation}\label{eq:reinforced}
+ d_\Gamma^{-k/p}D^\alpha f\in L_p(U_\Gamma),
+ \qquad U_\Gamma=\{x:d_\Gamma(x)<\varepsilon\}.
+\end{equation}
+
+The extrinsic space $F_{p,q}^{s,\rinf}(Q)$ consists of restrictions to $Q$
+of global $F_{p,q}^s(\R^n)$ functions satisfying \eqref{eq:reinforced} on
+both sides of every critical face.  The intrinsic space
+$F_{p,q}^{s,\rinf}(Q)^*$ asks for the same weighted estimates only on
+$U_\Gamma\cap Q$.  Restriction immediately gives
+\[
+ F_{p,q}^{s,\rinf}(Q)\hookrightarrow F_{p,q}^{s,\rinf}(Q)^*.
+\]
+
+Conjecture 4.22, on source PDF page 96, asserts that this embedding is an
+equality whenever
+\[
+ 1\le p<\infty,\qquad 0<q<\infty,\qquad s>\sigma_{p,q}.
+\]
+The source explicitly proposes constructing an extension operator which
+preserves the reinforced conditions.  Figure~\ref{fig:conjecture} records
+the conjecture and this proposed route.
+
+\begin{figure}[ht]
+ \centering
+ \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+ \caption{Conjecture 4.22 and its extension-operator route on page 96 of
+ the arXiv source~\cite{Scharf}.}
+ \label{fig:conjecture}
+\end{figure}
+
+We use the intrinsic quasi-norm
+\begin{equation}\label{eq:star-norm}
+ \|f\|_*=\|f\|_{F_{p,q}^s(Q)}+
+ \sum_{\Gamma\ \mathrm{critical}}\ \sum_{\substack{\alpha\perp\Gamma\\
+ |\alpha|=r_\Gamma}}
+ \left(\int_{U_\Gamma\cap Q}|D^\alpha f(x)|^p
+ \frac{dx}{d_\Gamma(x)^k}\right)^{1/p}.
+\end{equation}
+Changing the sufficiently small common value of $\varepsilon$ changes this
+quasi-norm only by an equivalent one.  Indeed, away from a smaller face
+collar the weight is bounded, while
+$D^\alpha f\in F_{p,q}^{s-|\alpha|}(Q)\subset L_p(Q)$ because
+$s-|\alpha|=k/p>0$.
+
+\section{Proof intuition}
+
+The cube admits an extension which, in a small collar, is a finite linear
+combination of coordinate reflections and dilations back into $Q$.  A
+finite common Seeley--Hestenes reflection can be chosen bounded on the one
+fixed space $F_{p,q}^s$; no infinite reflection series is needed.
+Tensoring the construction over the coordinates gives, on every collar
+cell,
+\[
+ D^\alpha E_Qf(x)=\sum_A c_{A,\alpha}(D^\alpha f)(T_Ax),
+\]
+where each $T_A$ is diagonal affine and maps the cell into $Q$.
+
+The decisive geometric fact is one-sided in exactly the useful direction.
+If $x$ is close to an open face $\Gamma$, then
+\[
+ d_\Gamma(T_Ax)\le C,d_\Gamma(x).
+\]
+Normal distances are merely multiplied by one of finitely many slopes.
+Tangential coordinates which lie outside the open face interval are
+reflected into $(0,1)$, so their contribution to the distance disappears.
+Consequently
+$d_\Gamma(x)^{-k}\le C^k d_\Gamma(T_Ax)^{-k}$.  A change of variables
+therefore bounds the full two-sided weighted norm of the extension by the
+one-sided intrinsic norm.  The same finite operator works for all faces,
+dimensions, and critical derivative orders at once.
+
+\section{A finite reflection extension on the cube}
+
+We isolate the standard extension input in the form actually used below.
+
+\begin{lemma}[Fixed-parameter finite reflection extension]\label{lem:extension}
+Fix $n\ge1$, $0<p<\infty$, $0<q<\infty$, and $s\in\R$.  There is a bounded
+linear right inverse
+\[
+ E_Q:F_{p,q}^s(Q)\longrightarrow F_{p,q}^s(\R^n)
+\]
+to restriction with the following additional property.  There are
+$\rho>0$, a finite set of nonzero coefficients, and a finite set of
+positive slopes such that, on each cell of the $\rho$-collar of $\bar Q$,
+$E_Qf$ is a finite sum
+\begin{equation}\label{eq:affine-sum}
+ E_Qf(x)=\sum_A c_A f(T_Ax).
+\end{equation}
+Every $T_A$ is a diagonal affine map from that cell into $Q$; in each
+coordinate it is the identity or a reflection/dilation about $0$ or $1$.
+The operator may be chosen compactly supported and its cutoff is identically
+one on the whole $\rho$-collar.
+\end{lemma}
+
+\begin{proof}
+We recall why the usual common reflection extension has precisely this
+form.  The quantitative common-extension theorem of Lu and Yao
+\cite[Theorem~23]{LuYao} states that, after choosing sufficiently large
+integers $m_1,m_2$, a half-space reflection
+\begin{equation}\label{eq:half-reflection}
+ Rh(x',t)=\sum_{\nu=1}^N a_\nu h(x',-b_\nu t),
+ \qquad t<0,\qquad b_\nu>0,
+\end{equation}
+is bounded from $F_{p,q}^s(\R^n_+)$ to $F_{p,q}^s(\R^n)$ provided its
+finite coefficients satisfy
+\[
+ \sum_{\nu=1}^N a_\nu(-b_\nu)^j=1
+ \quad(-m_1\le j\le m_2).
+\]
+Finite families satisfying as many of these moments as desired are given
+explicitly in \cite[(29)--(30)]{LuYao}.  We choose the moment range larger
+than every derivative order used below.
+
+Translate and reflect \eqref{eq:half-reflection} to treat both endpoints
+of $(0,1)$.  A smooth partition of unity consisting of a left endpoint
+piece, an interior piece, and a right endpoint piece localizes the
+half-space theorem; the interior piece is extended by zero.  The endpoint
+cutoffs are constant on smaller collars.  This produces a bounded interval
+extension which, on those collars, is exactly the appropriate finite
+reflection formula.  To spell out the product step, set
+$D_j=\R^j\times(0,1)^{n-j}$ for $0\le j\le n$.  Extend from $D_{j-1}$ to
+$D_j$ by applying the interval formula in coordinate $j$.  If $g$ is any
+global representative of an element of $F_{p,q}^s(D_{j-1})$, the localized
+half-space theorem gives a global representative of this new function with
+norm at most $C\|g\|_{F_{p,q}^s(\R^n)}$.  Taking the infimum over $g$ proves
+boundedness $F_{p,q}^s(D_{j-1})\to F_{p,q}^s(D_j)$.  Composing these $n$
+maps gives the asserted cube extension.
+
+Expanding the finite tensor product yields \eqref{eq:affine-sum}.  Finally,
+multiply by a smooth compactly supported function which is one on a still
+smaller collar of $\bar Q$.  Smooth multiplication is bounded on
+$F_{p,q}^s$, and all claimed properties remain valid after decreasing
+$\rho$.
+\end{proof}
+
+For a face it is useful to make its distance completely explicit.  Write
+\begin{equation}\label{eq:face}
+ \Gamma=\Gamma_{I,\epsilon}
+ =\{x\in\R^n:x_i=\epsilon_i\ (i\in I),\ 0<x_j<1\ (j\notin I)\},
+\end{equation}
+where $\epsilon_i\in\{0,1\}$ and $|I|=k$.  If
+$\delta(t)=\dist(t,(0,1))$, then
+\begin{equation}\label{eq:distance-formula}
+ d_\Gamma(x)^2=
+ \sum_{i\in I}|x_i-\epsilon_i|^2+
+ \sum_{j\notin I}\delta(x_j)^2.
+\end{equation}
+
+\begin{lemma}[Every face weight is reflection-stable]\label{lem:distance}
+After decreasing $\rho$ in Lemma~\ref{lem:extension}, there is $B\ge1$
+such that for every open face $\Gamma$, every collar cell meeting
+$\{d_\Gamma<\rho\}$, every affine term $T_A$ on that cell, and every point
+$x$ in the intersection,
+\begin{equation}\label{eq:distance-comparison}
+ d_\Gamma(T_Ax)\le B d_\Gamma(x).
+\end{equation}
+The constant is independent of the face and of the cell.
+\end{lemma}
+
+\begin{proof}
+Take $\rho<1/4$ and smaller, if necessary, so that every reflected point
+in the construction lies in $Q$.  For $i\in I$, closeness to $\Gamma$
+forces $x_i$ to be close to the specified endpoint $\epsilon_i$, not the
+opposite endpoint.  The corresponding component of $T_A$ is either the
+identity or a reflection/dilation about $\epsilon_i$, and hence
+\[
+ |(T_Ax)_i-\epsilon_i|\le B|x_i-\epsilon_i|
+\]
+for the maximum $B$ of the finitely many slopes.  For $j\notin I$,
+$(T_Ax)_j\in(0,1)$, so $\delta((T_Ax)_j)=0$.  Formula
+\eqref{eq:distance-formula} proves \eqref{eq:distance-comparison}.
+\end{proof}
+
+\section{The conjecture}
+
+\begin{theorem}[Conjecture 4.22]\label{thm:main}
+Let $Q=(0,1)^n$, $n\ge2$, and suppose
+\[
+ 1\le p<\infty,\qquad 0<q<\infty,\qquad s>\sigma_{p,q}.
+\]
+Then
+\[
+ F_{p,q}^{s,\rinf}(Q)=F_{p,q}^{s,\rinf}(Q)^*
+\]
+with equivalent quasi-norms.  In fact the operator $E_Q$ in
+Lemma~\ref{lem:extension} restricts to a bounded linear map
+\[
+ E_Q:F_{p,q}^{s,\rinf}(Q)^*\longrightarrow
+ F_{p,q}^{s,\rinf}(\R^n\setminus\partial Q)
+\]
+and remains a right inverse to restriction.
+\end{theorem}
+
+\begin{proof}
+Let $f\in F_{p,q}^{s,\rinf}(Q)^*$ and set $F=E_Qf$.  Its ordinary
+$F_{p,q}^s(\R^n)$ norm is at most a constant times
+$\|f\|_{F_{p,q}^s(Q)}$ by Lemma~\ref{lem:extension}.  Fix a critical face
+$\Gamma=\Gamma_{I,\epsilon}$, write $k=|I|$, and let
+$r=s-k/p\in\N_0$.  Fix a normal multi-index $\alpha$, so
+$\alpha_j=0$ for $j\notin I$ and $|\alpha|=r$.
+
+Choose the reinforced collar inside the region where the cutoff from
+Lemma~\ref{lem:extension} is one.  On the interior of each collar cell,
+differentiating the finite affine formula gives
+\begin{equation}\label{eq:derivative-sum}
+ D^\alpha F(x)=\sum_A c_{A,\alpha}(D^\alpha f)(T_Ax).
+\end{equation}
+This also holds distributionally across cell boundaries; alternatively,
+those boundaries have measure zero for the weighted $L_p$ estimate.  The
+moment order in Lemma~\ref{lem:extension} was chosen larger than $r$.
+
+For a collar cell $C$, the finite-sum inequality (using $p\ge1$), followed
+by a change of variables $y=T_Ax$, gives
+\begin{align*}
+ &\int_{C\cap U_\Gamma}|D^\alpha F(x)|^p
+          \frac{dx}{d_\Gamma(x)^k}\\
+ &\quad\le C\sum_A\int_{C\cap U_\Gamma}
+       |D^\alpha f(T_Ax)|^p\frac{dx}{d_\Gamma(x)^k}\\
+ &\quad\le C\sum_A\int_{T_A(C\cap U_\Gamma)}
+       |D^\alpha f(y)|^p\frac{dy}{d_\Gamma(y)^k}.
+\end{align*}
+For the second inequality we used
+\eqref{eq:distance-comparison} in the form
+$d_\Gamma(x)^{-k}\le B^k d_\Gamma(T_Ax)^{-k}$, together with the uniformly
+bounded Jacobians of the finitely many affine maps.  Moreover
+$T_A(C\cap U_\Gamma)$ lies in $Q\cap\{d_\Gamma<B\varepsilon\}$.
+
+There are only finitely many cells and affine terms.  Summing, and using
+the independence of the intrinsic condition from the precise small collar
+width, yields
+\begin{equation}\label{eq:weighted-bound}
+ \left(\int_{U_\Gamma}|D^\alpha F(x)|^p
+       \frac{dx}{d_\Gamma(x)^k}\right)^{1/p}
+ \le C\left(\int_{Q\cap U'_\Gamma}|D^\alpha f(y)|^p
+       \frac{dy}{d_\Gamma(y)^k}\right)^{1/p}.
+\end{equation}
+The construction and estimate apply simultaneously to every critical face
+and every required normal multi-index.  Thus
+\[
+ \|E_Qf\|_{F_{p,q}^{s,\rinf}(\R^n\setminus\partial Q)}
+ \le C\|f\|_*.
+\]
+Because $E_Qf|_Q=f$, this proves
+$F_{p,q}^{s,\rinf}(Q)^*\hookrightarrow F_{p,q}^{s,\rinf}(Q)$.
+The reverse embedding is the immediate restriction observation from the
+source, and the displayed estimates give equivalence of quasi-norms.
+\end{proof}
+
+\begin{corollary}[The intrinsic Sobolev example]\label{cor:sobolev}
+For the unit square $Q\subset\R^2$,
+\[
+ W_2^{1,\rinf}(Q)^*
+ =\left\{f\in W^{1,2}(Q):
+   \int_Q\frac{|f(x)|^2}{\dist(x,\Gamma_0)^2}\,dx<\infty\right\}
+ =F_{2,2}^{1,\rinf}(Q),
+\]
+where $\Gamma_0$ is the set of four vertices, with equivalent norms.
+Consequently the intrinsic space has an oscillating $u$-Riesz basis for
+every integer $u>1$.
+\end{corollary}
+
+\begin{proof}
+For $n=2$, $s=1$, and $p=q=2$, the only critical stratum has $l=0$,
+$k=2$, and $r=0$, so \eqref{eq:reinforced} is exactly the displayed corner
+condition.  Theorem~\ref{thm:main} identifies the intrinsic and extrinsic
+spaces.  The source's wavelet theorem for the latter therefore transfers
+to the former.
+\end{proof}
+
+\section{Verification, scope, and novelty status}
+
+The proof is analytic; no numerical experiment is needed.  The following
+checks are explicit in the argument.
+\begin{itemize}[leftmargin=*]
+ \item The external functional-space input is precisely the finite
+ common-extension case of Lu--Yao Theorem~23, not their infinite universal
+ reflection series.  Finiteness is what makes the weighted argument
+ immediate.
+ \item Formula \eqref{eq:distance-formula} includes the tangential endpoint
+ contribution to the distance from an \emph{open} face.  Under reflection
+ that contribution becomes zero; it is not silently discarded.
+ \item The cutoff is one on all reinforced collars, so no derivative of the
+ cutoff appears in \eqref{eq:derivative-sum}.
+ \item The restriction $p\ge1$ is used exactly in the finite-sum $L_p$
+ estimate.  The proof covers every $0<q<\infty$ in the conjecture.
+\end{itemize}
+
+The result is for an axis-parallel cube.  Extending the same proof to a
+general polyhedron would require a separate construction compatible with
+intersecting non-orthogonal faces and is not claimed here.
+
+Targeted searches through 9 August 2026 for the arXiv id, the exact
+intrinsic/extrinsic reinforced-space notation, Conjecture 4.22, and the
+extension problem found the source thesis and related reinforced-space work,
+but no paper stating this equality.  Lu and Yao prove the reflection
+extension theorem used here, but do not discuss reinforced face weights or
+Scharf's conjecture.  Novelty is therefore plausible, not certified.
+
+\begin{thebibliography}{9}
+\bibitem{Scharf}
+B.~Scharf,
+\emph{Wavelets in function spaces on cellular domains},
+arXiv:1302.3751 (2013).
+
+\bibitem{LuYao}
+H.~Lu and L.~Yao,
+\emph{On Seeley-type universal extension operators for the upper half
+space}, arXiv:2211.15567v2 (2024), especially Theorem~23 and
+equations (29)--(30).
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,273 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,graphicx,booktabs}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\newcommand{\T}{\mathbb T}
+\newcommand{\M}{\mathcal M}
+\newcommand{\F}{\mathcal F}
+\newcommand{\E}{\mathbb E}
+\newcommand{\tr}{\operatorname{Tr}}
+\newcommand{\BMO}{\operatorname{BMO}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.62em}
+
+\title{Failure of Unconditional Extrapolation for\\Operator-Valued Dyadic Paraproducts}
+\author{Run \texttt{fa\_banach\_001}, lane 10}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\textbf{Status.} Candidate full counterexample, likely valid, for expert review.
+
+\section{Source question}
+
+Let $(\F_j)_{j\geq0}$ be the usual dyadic filtration on the circle and
+write $E_j$ and $d_j=E_j-E_{j-1}$ for conditional expectation and
+martingale difference.  For a von Neumann algebra $\M$ with a normal
+semifinite faithful trace, Mei defines the left dyadic paraproduct
+\[
+ \pi_\varphi f=\sum_j(d_j\varphi)(E_{j-1}f)
+ \quad\text{on }L^p(\T;L^p(\M)).
+\]
+Theorem~1.2 of \cite{Mei} proves that boundedness for one
+$1<p<\infty$ extrapolates to all such $p$ provided
+$\varphi\in\BMO_{\M}(\T,\M)$.  The paper then asks whether that
+operator-norm BMO assumption can be removed
+\cite[Open Question, PDF p.~9]{Mei}.
+
+\begin{center}
+ \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+Equivalently, the question asks whether boundedness of $\pi_\varphi$ on
+one $L^p(\T;L^p(\M))$ alone forces boundedness on every such space.
+
+\section{Claimed contribution}
+
+\begin{theorem}\label{thm:main}
+There are a semifinite tracial von Neumann algebra $\M$ and an
+$\M$-valued Bochner integrable symbol $\varphi$ such that
+\[
+ \|\pi_\varphi\|_{L^2(\T;L^2(\M))\to L^2(\T;L^2(\M))}\leq1,
+\]
+but, for every $2<p<\infty$,
+\[
+ \pi_\varphi:L^p(\T;L^p(\M))\longrightarrow
+ L^p(\T;L^p(\M))
+ \quad\text{is unbounded}.
+\]
+The symbol belongs to $L^q(\T;\M)$ in operator norm for every finite
+$q$, but $\|\varphi\|_{\BMO_{\M}}=\infty$.  Hence the open question has
+a negative answer.
+\end{theorem}
+
+\section{Proof intuition}
+
+The one-sided paraproduct can see columns and rows very differently.  In an
+$n\times n$ matrix corner, put successive martingale differences in the
+first row: $d_k\varphi=r_k e_{1k}$.  On $L^2$, martingale orthogonality and
+the identity $\|e_{1k}x\|_2=\|e_{kk}x\|_2$ turn the output norm into a sum
+of mutually orthogonal input rows, so the norm is at most one.  On the
+identity matrix, however, the output is the row
+$(r_1,\ldots,r_n)$, whose only singular value is $\sqrt n$.  Its ratio to
+the Schatten-$p$ norm of the identity is $n^{1/2-1/p}$.
+
+A single finite block gives only a large norm, not an unbounded operator.
+We place the $n$th block on its own exponentially short dyadic interval and
+use mutually orthogonal matrix corners.  The resulting infinite symbol is
+Bochner integrable, retains the uniform $L^2$ contraction, and contains all
+the divergent $L^p$ tests simultaneously.
+
+\section{Construction}
+
+Identify $\T$ with $[0,1)$ and let
+\[
+ \mathcal H=\bigoplus_{n\geq1}\mathbb C^n,
+ \qquad \M=B(\mathcal H),
+\]
+equipped with its usual trace.  In the $n$th summand let
+$e_{ab}^{(n)}$ denote the standard matrix units and let
+$P_n=\sum_{k=1}^n e_{kk}^{(n)}$.
+
+For $n\geq1$, set
+\[
+ I_n=[2^{-n},3\cdot2^{-(n+1)}),\qquad m_n=n+1.
+\]
+Thus $I_n$ is an atom of $\F_{m_n}$, has length $2^{-(n+1)}$, and the
+intervals $I_n$ are pairwise disjoint.  On $I_n$ let
+$r_{n,1},\ldots,r_{n,n}$ be the local Rademacher functions: after extension
+by zero outside $I_n$, they satisfy
+\[
+ r_{n,k}\text{ is }\F_{m_n+k}\text{-measurable},\qquad
+ E_{m_n+k-1}r_{n,k}=0,\qquad |r_{n,k}|=1_{I_n}.
+\]
+Define
+\begin{equation}\label{eq:symbol}
+ \varphi(t)=\sum_{n=1}^{\infty}\sum_{k=1}^n
+ r_{n,k}(t)e_{1k}^{(n)}.
+\end{equation}
+At any $t$, at most one outer summand is nonzero.  On $I_n$ the operator
+$\varphi(t)$ is a rank-one row of length $\sqrt n$, so
+\[
+ \|\varphi(t)\|_{\M}=\sqrt n\quad(t\in I_n).
+\]
+Consequently
+\[
+ \int_\T\|\varphi(t)\|_{\M}^q\,dt
+ =\sum_{n\geq1}2^{-(n+1)}n^{q/2}<\infty
+ \qquad(1\leq q<\infty).
+\]
+In particular, \eqref{eq:symbol} is a legitimate Bochner integrable
+$\M$-valued symbol.
+
+The placement in the filtration gives the exact martingale differences
+\begin{equation}\label{eq:diff}
+ d_j\varphi
+ =\sum_{\substack{n\geq1,\ 1\leq k\leq n\\m_n+k=j}}
+ r_{n,k}e_{1k}^{(n)}.
+\end{equation}
+The sum in \eqref{eq:diff} is finite for each $j$.  Indeed, coarser local
+Rademachers are already $\F_{j-1}$-measurable, while finer ones have zero
+conditional expectation at both levels $j-1$ and $j$.
+
+\section{The uniform \texorpdfstring{$L^2$}{L2} bound}
+
+\begin{lemma}\label{lem:l2}
+The series defining $\pi_\varphi$ converges on
+$L^2(\T;S^2(\mathcal H))$ and $\|\pi_\varphi\|_{2\to2}\leq1$.
+\end{lemma}
+
+\begin{proof}
+Start with a finite martingale $f$.  Terms belonging to different global
+martingale levels are orthogonal in $L^2$.  At a common level, terms from
+different $n$ have orthogonal left ranges.  Hence \eqref{eq:diff} gives
+\begin{align*}
+ \|\pi_\varphi f\|_2^2
+ &=\sum_{n\geq1}\sum_{k=1}^n
+   \bigl\|r_{n,k}e_{1k}^{(n)}E_{m_n+k-1}f\bigr\|_2^2. \tag{1}
+\end{align*}
+All norms here include integration in $t$ and the Hilbert--Schmidt norm.
+Because $I_n\in\F_{m_n}$ and $m_n+k-1\geq m_n$,
+\[
+ 1_{I_n}E_{m_n+k-1}f
+ =E_{m_n+k-1}(1_{I_n}f).
+\]
+For every Hilbert--Schmidt operator $x$,
+\[
+ \|e_{1k}^{(n)}x\|_2=\|e_{kk}^{(n)}x\|_2.
+\]
+Conditional expectation is an $L^2$ contraction and commutes with the
+constant matrix unit, so each summand in (1) is at most
+\[
+ \|1_{I_n}e_{kk}^{(n)}f\|_2^2.
+\]
+The intervals $I_n$ are disjoint and all the projections
+$e_{kk}^{(n)}$ are mutually orthogonal.  Therefore
+\[
+ \|\pi_\varphi f\|_2^2
+ \leq\sum_{n\geq1}\sum_{k=1}^n
+ \|1_{I_n}e_{kk}^{(n)}f\|_2^2
+ \leq\|f\|_2^2.
+\]
+The same estimate for partial sums makes the full orthogonal series
+convergent.  Density then gives the asserted contraction on all of $L^2$.
+\end{proof}
+
+\section{Failure on every \texorpdfstring{$L^p$}{Lp} above two}
+
+Fix $n$ and use the $\F_{m_n}$-measurable test function
+\[
+ f^{(n)}(t)=1_{I_n}(t)P_n.
+\]
+For every $1\leq k\leq n$,
+$E_{m_n+k-1}f^{(n)}=f^{(n)}$.  Thus
+\begin{equation}\label{eq:output}
+ \pi_\varphi f^{(n)}
+ =\sum_{k=1}^n r_{n,k}e_{1k}^{(n)}.
+\end{equation}
+The projection $P_n$ has $n$ singular values equal to one, whereas the
+row in \eqref{eq:output} has exactly one nonzero singular value, namely
+$\sqrt n$.  It follows that, for every finite $p$,
+\[
+ \|f^{(n)}\|_{L^p(\T;S^p)}=|I_n|^{1/p}n^{1/p},
+ \qquad
+ \|\pi_\varphi f^{(n)}\|_{L^p(\T;S^p)}
+ =|I_n|^{1/p}\sqrt n.
+\]
+Hence
+\begin{equation}\label{eq:ratio}
+ \frac{\|\pi_\varphi f^{(n)}\|_p}{\|f^{(n)}\|_p}
+ =n^{1/2-1/p}.
+\end{equation}
+For each fixed $p>2$, the right-hand side tends to infinity.  Therefore
+$\pi_\varphi$ is unbounded on every $L^p(\T;S^p)$ with $p>2$.
+Together with Lemma~\ref{lem:l2}, this proves Theorem~\ref{thm:main}.
+
+Finally, the construction lies exactly outside the hypothesis in the source.
+Since every local Rademacher has mean zero on $I_n$, one has
+$\varphi_{I_n}=0$, and therefore
+\[
+ \left(\frac1{|I_n|}\int_{I_n}
+       \|\varphi-\varphi_{I_n}\|_{\M}^2\,dt\right)^{1/2}
+ =\sqrt n.
+\]
+Taking the supremum over dyadic intervals proves
+$\|\varphi\|_{\BMO_{\M}}=\infty$.
+
+\begin{remark}[Finite tracial variant]
+If a finite trace is preferred, replace $B(\mathcal H)$ by
+$\prod_{n\geq1}M_n$ with
+$\tau((x_n))=\sum_{n\geq1}2^{-n}\operatorname{tr}_n(x_n)$, where
+$\operatorname{tr}_n$ is normalized.  The same symbol and the same proof
+work blockwise.  Both norms in the $n$th test acquire the same factor
+$2^{-n/p}$, so the ratio \eqref{eq:ratio} is unchanged.
+\end{remark}
+
+\section{Verification, limitations, and novelty status}
+
+The script \texttt{code/verify\_counterexample.py} independently checks the
+local martingale-difference identities, random finite-block versions of the
+$L^2$ contraction for $n\leq8$, the rank-one singular-value computation, and
+the exact ratios \eqref{eq:ratio} for several $p$.  These computations are
+sanity checks; the proof above is exact and does not depend on them.
+
+The construction answers only the yes/no extrapolation question.  It does not
+characterize all symbols whose paraproducts extrapolate, nor does it settle
+the still broader problem of characterizing $L^2$ boundedness of
+operator-valued paraproducts.
+
+A bounded novelty search was performed on 11 August 2026: the run's title,
+abstract, source-signal, result, and attempt indexes were searched for the
+arXiv id and the core phrases; exact and keyword searches were made for an
+operator-valued paraproduct bounded on $L^2$ but unbounded on $L^p$; and
+later arXiv papers citing the source were inspected.  In particular,
+Wei--Zhang still state that general $L^2$ boundedness characterization is
+open and formulate extrapolation with the same strong BMO hypothesis
+\cite{WeiZhang}.  No matching counterexample was located.  This is bounded
+negative evidence, not a priority claim.
+
+\textbf{Human-review recommendation.} Send to a specialist in
+noncommutative martingales.  The critical audit points are the global
+martingale-difference identity \eqref{eq:diff}, the orthogonality in
+Lemma~\ref{lem:l2}, and whether the source question is read in its literal
+ambient class of Bochner integrable $\M$-valued symbols.
+
+\begin{thebibliography}{9}
+\bibitem{Mei}
+T.~Mei,
+\emph{An extrapolation of operator valued dyadic paraproducts},
+J. London Math. Soc. (2) 81 (2010), no.~3, 650--662;
+\href{https://arxiv.org/abs/0709.4229}{arXiv:0709.4229}.
+
+\bibitem{WeiZhang}
+Z.~Wei and H.~Zhang,
+\emph{Boundedness of operator-valued commutators involving martingale
+paraproducts},
+\href{https://arxiv.org/abs/2401.08729}{arXiv:2401.08729}.
+\end{thebibliography}
+
+\end{document}

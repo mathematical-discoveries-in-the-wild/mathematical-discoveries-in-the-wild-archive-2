@@ -1,0 +1,285 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\M}{\mathcal M}
+\newcommand{\E}{\mathcal E}
+\newcommand{\Lip}{\operatorname{Lip}}
+\makeatletter
+\renewcommand{\@seccntformat}[1]{\csname the#1\endcsname\hspace{0.65em}}
+\makeatother
+
+\title{Near-linear Euclidean Lipschitz selection\
+for interval-valued maps}
+\author{Automated mathematical discovery packet}
+\date{August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Candidate partial result, likely valid, subject to human review. It fully
+answers the interval-valued case singled out in the source's open Remark 1.4;
+the arbitrary half-plane-valued case remains open.}}
+\end{center}
+
+\section{Source problem}
+
+The source is P.~Shvartsman, \emph{Efficient Algorithms for Lipschitz
+Selections of Set-Valued Mappings in $\R^2$}, arXiv:2503.19094
+\cite{Shvartsman}. Its Theorem 1.3 gives a quadratic-work, quadratic-storage
+gap algorithm for half-plane-valued maps. On physical PDF page 4 (source
+TeX line 1341), Remark 1.4 asks:
+
+\begin{quote}
+``Can we replace the Projection Algorithm with an algorithm requiring at most
+$O(N\log N)$ operations and $O(N)$ storage, similar to the Approximate
+Selection Algorithm described in [35]?''
+\end{quote}
+
+The domain in the example is an $N$-point subset of $\R^n$ with Euclidean
+distance. The remark then says explicitly that the answer is unclear even for
+$D=1$, when every value is a closed interval in $\R$.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{The complete open Remark 1.4, rendered from the stored arXiv source
+(physical PDF page 4).}
+\end{figure}
+
+\section{Definitions and output convention}
+
+Let $(\M,\rho)$ be a finite metric space. A weighted connected graph
+$G=(\M,\E)$ is an \emph{upper $t$-spanner} for $\rho$ if its shortest-path
+metric $d_G$ satisfies
+\[
+  \rho(x,y)\le d_G(x,y)\le t\rho(x,y)\qquad(x,y\in\M).
+\]
+A usual metric spanner, whose edge $xy$ has weight $\rho(x,y)$, has the first
+inequality automatically by the triangle inequality.
+
+An interval is written $I_x=[a_x,b_x]$, allowing
+$a_x=-\infty$ and $b_x=+\infty$. A selection is a map $f$ with
+$f(x)\in I_x$. Given $\lambda\ge0$, the desired gap output is either
+
+\begin{enumerate}[label=(\roman*)]
+\item a sound certificate that no $\lambda$-Lipschitz selection exists; or
+\item a selection with Lipschitz constant at most $t\lambda$.
+\end{enumerate}
+
+This is the same one-sided output convention as the source: the algorithm is
+allowed to return a controlled-factor success even when no selection exists
+at the smaller constant $\lambda$.
+
+\section{Proof intuition}
+
+For scalar intervals, all global compatibility information collapses to one
+min-plus distance transform. With the complete metric it is
+\[
+  x\longmapsto \min_y\{b_y+\lambda\rho(x,y)\}.
+\]
+Replacing $\rho$ by an upper spanner metric can only increase this transform.
+Consequently, failure for the spanner is still a genuine failure for the
+original metric. On the other hand, success is Lipschitz for the spanner
+metric and loses only its stretch factor when returned to $\rho$.
+
+The transform is exactly a multi-source shortest-path computation. A
+fixed-dimensional Euclidean $(1+\varepsilon)$-spanner has only linearly many
+edges and is constructible in near-linear time, so one shortest-path pass
+delivers the requested complexity. The remaining $\R^2$ half-plane problem
+does not collapse to a single scalar transform because its constraints have
+varying normal directions.
+
+\section{Spanner reduction}
+
+\begin{lemma}[exact interval criterion]\label{lem:criterion}
+Suppose all $I_x=[a_x,b_x]$ are nonempty. There is a
+$\lambda$-Lipschitz selection for $(\M,\rho)$ if and only if
+\[
+ a_x\le b_y+\lambda\rho(x,y)\qquad(x,y\in\M).
+\]
+\end{lemma}
+
+\begin{proof}
+Necessity follows from
+$a_x\le f(x)\le f(y)+\lambda\rho(x,y)\le
+b_y+\lambda\rho(x,y)$.
+
+If at least one $b_y$ is finite, put
+\[
+ u(x)=\min_{y:\,b_y<+\infty}\{b_y+\lambda\rho(x,y)\}.
+\]
+The assumed inequalities give $a_x\le u(x)$, while the term $y=x$ gives
+$u(x)\le b_x$ whenever $b_x$ is finite. Thus $u(x)\in I_x$. The triangle
+inequality gives $u(x)\le u(z)+\lambda\rho(x,z)$ and its symmetric version,
+so $u$ is $\lambda$-Lipschitz. If every $b_y=+\infty$, the constant equal to
+the largest finite lower endpoint is a selection; use zero if all lower
+endpoints are $-\infty$.
+\end{proof}
+
+\begin{theorem}[sparse-spanner interval algorithm]\label{thm:graph}
+Let $G=(\M,\E)$ be an upper $t$-spanner for a metric $\rho$, let
+$I_x=[a_x,b_x]$ be nonempty closed intervals, and let $\lambda\ge0$. There is
+an algorithm with work
+\[
+ O\bigl((|\M|+|\E|)\log |\M|\bigr)
+\]
+and storage $O(|\M|+|\E|)$ which produces one of the following:
+
+\begin{enumerate}[label=(\roman*)]
+\item a correct conclusion that no $\lambda$-Lipschitz selection exists for
+$(\M,\rho)$; or
+\item a selection $f$ with $\|f\|_{\Lip(\M,\rho)}\le t\lambda$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+If every upper endpoint is infinite, use the constant selection from
+Lemma~\ref{lem:criterion}. Otherwise define
+\[
+ u_G(x)=\min_{y:\,b_y<+\infty}\{b_y+\lambda d_G(x,y)\}.
+\]
+If $a_x>u_G(x)$ for some $x$, choose a minimizer $y$. Since
+$d_G(x,y)\ge\rho(x,y)$,
+\[
+ a_x>b_y+\lambda d_G(x,y)
+       \ge b_y+\lambda\rho(x,y).
+\]
+This violates the necessary condition in Lemma~\ref{lem:criterion}, so the
+no-go conclusion is sound.
+
+Otherwise $u_G(x)\in I_x$: the lower inequality is the passed test, and the
+upper inequality follows from the term $y=x$ whenever $b_x$ is finite. As in
+the proof of the lemma,
+\[
+ |u_G(x)-u_G(z)|\le\lambda d_G(x,z)
+                    \le t\lambda\rho(x,z).
+\]
+Thus $u_G$ is the promised selection.
+
+For the complexity claim, let $B$ be the smallest finite upper endpoint.
+Initialize each vertex $y$ with finite upper endpoint at label $b_y-B\ge0$
+and give every graph edge $e$ length $\lambda w(e)\ge0$. A single
+multi-source version of Dijkstra's label-setting algorithm \cite{Dijkstra}
+computes $u_G-B$. Its work and storage have the stated bounds.
+\end{proof}
+
+\section{Near-linear Euclidean consequence}
+
+\begin{corollary}[the source's interval case]\label{cor:euclidean}
+Fix $n\in\mathbb N$ and $\varepsilon>0$. Given an $N$-point set
+$\M\subset\R^n$, nonempty closed intervals $I_x$, and $\lambda\ge0$, one can
+produce either
+
+\begin{enumerate}[label=(\roman*)]
+\item a sound certificate that no $\lambda$-Lipschitz interval selection
+exists; or
+\item an interval selection with Euclidean Lipschitz constant at most
+$(1+\varepsilon)\lambda$,
+\end{enumerate}
+
+using $O_{n,\varepsilon}(N\log N)$ operations and $O_{n,\varepsilon}(N)$
+storage.
+\end{corollary}
+
+\begin{proof}
+Standard fixed-dimensional Euclidean spanner constructions produce a
+$(1+\varepsilon)$-spanner with $O_{n,\varepsilon}(N)$ edges in
+$O_{n,\varepsilon}(N\log N)$ time and linear storage
+\cite{AryaEtAl}. Apply Theorem~\ref{thm:graph} with
+$t=1+\varepsilon$.
+\end{proof}
+
+This gives a full affirmative answer to the $D=1$ case that Remark 1.4
+explicitly singles out. When the domain lies in $\R$, sorting the points and
+joining consecutive points produces an exact $1$-spanner, so the success
+constant improves to $\lambda$ itself.
+
+The same proof coordinate by coordinate gives another extension: for fixed
+$D$, if every value is an axis-aligned box in $(\R^D,\|\cdot\|_\infty)$, the
+same gap algorithm uses $O_{n,D,\varepsilon}(N\log N)$ work and linear storage
+and returns a $(1+\varepsilon)\lambda$-selection. A no-go in one coordinate is
+a valid no-go for the box problem.
+
+\section{Verification and upgrade attempts}
+
+The script
+\texttt{code/verify\_spanner\_interval\_selection.py} checks 600 random line
+instances using the exact path spanner and 600 random planar instances using
+small greedy $1.8$-spanners. It includes rays and the whole line. In every
+case it verifies the spanner inequalities, compares no-go outputs with the
+complete-metric criterion of Lemma~\ref{lem:criterion}, and checks interval
+membership and the promised Lipschitz bound. It prints
+\texttt{VERDICT: PASS}. The experiment is a regression check, not the proof.
+
+Eight focused upgrade routes are recorded in the run's \texttt{attempts/}
+directory. The first four establish the exact scalar criterion, the abstract
+spanner transfer, the Euclidean near-linear bound, and the unbounded/box
+extensions. The remaining routes test an exact factor-one distance transform,
+a sparse half-plane feasibility reduction, WSPD compression of the source
+algorithm, and approximate convex optimization. They do not yield the full
+arbitrary-half-plane algorithm.
+
+\section{Literature and novelty check}
+
+The bounded search covered the exact title and arXiv id, the exact phrase
+``remains unclear even in the seemingly simpler one dimensional setting'',
+the author together with interval/Lipschitz-selection/near-linear keywords,
+and combinations with Euclidean spanners and shortest paths. Searches used
+arXiv and primary journal or conference pages. No later paper stating this
+interval subproblem or the spanner solution was found.
+
+Novelty confidence is moderate-to-high. The two ingredients are elementary
+once juxtaposed, and the Euclidean spanner theorem is classical, so an
+unindexed prior observation remains possible. However, the 2025 source itself
+explicitly labels the interval case unclear, and the bounded 2026 search found
+no subsequent answer.
+
+\section{Limitations and human-review recommendation}
+
+The near-linear constants assume fixed ambient dimension $n$ and fixed
+$\varepsilon$; the claim is not a dimension-uniform algorithm. The result
+fully resolves only interval-valued maps and, by products, axis-aligned boxes.
+It does not solve the source's arbitrary half-plane or polygon problem in
+$\R^2$.
+
+For that remaining case, spanner edges reduce the problem to a sparse linear
+feasibility system, but no exact near-linear solver or compressed version of
+the Projection Algorithm is supplied. Human review should check the direction
+of the two spanner inequalities in the no-go and success arguments and confirm
+that the cited Euclidean spanner construction matches the source's fixed-
+dimensional real-RAM model. All other steps are elementary.
+
+\begin{thebibliography}{9}
+\bibitem{Shvartsman}
+P.~Shvartsman,
+\emph{Efficient Algorithms for Lipschitz Selections of Set-Valued Mappings in
+$\mathbf R^2$},
+arXiv:2503.19094; J. Approx. Theory 316 (2026), article 106277,
+doi:10.1016/j.jat.2025.106277.
+
+\bibitem{AryaEtAl}
+S.~Arya, G.~Das, D.~M.~Mount, J.~S.~Salowe, and M.~Smid,
+\emph{Euclidean spanners: short, thin, and lanky},
+Proc. 27th ACM Symposium on Theory of Computing (1995), 489--498,
+doi:10.1145/225058.225191.
+
+\bibitem{Dijkstra}
+E.~W.~Dijkstra,
+\emph{A note on two problems in connexion with graphs},
+Numer. Math. 1 (1959), 269--271,
+doi:10.1007/BF01386390.
+\end{thebibliography}
+
+\end{document}

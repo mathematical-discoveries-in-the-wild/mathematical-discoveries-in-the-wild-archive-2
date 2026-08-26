@@ -1,0 +1,254 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+\usepackage{xcolor}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\CondAb}{\operatorname{CondAb}}
+\newcommand{\Extr}{\operatorname{Extr}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\Ball}{\mathcal B}
+
+\title{Contractively split compact projective\\
+condensed abelian groups are free}
+\author{Candidate partial result for arXiv:2605.11731}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+Candidate partial result; likely valid; human review requested.  This packet
+does not claim a full answer to the source question.
+
+\section{Source question}
+
+Clausen and Scholze prove that every compact projective condensed abelian
+group is a retract of $\Z[S]$ for some extremally disconnected profinite set
+$S$, and then ask the following question \cite[Question 3.6, p.~26]{CS}:
+
+\begin{quote}
+Are all compact projective condensed abelian groups isomorphic to $\Z[S]$
+for some $S\in\Extr$?
+\end{quote}
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The source emphasizes that the unrestricted question is closely related to
+an old question on the structure of injective Banach spaces
+\cite[Section 1.6.1]{ASC}.
+
+\section{Definitions and statement}
+
+Write a profinite set as $S=\varprojlim_i S_i$, with each $S_i$ finite.  The
+explicit description used in the source is
+\[
+ \Z[S]=\bigcup_{n\geq 0}\Ball_n(S),\qquad
+ \Ball_n(S):=\varprojlim_i
+ \{a\in\Z[S_i]:\lVert a\rVert_1\leq n\}.
+\]
+An endomorphism $e:\Z[S]\to\Z[S]$ is determined, under the
+free/forgetful adjunction, by its \emph{generator map}
+\[
+ g_e:S\longrightarrow \Z[S].
+\]
+We call $e$ \emph{generator-contractive} if $g_e$ factors through
+$\Ball_1(S)$.  This is the integral radius-one condition in the canonical
+$\ell^1$ filtration; it does not mean that every presentation of the same
+retract has this property.
+
+\begin{theorem}[Radius-one classification]\label{thm:main}
+Let $S\in\Extr$ and let $e:\Z[S]\to\Z[S]$ be a
+generator-contractive idempotent.  There is an extremally disconnected
+profinite retract $T\subseteq S$ such that
+\[
+ \im(e)\cong \Z[T].
+\]
+More precisely, there is a clopen partition
+$S=S_0\sqcup S_+\sqcup S_-$ and a continuous map
+$r:S_+\sqcup S_-\to T$, with $T\subseteq S_+$ and $r|_T=\mathrm{id}_T$,
+for which
+\[
+ g_e(s)=
+ \begin{cases}
+ 0,&s\in S_0,\\
+ [r(s)],&s\in S_+,\\
+ -[r(s)],&s\in S_-.
+ \end{cases}
+\]
+Conversely, every signed partial retraction of this form induces a
+generator-contractive idempotent with image $\Z[T]$.
+\end{theorem}
+
+Consequently, Question 3.6 has an affirmative answer for every compact
+projective which admits a presentation as the image of a
+generator-contractive idempotent on some $\Z[S]$.
+
+\section{Proof intuition}
+
+At integral $\ell^1$-radius one there are only three kinds of elements: zero,
+a positive basis vector, and a negative basis vector.  Hence the generator
+map of $e$ is a continuous signed partial map from $S$ back to $S$.
+Idempotence is unexpectedly rigid: every point hit by this partial map must
+be hit positively and fixed.  Those fixed points form a retract $T$ of $S$.
+The signed partial map then linearizes to a retraction $\Z[S]\to\Z[T]$, and
+the inclusion $T\hookrightarrow S$ linearizes to its section.
+
+This mechanism is special to radius one.  Starting at radius two, a generator
+may map to a sum or difference of basis vectors, so there is no point-valued
+map whose fixed set can be extracted.
+
+\section{Proof}
+
+\begin{lemma}\label{lem:ball}
+For every profinite set $S$, there is a natural isomorphism of profinite sets
+\[
+ \Ball_1(S)\cong \{0\}\sqcup S^+\sqcup S^-,
+\]
+where the two copies of $S$ send $s$ to $[s]$ and $-[s]$ respectively.
+\end{lemma}
+
+\begin{proof}
+For a finite set $S_i$, an integral vector of $\ell^1$-norm at most one is
+exactly $0$, $[s_i]$, or $-[s_i]$.  Under every transition map between finite
+quotients, zero remains zero and the sign and total coefficient of a nonzero
+vector remain fixed.  A compatible family of positive (respectively
+negative) basis vectors is exactly a point of
+$S=\varprojlim_i S_i$.  Taking the inverse limit gives the claimed natural
+decomposition.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+By Lemma~\ref{lem:ball}, the continuous map $g_e:S\to\Ball_1(S)$ determines
+a clopen partition
+\[
+ S=S_0\sqcup S_+\sqcup S_-
+\]
+and a continuous map $r:U:=S_+\sqcup S_-\to S$ such that
+$g_e(s)=0,[r(s)],-[r(s)]$ on the respective pieces.
+
+Evaluate $e^2=e$ on the universal generator $[s]$.  If $s\in S_+$ and
+$t=r(s)$, then
+\[
+ g_e(t)=e([t])=e(g_e(s))=g_e(s)=[t].
+\]
+If $s\in S_-$ and $t=r(s)$, then
+\[
+ -g_e(t)=e(-[t])=e(g_e(s))=g_e(s)=-[t],
+\]
+so again $g_e(t)=[t]$.  Thus every point in $r(U)$ is positively fixed.
+Put
+\[
+ T:=\{t\in S_+:r(t)=t\}.
+\]
+The preceding calculation gives $r(U)\subseteq T$, while the reverse
+inclusion follows from $r(t)=t$ for $t\in T$.  Hence $r(U)=T$ and
+$r|_T=\mathrm{id}_T$.  The set $T$ is closed, being an equalizer inside the
+clopen profinite set $S_+$.
+
+If $T$ is empty, then $U$ is empty and $e=0$, giving $\im(e)=\Z[\varnothing]$.
+Otherwise choose $t_0\in T$.  Extend $r$ across the clopen piece $S_0$ by the
+constant value $t_0$.  This produces a continuous retraction $S\to T$.
+A retract of an extremally disconnected compact Hausdorff space is
+extremally disconnected: for an open $V\subseteq T$, the closure of $V$ in
+$T$ is the intersection with $T$ of the closure of its inverse image under
+the retraction, and is therefore open.  Thus $T\in\Extr$.
+
+Let $i:\Z[T]\to\Z[S]$ be induced by the inclusion.  Define
+$p:\Z[S]\to\Z[T]$ from the generator map
+\[
+ s\longmapsto
+ \begin{cases}
+ 0,&s\in S_0,\\
+ [r(s)],&s\in S_+,\\
+ -[r(s)],&s\in S_-.
+ \end{cases}
+\]
+This map is continuous by the clopen decomposition and Lemma~\ref{lem:ball}
+applied to $T$.  On universal generators, $i\circ p$ agrees with $e$, while
+$p\circ i$ is the identity because every $t\in T$ lies in $S_+$ and is fixed
+by $r$.  Hence $e=i\circ p$, $p\circ i=\mathrm{id}_{\Z[T]}$, and the image of
+$e$ is isomorphic to $\Z[T]$.
+
+Conversely, the same formulas attached to any signed partial retraction give
+$p\circ i=\mathrm{id}$, so $e=i\circ p$ is an idempotent, is
+generator-contractive, and has image $\Z[T]$.
+\end{proof}
+
+\section{Verification and stress tests}
+
+The argument is exact and uses no computation.  As a finite sanity check, the
+script \path{code/check_finite_contractive_idempotents.py} enumerates every map
+from an $n$-point set to $\{0\}\sqcup S^+\sqcup S^-$ for $1\leq n\leq5$,
+keeps the idempotents, and checks that every nonzero output targets a
+positively fixed point.  It checked respectively
+\[
+ 2,\quad 8,\quad 44,\quad 288,\quad 2192
+\]
+idempotents.  This is corroboration of the pointwise algebra only; it is not
+a proof of the continuity or extremal-disconnectedness steps.
+
+The most useful hand checks are:
+\begin{itemize}
+\item Negative outputs cause no sign error: $e(-[t])=-e([t])$, so
+idempotence still forces $e([t])=[t]$.
+\item If $e\neq0$, then $T\neq\varnothing$, because every nonzero output
+lands in $T$.
+\item The extension over $S_0$ is continuous because $S_0$ is clopen.
+\item Equality of the constructed morphisms can be checked on the universal
+generator by the free/forgetful adjunction.
+\end{itemize}
+
+\section{Limitations and full-result frontier}
+
+Every compact projective is the image of some idempotent on $\Z[S]$, and the
+quasicompactness of $S$ places its generator map in $\Ball_N(S)$ for some
+finite $N$.  The theorem settles the sharp first layer $N=1$.
+
+The proof does not extend formally to $N=2$.  Already on two points, the
+idempotent
+\[
+ e([a])=[a]+[b],\qquad e([b])=0
+\]
+has generator bound two.  Its image is free in this finite example, but it has
+no positively fixed \emph{basis point}; the fixed object is instead generated
+by the vector $[a]+[b]$.  In a profinite family, the missing step is to choose
+such integral image bases continuously.  That is exactly the new structural
+issue at higher radius, and the source's comparison with complemented
+subspaces/injective Banach spaces cautions against treating it as routine.
+
+A bounded literature search on 9 August 2026 used the exact wording of
+Question 3.6 and combinations of ``compact projective condensed abelian
+group'', ``idempotent'', ``contractive'', ``$\ell^1$'', and ``retract''.
+It covered the source notes, recent condensed-mathematics notes, and the cited
+injective-Banach context.  No matching radius-one classification was found;
+novelty is therefore provisional.
+
+\section{Human-review recommendation}
+
+The candidate is likely valid and merits review as a partial result.  Review
+should concentrate on Lemma~\ref{lem:ball}, the deduction $r(U)=T$, and the
+topological assertion that the constructed $T$ is an extremally disconnected
+retract.  The unrestricted Question 3.6 remains open.
+
+\begin{thebibliography}{9}
+\bibitem{CS}
+D. Clausen and P. Scholze,
+\emph{Condensed Mathematics and Complex Geometry},
+arXiv:2605.11731, 2026.
+
+\bibitem{ASC}
+A. Avil\'es, F. Cabello S\'anchez, J. M. F. Castillo, M. Gonz\'alez, and
+Y. Moreno,
+\emph{Separably Injective Banach Spaces},
+Lecture Notes in Mathematics 2132, Springer, 2016.
+\end{thebibliography}
+
+\end{document}

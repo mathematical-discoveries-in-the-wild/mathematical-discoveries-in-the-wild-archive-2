@@ -1,0 +1,310 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\newcommand{\T}{\mathbb T}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\FL}{\mathcal F L}
+\newcommand{\one}{\mathbf 1}
+
+\title{A noncanonical automorphism at the critical polynomial weight}
+\author{Automated mathematics run \texttt{fa\_banach\_001}\\
+Model: GPT5.6}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\linewidth}{\textbf{Status.}
+Claimed full negative resolution (counterexample), likely valid pending human
+review.  The construction works for every $1<p<\infty$.}}
+\end{center}
+
+\section{Source question}
+
+Kuznetsova and Zadeh study algebra automorphisms of
+$\ell^p(\Z,\omega_a)$, where
+\[
+  \omega_a(n)=\max(1,|n|^a).
+\]
+After proving the canonical classification in their higher-regularity range,
+they state on published page 864, in Section 3 immediately after the relevant
+corollary: ``For $a=1$ and $p>1$, the question is open''
+\cite[p.~864]{KZ}.  In context, the question is whether every automorphism at
+the critical weight $\omega_1$ must still be canonical, namely of one of the
+forms
+\[
+ (Tf)_n=\lambda^n f_n,\qquad (Tf)_n=\lambda^n f_{-n}
+ \quad(\lambda\in\T).
+\]
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=.94\linewidth]{figures/open_problem_crop.png}
+\caption{The open statement and its immediate context in \cite[p.~864]{KZ}.}
+\end{figure}
+
+\section{Definitions}
+
+Write $\T=\mathbb R/\mathbb Z$ and
+$e_n(x)=e^{2\pi i n x}$.  For $1<p<\infty$, let
+\[
+ \FL^p(\T)=\left\{u:\bigl(\widehat u(n)\bigr)_{n\in\Z}
+ \in\ell^p(\Z)\right\},
+ \qquad
+ \|u\|_{\FL^p}=\|\widehat u\|_{\ell^p},
+\]
+initially in the sense of periodic distributions.  The Fourier transform
+identifies $\ell^p(\Z,\omega_1)$ with the completion $A_p^1$ of the
+trigonometric polynomials in the norm
+\begin{equation}\label{eq:weighted-norm}
+ \|f\|_{A_p^1}^p
+ =|\widehat f(0)|^p+
+   \sum_{n\ne0}|n\widehat f(n)|^p.
+\end{equation}
+Moreover, convolution of sequences corresponds to pointwise multiplication
+in $A_p^1$.
+
+If $q=p/(p-1)$, H\"older's inequality gives
+\begin{equation}\label{eq:embedding}
+ \|f\|_\infty
+ \le \sum_n|\widehat f(n)|
+ \le |\widehat f(0)|+
+ \left(2\sum_{n\ge1}n^{-q}\right)^{1/q}
+ \left(\sum_{n\ne0}|n\widehat f(n)|^p\right)^{1/p}.
+\end{equation}
+Thus $A_p^1$ embeds continuously into $C(\T)$.
+
+\section{Idea of the proof}
+
+At order two, the source paper obtains $C^1$ regularity and invokes a
+Beurling--Helson rigidity theorem.  At the critical first-order norm, corners
+are still allowed.  We exploit precisely that endpoint: a rational
+piecewise-affine homeomorphism has constant derivative on each branch, while
+the branch cutoffs are bounded-variation multipliers on $\FL^p$.
+
+For a rational slope $r/s$, splitting Fourier frequencies modulo $s$ turns a
+localized affine composition into finitely many sparse integer-frequency
+reindexings.  Each is followed only by multiplication by a bounded-variation
+function.  Such multiplication is bounded on $\FL^p$ because, after one
+integration by parts, its coefficient convolution is an average of modulated
+discrete Hilbert transforms.  Applying this to the derivative of a composed
+trigonometric polynomial controls the critical weighted norm.  The same
+argument applies to the rational piecewise-affine inverse.
+
+\section{Two Fourier lemmas}
+
+\begin{lemma}[bounded-variation multipliers]\label{lem:bv}
+Let $1<p<\infty$ and let $m$ be a complex-valued function of bounded
+variation on $\T$.  Then multiplication by $m$ is bounded on $\FL^p(\T)$.
+\end{lemma}
+
+\begin{proof}
+Let $\mu=Dm$ be the finite complex measure which is the distributional
+derivative of $m$.  With the normalization above, for $k\ne0$,
+\[
+  2\pi i k\widehat m(k)=\widehat\mu(k).
+\]
+For a finitely supported sequence $a$, convolution by the nonzero Fourier
+coefficients of $m$ can therefore be written as
+\[
+ \sum_{k\ne0}\widehat m(k)a_{n-k}
+ =\frac1{2\pi i}\int_\T
+   \left(\sum_{k\ne0}\frac{e^{-2\pi i k t}}{k}a_{n-k}\right)d\mu(t).
+\]
+For fixed $t$, the operator in parentheses is a modulation conjugate of the
+discrete Hilbert transform
+\[
+  Ha(n)=\sum_{k\ne0}\frac{a_{n-k}}{k}.
+\]
+The discrete Hilbert transform is bounded on $\ell^p(\Z)$ for
+$1<p<\infty$; this is the standard discrete singular-integral theorem (see,
+for example, the transference treatment in \cite{Grafakos}).  All modulation
+conjugates have the same norm.  Minkowski's integral inequality now bounds
+the displayed expression by
+$C_p\|\mu\|\|a\|_{\ell^p}$.  The $k=0$ term is
+$\widehat m(0)a_n$.  Hence convolution by $\widehat m$, equivalently
+multiplication by $m$ on $\FL^p$, is bounded.
+\end{proof}
+
+\begin{lemma}[a localized rational affine branch]\label{lem:branch}
+Let $I\subset\T$ be an interval, let $r,s$ be positive integers, and let
+$b\in\mathbb R$.  On trigonometric polynomials define
+\[
+  S_{I,r/s,b}f(x)=\one_I(x)f\left(\frac rsx+b\right).
+\]
+Then $S_{I,r/s,b}$ extends boundedly on $\FL^p(\T)$ for every
+$1<p<\infty$.
+\end{lemma}
+
+\begin{proof}
+It is enough to take $r/s$ in lowest terms.  If
+$f(x)=\sum_n a_ne_n(x)$, split $n=sk+j$ with $0\le j<s$.  Directly,
+\begin{equation}\label{eq:residue}
+ \one_I(x)f\left(\frac rsx+b\right)
+ =\sum_{j=0}^{s-1}m_j(x)F_j(x),
+\end{equation}
+where
+\[
+ m_j(x)=\one_I(x)e^{2\pi i rjx/s},
+ \qquad
+ F_j(x)=\sum_{k\in\Z}a_{sk+j}e^{2\pi i(sk+j)b}e_{rk}(x).
+\]
+The Fourier coefficients of $F_j$ are just the $j$th residue class of
+$(a_n)$, inserted at the multiples of $r$ and multiplied by unimodular
+numbers.  Consequently
+\[
+ \|F_j\|_{\FL^p}^p=\sum_k|a_{sk+j}|^p.
+\]
+Each $m_j$, viewed periodically, has bounded variation: it is smooth on $I$
+and zero off $I$, with only finitely many endpoint jumps.  Lemma
+\ref{lem:bv}, followed by the finite sum in \eqref{eq:residue}, proves the
+claim.
+\end{proof}
+
+\section{The counterexample}
+
+\begin{theorem}\label{thm:main}
+For every $1<p<\infty$, the convolution Banach algebra
+$\ell^p(\Z,\omega_1)$ has a noncanonical algebra automorphism.  More
+precisely, extend
+\[
+ \Phi(x)=
+ \begin{cases}
+   2x,&0\le x\le \frac13,\\[2mm]
+   \dfrac{x+1}{2},&\frac13\le x\le1
+ \end{cases}
+ \qquad\text{by}\qquad \Phi(x+1)=\Phi(x)+1.
+\]
+Then $\phi(x+\Z)=\Phi(x)+\Z$ is a non-affine circle homeomorphism, and
+composition $C_\phi f=f\circ\phi$ is a bounded invertible algebra
+automorphism of $A_p^1$.  Conjugating by the Fourier transform gives the
+claimed automorphism of $\ell^p(\Z,\omega_1)$.
+\end{theorem}
+
+\begin{proof}
+The two formulas for $\Phi$ agree at $x=1/3$, and
+$\Phi(0)=0$, $\Phi(1)=1$.  Thus the periodic lift is strictly increasing and
+induces an orientation-preserving circle homeomorphism.  Its inverse lift is
+\[
+ \Psi(y)=
+ \begin{cases}
+   y/2,&0\le y\le \frac23,\\[1mm]
+   2y-1,&\frac23\le y\le1,
+ \end{cases}
+ \qquad \Psi(y+1)=\Psi(y)+1.
+\]
+
+Let $f$ be a trigonometric polynomial and set $g=f\circ\phi$.  The function
+$g$ is continuous and piecewise smooth.  Since it is continuous at every
+breakpoint, its distributional derivative has no point masses.  The usual
+chain rule on the two open branches therefore gives
+\begin{equation}\label{eq:derivative}
+ g'
+ =2\one_{[0,1/3]}(f'\circ(2x))
+  +\frac12\one_{[1/3,1]}(f'\circ((x+1)/2)).
+\end{equation}
+Both summands are instances of Lemma \ref{lem:branch}, with slopes $2$ and
+$1/2$.  Hence
+\begin{equation}\label{eq:deriv-bound}
+  \|g'\|_{\FL^p}\le C_p\|f'\|_{\FL^p}.
+\end{equation}
+The mean coefficient is controlled using \eqref{eq:embedding}:
+\[
+ |\widehat g(0)|\le\|g\|_\infty=\|f\|_\infty
+ \le C_p'\|f\|_{A_p^1}.
+\]
+Since $\widehat{f'}(n)=2\pi i n\widehat f(n)$, equations
+\eqref{eq:weighted-norm} and \eqref{eq:deriv-bound} show that
+\[
+  \|C_\phi f\|_{A_p^1}\le C_p''\|f\|_{A_p^1}.
+\]
+
+Trigonometric polynomials are dense in $A_p^1$, so $C_\phi$ extends to a
+bounded operator on $A_p^1$.  The embedding \eqref{eq:embedding} shows that
+convergence in $A_p^1$ implies uniform convergence.  Thus this extension is
+still literal pointwise composition by $\phi$, rather than merely an abstract
+operator defined by completion.
+
+The inverse lift $\Psi$ is also rational piecewise affine.  Repeating the same
+argument proves that $C_{\phi^{-1}}$ is bounded on $A_p^1$.  On polynomials,
+and then by density,
+\[
+ C_{\phi^{-1}}C_\phi=C_\phi C_{\phi^{-1}}=I.
+\]
+Composition preserves products, so $C_\phi$ is a bounded algebra
+automorphism.  Under Fourier transform, multiplication in $A_p^1$ is
+convolution in $\ell^p(\Z,\omega_1)$, proving the algebra assertion.
+
+Finally, a canonical automorphism has circle symbol $x\mapsto x+c$ or
+$x\mapsto -x+c$.  Our symbol is orientation preserving but has slopes $2$
+and $1/2$ on sets of positive measure, so it is neither.  The automorphism is
+noncanonical.
+\end{proof}
+
+\begin{remark}
+The construction actually proves a small general statement: every circle
+homeomorphism whose lift and inverse are piecewise affine with finitely many
+rational slopes induces an automorphism of $A_p^1$ for
+$1<p<\infty$.  Only the explicit two-branch example is needed for the source
+question.
+\end{remark}
+
+\section{Verification and limitations}
+
+\begin{itemize}
+\item The argument covers every $1<p<\infty$.  It does not cover $p=1$,
+because the discrete Hilbert transform is not bounded on $\ell^1$; this is
+consistent with classical Beurling--Helson rigidity.
+\item The derivative formula is first used only for trigonometric
+polynomials.  Continuity at the breakpoints removes delta masses, and the
+bounded operator is then obtained by completion.  This avoids assuming that
+an arbitrary $\FL^p$ derivative is a function.
+\item A deterministic finite-Fourier smoke test is included in
+\texttt{code/numerical\_smoke\_test.py}.  It checks the explicit formulas and
+shows stable sample norm ratios, but it is not part of the proof.
+\item Bounded novelty search on 9 August 2026: the run's registry, solution,
+attempt, and proof-gap indexes were searched by arXiv id, title, and core
+terms.  Exact-phrase searches for the open sentence, DOI/title searches,
+author-plus-$a=1$ searches, and searches combining piecewise-linear changes
+with weighted Fourier--Lebesgue spaces found the source and general
+change-of-variable literature, but no later resolution of this exact
+question.  This is evidence, not a guarantee, of novelty.
+\item Recommended human check: audit Lemmas \ref{lem:bv} and
+\ref{lem:branch}, especially the periodic bounded-variation interpretation of
+$\one_I e^{2\pi i\alpha x}$, and then the completion argument in Theorem
+\ref{thm:main}.
+\end{itemize}
+
+\begin{thebibliography}{9}
+
+\bibitem{KZ}
+Y. Kuznetsova and S. Zadeh,
+\emph{On isomorphisms between weighted $L^p$-algebras},
+Canadian Mathematical Bulletin \textbf{64} (2021), no.~4, 853--866;
+arXiv:1803.06083; doi:10.4153/S0008439520000880.
+
+\bibitem{LO}
+V. Lebedev and A. Olevskii,
+\emph{$C^1$ changes of variable: Beurling--Helson type theorem and
+H\"ormander conjecture on Fourier multipliers},
+Geometric and Functional Analysis \textbf{4} (1994), no.~2, 213--235.
+
+\bibitem{Grafakos}
+L. Grafakos,
+\emph{Classical Fourier Analysis}, 3rd ed., Graduate Texts in Mathematics
+249, Springer, 2014.  See the treatment of singular integrals and
+transference underlying the boundedness of the discrete Hilbert transform on
+$\ell^p(\Z)$, $1<p<\infty$.
+
+\end{thebibliography}
+
+\end{document}
+

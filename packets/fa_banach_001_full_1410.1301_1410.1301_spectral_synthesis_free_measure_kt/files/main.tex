@@ -1,0 +1,422 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{statusblue}{RGB}{32,78,121}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\B}{\mathcal B}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\Sp}{\operatorname{Sp}}
+\newcommand{\Spu}{\operatorname{Sp}_{u}}
+
+\title{\textbf{A Spectral-Synthesis-Free Katznelson--Tzafriri Theorem for Measures}\\
+\large A candidate full answer to Remark 1.3 of arXiv:1410.1301}
+\author{Automated mathematics run \texttt{fa\_banach\_001}\\
+Lane 14, model GPT5.6}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Seifert asks whether the spectral-synthesis assumption can be removed from
+the Hilbert-space Katznelson--Tzafriri theorem for finite measures. We give
+an affirmative answer. The high-frequency resolvent hypothesis forces
+asymptotic uniform norm continuity. This supplies exactly the regularity
+needed to combine an \(L^1\)-smoothed Hilbert ultrapower with the unitary
+asymptote and the spectral theorem, even when the original measure is
+singular.
+\end{abstract}
+
+\noindent
+\colorbox{statusblue!10}{\parbox{0.96\linewidth}{
+\textbf{Status.} Candidate full result; verifier verdict: likely valid.
+No spectral-synthesis assumption remains. Human review is recommended,
+especially for the continuous-ultrapower and measure-integral steps.
+}}
+
+\section{Source question}
+
+The source is Seifert, \emph{A Katznelson--Tzafriri theorem for measures},
+arXiv:1410.1301 \cite{SeifertMeasures}. For a finite complex Borel measure
+\(\mu\) on \(\R_+\), it uses
+\[
+ (\mathcal F\mu)(s)=\int_{\R_+}e^{-ist}\,d\mu(t),
+ \qquad
+ \widehat\mu(T)x=\int_{\R_+}T(t)x\,d\mu(t).
+\]
+Theorem 1.2 assumes that \(T\) is a bounded \(C_0\)-semigroup on a complex
+Hilbert space, with generator \(A\), and that for some \(R>0\),
+\begin{equation}\label{eq:resolvent-hyp}
+ \{is:|s|\ge R\}\subset\rho(A),
+ \qquad
+ \sup_{|s|\ge R}\norm{R(is,A)}<\infty.
+\end{equation}
+If \(i\sigma(A)\cap\R\) is additionally a set of spectral synthesis and
+\(\mathcal F\mu\) vanishes there, it concludes that
+\(\norm{T(t)\widehat\mu(T)}\to0\).
+
+Remark 1.3 on p.~2 asks:
+\begin{quote}
+\emph{It remains open whether [the spectral-synthesis assumption can be
+dropped] also in the setting of Theorem 1.2.}
+\end{quote}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{Theorem 1.2 and Remark 1.3 on p.~2 of arXiv:1410.1301.}
+\end{figure}
+
+\section{Proof intuition}
+
+For \(L^1\) kernels, Seifert's Hilbert-space proof smooths the functional
+calculus in variation norm before passing to an ultrapower
+\cite{SeifertHilbert}. That cannot be copied literally for a singular
+measure: convolution with an \(L^1\) approximate identity does not converge
+to a singular measure in total variation.
+
+The resolvent assumption provides the missing replacement. On Hilbert space
+it gives a negative critical growth bound, which implies that \(T\) becomes
+uniformly norm-continuous far out on the time axis. We therefore smooth the
+\emph{almost-norming vectors} rather than the measure. The smoothing places
+those vectors in the continuous part of a Hilbert ultrapower, while tail
+norm-continuity preserves the non-decay witnessed by the original singular
+measure.
+
+The unitary asymptote of that continuous ultrapower sees only the original
+boundary spectrum. On this unitary group the spectral theorem turns the
+measure calculus into multiplication by \(\mathcal F\mu\), so the induced
+operator is zero. The resulting orbit must both decay and stay uniformly
+away from zero, which is the contradiction.
+
+\section{Main result}
+
+\begin{theorem}\label{thm:main}
+Let \(H\) be a complex Hilbert space and let \(T=(T(t))_{t\ge0}\) be a
+bounded \(C_0\)-semigroup on \(H\), with generator \(A\), satisfying
+\eqref{eq:resolvent-hyp}. Let \(\mu\) be a finite complex Borel measure on
+\(\R_+\) such that
+\[
+ (\mathcal F\mu)(s)=0
+ \qquad\bigl(s\in i\sigma(A)\cap\R\bigr).
+\]
+Then
+\[
+ \lim_{t\to\infty}\norm{T(t)\widehat\mu(T)}=0.
+\]
+In particular, spectral synthesis is unnecessary in Theorem 1.2 of
+\cite{SeifertMeasures}.
+\end{theorem}
+
+\section{Tail norm continuity}
+
+Recall the critical growth bound \(\delta(T)\): it is the infimum of the
+growth bounds of \(T-V\) over all norm-continuous
+\(V:(0,\infty)\to\B(H)\). The non-analytic Gearhart--Pr\"uss theorem and the
+standard inequalities for these growth bounds give, on Hilbert space,
+\[
+ \delta(T)=s_0^\infty(A).
+\]
+This equality and its use under precisely \eqref{eq:resolvent-hyp} are
+recorded in Sections 3--4 of \cite{SeifertMeasures}, drawing on
+\cite{BBS,BS}. A Neumann-series argument applied to the uniformly bounded
+resolvents in \eqref{eq:resolvent-hyp} gives
+\begin{equation}\label{eq:delta-neg}
+ \delta(T)=s_0^\infty(A)<0.
+\end{equation}
+
+\begin{lemma}[asymptotic uniform norm continuity]\label{lem:tail-cont}
+If a bounded \(C_0\)-semigroup satisfies \(\delta(T)<0\), then for every
+\(\gamma>0\) there are \(r_0>0\) and \(\eta>0\) such that
+\[
+ \norm{T(r+h)-T(r)}<\gamma
+\]
+whenever \(r\ge r_0\), \(|h|\le\eta\), and \(r+h\ge0\).
+\end{lemma}
+
+\begin{proof}
+Choose a norm-continuous \(V:(0,\infty)\to\B(H)\), \(C>0\), and \(c>0\)
+such that
+\[
+ \norm{T(r)-V(r)}\le Ce^{-cr}\qquad(r>0).
+\]
+For
+\[
+ D(r)=\limsup_{h\downarrow0}\norm{T(r+h)-T(r)},
+\]
+norm continuity of \(V\) gives \(D(r)\le2Ce^{-cr}\), hence \(D(r)\to0\).
+
+Put \(M=\sup_{t\ge0}\norm{T(t)}\). Choose \(r_1\) so large that
+\(MD(r_1)<\gamma/2\). By the definition of the limsup, after decreasing
+\(\eta>0\) if necessary,
+\[
+ \norm{T(r_1+h)-T(r_1)}<\gamma/M
+ \qquad(0\le h\le\eta).
+\]
+For \(r=r_1+q\), \(q\ge0\), the semigroup law gives
+\[
+ \norm{T(r+h)-T(r)}
+ \le M\norm{T(r_1+h)-T(r_1)}<\gamma.
+\]
+This handles \(h\ge0\). If \(-\eta\le h<0\) and \(r\ge r_1+\eta\), apply
+the positive-increment estimate at the base point \(r+h\). Thus
+\(r_0=r_1+\eta\) works.
+\end{proof}
+
+\section{The continuous ultrapower}
+
+We isolate the standard ultrapower facts used in the proof. Let
+\(\mathcal U\) be a free ultrafilter on \(\mathbb N\), and let
+\(H_{\mathcal U}\) be the Hilbert ultrapower. The operators
+\[
+ \widetilde T(t)[(x_n)]=[(T(t)x_n)]
+\]
+form a bounded semigroup, but need not be strongly continuous on all of
+\(H_{\mathcal U}\). For \(a\in L^1(\R_+)\), let
+\(\widehat a(\widetilde T)\) mean the coordinatewise ultrapower of
+\(\widehat a(T)\), and define
+\begin{equation}\label{eq:Hc}
+ H_c=\overline{\operatorname{span}}
+ \{\widehat a(\widetilde T)\xi:a\in L^1(\R_+),\ \xi\in H_{\mathcal U}\}.
+\end{equation}
+
+\begin{lemma}\label{lem:ultrapower}
+The restriction \(S(t)=\widetilde T(t)|_{H_c}\) is a bounded \(C_0\)-semigroup.
+For every \(a\in L^1(\R_+)\),
+\begin{equation}\label{eq:integrated-bound}
+ \widehat a(S)=\widehat a(\widetilde T)|_{H_c},
+ \qquad
+ \norm{\widehat a(S)}\le\norm{\widehat a(T)}.
+\end{equation}
+Consequently
+\begin{equation}\label{eq:spectrum-inclusion}
+ \Spu(S)\subset\Spu(T).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+If \(a\in L^1(\R_+)\), translation continuity in \(L^1\) gives
+\[
+ \norm{T(h)\widehat a(T)-\widehat a(T)}\longrightarrow0
+ \qquad(h\downarrow0).
+\]
+The same estimate holds in the ultrapower norm. Hence \(\widetilde T\) is
+strongly continuous on the generators in \eqref{eq:Hc}, and therefore on
+their closed span. Invariance is immediate.
+
+On a generator \(\widehat b(\widetilde T)\xi\), Fubini's theorem gives
+\[
+ \widehat a(S)\widehat b(\widetilde T)\xi
+ =\widehat{a*b}(\widetilde T)\xi
+ =\widehat a(\widetilde T)\widehat b(\widetilde T)\xi.
+\]
+This proves the first identity in \eqref{eq:integrated-bound} by density.
+The coordinatewise definition gives the norm inequality.
+
+For completeness, the spectrum of a bounded semigroup representation is
+characterized by
+\[
+ \Sp(T)=\{\chi:|\widehat a(\chi)|\le\norm{\widehat a(T)}
+ \text{ for every }a\in L^1(\R_+)\}.
+\]
+Thus \eqref{eq:integrated-bound} implies \(\Sp(S)\subset\Sp(T)\), and
+intersecting with the unitary characters proves
+\eqref{eq:spectrum-inclusion}. This is the same spectrum formalism used in
+\cite{SeifertHilbert}.
+\end{proof}
+
+We shall also use the standard Hilbert-space unitary-asymptote construction
+from the proof of Proposition 3.4 of \cite{SeifertHilbert}.
+
+\begin{lemma}[unitary asymptote]\label{lem:asymptote}
+For a bounded \(C_0\)-semigroup \(S\) on a Hilbert space \(G\), there exist a
+Hilbert space \(K\), a strongly continuous unitary group \(U=(U(t))_{t\in\R}\)
+on \(K\), and a bounded operator \(\pi:G\to K\) such that
+\begin{align}
+ \pi S(t)&=U(t)\pi \qquad(t\ge0),\label{eq:intertwine}\\
+ \ker\pi&=\{x\in G:\norm{S(t)x}\to0\},\label{eq:kernel}\\
+ \Sp(U)&\subset\Spu(S).\label{eq:unitary-spectrum}
+\end{align}
+\end{lemma}
+
+\begin{proof}[Construction reminder]
+Apply an invariant Banach limit to
+\(t\mapsto\langle S(t)x,S(t)y\rangle\), quotient by the resulting null
+space, and complete. This produces an isometric semigroup and the
+intertwiner. Boundedness of \(S\) shows that the null space is exactly the
+stable vectors: once an orbit has a subnet tending to zero, all of its tail
+does. The minimal unitary extension gives \(U\). The integrated-form
+spectrum characterization gives \eqref{eq:unitary-spectrum}; full details
+are supplied in the cited unitary-asymptote construction
+\cite[proof of Proposition 3.4]{SeifertHilbert}.
+\end{proof}
+
+\section{Proof of Theorem \ref{thm:main}}
+
+Put
+\[
+ M=\sup_{t\ge0}\norm{T(t)},
+ \qquad B=\widehat\mu(T).
+\]
+Suppose for contradiction that \(\norm{T(t)B}\not\to0\). Then there are
+\(\varepsilon>0\), \(t_n\to\infty\), and unit vectors \(y_n\in H\) such
+that
+\begin{equation}\label{eq:failure}
+ \norm{T(t_n)By_n}\ge\varepsilon.
+\end{equation}
+For \(0\le q\le t_n\), the semigroup law and boundedness imply
+\begin{equation}\label{eq:backward-lower}
+ \norm{T(q)By_n}\ge\varepsilon/M,
+\end{equation}
+because \(T(t_n)B=T(t_n-q)T(q)B\).
+
+Fix \(\tau>0\). Since failure implies \(B\ne0\), Lemma
+\ref{lem:tail-cont} supplies \(\eta>0\) and \(s_0>0\) such that
+\begin{equation}\label{eq:tail-choice}
+ \sup_{0\le h\le\eta}
+ \norm{T(s+\tau+h)-T(s+\tau)}
+ <\frac{\varepsilon}{2M\norm B}
+ \qquad(s\ge s_0).
+\end{equation}
+Choose a nonnegative \(b\in L^1(\R_+)\), supported in
+\([\tau,\tau+\eta]\), with \(\int b=1\).
+
+Use Lemma \ref{lem:ultrapower}, put \(y=[(y_n)]\in H_{\mathcal U}\), and set
+\[
+ x=\widehat b(\widetilde T)y
+   =[(\widehat b(T)y_n)]\in H_c.
+\]
+The map \(q\mapsto T(q)\widehat b(T)\) is norm-continuous. Indeed, for
+positive \(h\), translation continuity of \(b\) gives
+\[
+ \sup_{q\ge0}\norm{T(q+h)\widehat b(T)-T(q)\widehat b(T)}
+ \le M\norm{T(h)\widehat b(T)-\widehat b(T)}\longrightarrow0.
+\]
+It follows that this bounded norm-continuous operator-valued map is Bochner
+integrable against \(|\mu|\). Approximation in
+\(L^1(|\mu|;\B(H))\) by common simple functions gives operator-norm
+convergence before passing to the ultrapower. Hence, using Fubini,
+\begin{equation}\label{eq:measure-passes}
+ z:=\widehat\mu(S)x
+ =[(B\widehat b(T)y_n)]
+ =[\widehat{\mu*b}(T)y_n]\in H_c.
+\end{equation}
+This is the point at which the \(L^1\) smoothing of \(x\) is essential; no
+variation-norm approximation of \(\mu\) is asserted.
+
+For \(s\ge s_0\), equations \eqref{eq:backward-lower} and
+\eqref{eq:tail-choice} give
+\begin{align}
+ \norm{S(s)z}
+ &=\lim_{\mathcal U}
+   \norm{T(s)B\widehat b(T)y_n}\notag\\
+ &=\lim_{\mathcal U}
+   \norm{\int_{\tau}^{\tau+\eta}b(q)T(s+q)By_n\,dq}\notag\\
+ &\ge\lim_{\mathcal U}\norm{T(s+\tau)By_n}
+      -\frac{\varepsilon}{2M}
+ \ge\frac{\varepsilon}{2M}.\label{eq:nondecay}
+\end{align}
+For the last inequality, the cofinite set on which \(t_n\ge s+\tau\)
+belongs to \(\mathcal U\).
+
+Apply Lemma \ref{lem:asymptote} to \(S\). From
+\eqref{eq:intertwine}, bounded linearity of \(\pi\), and Bochner
+integration,
+\begin{equation}\label{eq:measure-intertwine}
+ \pi z=\int_{\R_+}U(q)\pi x\,d\mu(q).
+\end{equation}
+Under the standard identification of unitary characters with real Fourier
+parameters, \eqref{eq:spectrum-inclusion} and
+\eqref{eq:unitary-spectrum} place the spectral measure of \(U\) inside
+\(i\sigma(A)\cap\R\). (Explicitly, the character \(t\mapsto e^{-ist}\)
+has generator \(-is\), so \(s=i(-is)\).) The spectral theorem and the
+hypothesis on \(\mathcal F\mu\) therefore give
+\[
+ \int_{\R_+}U(q)\,d\mu(q)=0.
+\]
+Thus \(\pi z=0\). By \eqref{eq:kernel},
+\(\norm{S(s)z}\to0\), contradicting \eqref{eq:nondecay}. The theorem is
+proved.
+
+\section{Verification, scope, and novelty}
+
+\begin{itemize}[leftmargin=1.5em]
+\item The proof never approximates a singular measure in total variation.
+  The only smoothing is \(x=\widehat b(\widetilde T)y\), which makes the
+  operator orbit norm-continuous and justifies
+  \eqref{eq:measure-passes}.
+\item The ultrapower is restricted to the \(L^1\)-essential subspace
+  \eqref{eq:Hc}; strong continuity is not claimed on the full ultrapower.
+\item No sequential compactness of an operator ball is used. The free
+  ultrafilter preserves the almost-norming sequence directly.
+\item The resolvent hypothesis is used only to obtain
+  \(\delta(T)<0\), hence Lemma \ref{lem:tail-cont}. The argument proves the
+  slightly more general statement with \(\delta(T)<0\) in place of
+  \eqref{eq:resolvent-hyp}.
+\item The result removes spectral synthesis only in the Hilbert-space
+  theorem asked about in Remark 1.3. It makes no analogous assertion for
+  arbitrary Banach spaces.
+\end{itemize}
+
+\paragraph{Novelty check.}
+On 9 August 2026, bounded web/arXiv searches used the exact sentence in
+Remark 1.3, arXiv:1410.1301, the title and author, and combinations of
+\emph{bounded Borel measure}, \emph{Hilbert}, \emph{spectral synthesis}, and
+\emph{Katznelson--Tzafriri}. They found the source, the companion Hilbert
+paper \cite{SeifertHilbert}, the original measure theorem
+\cite{BCT}, and the 2022 survey \cite{BattySeifertSurvey}, but no later work
+claiming this removal. This is a bounded novelty check, not a comprehensive
+priority search.
+
+\paragraph{Human review recommendation.}
+Check Lemma \ref{lem:tail-cont}, the integrated-form spectrum inclusion in
+Lemma \ref{lem:ultrapower}, the uniform operator-norm approximation behind
+\eqref{eq:measure-passes}, and the Fourier-sign convention in the final
+spectral-theorem step. The verifier verdict is \emph{likely valid}.
+
+\begin{thebibliography}{9}
+
+\bibitem{SeifertMeasures}
+D. Seifert,
+\emph{A Katznelson--Tzafriri theorem for measures},
+Integral Equations Operator Theory 81 (2015), 255--270;
+arXiv:1410.1301.
+
+\bibitem{SeifertHilbert}
+D. Seifert,
+\emph{Some improvements of the Katznelson--Tzafriri theorem on Hilbert
+space}, Proc. Amer. Math. Soc. 143 (2015), 3827--3838;
+arXiv:1410.1294.
+
+\bibitem{BCT}
+C. J. K. Batty, R. Chill, and Y. Tomilov,
+\emph{Fine scales of decay of operator semigroups},
+J. Eur. Math. Soc. 18 (2016), 853--929.
+
+\bibitem{BBS}
+C. J. K. Batty, M. D. Blake, and S. Srivastava,
+\emph{A non-analytic growth bound for Laplace transforms and semigroups of
+operators}, Integral Equations Operator Theory 45 (2003), 125--154.
+
+\bibitem{BS}
+C. J. K. Batty and S. Srivastava,
+\emph{The non-analytic growth bound of a \(C_0\)-semigroup and inhomogeneous
+Cauchy problems}, J. Differential Equations 194 (2003), 300--327.
+
+\bibitem{BattySeifertSurvey}
+C. J. K. Batty and D. Seifert,
+\emph{Some developments around the Katznelson--Tzafriri theorem},
+Acta Sci. Math. (Szeged) 88 (2022), 53--84; arXiv:2204.13411.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,311 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Z}{\mathbb Z}
+
+\title{A nontrivial weakly amenable Beurling algebra\\
+on a noncommutative group\\
+\large Full answer to the existence challenge in arXiv:1702.06605}
+\author{Automated mathematics run \texttt{fa\_banach\_001}\\
+Lane 5, agent \texttt{agent\_lane\_05}}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Candidate full solution, likely valid, pending human review.  The example has
+an unbounded polynomial weight and a genuinely noncommutative convolution
+algebra.}}
+\end{center}
+
+\section{Source challenge}
+
+Shepelska and Zhang write in the introduction of \cite{SZ}, printed page 3
+(PDF page 3), that weak amenability of noncommutative Beurling algebras was
+still unclear and that they had not seen a nontrivial weakly amenable example
+which was noncommutative.  This restates the first open problem in
+Zhang's earlier paper \cite{Zhang}.
+
+The relevant sentence is:
+\begin{quote}
+``So far we have not even seen a non-trivial example of weakly amenable
+Beurling algebra which is not commutative.''
+\end{quote}
+We give such an example explicitly.
+
+\section{Definitions}
+
+For a discrete group $G$ and a weight $\omega:G\to[1,\infty)$ satisfying
+$\omega(xy)\leq\omega(x)\omega(y)$, the Beurling algebra
+$\ell^1(G,\omega)$ is the convolution algebra with norm
+\[
+       \|f\|_\omega=\sum_{x\in G}|f(x)|\omega(x).
+\]
+A Banach algebra $A$ is \emph{weakly amenable} if every bounded derivation
+$A\to A^*$ is inner.  It is \emph{amenable} if every bounded derivation from
+$A$ into the dual of every Banach $A$-bimodule is inner.
+
+We write $A\widehat\otimes B$ for the projective tensor product Banach
+algebra.  The dual module conventions are
+\[
+ \langle c,a\cdot\Phi\rangle=\langle ca,\Phi\rangle,
+ \qquad
+ \langle c,\Phi\cdot a\rangle=\langle ac,\Phi\rangle.
+\]
+
+\section{Proof intuition}
+
+The construction adds a finite noncommutative direction to a familiar
+commutative weakly amenable Beurling algebra.  The main point is to prove that
+this does not create a new derivation.
+
+For a derivation on $A\widehat\otimes B$, amenability of $B$ first removes
+its restriction to the $B$-factor by subtracting one inner derivation.  The
+remaining restriction to $A$ takes values in the functionals which are
+central for $B$.  Because $A$ is commutative, that space is a symmetric
+$A$-module.  A short duality argument shows that unital commutative weak
+amenability kills derivations into every such module.  Hence the original
+derivation is inner.
+
+Taking $A=\ell^1(\Z,(1+|n|)^\alpha)$ and $B=\ell^1(S_3)$ completes the
+example: the first algebra is weakly amenable for $\alpha<1/2$, while the
+second is amenable by its explicit finite-group diagonal.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{The source context and existence challenge, rendered from
+  \texttt{source\_paper.pdf}, PDF page 3.}
+\end{figure}
+
+\section{The tensor theorem}
+
+We first record the elementary module lemma needed in the proof.
+
+\begin{lemma}\label{lem:symmetric}
+Let $A$ be a unital commutative weakly amenable Banach algebra.  If $X$ is a
+unital symmetric Banach $A$-bimodule, then every bounded derivation
+$\delta:A\to X$ is zero.
+\end{lemma}
+
+\begin{proof}
+Fix $\lambda\in X^*$.  Define $T_\lambda:A\to A^*$ by
+\begin{equation}\label{eq:slice}
+  \langle T_\lambda(a),c\rangle
+      =\langle\lambda,c\cdot\delta(a)\rangle
+      \qquad(a,c\in A).
+\end{equation}
+Since $X$ is symmetric, for $a,b,c\in A$ we have
+\begin{align*}
+ \langle T_\lambda(ab),c\rangle
+ &=\langle\lambda,c\cdot(a\cdot\delta(b)+\delta(a)\cdot b)\rangle\\
+ &=\langle\lambda,(ca)\cdot\delta(b)+(cb)\cdot\delta(a)\rangle\\
+ &=\langle a\cdot T_\lambda(b)+T_\lambda(a)\cdot b,c\rangle.
+\end{align*}
+Thus $T_\lambda$ is a bounded derivation $A\to A^*$.  Weak amenability makes
+it inner; since $A$ is commutative, every inner derivation into $A^*$ is zero.
+Putting $c=1_A$ in \eqref{eq:slice} gives
+$\langle\lambda,\delta(a)\rangle=0$.  This holds for every $\lambda\in X^*$,
+so $\delta(a)=0$ for every $a$.
+\end{proof}
+
+\begin{theorem}\label{thm:tensor}
+Let $A$ be a unital commutative weakly amenable Banach algebra and let $B$ be
+a unital amenable Banach algebra.  Then
+$A\widehat\otimes B$ is weakly amenable.
+\end{theorem}
+
+\begin{proof}
+Put $C=A\widehat\otimes B$ and let $D:C\to C^*$ be a bounded derivation.
+Regard $A$ and $B$ as the commuting closed subalgebras
+$A\otimes 1_B$ and $1_A\otimes B$ of $C$.
+
+The restriction
+\[
+       b\longmapsto D(1_A\otimes b)
+\]
+is a derivation from $B$ into the dual $B$-bimodule $C^*$.  Amenability of
+$B$ supplies $\Phi\in C^*$ such that this restriction agrees with the inner
+derivation $c\mapsto c\cdot\Phi-\Phi\cdot c$.  Subtract that inner derivation
+from $D$.  It is enough to prove that the resulting derivation $D_0$ is zero,
+and by construction
+\begin{equation}\label{eq:Bzero}
+                D_0(1_A\otimes b)=0\qquad(b\in B).
+\end{equation}
+
+Let
+\[
+ X=\{\Psi\in C^*:(1_A\otimes b)\cdot\Psi
+                  =\Psi\cdot(1_A\otimes b)\text{ for every }b\in B\}.
+\]
+This is a closed unital $A$-submodule of $C^*$.  It is symmetric as an
+$A$-module because $A\otimes1_B$ is central in $C$: commutativity of $A$
+gives
+\[
+        (a\otimes1_B)c=c(a\otimes1_B)\qquad(a\in A,\ c\in C).
+\]
+
+Define $\delta:A\to C^*$ by $\delta(a)=D_0(a\otimes1_B)$.  The two factors
+commute, so applying $D_0$ to
+$(a\otimes1_B)(1_A\otimes b)=(1_A\otimes b)(a\otimes1_B)$ and using
+\eqref{eq:Bzero} yields
+\[
+  \delta(a)\cdot(1_A\otimes b)
+     =(1_A\otimes b)\cdot\delta(a).
+\]
+Hence $\delta$ is a bounded derivation $A\to X$.  Lemma
+\ref{lem:symmetric} gives $\delta=0$.
+
+Finally, on every elementary tensor,
+\[
+ D_0(a\otimes b)
+ =D_0\big((a\otimes1_B)(1_A\otimes b)\big)=0.
+\]
+Elementary tensors are dense in $C$, so $D_0=0$.  Therefore $D$ is inner,
+as required.
+\end{proof}
+
+\section{Full explicit answer}
+
+\begin{corollary}\label{cor:example}
+For every $0<\alpha<1/2$, let
+\[
+   G=\Z\times S_3,
+   \qquad
+   \Omega(n,\sigma)=(1+|n|)^\alpha.
+\]
+Then $G$ is noncommutative, $\Omega$ is an unbounded symmetric weight, and
+the Beurling algebra $\ell^1(G,\Omega)$ is weakly amenable and
+noncommutative.  In particular it is a nontrivial weakly amenable Beurling
+algebra of the type requested in \cite{SZ,Zhang}.
+\end{corollary}
+
+\begin{proof}
+The inequality
+\[
+  1+|m+n|\leq(1+|m|)(1+|n|)
+\]
+shows that $\Omega$ is a weight.  It is symmetric and unbounded, so it is not
+equivalent to the constant weight.  The group $G$ is noncommutative because
+$S_3$ is noncommutative.
+
+Set
+\[
+ A=\ell^1(\Z,\omega_\alpha),\qquad
+ \omega_\alpha(n)=(1+|n|)^\alpha,
+ \qquad B=\ell^1(S_3).
+\]
+Bade--Curtis--Dales proved that $A$ is weakly amenable exactly when
+$0\leq\alpha<1/2$ \cite{BCD}; this is also recalled explicitly in the source
+paper \cite[p.~3]{SZ}.  The finite group algebra $B$ is amenable.  Indeed,
+\[
+       M=\frac1{|S_3|}\sum_{\sigma\in S_3}
+              \delta_\sigma\otimes\delta_{\sigma^{-1}}
+       \in B\widehat\otimes B
+\]
+is a diagonal: $b\cdot M=M\cdot b$ for $b\in B$ and the multiplication map
+sends $M$ to $\delta_e$.  Thus $B$ is even contractible.
+
+The canonical convolution map gives the isometric Banach-algebra
+identification
+\[
+  A\widehat\otimes B
+     \cong \ell^1(\Z\times S_3,\Omega).
+\]
+Theorem \ref{thm:tensor} now gives weak amenability.  Finally, convolution is
+noncommutative because the point masses supported on two noncommuting
+elements of $S_3$ do not commute.
+\end{proof}
+
+The example is also a standard polynomial-weight example rather than merely
+an arbitrary inflation: for any finite generating set of $\Z\times S_3$, its
+word length differs from $|n|$ by a uniformly bounded amount in the finite
+$S_3$ direction.  Thus $\Omega$ is equivalent to the corresponding usual
+polynomial word-length weight.
+
+\section{Verification and scope}
+
+The proof has no computational or unproved dependency.  Its main checkable
+points are:
+\begin{enumerate}
+\item amenability of $B$ is used with the dual $B$-module $C^*$, exactly as
+      allowed by the definition;
+\item after the $B$-restriction is killed, commutation of the two tensor
+      factors forces the $A$-restriction into the $B$-central submodule;
+\item centrality of $A\otimes1_B$ makes that module symmetric;
+\item Lemma \ref{lem:symmetric} is proved directly from the defining
+      $A\to A^*$ form of weak amenability;
+\item $\Omega$ is unbounded and the algebra is genuinely noncommutative.
+\end{enumerate}
+
+The result fully answers the source's existence challenge.  It does not settle
+the source's broader tensor-product question asking whether the projective
+tensor product of \emph{arbitrary} weakly amenable Beurling algebras must be
+weakly amenable.  Theorem \ref{thm:tensor} gives a rigorous positive class:
+one factor may be any unital amenable algebra, provided the other is unital,
+commutative, and weakly amenable.
+
+\section{Bounded novelty check}
+
+On 9 August 2026 we searched the run's registry, solution, attempt, and
+proof-gap indexes; the local arXiv source corpus; exact phrases from the
+source challenge; and web searches for noncommutative weakly amenable
+Beurling algebras and weak amenability of projective tensor products.  No
+independent verified source for Corollary \ref{cor:example} was found.
+
+A later arXiv preprint of Mehdipour and Rejali \cite{MR}, Corollary 4.3,
+states a much broader pullback conclusion which would imply noncommutative
+examples.  Its proof depends on Proposition 4.1(i).  There, from injectivity
+of a pullback map $\mathfrak S:Q(G_2)\to Q(G_1)$ and the inclusion
+$\mathfrak S(I(G_2,\omega))\subseteq I(G_1,\overleftarrow\omega)$, the
+argument asserts that an arbitrary non-inner quasi-additive function upstairs
+has the form $\mathfrak S(p_2)$.  This is a surjectivity assertion not supplied
+by the preceding hypotheses or proof.  Consequently that preprint does not,
+without a repair, provide a verified duplicate.  The construction here uses
+a different, complete amenable-factor argument.  Novelty confidence is
+therefore moderate and remains subject to expert review.
+
+\section{Human-review recommendation}
+
+Review as a candidate full affirmative answer to the existence challenge.
+The main verifier focus should be Theorem \ref{thm:tensor}, especially the
+passage to the $B$-central symmetric module and the slicing argument in Lemma
+\ref{lem:symmetric}.  A secondary literature review should check whether this
+amenable-factor tensor lemma, or this exact $\Z\times S_3$ construction, has
+appeared elsewhere under a different formulation.
+
+\begin{thebibliography}{9}
+\bibitem{BCD}
+W.~G. Bade, P.~C. Curtis Jr., and H.~G. Dales,
+\emph{Amenability and weak amenability for Beurling and Lipschitz algebras},
+Proc. London Math. Soc. (3) \textbf{55} (1987), 359--377.
+
+\bibitem{MR}
+M.~J. Mehdipour and A. Rejali,
+\emph{Weak amenability of weighted group algebras},
+arXiv:2209.08346v1 (2022).
+
+\bibitem{SZ}
+V. Shepelska and Y. Zhang,
+\emph{Non-weakly amenable Beurling algebras},
+arXiv:1702.06605 (2017); Indiana Univ. Math. J. \textbf{67} (2018), 119--150.
+
+\bibitem{Zhang}
+Y. Zhang,
+\emph{Weak amenability of commutative Beurling algebras},
+Proc. Amer. Math. Soc. \textbf{142} (2014), 1649--1661;
+arXiv:1207.5033.
+\end{thebibliography}
+
+\end{document}

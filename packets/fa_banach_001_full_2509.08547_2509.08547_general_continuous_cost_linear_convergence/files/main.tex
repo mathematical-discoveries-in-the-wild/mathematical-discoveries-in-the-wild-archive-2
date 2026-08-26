@@ -1,0 +1,346 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\cH}{\mathcal{H}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\1}{\mathbf{1}}
+\newcommand{\op}{\mathrm{op}}
+
+\title{Linear Convergence for General Continuous Costs\\
+in Quadratically Regularized Optimal Transport}
+\author{Candidate solution packet for arXiv:2509.08547}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.9\textwidth}{\textbf{Status.}
+Candidate full solution, likely valid pending expert review.  The result proves
+the general-continuous-cost extension proposed in Remark~2.5 of the source
+paper, under its original weak marginal hypotheses.}}
+\end{center}
+
+\section{Source question}
+
+Gonz\'alez-Sanz, Nutz, and Riveros Valdevenito prove eventual linear
+$L^2$ convergence of dual gradient descent for quadratically regularized
+optimal transport with squared Euclidean cost \cite{GNR2026}.  In Remark~2.5
+(page 7), they explain that the special cost is used only to show that certain
+zero-level sections are negligible and ask whether their theorem extends to
+general continuous costs.  The theorem and remark are reproduced below.
+
+\begin{center}
+\includegraphics[width=0.74\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The result below answers that question affirmatively.  The new argument does
+not prove convergence of the secant operators to a single linearization;
+instead, it finds a common spectral gap for all eventual secant operators.
+
+\section{Setup}
+
+Let $P,Q$ be probability measures with compact topological supports
+$\Omega,\Omega'$.  Assume that at least one support is connected; by symmetry
+we take $\Omega'$ connected.  Let
+$c:\Omega\times\Omega'\to\R$ be continuous and let $\eps>0$.  The QOT dual
+objective is
+\[
+ \Gamma(f,g)=\int f\,dP+\int g\,dQ
+ -\frac1{2\eps}\int (f(x)+g(y)-c(x,y))_+^2\,dP(x)dQ(y).
+\]
+We use the normalized Hilbert space
+\[
+ \cH_0=\left\{(f,g)\in L^2(P)\oplus L^2(Q):
+                  \int f\,dP=\int g\,dQ\right\}.
+\]
+For continuous initial data $(f_0,g_0)\in\cH_0$ and step size
+$0<\eta<\eps$, define
+\[
+ (f_{n+1},g_{n+1})=(f_n,g_n)+\eta\,D\Gamma(f_n,g_n).
+\]
+The gradient belongs to $\cH_0$, so normalization is preserved.  Let
+$(f_*,g_*)$ be the normalized optimal potentials and set
+\[
+ \xi_n(x,y)=f_n(x)+g_n(y)-c(x,y),\qquad
+ \xi_*(x,y)=f_*(x)+g_*(y)-c(x,y).
+\]
+The first-order equations are
+\begin{equation}
+\label{eq:FOC}
+ \int (\xi_*(x,y))_+\,dQ(y)=\eps\quad(x\in\Omega),
+ \qquad
+ \int (\xi_*(x,y))_+\,dP(x)=\eps\quad(y\in\Omega').
+\end{equation}
+
+\section{Proof intuition}
+
+The derivative of the positive part between $\xi_n$ and $\xi_*$ is an exact
+secant weight $w_n(x,y)\in[0,1]$.  A large zero-level set can make these
+weights oscillate and prevents the operator-norm limit used in the source.
+But no limit is needed.
+
+Equation~\eqref{eq:FOC} forces a fixed strictly active core
+$E=\{\xi_*>\eps/2\}$ to have uniformly positive sections.  On the normalized
+space, the corresponding energy
+\[
+ \int_E(f(x)+g(y))^2\,dP(x)dQ(y)
+\]
+has a positive spectral gap.  Connectedness is exactly what eliminates its
+kernel: a zero-energy pair is locally a pair of opposite constants along the
+open bipartite core, hence globally so, and normalization removes the
+constant.
+
+After burn-in, both $\xi_n$ and $\xi_*$ are positive on $E$, so $w_n=1$ there.
+Every exact secant energy therefore dominates the same gapped core.  Its upper
+spectral bound is universally $2$, and $0<\eta/\eps<1$ turns the exact error
+recursion into a uniform strict contraction.
+
+\section{Main theorem}
+
+\begin{theorem}[General continuous costs]
+\label{thm:main}
+Let $P,Q$ have compact supports and suppose that at least one support is
+connected.  Let $c$ be continuous, $(f_0,g_0)\in\cH_0$ be continuous, and
+$0<\eta<\eps$.  Then there exist $n_0\in\mathbb N$, $C<\infty$, and
+$\delta\in(0,1)$ such that
+\[
+ \|(f_n,g_n)-(f_*,g_*)\|_{L^2(P)\oplus L^2(Q)}
+ \le C\delta^n\qquad(n\ge n_0).
+\]
+Thus Theorem~2.3 of \cite{GNR2026} extends to every continuous transport cost.
+In particular it holds under all the marginal assumptions of that theorem;
+the condition that $P,Q$ avoid boundaries of convex sets is unnecessary for
+this extension.
+\end{theorem}
+
+\section{Proof}
+
+\subsection{Uniform convergence before linearization}
+
+\begin{lemma}
+\label{lem:preconvergence}
+In the setting of Theorem~\ref{thm:main},
+\[
+ \|\xi_n-\xi_*\|_{L^\infty(\Omega\times\Omega')}\longrightarrow0.
+\]
+\end{lemma}
+
+\begin{proof}
+The source paper proves this before its only use of the squared Euclidean
+form; we record why the argument needs only continuity of $c$.
+
+First, the elementary positive-part inequalities and $\eta/\eps\le1$ show
+that the sup-norm distance of the iterates from the potentials is uniformly
+bounded (up to the harmless potential translation).  This is the proof of
+Lemma~5.2 in \cite{GNR2026} and is independent of $c$.
+
+Second, the iterates have a common modulus of continuity.  Indeed, for two
+points $x,x'$, write the secant identity
+\[
+ (u)_+-(v)_+=\theta(u-v),\qquad 0\le\theta\le1,
+\]
+inside the $Q$-integral defining the update of $f_n$.  If $\rho_n$ is a
+modulus for $f_n$ and
+\[
+ \omega_c(r)=\sup_{\substack{|x-x'|\le r\\y\in\Omega'}}
+              |c(x,y)-c(x',y)|,
+\]
+then the difference of the two updates is a convex combination, with total
+weight at most $\eta/\eps$, of a term bounded by $\rho_n(r)$ and one bounded
+by $\omega_c(r)$.  Hence $f_{n+1}$ has modulus at most
+$\max(\rho_n,\omega_c)$.  The same holds for $g_n$.  Starting from continuous
+data gives a common modulus for all iterates.
+
+The map $D\Gamma$ is $2/\eps$-Lipschitz on the Hilbert space, again by the
+one-Lipschitz property of the positive part.  Since $0<\eta<\eps$, the usual
+ascent inequality gives
+\[
+ \sum_{n=0}^\infty\|D\Gamma(f_n,g_n)\|_2^2<\infty.
+\]
+Uniform boundedness and equicontinuity give compactness by Arzel\`a--Ascoli.
+Every cluster point is stationary.  Existence and uniqueness of continuous
+potentials modulo translation for a continuous QOT cost, with uniqueness
+under connectedness of one support, are the general-cost preliminary results
+used in \cite{GNR2026}; their proof uses \eqref{eq:FOC} and continuity only.
+Normalization therefore makes $(f_*,g_*)$ the unique cluster point.  Thus
+$f_n\oplus g_n\to f_*\oplus g_*$ uniformly, which is precisely the asserted
+convergence of $\xi_n$.
+\end{proof}
+
+\subsection{A fixed active core has a spectral gap}
+
+Let $B=\|(\xi_*)_+\|_\infty$.  Equation~\eqref{eq:FOC} implies $B\ge\eps$.
+Set
+\[
+ \tau=\frac\eps2,\qquad
+ E=\{(x,y):\xi_*(x,y)>\tau\},\qquad
+ \lambda=\frac{\eps}{2B}>0.
+\]
+For all $x\in\Omega$ and $y\in\Omega'$, respectively,
+\begin{equation}
+\label{eq:sectionmass}
+ Q(E_x)\ge\lambda,\qquad P(E^y)\ge\lambda.
+\end{equation}
+Indeed,
+\[
+ \eps=\int(\xi_*)_+\,dQ
+ \le \tau+BQ\{\xi_*>\tau\},
+\]
+and the other inequality is symmetric.
+
+For $(f,g)\in\cH_0$, define the core form
+\[
+ \mathfrak a_E(f,g)=\int_E(f(x)+g(y))^2\,dP(x)dQ(y).
+\]
+
+\begin{lemma}[Active-core gap]
+\label{lem:gap}
+There is a constant $\kappa>0$ such that
+\[
+ \mathfrak a_E(f,g)\ge
+ \kappa\bigl(\|f\|_{L^2(P)}^2+\|g\|_{L^2(Q)}^2\bigr)
+ \qquad((f,g)\in\cH_0).
+\]
+\end{lemma}
+
+\begin{proof}
+Let $q(x)=Q(E_x)$ and $p(y)=P(E^y)$.  The self-adjoint operator represented by
+$\mathfrak a_E$ has diagonal multiplication part
+$D=\operatorname{diag}(q,p)$ and cross operator
+\[
+ Tg(x)=\int\1_E(x,y)g(y)\,dQ(y),\qquad T^*f(y)=\int\1_E(x,y)f(x)\,dP(x).
+\]
+The kernel $\1_E$ belongs to $L^2(P\otimes Q)$, so $T$ and $T^*$ are
+Hilbert--Schmidt.  By \eqref{eq:sectionmass}, the compression of $D$ to
+$\cH_0$ is bounded below by $\lambda$.  The compressed core operator is
+therefore an invertible positive operator plus a compact operator, hence is
+Fredholm.
+
+It remains to show that its kernel is zero.  If $\mathfrak a_E(f,g)=0$, then
+$f(x)+g(y)=0$ for $P\otimes Q$-almost every $(x,y)\in E$.  Fix
+$y_0\in\Omega'$.  By \eqref{eq:sectionmass}, choose $x_0$ with
+$(x_0,y_0)\in E$.  Since $E$ is relatively open, there are relative-open
+neighborhoods $U\ni x_0$ and $V\ni y_0$ such that $U\times V\subset E$.
+Both have positive measure because $\Omega,\Omega'$ are topological supports.
+Fubini's theorem now shows that $g$ is $Q$-almost everywhere constant on $V$.
+
+These neighborhoods cover the connected set $\Omega'$.  Constants agree on
+every nonempty overlap because such an overlap is relative-open and has
+positive $Q$-measure.  Connectedness then yields $g=c$ $Q$-almost everywhere
+on $\Omega'$.  Since every $E_x$ has positive $Q$-measure, the zero-energy
+identity gives $f=-c$ $P$-almost everywhere.  The normalization
+$\int f\,dP=\int g\,dQ$ forces $c=0$.
+
+Thus the compressed Fredholm operator has trivial kernel.  Being self-adjoint
+of index zero, it is invertible; its positive quadratic form consequently has
+some lower bound $\kappa>0$.
+\end{proof}
+
+\subsection{Every eventual secant operator dominates the core}
+
+Let $e_n=(f_n-f_*,g_n-g_*)\in\cH_0$.  Define the measurable secant slope
+\[
+ w_n(x,y)=
+ \begin{cases}
+ \dfrac{(\xi_n(x,y))_+-(\xi_*(x,y))_+}
+       {\xi_n(x,y)-\xi_*(x,y)},&\xi_n(x,y)\ne\xi_*(x,y),\\[1.2ex]
+ \1_{\{\xi_*(x,y)>0\}},&\xi_n(x,y)=\xi_*(x,y).
+ \end{cases}
+\]
+Then $0\le w_n\le1$, and the gradient update gives the exact recurrence
+\begin{equation}
+\label{eq:recurrence}
+ e_{n+1}=\left(I-\frac\eta\eps A_n\right)e_n,
+\end{equation}
+where $A_n$ is the self-adjoint operator on $\cH_0$ with form
+\[
+ \langle A_n(f,g),(f,g)\rangle
+ =\int w_n(x,y)(f(x)+g(y))^2\,dP(x)dQ(y).
+\]
+
+By Lemma~\ref{lem:preconvergence}, for all sufficiently large $n$ we have
+$\|\xi_n-\xi_*\|_\infty<\tau$.  On $E$, both $\xi_*>\tau$ and $\xi_n>0$,
+so $w_n=1$.  Lemma~\ref{lem:gap} then gives
+\begin{equation}
+\label{eq:lower}
+ \langle A_nh,h\rangle\ge\kappa\|h\|^2\qquad(h\in\cH_0).
+\end{equation}
+For the upper bound, write
+$m=\int f\,dP=\int g\,dQ$.  Since $w_n\le1$,
+\begin{align*}
+ \langle A_n(f,g),(f,g)\rangle
+ &\le\int(f(x)+g(y))^2\,dP(x)dQ(y)\\
+ &=\|f\|_2^2+\|g\|_2^2+2m^2\\
+ &\le2(\|f\|_2^2+\|g\|_2^2).
+\end{align*}
+Thus the spectrum of every eventual $A_n$ is contained in $[\kappa,2]$.
+Putting $a=\eta/\eps\in(0,1)$, the spectral theorem and
+\eqref{eq:recurrence} yield
+\[
+ \|e_{n+1}\|\le\delta\|e_n\|,
+ \qquad
+ \delta=\max\{|1-a\kappa|,|1-2a|\}<1.
+\]
+Iteration proves the stated geometric estimate.
+\qed
+
+\section{Relation to later literature}
+
+The later PL-inequality paper \cite{GNRPL2026} independently proves linear
+convergence for arbitrary uniformly continuous costs and provides explicit
+rates, but assumes that one marginal has a density bounded above and away
+from zero on a convex support (or on the closure of a bounded Lipschitz
+domain).  Theorem~\ref{thm:main} is non-quantitative but retains the source
+paper's substantially weaker marginal framework; its active-core Fredholm
+argument requires only compact supports and connectedness of one support.
+
+\section{Verification, limitations, and novelty}
+
+The proof was audited step by step in \path{VERIFICATION.md}.  The optional
+matrix checker \path{code/verify_weighted_core.py} verifies the spectral
+domination and contraction inequalities for finite weighted bipartite cores;
+it is not part of the proof.
+
+The theorem gives a qualitative contraction factor because the Fredholm gap
+$\kappa$ is not explicit.  It concerns fixed-step dual gradient descent with
+$0<\eta<\eps$ and does not assert convergence at or above the threshold.
+
+A bounded literature search on 9 August 2026 used the exact source title and
+arXiv id together with “general continuous cost,” “strictly active,” “secant
+weights,” “spectral gap,” and “linear convergence.”  It found the source and
+the stronger-assumption PL result \cite{GNRPL2026}, but no theorem with the
+weak marginal hypotheses above and no use of the present secant-domination
+argument.  Novelty confidence is moderate pending specialist review.
+
+\section{Human-review recommendation}
+
+The packet is ready for expert review as a candidate full solution of
+Remark~2.5.  The principal checks are the local-a.e.-constancy patching in
+Lemma~\ref{lem:gap}, the Fredholm compression to $\cH_0$, and the claim that
+the source's preconvergence proof remains valid for every continuous cost.
+
+\begin{thebibliography}{9}
+
+\bibitem{GNR2026}
+A. Gonz\'alez-Sanz, M. Nutz, and A. Riveros Valdevenito,
+\emph{Linear convergence of gradient descent for quadratically regularized
+optimal transport}, arXiv:2509.08547v3, 2026.
+
+\bibitem{GNRPL2026}
+A. Gonz\'alez-Sanz, M. Nutz, and A. Riveros Valdevenito,
+\emph{Polyak--\L{}ojasiewicz inequality for quadratically regularized optimal
+transport}, arXiv:2605.27175, 2026.
+
+\end{thebibliography}
+
+\end{document}

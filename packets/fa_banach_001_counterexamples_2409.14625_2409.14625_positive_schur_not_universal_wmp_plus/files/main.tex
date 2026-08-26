@@ -1,0 +1,239 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,graphicx}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\WMP}{\mathrm{WMP}^{+}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.65em}
+
+\title{The Positive Schur Property Does Not Characterize Universal $\WMP$ Codomains}
+\author{Run \texttt{fa\_banach\_001}, lane 18}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\textbf{Status.} Candidate counterexample, likely valid, for human review.
+
+\section{Source question}
+
+Luiz and Miranda introduce the positive weak maximizing property: a pair of
+Banach lattices $(E,F)$ has $\WMP$ when every positive operator $T:E\to F$
+with a positive non-weakly-null maximizing sequence is norm-attaining. After
+recalling that a Banach space $Y$ has the Schur property exactly when $(X,Y)$
+has the ordinary WMP for every reflexive $X$, they ask whether there is a
+similar characterization for $\WMP$ using the positive Schur property
+\cite[Section~3, PDF p.~12]{LuizMiranda}.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The direct candidate characterization is:
+\begin{quote}
+$F$ has the positive Schur property if and only if $(E,F)$ has $\WMP$ for
+every reflexive Banach lattice $E$.
+\end{quote}
+The source proves the proposed sufficiency only when the unit ball of $E$ is
+sequentially absolutely weakly compact, a condition stronger than
+reflexivity, and proves the relevant necessity result for order-continuous
+codomains. The construction below disproves sufficiency for reflexive domains.
+
+\section{Claimed contribution}
+
+\begin{theorem}\label{thm:main}
+For every $\delta>0$ there is an order-continuous lattice norm
+$\|\!|\cdot\|\!|$ on $L_1[0,1]$ such that
+\[
+ \|h\|_1\leq \|\!|h\|\!|\leq(1+\delta)\|h\|_1
+ \qquad(h\in L_1[0,1]),
+\]
+and the resulting Banach lattice $F=(L_1[0,1],\|\!|\cdot\|\!|)$ has the
+positive Schur property, but
+\[
+ (L_2[0,1],F)
+\]
+fails $\WMP$. Consequently the positive Schur property does not characterize
+the codomains $F$ for which $(E,F)$ has $\WMP$ for every reflexive Banach
+lattice $E$.
+\end{theorem}
+
+Thus the failure persists under arbitrarily small equivalent lattice
+renormings of the standard $L_1$ norm.
+
+\section{Proof intuition}
+
+An equivalent lattice renorming preserves the positive Schur property, but it
+can encode a moving family of positive functionals whose norms increase to an
+unattained limit. Rademacher half-sets provide exactly such a family. Their
+oscillatory parts vanish weakly against each fixed $L_2$ vector, preventing
+any single vector from attaining the limiting operator norm. On the other
+hand, each density nearly norms itself, so its normalization gives a
+maximizing sequence. Every density also has a fixed positive constant part;
+therefore that maximizing sequence converges weakly to a nonzero constant and
+is not weakly null. This is precisely the witness that violates $\WMP$.
+
+\section{Construction and proof}
+
+Work over the real scalars. Let $(r_n)$ be the Rademacher functions on
+$[0,1]$, normalized so that $r_n$ takes the values $-1$ and $1$ on sets of
+measure $1/2$. Put
+\[
+ A_n=\{t:r_n(t)=1\},\qquad \one_{A_n}=\frac{\one+r_n}{2}.
+\]
+Fix $c$ with $0<c\leq\delta$, choose any strictly increasing sequence
+$0<c_n<c$ with $c_n\to c$ (for instance $c_n=cn/(n+1)$), and define
+\[
+ g_n=\one+c_n\one_{A_n}.
+\]
+For $h\in L_1[0,1]$, set
+\begin{equation}\label{eq:Fnorm}
+ \|\!|h\|\!|=\sup_{n\geq1}\int_0^1 g_n|h|.
+\end{equation}
+
+\begin{lemma}\label{lem:lattice}
+Equation~\eqref{eq:Fnorm} defines an order-continuous Banach lattice norm on
+$L_1[0,1]$ satisfying
+\[
+ \|h\|_1\leq\|\!|h\|\!|\leq(1+c)\|h\|_1.
+\]
+The resulting Banach lattice $F$ has the positive Schur property.
+\end{lemma}
+
+\begin{proof}
+Since $\one\leq g_n\leq(1+c)\one$, the displayed norm equivalence is
+immediate. Positivity of the $g_n$, the inequality
+$|h+k|\leq|h|+|k|$, and monotonicity of the integral prove the norm and
+lattice-norm axioms. Completeness follows from equivalence with the ordinary
+$L_1$ norm. Since the ordinary $L_1$ norm is order continuous, the same
+equivalence shows that $\|\!|\cdot\|\!|$ is order continuous as well.
+
+Equivalent norms have the same continuous linear functionals and hence the
+same weak topology. If $(h_j)\subset F_+$ is weakly null, then the constant
+functional $\one\in L_\infty$ gives
+\[
+ \|h_j\|_1=\int_0^1h_j\longrightarrow0.
+\]
+Consequently
+$\|\!|h_j\|\!|\leq(1+c)\|h_j\|_1\to0$. This is the positive Schur
+property.
+\end{proof}
+
+Consider the natural inclusion
+\[
+ T:L_2[0,1]\longrightarrow F,\qquad Tf=f.
+\]
+It is positive. Write
+\[
+ d_n=\|g_n\|_2
+ =\left(1+c_n+\frac{c_n^2}{2}\right)^{1/2},
+ \qquad
+ L=\left(1+c+\frac{c^2}{2}\right)^{1/2}.
+\]
+Then $d_n\to L$ and $d_n<L$ for every $n$.
+
+\begin{lemma}\label{lem:operator}
+The operator $T$ has norm $L$ and does not attain its norm.
+\end{lemma}
+
+\begin{proof}
+For $f\in L_2$, Cauchy--Schwarz gives
+\[
+ \|\!|Tf\|\!|
+ =\sup_n\int_0^1g_n|f|
+ \leq\sup_n\|g_n\|_2\|f\|_2
+ =L\|f\|_2.
+\]
+For the reverse inequality let $x_n=g_n/d_n$. Then $x_n\geq0$,
+$\|x_n\|_2=1$, and
+\[
+ \|\!|Tx_n\|\!|
+ \geq\int_0^1g_nx_n=d_n\longrightarrow L.
+\]
+Thus $\|T\|=L$.
+
+Fix now any $f\in L_2$ with $\|f\|_2=1$ and put
+$a_n=\int g_n|f|$. Since
+\[
+ g_n=\left(1+\frac{c_n}{2}\right)\one+\frac{c_n}{2}r_n
+\]
+and $(r_n)$ is an orthonormal sequence in $L_2$, its Fourier coefficients
+against the fixed vector $|f|\in L_2$ tend to zero. Hence
+\begin{equation}\label{eq:fixedlimit}
+ a_n\longrightarrow
+ \left(1+\frac c2\right)\|f\|_1
+ \leq1+\frac c2.
+\end{equation}
+But
+\[
+ L^2-\left(1+\frac c2\right)^2=\frac{c^2}{4}>0,
+\]
+so the limit in~\eqref{eq:fixedlimit} is strictly less than $L$. Also,
+for each fixed $n$,
+\[
+ a_n\leq\|g_n\|_2\|f\|_2=d_n<L.
+\]
+Because $(a_n)$ converges to a value below $L$, its tail is uniformly below
+$L$; the finitely many remaining terms are each below $L$. Therefore
+\[
+ \|\!|Tf\|\!|=\sup_na_n<L.
+\]
+No unit vector $f$ attains $\|T\|=L$.
+\end{proof}
+
+It remains to verify that the already constructed sequence is the witness
+required by $\WMP$. From
+\[
+ x_n=\frac{1+c_n/2}{d_n}\one+\frac{c_n}{2d_n}r_n
+\]
+and weak nullity of the orthonormal sequence $(r_n)$ in $L_2$, we obtain
+\[
+ x_n\ \xrightarrow{\,w\,}\ \frac{1+c/2}{L}\one\neq0.
+\]
+Thus $(x_n)$ is positive and non-weakly-null. The estimates in the proof of
+Lemma~\ref{lem:operator} show
+\[
+ d_n\leq\|\!|Tx_n\|\!|\leq\|T\|=L,
+\]
+so $(x_n)$ is a maximizing sequence for $T$. The positive operator $T$ is
+not norm-attaining but admits a positive non-weakly-null maximizing sequence.
+Hence $(L_2,F)$ fails $\WMP$, proving Theorem~\ref{thm:main}.
+
+\section{Verification and limitations}
+
+The separate adversarial report \texttt{verification.md} audits the Banach
+lattice norm, the positive Schur property, the exact operator norm, the strict
+nonattainment argument, and the maximizing sequence. No numerical or symbolic
+computation is used as proof. The only analytic ingredients are
+Cauchy--Schwarz, weak nullity of an orthonormal sequence, and elementary norm
+equivalence.
+
+The construction answers the direct positive-Schur characterization
+negatively. It does not give an intrinsic replacement characterization of
+those $F$ for which $(E,F)$ has $\WMP$ for every reflexive Banach lattice
+$E$.
+
+\section{Novelty check}
+
+The bounded search on 11 August 2026 covered the run's registry, solution,
+attempt, and proof-gap indexes; exact searches for arXiv:2409.14625 and its
+title; the phrases ``positive weak maximizing property'' and ``positive Schur
+property''; the published JMAA article; and arXiv searches for the exact
+question and close variants. The published 2026 version still presents the
+characterization as a natural question. No later proof or counterexample was
+found. This supports, but cannot certify, novelty.
+
+\begin{thebibliography}{9}
+\bibitem{LuizMiranda}
+J. L. P. Luiz and V. C. C. Miranda,
+\emph{On norm-attaining positive operators between Banach lattices},
+J. Math. Anal. Appl. 558 (2026), Paper No. 130379;
+arXiv:2409.14625,
+\url{https://arxiv.org/abs/2409.14625}.
+\end{thebibliography}
+
+\end{document}

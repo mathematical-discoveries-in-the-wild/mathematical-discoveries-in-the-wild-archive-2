@@ -1,0 +1,200 @@
+\documentclass[10pt]{article}
+\usepackage[letterpaper,margin=0.85in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage{enumitem}
+\setlist{nosep,leftmargin=*}
+
+\newtheorem{theorem}{Theorem}
+\newcommand{\A}{\mathcal A}
+\newcommand{\B}{\mathcal B}
+\newcommand{\M}{M}
+\newcommand{\C}{\mathbb C}
+\newcommand{\op}{\mathrm{op}}
+\newcommand{\Tr}{\operatorname{Tr}}
+
+\title{The sharp Frobenius-Rieffel constants from the\\
+Pimsner-Popa finite-dimensional index formula}
+\author{Automated mathematics discovery run \texttt{fa\_banach\_001}\\
+Lane 13, model GPT5.6}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\begin{minipage}{0.94\textwidth}
+\textbf{Status.} Literature-implied answer to the full sharp-constant
+problem, likely valid, subject to human review.  The supporting authors did
+not identify their result as an answer to the Frobenius-Rieffel question.
+\end{minipage}}
+\end{center}
+
+\section{Source question}
+
+For a finite-dimensional unital C*-algebra $\A$, a unital C*-subalgebra
+$\B\subseteq\A$, a faithful tracial state $\tau$, and the unique
+$\tau$-preserving conditional expectation $E:\A\to\B$, Aguilar, Garcia, and
+Kim define
+\[
+   \|x\|_{E}=\|E(x^*x)\|_{\op}^{1/2}.
+\]
+They ask for the sharp constant
+\[
+ \kappa(E)=\inf_{x\ne0}\frac{\|x\|_E}{\|x\|_{\op}}.             \tag{1}
+\]
+The question appears immediately before Table 1 on arXiv PDF page 14; the
+table of conjectured constants is on page 15 \cite{AGK}.  The paper treats
+arbitrary finite-dimensional $\A$, $\B$, and faithful traces, so ``find the
+sharp constants'' is naturally read in this full generality.
+
+\section{The overlooked identification}
+
+Write
+\[
+ \A=\bigoplus_{k=1}^{K}M_{d_k}(\C),\qquad
+ \B\cong\bigoplus_{j=1}^{J}M_{n_j}(\C).
+\]
+After unitary conjugacy, the representation of $\B$ in the $k$th summand is
+\[
+ (z_j)_j\longmapsto\bigoplus_{j=1}^{J}
+       (I_{m_{kj}}\otimes z_j),
+ \qquad d_k=\sum_jm_{kj}n_j,                                  \tag{2}
+\]
+where $m_{kj}\ge0$ and every column is nonzero.  If
+\[
+ \tau((x_k)_k)=\sum_k q_k\Tr(x_k),\qquad q_k=\frac{v_k}{d_k},
+ \quad v_k>0,\quad\sum_kv_k=1,
+\]
+put
+\[
+ \omega_j=\sum_{\ell=1}^{K}q_\ell m_{\ell j},\qquad
+ b_{kj}=\min\{m_{kj},n_j\},
+\]
+and
+\[
+ D_k=\sum_{j:m_{kj}>0}\frac{b_{kj}\omega_j}{q_k},
+ \qquad D=\max_kD_k.                                         \tag{3}
+\]
+
+\begin{theorem}[sharp constant]
+For every finite-dimensional inclusion and faithful trace above,
+\[
+                         \boxed{\ \kappa(E)=D^{-1/2}\ }.       \tag{4}
+\]
+Moreover, $D$ is exactly the reciprocal of the finite-dimensional
+Pimsner-Popa order constant computed in Theorem 6.1 of \cite{PP}.
+\end{theorem}
+
+\paragraph{Identification with Pimsner-Popa.}
+Pimsner and Popa write $a_{kj}$ for the inclusion multiplicities, $q_k$ for
+the trace of a minimal projection in the $k$th ambient factor, and $\omega_j$
+for the trace of a minimal projection in the $j$th subalgebra factor. Their
+Theorem 6.1, on printed page 93 (supporting PDF page 38), states
+\[
+ \lambda(\A,\B)^{-1}
+ =\max_k\sum_j\min\{a_{kj},n_j\}\frac{\omega_j}{q_k}.          \tag{5}
+\]
+Thus (3) is precisely their formula.  Since
+$E(c)\ge D^{-1}c$ for $c\ge0$, it immediately gives
+$\|x\|_E\ge D^{-1/2}\|x\|_{\op}$.  The following elementary equality case
+shows that this lower constant is sharp for the norm problem, not merely for
+the stronger order inequality.
+
+\paragraph{Equality witness.}
+Choose $k_0$ with $D_{k_0}=D$.  In the decomposition (2), choose orthonormal
+vectors $e_{jr}\in\C^{m_{k_0j}}$ and $f_{jr}\in\C^{n_j}$ for
+$1\le r\le b_{k_0j}$, and set
+\[
+ x_j=\sqrt{\frac{\omega_j}{q_{k_0}D}}
+       \sum_{r=1}^{b_{k_0j}} e_{jr}\otimes f_{jr},
+ \qquad x=\bigoplus_jx_j.
+\]
+Equation (3) gives $\|x\|=1$.  Let $p=xx^*$, supported in the $k_0$th
+summand of $\A$.  The $j$th abstract component of $E(p)$ is
+\[
+ \frac{q_{k_0}}{\omega_j}
+ \Tr_{\C^{m_{k_0j}}}(x_jx_j^*)
+ =\frac1D\sum_{r=1}^{b_{k_0j}}f_{jr}f_{jr}^*.
+\]
+Consequently $\|E(p)\|_{\op}=1/D$.  Since $p=p^*p$ and
+$\|p\|_{\op}=1$, equality holds in (4).
+
+For completeness, the lower bound can also be seen without index theory.  A
+positive norm-one $c\in\A$ dominates a rank-one projection in a summand where
+its norm is attained.  For such a projection, write $t_j$ for the trace of its
+$j$th reduced density matrix.  Its rank is at most $b_{kj}$, so if
+$R=\|E(p)\|_{\op}$ then
+\[
+ t_j\le R\frac{b_{kj}\omega_j}{q_k},\qquad
+ 1=\sum_jt_j\le RD_k\le RD.
+\]
+Hence $R\ge1/D$, and positivity of $E$ completes the same proof.
+
+\section{Matrix-algebra specialization and a corrected guess}
+
+For $\A=M_n$ and
+\(
+ \B=\bigoplus_j(I_{m_j}\otimes M_{n_j})
+\), formula (3) reduces to
+\[
+                  D=\sum_jm_j\min\{m_j,n_j\}.                 \tag{6}
+\]
+This is also the specialization recorded as the Pimsner-Popa index in modern
+quantum Markov literature \cite[formula (14)]{GR}.
+
+Formula (6) agrees with every numerical guess in Table 1 of \cite{AGK} except
+one.  For
+\[
+ \B^5_{2^2,1}=\{\operatorname{diag}(A,A,\lambda):
+                  A\in M_2,\ \lambda\in\C\},
+\]
+it gives $D=2\min(2,2)+1=5$, hence $\kappa=1/\sqrt5$, not the guessed
+$1/2$.  Explicitly,
+\[
+ x=(\sqrt{2/5},0,0,\sqrt{2/5},\sqrt{1/5})^T,\qquad p=xx^*,
+\]
+satisfies $E(p)=I_5/5$.
+
+\section{Provenance and scope}
+
+This is classified as a literature-implied full answer, not as a new theorem:
+the decisive multiplicity-and-trace formula is Pimsner and Popa's 1986
+Theorem 6.1.  The bridge to the Frobenius-Rieffel norm and its explicit
+rank-one equality case do not appear to have been noted by the source authors.
+Indeed, their March 2026 follow-up still says that the sharp constants are
+unknown \cite{AGKL}.  Bounded searches used the exact source title, author
+names, ``sharp Frobenius-Rieffel constant'', ``Pimsner-Popa index'', and
+finite-dimensional multiplicity formulas.  No separate explicit resolution
+in Frobenius-Rieffel terminology was located.
+
+\paragraph{Human review focus.}
+Check the translation of minimal-projection trace weights in (5) to
+$q_k,\omega_j$, and verify that the unitary standard form (2) covers linked
+simple components across distinct ambient summands.  The rank-one equality
+calculation is otherwise finite-dimensional linear algebra.
+
+\begin{thebibliography}{9}
+\bibitem{AGK}
+K. Aguilar, S. R. Garcia, and E. Kim,
+\emph{Frobenius-Rieffel norms on finite-dimensional C*-algebras},
+Operators and Matrices 16 (2022), 733--758; arXiv:2112.13164.
+
+\bibitem{PP}
+M. Pimsner and S. Popa,
+\emph{Entropy and index for subfactors},
+Ann. Sci. Ecole Norm. Sup. (4) 19 (1986), 57--106.
+
+\bibitem{GR}
+L. Gao and C. Rouze,
+\emph{Complete entropic inequalities for quantum Markov chains},
+Arch. Ration. Mech. Anal. 245 (2022), 183--238.
+
+\bibitem{AGKL}
+K. Aguilar, S. R. Garcia, E. Kim, and F. Latremoliere,
+\emph{The strongly Leibniz property and the Gromov-Hausdorff propinquity},
+arXiv:2301.05692, March 2026 revision.
+\end{thebibliography}
+
+\end{document}

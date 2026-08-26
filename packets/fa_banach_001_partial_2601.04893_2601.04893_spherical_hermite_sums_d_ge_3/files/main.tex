@@ -1,0 +1,307 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\T}{\mathbb T}
+\newcommand{\N}{\mathbb N}
+\newcommand{\F}{\mathcal F}
+\newcommand{\SN}{\mathring S}
+
+\title{Spherical Hermite sums on modulation spaces\\
+       \large A complete classification in dimensions at least three}
+\author{Codex agent lane 6}
+\date{August 11, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\linewidth}{
+\textbf{Status: candidate partial result, likely valid.}
+The source question is completely answered for every $d\ge3$, but the
+intermediate range in $d=2$ remains open.  Human review is recommended.}}
+\end{center}
+
+\section*{Source question}
+
+Jaming and Speckbacher ask in Remark 3.3 of
+\emph{Convergence of Hermite expansions in modulation spaces},
+arXiv:2601.04893 \cite{JS}, for which $p$ the spherical Hermite sums
+\[
+  \SN_N f=\sum_{\substack{n\in\N_0^d\\ |n|\le N}}
+       \langle f,h_n\rangle h_n
+\]
+converge in $M^p(\R^d)$.  Here $h_n$ are the tensor Hermite functions and
+
+\begin{center}
+\includegraphics[width=0.96\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+The image is a full-width crop of source page 10.  The question follows the
+authors' observation that the known implication from torus Fourier multipliers
+to Hermite multipliers is only sufficient; they specifically point to
+Fefferman's ball multiplier as the natural obstruction.
+
+\section*{Result and scope}
+
+\begin{theorem}[High-dimensional classification]
+Let $d\ge3$ and $1\le p\le\infty$.  The following are equivalent:
+\begin{enumerate}
+  \item for every $f\in M^p(\R^d)$, one has
+        $\SN_Nf\to f$ in $M^p(\R^d)$;
+  \item $p=2$.
+\end{enumerate}
+In particular, for every $p\ne2$,
+\[
+  \sup_{N\in\N}\|\SN_N\|_{M^p\to M^p}=\infty.
+\]
+For $d=2$, convergence holds at $p=2$ and fails at $p=1,\infty$; the
+present proof does not decide $1<p<\infty$, $p\ne2$.
+\end{theorem}
+
+\section*{Proof intuition}
+
+The Bargmann transform sends Hermite functions to normalized monomials.  A
+finite collection of monomials whose multi-indices lie near a very large base
+index $K$ has, after division by the norm of the base monomial, the same
+asymptotic norm as the corresponding trigonometric polynomial on a torus.  This
+is an elementary concentration fact: the radial variables under the mass of a
+large monomial are Gamma distributed and concentrate at the base index.
+
+We place the neighboring indices in the integer hyperplane $v^\perp$.  Pell's
+equation produces arbitrarily remote base indices $K$ and integer radii $N$
+for which the spherical condition is \emph{exactly}
+$|q|\le J$ on that hyperplane.  Thus a hypothetical uniform bound for
+spherical Hermite sums would imply uniform bounds for ellipsoidal Fourier sums
+on a $(d-1)$-torus.  When $d\ge3$, de Leeuw transference and Fefferman's
+theorem make this impossible unless $p=2$.
+
+\section*{Bargmann-Fock setup}
+
+Under the standard Bargmann transform, $M^p(\R^d)$ is isomorphic (isometric
+up to the normalization convention) to the Fock space
+\[
+ \F^p(\C^d)=\left\{F\text{ entire}:
+ \int_{\C^d}|F(z)|^p e^{-\pi p|z|^2/2}\,dz<\infty\right\},
+ \qquad 1\le p<\infty,
+\]
+and $h_n$ is sent to
+\[
+ e_n(z)=\frac{\pi^{|n|/2}}{\sqrt{n!}}z^n,
+ \qquad n\in\N_0^d.
+\]
+Consequently $\SN_N$ becomes the monomial multiplier with symbol
+$1_{\{|n|\le N\}}$.
+
+\begin{lemma}[High-monomial torus limit]\label{lem:focklimit}
+Fix $1\le p<\infty$, a vector $v\in\N^d$ all of whose coordinates are
+positive, a finite set
+\[
+ E\subset H_v:=\{q\in\mathbb Z^d:v\cdot q=0\},
+\]
+and scalars $c_q$.  For $K=Lv$, with $L$ sufficiently large that
+$K+q\in\N_0^d$ for every $q\in E$, put
+\[
+ F_L=\sum_{q\in E}c_qe_{K+q}.
+\]
+Then
+\[
+ \lim_{L\to\infty}\frac{\|F_L\|_{\F^p}}{\|e_K\|_{\F^p}}
+ =\left\|\sum_{q\in E}c_q e^{iq\cdot\theta}\right\|_{L^p(\T^d)},
+\]
+where Haar measure on the torus is normalized.
+\end{lemma}
+
+\begin{proof}
+Write $z_j=r_je^{i\theta_j}$ and $t_j=\pi r_j^2$.  Normalize the measure
+
+\[
+ |e_K(z)|^p e^{-\pi p|z|^2/2}\,dz
+\]
+
+to have mass one.  Its angular part is normalized Haar measure, and its radial
+variables are independent with
+\[
+ t_j\sim\operatorname{Gamma}\left(\frac{pK_j}{2}+1,
+                                  \text{ rate }\frac p2\right).
+\]
+Furthermore,
+\[
+ \frac{e_{K+q}(z)}{e_K(z)}
+ =A_{K,q}(t)e^{iq\cdot\theta},\qquad
+ A_{K,q}(t)=\prod_{j=1}^d t_j^{q_j/2}
+            \sqrt{\frac{K_j!}{(K_j+q_j)!}}.
+\]
+For fixed $q$, $t_j/K_j\to1$ in probability.  The factorial ratio
+asymptotic therefore gives $A_{K,q}\to1$ in probability.  This convergence
+also holds in every fixed finite $L^s$.  Indeed, for all sufficiently large
+$K_j$, the Gamma moment formula gives
+\begin{align*}
+ \mathbb E[A_{K,q}^{s}]
+ =\prod_{j=1}^d&\left(\frac{K_j!}{(K_j+q_j)!}\right)^{s/2}
+ \left(\frac p2\right)^{-sq_j/2}\\
+ &\times
+ \frac{\Gamma(pK_j/2+1+sq_j/2)}{\Gamma(pK_j/2+1)}
+ \longrightarrow1.
+\end{align*}
+Applying this with a moment strictly larger than $p$ supplies uniform
+integrability, so $A_{K,q}\to1$ in $L^p$.  Since $E$ is finite,
+Minkowski's inequality yields
+\[
+ \left\|\sum_{q\in E}c_q(A_{K,q}-1)e^{iq\cdot\theta}\right\|_{L^p}
+ \le\sum_{q\in E}|c_q|\,\|A_{K,q}-1\|_{L^p}\longrightarrow0.
+\]
+This is exactly the asserted normalized norm limit.
+\end{proof}
+
+\section*{Exact integer-radius placement}
+
+\begin{lemma}[Pell slice]\label{lem:pell}
+For every $d\ge3$, there is a primitive vector $v\in\N^d$, all of whose
+coordinates are positive, for which $D=|v|^2$ is not a square.  For each
+integer $J\ge1$, there are sequences $K_k\in\N^d$ and $N_k\in\N$, with
+$\min_j(K_k)_j\to\infty$, such that for every $q\in H_v$ and all large
+$k$ for which $K_k+q\ge0$,
+\[
+ |K_k+q|\le N_k \quad\Longleftrightarrow\quad |q|\le J.
+\]
+\end{lemma}
+
+\begin{proof}
+If $d$ is not a square, take $v=(1,\ldots,1)$, so $D=d$.  If $d$ is a
+square, take $v=(1,\ldots,1,2)$, with $d-1$ entries equal to one; then
+$D=d+3$.  For square $d\ge4$, $d+3$ cannot be a square, because two
+positive squares differ by three only in the pair $1,4$.  In either case
+$v$ is primitive and $D$ is nonsquare.
+
+Pell's equation
+\[
+ a^2-Db^2=1
+\]
+has positive solutions $(a_k,b_k)$ with $b_k\to\infty$.  Set
+\[
+ K_k=Jb_kv,\qquad N_k=Ja_k.
+\]
+For $q\in H_v$, orthogonality and Pell's identity give
+\[
+ |K_k+q|^2=DJ^2b_k^2+|q|^2=N_k^2-J^2+|q|^2.
+\]
+The desired equivalence follows, with no rounding or limiting error.
+\end{proof}
+
+\section*{Proof of the theorem}
+
+Let first $1<p<\infty$, and suppose that $\SN_Nf\to f$ in $M^p$ for
+every $f$.  Banach--Steinhaus yields
+\[
+ \sup_N\|\SN_N\|_{M^p\to M^p}=C<\infty.
+\]
+Transfer this bound to $\F^p(\C^d)$.  Choose $v$ from Lemma
+\ref{lem:pell}.  Since $v$ is primitive, the lattice $H_v$ is saturated,
+has rank $d-1$, and is the character lattice of a $(d-1)$-torus.
+
+Fix $J\ge1$ and a finite trigonometric polynomial
+\[
+ P(\theta)=\sum_{q\in E}c_qe^{iq\cdot\theta},\qquad E\subset H_v.
+\]
+Embed it as $F_k=\sum_{q\in E}c_qe_{K_k+q}$, where $K_k,N_k$ come from
+Lemma \ref{lem:pell}.  The exact Pell equivalence gives
+\[
+ \SN_{N_k}F_k=\sum_{\substack{q\in E\\|q|\le J}}c_qe_{K_k+q}.
+\]
+Apply the uniform Fock bound, divide by $\|e_{K_k}\|_{\F^p}$, and use Lemma
+\ref{lem:focklimit} on both sides.  We obtain
+\[
+ \left\|\sum_{\substack{q\in E\\|q|\le J}}c_qe^{iq\cdot\theta}\right\|_p
+ \le C\left\|\sum_{q\in E}c_qe^{iq\cdot\theta}\right\|_p. \tag{1}
+\]
+
+Choose a lattice isomorphism $B:\mathbb Z^{d-1}\to H_v$.  In these
+coordinates, (1) says that the Fourier multipliers
+\[
+ m_J(\ell)=1_{\{Q(\ell)\le J^2\}},\qquad
+ Q(\ell)=|B\ell|^2,
+\]
+are uniformly bounded on $L^p(\T^{d-1})$.  The dilation part of de Leeuw's
+multiplier theorem \cite{deLeeuw} then makes the ellipsoid indicator
+$1_{\{Q(\xi)\le1\}}$ an $L^p(\R^{d-1})$ Fourier multiplier.  The ellipsoid
+boundary has measure zero, so the usual a.e.-continuity formulation applies.
+After an invertible linear change of variables, this is the Euclidean ball
+multiplier.  Since $d-1\ge2$, Fefferman's theorem \cite{Fefferman} forces
+$p=2$, a contradiction whenever $p\ne2$.
+
+At $p=1$, take $f=g\otimes h_0^{\otimes(d-1)}$.  Tensor factorization of
+the modulation norm and the Hermite coefficients gives
+\[
+ \SN_N f=(S_Ng)\otimes h_0^{\otimes(d-1)},
+\]
+where $S_N$ is the one-dimensional Hermite partial sum.  The source proves
+that $\|S_N\|_{M^1(\R)\to M^1(\R)}$ grows at least logarithmically
+\cite[Theorem 1.1]{JS}; hence the spherical sums are not uniformly bounded on
+$M^1(\R^d)$.  Under the standard $M^1$--$M^\infty$ duality, these
+finite-rank real diagonal projections are adjoints of themselves, so their
+$M^\infty$ operator norms equal their $M^1$ norms.  This rules out
+$p=\infty$.
+
+Finally, $M^2(\R^d)=L^2(\R^d)$ with equivalent (indeed, conventionally
+isometric) norm by Moyal's identity.  The operators $\SN_N$ are increasing
+orthogonal projections associated with the tensor Hermite orthonormal basis,
+so $\SN_Nf\to f$ for every $f\in M^2$.  This proves the theorem.
+
+\section*{Dimension two, verification, and limitations}
+
+The proof above exposes the precise dimension threshold: $H_v$ has rank
+$d-1$.  When $d=2$, it is one-dimensional, and its ball multipliers are
+interval partial sums, uniformly bounded for $1<p<\infty$.  Thus this method
+does not settle the intermediate two-dimensional range.  The tensor endpoint
+argument and the $p=2$ argument remain valid, giving the scoped claims stated
+in the theorem.
+
+The included script checks Pell identities for representative dimensions and
+radii and checks the convergence of the exact Gamma moments for positive and
+negative shifts.  These computations are sanity checks, not parts of the
+proof.
+
+A bounded novelty search on August 11, 2026 covered the local run indexes, the
+exact source title and question phrases, Hermite/Fock multiplier converses,
+monomial ball sums in Fock spaces, and Pell-based multiplier transference.  It
+found the source and general multiplier literature, but no later answer to
+Remark 3.3 and no matching argument.  This is not an exhaustive novelty claim.
+
+\medskip
+\noindent\textbf{Human-review recommendation.}
+Check Lemma \ref{lem:focklimit}'s normalization and the discontinuous-symbol
+form of de Leeuw dilation.  The Pell placement is an exact integer identity.
+The packet must remain classified as partial until the intermediate (d=2)
+range is settled.
+
+\begin{thebibliography}{9}
+
+\bibitem{JS}
+P. Jaming and M. Speckbacher,
+\emph{Convergence of Hermite expansions in modulation spaces},
+arXiv:2601.04893, 2026.
+
+\bibitem{deLeeuw}
+K. de Leeuw,
+\emph{On $L_p$ multipliers},
+Ann. of Math. (2) \textbf{81} (1965), 364--379.
+
+\bibitem{Fefferman}
+C. Fefferman,
+\emph{The multiplier problem for the ball},
+Ann. of Math. (2) \textbf{94} (1971), 330--336.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,250 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[margin=1in]{geometry}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+\newcommand{\T}{\mathbb T}
+\newcommand{\Z}{\mathbb Z}
+
+\title{A Harmonic-Near-Symmetric Order Obstruction\\
+at the Critical Sobolev Index}
+\author{Run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_11}}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source Question and Status}
+
+Ivanov and Kalton study when a Riesz basis of exponentials in
+$L^2(-\pi,\pi)$ remains a basis in Sobolev spaces.  After proving their
+unconditional-basis classification, they ask whether the exponentials can be
+a \emph{conditional} basis of $H^s$, under a suitable ordering, throughout
+the intermediate range $s_0\leq s\leq s_\Lambda$ \cite[p.~14]{IK}.
+
+\begin{center}
+\includegraphics[width=0.96\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+This packet gives a rigorous negative answer for a broad class of orders in
+the canonical endpoint model $\Lambda=\Z$, where $s_0=s_\Lambda=1/2$.
+The full question for arbitrary, highly nonlocal permutations remains open.
+
+\section*{Definitions}
+
+Write $I=(-\pi,\pi)$.  We use the equivalent Slobodeckij norm
+\[
+ \|g\|_{H^{1/2}(I)}^2\asymp \|g\|_{L^2(I)}^2+[g]_{1/2,I}^2,
+ \qquad
+ [g]_{1/2,I}^2=
+ \int_I\!\int_I\frac{|g(x)-g(y)|^2}{|x-y|^2}\,dx\,dy.
+\]
+Let $\pi_0:\mathbb N\to\Z$ be an enumeration and
+$A_k=\{\pi_0(1),\ldots,\pi_0(k)\}$.  We call the order
+\emph{harmonic-near-symmetric along a subsequence} if there are
+$k_j,N_j\to\infty$ such that
+\begin{equation}\label{eq:harmonic}
+ \sum_{\substack{n\in A_{k_j}\mathbin\triangle[-N_j,N_j]\\n\ne0}}
+ \frac1{|n|}\longrightarrow0.
+\end{equation}
+
+\section*{Proof Intuition}
+
+The smooth interval function $f(x)=x$ has Fourier coefficients of size
+$1/|n|$.  Its symmetric Fourier sums converge in every subcritical
+$H^s(I)$, but at $s=1/2$ their periodic jump is resolved in a boundary layer
+of width $1/N$.  After rescaling that layer, the error tends to a nonconstant
+profile.  The scale invariance of the critical Slobodeckij seminorm turns the
+profile into a fixed positive lower bound.  Changing the retained frequencies
+by a set of harmonic mass $o(1)$ changes the sum by $o(1)$ in $H^{1/2}(I)$,
+so every order satisfying \eqref{eq:harmonic} inherits the defect.
+
+\section*{Main Result}
+
+\begin{theorem}\label{thm:main}
+If an enumeration $\pi_0:\mathbb N\to\Z$ is harmonic-near-symmetric along a
+subsequence, then the ordered system
+\[
+  \bigl(e^{i\pi_0(k)x}\bigr)_{k\geq1}
+\]
+is not a Schauder basis of $H^{1/2}(-\pi,\pi)$.
+\end{theorem}
+
+\begin{proof}
+Let $f(x)=x$.  This function belongs to $H^{1/2}(I)$, and with the
+normalization
+\(
+ \widehat f(n)=(2\pi)^{-1}\int_{-\pi}^{\pi}f(x)e^{-inx}\,dx
+\)
+one has
+\[
+ \widehat f(0)=0,
+ \qquad
+ \widehat f(n)=\frac{i(-1)^n}{n}\quad(n\ne0).
+\]
+Its symmetric Fourier sum is therefore
+\[
+ S_Nf(x)=2\sum_{n=1}^N\frac{(-1)^{n+1}\sin(nx)}n.
+\]
+
+We first prove that these sums do not converge to $f$ in $H^{1/2}(I)$.
+At the boundary scale $x=\pi-u/N$ their errors satisfy
+\begin{align*}
+ r_N(\pi-u/N)
+ &:=f(\pi-u/N)-S_Nf(\pi-u/N)\\
+ &=\pi-\frac uN-2\sum_{n=1}^N\frac{\sin(nu/N)}n.
+\end{align*}
+For $u$ in any fixed compact subset of $[0,\infty)$,
+\[
+ \sum_{n=1}^N\frac{\sin(nu/N)}n
+ =\frac1N\sum_{n=1}^N h(u,n/N),
+ \qquad
+ h(u,t)=
+ \begin{cases}\sin(ut)/t,&t>0,\\u,&t=0,
+ \end{cases}
+\]
+is a Riemann sum converging uniformly to $\int_0^1\sin(ut)/t\,dt$.
+Consequently
+\begin{equation}\label{eq:profile}
+ r_N(\pi-u/N)\longrightarrow
+ R(u):=\pi-2\int_0^1\frac{\sin(ut)}t\,dt
+\end{equation}
+uniformly on compact $u$-intervals.
+
+The profile is nonconstant: $R'(u)=-2\sin(u)/u$ for $u>0$.  Choose two
+disjoint compact intervals $U,V\subset(0,\pi)$ on which the values of $R$
+are separated by some $\delta>0$.  Uniform convergence in
+\eqref{eq:profile} then gives, for all sufficiently large $N$,
+\[
+ |r_N(\pi-u/N)-r_N(\pi-v/N)|\geq\delta/2
+ \qquad(u\in U,\ v\in V).
+\]
+Restricting the Slobodeckij integral to the corresponding two boundary
+strips and changing variables yields
+\begin{align*}
+ [r_N]_{1/2,I}^2
+ &\geq
+ \int_U\!\int_V
+ \frac{|r_N(\pi-u/N)-r_N(\pi-v/N)|^2}{|u-v|^2}\,du\,dv\\
+ &\geq c_{U,V,\delta}>0.
+\end{align*}
+Thus $\liminf_N\|f-S_Nf\|_{H^{1/2}(I)}>0$.
+
+For a finite set $A\subset\Z$, let
+$T_Af=\sum_{n\in A}\widehat f(n)e^{inx}$.  Restriction from the periodic
+space $H^{1/2}(\T)$ to $H^{1/2}(I)$ is continuous.  Hence, with
+$D=A\mathbin\triangle[-N,N]$,
+\begin{align}
+ \|(T_A-S_N)f\|_{H^{1/2}(I)}^2
+ &\leq C\|(T_A-S_N)f\|_{H^{1/2}(\T)}^2 \notag\\
+ &\leq C'\sum_{\substack{n\in D\\n\ne0}}
+ (1+n^2)^{1/2}|\widehat f(n)|^2
+ \leq C''\sum_{\substack{n\in D\\n\ne0}}\frac1{|n|}.
+ \label{eq:perturb}
+\end{align}
+By \eqref{eq:harmonic},
+$\|(T_{A_{k_j}}-S_{N_j})f\|_{H^{1/2}(I)}\to0$.  The boundary lower bound and
+the triangle inequality imply
+\[
+ \liminf_j\|f-T_{A_{k_j}}f\|_{H^{1/2}(I)}>0.
+\]
+
+Finally, if the ordered exponentials were a Schauder basis, its expansion
+coefficients for $f$ would have to be $\widehat f(n)$.  Indeed, convergence
+in $H^{1/2}(I)$ implies convergence in $L^2(I)$, where the integer
+exponentials are an orthogonal basis and coefficients are unique.  Its
+$k$th basis partial sum would therefore be $T_{A_k}f$, contradicting the
+display above.
+\end{proof}
+
+\section*{Concrete Orders Ruled Out}
+
+Let $\eta(1)=0$, $\eta(2r)=r$, and $\eta(2r+1)=-r$ be the canonical
+symmetric enumeration, and let $p(m)$ be the position occupied by $\eta(m)$
+in another enumeration.
+
+\begin{corollary}
+The conclusion of Theorem~\ref{thm:main} holds if either
+\begin{enumerate}
+\item $\sup_m|p(m)-m|<\infty$, or
+\item $|p(m)-m|=o(m)$ as $m\to\infty$.
+\end{enumerate}
+In particular, the symmetric order, every bounded positional perturbation,
+and every sublinear positional perturbation fail at $s=1/2$.
+\end{corollary}
+
+\begin{proof}
+Let $B_M=\{\eta(1),\ldots,\eta(M)\}$ and let $A_M$ be the first $M$
+frequencies in the new order.  If $|p(m)-m|\leq C$, membership in $A_M$ and
+$B_M$ can differ only when $|m-M|\leq C$; hence their harmonic symmetric
+difference has mass $O(C/M)$.  If $|p(m)-m|=o(m)$, fix $\varepsilon>0$.
+For all sufficiently large $m$,
+$(1-\varepsilon)m\leq p(m)\leq(1+\varepsilon)m$.  Membership can then differ
+only for
+\[
+ \frac{M}{1+\varepsilon}<m<\frac{M}{1-\varepsilon},
+\]
+apart from finitely many indices, which agree once $M$ is large.  This window
+has $O(\varepsilon M)$ indices, and $|\eta(m)|\asymp M$ there, so its harmonic
+mass is $O(\varepsilon)$.  Taking $M=2N+1$ gives $B_M=[-N,N]$; first let
+$N\to\infty$ and then $\varepsilon\downarrow0$ to obtain
+\eqref{eq:harmonic}.
+\end{proof}
+
+\section*{Scope, Upgrade Attempts, and Novelty Check}
+
+The theorem is not a full answer to the Ivanov--Kalton question.  An arbitrary
+permutation can retain a reservoir of remote frequencies with positive
+harmonic mass while delaying frequencies at every scale, so
+\eqref{eq:perturb} need not compare any of its prefixes with a symmetric sum.
+The argument also does not cover general noninteger $\Lambda$.
+
+Eight focused upgrade attempts were made before promotion: a false
+Bessel-to-Riesz implication was eliminated; uniform minimality was checked;
+the lattice endpoint was reduced to exact spectral finite sections; the
+boundary profile was proved; it was extended to harmonic-near-symmetric
+orders; arbitrary permutations were tested and isolated as the obstruction;
+weighted conditional exponential bases were examined as possible positive
+models; and regular split-shift examples from the source were stress-tested.
+The last computation again showed endpoint growth for natural symmetric
+orders but supplied no theorem for exotic permutations.
+
+The run's cheap indexes and a bounded exact-phrase/citation search through
+17 August 2026 found no later answer to the exact question.  This theorem
+should therefore be reviewed as a new ordering-sensitive partial result, not
+as a claim that the source problem is resolved.
+
+\section*{Verification Notes}
+
+The proof is analytic.  The companion script evaluates the limiting profile,
+checks finite-$N$ convergence on a fixed grid, and verifies explicit
+separation between two profile intervals.  These computations are consistency
+checks only and are not used in the proof.
+
+\section*{Human Review Recommendation}
+
+Verify the critical boundary rescaling, the periodic-to-interval norm
+comparison in \eqref{eq:perturb}, and the positional-displacement corollary.
+Most importantly, preserve the distinction between the proved
+harmonic-near-symmetric obstruction and the unresolved arbitrary-order class.
+
+\enlargethispage{2\baselineskip}
+\begin{thebibliography}{9}
+\small
+
+\bibitem{IK}
+S. Ivanov and N. Kalton,
+\emph{Interpolation of subspaces and applications to exponential bases in
+Sobolev spaces},
+arXiv:math/0104130; St. Petersburg Math. J. \textbf{13} (2002), no.~2,
+221--239.
+
+\end{thebibliography}
+
+\end{document}

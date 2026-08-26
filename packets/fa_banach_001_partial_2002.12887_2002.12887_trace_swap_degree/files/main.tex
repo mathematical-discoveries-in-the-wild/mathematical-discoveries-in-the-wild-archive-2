@@ -1,0 +1,302 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx,microtype,enumitem,xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\newcommand{\M}{M_d(\mathbb C)}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\Id}{I}
+\newcommand{\slin}{\mathfrak{sl}_d}
+
+\title{Sharp Swap-Polynomial Degrees on $M_2$\\
+and an Exterior-Volume Construction in Every Dimension}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 7}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{\textbf{Status.} Substantial partial result,
+likely valid, pending human review.  The lowest swap degree is determined
+exactly for $2\times2$ matrices: it is $4$ for ordinary tensor polynomials and
+$3$ when traces are allowed.  In general dimension, a new direct trace-swap
+construction has degree $d^2-1$.  Sharp minimality for $d\ge3$ remains open.}}
+\end{center}
+
+\section{Source question and answer}
+
+Let $\Gamma\in M_d(\mathbb C)^{\otimes2}$ be the swap tensor,
+\[
+ \Gamma=\sum_{i,j=1}^d E_{ij}\otimes E_{ji}.
+\]
+A (trace) tensor polynomial $P$ is a \emph{swap polynomial} if
+$P(X)=c(X)\Gamma$ for a scalar polynomial $c$ which is not identically zero.
+Degree below always means total matrix-variable degree; traces carry their
+usual word degree.  Huber asks for the lowest possible degree, both for
+ordinary tensor polynomials and when trace polynomials are allowed
+\cite[p.~19]{Huber2021}:
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{The degree question in the source paper \cite[p.~19]{Huber2021}.}
+\end{figure}
+
+Write $\mu_d$ for the least ordinary swap degree and $\mu_d^{\rm tr}$ for
+the least trace-swap degree.
+
+\begin{theorem}[Sharp $2\times2$ answer and a general construction]
+\label{thm:main}
+Over $\mathbb C$ one has
+\[
+                         \boxed{\mu_2=4,\qquad \mu_2^{\rm tr}=3.}
+\]
+More generally, for every $d\ge2$ there is a nonzero multilinear trace-swap
+polynomial of degree $d^2-1$.  Consequently
+\[
+                         3\le \mu_d^{\rm tr}\le d^2-1.
+\]
+An exact Schur--Weyl rank computation additionally gives
+$5\le\mu_3^{\rm tr}\le8$.
+\end{theorem}
+
+Thus allowing traces strictly lowers the minimum in dimension two.  The
+all-dimensional upper bound is obtained by one coordinate-free formula,
+rather than by clearing a Gram determinant.
+
+\section{The exterior-volume trace-swap formula}
+
+Put $N=d^2-1$ and $W=\slin$.  The trace pairing
+$\langle X,Y\rangle=\tr(XY)$ is nondegenerate on $W$.  Choose a nonzero
+volume form $\Omega\in\bigwedge^N W^*$ and, for
+$X_1,\ldots,X_N\in M_d(\mathbb C)$, put
+\[
+ x_i=X_i-\frac{\tr X_i}{d}\Id,
+ \qquad
+ \Delta(X_1,\ldots,X_N)=\Omega(x_1,\ldots,x_N).
+\]
+For each $i$, define the cofactor matrix $x_i^\#$ by
+\begin{equation}\label{eq:cofactor}
+ \tr(Zx_i^\#)=
+ \Omega(x_1,\ldots,x_{i-1},Z,x_{i+1},\ldots,x_N)
+ \quad (Z\in W).
+\end{equation}
+Nondegeneracy makes $x_i^\#$ unique.  It is homogeneous of degree $N-1$.
+
+\begin{proposition}[Exterior-volume identity]\label{prop:volume}
+For all $X_1,\ldots,X_N\in M_d(\mathbb C)$,
+\begin{equation}\label{eq:volume-swap}
+ \boxed{
+ \frac{\Delta}{d}\,\Id\otimes\Id+
+       \sum_{i=1}^N x_i\otimes x_i^\#
+       =\Delta\,\Gamma.}
+\end{equation}
+Both sides are multilinear of degree $N=d^2-1$, and the left side is a
+tensor trace polynomial.
+\end{proposition}
+
+\begin{proof}
+If $\Delta\ne0$, the matrices $x_1,\ldots,x_N$ form a basis of $W$.
+Equation \eqref{eq:cofactor} gives
+\[
+ \tr(x_jx_i^\#)=\Delta\,\delta_{ij}.
+\]
+Hence the trace-dual basis to
+$\{\Id,x_1,\ldots,x_N\}$ is
+$\{\Id/d,x_1^\#/\Delta,\ldots,x_N^\#/\Delta\}$.  For every basis
+$\{e_a\}$ of $M_d$ and its trace-dual basis $\{e^a\}$, the canonical
+dual-basis tensor satisfies
+\[
+ \sum_a e_a\otimes e^a
+ =\sum_{i,j}E_{ij}\otimes E_{ji}=\Gamma.
+\]
+Multiplication by $\Delta$ proves \eqref{eq:volume-swap} when
+$\Delta\ne0$, and polynomial continuation proves it everywhere.
+
+It remains to justify the word ``trace.''  Conjugation acts on $W$ through
+the adjoint representation, whose determinant is one.  Thus $\Omega$, and
+hence $\Delta$, is invariant under simultaneous conjugation.  The first
+fundamental theorem for matrix invariants expresses $\Delta$ as a polynomial
+in traces of words \cite{Procesi1976}; the source recalls precisely this
+trace-polynomial description of equivariants and invariants
+\cite[Sections II and VI]{Huber2021}.  Taking the cyclic derivative of such
+a trace expression in its $i$th variable produces the matrix trace
+polynomial characterized by \eqref{eq:cofactor}.  Therefore every
+$x_i^\#$, and the whole left side of \eqref{eq:volume-swap}, is a tensor
+trace polynomial.  Choosing the $x_i$ to be any basis of $W$ shows that
+$\Delta$ is not identically zero.
+\end{proof}
+
+\section{The cubic formula on $M_2$}
+
+For a $2\times2$ matrix $A$, write
+$A_0=A-\tfrac12\tr(A)\Id$, and similarly define $B_0,C_0$.  Set
+\[
+                         \tau=\tr\bigl(A[B,C]\bigr).
+\]
+Proposition~\ref{prop:volume}, with the invariant volume form
+$\Omega(a,b,c)=\tr(a[b,c])$ on $\mathfrak{sl}_2$, becomes the explicit
+four-term identity
+\begin{equation}\label{eq:cubic}
+ \boxed{
+ \frac{\tau}{2}\Id\otimes\Id
+ +A_0\otimes[B,C]+B_0\otimes[C,A]+C_0\otimes[A,B]
+ =\tau\Gamma.}
+\end{equation}
+Indeed $[B,C],[C,A],[A,B]$ are exactly the three trace-dual cofactors:
+for example $\tr(A_0[B,C])=\tau$, while
+$\tr(B_0[B,C])=\tr(C_0[B,C])=0$.  The coefficient is nonzero, for example
+on the three Pauli matrices.  Thus $\mu_2^{\rm tr}\le3$.
+
+The following elementary observation proves sharpness and, in fact, gives a
+dimension-independent lower bound.
+
+\begin{lemma}\label{lem:trace-lower}
+For every $d\ge2$, no nonzero tensor trace swap polynomial has degree at most
+two.
+\end{lemma}
+
+\begin{proof}
+Taking homogeneous components and polarizing reduces the claim to multilinear
+degrees $0,1,2$.  A scalar coefficient of a multilinear swap polynomial is a
+simultaneous-conjugation invariant.  In degree one it is a multiple of
+$\tr A$.  Evaluating at $A=\Id$, every tensor trace monomial is a multiple of
+$\Id\otimes\Id$, whereas a nonzero multiple of $\Gamma$ is not; hence the
+coefficient vanishes.  Degree zero is identical.
+
+In degree two the scalar coefficient has the form
+\[
+ c(A,B)=u\,\tr(A)\tr(B)+v\,\tr(AB).
+\]
+Take $A=E_{11}$ and $B=E_{22}$.  Every degree-two tensor trace monomial is
+diagonal in the product matrix-unit basis, while $u\Gamma$ has the nonzero
+off-diagonal summand $uE_{12}\otimes E_{21}$.  Thus $u=0$.  Taking
+$A=B=\Id$ then makes the left side a multiple of $\Id\otimes\Id$ and the
+right side $vd\Gamma$, so $v=0$.
+\end{proof}
+
+Together with \eqref{eq:cubic}, the lemma proves
+$\mu_2^{\rm tr}=3$.
+
+\section{The ordinary degree on $M_2$}
+
+Procesi gives the following ordinary tensor polynomial
+\cite[Section 3]{Procesi2022}:
+\begin{align}\label{eq:procesi}
+ P(x,y)={}&\Id\otimes\bigl([x,y]^2+x[x,y]y\bigr)
+ -y\otimes x[x,y]-x\otimes[x,y]y+xy\otimes[x,y]\notag\\
+ ={}&[x,y]^2\Gamma.
+\end{align}
+For $2\times2$ matrices, the square of the traceless matrix $[x,y]$ is
+scalar, and it is not identically zero.  Hence $\mu_2\le4$.
+
+For the reverse inequality, let
+$Q=\sum_i p_i\otimes q_i=c\Gamma$ be an ordinary swap polynomial.  Applying
+the multiplication map $m(U\otimes V)=UV$ gives
+\[
+                  \sum_i p_iq_i=d\,c\Id,
+\]
+an ordinary central polynomial of the same degree.  There is no nonzero
+central polynomial on $M_2$ of degree at most three.  For completeness, after
+homogenization and polarization, only the trilinear case needs checking:
+write
+$q(A,B,C)=\sum_{\sigma\in S_3}a_\sigma
+A_{\sigma(1)}A_{\sigma(2)}A_{\sigma(3)}$.  Requiring the two off-diagonal
+entries and the diagonal difference to vanish on the six tests
+\[
+\begin{array}{c|c}
+(E_{11},E_{11},E_{11})&11-22\\
+(E_{11},E_{11},E_{12})&12\\
+(E_{11},E_{11},E_{21})&21\\
+(E_{11},E_{12},E_{11})&12\\
+(E_{11},E_{12},E_{21})&11-22\\
+(E_{11},E_{21},E_{11})&21
+\end{array}
+\]
+gives, in the order
+$ABC,ACB,BAC,BCA,CAB,CBA$, the coefficient matrix
+\[
+\begin{pmatrix}
+1&1&1&1&1&1\\1&0&1&0&0&0\\0&0&0&0&1&1\\
+0&1&0&0&1&0\\1&0&0&1&-1&0\\0&0&1&1&0&0
+\end{pmatrix},
+\qquad \det=-1.
+\]
+Thus all $a_\sigma$ vanish.  In degree two, writing $q(A,B)=aAB+bBA$ and
+testing $(A,B)=(E_{11},E_{12})$ and $(E_{12},E_{11})$ gives $a=b=0$;
+degree one is immediate.  Consequently $\mu_2\ge4$, and
+\eqref{eq:procesi} proves $\mu_2=4$.
+
+\section{Exact $d=3$ check, limitations, and novelty boundary}
+
+For a multilinear trace degree $r$, let $B$ be the permutations in
+$S_{r+2}$ whose two output labels lie in distinct cycles; these encode tensor
+trace monomials.  Let $G$ consist of an input permutation followed by the
+output transposition; these encode scalar trace invariants times $\Gamma$.
+In the Schur--Weyl representation on $(\mathbb C^d)^{\otimes(r+2)}$, a trace
+swap exists exactly when the represented spans of $B$ and $G$ intersect
+nontrivially.  The exact Gram entry is
+\[
+ \langle T(\pi),T(\sigma)\rangle_{\rm HS}
+ =d^{\#\operatorname{cycles}(\pi^{-1}\sigma)}.
+\]
+For $d=3$, exact integer ranks are
+\[
+\begin{array}{c|ccc|c}
+r&\operatorname{rank}B&\operatorname{rank}G&
+\operatorname{rank}[B\ G]&\dim(\operatorname{span}B\cap\operatorname{span}G)\\
+\hline
+3&58&6&64&0\\
+4&319&23&342&0.
+\end{array}
+\]
+Together with Lemma~\ref{lem:trace-lower}, this proves
+$\mu_3^{\rm tr}\ge5$; Proposition~\ref{prop:volume} gives
+$\mu_3^{\rm tr}\le8$.  The accompanying script constructs these Gram
+matrices over the integers and also verifies \eqref{eq:cubic} on all $4^3$
+matrix-unit triples.  The $r=4$ exact check is enabled by
+\texttt{--d3-exact}.
+
+The full source question remains open here for $d\ge3$.  A proof that
+$d^2-1$ is always minimal, or a lower-degree construction, would require
+controlling the intersection above for a rapidly growing separated-output
+subspace.  Eight focused attempts are documented in the attempt log.
+
+A bounded novelty audit covered the run indexes, exact source phrases, arXiv
+searches for ``swap polynomial'' and ``swap trace polynomial,'' and the
+post-source paper of Procesi.  The latter supplies \eqref{eq:procesi} and
+higher-dimensional ordinary constructions, but no cubic trace identity or
+sharp trace minimum was found.  Novelty confidence is moderate: the
+dual-basis proof is elementary once the invariant volume form is selected,
+so an uncatalogued prior occurrence remains possible.
+
+Human review should focus on the trace-polynomial realization of the
+cofactors in Proposition~\ref{prop:volume}, the degree convention relative to
+the source, and the exact-rank certificate for the optional $d=3$ bound.
+
+\enlargethispage{3\baselineskip}
+\small
+\begin{thebibliography}{9}
+\bibitem{Huber2021}
+F. Huber,
+\emph{Positive maps and trace polynomials from the symmetric group},
+arXiv:2002.12887 (2020, revised 2021).
+
+\bibitem{Procesi1976}
+C. Procesi,
+\emph{The invariant theory of $n\times n$ matrices},
+Adv. Math. 19 (1976), 306--381.
+
+\bibitem{Procesi2022}
+C. Procesi,
+\emph{A construction of swap or switch polynomials},
+Adv. Math. 400 (2022), Article 108308; arXiv:2102.10657.
+\end{thebibliography}
+
+\end{document}

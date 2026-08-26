@@ -1,0 +1,156 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1.9cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{ink}{HTML}{172033}
+\definecolor{accent}{HTML}{174F70}
+\definecolor{soft}{HTML}{EEF5F8}
+\color{ink}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\E}{\mathcal E}
+\newcommand{\rad}{\operatorname{rad}}
+\newcommand{\decay}{\operatorname{decay}}
+\newcommand{\ip}[2]{\langle #1,#2\rangle}
+
+\title{Divergent dual mass forces a fixed random-section radius}
+\author{Solution packet for arXiv:2109.14504}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{accent}{soft}{\parbox{0.91\textwidth}{
+\textbf{Outcome.} The zero-decay half of the source conjecture holds in the stronger proposed generality: if $1<p\leq\infty$, $q=p^*$, and the nonincreasing semiaxes satisfy $\sigma\notin\ell_q$, then for every fixed codimension $n$ a sufficiently long Gaussian section has radius at least $\sigma_1/2^{1/p}$ with arbitrarily high probability.  For $\sigma_j=j^{-\lambda}$ this is exactly $\lambda\leq1/p^*$, closing both cases left open in the source.}}
+\end{center}
+
+\section*{Source question}
+For $1\leq p\leq\infty$ and nonincreasing positive $\sigma$, put
+\[
+ \E_{p,\sigma}^m=\left\{x\in\R^m:\sum_{j=1}^m |x_j/\sigma_j|^p\leq1\right\},
+\]
+with the usual maximum convention for $p=\infty$.  If $G_{n,m}$ is an $n\times m$ standard Gaussian matrix, the source asks for the polynomial decay of
+$\rad(\E_{p,\sigma}^m,\ker G_{n,m})$ uniformly over $m>n$.
+
+The source proves its threshold conjecture except when
+\[
+ 1<p<2,\quad \lambda=1/p^*,
+ \qquad\text{or}\qquad
+ p>2,\quad 1/2<\lambda\leq1/p^*.
+\]
+It further proposes zero decay whenever $\sigma\notin\ell_{p^*}$.  The exact source passage is reproduced below.
+
+\begin{center}
+\includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{A uniform Gaussian small-ball lemma}
+
+\begin{lemma}\label{lem:block}
+For every $q>0$ there are constants $c_q,c,C>0$ such that, whenever $L\geq Cn$ and $g_1,\ldots,g_L$ are independent standard Gaussian vectors in $\R^n$,
+\[
+ \Pr\left\{\inf_{v\in S^{n-1}}
+ \left(\frac1L\sum_{j=1}^L |\ip{g_j}{v}|^q\right)^{1/q}\geq c_q\right\}
+ \geq 1-2e^{-cL}.
+\]
+\end{lemma}
+
+\begin{proof}
+Let $a=\Pr\{|Z|\geq1\}>0$ for a standard Gaussian $Z$.  Choose a fixed $\eta>0$ so small that $36\eta^2\leq a/4$, and let $\mathcal N$ be an $\eta$-net of $S^{n-1}$ with $|\mathcal N|\leq(3/\eta)^n$.  For each $u\in\mathcal N$, a binomial Chernoff bound gives
+\[
+ \#\{j:|\ip{g_j}{u}|\geq1\}\geq aL/2
+\]
+except on an event of probability $e^{-c_0L}$.  A union bound makes this simultaneous over $\mathcal N$ once $L\geq Cn$.
+
+Write $H:\R^n\to\R^L$, $Hv=(\ip{g_j}{v})_j$.  The standard Gaussian operator-norm estimate gives $\|H\|_{2\to2}\leq3\sqrt L$ outside an event of probability $e^{-c_1L}$.  Given $v\in S^{n-1}$, choose $u\in\mathcal N$ with $\|v-u\|_2\leq\eta$.  Among the at least $aL/2$ indices for which $|\ip{g_j}{u}|\geq1$, at most
+\[
+ 4\|H(v-u)\|_2^2\leq36L\eta^2\leq aL/4
+\]
+can satisfy $|\ip{g_j}{v-u}|>1/2$.  Thus at least $aL/4$ coordinates obey $|\ip{g_j}{v}|\geq1/2$.  Hence the displayed empirical $q$-moment is at least $(a/4)^{1/q}/2$, uniformly in $v$.
+\end{proof}
+
+\section*{Main theorem}
+
+\begin{theorem}\label{thm:main}
+Let $1<p\leq\infty$, let $q=p^*$, and let
+$\sigma_1\geq\sigma_2\geq\cdots>0$ with
+$\sum_{j\geq1}\sigma_j^q=\infty$.  For every $n\in\mathbb N$ and every $\varepsilon\in(0,1)$ there is $m>n$ such that
+\[
+ \Pr\left\{\rad(\E_{p,\sigma}^m,\ker G_{n,m})
+ \geq \frac{\sigma_1}{2^{1/p}}\right\}\geq1-\varepsilon,
+\]
+where $2^{1/\infty}=1$.
+\end{theorem}
+
+\begin{proof}
+Write the columns of $G_{n,m}$ as $g_1,\ldots,g_m$.  Consider the symmetric convex body
+\[
+ K_m=\left\{\sum_{j=2}^m \sigma_j u_jg_j:
+       \|(u_j)_{j=2}^m\|_p\leq1\right\}\subset\R^n.
+\]
+Its support function is, with $q=p^*$,
+\[
+ h_{K_m}(v)=
+ \left(\sum_{j=2}^m\sigma_j^q|\ip{g_j}{v}|^q\right)^{1/q};
+\]
+this formula also covers $p=\infty,q=1$.
+
+Use dyadic blocks $I_k=\{2^k+1,\ldots,2^{k+1}\}$, of length $2^k$.  Choose $k_0$ large enough that Lemma~\ref{lem:block} applies on every $I_k$, $k\geq k_0$, and that the sum of their failure probabilities is at most $\varepsilon/2$.  Simultaneously on all blocks $I_{k_0},\ldots,I_K$, monotonicity of $\sigma$ gives, for every $v\in S^{n-1}$,
+\begin{align*}
+ h_{K_m}(v)^q
+ &\geq c_q^q\sum_{k=k_0}^K 2^k\sigma_{2^{k+1}}^q,
+ \qquad m=2^{K+1}.
+\end{align*}
+By Cauchy's condensation theorem, the sum on the right tends to infinity with $K$, because $(\sigma_j^q)$ is nonincreasing and has divergent sum.
+
+Choose $B$ so that $\Pr\{\|g_1\|_2\leq B\}\geq1-\varepsilon/2$, and then choose $K$ so large that the preceding lower bound for $h_{K_m}$ is at least $\sigma_1B$.  Support-function domination yields
+\[
+ K_m\supseteq \sigma_1B B_2^n.
+\]
+On the intersection of the two good events, $-\sigma_1g_1\in K_m$.  Consequently there is a tail vector $(u_j)_{j=2}^m$ with $\|(u_j)_{j=2}^m\|_p\leq1$ and
+\[
+ \sum_{j=2}^m\sigma_ju_jg_j=-\sigma_1g_1.
+\]
+Set $u_1=1$ and $x=2^{-1/p}(\sigma_ju_j)_{j=1}^m$ (with no rescaling when $p=\infty$).  Then $x\in\E_{p,\sigma}^m$, $G_{n,m}x=0$, and
+\[
+ \|x\|_2\geq |x_1|=\sigma_1/2^{1/p}.
+\]
+The two good events have joint probability at least $1-\varepsilon$.
+\end{proof}
+
+\section*{Consequence for the source conjecture}
+If $\sigma_j=j^{-\lambda}$, then
+$\sum_j\sigma_j^{p^*}=\infty$ exactly when $\lambda\leq1/p^*$.  Theorem~\ref{thm:main} therefore supplies a fixed positive lower bound for a suitable $m$ at every $n$, with arbitrarily high probability.
+
+This forces the source's uniform polynomial decay exponent to be zero.  Indeed, a positive exponent $\rho$ would give constants $C,C_1,C_2>0$ such that, for every $m>n$,
+\[
+ \Pr\{\rad(\E_{p,\sigma}^m,\ker G_{n,m})\leq Cn^{-\rho}\}
+ \geq1-C_1e^{-C_2n}.
+\]
+For large $n$, $Cn^{-\rho}<\sigma_1/2^{1/p}$ and the probability on the right exceeds $1/2$.  Theorem~\ref{thm:main}, with (say) $\varepsilon=1/4$, gives an $m$ for which the incompatible lower event has probability at least $3/4$.
+
+Thus the two missing regimes listed by the source both have decay zero.  Combined with the cases already proved there, this establishes the stated polynomial threshold conjecture for every $1\leq p\leq\infty$.
+
+\section*{Audit notes}
+\begin{itemize}[leftmargin=1.4em,itemsep=2pt]
+\item The argument uses the quantifier ``for every $n$, some sufficiently large $m$,'' exactly as required to disprove any upper estimate uniform in $m$.
+\item The first column is separated before the tail body is formed; no circular dependence enters the absorption step.
+\item Support-function domination has the correct direction: $h_{K_m}\geq R$ on the sphere is equivalent to $K_m\supseteq RB_2^n$.
+\item At the critical line, each dyadic block contributes constant dual mass; arbitrarily many independent blocks supply the missing logarithmic accumulation.
+\item No assertion is made for $p=1$ in the general $\ell_{p^*}$ formulation.  The polynomial conjecture at $p=1$ was already outside the missing list in the source.
+\end{itemize}
+
+\section*{Source}
+A. Hinrichs, J. Prochno, and M. Sonnleitner,
+\emph{Random sections of $\ell_p$-ellipsoids, optimal recovery and Gelfand numbers of diagonal operators}, arXiv:2109.14504v1 (2021), later Journal of Approximation Theory 289 (2023), 105919.
+
+\end{document}

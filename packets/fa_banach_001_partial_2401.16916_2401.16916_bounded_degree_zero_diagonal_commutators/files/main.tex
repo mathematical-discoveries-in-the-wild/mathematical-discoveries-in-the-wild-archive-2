@@ -1,0 +1,240 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Hc}{\mathcal H}
+\newcommand{\Kc}{\mathcal K}
+\newcommand{\N}{\mathbb N}
+\newcommand{\C}{\mathbb C}
+
+\title{Sparse Zero-Diagonal Compact Operators Are Compact Commutators}
+\author{Run fa\_banach\_001, agent\_lane\_01}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status and source question}
+
+This is a \texttt{candidate\_partial\_likely\_valid} result for Sasmita
+Patnaik and Rahul Sethi, \emph{On Simultaneous Triangularization of Matrices
+and Quasinilpotency of Commutator of Compact Operators}, arXiv:2401.16916
+\cite{PS}.  The unnumbered question on PDF page~2 asks:
+
+\begin{quote}
+Is every compact quasinilpotent operator a commutator of compact operators?
+\end{quote}
+
+\begin{center}
+\includegraphics[width=0.98\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+The theorem below answers this for a concrete sparse subfamily, and in fact
+does not need quasinilpotence.  The general question remains open.
+
+Fix an orthonormal basis $(e_i)_{i\in\N}$ of a separable Hilbert space.  If
+$T=(t_{ij})$, where $t_{ij}=\langle Te_j,e_i\rangle$, its \emph{undirected
+support graph} has vertex set $\N$ and an edge $\{i,j\}$, $i\ne j$, exactly
+when $t_{ij}\ne0$ or $t_{ji}\ne0$.
+
+\section*{Proof intuition}
+
+A commutator with a diagonal operator is entrywise division by differences
+of diagonal entries.  Small differences are the usual obstruction.  Bounded
+support degree gives a finite proper coloring.  Put the colors on finitely
+many distinct complex rays and give vertex $i$ a radial length equal to the
+square root of the largest matrix entry touching it.  Compactness makes these
+lengths tend to zero, so the diagonal factor is compact.  Distinct rays keep
+the denominator on every support edge comparable to the larger radial
+length; after division, the new entry is bounded by the smaller radial
+length.  The bounded degree then turns entrywise tail decay into operator-norm
+tail decay by the Schur test, proving that the second factor is compact.
+
+This mechanism fails for the currently known universal block-tridiagonal
+forms because their scalar support degrees grow with the block sizes.
+
+\section*{Main theorem}
+
+\begin{theorem}[bounded-degree support]\label{thm:main}
+Let $T\in\Kc(\Hc)$ have zero diagonal in an orthonormal basis $(e_i)$.
+Suppose its undirected support graph has degree at most $\Delta<\infty$.
+Then there are compact operators $A,B\in\Kc(\Hc)$ such that
+\[
+ T=[A,B]=AB-BA.
+\]
+Moreover, $A$ may be chosen diagonal and $B$ may be chosen with matrix
+support contained in that of $T$.
+\end{theorem}
+
+\begin{proof}
+Write $G$ for the support graph.  A greedy coloring of a countable graph of
+maximum degree $\Delta$ gives a proper coloring
+$c:\N\to\{0,\ldots,\Delta\}$.  Choose distinct unit complex numbers
+$\zeta_0,\ldots,\zeta_\Delta$.  Since there are only finitely many distinct
+rays, the number
+\[
+ \delta=\min_{p\ne q}\ \min_{0\le s\le1}
+       |\zeta_p-s\zeta_q|
+\]
+is strictly positive.  Consequently, for $r,u\ge0$ and $p\ne q$,
+\begin{equation}\label{eq:raysep}
+ |r\zeta_p-u\zeta_q|\ge\delta\max\{r,u\}.
+\end{equation}
+
+For each vertex put
+\[
+ \rho_i=\sup_{j\ne i}\max\{|t_{ij}|,|t_{ji}|\},
+ \qquad a_i=\sqrt{\rho_i},
+ \qquad \lambda_i=a_i\zeta_{c(i)}.
+\]
+(The supremum is zero at an isolated vertex.)  Compactness of $T$ and $T^*$
+gives
+\[
+ \rho_i\le\max\{\|Te_i\|,\|T^*e_i\|\}\longrightarrow0,
+\]
+because $(e_i)$ is weakly null.  Hence the diagonal operator
+$Ae_i=\lambda_i e_i$ is compact.
+
+For $i\ne j$, define
+\[
+ b_{ij}=\begin{cases}
+ \dfrac{t_{ij}}{\lambda_i-\lambda_j},&t_{ij}\ne0,\\[6pt]
+ 0,&t_{ij}=0,
+ \end{cases}
+ \qquad b_{ii}=0.
+\]
+Whenever $t_{ij}\ne0$, the vertices $i,j$ are adjacent and hence differently
+colored.  Both $\rho_i$ and $\rho_j$ dominate $|t_{ij}|$.  By
+\eqref{eq:raysep},
+\begin{equation}\label{eq:bij}
+ |b_{ij}|
+ \le \delta^{-1}\frac{|t_{ij}|}{\max\{a_i,a_j\}}
+ \le \delta^{-1}\min\{a_i,a_j\}.
+\end{equation}
+There are at most $\Delta$ nonzero entries in each row and column of
+$B=(b_{ij})$.  Thus the Schur test first shows that this matrix defines a
+bounded operator.
+
+It also shows compactness.  Given $\varepsilon>0$, choose $M$ so that
+$a_i<\varepsilon\delta/\Delta$ for $i>M$ (with the evident harmless change
+when $\Delta=0$).  The first $M$ vertices have only finitely many neighbors;
+choose $N\ge M$ larger than all their indices.  Every support edge with at
+least one endpoint greater than $N$ then has both endpoints greater than
+$M$.  By \eqref{eq:bij}, all corresponding entries have modulus less than
+$\varepsilon/\Delta$.  The row and column sum bounds in the Schur test give
+\[
+ \|B-P_NBP_N\|<\varepsilon,
+\]
+where $P_N$ projects onto $\operatorname{span}\{e_1,\ldots,e_N\}$.  Hence
+$B$ is a norm limit of finite-rank operators and is compact.
+
+Finally, the diagonal entries of $[A,B]$ vanish, as do those of $T$, and for
+$i\ne j$,
+\[
+ [A,B]_{ij}=(\lambda_i-\lambda_j)b_{ij}=t_{ij}.
+\]
+Therefore $T=[A,B]$.
+\end{proof}
+
+\section*{Consequences and an upgrade}
+
+\begin{corollary}\label{cor:band}
+Every compact zero-diagonal finite-band matrix is a commutator of two compact
+operators.  In particular, every compact unilateral or bilateral weighted
+shift is such a commutator.
+\end{corollary}
+
+\begin{proof}
+A matrix of bandwidth $m$ has support degree at most $2m$.  A weighted shift
+has support degree at most two.  Apply Theorem~\ref{thm:main}.
+\end{proof}
+
+Every compact unilateral weighted shift is quasinilpotent: if its weights
+tend to zero, its spectral radius is bounded by the supremum of every tail of
+the weight sequence.  Taking all weights nonzero gives a nonnilpotent compact
+quasinilpotent covered by Corollary~\ref{cor:band}.  Thus the corollary is a
+literal nonnilpotent subcase of the source question, not merely a reproof of
+the known nilpotent case.
+
+The same argument has a useful block form.
+
+\begin{corollary}[uniform finite blocks]\label{cor:block}
+Let $\Hc=\bigoplus_{n\ge1}\Hc_n$, with $1\le\dim\Hc_n\le r<\infty$, and let
+$T=(T_{mn})$ be compact.  Suppose the graph joining block vertices $m,n$ when
+$T_{mn}\ne0$ or $T_{nm}\ne0$ has uniformly bounded degree, and
+\[
+ \operatorname{tr}(T_{nn})=0\qquad(n\ge1).
+\]
+Then $T$ is a commutator of two compact operators.
+\end{corollary}
+
+\begin{proof}
+Every trace-zero matrix has an orthonormal basis with zero diagonal.  Indeed,
+zero is in the convex hull of its eigenvalues and hence in its numerical
+range, so choose a unit vector $x$ with $\langle Sx,x\rangle=0$; the
+compression to $x^\perp$ again has trace zero, and induction completes the
+basis.  Apply this inside each $\Hc_n$ and take the direct sum of the resulting
+unitaries.  The transformed $T$ has zero scalar diagonal.  A scalar vertex is
+adjacent to at most $r-1$ vertices in its own block and to at most $r$ times
+the block-degree outside it, so the scalar support degree is uniformly
+bounded.  Theorem~\ref{thm:main} applies, and unitary conjugation transfers
+the commutator representation back to $T$.
+\end{proof}
+
+\section*{Verification, limitations, and novelty status}
+
+The included script tests the exact factorization, proper coloring, ray
+separation, and estimate \eqref{eq:bij} on 2,900 random finite sparse
+matrices.  All cases passed with operator-norm residual below $2\cdot10^{-15}$.
+This is a regression check only; compactness is proved by the Schur-tail
+argument above.
+
+Eight focused routes were examined.  Finite-rank nilpotent approximation
+only produces a limit of commutators; a commutator range need not be closed.
+The diagonal-derivation route succeeded for bounded-degree zero-diagonal
+support and was upgraded to Corollary~\ref{cor:block}.  It does not extend
+directly to unbounded degrees.  Universal block-tridiagonalization has
+exponentially growing block sizes, while changing to a zero-diagonal basis
+does not preserve sparsity.  Hardy-type factorization and stabilization of a
+sum of commutators also fail to give the original operator rather than an
+amplification.  Finally, the usual eigenvalue/trace constraints yield no
+counterexample for quasinilpotents.
+
+The run indexes and bounded web/arXiv searches used the exact source question
+and the phrases \emph{zero diagonal commutator of compact operators},
+\emph{bounded degree sparse matrix compact commutator}, and \emph{compact
+weighted shift commutator compact}.  They located the general
+Pearcy--Topping literature, including the block-tridiagonal analysis of
+Loreaux--Patnaik--Petrovic--Weiss \cite{LPPW}, but no exact theorem with the
+bounded support-degree hypothesis and two compact factors.  Novelty confidence
+is moderate pending expert review.  The source's question for arbitrary
+compact quasinilpotents remains open.
+
+\paragraph{Human-review recommendation.}
+Check especially the passage from \eqref{eq:bij} to norm compactness of $B$
+and search older sparse-matrix commutator literature for an equivalent
+formulation.  The proof itself is elementary and otherwise self-contained.
+
+\begin{thebibliography}{9}
+\bibitem{PS}
+S.~Patnaik and R.~Sethi,
+\emph{On Simultaneous Triangularization of Matrices and Quasinilpotency of
+Commutator of Compact Operators}, arXiv:2401.16916 (2024).
+
+\bibitem{LPPW}
+J.~Loreaux, S.~Patnaik, S.~Petrovic, and G.~Weiss,
+\emph{On commutators of compact operators via block tridiagonalization:
+generalizations and limitations of Anderson's approach},
+Integral Equations Operator Theory 95 (2023), Article 9;
+arXiv:2203.11995.
+\end{thebibliography}
+
+\end{document}

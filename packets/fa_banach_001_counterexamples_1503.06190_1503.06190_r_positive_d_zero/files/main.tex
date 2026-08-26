@@ -1,0 +1,216 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,microtype,graphicx}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\V}{\mathcal V}
+\newcommand{\dist}{\operatorname{dist}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.62em}
+
+\title{Positive $R(\mathcal V)$ Does Not Force Positive $d_{\mathcal V}$\\
+\large Counterexample to Remark 2.23 on Fr\'echet approximation schemes}
+\author{Run \texttt{fa\_banach\_001}, lane 18}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Candidate full counterexample, likely valid, for human review. The proof is
+self-contained and analytic; novelty remains subject to broader literature
+review.}}
+\end{center}
+
+\section{Source question}
+
+Let $(X,\|\cdot\|)$ be an infinite-dimensional Fr\'echet space and let
+$\V=(V_n)_{n\geq1}$ be nested linear subspaces such that
+$\overline{V_n}\subsetneq V_{n+1}$ and
+$X=\overline{\bigcup_{n\geq1}V_n}$. Define
+\[
+ \rho_n(x)=\dist(x,V_n),\qquad
+ d_{n,\V}=\sup_{v\in V_{n+1}}\rho_n(v),\qquad
+ d_{\V}=\inf_{n\geq1}d_{n,\V},
+\]
+and
+\[
+ R(\V)=\inf_{v\in(\bigcup_nV_n)\setminus\{0\}}
+          \sup_{t\in\R_+}\|tv\|.
+\]
+Aksoy and Lewicki prove $d_{\V}>0\Rightarrow R(\V)>0$. They note that the
+converse holds when every $V_n$ is finite-dimensional and ask whether the
+equivalence holds for arbitrary $\V$ \cite{AL}. The answer is no.
+
+\begin{center}
+ \includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+
+ \small Lemma 2.22 and Remark 2.23, source PDF page 16.
+\end{center}
+
+\section{Idea of the proof}
+
+Use the usual smooth-function space, but metrize it by a bounded product
+F-norm. Along every nonzero ray, every coordinate of this metric saturates,
+so the supremum of the norm is exactly one; this forces $R(\V)=1$. For the
+subspaces, filter functions by how many derivatives of their germ at zero may
+be nonzero. Passing from $V_n$ to $V_{n+1}$ adds just the $n$th jet. A degree
+$n$ monomial times a shrinking cutoff removes that jet. Its low derivatives
+vanish in the limit, while all uncontrolled high derivatives live in a metric
+tail of total weight $2^{-n}$. Thus $d_{n,\V}\leq2^{-n}$.
+
+\section{The counterexample}
+
+Let $X=C^\infty([0,1];\mathbb K)$, where $\mathbb K=\R$ or $\C$, and set
+\[
+ p_j(f)=\max_{0\leq k\leq j}\|f^{(k)}\|_\infty,
+ \qquad
+ \|f\|_F=\sum_{j=0}^{\infty}2^{-(j+1)}
+          \frac{p_j(f)}{1+p_j(f)}.
+ \tag{1}\label{eq:Fnorm}
+\]
+For $n\geq1$, define
+\[
+ V_n=\{f\in X:f^{(k)}(0)=0\text{ for every }k\geq n\}.
+ \tag{2}\label{eq:Vn}
+\]
+
+\begin{theorem}\label{thm:main}
+The F-norm in \eqref{eq:Fnorm} makes $X$ a Fr\'echet space, and the subspaces
+in \eqref{eq:Vn} are closed, strictly nested, and infinite-dimensional, with
+dense union. Nevertheless,
+\[
+ R(\V)=1\qquad\text{and}\qquad d_{\V}=0.
+\]
+In particular, $R(\V)>0$ does not imply $d_{\V}>0$ for arbitrary $\V$.
+\end{theorem}
+
+\section{Topology and density}
+
+The functions $s\mapsto s/(1+s)$ are increasing and subadditive on
+$[0,\infty)$, so \eqref{eq:Fnorm} is an F-norm. It induces the usual
+$C^\infty$ topology: convergence in the F-norm forces convergence in every
+$p_j$ by looking at the $j$th summand, while convergence in every $p_j$
+implies convergence of the sum by splitting it into a finite head and a
+uniformly small geometric tail. Hence completeness is the usual completeness
+of $C^\infty[0,1]$.
+
+Every jet functional $f\mapsto f^{(k)}(0)$ is continuous. Thus $V_n$, an
+intersection of their kernels, is closed. We have $V_n\subset V_{n+1}$, and
+the inclusion is proper because $x\mapsto x^n$ lies in $V_{n+1}\setminus
+V_n$. Each $V_n$ is infinite-dimensional because it contains every smooth
+function supported in a compact subset of $(0,1]$.
+
+The union contains every polynomial: a polynomial of degree $d$ belongs to
+$V_{d+1}$. For completeness, we verify that polynomials are dense in the full
+smooth topology. Fix $f\in X$, $m\geq1$, and $\varepsilon>0$. By the
+Weierstrass theorem choose a polynomial $q$ with
+$\|f^{(m)}-q\|_\infty<\varepsilon$. Define the polynomial
+\[
+ P(x)=\sum_{r=0}^{m-1}\frac{f^{(r)}(0)}{r!}x^r
+ +\int_0^x\frac{(x-s)^{m-1}}{(m-1)!}\,q(s)\,ds.
+\]
+Then $P^{(m)}=q$ and $P^{(r)}(0)=f^{(r)}(0)$ for $r<m$. Repeated integration
+gives, for $0\leq r<m$,
+\[
+ \|f^{(r)}-P^{(r)}\|_\infty
+ \leq\frac{\|f^{(m)}-q\|_\infty}{(m-r)!}<\varepsilon.
+\]
+Thus $p_m(f-P)<\varepsilon$. The case $m=0$ is Weierstrass approximation
+itself. Hence $X=\overline{\bigcup_nV_n}$.
+
+\section{Exact value of \texorpdfstring{$R(\mathcal V)$}{R(V)}}
+
+If $f\neq0$, then $p_j(f)\geq p_0(f)>0$ for all $j$. For $t\geq0$,
+\[
+ \|tf\|_F=\sum_{j=0}^{\infty}2^{-(j+1)}
+ \frac{t p_j(f)}{1+t p_j(f)}\leq1.
+\]
+Every summand increases to its full weight as $t\to\infty$. Monotone
+convergence therefore yields
+\[
+ \lim_{t\to\infty}\|tf\|_F
+ =\sum_{j=0}^{\infty}2^{-(j+1)}=1.
+\]
+Consequently $\sup_{t\in\R_+}\|tf\|_F=1$ for every nonzero $f$, in
+particular for every nonzero $f\in\bigcup_nV_n$. Hence
+\[
+ R(\V)=1. \tag{3}\label{eq:R}
+\]
+
+\section{Decay of \texorpdfstring{$d_{n,\mathcal V}$}{d(n,V)}}
+
+Fix $n\geq1$ and $f\in V_{n+1}$. Put $a=f^{(n)}(0)$. Choose
+$\chi\in C^\infty([0,\infty))$ such that $\chi=1$ near zero and
+$\chi=0$ on $[1,\infty)$. For $0<\delta\leq1$, define
+\[
+ h_\delta(x)=a\frac{x^n}{n!}\chi(x/\delta).
+ \tag{4}\label{eq:cutoff}
+\]
+Near zero, $h_\delta(x)=a x^n/n!$. Therefore
+\[
+ h_\delta^{(n)}(0)=a,qquad
+ h_\delta^{(k)}(0)=0\quad(k>n).
+\]
+Because $f\in V_{n+1}$ already has $f^{(k)}(0)=0$ for $k>n$, it follows that
+$g_\delta=f-h_\delta\in V_n$.
+
+For every fixed $k<n$, Leibniz' rule and the support condition give a constant
+$C_{n,k,\chi}$, independent of $a$ and $\delta$, such that
+\[
+ \|h_\delta^{(k)}\|_\infty
+ \leq C_{n,k,\chi}|a|\delta^{,n-k}.
+ \tag{5}\label{eq:lowder}
+\]
+Indeed, each term is a constant multiple of
+$x^{n-r}\delta^{-(k-r)}\chi^{(k-r)}(x/\delta)$ on $0\leq x\leq\delta$,
+and hence has size $O(\delta^{n-k})$. It follows that
+$p_j(h_\delta)\to0$ for every $j<n$.
+
+Using $s/(1+s)\leq1$ on the remaining terms, we obtain
+\begin{align*}
+ \rho_n(f)
+ &\leq \|f-g_\delta\|_F=\|h_\delta\|_F,\\
+ \limsup_{\delta\downarrow0}\|h_\delta\|_F
+ &\leq \sum_{j=n}^{\infty}2^{-(j+1)}=2^{-n}.
+\end{align*}
+Thus $\rho_n(f)\leq2^{-n}$ for every $f\in V_{n+1}$. Taking the supremum,
+\[
+ d_{n,\V}\leq2^{-n};
+\]
+and therefore
+\[
+ d_{\V}=\inf_{n\geq1}d_{n,\V}=0. \tag{6}\label{eq:d}
+\]
+Equations \eqref{eq:R} and \eqref{eq:d} prove Theorem~\ref{thm:main}.
+
+\section{Verification, scope, and novelty status}
+
+The proof uses no computation. The only limiting estimate relevant to the
+supremum in $d_{n,\V}$ is uniform in the required direction: for every fixed
+$f\in V_{n+1}$ it proves the same upper bound $2^{-n}$, even though the
+cutoff scale may depend on $f^{(n)}(0)$. If that jet is zero, then
+$f\in V_n$ already.
+
+The construction works over both real and complex scalars. All $V_n$ are
+closed and infinite-dimensional, so the failure is precisely outside the
+finite-dimensional hypothesis highlighted in Remark 2.23. It does not
+contradict the proved implication $d_{\V}>0\Rightarrow R(\V)>0$.
+
+A bounded search of the run indexes and exact web queries found the source
+paper and its journal version, but no later resolution of Remark 2.23.
+Priority is not asserted. Expert proof review and a broader citation search
+are recommended before dissemination.
+
+\begin{thebibliography}{9}
+\bibitem{AL}
+A.~G.~Aksoy and G.~Lewicki,
+\emph{Bernstein's Lethargy Theorem in Fr\'echet Spaces},
+arXiv:1503.06190 (2015).
+\end{thebibliography}
+
+\end{document}

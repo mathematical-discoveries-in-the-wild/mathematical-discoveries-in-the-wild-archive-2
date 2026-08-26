@@ -1,0 +1,261 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\newcommand{\M}{\mathcal M}
+\newcommand{\D}{\mathcal D}
+\newcommand{\W}{\mathcal W}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\Ent}{\operatorname{Ent}}
+
+\title{Nontracial Transport on Countable Matrix Bundles\\
+\large An infinite-dimensional subcase of Wirth's question}
+\author{Autonomous proof candidate for human review}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Candidate partial result, likely valid.  The construction covers countable
+direct products of finite-dimensional detailed-balance systems, hence genuine
+infinite-dimensional von Neumann algebras with nontracial faithful normal
+states.  It does not cover semigroups mixing the central summands, factors of
+type II or III, or reference weights.}}
+\end{center}
+
+\section{Source question}
+
+Wirth \cite{Wirth} constructs a transport metric for tracially symmetric
+quantum Markov semigroups.  At the end of Example 4.19 (source PDF page 26),
+after recalling the finite-dimensional construction of Carlen and Maas
+\cite{CM}, he asks:
+\begin{quote}
+How can the construction of the metric $\W$ be generalized to
+infinite-dimensional quantum Markov semigroups satisfying detailed balance
+for a nontracial state or weight?
+\end{quote}
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{The finite-dimensional construction and open question in the
+  original paper, source PDF page 26.}
+\end{figure}
+
+The result below answers the question for decomposable semigroups on a
+countable matrix bundle.  It uses the Carlen--Maas theorem on each fibre, but
+the infinite product metric, its exact distance formula, and the global
+entropy-gradient-flow identification require a separate argument.
+
+\section{Setup and statement}
+
+For every $n\geq1$, let $\M_n=M_{d_n}(\mathbb C)$ with normalized trace
+$\tr_n$, let $\sigma_n\in\M_n$ be a strictly positive density matrix, and let
+$(P_t^{(n)})_{t\geq0}$ be a quantum Markov semigroup satisfying detailed
+balance with respect to $\sigma_n$.  Write $g^{(n)}$ and $\W_n$ for its
+Carlen--Maas Riemannian metric and induced transport distance on the strictly
+positive density matrices $\D_n^+$.  Thus the predual evolution
+$P_{t,*}^{(n)}$ is the $g^{(n)}$-gradient flow of
+\[
+  E_n(r)=\tr_n\bigl(r(\log r-\log\sigma_n)\bigr).
+\]
+
+Let
+\[
+  \M=\prod_{n\geq1}\M_n,
+  \qquad
+  \phi(a)=\sum_{n\geq1}w_n\tr_n(\sigma_n a_n),
+\]
+where $w_n>0$ and $\sum_nw_n=1$.  This is a faithful normal state.  It is
+nontracial as soon as some $\sigma_n$ is nonscalar.  Define the decomposable
+semigroup $P_t(a)=(P_t^{(n)}a_n)_n$.  It is a quantum Markov semigroup on
+$\M$, is strongly continuous on the predual, and satisfies detailed balance
+with respect to $\phi$, by summing the corresponding fibre identities.
+
+A normal state on $\M$ is a sequence $\rho=(p_nr_n)_n$, where $p_n\geq0$,
+$\sum_np_n=1$, and $r_n$ is a density matrix whenever $p_n>0$.  The numbers
+$p_n$ are its central masses.  Since $P_t$ preserves each central projection,
+the vector $p=(p_n)$ is invariant.  Fix $p_n>0$ and put
+\[
+  \D_p^+=\{(p_nr_n)_n:r_n\in\D_n^+\}.
+\]
+
+For $\rho=(p_nr_n)$ and a tangent vector
+$h=(p_nh_n)$ with $h_n=h_n^*$ and $\tr_nh_n=0$, define the possibly infinite
+quadratic form
+\begin{equation}\label{eq:productmetric}
+  g^p_\rho(h,h)=\sum_{n\geq1}p_n g^{(n)}_{r_n}(h_n,h_n).
+\end{equation}
+Also set
+\begin{equation}\label{eq:productdistance}
+  \W_p(\rho,\eta)^2
+  =\sum_{n\geq1}p_n\W_n(r_n,s_n)^2,
+  \qquad \eta=(p_ns_n).
+\end{equation}
+
+\begin{theorem}[Countable matrix-bundle extension]\label{thm:main}
+The function $\W_p$ is an extended nondegenerate metric on $\D_p^+$, and it
+is the length distance associated with the product Riemannian form
+\eqref{eq:productmetric}.  On the finite-distance, finite-entropy domain, the
+predual evolution
+\[
+ \rho_t=P_{t,*}\rho_0
+       =(p_nP_{t,*}^{(n)}r_{n,0})_{n\geq1}
+\]
+is the gradient flow of the relative entropy
+\[
+ \Ent_\phi(\rho)
+ =\sum_{n\geq1}p_nE_n(r_n)
+  +\sum_{n\geq1}p_n\log\frac{p_n}{w_n}.
+\]
+More precisely, the Riemannian gradient identity holds for every finite-block
+tangent vector; whenever the displayed metric-slope and entropy-dissipation
+sums are finite, it extends by monotone convergence to the full product and
+the usual energy-dissipation identity is the sum of its fibre identities.
+\end{theorem}
+
+\section{Proof intuition}
+
+The center records which matrix block a state occupies.  A decomposable
+semigroup cannot transport mass between blocks, so each fixed central-mass
+fibre is invariant.  On that fibre the only possible dynamics are the known
+finite-dimensional detailed-balance dynamics.  The correct kinetic energy is
+therefore the weighted sum of the fibre kinetic energies, which produces the
+weighted $\ell_2$ product of their distances.
+
+Relative entropy splits in exactly the same way.  Its additional classical
+term measures the discrepancy between the central masses $p_n$ and the
+reference weights $w_n$, but this term is constant along the invariant fibre.
+Consequently its metric gradient is simply the tuple of the fibre gradients.
+
+\section{Proof}
+
+\begin{lemma}[Weighted product length]\label{lem:length}
+Let $(X_n,d_n)$ be length spaces and let $p_n>0$ with $\sum_np_n=1$.  On
+$X=\prod_nX_n$, the formula
+\[
+ d(x,y)=\left(\sum_np_nd_n(x_n,y_n)^2\right)^{1/2}
+\]
+defines an extended metric.  Its restriction to every finite-distance
+component is the length metric of the product speed
+\[
+ |\dot\gamma_t|^2=\sum_np_n|\dot\gamma_{n,t}|^2.
+\]
+\end{lemma}
+
+\begin{proof}
+Separation and symmetry are immediate.  Minkowski's inequality in weighted
+$\ell_2$ gives the triangle inequality.  For every rectifiable product curve,
+$d_n(x_n,y_n)\leq\int_0^1|\dot\gamma_{n,t}|\,dt$; Minkowski's integral
+inequality then gives
+\[
+ d(x,y)\leq\int_0^1
+ \left(\sum_np_n|\dot\gamma_{n,t}|^2\right)^{1/2}dt.
+\]
+Conversely choose in each factor a path of length at most
+$d_n(x_n,y_n)+\epsilon_n$, reparametrize it with constant speed, and choose
+$\epsilon_n>0$ so that
+$\sum_np_n\epsilon_n^2$ and
+$\sum_np_nd_n(x_n,y_n)\epsilon_n$ are arbitrarily small.  Their product path
+has length at most
+$\bigl(\sum_np_n(d_n(x_n,y_n)+\epsilon_n)^2\bigr)^{1/2}$.
+This proves the reverse inequality by letting the errors tend to zero.
+\end{proof}
+
+Applying Lemma~\ref{lem:length} to $(\D_n^+,\W_n)$ proves all metric and
+length assertions in Theorem~\ref{thm:main}; the infinitesimal product speed
+is precisely \eqref{eq:productmetric}.
+
+It remains to identify the gradient flow.  Since scalar central weights
+commute with all matrices,
+\begin{align*}
+ \Ent_\phi(\rho)
+ &=\sum_n\tr_n\!\left(p_nr_n
+   \left(\log(p_nr_n)-\log(w_n\sigma_n)\right)\right)\\
+ &=\sum_np_nE_n(r_n)+\sum_np_n\log\frac{p_n}{w_n}.
+\end{align*}
+On $\D_p^+$ the second sum is constant.  If $h=(p_nh_n)$ has only finitely
+many nonzero coordinates, differentiation gives
+\[
+ D\Ent_\phi(\rho)[h]
+ =\sum_np_nDE_n(r_n)[h_n].
+\]
+By the Carlen--Maas gradient-flow theorem in each block,
+\[
+ DE_n(r_n)[h_n]
+ =g^{(n)}_{r_n}\bigl(\operatorname{grad}_{g^{(n)}}E_n,h_n\bigr),
+ \qquad
+ \dot r_{n,t}=-\operatorname{grad}_{g^{(n)}}E_n(r_{n,t}).
+\]
+Multiplying by $p_n$ and summing yields
+\[
+ D\Ent_\phi(\rho)[h]
+ =g^p_\rho\bigl((\operatorname{grad}_{g^{(n)}}E_n)_n,h\bigr)
+\]
+and
+\[
+ \dot\rho_t
+ =-\operatorname{grad}_{g^p}\Ent_\phi(\rho_t)
+ =(p_n\dot r_{n,t})_n.
+\]
+This proves the classical Riemannian identity on the finite-block core.
+
+For a general product trajectory for which the sums are finite, the fibre
+energy-dissipation identities are nonnegative identities.  Summing their first
+$N$ terms and sending $N\to\infty$ gives, by monotone convergence, the global
+identity and hence the asserted gradient-flow statement on its natural
+finite-energy domain.  Strong continuity of the predual product semigroup
+follows independently from dominated convergence, since each predual map is
+an $L^1$ contraction.  This completes the proof.
+
+\section{Scope, full-upgrade obstruction, and verification}
+
+The construction is not merely a finite direct sum: with infinitely many
+blocks, $\M$ is infinite dimensional and generally nonseparable in operator
+norm, while $\phi$ can be genuinely nontracial.  Equation
+\eqref{eq:productdistance} may take the value $+\infty$, exactly as Wirth's
+transport metric may.
+
+Two upgrades were tested.  The same product argument extends formally to
+measurable fields $L^\infty(X;M_d)$, but an exact length-space statement needs
+a measurable choice of almost-minimizing fibre paths; this was not inserted as
+an unproved selection lemma.  More importantly, the derivation theorem for
+arbitrary KMS-symmetric semigroups \cite{VW} does not by itself supply the
+operator-valued logarithmic-mean chain rule needed to identify the Onsager
+operator on Haagerup $L^1$ densities.  In type III algebras such densities are
+not bounded elements of $\M$, so the finite-matrix left/right functional
+calculus used above cannot simply be repeated.  Thus no claim is made for the
+full question.
+
+The proof is purely analytic.  The verifier should focus on (i) the intended
+notion of detailed balance in the source, (ii) the domain on which an infinite
+sum of fibre energy-dissipation identities is finite, and (iii) whether a
+standard reference already records this countable-product closure explicitly.
+
+\begin{thebibliography}{9}
+\bibitem{Wirth}
+M.~Wirth,
+\emph{A Noncommutative Transport Metric and Symmetric Quantum Markov
+Semigroups as Gradient Flows of the Entropy}, arXiv:1808.05419 (2018).
+
+\bibitem{CM}
+E.~A. Carlen and J.~Maas,
+\emph{Gradient flow and entropy inequalities for quantum Markov semigroups
+with detailed balance}, J. Funct. Anal. 273 (2017), 1810--1869;
+arXiv:1609.01254.
+
+\bibitem{VW}
+M.~Vernooij and M.~Wirth,
+\emph{Derivations and KMS-Symmetric Quantum Markov Semigroups},
+arXiv:2303.15949 (2023).
+\end{thebibliography}
+
+\end{document}

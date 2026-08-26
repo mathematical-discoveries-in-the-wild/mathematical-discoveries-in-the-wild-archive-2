@@ -1,0 +1,244 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\OB}{\mathrm{OB}}
+\newcommand{\Sym}{S_\infty}
+
+\title{Property \texorpdfstring{$(\OB)$}{(OB)} Need Not Pass to Open Subgroups}
+\author{Candidate counterexample packet for arXiv:1203.6047\\Model: GPT5.6}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+\texttt{candidate\_counterexample\_likely\_valid\_novelty\_unconfirmed}.
+
+\section{Source problem}
+
+Christian Rosendal asks the following in Problem 1.16 of
+\emph{Global and local boundedness of Polish groups} (PDF page 14 of the
+arXiv version) \cite{Rosendal2013}:
+
+\begin{quote}
+Suppose $G$ is a Polish group with property $(\OB)$ and $H\leq G$ is an
+open subgroup. Does $H$ have property $(\OB)$?
+\end{quote}
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{The source question and its immediate context, arXiv:1203.6047,
+  PDF page 14.}
+\end{figure}
+
+For a Polish group $K$, we use Rosendal's equivalent bounded-width
+characterization \cite[Theorem 1.11]{Rosendal2013}:
+\begin{equation}\label{eq:obcriterion}
+ K\text{ has property }(\OB)
+ \quad\Longleftrightarrow\quad
+ \begin{minipage}{0.61\textwidth}
+ for every nonempty symmetric open $V\subseteq K$, there are a finite
+ $F\subseteq K$ and $k\geq1$ such that $K=(FV)^k$.
+ \end{minipage}
+\end{equation}
+Equivalently, property $(\OB)$ fails if the group admits an unbounded
+continuous length function \cite[Theorem 1.11]{Rosendal2013}.
+
+\section{Construction and proof intuition}
+
+Let $P=\Sym$ be the full symmetric group of $\N$, with the topology of
+pointwise convergence, and let $N=\Z^{\N}$ have the product topology.  The
+group $P$ acts continuously on $N$ by permuting coordinates,
+\[
+ (p\cdot a)_i=a_{p^{-1}(i)}.
+\]
+Set $G=N\rtimes P$.
+
+The key idea is that a neighbourhood of the identity only constrains finitely
+many coordinates.  A single finite permutation moves those constrained
+coordinates to a disjoint block, where arbitrary values are allowed.  This
+gives bounded width for the whole base group $N$.  The permutation part also
+has bounded width because the pointwise stabilizer of a finite set has only
+finitely many double cosets in $P$.  Together these observations verify
+\eqref{eq:obcriterion} for $G$.
+
+On the other hand, once the permutation part is required to fix coordinate
+$0$, projection onto that coordinate becomes a homomorphism onto $\Z$.  The
+absolute value of this homomorphism is an unbounded continuous length
+function.  Thus the open coordinate stabilizer fails property $(\OB)$.
+
+\section{Formal counterexample}
+
+We use additive notation on $N$.  The multiplication in $G$ is
+\[
+ (a,p)(b,q)=(a+p\cdot b,pq).
+\]
+
+For a finite set $A\subseteq\N$, define
+\[
+ N_A=\{a\in N:a_i=0\text{ for all }i\in A\},\qquad
+ P_A=\{p\in P:p(i)=i\text{ for all }i\in A\},
+\]
+and $U_A=N_A\rtimes P_A$.
+
+\begin{lemma}\label{lem:basis}
+The subgroups $U_A$, with $A\subseteq\N$ finite, form a neighbourhood basis
+at the identity of $G$.
+\end{lemma}
+
+\begin{proof}
+Since $P_A$ fixes every coordinate in $A$, it preserves $N_A$, so $U_A$ is a
+subgroup.  A basic identity neighbourhood in the product topology constrains
+only finitely many coordinates of $N$ and requires the permutation to fix
+only finitely many indices.  Enlarging the union of these two finite sets to
+$A$ gives $U_A$ contained in that neighbourhood.
+\end{proof}
+
+\begin{lemma}\label{lem:doublecosets}
+For finite $A\subseteq\N$, the double-coset space $P_A\backslash P/P_A$ is
+finite.
+\end{lemma}
+
+\begin{proof}
+To $p\in P$, associate the partial injection
+\[
+ \theta_p:\{i\in A:p(i)\in A\}\longrightarrow A,\qquad \theta_p(i)=p(i).
+\]
+Left or right multiplication by an element of $P_A$ does not change
+$\theta_p$.
+
+Conversely, suppose $p,q\in P$ induce the same partial injection.  On the
+indices $i\in A$ sent outside $A$, the points $p(i)$ and $q(i)$ form two
+equally sized tuples of distinct points in $\N\setminus A$.  Choose
+$u\in P_A$ with $u(p(i))=q(i)$ for all such $i$.  On the remaining indices
+of $A$, equality of the partial injections and the fact that $u$ fixes $A$
+give $up(i)=q(i)$.  Hence $(up)^{-1}q$ fixes $A$ pointwise; writing this
+permutation as $v\in P_A$ gives $q=upv$.  Thus the double cosets are
+classified by partial injections of the finite set $A$ into itself, of which
+there are only finitely many.
+\end{proof}
+
+\begin{theorem}\label{thm:counterexample}
+There is a Polish group with property $(\OB)$ having an open subgroup without
+property $(\OB)$.  In particular, the answer to Rosendal's Problem 1.16 is
+negative.
+\end{theorem}
+
+\begin{proof}
+Both $N=\Z^{\N}$ and $P=\Sym$ are Polish, and the coordinate-permutation
+action is continuous.  Hence $G=N\rtimes P$ is Polish.
+
+We first prove that $G$ has property $(\OB)$.  Fix an identity neighbourhood
+$W\subseteq G$.  By Lemma \ref{lem:basis}, choose finite $A$ with
+$U_A\subseteq W$.  Choose a finite set $B\subseteq\N\setminus A$ with
+$|B|=|A|$, and let $\tau\in P$ be an involution exchanging $A$ and $B$ and
+fixing the remaining coordinates.
+
+For $a\in N$, let $x\in N_A$ agree with $a$ on $\N\setminus A$ and vanish on
+$A$.  Then $a-x$ is supported on $A$.  Put
+$y=\tau^{-1}\cdot(a-x)=\tau\cdot(a-x)$; this is supported on $B$ and hence
+belongs to $N_A$.  Directly from the multiplication law,
+\begin{equation}\label{eq:basefactor}
+ (a,1)=(x,1)(0,\tau)(y,1)(0,\tau).
+\end{equation}
+
+By Lemma \ref{lem:doublecosets}, choose a finite set $E\subseteq P$ of
+representatives for $P_A\backslash P/P_A$.  For every $p\in P$, write
+$p=uev$ with $u,v\in P_A$ and $e\in E$.  Combining this with
+\eqref{eq:basefactor} shows
+\[
+ (a,p)\in U_A(0,\tau)U_A(0,\tau)U_A(\{0\}\times E)U_A.
+\]
+If
+\[
+ F=\{(0,1),(0,\tau)\}\cup(\{0\}\times E),
+\]
+then
+\begin{equation}\label{eq:width}
+ G=(F U_A)^4\subseteq(FW)^4.
+\end{equation}
+
+To match the exact form of \eqref{eq:obcriterion}, let $V\subseteq G$ be any
+nonempty symmetric open set.  Then $V^2$ is an identity neighbourhood.  Apply
+\eqref{eq:width} with $W=V^2$ to get $G=(FV^2)^4$.  After adjoining the
+identity to $F$, each factor $f v_1v_2$ splits as
+$(f v_1)(1v_2)$, and therefore $G=(F'V)^8$ for a finite $F'$.  Criterion
+\eqref{eq:obcriterion} proves that $G$ has property $(\OB)$.
+
+Now let $P_0=P_{\{0\}}$ and
+\[
+ H=N\rtimes P_0.
+\]
+This is an open subgroup of $G$.  Define
+\[
+ \varphi:H\longrightarrow\Z,\qquad \varphi(a,p)=a_0.
+\]
+If $p\in P_0$, then $(p\cdot b)_0=b_{p^{-1}(0)}=b_0$, so the multiplication
+law gives
+\[
+ \varphi((a,p)(b,q))=a_0+b_0=\varphi(a,p)+\varphi(b,q).
+\]
+Thus $\varphi$ is a continuous surjective homomorphism.  Consequently
+$\ell(a,p)=|a_0|$ is an unbounded continuous length function on $H$.
+Rosendal's length-function characterization implies that $H$ does not have
+property $(\OB)$.
+\end{proof}
+
+\section{Verification notes}
+
+The proof is non-computational.  The following points were checked directly.
+\begin{itemize}
+\item The action $P\curvearrowright N$ is continuous in the stated Polish
+topologies.
+\item $U_A$ is a subgroup because $P_A$ preserves the condition of vanishing
+on $A$.
+\item Lemma \ref{lem:doublecosets} proves, rather than assumes, the finite
+double-coset assertion.
+\item Expanding the semidirect-product law in \eqref{eq:basefactor} yields
+$x+\tau\cdot y=x+(a-x)=a$ and permutation part $\tau^2=1$.
+\item The four blocks in \eqref{eq:width} are
+$(1U_A)((0,\tau)U_A)((0,\tau)U_A)((0,e)U_A)$.
+\item The map $\varphi$ is a homomorphism exactly because all permutation
+parts in $H$ fix $0$.
+\end{itemize}
+
+\section{Scope and novelty status}
+
+This construction completely answers the yes/no source problem if the proof
+is accepted.  It does not claim a classification of those property-$(\OB)$
+Polish groups whose open subgroups retain property $(\OB)$.
+
+A bounded novelty search on 11 August 2026 checked the run's registry,
+solution, attempt, and proof-gap indexes and searched exact source wording,
+both problem labels, and combinations of ``property $(\OB)$'', ``open
+subgroup'', ``counterexample'', ``wreath product'', and the displayed
+semidirect product.  No later paper claiming an answer was found.  This was
+not an exhaustive citation search, so novelty remains unconfirmed and should
+be checked by a specialist before any public originality claim.
+
+\section{Human-review recommendation}
+
+High priority.  The central audit is the bounded-width factorization proving
+property $(\OB)$ for $\Z^{\N}\rtimes\Sym$.  The rest of the obstruction is the
+explicit quotient map onto $\Z$.
+
+\begin{thebibliography}{9}
+\bibitem{Rosendal2013}
+Christian Rosendal,
+\emph{Global and local boundedness of Polish groups},
+Indiana Univ. Math. J. \textbf{62} (2013), no. 5,
+arXiv:\href{https://arxiv.org/abs/1203.6047}{1203.6047},
+\href{https://doi.org/10.1512/iumj.2013.62.5133}{doi:10.1512/iumj.2013.62.5133}.
+\end{thebibliography}
+
+\end{document}
+

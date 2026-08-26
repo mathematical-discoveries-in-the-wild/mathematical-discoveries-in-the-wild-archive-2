@@ -1,0 +1,240 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,graphicx}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newcommand{\K}{\mathbb K}
+\newcommand{\G}{\Gamma}
+\newcommand{\co}{\operatorname{co}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.62em}
+
+\title{Arbitrary $c_0$-Sums Preserve Weak Stability Exactly}
+\author{Run \texttt{fa\_banach\_001}, lane 18}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\textbf{Status.} Candidate substantial partial result for arXiv:2012.04940.
+Likely valid; human review requested.
+
+\section{Source question}
+
+A unit ball is \emph{weakly stable} if every finite convex combination of
+relatively weakly open subsets of the ball is again relatively weakly open.
+This is property CWO in the terminology of Abrahamsen et al. \cite{Aetal}.
+
+L\'opez-P\'erez and Medina prove that $B_{C_0(K,X)}$ is weakly stable when
+$K$ is scattered and $B_X$ is both norm stable and weakly stable.  Conversely,
+weak stability of $B_{C_0(K,X)}$ forces weak stability of both $B_{C_0(K)}$
+and $B_X$; the first condition forces $K$ to be scattered.  They then ask
+whether these necessary conditions are sufficient without the norm-stability
+hypothesis \cite[p.~13]{LM}.
+
+\begin{center}
+\includegraphics[width=0.92\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+We prove the full converse for every discrete $K$, and in fact for arbitrary
+$c_0$-sums with varying fibers.
+
+\section{Claimed contribution}
+
+For a family $(X_\gamma)_{\gamma\in\G}$, write
+\[
+ Z=\left(\bigoplus_{\gamma\in\G}X_\gamma\right)_{c_0}
+ =\left\{z=(z_\gamma):\sup_\gamma\|z_\gamma\|<\infty,
+ \ \{\gamma:\|z_\gamma\|\geq\varepsilon\}\text{ finite for all }
+ \varepsilon>0\right\}.
+\]
+
+\begin{theorem}\label{thm:main}
+Let $\G$ be nonempty and $(X_\gamma)_{\gamma\in\G}$ be arbitrary real or
+complex Banach spaces.  Then $B_Z$ is weakly stable if and only if every
+$B_{X_\gamma}$ is weakly stable.
+\end{theorem}
+
+\begin{corollary}\label{cor:discrete}
+If $K$ is any discrete locally compact space and $X$ any Banach space, then
+\[
+ B_{C_0(K,X)}\text{ is weakly stable}
+ \quad\Longleftrightarrow\quad
+ B_X\text{ is weakly stable}.
+\]
+Equivalently, for every nonempty set $\G$ and every weakly stable $X$,
+\[
+ c_0(\G)\widehat\otimes_\varepsilon X
+ \cong c_0(\G,X)
+\]
+has a weakly stable unit ball.
+\end{corollary}
+
+\section{Idea of the proof}
+
+The dual of a $c_0$-sum is an $\ell_1$-sum.  Hence finitely many weak tests can
+be approximated simultaneously by tests supported on one finite coordinate
+set $F$.  Shrink each original weak neighborhood so that controlling weak
+coordinates on $F$ is sufficient to remain inside it.
+
+Now split a nearby target independently in every coordinate of $F$, using weak
+stability of the corresponding fiber.  No continuous selection is required:
+$F$ is finite and discrete.  Outside $F$, put the target coordinate itself in
+every component of the convex combination.  The resulting component vectors
+still vanish at infinity, because they differ from the target at only finitely
+many coordinates.  This gives the desired weak neighborhood of the convex
+combination.
+
+\section{Proof}
+
+We first isolate the finite-coordinate reduction.
+
+\begin{lemma}\label{lem:finite}
+Let $z\in B_Z$ and let $U$ be a relatively weakly open neighborhood of $z$ in
+$B_Z$.  There are a finite set $F\subset\G$ and, for every $\gamma\in F$, a
+relatively weakly open neighborhood $U_\gamma$ of $z_\gamma$ in
+$B_{X_\gamma}$ such that
+\begin{equation}\label{eq:box}
+ w\in B_Z,\quad w_\gamma\in U_\gamma\ (\gamma\in F)
+ \quad\Longrightarrow\quad w\in U.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Since
+\[
+ Z^*=\left(\bigoplus_{\gamma\in\G}X_\gamma^*\right)_{\ell_1},
+\]
+choose $f_1,\dots,f_r\in Z^*$ and $\eta>0$ such that the basic neighborhood
+\[
+ V=\{w\in B_Z:|f_q(w-z)|<\eta,\ 1\leq q\leq r\}
+\]
+is contained in $U$.  Approximate every $f_q$ in dual norm by a finitely
+supported $g_q$ so that $2\|f_q-g_q\|<\eta/2$, and let $F$ contain all their
+supports.  If $F$ is empty there is nothing to prove.  Otherwise, writing
+$g_q=(g_{q,\gamma})_{\gamma\in F}$, put
+\[
+ U_\gamma=\left\{u\in B_{X_\gamma}:
+ |g_{q,\gamma}(u-z_\gamma)|<\frac{\eta}{2|F|}
+ \text{ for }1\leq q\leq r\right\}.
+\]
+If $w$ satisfies the left side of \eqref{eq:box}, then
+\[
+ |g_q(w-z)|\leq\sum_{\gamma\in F}
+ |g_{q,\gamma}(w_\gamma-z_\gamma)|<\eta/2,
+\]
+while $|(f_q-g_q)(w-z)|\leq2\|f_q-g_q\|<\eta/2$.
+Thus $w\in V\subset U$.
+\end{proof}
+
+Assume first that every $B_{X_\gamma}$ is weakly stable.  Let
+$U_1,\dots,U_m$ be relatively weakly open subsets of $B_Z$, let
+$\lambda_j>0$ with $\sum_j\lambda_j=1$, and fix
+\[
+ z=\sum_{j=1}^m\lambda_jz^{,j},\qquad z^{,j}\in U_j.
+\]
+Apply Lemma~\ref{lem:finite} to every pair $(z^{,j},U_j)$ and enlarge the
+finitely many resulting supports to a common finite set $F$.  Taking
+$U_{j,\gamma}=B_{X_\gamma}$ on any newly added coordinate, we obtain weak
+neighborhoods $U_{j,\gamma}$ of $z^{,j}_\gamma$ such that coordinate
+membership on $F$ forces membership in $U_j$.
+
+For $\gamma\in F$, weak stability of $B_{X_\gamma}$ makes
+\[
+ W_\gamma=\sum_{j=1}^m\lambda_jU_{j,\gamma}
+\]
+relatively weakly open in $B_{X_\gamma}$ and containing $z_\gamma$.  Therefore
+\[
+ W=\{w\in B_Z:w_\gamma\in W_\gamma\text{ for every }\gamma\in F\}
+\]
+is a relatively weakly open neighborhood of $z$ in $B_Z$, because the finite
+coordinate projections are weak-to-weak continuous.
+
+Take $w\in W$.  For every $\gamma\in F$, choose
+$u^{,j}_\gamma\in U_{j,\gamma}$ with
+$w_\gamma=\sum_j\lambda_ju^{,j}_\gamma$.  Define
+\[
+ w^{,j}_\gamma=
+ \begin{cases}
+ u^{,j}_\gamma,&\gamma\in F,\\
+ w_\gamma,&\gamma\notin F.
+ \end{cases}
+\]
+Each $w^{,j}$ belongs to $B_Z$: every coordinate has norm at most one, and
+$w^{,j}$ differs from the $c_0$ vector $w$ on only finitely many coordinates.
+The finite-coordinate reduction gives $w^{,j}\in U_j$, and
+$w=\sum_j\lambda_jw^{,j}$.  Hence
+$W\subset\sum_j\lambda_jU_j$, proving weak stability of $B_Z$.
+
+Conversely, suppose $B_Z$ is weakly stable and fix $\gamma_0\in\G$.  Let
+$J:X_{\gamma_0}\to Z$ be the coordinate embedding and
+$P:Z\to X_{\gamma_0}$ the coordinate projection.  Both have norm one and
+$PJ=I$.  If $A_j\subset B_{X_{\gamma_0}}$ are relatively weakly open, then
+\[
+ \widetilde A_j=\{z\in B_Z:Pz\in A_j\}
+\]
+are relatively weakly open.  Given
+$x=\sum_j\lambda_ja_j$ with $a_j\in A_j$, weak stability of $B_Z$ says that
+$Jx$ is an interior point of $\sum_j\lambda_j\widetilde A_j$ in $B_Z$.
+Intersect a witnessing neighborhood with $J(B_{X_{\gamma_0}})$ and pull it
+back by $J$.  If $Jy=\sum_j\lambda_jz^j$ with
+$z^j\in\widetilde A_j$, applying $P$ gives
+$y=\sum_j\lambda_jPz^j$ with $Pz^j\in A_j$.  Thus $x$ is an interior point of
+$\sum_j\lambda_jA_j$.  The coordinate unit ball is weakly stable, completing
+the proof of Theorem~\ref{thm:main}.
+
+For Corollary~\ref{cor:discrete}, use
+$C_0(K,X)=c_0(K,X)$ when $K$ is discrete.  On finite tensors
+$\sum_{\gamma\in F}e_\gamma\otimes x_\gamma$, the injective tensor norm is
+$\max_{\gamma\in F}\|x_\gamma\|$ (one inequality is immediate, and the other
+uses a coordinate functional and a norming functional for $x_\gamma$).
+Completion yields the stated isometry.
+
+\section{Scope, comparison, and novelty}
+
+Theorem~5.2 of Abrahamsen et al. proves a predecessor: $c_0(X_n)$ has CWO
+when the fibers are finite-dimensional and satisfy the stronger norm-selection
+property (co) \cite[Theorem~5.2]{Aetal}.  Their proof uses finite-dimensionality
+to turn weak coordinate control into norm control and then invokes continuous
+norm selections.  Lemma~\ref{lem:finite} keeps the coordinate conditions weak,
+so the present proof removes finite-dimensionality and (co), permits arbitrary
+fibers, and permits an arbitrary index set.
+
+This does not settle the source question for a non-discrete scattered $K$.
+At a non-isolated point, pointwise decompositions must assemble into
+norm-continuous $X$-valued functions.  The source obtains that assembly from
+norm stability and Michael selection.  Already for the one-point
+compactification of a sequence, the missing step is the norm lower
+semicontinuity of the inverse midpoint map, closely tied to the separate open
+question whether weak stability implies norm stability.
+
+A bounded novelty search on 11 August 2026 covered the four lightweight run
+indexes and the two source papers.  Exact searches combined arbitrary
+$c_0$-sums with weak stability and property CWO; further searches used the
+vector-valued converse and injective-tensor question.  The search found the
+cited finite-dimensional (co) theorem, but no arbitrary weakly
+stable-coordinate version.  This supports, but cannot certify, novelty.
+
+\textbf{Human-review recommendation.}  Review as a substantial partial
+solution.  The key audit is the finite-support reduction; the remainder is an
+exact coordinate patching argument.
+
+\begin{thebibliography}{9}
+\bibitem{LM}
+G. L\'opez-P\'erez and R. Medina,
+\emph{A characterization of the weak topology in the unit ball of purely
+atomic $L_1$ preduals},
+J. Math. Anal. Appl. \textbf{504} (2021), 125434;
+arXiv:2012.04940.
+
+\bibitem{Aetal}
+T. A. Abrahamsen, J. Becerra Guerrero, R. Haller, V. Lima, and M. P\~oldvere,
+\emph{Banach spaces where convex combinations of relatively weakly open
+subsets of the unit ball are relatively weakly open},
+Studia Math. \textbf{250} (2020), 297--320;
+arXiv:1806.10693.
+\end{thebibliography}
+
+\end{document}

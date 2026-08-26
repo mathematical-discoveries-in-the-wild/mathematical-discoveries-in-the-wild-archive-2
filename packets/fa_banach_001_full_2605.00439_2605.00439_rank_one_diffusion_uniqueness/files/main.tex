@@ -1,0 +1,268 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\R}{\mathbb R}
+\newcommand{\D}{\mathrm D}
+\newcommand{\Id}{\mathrm I}
+\newcommand{\essran}{\overline{\operatorname{ran}}}
+
+\title{Uniqueness for spatially homogeneous rank-one-cone diffusions}
+\author{Candidate full sufficient-condition theorem for arXiv:2605.00439}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\linewidth}{\textbf{Status.}
+Candidate full theorem, likely valid, pending independent expert review.
+It gives weighted one-sided stability, comparison, and uniqueness for every
+bounded datum whenever the coefficient is a nonnegative combination of
+fixed rank-one directions with state-dependent weights.}}
+\end{center}
+
+\section{Source question and result}
+
+Auscher and Bechtel consider bounded weak solutions on $\R^n$ of
+\begin{equation}\label{eq:QL}
+ \partial_tu-\operatorname{div}(a(t,x,u)\nabla u)=0,
+ \qquad u(0)=u_0.
+\end{equation}
+Their Corollary~1.5 constructs a global bounded weak solution for every
+bounded datum, but their concluding uniqueness problem asks for suitable
+conditions ensuring uniqueness at this rough initial regularity
+\cite{AB}.
+
+\begin{center}
+\includegraphics[width=0.98\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+Here is a broad structural answer.  Fix nonzero vectors
+$e_1,\ldots,e_m\in\R^n$ spanning $\R^n$.  Assume
+\begin{equation}\label{eq:cone}
+ a(t,x,s)=a(t,s)=\sum_{r=1}^m\alpha_r(t,s)e_r\otimes e_r,
+ \qquad \alpha_r(t,s)>0,
+\end{equation}
+where each $\alpha_r$ is measurable in $t$, locally Lipschitz in $s$, and,
+on every bounded time interval and compact state interval, is bounded above
+and away from zero.  Assume also that the resulting matrix $a$ satisfies
+Assumption~A of the source.  Thus the weights may vary with time and the
+state while the elliptic directions remain fixed.  Isotropic diffusion
+$a(t,s)=\alpha(t,s)\Id$ and fixed-axis diagonal anisotropy are special cases.
+
+For $p>n/2$, put
+\begin{equation}\label{eq:weight}
+ \omega_p(x)=(1+|x|^2)^{-p}.
+\end{equation}
+
+\begin{theorem}[Weighted comparison and uniqueness]\label{thm:main}
+Assume \eqref{eq:cone}.  Let $u,v$ be bounded weak solutions of
+\eqref{eq:QL}, in the precise sense of \cite[Definition 1.2]{AB}, with
+bounded initial data $u_0,v_0$.  For every $T<\infty$ there is
+$C_T<\infty$, depending only on $p$, the fixed directions, and the bounds
+of the $\alpha_r$ on the joint solution range up to time $T$, such that
+for almost every $t\in(0,T)$,
+\begin{equation}\label{eq:stability}
+ \int_{\R^n}(u(t)-v(t))_+\omega_p
+ \leq e^{C_Tt}\int_{\R^n}(u_0-v_0)_+\omega_p.
+\end{equation}
+The analogous estimate holds for the negative part.  Consequently:
+\begin{enumerate}
+\item $u_0\leq v_0$ almost everywhere implies $u\leq v$ almost everywhere;
+\item two bounded weak solutions with the same bounded datum coincide;
+\item under \eqref{eq:cone}, the solution supplied by source
+Corollary~1.5 is the unique global bounded weak solution.
+\end{enumerate}
+\end{theorem}
+
+The argument has two ingredients.  The fixed rank-one structure converts
+the difference equation into a sum of one-dimensional monotone diffusions.
+A directional Kato inequality then propagates a polynomially weighted
+$L^1$ distance.  The source's own local $L^2$ trace theorem closes the
+estimate at $t=0$, even though the solutions need not be integrable on
+$\R^n$.
+
+\section{Directional Kato lemma}
+
+Write $\D_e=e\cdot\nabla$.  We use the standard parabolic Kato inequality
+in the following finite-direction form.
+
+\begin{lemma}[Finite-direction Kato inequality]\label{lem:kato}
+Let $w,z_1,\ldots,z_m$ be locally integrable on
+$(0,T)\times\R^n$, with enough local energy regularity to justify the weak
+equation
+\begin{equation}\label{eq:abstract}
+ \partial_tw=\sum_{r=1}^m\D_{e_r}^2z_r.
+\end{equation}
+Suppose $z_r=q_rw$ with $q_r\in H^1_{\mathrm{loc}}$ locally bounded and
+strictly positive (locally bounded away from zero).
+Then, in distributions,
+\begin{equation}\label{eq:kato}
+ \partial_t(w)_+\leq
+ \sum_{r=1}^m\D_{e_r}^2(z_r)_+.
+\end{equation}
+The same assertion holds for negative parts and, after addition, for
+absolute values.
+\end{lemma}
+
+\begin{proof}
+For smooth $w,q_r$, the claim is transparent. Since $q_r>0$,
+$(z_r)_+=q_rw_+$. Along a line parallel to $e_r$, the distributional chain
+rule gives
+\[
+ \D_{e_r}^2(q_rw_+)
+ -\mathbf1_{\{w>0\}}\D_{e_r}^2(q_rw)
+ =q_r\,\delta_{\{w=0\}}|\D_{e_r}w|^2\geq0;
+\]
+all first and second derivatives of $q_r$ cancel. Also
+$\partial_tw_+=\mathbf1_{\{w>0\}}\partial_tw$. Multiplying
+\eqref{eq:abstract} by this common indicator and summing the displayed
+inequalities proves \eqref{eq:kato}.
+
+For the stated weak regularity, take Steklov averages in time and smooth
+convex approximations $j_\varepsilon$ of $s\mapsto s_+$, perform the same
+calculation after spatial mollification, and pass first in the mollifier,
+then the Steklov scale, and finally $\varepsilon$. The
+$H^1_{\mathrm{loc}}$ regularity of $q_r$, its local bounds, and the local
+energy bounds control the commutators; the only surviving convexity term is
+the nonnegative measure displayed above. This is the standard parabolic Kato
+approximation, applied separately in each fixed direction and then summed.
+\end{proof}
+
+For the solutions considered below, $u,v$ and their spatial gradients are
+locally square integrable, and every nonlinear primitive is locally
+$H^1$ by the source's local Lipschitz assumption.  Thus Lemma~\ref{lem:kato}
+applies by the displayed approximation argument.  This is also the familiar
+$L^1$-accretivity mechanism for scalar nonlinear diffusion; compare the
+bounded, non-integrable entropy theory in \cite{EJ}.
+
+\section{Difference equation and weighted estimate}
+
+Fix $s_*\in O$.  For each direction define the increasing primitive
+\begin{equation}\label{eq:beta}
+ \beta_r(t,s)=\int_{s_*}^s\alpha_r(t,q)\,dq.
+\end{equation}
+Since $\alpha_r$ is independent of $x$, the Sobolev chain rule gives
+\[
+ \operatorname{div}(a(t,u)\nabla u)
+ =\sum_{r=1}^m\D_{e_r}^2\beta_r(t,u)
+\]
+in distributions.  Set
+\[
+ w=u-v,
+ \qquad z_r=\beta_r(t,u)-\beta_r(t,v).
+\]
+More explicitly,
+\[
+ z_r=q_rw,\qquad
+ q_r(t,x)=\int_0^1\alpha_r(t,v(t,x)+\theta w(t,x))\,d\theta.
+\]
+The local Lipschitz assumption and $u,v\in H^1_{\mathrm{loc}}$ give
+$q_r\in H^1_{\mathrm{loc}}$ in space.
+Subtracting the weak equations gives \eqref{eq:abstract}. Because every
+$\alpha_r$ is positive,
+\begin{equation}\label{eq:signbound}
+ \operatorname{sgn}z_r=\operatorname{sgn}w\quad(z_r\ne0),
+ \qquad |z_r|\leq L_{r,T}|w|,
+\end{equation}
+where $L_{r,T}$ is the supremum of $\alpha_r$ on the compact joint range
+of $u,v$ and on $[0,T]$.  Lemma~\ref{lem:kato} therefore yields
+\begin{equation}\label{eq:kato2}
+ \partial_tw_+\leq\sum_r\D_{e_r}^2(z_r)_+.
+\end{equation}
+
+The weight \eqref{eq:weight} is integrable because $p>n/2$, and direct
+differentiation gives
+\begin{equation}\label{eq:hessian}
+ |\D_e^2\omega_p(x)|
+ \leq C_p|e|^2\omega_p(x),
+ \qquad C_p=2p+4p(p+1).
+\end{equation}
+Test \eqref{eq:kato2} against increasingly large compactly supported
+approximations to $\omega_p$.  The cutoff errors vanish by boundedness of
+$z_r$ and integrability of $\omega_p$ and its first two derivatives.
+Using \eqref{eq:signbound}--\eqref{eq:hessian}, in the sense of
+distributions in time,
+\begin{align}\label{eq:gronwall}
+ \frac{d}{dt}\int w_+\omega_p
+ &\leq\sum_r\int (z_r)_+\D_{e_r}^2\omega_p \\
+ &\leq C_p\sum_rL_{r,T}|e_r|^2\int w_+\omega_p
+ =C_T\int w_+\omega_p.
+\end{align}
+
+It remains only to identify the value at time zero.  A bounded quasilinear
+solution is also a bounded weak solution of the linear equation with
+coefficient $A(t,x)=a(t,u(t,x))$.  On the compact solution range, $A$ is
+bounded and uniformly elliptic.  Hence \cite[Proposition 3.4(b)]{AB} gives
+\begin{equation}\label{eq:l2trace}
+ u(t)\to u_0,\qquad v(t)\to v_0
+ \quad\hbox{in }L^2_{\mathrm{loc}}(\R^n)\quad(t\downarrow0).
+\end{equation}
+The weighted $L^1$ convergence follows: on a fixed ball use
+\eqref{eq:l2trace} and Cauchy--Schwarz, while outside the ball use the
+uniform bounds on $u,v,u_0,v_0$ and then send the radius to infinity because
+$\omega_p\in L^1$.  Therefore
+\[
+ \int (u(t)-v(t))_+\omega_p
+ \longrightarrow\int(u_0-v_0)_+\omega_p.
+\]
+Gronwall's lemma applied to \eqref{eq:gronwall} proves
+\eqref{eq:stability}.  Reversing $u,v$ proves the negative-part estimate,
+and all conclusions of Theorem~\ref{thm:main} follow.
+
+\section{Examples, boundary of the method, and novelty audit}
+
+The theorem includes
+\[
+ a(t,s)=\alpha(t,s)\Id,
+ \qquad
+ a(t,s)=\operatorname{diag}(\alpha_1(t,s),\ldots,\alpha_n(t,s)),
+\]
+and overcomplete fixed frames
+$a(t,s)=\sum_r\alpha_r(t,s)e_r\otimes e_r$.  The weights need not coincide,
+and may be time dependent.  The source permits local degeneracy as
+$|s|\to\infty$; only uniform ellipticity on the bounded joint solution range
+is needed.
+
+The proof does not cover rotating eigendirections depending on $s$, nor
+$x$-dependent coefficients: differentiating a state primitive then creates
+spatial drift terms, and sign-separated directional Kato no longer applies
+directly.  Those are genuine remaining parts of the source's broad
+uniqueness program.
+
+Exact-title, exact-equation, Kato, nonlinear-diffusion, and rank-one-cone
+searches through 11 August 2026 found classical isotropic entropy and
+$L^1$-contraction results, notably \cite{EJ}, but no statement matching the
+fixed-rank-one cone for the source's bounded weak-solution class and rough
+distributional trace.  The present argument is self-contained modulo the
+standard Kato approximation detailed in Lemma~\ref{lem:kato} and the source's
+own local $L^2$ trace theorem.
+
+One final triage point is worth recording.  The source's VMO existence bullet
+cannot literally enlarge its \emph{bounded} weak-solution class to unbounded
+VMO traces: Proposition~3.4(b) already forces every bounded solution trace
+to lie in $L^\infty$.  A separate supporting note in this packet's companion
+attempt gives an explicit locally bounded unbounded CMO datum.  The
+rank-one-cone uniqueness theorem above is the genuinely live result.
+
+\begin{thebibliography}{9}
+\bibitem{AB}
+P.~Auscher and S.~Bechtel,
+\emph{Existence and uniqueness of weak solutions to quasilinear PDEs with
+critical data}, arXiv:2605.00439v3, 2026.
+
+\bibitem{EJ}
+J.~Endal and E.~R. Jakobsen,
+\emph{$L^1$ contraction for bounded (non-integrable) solutions of degenerate
+parabolic equations}, SIAM J. Math. Anal. \textbf{46} (2014), 3957--3982;
+arXiv:1404.6418v2.
+\end{thebibliography}
+
+\end{document}

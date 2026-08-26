@@ -1,0 +1,285 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\Hh}{\mathbb H}
+\newcommand{\Ecal}{\mathcal E}
+\newcommand{\R}{\mathbb R}
+
+\title{The Nonnegative Heisenberg Kernel Threshold Is Exactly Four}
+\author{Candidate full counterexample to arXiv:1911.03223}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\fbox{\parbox{0.94\textwidth}{
+\textbf{Status: candidate full counterexample, likely valid.}
+For every $0<\alpha<4$ there is a compact regular curve in the first
+Heisenberg group on which the singular integral associated with $K_\alpha$
+is not uniformly $L^2$ bounded.  Hence the positive theorem for
+$\alpha\geq4$ is sharp, and in particular it does not persist for
+$\alpha\geq2$.  Independent expert review is still required.}}
+
+\section{Source question and current boundary}
+
+F\"assler and Orponen \cite{FO} consider the nonnegative homogeneous kernels
+\[
+ K_\alpha(x,y,t)
+ =\frac{|t|^{\alpha/2}}{\|(x,y,t)\|^{\alpha+1}},\qquad \alpha\geq1,
+\]
+on the first Heisenberg group.  Their Theorem 1.7 proves boundedness on every
+regular curve for $\alpha\geq4$, and the paragraph immediately afterward asks
+whether the result persists for $\alpha\geq2$.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{Theorem 1.7 and the question in F\"assler--Orponen
+\cite{FO}, PDF page 4.}
+\end{figure}
+
+The May 2026 paper of Chousionis, Li, and Zhang \cite{CLZ} gives
+counterexamples for $0<\alpha<2$ and explicitly says that extension to
+$[2,4)$ may be possible.  The construction below covers all $0<\alpha<4$.
+
+We use the group law
+\[
+ (x,y,t)(x',y',t')=(x+x',y+y',t+t'+\tfrac12(xy'-yx'))
+\]
+and the Kor\'anyi norm
+\[
+ \|(x,y,t)\|=\big((x^2+y^2)^2+16t^2\big)^{1/4}.
+\]
+Changing the harmless normalization constant does not affect the argument.
+
+\section{Idea of the proof}
+
+The vertical coordinate of the horizontal lift of a planar graph is exactly
+the trapezoidal-rule error for its slope.  We arrange that slope as the
+primitive of a bounded stopped dyadic martingale.  Its increments
+$\varepsilon_j$ can be square summable---which keeps the martingale bounded
+on most paths and the lift regular---while
+$\sum_j\varepsilon_j^{\alpha/2}$ diverges whenever $\alpha<4$.
+
+On a fixed positive proportion of pairs crossing the two children of every
+active dyadic interval, the current martingale increment dominates all later
+increments.  These pair rectangles are disjoint across scales.  Since
+$K_\alpha$ is nonnegative, their contributions add rather than cancel, and
+the $K_\alpha$ energy is infinite.  Uniform $L^2$ bounds for the truncations
+would bound that energy, giving the contradiction.
+
+\section{A stopped-martingale energy lemma}
+
+For $g\in L^\infty[0,1]$ and $y<x$, write
+\[
+ \Ecal_g(x,y):=\int_y^x\left(\frac{x+y}{2}-s\right)g(s)\,ds.
+\]
+
+\begin{lemma}\label{lem:mart}
+Let $0<q<2$.  There are a bounded function $g$ on $[0,1]$, decreasing
+numbers $\varepsilon_j>0$, dyadic levels $n_j=8j$, and sets $A_j$ which are
+unions of dyadic intervals of level $n_j-1$, such that
+\[
+ |A_j|\geq\frac34,\qquad
+ \sum_j\varepsilon_j^2<\infty,\qquad
+ \sum_j\varepsilon_j^q=\infty.
+\]
+Moreover, if $I=[a,a+\ell]\subset A_j$ is one of those level-$(n_j-1)$
+intervals, then
+\[
+ |\Ecal_g(x,y)|\geq c_*\varepsilon_j\ell^2
+ \tag{3.1}
+\]
+whenever
+\[
+ y\in[a,a+\ell/8],\qquad
+ x\in[a+7\ell/8,a+\ell],
+\]
+where $c_*>0$ is absolute.  All the resulting pair rectangles, over every
+$I$ and $j$, are mutually disjoint.
+\end{lemma}
+
+\begin{proof}
+Choose
+\[
+ \frac12<p<\frac1q,\qquad \varepsilon_j=cj^{-p},
+\]
+where $c>0$ is small enough that
+$4\sum_j\varepsilon_j^2\leq1/4$.  The two asserted series then have the
+required behavior.
+
+Let $\mathcal F_n$ be the dyadic filtration on $[0,1)$, and let $r_n$ be the
+$n$th Rademacher function: it is $+1$ and $-1$ on the two children of every
+level-$(n-1)$ interval.  Starting with $M_0=0$ and $A_1=[0,1)$, define
+\[
+ d_j=\varepsilon_j\mathbf 1_{A_j}r_{n_j},\qquad
+ M_j=M_{j-1}+d_j,\qquad
+ A_{j+1}=A_j\cap\{|M_j|<1/2\}.
+\]
+This is a stopped martingale.  Doob's inequality gives
+\[
+ |A_j^c|
+ \leq \mathbb P\!\left(\max_{k<j}|M_k|\geq\frac12\right)
+ \leq4\mathbb E|M_{j-1}|^2
+ \leq4\sum_k\varepsilon_k^2\leq\frac14.
+\]
+The martingale converges almost everywhere and in $L^2$ to a function $g$.
+It is bounded: after the first crossing of $1/2$ the process stops, and the
+overshoot is at most $\varepsilon_1$; a path which never crosses stays below
+$1/2$.
+
+Fix an active parent $I$ at stage $j$.  Earlier details are constant on $I$,
+and $\Ecal$ annihilates constants.  After rescaling $I$ to $[0,1]$, the
+contribution of the current Haar detail to $\Ecal_g(x,y)$ has absolute value
+\[
+ \varepsilon_j\ell^2\frac{(2X-1)(1-2Y)}4
+ \geq\frac9{64}\varepsilon_j\ell^2,
+ \tag{3.2}
+\]
+where $Y\in[0,1/8]$ and $X\in[7/8,1]$.
+
+It remains to control descendants.  A later detail $d_k$ has mean zero on
+each of its dyadic parent cells $J$, whose length is
+$2^{-8(k-j)}\ell$.  On a cell wholly contained in $[y,x]$, subtract a
+constant from the affine weight $(x+y)/2-s$; its oscillation on $J$ is at
+most $|J|$.  The full cells therefore contribute in total at most
+$\varepsilon_k\ell|J|$.  The two possible boundary cells obey the same
+bound up to a factor two.  Consequently
+\[
+ \left|\int_y^x\left(\frac{x+y}{2}-s\right)d_k(s)\,ds\right|
+ \leq3\varepsilon_k\ell^2 2^{-8(k-j)}.
+\]
+Since $\varepsilon_k\leq\varepsilon_j$, the complete descendant tail is at
+most
+\[
+ \frac3{2^8-1}\varepsilon_j\ell^2
+ <\frac12\cdot\frac9{64}\varepsilon_j\ell^2.
+\]
+This proves (3.1), for example with
+$c_*=9/64-3/255$.
+
+Finally, a selected pair lies in opposite immediate children of $I$.
+Thus $I$ is its unique smallest dyadic common ancestor, which proves
+disjointness over all parents and stages.
+\end{proof}
+
+\section{The regular curve and divergent energy}
+
+\begin{theorem}\label{thm:main}
+For every $0<\alpha<4$, there is a compact regular curve
+$\Gamma_\alpha\subset\Hh$ such that the truncations of the singular integral
+associated with $K_\alpha$ are not uniformly bounded on
+$L^2(\mathcal H^1|_{\Gamma_\alpha})$.
+\end{theorem}
+
+\begin{proof}
+Set $q=\alpha/2<2$ and take $g$ from Lemma \ref{lem:mart}.  Extend $g$ by
+zero outside $[0,1]$, and define
+\[
+ f(x)=\int_0^x g(u)\,du,\qquad
+ F(x)=\int_0^x f(u)\,du.
+\]
+Since $g$ is bounded, $f$ is Lipschitz.  Consider the horizontal graph map
+\[
+ \Phi(x)=\left(x,f(x),-F(x)+\frac{x f(x)}2\right).
+ \tag{4.1}
+\]
+For $h=x-y$, direct use of the group law gives
+\[
+ \Phi(y)^{-1}\Phi(x)
+ =\big(h,f(x)-f(y),-\Ecal_g(x,y)\big),
+ \tag{4.2}
+\]
+because integration by parts yields
+\[
+ F(x)-F(y)-\frac h2(f(x)+f(y))
+ =\int_y^x\left(\frac{x+y}{2}-s\right)g(s)\,ds.
+\]
+The same identity and boundedness of $g$ show
+\[
+ |f(x)-f(y)|\lesssim|h|,\qquad
+ |\Ecal_g(x,y)|\lesssim |h|^2.
+\]
+Hence
+\[
+ |x-y|\leq d(\Phi(x),\Phi(y))\lesssim|x-y|.
+\]
+Thus $\Phi$ is bi-Lipschitz, and
+$\Gamma_\alpha:=\Phi([0,1])$ is a compact regular curve.  Its Hausdorff
+measure is comparable, under $\Phi$, to Lebesgue measure.
+
+Equation (4.2) and the upper metric estimate imply
+\[
+ K_\alpha(\Phi(y)^{-1}\Phi(x))
+ \gtrsim
+ \frac{|\Ecal_g(x,y)|^{\alpha/2}}{|x-y|^{\alpha+1}}.
+ \tag{4.3}
+\]
+For a pair in the rectangle associated with an active interval $I$ of
+length $\ell$ at stage $j$, Lemma \ref{lem:mart} and $|x-y|\leq\ell$ give
+\[
+ K_\alpha(\Phi(y)^{-1}\Phi(x))
+ \gtrsim \frac{\varepsilon_j^{\alpha/2}}{\ell}.
+\]
+The pair rectangle has planar measure $\ell^2/64$, so its contribution to
+the positive double integral is at least
+$c\varepsilon_j^{\alpha/2}\ell$.  The rectangles are disjoint, and the
+total length of the active parents is $|A_j|\geq3/4$.  Consequently
+\[
+ \iint_{[0,1]^2}
+ K_\alpha(\Phi(y)^{-1}\Phi(x))\,dx\,dy
+ \gtrsim \sum_j\varepsilon_j^{\alpha/2}|A_j|=\infty.
+ \tag{4.4}
+\]
+
+To phrase the last step directly in terms of truncations, retain only the
+first $N$ generations of pair rectangles and choose the truncation radius
+smaller than their least metric separation.  If the truncations were
+uniformly $L^2$ bounded, positivity and Cauchy--Schwarz, applied to the
+indicator of $\Gamma_\alpha$, would bound every such partial double integral
+by a constant times $\mathcal H^1(\Gamma_\alpha)$.  The lower bounds in
+(4.4) tend to infinity.  This contradiction proves the theorem.
+\end{proof}
+
+\section{Consequences, limitations, and verification}
+
+Theorem \ref{thm:main} answers the source's $\alpha\geq2$ question
+negatively, including every previously unsettled value $2\leq\alpha<4$.
+Combined with F\"assler--Orponen's positive theorem for $\alpha\geq4$, it
+shows that four is the exact threshold.
+
+This does \emph{not} by itself settle the separate smooth-kernel Question 1
+shown at the bottom of Figure 1.  The nonsmooth behavior of $K_\alpha$ across
+the horizontal plane is essential to membership in this particular family.
+
+The finite checker supplied with the packet verifies the exact Haar formula,
+the exponent window, the variance budget, and finite trapezoidal lower bounds.
+It is not used in the proof.  A bounded novelty search used the exact formula,
+question text, source title and authors, and the terms ``nonnegative kernel'',
+``regular curve'', and ``$\alpha=4$''.  It found \cite{CLZ}, which handles
+only $0<\alpha<2$ and explicitly flags $[2,4)$ as a possible extension; no
+primary source stating the result above was found.
+
+Human review should concentrate on the descendant estimate in Lemma
+\ref{lem:mart} and on the Hausdorff-measure transfer in (4.4).
+
+\begin{thebibliography}{9}
+\bibitem{FO}
+K. F\"assler and T. Orponen,
+\emph{Singular integrals on regular curves in the Heisenberg group},
+arXiv:1911.03223; J. Math. Pures Appl. 153 (2021), 30--154.
+
+\bibitem{CLZ}
+V. Chousionis, S. Li, and L. Zhang,
+\emph{On singular integrals with non-negative kernels in the Heisenberg group},
+arXiv:2605.17680 (2026).
+\end{thebibliography}
+
+\end{document}

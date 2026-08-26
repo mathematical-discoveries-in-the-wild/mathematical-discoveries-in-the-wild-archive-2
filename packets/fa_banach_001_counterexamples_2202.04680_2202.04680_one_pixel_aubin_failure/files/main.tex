@@ -1,0 +1,234 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newcommand{\R}{\mathbb R}
+\newcommand{\ind}{\delta}
+\newcommand{\dist}{\operatorname{dist}}
+
+\title{A One-Pixel Counterexample to Automatic Aubin Regularity}
+\author{Candidate full counterexample for arXiv:2202.04680}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{\textbf{Status.} Candidate full counterexample, likely valid, pending human review. The Aubin condition in the source's convergence question is not automatic for the proposed functional class.}}
+\end{center}
+
+\section{Source and exact question}
+
+N. Gruber, J. Schwab, S. Court, E. R. Gizewski, and M. Haltmeier,
+\emph{Lifting-based variational multiclass segmentation algorithm: design,
+convergence analysis, and implementation with applications in medical
+imaging}, arXiv:2202.04680v3 \cite{source}. On source PDF page 17, after
+deriving its nonlinear primal--dual algorithm, the paper asks whether the
+Aubin property and a dual-variable smallness condition from the convergence
+analysis in \cite{valkonen} hold for its functional.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{The exact open statement in the source, PDF page 17.}
+\end{figure}
+
+The answer is negative if the question is read as asking whether these
+conditions hold automatically over the proposed discrete model class. A
+degenerate but fully admissible one-pixel instance already violates the Aubin
+property, even with zero dual variable.
+
+\section{The saddle map used by the convergence theorem}
+
+Write the source's finite-dimensional objective in the form
+\[
+  \min_u F(\mathcal K(u))+G(u),
+  \qquad
+  \mathcal K=(\nabla,\mathcal M),\quad
+  G=\ind_{\mathcal U},
+\]
+where \(\mathcal U\) is the pointwise multiclass simplex and
+\[
+ F(v,w)=\lambda\|v\|_{2,1}+\|w\|_{1,1}.
+\]
+Thus \(F^*=\ind_{\mathcal C}\), where \(\mathcal C\) is the product of
+the corresponding closed dual balls.
+
+For a reference primal point \(\bar u\), the convergence analysis
+\cite{valkonen} uses the set-valued linearized saddle map
+\[
+ H_{\bar u}(u,y)=
+ \begin{pmatrix}
+   \partial G(u)+\mathcal K'(\bar u)^*y\\
+   \partial F^*(y)-\mathcal K'(\bar u)u-c_{\bar u}
+ \end{pmatrix},
+ \qquad
+ c_{\bar u}=\mathcal K'(\bar u)\bar u-\mathcal K(\bar u).
+\]
+Its inverse is required to have the Aubin property at zero for the reference
+saddle point.
+
+\section{Idea of the proof}
+Choose a one-pixel, two-class instance with both feature values zero.  Then
+both the discrete gradient and every nonlinear discrepancy term vanish
+identically, so the linearized saddle map is exactly the product of the
+normal-cone maps of the primal simplex and the dual ball.
+
+At the simplex midpoint, zero is a normal.  But an arbitrarily small normal
+perturbation in the tangent direction \(t(1,-1)\) selects the distant vertex
+\((1,0)\) as its unique inverse image.  The input perturbation tends to zero
+while the inverse-image distance stays \(1/\sqrt2\), contradicting the
+metric-regularity estimate equivalent to the Aubin property.  The reference
+dual variable is zero, so this failure persists even when the separate
+dual-smallness condition is satisfied maximally.
+
+\section{Counterexample}
+
+\begin{theorem}\label{thm:counterexample}
+There are admissible dimensions, feature maps, and a saddle point for the
+source functional such that the reference dual variable is zero but
+\(H_{\bar u}^{-1}\) does not have the Aubin property at zero. Consequently,
+the two convergence conditions named in the source do not hold automatically.
+\end{theorem}
+
+\begin{proof}
+Fix any \(\lambda>0\). Choose a one-pixel image, so \(N_1=N_2=1\), and two classes. The primal
+variable is \(u=(u_1,u_2)\in\R^2\), constrained to
+\[
+ \mathcal U=\{u\in\R^2:u_1,u_2\ge0,\ u_1+u_2=1\}.
+\]
+Choose both feature values to be zero. The one-pixel discrete gradient is
+identically zero. Moreover, the source's smoothed class average is zero:
+\[
+ A(u_k)=\frac{\langle u_k,0\rangle}{|u_k|_{1,\varepsilon}}=0.
+\]
+Every component of its nonlinear discrepancy map has the form
+\[
+ m(u_k)=u_k\bigl(A(u_k)\mathbf 1-0\bigr)^2=0,
+\]
+and the same holds with \(u_k\) replaced by \(1-u_k\). Hence
+\[
+ \mathcal K\equiv0,\qquad \mathcal K'\equiv0,
+ \qquad c_{\bar u}=0.
+\]
+The saddle map therefore reduces exactly to
+\begin{equation}
+ H_{\bar u}(u,y)=\bigl(N_{\mathcal U}(u),N_{\mathcal C}(y)\bigr),
+ \label{eq:product-normal}
+\end{equation}
+where \(N\) denotes the convex normal cone.
+
+Let
+\[
+ \widehat u=(1/2,1/2),\qquad \widehat y=0,
+ \qquad \widehat z=(\widehat u,\widehat y).
+\]
+Because \(0\in N_{\mathcal U}(\widehat u)\) and
+\(0\in N_{\mathcal C}(0)\), equation \eqref{eq:product-normal} gives
+\(0\in H_{\bar u}(\widehat z)\). More precisely,
+\[
+ N_{\mathcal U}(\widehat u)=\operatorname{span}\{(1,1)\},
+ \qquad N_{\mathcal C}(0)=\{0\},
+\]
+because \(\widehat u\) is in the relative interior of the simplex and zero is
+in the interior of every dual ball.
+
+For \(t>0\), put
+\[
+ p_t=t(1,-1),\qquad q_t=(p_t,0).
+\]
+A point of \(\mathcal U\) has \(p_t\) in its normal cone exactly when it
+maximizes \(\langle p_t,u\rangle=t(u_1-u_2)\) over the simplex. The unique
+maximizer is \(e_1=(1,0)\). Also
+\((N_{\mathcal C})^{-1}(0)=\mathcal C\). It follows that
+\begin{equation}
+ H_{\bar u}^{-1}(q_t)=\{e_1\}\times\mathcal C,
+ \qquad
+ \dist\bigl(\widehat z,H_{\bar u}^{-1}(q_t)\bigr)
+ =\|\widehat u-e_1\|=\frac1{\sqrt2}.
+ \label{eq:fixed-distance}
+\end{equation}
+
+Suppose, toward a contradiction, that \(H_{\bar u}^{-1}\) had the Aubin
+property at \(0\) for \(\widehat z\). The residual metric-regularity estimate
+used in \cite{valkonen}, applied with \(u=\widehat z\) and \(w=q_t\), would
+give for all sufficiently small \(t>0\)
+\[
+ \dist\bigl(\widehat z,H_{\bar u}^{-1}(q_t)\bigr)
+ \le L\dist\bigl(q_t,H_{\bar u}(\widehat z)\bigr)
+ =L\dist\bigl(p_t,\operatorname{span}\{(1,1)\}\bigr)
+ =L\sqrt2\,t
+\]
+for some finite \(L\). This contradicts \eqref{eq:fixed-distance} as
+\(t\downarrow0\). Thus the Aubin property fails.
+
+Finally, \(\widehat y=0\), so every projection of the reference dual
+variable onto the nonlinear dual block is zero. The informal dual-smallness
+requirement is therefore satisfied as strongly as possible, but the Aubin
+requirement still fails.
+\end{proof}
+
+\section{A second structural obstruction}
+
+The cited convergence theorem also assumes strong convexity of \(F^*\) on
+the nonlinear dual subspace. For the source functional,
+\(F^*=\ind_{\mathcal C}\) on that block. Pick two distinct interior points
+of the relevant dual ball. The indicator is zero at both points and their
+midpoint, so no positive strong-convexity modulus can satisfy the defining
+midpoint inequality. Thus this hypothesis is not automatic either.
+
+This observation is independent of Theorem~\ref{thm:counterexample}. The
+counterexample itself directly answers the source's named Aubin question.
+
+\section{Verification and scope}
+
+\begin{enumerate}[leftmargin=*,itemsep=0.35em]
+ \item The construction uses only dimensions and feature maps allowed by the
+ source; the smoothing parameter keeps every denominator positive.
+ \item The affine residual \(c_{\bar u}\) vanishes because the complete
+ operator, not merely its derivative at one point, is zero.
+ \item The fixed distance in \eqref{eq:fixed-distance} is exact in the product
+ Hilbert norm because \(0\in\mathcal C\).
+ \item The proof uses the exact residual metric-regularity formulation from
+ the cited analysis, including the distance to the full set
+ \(H_{\bar u}(\widehat z)\).
+ \item The result does not assert divergence of the implemented algorithm.
+ It shows that the cited convergence assumptions require additional
+ nondegeneracy hypotheses and cannot be inferred from the functional's form.
+\end{enumerate}
+
+\section{Bounded novelty check}
+
+The local run indexes were searched for arXiv:2202.04680, the exact title,
+the exact open sentence, \emph{Aubin property}, and \emph{dual variable}. A
+bounded external search on 11 August 2026 used the same phrases and
+citation-oriented variants. It found the source, its 2024 journal version, the
+cited nonlinear PDHG paper, and general work on Aubin properties, but no
+explicit answer to this source question. The search was not an exhaustive
+citation-graph or MathSciNet review, so originality remains a candidate claim.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+N. Gruber, J. Schwab, S. Court, E. R. Gizewski, and M. Haltmeier,
+\newblock Lifting-based variational multiclass segmentation algorithm:
+design, convergence analysis, and implementation with applications in medical
+imaging,
+\newblock \emph{J. Comput. Appl. Math.} 439 (2024), 115583;
+arXiv:2202.04680,
+\href{https://doi.org/10.1016/j.cam.2023.115583}{doi:10.1016/j.cam.2023.115583}.
+
+\bibitem{valkonen}
+T. Valkonen,
+\newblock A primal--dual hybrid gradient method for non-linear operators with
+applications to MRI,
+\newblock \emph{Inverse Problems} 30 (2014), 055012;
+arXiv:1309.5032,
+\href{https://doi.org/10.1088/0266-5611/30/5/055012}{doi:10.1088/0266-5611/30/5/055012}.
+\end{thebibliography}
+
+\end{document}

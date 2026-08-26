@@ -1,0 +1,327 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=0.85in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\wh}{\widehat}
+\newcommand{\dd}{\,d}
+
+\title{Linear asymptotics for the $L_2$ regularity\\of tile B-splines}
+\author{Candidate partial solution packet for arXiv:2212.12945}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\linewidth}{\textbf{Status.}
+Candidate partial result, likely valid.  The result proves a general linear
+asymptotic law, monotonicity, concavity, and slope bounds for the $L_2$
+regularity.  It does not compute the limiting slope for the Dragon or Bear,
+and it does not address $C$-regularity.}}
+\end{center}
+
+\section{Source question}
+
+The source is T.~I.~Zaitseva, \emph{Multivariate tile B-splines},
+arXiv:2212.12945, later published in \emph{Izvestiya: Mathematics}
+87(2) (2023), 284--325 \cite{Zaitseva2023}.  If $G\subset\R^d$ is a tile,
+the tile B-spline of order $\ell$ is
+\[
+ B_\ell^G=\underbrace{\chi_G*\cdots*\chi_G}_{\ell+1\text{ factors}}.
+\]
+After computing small-order regularities by growing transition matrices, the
+paper asks in Remark~6 (PDF page 33):
+\begin{quote}
+``The question of the asymptotics of the regularity with the increase of order
+of B-splines remains open.''
+\end{quote}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/open_problem_crop.png}
+\caption{The complete source question, rendered from page 33 of
+arXiv:2212.12945.}
+\end{figure}
+
+The source considers both $C$-regularity and $L_2$-H\"older regularity.  The
+result below addresses the latter.  It applies more generally to convolution
+powers of any normalized bounded measurable set.
+
+\section{Proof intuition}
+
+The growing refinement matrices disappear after taking Fourier transforms:
+if $F=\wh{\chi_G}$, then $\wh{B_\ell^G}=F^{\ell+1}$.  Regularity is therefore
+the boundary of the set of pairs $(p,s)$ for which
+\[
+ \int_{|\xi|\ge1}|\xi|^{2s}|F(\xi)|^{2p}\dd\xi<\infty.
+\]
+H\"older's inequality makes this integrability set convex, so its upper
+boundary as a function of $p$ is concave.  Its value at $p=0$ is exactly
+$-d/2$.  A nonnegative concave function vanishing at the origin has decreasing
+secant slopes; this yields a limiting regularity per convolution and exact
+finite-order upper bounds on it.
+
+The tile sum rules bound the limiting slope above by $1$.  In the other
+direction, a $p$th difference of a $p$fold convolution is the convolution of
+$p$ first differences.  Young's inequality converts the translation modulus
+of the tile itself into the lower bound $L_G\ge2\alpha_{0,2}(G)$.  What remains
+open is the computation of $L_G$ for particular fractal tiles and the analogous
+$C$-regularity problem.
+
+\section{Definitions and a threshold lemma}
+
+Let $G\subset\R^d$ be bounded and measurable with $|G|=1$, put
+$f=\chi_G$, and use the Fourier convention
+\(
+\wh f(\xi)=\int f(x)e^{-2\pi i x\cdot\xi}\dd x.
+\)
+Then $F=\wh f$ satisfies $|F|\le1$.  For real $p\ge0$, define the extended
+regularity threshold
+\begin{equation}\label{eq:Adef}
+ A_G(p)=\sup\left\{s\in\R:
+ \int_{|\xi|\ge1}|\xi|^{2s}|F(\xi)|^{2p}\dd\xi<\infty\right\},
+\end{equation}
+where $|F|^0=1$.
+
+For a compactly supported $g\in L_2(\R^d)$, let
+\(\alpha_2(g)\) denote the supremal $L_2$-H\"older/Besov regularity used by
+the source.  Only the supremal threshold matters here, so endpoint conventions
+at integral exponents do not affect the result.
+
+\begin{lemma}[Sobolev and $L_2$-H\"older thresholds]\label{lem:threshold}
+For compactly supported $g\in L_2(\R^d)$,
+\[
+ \alpha_2(g)=\sup\{s:g\in H^s(\R^d)\}.
+\]
+Consequently,
+\begin{equation}\label{eq:alphaA}
+ \alpha_{\ell,2}(G):=\alpha_2(B_\ell^G)=A_G(\ell+1).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Let
+\[
+ E_j=\int_{2^j\le|\xi|<2^{j+1}}|\wh g(\xi)|^2\dd\xi,
+ \qquad j\ge0.
+\]
+Up to the harmless low-frequency term, membership in $H^s$ is equivalent to
+\(\sum_j2^{2sj}E_j<\infty\), while the $B^t_{2,\infty}$ condition is
+\(\sup_j2^{2tj}E_j<\infty\).  The former implies the latter at the same
+exponent.  Conversely, the latter at exponent $t$ implies the former at every
+$s<t$ by a geometric series.  Their supremal thresholds are equal.  Since
+\(\wh{B_\ell^G}=F^{\ell+1}\), the Sobolev integral gives
+\eqref{eq:alphaA}.
+\end{proof}
+
+\section{The linear-asymptotic theorem}
+
+\begin{theorem}[Concavity and asymptotic slope]\label{thm:main}
+Let $G\subset\R^d$ be bounded, measurable, and $|G|=1$.  Assume
+$\alpha_{0,2}(G)<\infty$, as holds for every nontrivial tile indicator.  Then:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $A_G$ is nondecreasing and concave on $[0,\infty)$, and
+      $A_G(0)=-d/2$.
+\item The shifted normalized regularities
+\begin{equation}\label{eq:qmono}
+ q_\ell(G)=\frac{\alpha_{\ell,2}(G)+d/2}{\ell+1}
+\end{equation}
+are nonincreasing.  Hence
+\begin{equation}\label{eq:Ldef}
+ L_G:=\lim_{\ell\to\infty}q_\ell(G)
+     =\inf_{\ell\ge0}q_\ell(G)
+\end{equation}
+exists and is finite and nonnegative.
+\item The regularity has the first-order asymptotic
+\begin{equation}\label{eq:asymptotic}
+ \alpha_{\ell,2}(G)=L_G(\ell+1)-\frac d2+o(\ell).
+\end{equation}
+Here the displayed $-d/2$ is the natural concavity normalization, not a claim
+about a second-order constant.
+\item The sequence $\alpha_{\ell,2}(G)$ is nondecreasing and discretely
+concave.  Its marginal gains decrease and satisfy
+\begin{equation}\label{eq:increments}
+ \alpha_{\ell+1,2}(G)-\alpha_{\ell,2}(G)\ \downarrow\ L_G.
+\end{equation}
+\end{enumerate}
+If $G$ is a lattice tile and its tile B-splines are stable with the exact
+sum-rule orders described in \cite{Zaitseva2023,ProtasovZaitseva2025}, then
+\begin{equation}\label{eq:tileupper}
+ 0\le L_G\le1.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Suppose the integral in \eqref{eq:Adef} is finite at $(p_0,s_0)$ and
+$(p_1,s_1)$.  For $0<\theta<1$, set
+\[
+ p_\theta=\theta p_0+(1-\theta)p_1,
+ \qquad s_\theta=\theta s_0+(1-\theta)s_1.
+\]
+The integrand at $(p_\theta,s_\theta)$ is the product of the two endpoint
+integrands raised to the powers $\theta$ and $1-\theta$.  H\"older's
+inequality proves its integrability.  Letting $s_i\uparrow A_G(p_i)$ shows
+\[
+ A_G(p_\theta)\ge\theta A_G(p_0)+(1-\theta)A_G(p_1),
+\]
+so $A_G$ is concave.  Since $|F|\le1$, increasing $p$ can only decrease the
+integrand, hence $A_G$ is nondecreasing.  At $p=0$, radial integration gives
+\[
+ \int_{|\xi|\ge1}|\xi|^{2s}\dd\xi<\infty
+ \quad\Longleftrightarrow\quad s<-d/2,
+\]
+and therefore $A_G(0)=-d/2$.
+
+Put $C(p)=A_G(p)+d/2$.  Then $C$ is nonnegative and concave, with $C(0)=0$.
+For $0<p<r$, concavity gives
+\[
+ C(p)\ge\frac p r C(r),
+\]
+so $C(p)/p$ is nonincreasing.  Restricting to $p=\ell+1$ and using
+Lemma~\ref{lem:threshold} proves \eqref{eq:qmono}--\eqref{eq:asymptotic}.
+The assumed finiteness at $p=1$ and the secant inequality make the limit
+finite.  Monotonicity and concavity of $A_G$ restricted to the integers give
+the corresponding properties of $\alpha_{\ell,2}$.  The decreasing discrete
+increments have a limit, and the Ces\`aro mean identity forces that limit to
+equal $L_G$, proving \eqref{eq:increments}.
+
+Finally, the source proves stability of tile B-splines and identifies their
+sum-rule order.  The standard stability/sum-rule obstruction recalled and
+used in \cite{ProtasovZaitseva2025} gives
+\(\alpha_{\ell,2}(G)\le\ell+1\).  Divide by $\ell+1$ and take the limit to
+obtain $L_G\le1$; nonnegativity was already proved.
+\end{proof}
+
+\begin{corollary}[A geometric lower bound]\label{cor:lower}
+For every normalized tile $G$,
+\begin{equation}\label{eq:lower}
+ 2\alpha_{0,2}(G)\le L_G\le1.
+\end{equation}
+In particular, the square has $L_G=1$.
+\end{corollary}
+
+\begin{proof}
+Write $f=\chi_G$, $D(h)=|G\triangle(G+h)|$, and
+$\Delta_h=\tau_h-I$.  Then
+\begin{equation}\label{eq:indicatornorms}
+ \|\Delta_hf\|_1=D(h),\qquad
+ \|\Delta_hf\|_2=D(h)^{1/2}.
+\end{equation}
+For an integer $p\ge1$, the convolution and translation algebras give
+\begin{equation}\label{eq:diffidentity}
+ \Delta_h^p(f^{*p})=(\Delta_hf)^{*p}.
+\end{equation}
+Young's inequality and \eqref{eq:indicatornorms} imply
+\begin{equation}\label{eq:young}
+ \|\Delta_h^p(f^{*p})\|_2
+ \le \|\Delta_hf\|_2\|\Delta_hf\|_1^{p-1}
+ =D(h)^{p-1/2}.
+\end{equation}
+Fix $0\le\eta<\alpha_{0,2}(G)$.  By the definition of the regularity of
+$\chi_G$, $D(h)^{1/2}\le C_\eta|h|^\eta$ for small $h$.  Thus
+\[
+ \|\Delta_h^p(f^{*p})\|_2
+ \le C_{\eta,p}|h|^{2\eta(p-1/2)}.
+\]
+A nonconstant compactly supported indicator has
+$\alpha_{0,2}\le1/2$, so $2\eta(p-1/2)<p$.  The $p$th-difference
+characterization of $B^s_{2,\infty}$ therefore yields
+\[
+ \alpha_{p-1,2}(G)\ge2\eta(p-1/2).
+\]
+Divide by $p$, let $p\to\infty$, and then let
+$\eta\uparrow\alpha_{0,2}(G)$ to get $L_G\ge2\alpha_{0,2}(G)$.
+The upper bound is Theorem~\ref{thm:main}.  For the square,
+$\alpha_{0,2}=1/2$, so equality follows.
+\end{proof}
+
+\section{Consequences for the source examples}
+
+In dimension two, every computed order gives the rigorous implication
+\begin{equation}\label{eq:finitebound}
+ L_G\le\frac{\alpha_{\ell,2}(G)+1}{\ell+1},
+\end{equation}
+and these upper bounds must decrease with $\ell$.  The tables in
+\cite{ProtasovZaitseva2025} exhibit exactly this pattern.  Using their displayed
+decimal values only as numerical evidence, not as interval-certified proof,
+the order-$8$ Bear value $8.9199$ gives
+$L_{\rm Bear}\lesssim1.10221$, while the order-$5$ Dragon value $3.6688$ gives
+$L_{\rm Dragon}\lesssim0.77813$.  Corollary~\ref{cor:lower} and the source's
+order-zero decimals give the indicative lower bounds
+\[
+ L_{\rm Bear}\gtrsim0.7892,
+ \qquad L_{\rm Dragon}\gtrsim0.4764.
+\]
+The exact theorem is the monotonicity and limiting law; the decimal endpoints
+inherit the precision limitations of the published tables.
+
+\section{Verification, limitations, and novelty status}
+
+\paragraph{Internal checks.}
+The Fourier-power identity and the dyadic threshold equivalence were checked
+independently, as were all exponents in H\"older's and Young's inequalities.
+The theorem reproduces
+the square sequence $\alpha_{\ell,2}=\ell+1/2$: its normalized quantities are
+$1+1/(2(\ell+1))$, decreasing to $1$.  The published Dragon and Bear tables
+also have decreasing marginal gains and decreasing normalized shifted values,
+as the theorem requires.
+
+\paragraph{Bounded literature audit.}
+The search covered the source and its citations, exact question phrases,
+arXiv/title/author searches, the run indexes, arXiv:2312.11182 and its 2025
+journal version \cite{ProtasovZaitseva2025}, and Zaitseva's 2025
+\emph{Supersmooth tile B-splines} \cite{Zaitseva2025}.  Those papers give new
+finite-order formulas and tables and a supersmoothness classification
+conjecture.  No theorem asserting concavity, existence of the large-order
+slope, or the displayed geometric lower bound was found through 13 August
+2026.  This bounded search does not certify novelty.
+
+\paragraph{Limitations.}
+The result does not compute $L_G$ for Dragon, Bear, or a general tile.  It does
+not show that the remainder in \eqref{eq:asymptotic} is bounded, and the
+$-d/2$ normalization is not a second-order asymptotic.  It does not address
+the joint-spectral-radius asymptotics governing $C$-regularity.  Hence this is
+a substantial partial answer rather than a full resolution of every reading
+of Remark~6.
+
+\paragraph{Human-review recommendation.}
+High priority.  The core proof is short and matrix-free.  A reviewer should
+focus on Lemma~\ref{lem:threshold}, the endpoint-independent interpretation
+of the source regularity, the exact sum-rule upper bound, and the use of the
+$p$th-difference characterization in Corollary~\ref{cor:lower}.
+
+\begin{thebibliography}{9}
+\bibitem{Zaitseva2023}
+T.~I. Zaitseva,
+\emph{Multivariate tile B-splines},
+Izv. Math. 87(2) (2023), 284--325;
+arXiv:2212.12945.
+
+\bibitem{ProtasovZaitseva2025}
+V.~Yu. Protasov and T. Zaitseva,
+\emph{Anisotropic refinable functions and the tile B-splines},
+Appl. Comput. Harmon. Anal. 75 (2025), 101727;
+doi:10.1016/j.acha.2024.101727; arXiv:2312.11182.
+
+\bibitem{Zaitseva2025}
+T.~I. Zaitseva,
+\emph{Supersmooth tile B-splines},
+Sb. Math. 216(3) (2025), 333--356;
+doi:10.4213/sm10212e.
+\end{thebibliography}
+
+\end{document}

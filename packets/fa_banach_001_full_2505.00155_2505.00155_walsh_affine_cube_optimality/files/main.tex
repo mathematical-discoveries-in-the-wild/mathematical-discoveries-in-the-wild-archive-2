@@ -1,0 +1,346 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\hypersetup{hidelinks}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\F}{\mathbb F}
+\newcommand{\E}{\mathbb E}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\Nphi}{\mathcal N_{\Phi}}
+
+\title{Optimality of the endpoint Orlicz loss:\\
+every dense Walsh subsystem contains an affine spike}
+\author{Run \texttt{fa\_banach\_001}, lane 19}
+\date{August 11, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Burstein proves that every uniformly bounded orthogonal system of size $n$
+has a subsystem of cardinality at least
+$n/[e(\log n)^{\alpha+1}]$ whose $L^2\log^\alpha L$ synthesis norm is at
+most $C_\alpha(\log\log n)^{\alpha/2}$, and asks whether the iterated
+logarithm is optimal.  We prove that it is.  For every sufficiently large
+$N=2^d$, take all characters of $\F_2^d$.  Every subset of the target
+cardinality contains an affine frequency subspace of size
+$m\asymp_\alpha \log N/\log\log N$.  The normalized character sum on that
+subspace is exactly $\sqrt m$ on a set of measure $1/m$ and zero elsewhere,
+so its Luxemburg norm is at least
+$c_\alpha(\log m)^{\alpha/2}\asymp
+c_\alpha(\log\log N)^{\alpha/2}$.  The affine-subspace assertion follows
+from an elementary cube count and a count of linearly dependent direction
+tuples.  Thus the source upper bound has the optimal asymptotic order in the
+worst case.
+\end{abstract}
+
+\section{Source question}
+
+The source is Will Burstein, \emph{$\Lambda_p$ Style Bounds in Orlicz Spaces
+Close to $L^2$}, arXiv:2505.00155v2 \cite{Burstein}.  Its Theorem 2.7 proves
+the upper bound discussed below.  On page 13, Remark 2.11 says that the
+optimality of equation (2.4) remains open.  The relevant source passage is
+reproduced here.
+
+\begin{center}
+\includegraphics[width=0.98\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+Fix $\alpha>0$.  The source uses a Young function $\Phi$ for which, with
+constants $u_0\ge e$ and $c(\alpha)>0$ fixed once $\alpha$ is fixed,
+\[
+ \Phi(u)=u^2\log^\alpha u\quad (u\ge u_0),
+ \qquad
+ \Phi(u)=c(\alpha)u^2\quad (0\le u<u_0).
+\]
+The corresponding Luxemburg norm on a probability space is
+\[
+ \|f\|_\Phi
+ =\inf\left\{\lambda>0:
+ \E\Phi(|f|/\lambda)\le1\right\}.
+\]
+For an orthogonal family $(\varphi_\xi)_{\xi\in I}$, write
+\[
+ \Nphi(I)=
+ \sup_{\|a\|_2\le1}
+ \left\|\sum_{\xi\in I}a_\xi\varphi_\xi\right\|_\Phi.
+\]
+The source proves that every bounded orthogonal system of size $n$ has, with
+positive probability and hence in particular deterministically, a subset
+$I$ with
+\[
+ |I|\ge \frac{n}{e(\log n)^{\alpha+1}}
+ \quad\text{and}\quad
+ \Nphi(I)\le C_\alpha(\log\log n)^{\alpha/2}.
+\]
+It asks whether the factor $(\log\log n)^{\alpha/2}$ can be improved.
+
+\section{Proof intuition}
+
+The source lower bound finds a consecutive Fourier block inside a random
+subset.  That mechanism cannot control a deterministic subset, which may
+avoid all long intervals.  The replacement is to use all binary characters
+and search for an affine subspace of frequencies.  An affine $r$-flat is an
+ideal bad configuration: the sum of its $m=2^r$ characters is supported on
+the annihilator of its direction space, an event of probability exactly
+$1/m$, and has normalized height exactly $\sqrt m$ there.
+
+It remains to force such a flat inside \emph{every} target-size subset.  If
+$A\subset\F_2^d$ has density $\delta$, the normalized number of ordered
+$r$-dimensional cubes in $A$ is at least $\delta^{2^r}$.  This follows by
+iterating Cauchy--Schwarz (in the particularly simple form of Jensen's
+inequality for opposite cube faces).  Degenerate cubes, whose directions are
+linearly dependent, account for fewer than $2^r/2^d$ of all direction
+tuples.  Hence $A$ contains a genuine affine $r$-flat as soon as
+$\delta^{2^r}2^d>2^r$.
+
+At the source density
+$\delta\asymp(\log N)^{-(\alpha+1)}$, this condition permits
+$2^r\asymp_\alpha\log N/\log\log N$.  Since the Orlicz norm of the resulting
+spike grows as $(\log 2^r)^{\alpha/2}$, the desired endpoint loss follows.
+
+\section{The deterministic lower theorem}
+
+Let $G_d=\F_2^d$, let $N=|G_d|=2^d$, and give $G_d$ uniform probability
+measure.  For $\xi,x\in G_d$, define
+\[
+ \chi_\xi(x)=(-1)^{\xi\cdot x},
+\]
+where the dot product is over $\F_2$.  The $N$ functions
+$(\chi_\xi)_{\xi\in G_d}$ are orthonormal and have supremum norm one.
+
+\begin{theorem}[Worst-case optimality]\label{thm:main}
+Fix $\alpha>0$ and let $\Phi$ be the Young function above.  There are
+$c_\alpha>0$ and $d_0(\alpha)$ such that for every $d\ge d_0(\alpha)$,
+the character system $(\chi_\xi)_{\xi\in\F_2^d}$ has the following
+property.  Every $I\subseteq\F_2^d$ satisfying
+\[
+ |I|\ge \frac{N}{e(\log N)^{\alpha+1}},
+ \qquad N=2^d,
+\]
+obeys
+\[
+ \Nphi(I)\ge c_\alpha(\log\log N)^{\alpha/2}.
+\]
+Consequently the factor $(\log\log n)^{\alpha/2}$ in the source upper
+bound is optimal, up to constants depending only on $\alpha$, in the
+worst-case best-subsystem problem.
+\end{theorem}
+
+We first prove the combinatorial statement which replaces random block
+selection.
+
+\begin{lemma}[Dense sets contain affine cubes]\label{lem:cube}
+Let $A\subseteq\F_2^d$ have density $\delta=|A|/2^d$.  If an integer
+$r\ge1$ satisfies
+\[
+ \delta^{2^r}2^d>2^r,
+\]
+then $A$ contains an affine subspace of dimension $r$.
+\end{lemma}
+
+\begin{proof}
+Put $G=\F_2^d$, $N=|G|$, and $f=\one_A$.  For $s\ge0$, let
+\[
+ C_s=
+ \E_{x,h_1,\ldots,h_s\in G}
+ \prod_{\omega\in\{0,1\}^s}
+ f\left(x+\sum_{j=1}^s\omega_jh_j\right).
+\]
+Thus $C_s$ is the normalized number of ordered $s$-cubes contained in
+$A$, with degenerate cubes included, and $C_0=\delta$.
+
+For fixed $h_1,\ldots,h_s$, set
+\[
+ g(x)=\prod_{\omega\in\{0,1\}^s}
+ f\left(x+\sum_{j=1}^s\omega_jh_j\right).
+\]
+Splitting an $(s+1)$-cube into its two opposite $s$-faces and averaging
+first in its final direction gives
+\[
+ C_{s+1}
+ =\E_{h_1,\ldots,h_s}
+   \E_{x,t}g(x)g(x+t)
+ =\E_{h_1,\ldots,h_s}(\E_xg(x))^2
+ \ge C_s^2.
+\]
+The last step is Jensen's inequality.  Induction yields
+\[
+ C_r\ge\delta^{2^r}.
+\]
+Therefore the number of ordered tuples
+$(x,h_1,\ldots,h_r)$ defining a cube in $A$ is at least
+$\delta^{2^r}N^{r+1}$.
+
+We now bound degenerate tuples.  Choosing the directions in order, if
+$h_1,\ldots,h_r$ are linearly dependent, then for some first index $j$ one
+has
+$h_j\in\operatorname{span}(h_1,\ldots,h_{j-1})$.  For each $j$, there are
+at most
+\[
+ N^{j-1}2^{j-1}N^{r-j}=2^{j-1}N^{r-1}
+\]
+such ordered direction tuples.  Hence fewer than
+$(2^r-1)N^{r-1}$ direction tuples are dependent, and after choosing $x$
+fewer than $(2^r-1)N^r$ ordered cubes are degenerate.
+
+The assumed inequality makes the total number of cubes strictly larger
+than the number of degenerate tuples.  Thus one cube has linearly independent
+directions.  Its $2^r$ vertices form an affine $r$-dimensional subspace
+contained in $A$.
+\end{proof}
+
+\begin{lemma}[The target density forces a large flat]\label{lem:scale}
+Put $\rho=\alpha+1$.  For all sufficiently large $N=2^d$, every
+$A\subseteq\F_2^d$ with
+\[
+ |A|/N\ge \frac1{e(\log N)^\rho}
+\]
+contains an affine subspace of cardinality $m=2^r$ satisfying
+\[
+ \frac{\log N}{16\rho\log\log N}<m
+ \le \frac{\log N}{8\rho\log\log N}.
+\]
+\end{lemma}
+
+\begin{proof}
+Let $m=2^r$ be the largest power of two not exceeding
+\[
+ M=\frac{\log N}{8\rho\log\log N}.
+\]
+For large $N$, $m>M/2$, giving the displayed bounds.  If
+$\delta=|A|/N$, then
+\begin{align*}
+ \log\left(\frac{\delta^mN}{m}\right)
+ &\ge \log N-m-\rho m\log\log N-\log m\\
+ &\ge \log N-M(1+\rho\log\log N)-\log M.
+\end{align*}
+For all sufficiently large $N$, the last expression is positive (indeed it
+is at least $\tfrac34\log N-\log M$).  Thus
+$\delta^mN>m$, and Lemma~\ref{lem:cube} applies.
+\end{proof}
+
+\begin{lemma}[An affine character flat is an Orlicz spike]
+\label{lem:spike}
+There are $b_\alpha>0$ and $m_0(\alpha)$ such that the following holds.
+If $V=\xi_0+H\subseteq\F_2^d$ is an affine subspace of cardinality
+$m\ge m_0(\alpha)$, then
+\[
+ \left\|m^{-1/2}\sum_{\xi\in V}\chi_\xi\right\|_\Phi
+ \ge b_\alpha(\log m)^{\alpha/2}.
+\]
+\end{lemma}
+
+\begin{proof}
+Let
+\[
+ H^\perp=\{x\in\F_2^d:h\cdot x=0\text{ for every }h\in H\}.
+\]
+Character orthogonality on the group $H$ gives
+\[
+ \left|m^{-1/2}\sum_{\xi\in V}\chi_\xi(x)\right|
+ =m^{-1/2}\left|\sum_{h\in H}\chi_h(x)\right|
+ =\begin{cases}
+ \sqrt m,&x\in H^\perp,\\
+ 0,&x\notin H^\perp.
+ \end{cases}
+\]
+Since $|H^\perp|=N/m$, the nonzero event has probability $1/m$.
+
+Set $\lambda=b_\alpha(\log m)^{\alpha/2}$.  For large $m$,
+$\sqrt m/\lambda\ge u_0$ and
+\[
+ \log(\sqrt m/\lambda)\ge\tfrac14\log m.
+\]
+Consequently
+\[
+ \E\Phi\left(
+ \frac{m^{-1/2}|\sum_{\xi\in V}\chi_\xi|}{\lambda}
+ \right)
+ =\frac1{\lambda^2}
+ \log^\alpha(\sqrt m/\lambda)
+ \ge\frac{4^{-\alpha}}{b_\alpha^2}.
+\]
+Choose, for example, $b_\alpha=2^{-\alpha-1}$.  The last quantity is at
+least $4>1$.  By the definition of the Luxemburg norm, the norm is at least
+$\lambda$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Let $I$ have the stated cardinality.  By Lemma~\ref{lem:scale}, $I$ contains
+an affine subspace $V$ of cardinality $m$ with
+\[
+ m\asymp_\alpha\frac{\log N}{\log\log N}.
+\]
+Put coefficients $a_\xi=m^{-1/2}$ on $V$ and zero on $I\setminus V$.
+They have $\ell^2$ norm one, so Lemma~\ref{lem:spike} gives
+\[
+ \Nphi(I)\ge b_\alpha(\log m)^{\alpha/2}.
+\]
+For sufficiently large $N$,
+\[
+ \log m
+ \ge\log\log N-\log\log\log N-\log(16\rho)
+ \ge\tfrac12\log\log N.
+\]
+Absorbing the factor $2^{-\alpha/2}$ into the constant proves the lower
+bound.  The source upper bound holds for every uniformly bounded orthogonal
+system, so the two estimates establish optimality in worst-case asymptotic
+order.
+\end{proof}
+
+\section{Verification and novelty notes}
+
+The proof has no unproved dependency and no computational step.  Its two
+quantitative thresholds can be audited directly:
+\begin{itemize}
+\item the cube lower bound counts all ordered cubes, while the explicit
+      $(2^r-1)N^{r-1}$ estimate counts every dependent direction tuple;
+\item at density $e^{-1}(\log N)^{-\rho}$, taking
+      $2^r\le \log N/[8\rho\log\log N]$ leaves a positive exponential
+      margin in the condition $\delta^{2^r}N>2^r$;
+\item the affine character sum is an exact two-valued function, so the
+      Luxemburg modular calculation has no tail estimate or asymptotic
+      approximation other than choosing $N$ sufficiently large.
+\end{itemize}
+
+A bounded novelty check on August 11, 2026 searched the run registry and
+solution/attempt indexes for arXiv:2505.00155, endpoint Orlicz optimality,
+Walsh systems, affine subspaces, and cube-count terms.  External searches
+covered the exact title and arXiv id, combinations of ``bounded orthogonal
+systems'', ``Orlicz'', ``Walsh'', ``affine subspace'', and ``Gowers norm'',
+and recent papers returned for affine-subspace statistics.  The search found
+the source paper and unrelated/background work, but no later paper claiming
+to answer Remark 2.11 and no matching deterministic lower theorem.  Novelty
+therefore remains subject to expert literature review.
+
+\section{Limitations and human-review recommendation}
+
+The theorem is stated on the infinite dimension subsequence $N=2^d$, which
+is sufficient to prove that the source factor cannot be uniformly replaced
+by a smaller asymptotic order.  Constants and the threshold $d_0$ depend on
+$\alpha$, exactly as in the source upper bound.  No assertion is made about
+the sharp numerical constant.
+
+This is recommended for expert review as a likely valid full solution of the
+source optimality question.  The highest-value checks are: (i) the
+$C_{s+1}\ge C_s^2$ cube-count recursion, (ii) the subtraction of degenerate
+direction tuples, (iii) the scale choice in Lemma~\ref{lem:scale}, and
+(iv) the precise match between the source's best-subsystem quantifiers and
+the universal statement for the constructed character system.
+
+\begin{thebibliography}{9}
+\bibitem{Burstein}
+W. Burstein,
+\emph{$\Lambda_p$ Style Bounds in Orlicz Spaces Close to $L^2$},
+arXiv:2505.00155v2, 2025.
+\end{thebibliography}
+
+\end{document}

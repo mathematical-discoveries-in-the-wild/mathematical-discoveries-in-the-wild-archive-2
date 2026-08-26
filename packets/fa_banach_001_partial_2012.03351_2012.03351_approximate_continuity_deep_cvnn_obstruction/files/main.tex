@@ -1,0 +1,241 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,margin=0.92in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\M}{\mathcal M}
+\newcommand{\NN}{\mathcal{NN}}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.52em}
+
+\title{Approximate Continuity Restores the Necessary\\
+Obstruction for Deep Complex-Valued Networks}
+\author{Run \texttt{fa\_banach\_001} --- lane 0}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{
+\textbf{Status: candidate partial result, likely valid.}
+Everywhere approximate continuity is a natural hypothesis strictly weaker
+than continuity under which Voigtlaender's necessary condition becomes valid.
+Together with his sufficient theorem, it gives a complete characterization
+inside this larger class.  No claim of optimality of the hypothesis is made.
+}}
+\end{center}
+
+\section{Source problem}
+
+Felix Voigtlaender's \emph{The universal approximation theorem for
+complex-valued neural networks}, arXiv:2012.03351, studies fixed-depth,
+arbitrarily wide complex-valued feedforward networks~\cite{source}.
+Let $\NN^d_{\sigma,L}$ denote the resulting scalar-output network class on
+$\C^d$ with activation $\sigma:\C\to\C$ and $L$ hidden layers.
+
+The source class $\M$ consists of the locally bounded activations for which the
+closure of the set of ordinary discontinuity points has planar Lebesgue
+measure zero.  Source Theorem~1.4 proves, for $L\ge2$, that
+$\NN^d_{\sigma,L}$ is universal whenever $\sigma\in\M$ satisfies neither
+of the following:
+\begin{enumerate}[label=(\alph*),leftmargin=2em]
+\item $\sigma(z)=p(z,\overline z)$ almost everywhere for some
+      $p\in\C[X,Y]$;
+\item $\sigma=g$ almost everywhere or $\sigma=\overline g$ almost
+      everywhere for an entire function $g:\C\to\C$.
+\end{enumerate}
+Its converse assumes that $\sigma$ is continuous.  The remark immediately
+after the theorem, on arXiv PDF page~4, asks for natural hypotheses weaker
+than continuity under which the necessary condition still holds.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.83\textwidth]{figures/open_problem_crop.png}
+\caption{Source Theorem~1.4 and its future-work question, arXiv PDF page~4.}
+\end{figure}
+
+\section{Candidate result}
+
+Write $\lambda$ for planar Lebesgue measure.  A function
+$f:\C\to\C$ is \emph{approximately continuous at $z_0$} if, for every
+$\varepsilon>0$,
+\[
+ \lim_{r\downarrow0}
+ \frac{\lambda\bigl(\{z\in B_r(z_0):
+       |f(z)-f(z_0)|<\varepsilon\}\bigr)}{\lambda(B_r(z_0))}=1.
+\]
+Thus ordinary neighborhoods are replaced by sets of density one.
+
+\begin{theorem}[complete criterion under approximate continuity]
+\label{thm:main}
+Let $\sigma\in\M$ be approximately continuous at every point of $\C$.
+For every $d\in\N$ and $L\ge2$, the class $\NN^d_{\sigma,L}$ has the
+universal approximation property if and only if neither \emph{(a)} nor
+\emph{(b)} above holds.
+
+If either obstruction holds, the stronger source conclusion remains true:
+there are $F\in C_c(\C^d;\R)$ and $\varepsilon>0$ such that
+\[
+  \|F-\Phi\|_{L^1(B_1(0))}\ge\varepsilon
+  \qquad\text{for every }\Phi\in\NN^d_{\sigma,L}.
+\]
+\end{theorem}
+
+\subsection*{Proof intuition}
+
+The exceptional values of an almost-everywhere representative matter because
+deep networks compose the activation with itself.  Approximate continuity
+removes precisely this freedom: a density-one approach to every point sees
+the continuous representative, so the value at that point is forced to equal
+the representative's value.  Consequently, an activation which is almost
+everywhere polynomial, entire, or conjugate-entire is pointwise so.  The
+source obstruction proof then applies verbatim.  Its sufficient theorem
+already requires only $\sigma\in\M$, so the two directions meet.
+
+\begin{lemma}[density-one rigidity]
+\label{lem:rigidity}
+Let $f,h:\C\to\C$.  Suppose that $f=h$ almost everywhere, $f$ is
+approximately continuous at $z_0$, and $h$ is continuous at $z_0$.
+Then $f(z_0)=h(z_0)$.
+\end{lemma}
+
+\begin{proof}
+Fix $\eta>0$.  Approximate continuity says that
+\[
+ A_r:=\{z\in B_r(z_0):|f(z)-f(z_0)|<\eta\}
+\]
+has positive measure for every sufficiently small $r$.  Continuity of $h$
+allows $r$ to be chosen so that $|h(z)-h(z_0)|<\eta$ throughout
+$B_r(z_0)$.  Since the set on which $f=h$ has full measure, there is a point
+$z\in A_r$ with $f(z)=h(z)$.  Hence
+\[
+ |f(z_0)-h(z_0)|
+ \le |f(z_0)-f(z)|+|h(z)-h(z_0)|<2\eta.
+\]
+Letting $\eta\downarrow0$ proves the claim.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Suppose first that (a) holds.  The function
+$h(z)=p(z,\overline z)$ is continuous, so Lemma~\ref{lem:rigidity}, applied
+at every $z_0\in\C$, gives $\sigma=h$ pointwise.  In case (b), the same
+argument applies to $h=g$ or $h=\overline g$.  In every case $\sigma$ is
+therefore continuous and satisfies the corresponding pointwise obstruction.
+Voigtlaender's Theorem~4.12 now supplies the displayed $L^1$ lower bound,
+and in particular rules out universality~\cite{source}.
+
+Conversely, if neither (a) nor (b) holds, source Theorem~4.11 (equivalently,
+the sufficient direction of Theorem~1.4) applies directly to
+$\sigma\in\M$ and yields universality for every $d\in\N$ and $L\ge2$.
+\end{proof}
+
+\section{The hypothesis is strictly weaker than continuity}
+
+The result is not merely continuity under a different name, even after
+intersecting with the source class $\M$.
+
+\begin{proposition}
+There is a bounded $\sigma\in\M$ which is approximately continuous at every
+point of $\C$ but is not continuous.
+\end{proposition}
+
+\begin{proof}
+Identify the positive real axis with a subset of $\C$.  Put
+\[
+ a_n=2^{-n},\qquad r_n=2^{-4n-4},\qquad
+ D_n=B_{r_n}(a_n) \quad(n\ge1).
+\]
+The closed disks $\overline D_n$ are pairwise disjoint.  Let
+$\psi(w)=\max\{1-|w|,0\}$ and define
+\[
+ \sigma(z)=\sum_{n=1}^{\infty}
+ \psi\!\left(\frac{z-a_n}{r_n}\right).
+\]
+At most one summand is nonzero at each point.  Away from the origin the disk
+family is locally finite, and each bump vanishes on its boundary, so $\sigma$
+is continuous on $\C\setminus\{0\}$.  But $\sigma(0)=0$ while
+$\sigma(a_n)=1$ and $a_n\to0$; hence $\sigma$ is discontinuous at $0$.
+
+It remains to check approximate continuity at $0$.  Let
+$E=\bigcup_nD_n$, and choose $N$ with
+$2^{-(N+1)}<R\le2^{-N}$.  No $D_n$ with $n<N$ meets $B_R(0)$, and therefore
+\[
+ \frac{\lambda(E\cap B_R(0))}{\lambda(B_R(0))}
+ \le
+ \frac{\sum_{n\ge N}r_n^2}{R^2}
+ \le \frac{2^{-6N-6}}{1-2^{-8}}\longrightarrow0.
+\]
+Since $\sigma=0$ off $E$, every set
+$\{z:|\sigma(z)-\sigma(0)|<\varepsilon\}$ has density one at $0$.
+Thus $\sigma$ is approximately continuous there, and it is ordinarily
+continuous (hence approximately continuous) everywhere else.  Finally,
+$0\le\sigma\le1$ and its discontinuity set is exactly $\{0\}$, so
+$\sigma\in\M$.
+\end{proof}
+
+\begin{remark}
+The source's pathological universal activation (Example~4.13) fails the new
+hypothesis in the expected place: on the negative real axis its prescribed
+point value differs from the approximate limit supplied by the values off the
+axis.  Approximate continuity therefore excludes that null-set coding
+mechanism without imposing ordinary continuity everywhere.
+\end{remark}
+
+\section{Verification, limitations, and novelty check}
+
+The proof has two dependencies: the elementary density-one rigidity lemma
+proved above and Voigtlaender's published Theorems~4.11--4.12.  No numerical
+or symbolic computation is used.  The main points for human verification are
+the all-points quantifier in approximate continuity, the pointwise upgrade in
+Lemma~\ref{lem:rigidity}, and the fact that the source's $L^1$ obstruction can
+be invoked after that upgrade.
+
+This answers the future-work direction by giving a natural strict weakening
+and a complete characterization within it.  It does not characterize all
+discontinuous representatives for which non-universality holds, and it does
+not assert that approximate continuity is minimal.
+
+A bounded novelty search through 9 August 2026 checked the run indexes; the
+exact phrase ``weaker than continuity'' from arXiv:2012.03351; arXiv/web
+queries combining complex-valued networks with approximate continuity; and
+the nearby later papers arXiv:2303.16813 and arXiv:2305.16910, which cite the
+source but work with smooth or continuous activations~\cite{optimal,narrow}.
+No direct statement of the extension above was found.  Mathematical
+confidence is high; novelty confidence is moderate because the rigidity step
+is elementary and could be implicit in the literature.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+F. Voigtlaender,
+\emph{The universal approximation theorem for complex-valued neural networks},
+Appl. Comput. Harmon. Anal. \textbf{64} (2023), 33--61;
+arXiv:2012.03351. doi:10.1016/j.acha.2022.12.002.
+
+\bibitem{optimal}
+P. Geuchen and F. Voigtlaender,
+\emph{Optimal approximation using complex-valued neural networks},
+Adv. Neural Inf. Process. Syst. \textbf{36} (2023);
+arXiv:2303.16813.
+
+\bibitem{narrow}
+P. Geuchen, T. Jahn, and H. Matt,
+\emph{Universal approximation with complex-valued deep narrow neural networks},
+arXiv:2305.16910; later published in Constructive Approximation.
+\end{thebibliography}
+
+\end{document}

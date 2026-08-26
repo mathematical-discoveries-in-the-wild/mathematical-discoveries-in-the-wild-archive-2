@@ -1,0 +1,278 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,graphicx,microtype,enumitem}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\T}{\mathbb T}
+\newcommand{\R}{\mathbb R}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+
+\title{A continuous uniform-BV kernel whose Mercer singular-value expansion is not absolutely convergent}
+\author{Candidate full counterexample to the belief stated in arXiv:2409.16453}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Candidate full counterexample, likely valid.  There is a real continuous
+kernel on $[-\pi,\pi]^2$ whose sections have uniformly bounded variation and
+whose Mercer singular-value expansion converges uniformly, but not absolutely
+at $(\pi/4,\pi/4)$.  Its positive singular values are simple, so the failure
+cannot be removed by choosing a different singular basis.}}
+\end{center}
+
+\section{The source statement}
+
+Jeong and Townsend consider a continuous kernel $K:[a,b]\times[c,d]\to\R$
+of \emph{uniform bounded variation}, meaning that its weak partial derivatives
+satisfy
+\[
+ \sup_y\int_a^b |\partial_xK(x,y)|\,dx<\infty,
+ \qquad
+ \sup_x\int_c^d |\partial_yK(x,y)|\,dy<\infty.
+\]
+They prove almost-everywhere and almost-uniform convergence results and then
+state their belief that the Mercer singular-value expansion of every such
+kernel converges ``pointwise, absolutely, and uniformly''
+\cite[p.~2]{JeongTownsend}.  The complete context, including their definition,
+is reproduced in Figure~\ref{fig:source}.
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{Full-width rendering of PDF page 2 of arXiv:2409.16453v2.  The
+uniform-BV definition is equation (3), and the stated belief appears in the
+paragraph immediately below it.}
+\label{fig:source}
+\end{figure}
+
+\section{Proof intuition}
+
+Absolute SVE convergence would force the values of the singular functions to
+compensate for a borderline nonsummable singular spectrum.  Trigonometric
+singular functions allow us to defeat that compensation at one explicit
+point.  We choose singular coefficients
+\[
+ a_n=\frac{1}{n\log(n+2)},
+\]
+which are square-summable but not summable on the odd integers.  The resulting
+sine series nevertheless converges uniformly because $n a_n\to0$.
+
+The only subtlety is bounded variation: formally differentiating loses the
+factor $1/n$ and produces coefficients $b_n=1/\log(n+2)$, which are not
+summable.  Convexity of $(b_n)$ resolves this.  A positive mixture of the
+Fej\'er kernels has exactly these Fourier coefficients and finite $L^1$ norm.
+Its mean-zero part is therefore the weak derivative of a continuous periodic
+primitive $f$.  The identity
+\[
+ K(x,y)=\frac{f(x+y)+f(x-y)}2
+\]
+then supplies the uniform variation bounds, while orthogonality identifies
+the series as the actual SVE.  At $(\pi/4,\pi/4)$ its absolute values contain
+one half of the divergent odd subseries of $\sum a_n$.
+
+\section{The counterexample}
+
+\begin{theorem}\label{thm:main}
+There is a real continuous asymmetric kernel
+$K:[-\pi,\pi]^2\to\R$ of uniform bounded variation such that its Mercer
+singular-value expansion converges uniformly on the square but is not
+absolutely convergent at $(\pi/4,\pi/4)$.  Its nonzero singular values are all
+simple.
+\end{theorem}
+
+We prove the theorem in four steps.
+
+\subsection{An integrable function with prescribed slow Fourier coefficients}
+
+Put
+\[
+ b_n=\frac1{\log(n+2)}\quad(n\geq0),
+ \qquad
+ \Delta^2b_N=b_N-2b_{N+1}+b_{N+2}.
+\]
+The function $x\mapsto1/\log(x+2)$ is strictly decreasing and
+\[
+ \frac{d^2}{dx^2}\frac1{\log(x+2)}
+ =\frac{\log(x+2)+2}{(x+2)^2\log^3(x+2)}>0.
+\]
+Thus $b_n\downarrow0$ and $\Delta^2b_N>0$.  Let
+\[
+ F_N(t)=1+2\sum_{k=1}^N\left(1-\frac{k}{N+1}\right)\cos(kt)
+ =\frac1{N+1}\left(\frac{\sin((N+1)t/2)}{\sin(t/2)}\right)^2
+\]
+with the continuous interpretation at multiples of $2\pi$.  These are the
+nonnegative Fej\'er kernels \cite{Fejer}, normalized by
+$\int_{-\pi}^{\pi}F_N=2\pi$.  Define, in $L^1(\T)$,
+\begin{equation}\label{eq:g}
+ g(t)=\frac12\sum_{N=0}^{\infty}(N+1)\Delta^2b_N F_N(t).
+\end{equation}
+
+To justify convergence and compute the coefficients, write
+$d_N=b_N-b_{N+1}$.  For finite $M$,
+\begin{align}
+ \sum_{N=0}^M(N+1)\Delta^2b_N
+ &=b_0-b_{M+1}-(M+1)d_{M+1},                                      \label{eq:mass}\\
+ \sum_{N=n}^M(N+1-n)\Delta^2b_N
+ &=b_n-b_{M+1}-(M+1-n)d_{M+1}.                                   \label{eq:coeff}
+\end{align}
+The mean-value theorem gives $N d_N\to0$.  Hence the nonnegative terms in
+\eqref{eq:g} have total $L^1$ norm $\pi b_0$, and the series converges in
+$L^1$.  Equations \eqref{eq:mass}--\eqref{eq:coeff} show that $g$ has constant
+term $b_0/2$ and cosine coefficient $b_n$ for every $n\geq1$.  Consequently
+\begin{equation}\label{eq:h}
+ h=g-\frac{b_0}{2}
+\end{equation}
+is even, belongs to $L^1(\T)$, has mean zero, and has cosine coefficients
+$b_n$.
+
+\subsection{A continuous periodic primitive and its uniform series}
+
+Define $f(t)=\int_0^t h(s)\,ds$ on $[-\pi,\pi]$ and extend it periodically.
+Evenness and zero mean of $h$ give $f(-t)=-f(t)$ and
+$f(-\pi)=f(\pi)=0$.  Thus $f$ is continuous, periodic, and absolutely
+continuous, with weak derivative $h$.  Integration by parts shows that its
+$n$th sine coefficient is
+\begin{equation}\label{eq:an}
+ a_n=\frac{b_n}{n}=\frac1{n\log(n+2)}.
+\end{equation}
+
+For completeness, we verify uniform convergence rather than cite a criterion.
+If $(a_n)$ is positive decreasing and
+$A_N=\sup_{n\geq N}n a_n\to0$, then for $0<t\leq\pi/2$ split a tail at
+$q=\lfloor1/t\rfloor$.  On $N\leq n\leq q$, the bound
+$|\sin(nt)|\leq nt$ gives a total at most $A_N$.  On the remaining indices,
+Abel summation and
+\[
+ \left|\sum_{n=r}^s\sin(nt)\right|\leq\frac{2}{|\sin(t/2)|}
+\]
+give at most a fixed multiple of $A_N$.  If $t>1/N$, the same Abel estimate
+applied from $N$ gives the bound directly.  For $\pi/2\leq t\leq\pi$, the
+partial sine sums are uniformly bounded, so Abel summation again applies.
+The endpoints are trivial.  Therefore
+\begin{equation}\label{eq:uniformtail}
+ \sup_{t\in\R}\left|\sum_{n=N}^M a_n\sin(nt)\right|\leq C A_N
+ \qquad(M\geq N)
+\end{equation}
+for an absolute $C$.
+
+Here $n a_n=b_n\to0$, so $\sum_{n\geq1}a_n\sin(nt)$ converges uniformly to a
+continuous periodic function $S$.  Both $S$ and $f$ are odd and have the same
+sine coefficients.  Their difference has every Fourier coefficient zero.
+Convolving that continuous difference with $F_N/(2\pi)$ gives zero for every
+$N$, while the displayed positive-kernel formula makes these convolutions
+converge uniformly to the difference.  Hence
+\begin{equation}\label{eq:fseries}
+ f(t)=\sum_{n=1}^{\infty}a_n\sin(nt)
+\end{equation}
+uniformly on $\R$.
+
+\subsection{The kernel and its uniform variation bounds}
+
+Set
+\begin{equation}\label{eq:K}
+ K(x,y)=\frac{f(x+y)+f(x-y)}2
+ =\sum_{n=1}^{\infty}a_n\sin(nx)\cos(ny).
+\end{equation}
+The identity and uniform convergence follow from \eqref{eq:fseries}.  In
+particular $K$ is real and continuous.  Its weak partial derivatives are
+\[
+ \partial_xK(x,y)=\frac{h(x+y)+h(x-y)}2,
+ \qquad
+ \partial_yK(x,y)=\frac{h(x+y)-h(x-y)}2.
+\]
+Because an interval of length $2\pi$ contains one full period of every
+translate of $h$,
+\begin{align*}
+ \int_{-\pi}^{\pi}|\partial_xK(x,y)|\,dx&\leq\norm{h}_{L^1(\T)},\
+ \int_{-\pi}^{\pi}|\partial_yK(x,y)|\,dy&\leq\norm{h}_{L^1(\T)}.
+\end{align*}
+The bounds are uniform in the fixed variable, exactly as required by the
+source definition.  The kernel is asymmetric: $K(0,y)=0$ for every $y$, while
+$K(y,0)=f(y)$ is not identically zero because its first sine coefficient is
+$a_1>0$.
+
+\subsection{Exact SVE and failure of absolute convergence}
+
+Let $T_K:L^2[-\pi,\pi]\to L^2[-\pi,\pi]$ be
+$(T_K\varphi)(x)=\int_{-\pi}^{\pi}K(x,y)\varphi(y)\,dy$, and put
+\[
+ u_n(x)=\frac{\sin(nx)}{\sqrt\pi},
+ \qquad
+ v_n(y)=\frac{\cos(ny)}{\sqrt\pi}.
+\]
+Orthogonality and \eqref{eq:K} give
+\begin{equation}\label{eq:svd}
+ T_Kv_n=\pi a_nu_n,
+ \qquad
+ T_K^*u_n=\pi a_nv_n.
+\end{equation}
+Moreover, $T_K$ is Hilbert--Schmidt, vanishes on the constant and sine
+subspaces, and its range is contained in the sine subspace.  Since the
+constant, sine, and cosine systems give the standard orthogonal decomposition
+of $L^2[-\pi,\pi]$, the complete list of positive
+singular values is
+\[
+ \sigma_n=\pi a_n,
+\]
+and the SVE term $\sigma_nu_n(x)v_n(y)$ is exactly
+$a_n\sin(nx)\cos(ny)$.  The sequence $(a_n)$ is strictly decreasing, so each
+positive singular value is simple; only simultaneous sign changes of
+$u_n,v_n$ are possible.
+
+Finally, at $x=y=\pi/4$,
+\begin{align*}
+ \sum_{n=1}^{\infty}|\sigma_nu_n(x)v_n(y)|
+ &=\sum_{n=1}^{\infty}a_n
+   |\sin(n\pi/4)\cos(n\pi/4)|\\
+ &=\frac12\sum_{\substack{n\geq1\\ n\ \mathrm{odd}}}
+   \frac1{n\log(n+2)}=\infty.                                    \label{eq:diverge}
+\end{align*}
+For instance, after including the prefactor $1/2$, the $n=2k+1$ summand
+dominates $1/[8(k+1)\log(k+2)]$, whose sum diverges.  This proves
+Theorem~\ref{thm:main}.
+
+\section{Verification, scope, and novelty}
+
+Eight focused audits checked independently: positivity and $L^1$ convergence
+of \eqref{eq:g}; every boundary term in \eqref{eq:mass}--\eqref{eq:coeff}; the
+uniform tail estimate; identification of the primitive; both weak-variation
+bounds; the exhaustive SVD; the simple-spectrum divergent point; and periodic
+endpoint/scope issues.  The accompanying checker verifies high-precision
+finite instances of the telescoping identities, monotonicity and convexity,
+sampled uniform tails, simple coefficients, and growing absolute partial
+sums.  These computations are sanity checks, not ingredients of the proof.
+
+The counterexample lies in the paper's general asymmetric-kernel class and
+therefore disproves the stated universal belief.  It does not address the
+narrower question restricted to symmetric kernels.  It is compatible with
+the authors' theorem: the failure occurs at one point, while their
+unconditional conclusion is only almost everywhere.
+
+Novelty is provisional.  Bounded searches through 13 August 2026 covered the
+local run indexes and source corpus, the exact title and arXiv id, the quoted
+uniform-BV/absolute-convergence statement, close Fourier/SVE phrases, the
+arXiv and OpenReview records, and title/citation searches.  No later answer or
+matching construction was found.  Priority is not claimed.  Human review
+should first check the coefficient identity \eqref{eq:coeff} and the
+exhaustiveness statement following \eqref{eq:svd}.
+
+\begin{thebibliography}{9}
+\bibitem{JeongTownsend}
+S.~Jeong and A.~Townsend,
+\emph{Extending Mercer's expansion to indefinite and asymmetric kernels},
+Proceedings of ICLR 2025; arXiv:2409.16453v2.
+
+\bibitem{Fejer}
+L.~Fej\'er,
+\emph{Untersuchungen \"uber Fouriersche Reihen},
+Mathematische Annalen \textbf{58} (1904), 51--69.
+\end{thebibliography}
+
+\end{document}

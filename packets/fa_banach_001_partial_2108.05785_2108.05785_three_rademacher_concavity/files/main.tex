@@ -1,0 +1,354 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem*{sourceproblem}{Source problem}
+\newcommand{\E}{\mathbb E}
+\newcommand{\R}{\mathbb R}
+\newcommand{\eps}{\varepsilon}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.48em}
+
+\title{Concavity of the Three-Variable Rademacher Moment\
+throughout the Missing Range $2<p<3$}
+\author{Run \texttt{fa\_banach\_001}, lane 17 (\texttt{agent\_lane\_17})}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.9\textwidth}{
+\textbf{Status: new substantial partial result, likely valid, pending human review.}
+For every $2<p<3$, the Schechtman concavity conjecture is proved for three
+Rademacher variables.  Equivalently, the constant-one Hanner-type inequality
+holds for every three functions in real $L_p$.  The unrestricted number of
+variables remains open.
+}}
+\end{center}
+
+\section{Problem and exact scope}
+
+Zhang observes in Section 4, arXiv PDF page 9, that a proposed matrix
+concavity statement would imply the long-open assertion that the Rademacher
+sequence has concavity constant one~\cite{zhang,schechtman}.  In his notation
+the exponent is $1/p$; we use the conventional moment exponent $p>2$.
+
+\begin{center}
+\includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The matrix statement is disproved later in Zhang's paper, so that route does
+not answer the scalar problem.  Jenkins and Tkocz subsequently isolate the
+precise remaining real range $2<p<3$ and the equivalent formulation below
+\cite[Section 3.2]{jenkins}.
+
+\begin{sourceproblem}
+For $2<p<3$, is
+\[
+ \Phi_n(x_1,\ldots,x_n)
+   :=\E\left|\sum_{k=1}^n x_k^{1/p}\eps_k\right|^p
+\tag{1}\label{eq:phi}
+\]
+concave on $\R_+^n$ for every $n$, where the $\eps_k$ are independent
+Rademacher variables?
+\end{sourceproblem}
+
+Schechtman's equivalences turn this into the constant-one inequality
+\[
+ \E\left\|\sum_{k=1}^n \eps_k f_k\right\|_p^p
+ \leq
+ \E\left|\sum_{k=1}^n \eps_k\|f_k\|_p\right|^p
+\tag{2}\label{eq:hanner}
+\]
+for arbitrary real $L_p$ functions $f_k$~\cite{schechtman,jenkins}.  The
+two-variable case is classical Hanner.  The theorem below settles the next
+case $n=3$.
+
+\section{Proof intuition}
+
+The Hessian formula of Schechtman, in the convenient form recorded by
+Jenkins--Tkocz, writes minus the Hessian as the Laplacian of a weighted
+complete graph.  For three variables this graph is a triangle.  After the
+three coefficients are ordered, two edges have nonnegative weight, while
+only the edge joining the two smaller coefficients can be negative.
+
+A weighted triangle with positive weights $a,b$ and a negative weight $-c$
+has a positive semidefinite Laplacian exactly when the bad conductance $c$ is
+at most the effective conductance $ab/(a+b)$ of the other two edges.  The
+required estimate is elementary but not termwise: in the genuine triangle
+regime it follows from two secant-ratio inequalities for $t^q$, $0<q<1$.
+Both reduce to the fact that
+\[
+ g(a,h)=a\big((a+h)^q-a^q\big)
+\]
+is increasing in each variable.  Thus the elusive ``coarser grouping'' of
+the Hessian terms becomes exact effective-resistance grouping when $n=3$.
+
+\section{Laplacian reduction}
+
+We begin with an elementary criterion.
+
+\begin{lemma}[weighted triangle]\label{lem:triangle}
+Let $a,b>0$ and $c\geq0$.  The quadratic form
+\[
+ Q(z)=a(z_1-z_2)^2+b(z_1-z_3)^2-c(z_2-z_3)^2
+\]
+is nonnegative on $\R^3$ if and only if
+\[
+ c(a+b)\leq ab.
+\tag{3}\label{eq:conductance}
+\]
+\end{lemma}
+
+\begin{proof}
+For a fixed value of $z_2-z_3$, minimize the first two terms over $z_1$.
+Their minimum is $ab(z_2-z_3)^2/(a+b)$.  This gives
+\eqref{eq:conductance}.
+\end{proof}
+
+For $x_k>0$, put $r_k=x_k^{1/p}$ and $S=\sum r_k\eps_k$.  The Hessian
+identity from~\cite[Lemma 3]{jenkins} says that for every $h\in\R^n$,
+\[
+ h^{\mathsf T}D^2\Phi_n(x)h
+ =-\frac{p-1}{p}\sum_{k<\ell}
+ \left(\frac{h_k}{x_k}-\frac{h_\ell}{x_\ell}\right)^2
+ r_kr_\ell\E\big[|S|^{p-2}\eps_k\eps_\ell\big].
+\tag{4}\label{eq:hessian}
+\]
+Thus $\Phi_n$ is concave exactly when the associated weighted Laplacian is
+positive semidefinite.
+
+\section{Main theorem}
+
+\begin{theorem}\label{thm:main}
+Let $2<p<3$ and let $\eps_1,\eps_2,\eps_3$ be independent Rademacher
+variables.  Then
+\[
+ (x_1,x_2,x_3)\longmapsto
+ \E\left|x_1^{1/p}\eps_1+x_2^{1/p}\eps_2+x_3^{1/p}\eps_3\right|^p
+\]
+is concave on $\R_+^3$.
+\end{theorem}
+
+\begin{proof}
+It suffices first to work on the positive orthant.  Put $q=p-2\in(0,1)$ and,
+after permuting indices, write the three root coefficients as
+\[
+ r\geq u\geq v>0.
+\]
+Define
+\[
+ \begin{array}{llll}
+ A=r+u+v,&B=r+u-v,&C=r-u+v,&D=|r-u-v|,\\
+ U=A^q,&V=B^q,&W=C^q,&X=D^q,
+ \end{array}
+\]
+and
+\[
+ P=U+V-W-X,\qquad Q=U-V+W-X,\qquad
+ R=U-V-W+X.
+\tag{5}\label{eq:PQR}
+\]
+Direct averaging over the eight signs gives the three weights in
+\eqref{eq:hessian}:
+\[
+ w_{12}=\frac{ru}{4}P,\qquad
+ w_{13}=\frac{rv}{4}Q,\qquad
+ w_{23}=\frac{uv}{4}R.
+\tag{6}\label{eq:weights}
+\]
+Because $A>C$ and $B\geq D$, the decomposition
+$P=(U-W)+(V-X)$ gives $P>0$.  Similarly, $A>B$ and $C\geq D$ give
+$Q=(U-V)+(W-X)>0$.  If $R\geq0$, all three weights are
+nonnegative and there is nothing to prove.  Hence assume $R<0$ and put
+\[
+ m=-R=-U+V+W-X>0.
+\]
+Lemma~\ref{lem:triangle} and \eqref{eq:weights} reduce positive
+semidefiniteness to
+\[
+ m(uP+vQ)\leq rPQ.
+\tag{7}\label{eq:key}
+\]
+
+First suppose $r\geq u+v$.  From \eqref{eq:PQR},
+\[
+ P-m=2(U-W)\geq0,\qquad Q-m=2(U-V)\geq0.
+\]
+Therefore
+\[
+ m(uP+vQ)\leq uPQ+vPQ\leq rPQ,
+\]
+which proves \eqref{eq:key} in the dominant-coefficient cone.
+
+It remains to consider the triangle regime $u\leq r<u+v$.  Here
+$D=u+v-r$.  We claim the sharper pair of estimates
+\[
+ \frac mQ\leq\frac{r-v}{u},\qquad
+ \frac mP\leq\frac{r-u}{v}.
+\tag{8}\label{eq:ratios}
+\]
+Adding $u$ times the first and $v$ times the second gives exactly
+\[
+ m\left(\frac uQ+\frac vP\right)\leq(r-v)+(r-u)<r,
+\]
+where the last inequality is $r<u+v$.  Multiplication by $PQ$ proves
+\eqref{eq:key}.
+
+We prove \eqref{eq:ratios}.  The first inequality is equivalent, after
+substituting \eqref{eq:PQR}, to
+\[
+ (r+u-v)(U-V)\geq(u+v-r)(W-X),
+\tag{9}\label{eq:ratio1}
+\]
+and the second to
+\[
+ (r-u+v)(U-W)\geq(u+v-r)(V-X).
+\tag{10}\label{eq:ratio2}
+\]
+For $a,h>0$ set
+\[
+ g(a,h)=a\big((a+h)^q-a^q\big).
+\]
+Clearly $g$ is increasing in $h$.  It is also increasing in $a$, because
+with $t=h/a$,
+\[
+ \frac{\partial g}{\partial a}
+ =a^q\big((1+q)((1+t)^q-1)-qt(1+t)^{q-1}\big)
+ =a^q\big((1+t)^{q-1}(1+q+t)-(1+q)\big)>0.
+\]
+Indeed $F(t)=(1+t)^{q-1}(1+q+t)$ satisfies
+$F(0)=1+q$ and $F'(t)=q(1+t)^{q-2}(q+t)>0$.
+
+Now \eqref{eq:ratio1} is
+\[
+ g(B,2v)\geq g(D,2(r-u)),
+\]
+which follows from $B\geq D$ and $v\geq r-u$.  Likewise
+\eqref{eq:ratio2} is
+\[
+ g(C,2u)\geq g(D,2(r-v)),
+\]
+which follows from $C\geq D$ and $u\geq r-v$.  This proves
+\eqref{eq:ratios}, hence \eqref{eq:key}, and therefore the Hessian is
+negative semidefinite throughout $(0,\infty)^3$.
+
+Finally, $\Phi_3$ is continuous on the closed positive orthant.  Concavity on
+the open orthant extends to the boundary by approximation, completing the
+proof.
+\end{proof}
+
+\begin{corollary}\label{cor:hanner}
+For $2<p<3$ and arbitrary real $f_1,f_2,f_3\in L_p$,
+\[
+ \E\left\|\eps_1f_1+\eps_2f_2+\eps_3f_3\right\|_p^p
+ \leq
+ \E\left|\eps_1\|f_1\|_p+\eps_2\|f_2\|_p+\eps_3\|f_3\|_p\right|^p.
+\]
+Thus the three-dimensional Rademacher subspace has $p$-concavity constant
+one.
+\end{corollary}
+
+\begin{proof}
+This is the $n=3$ instance of Schechtman's equivalence between concavity of
+\eqref{eq:phi} and \eqref{eq:hanner}; see~\cite{schechtman,jenkins}.
+\end{proof}
+
+\section{Eight focused upgrade attempts}
+
+After the live problem was identified, eight materially different or
+deepening routes were pursued.
+
+\begin{enumerate}
+\item \textbf{Exact-status audit.}  Zhang's stronger matrix conjecture is
+refuted in the source itself.  Jenkins--Tkocz confirms that the scalar real
+problem remains open precisely for $2<p<3$.
+
+\item \textbf{Hessian/Laplacian reduction.}  Formula \eqref{eq:hessian}
+turns the sign problem into positive semidefiniteness of a signed graph
+Laplacian.  This is the successful structural reduction used above.
+
+\item \textbf{Counterexample search.}  Exact sign enumeration and
+eigenvalue tests over broad logarithmic coefficient samples for
+$3\leq n\leq9$ found no contradiction, while confirming that individual
+edge weights can be negative.
+
+\item \textbf{Bernstein integral representation.}  Representing $|S|^q$
+by a Bernstein integral does not prove positivity pointwise: sampled
+integrand Laplacians can be indefinite.  Integration must exploit
+cancellation.
+
+\item \textbf{Dominant three-variable cone.}  The effective-conductance
+criterion and the simple inequalities $m\leq P,Q$ prove the case
+$r\geq u+v$ directly.
+
+\item \textbf{Triangle three-variable cone.}  The sharp ratio bounds
+\eqref{eq:ratios}, proved by monotonicity of $g(a,h)$, complete the new
+$n=3$ theorem.
+
+\item \textbf{Interpolation from $p=2$ and $p=3$.}  The Hessian depends on
+both the power $q=p-2$ and the nonlinear coordinates $x_k^{1/p}$; neither
+matrix convexity in $p$ nor a suitable complex interpolation family was
+found.  Endpoint positivity alone does not control the interior signed
+edges.
+
+\item \textbf{Extension by triangle decomposition.}  A tempting upgrade is
+to decompose the $n$-vertex Laplacian into positive three-vertex Laplacians.
+This fails termwise: after conditioning on the other signs, a three-vertex
+sub-Laplacian may have all three edge weights negative.  A genuinely global
+grouping remains necessary for $n\geq4$.
+\end{enumerate}
+
+\section{Verification, novelty, and limitations}
+
+The formal proof uses only the cited Hessian identity, the elementary
+weighted-triangle lemma, and explicit inequalities for $t^q$.  The included
+script \texttt{code/check\_hessian.py} independently enumerates all eight
+signs, checks \eqref{eq:weights}, and tests the Laplacian over 200,000 fixed
+random samples spanning eight exponents and twelve logarithmic orders of
+magnitude.  Its worst scaled minimum eigenvalue is
+$-4.24\cdot10^{-16}$ (roundoff), and the maximum relative formula discrepancy
+is $1.44\cdot10^{-13}$.  This computation is a contradiction check, not part
+of the proof.
+
+A bounded novelty search covered the run's four cheap indexes, the source
+paper, Schechtman's cited problem, Jenkins--Tkocz and its references, and
+focused arXiv/web queries combining ``Rademacher'', ``$p$-concavity'',
+``$2<p<3$'', ``three variables'', and Hanner's inequality.  No prior
+three-variable statement or proof was found.  The search is not exhaustive,
+so novelty confidence is moderate rather than definitive.
+
+The result does not settle arbitrary $n$.  Human review should prioritize:
+the sign claims $P,Q\geq0$; the algebra converting \eqref{eq:ratios} to
+\eqref{eq:ratio1}--\eqref{eq:ratio2}; monotonicity of $g$; and the precise use
+of Schechtman's equivalence in Corollary~\ref{cor:hanner}.
+
+\begin{thebibliography}{9}
+\bibitem{zhang}
+H. Zhang,
+\emph{Some convexity and monotonicity results of trace functionals},
+J. Math. Phys. \textbf{63} (2022), 091901; arXiv:2108.05785.
+
+\bibitem{schechtman}
+G. Schechtman,
+\emph{Two remarks on 1-unconditional basic sequences in $L_p$, $3\leq p<\infty$},
+in \emph{Geometric Aspects of Functional Analysis},
+Oper. Theory Adv. Appl. 77, Birkh\"auser, 1995, 251--254.
+
+\bibitem{jenkins}
+J. Jenkins and T. Tkocz,
+\emph{Complex Hanner's inequality for many functions},
+Proc. Amer. Math. Soc. \textbf{151} (2023), 1191--1202;
+arXiv:2207.09122.
+\end{thebibliography}
+
+\end{document}

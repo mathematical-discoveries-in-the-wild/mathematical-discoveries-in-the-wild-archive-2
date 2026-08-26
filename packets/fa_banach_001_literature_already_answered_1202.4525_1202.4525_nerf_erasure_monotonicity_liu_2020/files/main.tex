@@ -1,0 +1,107 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newcommand{\Cond}{\operatorname{Cond}}
+\newcommand{\lmax}{\lambda_{\max}}
+\newcommand{\lmin}{\lambda_{\min}}
+
+\title{NERF Erasure-Rate Monotonicity\\
+\large Literature-Already-Answered Identification}
+\author{Run \texttt{fa\_banach\_001}, lane 2}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+\texttt{literature\_already\_answered}. This note records an exact later
+answer; it is not claimed as a new discovery.
+
+\section{Original question}
+
+Let $F=[f_1\ \cdots\ f_N]$ be an $M\times N$ frame. Fickus and
+Mixon call $F$ a $(p,C)$-numerically erasure-robust frame (NERF) if every
+submatrix $F_{\mathcal K}$ with
+$|\mathcal K|=K=(1-p)N$ satisfies
+$\Cond(F_{\mathcal K})\leq C$.
+
+In Section 4, source-PDF page 14, they ask whether a $(p,C)$-NERF must
+also be a $(p',C)$-NERF for every $p'\in[0,p)$ for which
+$L=(1-p')N$ is integral \cite{fickus-mixon}. Equivalently, does the same
+worst-case condition-number bound persist when more columns survive?
+
+\section{Exact later answer}
+
+Liu explicitly cites the Fickus--Mixon question in the introduction of
+\cite{liu}. Lemma 1 (pp.~586--587) proves
+\[
+ \max_{|\mathcal K|=K}\Cond(F_{\mathcal K})
+ \;\geq\;
+ \max_{|\mathcal S|=L}\Cond(F_{\mathcal S})
+ \qquad (K<L).
+\]
+Therefore every $(p,C)$-NERF is a $(p',C)$-NERF whenever $p'<p$ and the
+two prescribed cardinalities are integral. This is exactly the affirmative
+answer requested in the source.
+
+\section{Independent verification}
+
+For completeness, fix a set $\mathcal S$ of $L$ columns and write
+$A_{\mathcal T}=F_{\mathcal T}F_{\mathcal T}^{*}$ for each
+$K$-element subset $\mathcal T\subset\mathcal S$. If
+$\Cond(F_{\mathcal T})\leq C$, then
+\[
+ \lmax(A_{\mathcal T})\leq C^2\lmin(A_{\mathcal T}).
+\]
+The cone defined by this inequality is closed under finite sums: for any such
+positive semidefinite matrices $A_j$,
+\begin{align*}
+ \lmax\!\left(\sum_j A_j\right)
+ &\leq \sum_j\lmax(A_j)
+ \leq C^2\sum_j\lmin(A_j)\\
+ &\leq C^2\lmin\!\left(\sum_j A_j\right).
+\end{align*}
+Every column of $F_{\mathcal S}$ occurs in exactly
+$\binom{L-1}{K-1}$ of the $K$-subsets, and hence
+\[
+ \sum_{\substack{\mathcal T\subset\mathcal S\\|\mathcal T|=K}}
+ A_{\mathcal T}
+ =\binom{L-1}{K-1}F_{\mathcal S}F_{\mathcal S}^{*}.
+\]
+The preceding cone inequality and invariance under positive scalar multiples
+give
+$\Cond(F_{\mathcal S})^2\leq C^2$. Since $\mathcal S$ was arbitrary,
+$F$ is a $(p',C)$-NERF. This also independently checks the decisive content
+of Liu's Lemma 1.
+
+\section{\hspace{0.35em}Scope and search record}
+
+The identification resolves the monotonicity question only. It does not
+address the source's separate questions asking whether NERFs exist for
+$p\geq\tfrac12$ or what the largest admissible erasure rate is.
+
+A bounded novelty search used the exact source title, the phrases
+``deleting columns does not necessarily worsen'' and
+``$(p',C)$-NERF'', and NERF/erasure-rate monotonicity terminology. It found
+Liu's 2020 paper, whose introduction explicitly says it answers the
+Fickus--Mixon question and whose Lemma 1 gives the exact comparison.
+
+\begin{thebibliography}{9}
+\bibitem{fickus-mixon}
+M.~Fickus and D.~G. Mixon,
+\emph{Numerically erasure-robust frames},
+Linear Algebra and its Applications 437 (2012), 1394--1407;
+\href{https://arxiv.org/abs/1202.4525}{arXiv:1202.4525}.
+
+\bibitem{liu}
+Y.~Liu,
+\emph{Comparison on the robustness against erasure rates of numerically
+erasure-robust frames},
+International Journal of Applied Mathematics 33 (2020), 585--590,
+\href{https://doi.org/10.12732/ijam.v33i4.3}{doi:10.12732/ijam.v33i4.3}.
+\end{thebibliography}
+
+\end{document}

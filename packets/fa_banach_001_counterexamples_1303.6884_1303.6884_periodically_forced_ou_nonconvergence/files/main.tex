@@ -1,0 +1,133 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx,microtype,xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathcal N}
+
+\title{A Tight Contracting Diffusion Whose Laws Do Not Converge}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 7}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.} Full counterexample, likely
+valid, pending human review.  The time-dependent curvature and integrability
+hypotheses in the source do not force weak convergence, even for a smooth
+one-dimensional diffusion with constant nondegenerate noise.}}
+\end{center}
+
+\section{Question and counterexample}
+
+For a time-inhomogeneous diffusion
+\[
+ dX_t=\sigma(t,X_t)\,dB_t+b(t,X_t)\,dt,
+\]
+Cattiaux and Guillin assume
+\begin{equation}\label{eq:HCK}
+ |\sigma(t,x)-\sigma(t,y)|_{\rm HS}^2
+ +2\langle b(t,x)-b(t,y),x-y\rangle
+ \le -K'(t)|x-y|^2.
+\end{equation}
+In Remark 4.5 they observe that if $K(t)\to+\infty$ and
+$\int_0^\infty e^{-K(s)}ds<\infty$, the transition laws $P(t,x,\cdot)$ are
+tight, but state that they do not know whether this family converges weakly
+\cite[p.~29]{CG2013}:
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/open_question_crop.png}
+\caption{The convergence question in Remark 4.5 of \cite[p.~29]{CG2013}.}
+\end{figure}
+
+\begin{theorem}\label{thm:counterexample}
+The stated hypotheses do not imply weak convergence.  In dimension one, the
+smooth diffusion
+\begin{equation}\label{eq:sde}
+             dX_t=dB_t-\frac12X_t\,dt+\sin(t)\,dt,
+             \qquad X_0=x,
+\end{equation}
+satisfies \eqref{eq:HCK} with $K(t)=t$ and has a tight, nonconvergent family
+of laws.  More precisely,
+\[
+ \mathcal L(X_{2\pi n})\Longrightarrow\N(-4/5,1),
+ \qquad
+ \mathcal L(X_{(2n+1)\pi})\Longrightarrow\N(4/5,1).
+\]
+\end{theorem}
+
+\section{Verification}
+
+Here $\sigma\equiv1$ and $b(t,u)=-u/2+\sin t$.  Therefore, for every
+$u,v\in\R$,
+\[
+ |\sigma(t,u)-\sigma(t,v)|^2
+ +2(b(t,u)-b(t,v))(u-v)=-|u-v|^2.
+\]
+Thus \eqref{eq:HCK} holds with equality for $K'(t)=1$, so one may take
+$K(t)=t$.  Both remaining assumptions are immediate:
+\[
+ K(t)\longrightarrow+\infty,
+ \qquad
+ \int_0^\infty e^{-K(s)}\,ds=\int_0^\infty e^{-s}\,ds=1.
+\]
+The coefficients are globally Lipschitz and smooth, so all standard
+regularity and nonexplosion requirements in the source are satisfied.
+
+Solving \eqref{eq:sde} by variation of constants gives
+\[
+ X_t=e^{-t/2}x+\int_0^t e^{-(t-s)/2}\sin s\,ds
+                 +\int_0^t e^{-(t-s)/2}\,dB_s.
+\]
+Consequently $X_t$ is Gaussian with variance
+\begin{equation}\label{eq:variance}
+ v(t)=\int_0^t e^{-(t-s)}ds=1-e^{-t}\longrightarrow1
+\end{equation}
+and mean
+\begin{align}\label{eq:mean}
+ m_x(t)
+ &=e^{-t/2}x+\int_0^t e^{-(t-s)/2}\sin s\,ds\notag\\
+ &=\frac25\sin t-\frac45\cos t+\left(x+\frac45\right)e^{-t/2}.
+\end{align}
+The means are uniformly bounded and the variances are at most one; hence the
+family $\{\mathcal L(X_t):t\ge0\}$ is tight.  But
+\[
+ m_x(2\pi n)\longrightarrow-\frac45,
+ \qquad
+ m_x((2n+1)\pi)\longrightarrow\frac45.
+\]
+Combining these limits with \eqref{eq:variance} gives the two distinct
+Gaussian subsequential limits in Theorem~\ref{thm:counterexample}.  The full
+family therefore cannot converge weakly. \qed
+
+\section{Mechanism and scope}
+
+The obstruction is structural: the curvature condition \eqref{eq:HCK}
+depends only on drift differences and is completely insensitive to an
+additive forcing $a(t)$.  Strict contraction erases the initial condition but
+does not erase a persistent periodic motion of the common center.  Any claim
+of convergence under this framework therefore needs an additional condition
+controlling the absolute drift, for example convergence of the forcing or of
+an instantaneous equilibrium center.
+
+The counterexample answers exactly the universal question in Remark 4.5; it
+does not contradict the source's functional inequalities, all of which hold
+uniformly for the translated Gaussian laws above.  The calculation is exact
+and has no computational dependency.  The run indexes and exact arXiv id and
+question wording were checked; no pre-existing packet or duplicate result was
+found.  Because the mechanism is elementary, an uncatalogued prior example is
+possible even though no direct later answer was located in the bounded audit.
+
+\begin{thebibliography}{9}
+\bibitem{CG2013}
+P. Cattiaux and A. Guillin,
+\emph{Semi Log-Concave Markov Diffusions},
+arXiv:1303.6884 (2013).
+\end{thebibliography}
+
+\end{document}

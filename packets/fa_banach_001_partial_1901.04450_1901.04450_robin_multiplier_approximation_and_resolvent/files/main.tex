@@ -1,0 +1,293 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,graphicx}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\N}{\mathbb N}
+\newcommand{\C}{\mathbb C}
+\newcommand{\D}{\mathcal D}
+\newcommand{\Rop}{R}
+\newcommand{\ip}[2]{\langle #1,#2\rangle}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.62em}
+
+\title{Robin Boundary Traces Have the Same Approximation Scale as the Poisson Semigroup}
+\author{Run \texttt{fa\_banach\_001}, lane 18}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\textbf{Status.} Candidate substantial partial solution, likely valid, for
+human review.  It completely settles the direct/inverse approximation
+component and the literal reciprocal-resolvent question in the source's open
+program; it does not claim all of the proposed inverse-ergodic or unbounded
+generalized-Drazin extensions.
+
+\section{Source problem}
+
+Butzer and Stens write the Robin boundary trace for the exterior unit ball as
+a spherical-harmonic multiplier family.  Unlike the Dirichlet and Neumann
+families, it is not a semigroup.  They ask for a direct and inverse
+approximation theorem, a replacement for the missing infinitesimal generator,
+and an analogue of the resolvent interconnection formula when the operator is
+not a semigroup generator \cite[Section~3, PDF p.~8]{ButzerStens}.
+
+\begin{center}
+\includegraphics[width=0.52\textwidth]{figures/source_open_problem.png}
+\end{center}
+
+The results below give all three objects at the level needed for the
+approximation question.  The key point is that the semigroup law is
+unnecessary: the Robin multipliers can be compared coefficient by coefficient
+with the Poisson multipliers.
+
+\section{Claimed contribution}
+
+Let $H=L^2(S^2)$ and write its orthogonal spherical-harmonic decomposition as
+\[
+ H=\bigoplus_{k=0}^{\infty}H_k,\qquad h=\sum_{k\geq0}h_k.
+\]
+Define the positive self-adjoint operator $N$ by
+\[
+ Nh_k=(k+1)h_k,\qquad
+ \D(N)=\left\{h:\sum_{k\geq0}(k+1)^2\|h_k\|_2^2<\infty\right\},
+\]
+and let $P_t=e^{-tN}$ be the exterior Poisson semigroup.  Fix real Robin
+parameters $\alpha,\beta$, not both zero, satisfying the nonresonance
+condition
+\begin{equation}\label{eq:nonres}
+ \alpha-\beta n\neq0\qquad(n=1,2,\ldots).
+\end{equation}
+The source's boundary-trace family, with $r=e^t$, is
+\begin{equation}\label{eq:Vdef}
+ V_th=\sum_{k\geq0}b_{k+1}(t)h_k,\qquad
+ b_n(t)=e^{-nt}\frac{\alpha-\beta n e^{-t}}{\alpha-\beta n}.
+\end{equation}
+This formula is initially read on finite harmonic sums; the uniform estimate
+proved below extends every $V_t$, $0<t\leq t_0$, to a bounded operator on $H$.
+
+For the usual $K$-functional we use the equivalent homogeneous graph norm
+\[
+ K(t,h;H,\D(N))=
+ \inf_{g\in\D(N)}\bigl(\|h-g\|_2+t\|Ng\|_2\bigr).
+\]
+This is equivalent to the conventional full graph norm because $N\geq I$.
+
+\begin{theorem}[Robin direct and inverse theorem]\label{thm:main}
+Under \eqref{eq:nonres}, there are $t_0>0$ and constants $0<c\leq C<\infty$,
+depending only on $\alpha,\beta$, such that for every $h\in H$ and
+$0<t\leq t_0$,
+\begin{equation}\label{eq:threeway}
+ c\,K(t,h;H,\D(N))
+ \leq \|(I-V_t)h\|_2
+ \leq C\,K(t,h;H,\D(N)).
+\end{equation}
+Equivalently, the Robin error, the Poisson error
+$\|(I-P_t)h\|_2$, and this $K$-functional are uniformly comparable.
+
+Consequently, for every $0<s<1$,
+\[
+ \|(I-V_t)h\|_2=O(t^s)
+ \quad\Longleftrightarrow\quad
+ K(t,h;H,\D(N))=O(t^s).
+\]
+At the saturation order,
+\begin{align*}
+ \|(I-V_t)h\|_2=O(t)&\quad\Longleftrightarrow\quad h\in\D(N),\\
+ \|(I-V_t)h\|_2=o(t)&\quad\Longleftrightarrow\quad h=0.
+\end{align*}
+
+Moreover the strong right derivative of $V_t$ at zero on $\D(N)$ is
+\begin{equation}\label{eq:C}
+ Ch:=\lim_{t\downarrow0}\frac{V_th-h}{t}
+ =\left[-N+\beta N(\alpha I-\beta N)^{-1}\right]h.
+\end{equation}
+The second term is bounded, $\D(C)=\D(N)$,
+$\|Ch\|_2\asymp\|Nh\|_2$, and $C$ is a bounded perturbation of $-N$.
+Thus $C$ is an explicit replacement infinitesimal operator and itself
+generates a strongly continuous semigroup.
+\end{theorem}
+
+The source's separate resolvent question has an algebraic answer that is
+independent of the Robin setting.
+
+\begin{proposition}[Reciprocal resolvents need no semigroup]\label{prop:res}
+Let $A:\D(A)\subset X\to X$ be a closed injective operator on a complex
+Banach space and regard $A^{-1}$ as the closed operator with domain
+$\operatorname{Ran}A$.  If $\lambda\neq0$ and
+$\lambda^{-1}\in\rho(A)$, then $\lambda\in\rho(A^{-1})$ and
+\begin{equation}\label{eq:res}
+ \lambda\Rop(\lambda;A^{-1})
+ =I-\lambda^{-1}\Rop(\lambda^{-1};A).
+\end{equation}
+No generator or semigroup assumption is used.
+
+If instead $A$ is a bounded generalized-Drazin invertible operator, let $P$
+be its spectral idempotent at zero, $Q=I-P$, and $A^D$ its generalized-Drazin
+inverse.  At reciprocal nonzero resolvent points,
+\begin{equation}\label{eq:drazin}
+ \lambda\Rop(\lambda;A^D)
+ =P+Q\bigl[I-\lambda^{-1}\Rop(\lambda^{-1};A)\bigr]Q.
+\end{equation}
+\end{proposition}
+
+\section{Proof intuition}
+
+There are two short mechanisms.  First, after dividing by the Poisson error,
+the Robin error multiplier becomes
+\[
+ \frac{1-b_n(t)}{1-e^{-nt}}
+ =\frac{nq_n(t)-a}{n-a},\qquad
+ q_n(t)=\frac{1-e^{-(n+1)t}}{1-e^{-nt}},\quad a=\frac\alpha\beta.
+\]
+Concavity of $x\mapsto1-e^{-tx}$ gives
+$1<q_n(t)<1+1/n$.  Large degrees are therefore uniformly harmless.  Only
+finitely many small degrees remain, and their zero-time limits are nonzero
+exactly because the Robin problem is nonresonant.
+
+Second, the reciprocal-resolvent formula is simply the factorization
+\[
+ (\lambda I-A^{-1})A=\lambda(A-\lambda^{-1}I).
+\]
+The semigroup representation of a resolvent is one way to discover the
+identity, but is not required to prove it.
+
+\section{Proof of Theorem~\ref{thm:main}}
+
+If $\beta=0$, then $b_n(t)=e^{-nt}$ and the Robin and Poisson errors are
+identical.  Assume $\beta\neq0$ and put $a=\alpha/\beta$.  Condition
+\eqref{eq:nonres} is precisely $a\notin\{1,2,\ldots\}$.
+
+For $t>0$ define
+\[
+ q_n(t)=\frac{1-e^{-(n+1)t}}{1-e^{-nt}}.
+\]
+The function $x\mapsto1-e^{-tx}$ is increasing and concave on $[0,\infty)$
+and vanishes at zero.  Hence
+\begin{equation}\label{eq:qbound}
+ 1<q_n(t)<\frac{n+1}{n}=1+\frac1n.
+\end{equation}
+A direct calculation from \eqref{eq:Vdef} gives
+\begin{equation}\label{eq:ratio}
+ \frac{1-b_n(t)}{1-e^{-nt}}=\frac{nq_n(t)-a}{n-a}.
+\end{equation}
+
+Choose $n_0>2|a|+2$.  For $n\geq n_0$, the two quantities $n-a$ and
+$nq_n(t)-a$ are positive, and \eqref{eq:qbound} bounds their ratio above and
+away from zero by absolute constants independent of $n,t$.  For each of the
+finitely many $1\leq n<n_0$, the right side of \eqref{eq:ratio} extends
+continuously to $t=0$ with value
+\[
+ \frac{n+1-a}{n-a}.
+\]
+Neither numerator nor denominator vanishes because
+$a\notin\{1,2,\ldots\}$.  Shrinking
+$t_0$ and taking the minimum and maximum over these finitely many degrees
+therefore yields constants $m,M>0$ such that
+\begin{equation}\label{eq:scalarcomp}
+ m(1-e^{-nt})\leq |1-b_n(t)|\leq M(1-e^{-nt})
+ \quad(n\geq1,\ 0<t\leq t_0).
+\end{equation}
+Orthogonality now gives
+\begin{equation}\label{eq:poissoncomp}
+ m\|(I-P_t)h\|_2\leq\|(I-V_t)h\|_2
+ \leq M\|(I-P_t)h\|_2.
+\end{equation}
+
+It remains to identify the Poisson error.  Introduce the quadratic functional
+\[
+ K_2(t,h)^2=\inf_{g\in\D(N)}
+ \bigl(\|h-g\|_2^2+t^2\|Ng\|_2^2\bigr).
+\]
+Minimizing independently on every $H_k$ gives the exact formula
+\begin{equation}\label{eq:K2}
+ K_2(t,h)^2=
+ \sum_{k\geq0}\frac{t^2(k+1)^2}{1+t^2(k+1)^2}\|h_k\|_2^2.
+\end{equation}
+The inequalities
+\[
+ K_2(t,h)\leq K(t,h;H,\D(N))\leq\sqrt2K_2(t,h)
+\]
+are immediate.  Finally, $1-e^{-x}$ is uniformly comparable on
+$[0,\infty)$ with $x/\sqrt{1+x^2}$.  Comparing the orthogonal sums for
+$\|(I-P_t)h\|_2^2$ and \eqref{eq:K2} proves \eqref{eq:threeway}.
+
+The $O(t^s)$ statement follows immediately.  Also
+$K(t,h)\leq t\|Nh\|_2$ for $h\in\D(N)$.  Conversely, if
+$K(t,h)=O(t)$, divide \eqref{eq:K2} by $t^2$ and use Fatou's lemma as
+$t\downarrow0$ to obtain $\sum(k+1)^2\|h_k\|_2^2<\infty$.  If
+$K(t,h)=o(t)$, the same formula applied to each fixed $k$ forces every
+$h_k=0$.  This proves the saturation assertions.
+
+For the derivative, differentiating \eqref{eq:Vdef} at zero gives the
+multiplier
+\[
+ c_n=-n+\frac{\beta n}{\alpha-\beta n}.
+\]
+The rational second term is bounded under \eqref{eq:nonres}, while
+$|c_n|\asymp n$: after division by $n$ its absolute value is
+$|(n+1-a)/(n-a)|$, a nonzero sequence converging to one.  The scalar bound
+\eqref{eq:scalarcomp} also gives
+$|(b_n(t)-1)/t|\leq Mn$.  Dominated convergence in the orthogonal sum now
+proves \eqref{eq:C} for $h\in\D(N)$.  The domain and norm assertions follow,
+and the bounded perturbation theorem gives the final generator statement.
+
+\section{Proof of Proposition~\ref{prop:res}}
+
+Put $\mu=\lambda^{-1}$.  On $\D(A)$,
+\[
+ (\lambda I-A^{-1})A=\lambda(A-\mu I).
+\]
+Since $\mu\in\rho(A)$, this factorization shows that
+$\lambda I-A^{-1}:\operatorname{Ran}A\to X$ is bijective.  Solving the
+factorization and using $(A-\mu I)^{-1}=-\Rop(\mu;A)$ gives
+\[
+ \Rop(\lambda;A^{-1})
+ =\lambda^{-1}I-\lambda^{-2}\Rop(\lambda^{-1};A),
+\]
+which is bounded and is equivalent to \eqref{eq:res}.
+
+For the generalized-Drazin statement, use the reducing decomposition
+$X=PX\oplus QX$.  On $PX$, $A^D=0$, so the left side of
+\eqref{eq:drazin} equals $P$.  On $QX$, $A$ is invertible and
+$A^D=A^{-1}$, so \eqref{eq:res} applies.  Combining the two blocks proves
+\eqref{eq:drazin}.
+
+\section{Verification, scope, and novelty}
+
+The separate report \texttt{verification.md} audits the resonance condition,
+uniformity in the harmonic degree, the $K$-functional converse, and the
+closed-operator domains.  The script in \texttt{code/} checks the scalar
+factorization, derivative, resolvent identity, and representative numerical
+ratios; computation is not used as proof.
+
+The theorem gives the requested direct/inverse approximation counterpart for
+all real nonresonant Robin parameters, not merely the opposite-sign example
+mentioned in the source.  Proposition~\ref{prop:res} answers the literal
+injective resolvent question and gives the standard bounded
+generalized-Drazin modification.  We do not claim counterparts of every
+inverse-ergodic assertion in the source, nor an unbounded $a$-Drazin theorem.
+
+A bounded search on 11 August 2026 covered the run's four cheap indexes,
+exact-title and arXiv searches for arXiv:1901.04450, the displayed resolvent
+formula, the source authors' later exterior-boundary work, and combinations
+of ``Robin'', ``K-functional'', and ``spherical harmonic multiplier''.  A
+2022 follow-up found in the search treats exterior Dirichlet and Neumann
+problems, not this Robin comparison.  No later source stating the theorem
+above was found.  This supports, but cannot certify, novelty.  The resolvent
+part itself should be regarded as an elementary clarification, not as a new
+operator identity.
+
+\begin{thebibliography}{9}
+\bibitem{ButzerStens}
+P. L. Butzer and R. L. Stens,
+\emph{The Third Boundary Value Problem of Potential Theory for the Exterior
+Ball and the Approximation Behaviour of the Solution; a Novel Open Problem},
+arXiv:1901.04450 (2019),
+\url{https://arxiv.org/abs/1901.04450}.
+\end{thebibliography}
+
+\end{document}

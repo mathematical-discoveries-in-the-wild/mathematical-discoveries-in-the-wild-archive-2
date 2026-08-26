@@ -1,0 +1,249 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\gauss}{\gamma_n}
+
+\title{Near-Endpoint Gaussian Small-Ball Exponents for Ellipsoidal Cylinders}
+\author{Automated mathematics run \texttt{fa\_banach\_001}\\
+Lane 12, agent \texttt{agent\_lane\_12}, model GPT5.6}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\linewidth}{\textbf{Status.}
+Candidate partial result, likely valid.  Conjecture~1 of
+Lata\l a--Oleszkiewicz is proved for centered ellipsoids and ellipsoidal
+cylinders.  The general symmetric-convex-body case remains open in this
+investigation.}}
+\end{center}
+
+\section{Source conjecture}
+
+Lata\l a and Oleszkiewicz~\cite{LO} consider the standard Gaussian measure
+$\gamma_n$ on $\R^n$ and the inradius
+\[
+ w(K)=\sup\{r>0:B_2^n(0,r)\subset K\}
+\]
+of a symmetric convex set.  Their Conjecture~1, on PDF page~2 of
+arXiv:math/0501268, is the following.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+Thus, for every $\kappa\in(0,1)$, the aim is to find constants
+$C(\kappa),w_0(\kappa)>0$ such that
+\begin{equation}\label{eq:conj}
+ \gamma_n(tK)\le (C(\kappa)t)^{\kappa w(K)^2}\gamma_n(K),
+ \qquad 0\le t\le1,
+\end{equation}
+whenever $\gamma_n(K)\le1/2$ and $w(K)\ge w_0(\kappa)$.  The source proves
+the coefficient $1/4$ in place of every $\kappa<1$.
+
+\section{Proof intuition}
+
+For an ellipsoid, the Gaussian measure of $tK$ is the lower tail at $t^2$ of
+a weighted chi-square variable $X=\sum_i\lambda_i g_i^2$.  The inradius
+condition bounds every weight by $w^{-2}$.  After enlarging the ellipsoid so
+that its Gaussian measure is exactly $1/2$, the number $1$ is a median of
+$X$.  Since no single weight can dominate, a one-sided variance estimate
+forces the total spectral mass $m=\sum_i\lambda_i$ to satisfy
+$m\ge1-O(w^{-1})$.
+
+The exact product Laplace transform of $X$ then produces a lower-tail power
+$m w^2$.  As the inradius grows this power approaches the conjectured
+endpoint $w^2$, so every fixed coefficient $\kappa<1$ follows.  The argument
+also tolerates zero eigenvalues, hence unbounded ellipsoidal cylinders.
+
+\section{Statement of the partial result}
+
+\begin{theorem}\label{thm:main}
+Fix $\kappa\in(0,1)$ and set
+\begin{equation}\label{eq:constants}
+ \eta=\frac{1+\kappa}{2},\qquad
+ C_\kappa=\exp(1/\eta),\qquad
+ w_{0,\kappa}=\max\left\{
+ \frac{2\sqrt2}{1-\kappa},\sqrt{2\log2}\right\}.
+\end{equation}
+Let
+\begin{equation}\label{eq:cylinder}
+ K=\left\{x\in\R^n:\sum_{i=1}^r\lambda_i x_i^2\le1\right\},
+ \qquad 1\le r\le n,\quad \lambda_i>0,
+\end{equation}
+after an orthogonal change of coordinates.  If $\gamma_n(K)\le1/2$ and
+$w(K)\ge w_{0,\kappa}$, then
+\[
+ \gamma_n(tK)\le(C_\kappa t)^{\kappa w(K)^2}\gamma_n(K)
+ \qquad(0\le t\le1).
+\]
+In particular, Conjecture~1 holds for every centered ellipsoid and every
+ellipsoidal cylinder.
+\end{theorem}
+
+\section{Half-measure reduction}
+
+We use the B-inequality of Cordero-Erausquin, Fradelizi, and Maurey
+\cite{CFM}: for a symmetric convex set $K$, the function
+$a\mapsto\log\gamma_n(e^aK)$ is concave.  The following consequence is also
+used explicitly in the source paper.
+
+\begin{lemma}\label{lem:normalize}
+If $\gamma_n(K)\le1/2$, choose $q\ge1$ so that $\gamma_n(qK)=1/2$.  Then
+\begin{equation}\label{eq:ratio}
+ \frac{\gamma_n(tK)}{\gamma_n(K)}
+ \le\frac{\gamma_n(tqK)}{\gamma_n(qK)}
+ \qquad(0<t\le1).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Write $F(a)=\log\gamma_n(e^aK)$, $A=\log q\ge0$, and $h=\log t\le0$.
+For concave $F$, the backward increment $F(x+h)-F(x)$ is nondecreasing in
+$x$.  Hence $F(h)-F(0)\le F(A+h)-F(A)$, which is exactly
+\eqref{eq:ratio} after exponentiation.
+\end{proof}
+
+It is therefore enough to prove the theorem when $\gamma_n(K)=1/2$.
+Indeed, $qK$ has inradius $W=qw(K)\ge w(K)$.  When $C_\kappa t\le1$, the
+power with $W^2$ is no larger than the power with $w(K)^2$; when
+$C_\kappa t\ge1$, the conclusion follows directly from $tK\subset K$.
+
+\section{The weighted chi-square estimate}
+
+Assume now that $\gamma_n(K)=1/2$ and write $W=w(K)$.  If
+$g_1,\dots,g_r$ are independent standard Gaussians, set
+\[
+ X=\sum_{i=1}^r\lambda_i g_i^2,\qquad
+ m=\mathbb EX=\sum_i\lambda_i,\qquad
+ v=\operatorname{Var}(X)=2\sum_i\lambda_i^2.
+\]
+Then
+\begin{equation}\label{eq:translation}
+ \gamma_n(tK)=\mathbb P\{X\le t^2\},\qquad
+ \mathbb P\{X\le1\}=\mathbb P\{X\ge1\}=\frac12.
+\end{equation}
+The inradius identity is
+\begin{equation}\label{eq:weights}
+ \max_i\lambda_i=W^{-2},\qquad
+ v\le2W^{-2}m.
+\end{equation}
+
+\begin{lemma}[Median-to-mean estimate]\label{lem:mass}
+Under \eqref{eq:translation}--\eqref{eq:weights},
+\[
+ m\ge1-\frac{\sqrt2}{W}.
+\]
+\end{lemma}
+
+\begin{proof}
+The assertion is immediate if $m\ge1$.  Suppose $m<1$.  Cantelli's
+one-sided variance inequality gives
+\[
+ \frac12=\mathbb P\{X-m\ge1-m\}
+ \le\frac{v}{v+(1-m)^2}.
+\]
+Consequently $(1-m)^2\le v\le2m/W^2\le2/W^2$, proving the claim.
+For completeness, Cantelli's inequality follows by applying Markov's
+inequality to $(Y+v/a)^2$ when $\mathbb EY=0$,
+$\mathbb EY^2=v$, and $a>0$.
+\end{proof}
+
+\begin{lemma}[Lower-tail estimate]\label{lem:tail}
+For every $t>0$,
+\begin{equation}\label{eq:tail}
+ \mathbb P\{X\le t^2\}
+ \le e^{W^2/2}t^{mW^2}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+For $s>0$, Markov's inequality and the Gaussian Laplace transform give
+\begin{equation}\label{eq:laplace}
+ \mathbb P\{X\le t^2\}
+ \le e^{st^2}\mathbb Ee^{-sX}
+ =e^{st^2}\prod_i(1+2s\lambda_i)^{-1/2}.
+\end{equation}
+Put $L=W^{-2}$.  The function
+$f(x)=\log(1+2sx)$ is concave and vanishes at zero, so
+$f(x)\ge(x/L)f(L)$ for $0\le x\le L$.  Therefore
+\[
+ \sum_i\log(1+2s\lambda_i)
+ \ge mW^2\log(1+2s/W^2).
+\]
+Choosing $s=W^2/(2t^2)$ in \eqref{eq:laplace} yields
+\[
+ \mathbb P\{X\le t^2\}
+ \le e^{W^2/2}(1+t^{-2})^{-mW^2/2}
+ \le e^{W^2/2}t^{mW^2}.
+\]
+\end{proof}
+
+\section{Proof of Theorem~\ref{thm:main}}
+
+By Lemma~\ref{lem:normalize}, assume $\gamma_n(K)=1/2$.  The first lower
+bound in \eqref{eq:constants} and Lemma~\ref{lem:mass} imply
+\[
+ m\ge1-\frac{\sqrt2}{W}\ge\eta.
+\]
+For $0<t\le C_\kappa^{-1}$, Lemma~\ref{lem:tail} gives
+\begin{align*}
+ \frac{\gamma_n(tK)}{(C_\kappa t)^{\kappa W^2}/2}
+ &\le2e^{W^2/2}C_\kappa^{-\kappa W^2}
+ t^{(m-\kappa)W^2}\\
+ &\le2e^{W^2/2}C_\kappa^{-mW^2}
+ \le2e^{-W^2/2}\le1.
+\end{align*}
+Here we used $\log C_\kappa=1/\eta$, $m\ge\eta$, and
+$W\ge\sqrt{2\log2}$.  If $C_\kappa^{-1}\le t\le1$, then
+\[
+ \gamma_n(tK)\le\gamma_n(K)=\frac12
+ \le(C_\kappa t)^{\kappa W^2}\frac12.
+\]
+The case $t=0$ is immediate.  The reduction following
+Lemma~\ref{lem:normalize} completes the proof for the original $K$.
+
+\section{Scope, sharpness, and novelty}
+
+For Euclidean balls of Gaussian measure $1/2$, the squared radius is
+asymptotic to $n$, while the probability at scale $t\downarrow0$ has power
+$n$.  Thus coefficient $1$ is the natural endpoint and cannot be replaced by
+a larger universal coefficient.  Theorem~\ref{thm:main} reaches every strict
+sub-endpoint for quadratic bodies.
+
+The factorized transform in \eqref{eq:laplace} is the decisive special
+structure.  For a general norm, the analogous random variable is a supremum
+of correlated Gaussian linear forms; the inradius bounds individual
+variances but does not supply the product estimate.  Optimizing the source
+paper's isoperimetric anchor is likewise capped at coefficient $1/4$.  These
+two upgrade attempts did not yield the general conjecture.
+
+A bounded novelty search on 11 August 2026 covered the run indexes, the exact
+arXiv id and title, exact-statement searches involving $\gamma_n(tK)$ and
+$\kappa w^2$, and combinations of ``Gaussian small ball'', ``inradius'',
+``ellipsoid'', and ``weighted chi-square''.  No explicit near-endpoint
+ellipsoidal theorem or full resolution of Conjecture~1 was found.  This
+supports but does not certify novelty.
+
+\begin{thebibliography}{9}
+\bibitem{LO}
+R. Lata\l a and K. Oleszkiewicz,
+\emph{Small ball probability estimates in terms of width},
+Studia Math. \textbf{169} (2005), no.~3, 305--314;
+arXiv:math/0501268.
+
+\bibitem{CFM}
+D. Cordero-Erausquin, M. Fradelizi, and B. Maurey,
+\emph{The (B) conjecture for the Gaussian measure of dilates of symmetric
+convex sets and related problems},
+J. Funct. Anal. \textbf{214} (2004), no.~2, 410--427.
+\end{thebibliography}
+
+\end{document}

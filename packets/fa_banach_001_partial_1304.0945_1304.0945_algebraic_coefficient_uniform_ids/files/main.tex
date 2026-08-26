@@ -1,0 +1,578 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{proposition}{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\OK}{\mathcal{O}_K}
+\newcommand{\Gal}{\operatorname{Gal}}
+\newcommand{\Spec}{\operatorname{Spec}}
+
+\title{\textbf{Two positive regimes for uniform IDS approximation}\\
+\large Algebraic local coefficients and arbitrary finite-spectrum limits in
+arXiv:1304.0945}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 7}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{
+\textbf{Status.} Candidate partial results; current verdict: \emph{likely
+valid}.  Human review is recommended.  The packet proves uniform IDS
+approximation (i) for every fixed finite set of real algebraic local
+coefficients and (ii) for arbitrary complex local coefficients whenever the
+limiting IDS has finite support.  It does not settle the remaining
+infinite-spectrum transcendental case.
+}}
+\end{center}
+
+\section{Source question}
+
+The source is Felix Pogorzelski, \emph{Convergence theorems for graph
+sequences}, arXiv:1304.0945, Section 6.2, page 12
+\cite{Pogorzelski}.  For a weakly convergent bounded-degree graph sequence and
+a fixed finite-range pattern-invariant selfadjoint operator sequence, the
+source recalls pointwise convergence of spectral atom masses for
+integer-valued local kernels (Theorem 6.10).  It then asks whether the
+resulting pointwise, equivalently uniform, convergence remains true for
+arbitrary coefficients.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{Theorem 6.10 and the arbitrary-coefficient question on page 12 of
+the source paper.}
+\end{figure}
+
+\paragraph{Transcription.}
+After deriving uniform convergence for bounded integer-coefficient operators,
+the source states: ``To the knowledge of the author, this is still an open
+question for arbitrary coefficients.''
+
+\section{Set-up}
+
+Let $(G_n)$ be finite graphs of maximum degree at most $d$, with
+$|V(G_n)|\to\infty$, which converge weakly (in the
+Benjamini--Schramm sense).  Let $H_n$ be selfadjoint matrices arising from one
+fixed pattern-invariant kernel rule of range $R$: every row is determined by
+the rooted $R$-ball, and the rule does not change with $n$.  There are only
+finitely many rooted $R$-ball types and only finitely many vertices in each
+such ball, so the set $S$ of all matrix-entry values used by this rule is
+finite.
+
+Write
+\[
+  N_n=|V(G_n)|,\qquad
+  \nu_n=\frac1{N_n}\sum_{j=1}^{N_n}\delta_{\lambda_{n,j}} .
+\]
+Weak graph convergence and locality imply that all moments of $\nu_n$
+converge.  Uniform boundedness of the matrices makes the supports compact, so
+$\nu_n$ converges weakly to the source paper's density-of-states measure
+$\nu$; this is source Theorem 6.6 \cite{Pogorzelski}.
+
+\section{Idea of the proof}
+
+For integer matrices, the Ab\'ert--Thom--Vir\'ag argument uses the fact that a
+nonzero product of eigenvalue differences is a nonzero integer.  Hence it
+cannot be too small.  With algebraic entries, that product need not be a
+rational integer.  The replacement is to put all coefficients in one number
+field $K$ and take the field norm: the product is a nonzero algebraic integer,
+so its norm down to $\Q$ is a nonzero rational integer.
+
+The other embeddings of $K$ replace $H_n$ by Galois-conjugate matrices.  They
+need not be selfadjoint, but their entries and row sparsity are uniformly
+bounded, so all their eigenvalues stay in one fixed disk.  The conjugate
+factors in the field norm therefore cost only
+$\exp(O(N_n^2))$.  This gives exactly the scale needed to rule out a positive
+proportion of distinct eigenvalues collapsing into an arbitrarily small
+punctured interval.
+
+A second elementary number-field observation handles large multiplicities.
+If an eigenvalue has normalized multiplicity at least $1/k$, its degree over
+$K$ is at most $k$.  Its absolute conjugates are uniformly bounded, so only
+finitely many such algebraic integers exist.  Avoiding this finite set and
+using the discriminant estimate gives a punctured-neighborhood bound tending
+to zero.  Portmanteau's inequalities then force convergence at every atom.
+
+There is also a coefficient-free mechanism when the limiting measure has
+finite support.  If $\operatorname{supp}\nu=\{x_1,\ldots,x_m\}$, put
+$p(t)=\prod_j(t-x_j)$.  Moment convergence makes the normalized
+Hilbert--Schmidt norm of $p(H_n)$ tend to zero.  Locality and the fixed finite
+coefficient alphabet imply that the entries of all $p(H_n)$ range over one
+finite set.  Hence every nonzero row has a uniformly positive contribution
+to the Hilbert--Schmidt norm, so $\operatorname{rank}p(H_n)=o(N_n)$.  Almost
+the entire spectrum of $H_n$ is therefore exactly contained in
+$\{x_1,\ldots,x_m\}$, which forces convergence of the individual atom masses.
+
+\section{Main result}
+
+\begin{theorem}[Algebraic-coefficient pointwise approximation]
+\label{thm:main}
+In the set-up above, assume that every value in the finite local coefficient
+set $S$ is a real algebraic number.  Then, for every $x\in\R$,
+\[
+             \lim_{n\to\infty}\nu_n(\{x\})=\nu(\{x\}).
+\]
+Consequently, if
+\[
+ F_n(t)=\nu_n((-\infty,t])\quad\text{and}\quad
+ F(t)=\nu((-\infty,t]),
+\]
+then
+\[
+             \lim_{n\to\infty}\|F_n-F\|_\infty=0.
+\]
+\end{theorem}
+
+\begin{remark}
+The theorem strictly extends the integer hypothesis in source Theorem 6.10:
+it includes arbitrary real algebraic local values in a common number field.
+It does not include a coefficient set containing a transcendental number.
+\end{remark}
+
+\begin{theorem}[Arbitrary coefficients with finite limiting spectrum]
+\label{thm:finite-spectrum}
+In the set-up above, impose no arithmetic restriction on the finite set
+$S\subset\mathbb C$.  If the weak limiting measure $\nu$ has finite support, then
+for every $x\in\R$,
+\[
+             \lim_{n\to\infty}\nu_n(\{x\})=\nu(\{x\}),
+\]
+and consequently $\|F_n-F\|_\infty\to0$.
+\end{theorem}
+
+The next proposition does not prove convergence in the remaining case, but
+it sharply restricts any possible failure.  It applies to more general sparse
+matrix families and uses Jaikin-Zapirain's strict eigenvalue theorem
+\cite[Theorem~2.2]{Jaikin}.
+
+\begin{proposition}[Macroscopic eigenvalues come from a fixed finite set]
+\label{prop:strict}
+Let $A_n$ be square complex matrices of orders $N_n$.  Suppose that every row
+and every column has at most $D$ nonzero entries and that all entries belong
+to one fixed finite set $S\subset\mathbb C$.  For every $\eta>0$ there is a
+finite set $E_\eta\subset\mathbb C$, independent of $n$, such that
+\[
+ \frac{\dim\ker(A_n-\lambda I)}{N_n}\ge\eta
+ \quad\Longrightarrow\quad \lambda\in E_\eta.
+\]
+In particular, this holds for every fixed-range pattern-invariant operator
+sequence, without any algebraicity assumption.
+\end{proposition}
+
+\section{Proof}
+
+Multiplying every $H_n$ by the same positive integer only rescales the
+spectral variable and does not affect either conclusion.  Since $S$ is
+finite, we may therefore choose a finite Galois extension $K/\Q$, realized
+inside $\mathbb C$ with its distinguished identity embedding, such that
+\[
+                       S\subset\OK\cap\R .
+\]
+For $\sigma\in\Gal(K/\Q)$, let $H_n^\sigma$ be obtained by applying $\sigma$
+entrywise.  There is a constant $M\ge1$, independent of $n$ and $\sigma$,
+such that every row sum of absolute values of every $H_n^\sigma$ is at most
+$M$.  Indeed, the number of nonzero entries per row is bounded in terms of
+$d,R$, and there are only finitely many numbers $\sigma(s)$ with
+$s\in S$.  Thus every eigenvalue of every $H_n^\sigma$ has modulus at most
+$M$.
+
+\begin{lemma}[Only finitely many possible large atoms]
+\label{lem:finite}
+For every positive integer $k$, there is a finite set $X_k$ of algebraic
+integers, depending only on $K,M,k$, such that
+\[
+       \nu_n(\{\alpha\})\ge \frac1k
+       \quad\Longrightarrow\quad
+       \alpha\in X_k
+\]
+for every $n$ and every eigenvalue $\alpha$ of $H_n$.
+\end{lemma}
+
+\begin{proof}
+Let $\alpha$ have multiplicity $m$ as a root of
+$p_n(t)=\det(tI-H_n)\in\OK[t]$.  If $q_\alpha$ is its minimal polynomial over
+$K$, separability in characteristic zero gives $q_\alpha^m\mid p_n$.
+Therefore
+\[
+        m[K(\alpha):K]\le N_n.
+\]
+If $m/N_n\ge1/k$, then $[K(\alpha):K]\le k$.  Moreover $\alpha$ is integral
+over $\OK$, hence is an algebraic integer over $\mathbb Z$.
+
+Every embedding of $\Q(\alpha)$ into $\mathbb C$ extends to an embedding of
+$K(\alpha)$.  Its restriction to $K$ is some $\sigma$, and the image of
+$\alpha$ is an eigenvalue of $H_n^\sigma$; hence every absolute conjugate of
+$\alpha$ has modulus at most $M$.  Finally,
+\[
+             [\Q(\alpha):\Q]\le [K:\Q]\,k.
+\]
+There are only finitely many algebraic integers of bounded degree whose
+conjugates all have bounded modulus: their monic minimal polynomials have
+bounded degree and bounded integer coefficients.  Taking all such numbers as
+$X_k$ proves the claim.
+\end{proof}
+
+\begin{lemma}[Number-field anti-clustering estimate]
+\label{lem:cluster}
+Put $q=[K:\Q]$.  Fix $x\in\R$ and $k\ge1$.  Choose
+$0<\varepsilon<1/2$ such that
+\[
+ I_{x,\varepsilon}:=(x-\varepsilon,x+\varepsilon)\setminus\{x\}
+ \quad\text{satisfies}\quad
+ I_{x,\varepsilon}\cap X_k=\varnothing .
+\]
+Then, for every $n$,
+\[
+\nu_n(I_{x,\varepsilon})
+\le
+\left(
+\frac{q\log(2M)}{\log(1/(2\varepsilon))}+\frac1k
+\right)^{1/2}.
+\tag{1}\label{eq:cluster}
+\]
+\end{lemma}
+
+\begin{proof}
+List the eigenvalues of $H_n$, with multiplicity, as
+$\lambda_1,\ldots,\lambda_N$, where $N=N_n$.  Define the nonzero-pair
+discriminant
+\[
+ D_n=
+ \prod_{\substack{1\le i<j\le N\\\lambda_i\ne\lambda_j}}
+          (\lambda_i-\lambda_j)^2 .
+\]
+It is a nonzero algebraic integer.  It is also fixed by every automorphism of
+$\overline{\Q}$ fixing $K$: such an automorphism permutes the multiset of
+roots of $p_n$, preserves equality and inequality of roots, and the square
+removes the sign.  Thus
+\[
+                         D_n\in\OK\setminus\{0\}.
+\]
+Its field norm is a nonzero rational integer.  For every nonidentity
+$\sigma\in\Gal(K/\Q)$, the conjugate $\sigma(D_n)$ is the analogous
+nonzero-pair product for $H_n^\sigma$.  Since all conjugate eigenvalues have
+modulus at most $M$,
+\[
+  1\le |N_{K/\Q}(D_n)|
+     \le |D_n|(2M)^{(q-1)N^2}.
+\]
+Consequently,
+\[
+                         |D_n|\ge(2M)^{-(q-1)N^2}.
+\tag{2}\label{eq:lower}
+\]
+
+Set
+\[
+ a=\nu_n(I_{x,\varepsilon}),\qquad
+ b=\nu_n(\{x\}),\qquad
+ s=\sum_{\lambda\in I_{x,\varepsilon}}\nu_n(\{\lambda\})^2 .
+\]
+No eigenvalue in $I_{x,\varepsilon}$ has mass at least $1/k$, by
+Lemma~\ref{lem:finite}; hence
+\[
+                         s<\frac1k.
+\tag{3}\label{eq:s}
+\]
+The normalized number of \emph{ordered} pairs of unequal eigenvalue
+occurrences which both lie in $(x-\varepsilon,x+\varepsilon)$ is exactly
+\[
+        (a+b)^2-\left(b^2+s\right)=a^2+2ab-s.
+\]
+The square in $D_n$ makes its factors correspond precisely to ordered
+unequal pairs.  Factors belonging to the displayed collection have modulus
+at most $2\varepsilon$, while all remaining factors have modulus at most
+$2M$.  Therefore
+\[
+ |D_n|
+ \le
+ (2\varepsilon)^{N^2(a^2+2ab-s)}(2M)^{N^2}.
+\tag{4}\label{eq:upper}
+\]
+Combining \eqref{eq:lower} and \eqref{eq:upper} gives
+\[
+  a^2+2ab-s
+  \le \frac{q\log(2M)}{\log(1/(2\varepsilon))}.
+\]
+Since $b\ge0$, estimate \eqref{eq:s} now yields \eqref{eq:cluster}.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Fix $x\in\R$.  For each $k$, Lemma~\ref{lem:finite} allows us to choose
+\[
+  0<\varepsilon_k<\min\{1/k,1/2\},
+  \qquad
+  I_{x,\varepsilon_k}\cap X_k=\varnothing .
+\]
+Let
+\[
+ \delta_k=
+ \left(
+ \frac{q\log(2M)}{\log(1/(2\varepsilon_k))}+\frac1k
+ \right)^{1/2}.
+\]
+Then $\delta_k\to0$ and Lemma~\ref{lem:cluster} says
+\[
+          \sup_n\nu_n(I_{x,\varepsilon_k})\le\delta_k.
+\tag{5}\label{eq:punctured}
+\]
+
+Weak convergence and the Portmanteau theorem give
+\[
+ \limsup_{n\to\infty}\nu_n(\{x\})\le\nu(\{x\}).
+\tag{6}\label{eq:upperatom}
+\]
+On the other hand, for the open interval
+$J_k=(x-\varepsilon_k,x+\varepsilon_k)$,
+\[
+\begin{aligned}
+\nu(\{x\})
+&\le \nu(J_k)
+ \le \liminf_{n\to\infty}\nu_n(J_k)\\
+&\le \liminf_{n\to\infty}\nu_n(\{x\})+\delta_k,
+\end{aligned}
+\]
+where the last inequality follows from \eqref{eq:punctured} by taking a
+subsequence realizing the lower limit of the singleton masses.  Letting
+$k\to\infty$ and combining with \eqref{eq:upperatom} proves
+\[
+                    \nu_n(\{x\})\longrightarrow\nu(\{x\}).
+\]
+
+Finally, the standard distribution-function lemma says that weak convergence
+of probability measures together with convergence of the mass of every
+singleton is equivalent to uniform convergence of their cumulative
+distribution functions.  For completeness, one proves it by isolating the
+finitely many atoms of $\nu$ larger than a prescribed tolerance, choosing a
+finite partition by continuity points of $\nu$ on the remaining intervals,
+and using monotonicity between consecutive partition points.  The atom
+convergence controls the isolated jumps.  Applying the lemma to
+$\nu_n\Rightarrow\nu$ completes the proof.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:finite-spectrum}]
+Write $\operatorname{supp}\nu=\{x_1,\ldots,x_m\}$ and set
+\[
+                       p(t)=\prod_{j=1}^m(t-x_j).
+\]
+The spectra of all $H_n$ lie in one fixed compact interval.  Weak convergence
+therefore gives
+\[
+ \frac1{N_n}\|p(H_n)\|_{\mathrm{HS}}^2
+ =\frac1{N_n}\operatorname{Tr}\bigl(p(H_n)^2\bigr)
+ =\int_{\R}|p(t)|^2\,d\nu_n(t)
+ \longrightarrow \int_{\R}|p(t)|^2\,d\nu(t)=0.
+\tag{6}\label{eq:hs}
+\]
+
+The matrices $p(H_n)$ are again fixed-range pattern-invariant matrices: their
+range is at most $mR$, and an entry is determined by a rooted ball of a fixed
+radius together with two marked vertices.  Bounded degree leaves only
+finitely many such marked ball types.  Because the original local rule uses
+only the fixed finite alphabet $S$, all entries of all the matrices $p(H_n)$
+therefore belong to one finite set $T\subset\mathbb C$.  If
+$T\setminus\{0\}$ is nonempty, let
+\[
+                c=\min\{|t|:t\in T\setminus\{0\}\}>0;
+\]
+if it is empty, the conclusion below is immediate.  Every nonzero row of
+$p(H_n)$ contributes at least $c^2$ to its squared Hilbert--Schmidt norm.
+Thus \eqref{eq:hs} implies
+\[
+ \operatorname{rank}p(H_n)
+ \le \#\{\text{nonzero rows of }p(H_n)\}
+ \le c^{-2}\|p(H_n)\|_{\mathrm{HS}}^2=o(N_n).
+\tag{7}\label{eq:rank}
+\]
+
+Since $H_n$ is selfadjoint, functional calculus and \eqref{eq:rank} give
+\[
+ \sum_{j=1}^m\nu_n(\{x_j\})
+ =\frac{\dim\ker p(H_n)}{N_n}\longrightarrow1.
+\tag{8}\label{eq:sumatoms}
+\]
+Portmanteau gives
+$\limsup_n\nu_n(\{x_j\})\le\nu(\{x_j\})$ for each $j$, while the right-hand
+atom masses sum to one.  Equation \eqref{eq:sumatoms} forces equality in each
+of these finitely many upper bounds, hence
+$\nu_n(\{x_j\})\to\nu(\{x_j\})$.  If $x$ is not among the $x_j$, Portmanteau
+gives $\nu_n(\{x\})\to0=\nu(\{x\})$.  The distribution-function lemma used
+above now yields uniform convergence.
+\end{proof}
+
+\begin{proof}[Proof of Proposition~\ref{prop:strict}]
+Regard the support of $A_n$ as a bipartite graph between a row copy and a
+column copy of $\{1,\ldots,N_n\}$, keeping the matrix value as an edge label.
+For each nonzero $s\in S$, K\"onig's edge-colouring theorem partitions the
+$s$-labelled edges into at most $D$ matchings.  Consequently there are a
+fixed number $r\le D|S\setminus\{0\}|$ and partial permutation matrices
+$P_{n,1},\ldots,P_{n,r}$ such that
+\[
+                       A_n=\sum_{i=1}^r c_iP_{n,i},
+\tag{9}\label{eq:partials}
+\]
+where the coefficient list $(c_i)$ is independent of $n$ (zero matchings may
+be inserted when needed).
+
+Every partial permutation matrix $P$ is the average of two signed permutation
+matrices.  Indeed, extend its bijection from its domain to its range by an
+arbitrary bijection between the two complements.  Give the extension the
+same positive signs on the original domain in two copies, and opposite signs
+on the complementary domain.  If the resulting signed permutation matrices
+are $U$ and $V$, then $P=(U+V)/2$.
+
+Let $F$ be the free group on $2r$ fixed generators and let
+\[
+                         a=\sum_{i=1}^r\frac{c_i}{2}(u_i+v_i)
+                         \in\mathbb C[F].
+\]
+For each $n$, mapping $u_i,v_i$ to the signed permutations just constructed
+defines a representation $\rho_n$ of $F$ on $\mathbb C^{N_n}$ with
+$\rho_n(a)=A_n$.
+
+Replace every signed permutation action on $\{1,\ldots,N_n\}$ by its standard
+double cover on
+$X_n=\{1,\ldots,N_n\}\times\{+1,-1\}$: a signed permutation sends
+$(j,\epsilon)$ to $(\sigma(j),s_j\epsilon)$.  This is an ordinary finite
+$F$-set.  The odd subspace of $\mathbb C[X_n]$ is invariant and its
+representation is unitarily equivalent to $\rho_n$.  Hence an eigenvalue of
+$A_n$ of multiplicity at least $\eta N_n$ is an eigenvalue of the permutation
+operator associated with the fixed group-ring element $a$ on $X_n$, with
+multiplicity at least $(\eta/2)|X_n|$.  Jaikin-Zapirain's strict eigenvalue
+theorem says that the union of all eigenvalues with such normalized
+multiplicity, over all finite $F$-sets, is finite.  Taking that finite set
+proves the claim.
+\end{proof}
+
+\begin{corollary}[Necessary form of a counterexample]
+\label{cor:diffuse}
+If atom convergence fails at $x$ for an arbitrary-coefficient local operator
+sequence, then along a subsequence a positive amount of spectral mass lies in
+every punctured neighbourhood of $x$, while the normalized multiplicity of
+each eigenvalue in a sufficiently small such neighbourhood is arbitrarily
+small.  Thus failure can only occur through a diffuse cloud of distinct
+eigenvalues coalescing at $x$, not through a moving macroscopic atom.  By
+Theorem~\ref{thm:finite-spectrum}, the limiting IDS of any counterexample must
+have infinite support.
+\end{corollary}
+
+\begin{proof}
+Failure and Portmanteau imply that, along a subsequence, there is a $\delta>0$
+such that $\nu_n(\{x\})\le\nu(\{x\})-\delta$.  For every open interval $J$
+containing $x$, Portmanteau also gives
+$\liminf_n\nu_n(J)\ge\nu(J)\ge\nu(\{x\})$; hence eventually
+$\nu_n(J\setminus\{x\})\ge\delta/2$ along that subsequence.  Given
+$\eta>0$, Proposition~\ref{prop:strict} supplies a finite $E_\eta$.
+Choose $J$ so small that $(J\setminus\{x\})\cap E_\eta=\varnothing$.
+Every eigenvalue contributing to the displayed punctured mass then has
+normalized multiplicity less than $\eta$.  The last assertion is the
+contrapositive of Theorem~\ref{thm:finite-spectrum}.
+\end{proof}
+
+\section{Verification notes and limitations}
+
+\paragraph{Proof audit.}
+The argument was checked independently at the following structural points:
+(i) one denominator clears the finite coefficient set; (ii) multiplicity
+bounds relative degree over $K$; (iii) the squared nonzero-pair
+discriminant belongs to $\OK$ despite repeated eigenvalues; (iv) the field
+norm and the row-sum bounds on every conjugate matrix give
+\eqref{eq:lower}; (v) the Portmanteau inequalities have the required
+directions; (vi) the finite-spectrum proof uses a genuinely finite entry
+alphabet for $p(H_n)$; and (vii) the signed-permutation double cover puts the
+macroscopic-eigenvalue question exactly within the scope of the strict
+eigenvalue theorem.  No numerical experiment is used as proof evidence.
+
+\paragraph{Human-review focus.}
+The most important lines to verify are $D_n\in\OK$ in
+Lemma~\ref{lem:cluster}, the assertion that the entries of $p(H_n)$ range over
+one finite set in Theorem~\ref{thm:finite-spectrum}, and the reduction from
+partial permutations to a fixed free-group element in
+Proposition~\ref{prop:strict}.
+
+\paragraph{Scope.}
+The original arbitrary-real-coefficient problem remains open when the limit
+has infinite support.  The algebraic proof uses algebraicity exactly through
+the nonzero field-norm lower bound and the finiteness of bounded-house
+algebraic integers of bounded degree.  Neither input is available for a
+general transcendental coefficient tuple.  The coefficient-free rank proof
+requires one polynomial to vanish on the whole limiting support and hence
+does not extend directly beyond finite support.  Proposition~\ref{prop:strict}
+excludes only a moving eigenvalue with one macroscopic eigenspace; it does not
+exclude diffuse coalescence of increasingly many small eigenspaces.
+
+\section{Novelty check}
+
+The exact graph-sequence formulation was not located in a bounded search.
+The search covered the local run indexes; the phrases \emph{algebraic
+coefficients L\"uck approximation spectral measures graph sequences},
+\emph{number field L\"uck approximation}, and \emph{arbitrary coefficients
+graph sequences spectral distribution}; and arXiv:1304.0945,
+arXiv:math/0701294, the Ab\'ert--Thom--Vir\'ag preprint cited in the source,
+and arXiv:2603.01610.
+
+The number-field mechanism is not itself new: Thom proves the algebraic
+coefficient analogue for sofic group approximations
+\cite{Thom}.  Jaikin-Zapirain proves arbitrary-coefficient L\"uck
+approximation for fixed group-ring operators along deterministic sofic
+approximations and, separately, the strict eigenvalue theorem used in
+Proposition~\ref{prop:strict} \cite{Jaikin}.  The 2026 work of
+Donoso-Echenique, Pogorzelski, and Schr\"odl-Baumann proves pointwise
+convergence for finitely many rational values in a random-operator/sofic-group
+setting and treats arbitrary complex coefficients through adapted
+approximants with varying rational coefficients \cite{DPS}.  That paper
+explicitly says that arbitrary fixed real or complex values remain open in
+its random setting and asks whether Jaikin-Zapirain's methods extend there.
+No searched source stated Theorem~\ref{thm:main},
+Theorem~\ref{thm:finite-spectrum}, or Corollary~\ref{cor:diffuse} for every
+weakly convergent bounded-degree graph sequence.  Accordingly, novelty of
+these extensions is \emph{provisional}, not established.
+
+\begin{thebibliography}{9}
+
+\bibitem{ATV}
+M.~Ab\'ert, A.~Thom, and B.~Vir\'ag,
+\emph{Benjamini--Schramm convergence and pointwise convergence of the
+spectral measure}, circulated preprint, 2013.
+
+\bibitem{DPS}
+M.~Donoso-Echenique, F.~Pogorzelski, and M.~Schr\"odl-Baumann,
+\emph{Random operators, spectral measures, and local empirical convergence
+in sofic groups}, arXiv:2603.01610, 2026.
+
+\bibitem{Jaikin}
+A.~Jaikin-Zapirain,
+\emph{The base change in the Atiyah and the L\"uck approximation
+conjectures}, Geometric and Functional Analysis 29 (2019), 464--538.
+
+\bibitem{Pogorzelski}
+F.~Pogorzelski,
+\emph{Convergence theorems for graph sequences},
+International Journal of Algebra and Computation 24 (2014), 1233--1251;
+arXiv:1304.0945.
+
+\bibitem{Thom}
+A.~Thom,
+\emph{Sofic groups and diophantine approximation},
+Communications on Pure and Applied Mathematics 61 (2008), 1155--1171;
+arXiv:math/0701294.
+
+\end{thebibliography}
+
+\end{document}

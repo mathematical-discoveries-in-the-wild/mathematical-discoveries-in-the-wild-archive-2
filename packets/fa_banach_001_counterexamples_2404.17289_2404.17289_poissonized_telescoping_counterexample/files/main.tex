@@ -1,0 +1,186 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+
+\title{A convergent $o(1/k)$ series whose Poisson transform is not $L^1$\\
+\large A full negative answer to Remark 3.4(c) of arXiv:2404.17289}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 14}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+Candidate full counterexample, likely valid; human review recommended.
+
+\section{Source question}
+
+The source is A.~K.~J. Pritchard and D.~Seifert,
+\emph{The asymptotic behaviour of the Ces\`aro operator},
+arXiv:2404.17289\cite{source}.  Given a sequence $(a_k)_{k\ge0}$, it considers
+\[
+ f(t)=e^{-t}\sum_{k=0}^\infty a_k\frac{t^k}{k!}.
+\]
+Remark 3.4(c), on printed page 6, asks whether convergence of
+$\sum_{k\ge0}a_k$ implies $f\in L^1(0,\infty)$, even under the stronger
+assumption $a_k=o(k^{-1})$.  It consequently leaves open whether the paper's
+series condition (3.2) is strictly weaker than its integral condition (3.1).
+
+\begin{figure}[ht]
+ \centering
+ \includegraphics[width=\linewidth]{figures/open_problem_crop.png}
+ \caption{Real full-width crop of Remark 3.4 from printed page 6.}
+\end{figure}
+
+\section{Idea of the proof}
+
+A convergent series can be manufactured as the discrete derivative of any
+null sequence.  We choose a null sequence that oscillates on logarithmic
+scales, so its discrete derivative has infinite total variation but changes
+negligibly across the $\sqrt t$-wide window sampled by a Poisson random
+variable of mean $t$.  Poisson smoothing therefore preserves the leading
+term $-\cos(\log t)/(t\log t)$.  Its sign oscillates, so its improper integral
+converges as Hardy's theorem predicts, but its absolute integral diverges.
+
+\section{Counterexample}
+
+Fix $c=e^2$ and define, for $x\ge0$,
+\[
+ s(x)=\frac{\sin(\log(x+c))}{\log(x+c)},\qquad
+ h(x)=s(x)-s(x+1),\qquad a_k=h(k).
+\]
+
+\begin{lemma}[Poisson smoothing]\label{lem:poisson}
+If $N_t$ has the Poisson distribution with mean $t$, then
+\[
+ \mathbb E h(N_t)=h(t)+O\!\left(\frac1{t^2\log t}\right)
+ \qquad(t\to\infty).
+\]
+\end{lemma}
+
+\begin{proof}
+Direct differentiation, with $y=x+c$, gives
+\[
+ s^{(j)}(x)=O\!\left(\frac1{y^j\log y}\right),
+ \qquad j=1,2,3.
+\]
+Since $h''(x)=s''(x)-s''(x+1)$, the mean-value theorem yields
+\[
+ h''(x)=O\!\left(\frac1{(x+c)^3\log(x+c)}\right).\tag{1}
+\]
+Let $E_t=\{|N_t-t|\le t/2\}$.  On $E_t$, Taylor's theorem at $t$ and
+(1) give
+\[
+ h(N_t)=h(t)+h'(t)(N_t-t)
+ +O\!\left(\frac{(N_t-t)^2}{t^3\log t}\right).
+\]
+Now $\mathbb E(N_t-t)=0$ and $\mathbb E(N_t-t)^2=t$.  Standard Poisson
+Chernoff bounds give $\mathbb P(E_t^c)\le 2e^{-\gamma t}$ for an absolute
+$\gamma>0$.  Since $h$ is bounded and $h'(t)=O(t^{-2}/\log t)$, Cauchy--
+Schwarz bounds all terms created by restricting the constant and linear terms
+to $E_t$ by an exponentially small quantity.  Taking expectations therefore
+gives
+\[
+ \mathbb E h(N_t)-h(t)
+ =O\!\left(\frac{\mathbb E(N_t-t)^2}{t^3\log t}\right)+O(e^{-\gamma t/2})
+ =O\!\left(\frac1{t^2\log t}\right).
+\]
+\end{proof}
+
+\begin{theorem}\label{thm:main}
+The series $\sum_{k=0}^\infty a_k$ converges and $a_k=o(k^{-1})$, but
+\[
+ F(t):=e^{-t}\sum_{k=0}^\infty a_k\frac{t^k}{k!}
+ \notin L^1(0,\infty).
+\]
+More precisely,
+\[
+ F(t)=-\frac{\cos(\log(t+c))}{(t+c)\log(t+c)}
+ +O\!\left(\frac1{t(\log t)^2}+\frac1{t^2\log t}\right).\tag{2}
+\]
+\end{theorem}
+
+\begin{proof}
+The sum telescopes:
+\[
+ \sum_{k=0}^n a_k=s(0)-s(n+1)\longrightarrow s(0).
+\]
+Moreover,
+\[
+ s'(x)=\frac{\cos(\log(x+c))}{(x+c)\log(x+c)}
+       -\frac{\sin(\log(x+c))}{(x+c)(\log(x+c))^2}.
+\]
+Since $h(x)=-\int_x^{x+1}s'(u)\,du$ and
+$s''(x)=O((x+c)^{-2}/\log(x+c))$, we have
+\[
+ h(x)=-\frac{\cos(\log(x+c))}{(x+c)\log(x+c)}
+ +O\!\left(\frac1{x(\log x)^2}+\frac1{x^2\log x}\right).\tag{3}
+\]
+In particular, $a_k=O(k^{-1}(\log k)^{-1})=o(k^{-1})$.
+
+The defining series for $F$ is the Poisson expectation
+$F(t)=\mathbb E h(N_t)$.  Combining Lemma~\ref{lem:poisson} with (3) proves
+(2).
+
+Put $u=\log(t+c)$.  For all sufficiently large $t$ satisfying
+$|\cos u|\ge1/2$, the error in (2) is at most
+$1/(4(t+c)u)$, and hence
+\[
+ |F(t)|\ge \frac1{4(t+c)u}.
+\]
+The set $\{u:|\cos u|\ge1/2\}$ contains intervals of a fixed positive
+length in every period.  Since $dt/(t+c)=du$,
+\[
+ \int_{\substack{t\ \mathrm{large}\\|\cos\log(t+c)|\ge1/2}}
+ \frac{dt}{(t+c)\log(t+c)}
+ =\int_{\substack{u\ \mathrm{large}\\|\cos u|\ge1/2}}\frac{du}{u}
+ =\infty.
+\]
+Thus $F\notin L^1(0,\infty)$.
+\end{proof}
+
+\section{Exact consequence for the Ces\`aro conditions}
+
+Define a convergent sequence $x=(x_k)_{k\ge0}$ by
+\[
+ x_0=0,\qquad x_{k+1}=(k+1)a_k\quad(k\ge0).
+\]
+The estimate on $a_k$ shows $x_k\to0=x_0$.  Furthermore,
+\[
+ \sum_{k=1}^\infty\frac{x_k-x_0}{k}=\sum_{j=0}^\infty a_j
+\]
+converges, so condition (3.2) of the source holds.  But its condition (3.1)
+has integrand
+\[
+ e^{-t}\left|\sum_{k=1}^\infty (x_k-x_0)\frac{t^{k-1}}{k!}\right|
+ =e^{-t}\left|\sum_{j=0}^\infty a_j\frac{t^j}{j!}\right|=|F(t)|,
+\]
+whose integral diverges.  Hence (3.2) is strictly weaker than (3.1), fully
+answering the second sentence of Remark 3.4(c).
+
+\section{Verification, limitations, and novelty}
+
+The accompanying numerical script verifies the telescoping identity, the
+Poisson-smoothing error, and the asymptotic sign on logarithmic periods.  It is
+not used in the proof.  A bounded search of the run indexes, exact source
+phrases, the title/citations, and close Poisson-transform variants through
+2026-08-13 found no later answer or matching construction.  The search was not
+an exhaustive bibliographic review, so novelty remains subject to human check.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+A.~K.~J. Pritchard and D.~Seifert,
+\emph{The asymptotic behaviour of the Ces\`aro operator},
+J. Math. Anal. Appl. \textbf{552} (2025), 129748;
+arXiv:2404.17289.
+\end{thebibliography}
+
+\end{document}
+

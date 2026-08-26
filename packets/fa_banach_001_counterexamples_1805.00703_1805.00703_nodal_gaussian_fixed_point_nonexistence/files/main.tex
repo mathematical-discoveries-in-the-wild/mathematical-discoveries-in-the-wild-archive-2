@@ -1,0 +1,257 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,graphicx,microtype,enumitem}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Sch}{\mathcal S}
+
+\title{A nodal Gaussian obstruction to the adaptive\\fixed-point equation}
+\author{Candidate exact counterexample and partial classification for arXiv:1805.00703}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Candidate exact counterexample, likely valid.  The source's implicit adaptation
+equation is not well posed for every admissible Sobolev function.  For
+$f(x)=x e^{-a x^2/2}$ it has no positive solution at $x=0$ whenever
+$\lambda^2\geq2/3$, including $\lambda=1$ in the source's empirically favorable
+range.  More generally, every Gaussian monomial has an exact sharp nodal
+threshold.  This is a substantial partial answer, not a classification of all
+functions in the source's open problem.}}
+\end{center}
+
+\section{The source problem}
+
+Klebanov proposes an implicit, matrix-valued adaptation equation for
+$f\in W^{2,2}(\R^d,\R)\setminus\{0\}$ and $0<\lambda<\sqrt2$.  In one
+dimension, write $s(x)=\mu_f(x)^2>0$.  The equation at a fixed spatial point
+$x$ is
+\begin{equation}\label{eq:fixed}
+ s=\frac{\lambda^2s}{2}+\frac12 R_f(s;x),
+\end{equation}
+where
+\begin{equation}\label{eq:R}
+ R_f(s;x)=
+ \frac{(f'^2-ff'')*G_{(\lambda\sqrt{s})^{-2}}^2(x)}
+      {f^2*G_{(\lambda\sqrt{s})^{-2}}^2(x)}.
+\end{equation}
+The corresponding iteration replaces $s$ on the right by $s_n$ and defines
+$s_{n+1}$.  Remark 23 assumes that the equation has a unique positive solution
+and that the iteration converges to it from every positive initial value, then
+states that the class of functions for which this holds is open.  The exact
+source passage is reproduced in Figure~\ref{fig:source}.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{Remark 23 and iteration (12), arXiv:1805.00703v1, PDF page 13.}
+\label{fig:source}
+\end{figure}
+
+For the normalized one-dimensional Gaussian with covariance $C$, its square is
+proportional to $e^{-y^2/C}$.  Therefore, at $x=0$, the squared window in
+\eqref{eq:R} contributes precisely the factor
+\begin{equation}\label{eq:weight}
+ \exp(-\lambda^2 s y^2);
+\end{equation}
+its normalization cancels from the quotient.
+
+\section{Proof intuition}
+
+The source computes the fixed point for a nonvanishing Gaussian.  A zero of the
+signal changes the calculation decisively because the denominator of
+\eqref{eq:R} acquires extra powers of the integration variable.  Gaussian
+moment ratios then grow linearly with $s$, feeding an additional multiple of
+$s_n$ back into the iteration.
+
+For the first nodal Gaussian $f(x)=x e^{-a x^2/2}$, the nonlinear-looking
+scheme becomes the affine recurrence
+\[
+ s_{n+1}=\frac{3a}{2}+\frac{3\lambda^2}{2}s_n.
+\]
+Its slope crosses one at $\lambda^2=2/3$.  Below this value there is one
+positive fixed point and geometric convergence at the node.  At the threshold
+the iterates drift linearly, and above it they grow exponentially; the only
+algebraic fixed point is then nonpositive.  Thus a zero of a perfectly regular
+Schwartz function destroys even existence.
+
+The same calculation works for $x^m e^{-a x^2/2}$.  The consecutive even
+Gaussian moments give the exact threshold
+$(4m-2)/(4m-1)$.  A further calculation away from the node shows that the first
+threshold is sharp for global pointwise solvability of the implicit equation,
+not merely an artifact of evaluating at one point.
+
+\section{Exact Gaussian-monomial classification at the node}
+
+\begin{theorem}\label{thm:family}
+Let $a>0$, $m\in\mathbb N$, and
+\[
+ f_m(y)=y^m e^{-a y^2/2}.
+\]
+For the source iteration at $x=0$, put $s_n=\mu_n(0)^2$.  Then
+\begin{equation}\label{eq:affine}
+ s_{n+1}=A_m+r_m s_n,
+ \qquad
+ A_m=\frac{a(4m-1)}{2(2m-1)},
+ \qquad
+ r_m=\frac{\lambda^2(4m-1)}{2(2m-1)}.
+\end{equation}
+Consequently:
+\begin{enumerate}[label=(\roman*)]
+\item if $\lambda^2<(4m-2)/(4m-1)$, there is one positive fixed point,
+\[
+ s_* =\frac{a(4m-1)}{2(2m-1)-\lambda^2(4m-1)},
+\]
+and every $s_0>0$ converges to it with
+$s_n-s_*=r_m^n(s_0-s_*)$;
+\item at equality, no fixed point exists and $s_n=s_0+nA_m$;
+\item above the threshold, no positive fixed point exists and every positive
+orbit diverges exponentially.
+\end{enumerate}
+For $m=0$, the nonvanishing Gaussian instead gives
+$s_{n+1}=a/2+(\lambda^2/2)s_n$, which converges throughout the source range
+$0<\lambda<\sqrt2$.
+\end{theorem}
+
+\begin{proof}
+For $m\geq1$, direct differentiation (or differentiating
+$\log|f_m|$ away from zero and extending the polynomial identity) gives
+\begin{equation}\label{eq:B}
+ f_m'^2-f_mf_m''
+ =\left(a y^{2m}+m y^{2m-2}\right)e^{-a y^2}.
+\end{equation}
+At $x=0$, combine this with \eqref{eq:weight} and put
+$c=a+\lambda^2s$.  If
+\[
+ I_j(c)=\int_{\R}y^{2j}e^{-cy^2}\,dy,
+\]
+the standard integration-by-parts recurrence is
+\[
+ \frac{I_{m-1}(c)}{I_m(c)}=\frac{2c}{2m-1}.
+\]
+The quotient in \eqref{eq:R} is therefore
+\begin{align*}
+ R_{f_m}(s;0)
+ &=a+m\frac{I_{m-1}(c)}{I_m(c)}\\
+ &=\frac{a(4m-1)}{2m-1}
+   +\frac{2m\lambda^2}{2m-1}s.
+\end{align*}
+Substitution into \eqref{eq:fixed} gives exactly \eqref{eq:affine}.  An affine
+recurrence with positive intercept has a positive fixed point and convergence
+from every positive start exactly when $r_m<1$.  The three cases and the
+displayed formulas follow immediately.
+
+When $m=0$, identity \eqref{eq:B} reduces to
+$f_0'^2-f_0f_0''=a f_0^2$, so $R_{f_0}=a$ independently of the window and the
+last assertion follows.
+\end{proof}
+
+\begin{corollary}\label{cor:counter}
+For every $\lambda$ with
+\[
+ \sqrt{2/3}\leq\lambda<\sqrt2,
+\]
+the admissible Schwartz function $f(x)=x e^{-a x^2/2}$ has no positive
+solution of the source equation at $x=0$.  Hence it has no positive adaptation
+function solving the equation on $\R$, and its fixed-point iteration cannot
+have the property required in Remark 23.  In particular, this failure occurs
+at $\lambda=1$, inside the source's reported favorable interval $[0.6,1.2]$.
+\end{corollary}
+
+\begin{proof}
+Take $m=1$ in Theorem~\ref{thm:family}; its threshold is $2/3$.  Failure at a
+single spatial point rules out a positive solution function on all of $\R$.
+The source's empirical interval is stated in its conclusion.
+\end{proof}
+
+\section{Sharp global solvability for the first nodal Gaussian}
+
+\begin{proposition}\label{prop:global}
+Let $f(y)=y e^{-a y^2/2}$.  The implicit equation \eqref{eq:fixed} has a unique
+positive solution $s=s(x)$ at every $x\in\R$ if and only if
+$\lambda^2<2/3$.  In that regime $s(x)$, and hence $\mu_f(x)=\sqrt{s(x)}$, is
+continuous.
+\end{proposition}
+
+\begin{proof}
+Write $L=\lambda^2$, $b=Ls$, and $c=a+b$.  Completing the square in the
+Gaussian integrals shows that, under their normalized weight, the integration
+variable has mean $bx/c$ and variance $1/(2c)$.  Since
+\[
+ f^2=y^2e^{-ay^2},
+ \qquad f'^2-ff''=(1+ay^2)e^{-ay^2},
+\]
+we obtain the exact formula
+\begin{equation}\label{eq:generalx}
+ R_f(s;x)=a+\frac{2c^2}{c+2b^2x^2}.
+\end{equation}
+For $L<2/3$, define
+$F_x(s)=R_f(s;x)-(2-L)s$.  We have $F_x(0)=3a>0$.  As $s\to\infty$,
+$F_x(s)\to-\infty$: for $x\neq0$, the first term in \eqref{eq:generalx}
+tends to $a+x^{-2}$, while for $x=0$ one has
+$F_0(s)=3a-(2-3L)s$.
+
+It remains to prove uniqueness.  If
+$h(b)=2(a+b)^2/(a+b+2b^2x^2)$, direct differentiation gives
+\[
+ h'(b)=
+ \frac{2(a+b)(a+b-4abx^2)}{(a+b+2b^2x^2)^2}\leq2.
+\]
+Thus $\partial_sR_f\leq2L$ and
+\[
+ \partial_sF_x\leq3L-2<0.
+\]
+The intermediate value theorem and strict decrease give exactly one positive
+root.  The displayed strict derivative bound and the smooth formula imply
+continuous dependence of the root on $x$.  The converse follows from
+Corollary~\ref{cor:counter}.
+\end{proof}
+
+\begin{remark}
+Proposition~\ref{prop:global} classifies existence and uniqueness of the
+implicit equation for this test function.  It does not assert convergence of
+the raw iteration at every nonzero $x$.  The derivative of that map need not be
+a uniform contraction over all $x$ and $s$, so a separate dynamical argument
+would be required.  At the decisive node $x=0$, Theorem~\ref{thm:family} gives
+the complete iteration dynamics.
+\end{remark}
+
+\section{Verification, novelty, and review}
+
+The core calculation is exact: it uses only differentiation and the recurrence
+for even Gaussian moments.  The companion script
+\texttt{code/verify\_gaussian\_monomial.py} symbolically verifies the $m=1$
+identity and all threshold formulas.  No numerical approximation enters the
+proof.
+
+A bounded search of the run's lightweight indexes and primary arXiv sources
+found the source paper and its companion on variable kernel density estimation,
+but no later treatment of this fixed-point obstruction.  The source proves the
+constant fixed point for a nonvanishing Gaussian, but does not analyze the
+iteration or nodal Gaussians.  Novelty confidence is moderate; exhaustive
+priority is not claimed.
+
+This packet gives a full counterexample to universal well-posedness and an exact
+infinite-family threshold, but not the complete class requested by the open
+problem.  A human reviewer should check the translation from the source's
+Gaussian covariance notation to \eqref{eq:weight}, the Gaussian-moment quotient,
+and the derivative bound in Proposition~\ref{prop:global}.
+
+\begin{thebibliography}{9}
+\bibitem{Klebanov}
+I. Klebanov,
+\emph{Adaptive Convolutions}, arXiv:1805.00703v1 (2018), especially
+equations (11)--(12), Remark 23 on PDF p.~13, and the parameter discussion on
+PDF p.~16.
+\end{thebibliography}
+
+\end{document}

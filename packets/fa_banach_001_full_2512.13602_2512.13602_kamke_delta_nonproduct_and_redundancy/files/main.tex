@@ -1,0 +1,270 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+
+\newcommand{\T}{\mathbb T}
+\newcommand{\Rd}{C_{\mathrm{rd}}}
+\newcommand{\Deltas}{\,\Delta s}
+\newcommand{\muT}{\mu}
+
+\title{Non-Product Kamke $\Delta$-Functions and Redundancy of the Initial Derivative Clause}
+\author{Automated Math Discovery Candidate Proof}
+\date{August 11, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{\textbf{Status.}
+Candidate full answer to the Kamke $\Delta$-function question in the source
+paper, likely valid pending expert review.  A broad polynomial family supplies
+non-product examples.  More strongly, an example for which the initial
+$\Delta$-derivative requirement is essential cannot exist under the stated
+axioms.}}
+\end{center}
+
+\section*{Source and Question}
+
+This packet concerns the final paragraph on Kamke $\Delta$-functions in
+Section~5, page~29, of Oberta~\cite{Oberta}, arXiv:2512.13602v2.  Definition~7
+there calls
+\[
+ w:[a,b]_{\T}\times[0,\infty)\longrightarrow[0,\infty)
+\]
+a Kamke $\Delta$-function when:
+\begin{enumerate}
+\item $w(\cdot,x)$ is rd-continuous for every $x\geq0$;
+\item the family $\{w(t,\cdot):t\in[a,b]_{\T}\}$ is uniformly
+equicontinuous on every bounded interval $[0,R]$;
+\item $w(t,0)=0$;
+\item zero is the unique nonnegative continuous solution of
+\begin{equation}\label{eq:ineq}
+ u(t)\leq \int_a^t w(s,u(s))\Deltas
+\end{equation}
+among those $u$ that are $\Delta$-differentiable at $a$ and satisfy
+$u^\Delta(a)=0$.
+\end{enumerate}
+The paper asks for more sophisticated examples, for instance one not of the
+form $q(t)h(x)$, or one having a nonzero continuous solution of
+\eqref{eq:ineq} that is excluded only by the derivative requirement.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Proof Intuition}
+
+There are two independent observations.  First, the derivative condition in
+Definition~7 is already forced by the integral inequality.  The inequality at
+$t=a$ gives $u(a)=0$.  If $a$ is right-scattered, the first $\Delta$-integral
+step is $\muT(a)w(a,u(a))=0$, so $u(\sigma(a))=0$.  If $a$ is right-dense,
+uniform equicontinuity of all the functions $w(t,\cdot)$ at zero makes the
+integrand uniformly small on the shrinking interval $[a,t]_{\T}$.  Dividing
+by $t-a$ then shows $u(t)/(t-a)\to0$.  Thus the extra derivative condition
+can never separate a nonzero solution from zero.
+
+Second, many non-product examples are nevertheless easy to build.  Any finite
+polynomial in $x$ with bounded nonnegative rd-continuous coefficients is at
+most linear in $u$ on the bounded range of a candidate solution.  Time-scale
+Gronwall therefore forces that solution to vanish.  Choosing nonproportional
+coefficient functions prevents a factorization $q(t)h(x)$.
+
+\section*{Automatic Endpoint Derivative}
+
+We use the standard notation $\sigma$ for the forward jump and
+$\muT(t)=\sigma(t)-t$ for graininess.  As in the source paper, the compact
+interval $[a,b]_{\T}$ is treated as the ambient time scale and $a<b$.
+
+\begin{theorem}[The derivative clause is automatic]\label{thm:auto}
+Suppose $w$ satisfies axioms (i)--(iii) of Definition~7 in the source paper.
+If a nonnegative continuous function $u:[a,b]_{\T}\to[0,\infty)$ satisfies
+\eqref{eq:ineq} for every $t\in[a,b]_{\T}$, then $u$ is
+$\Delta$-differentiable at $a$ and
+\[
+                              u^\Delta(a)=0.
+\]
+\end{theorem}
+
+\begin{proof}
+Putting $t=a$ in \eqref{eq:ineq} gives $0\leq u(a)\leq0$, hence $u(a)=0$.
+
+Suppose first that $a$ is right-scattered.  The one-step identity for the
+Cauchy $\Delta$-integral gives
+\[
+ 0\leq u(\sigma(a))
+ \leq \int_a^{\sigma(a)}w(s,u(s))\Deltas
+ =\muT(a)w(a,u(a))
+ =0.
+\]
+Thus $u(\sigma(a))=u(a)=0$.  Continuity at a right-scattered point implies
+$\Delta$-differentiability, and the difference-quotient formula yields
+\[
+ u^\Delta(a)=\frac{u(\sigma(a))-u(a)}{\muT(a)}=0.
+\]
+
+Suppose instead that $a$ is right-dense.  Fix $\varepsilon>0$.  Uniform
+equicontinuity in axiom (ii), applied at $x=0$, and axiom (iii) give an
+$\eta>0$ such that
+\begin{equation}\label{eq:uniformsmall}
+ 0\leq y<\eta
+ \quad\Longrightarrow\quad
+ 0\leq w(s,y)<\varepsilon
+ \qquad(s\in[a,b]_{\T}).
+\end{equation}
+Since $u$ is continuous at $a$ and $u(a)=0$, there is $\delta>0$ such that
+$u(s)<\eta$ whenever $s\in[a,b]_{\T}$ and $0\leq s-a<\delta$.  Hence, for
+$t\in(a,a+\delta)\cap\T$, \eqref{eq:ineq},
+\eqref{eq:uniformsmall}, and $\int_a^t1\Deltas=t-a$ imply
+\[
+ 0\leq \frac{u(t)-u(a)}{t-a}
+ \leq \frac1{t-a}\int_a^t\varepsilon\Deltas
+ =\varepsilon.
+\]
+Therefore the time-scale limit of the difference quotient at $a$ is zero,
+which is precisely $u^\Delta(a)=0$ in the right-dense case.
+\end{proof}
+
+\begin{corollary}[Equivalent definition and impossibility result]
+Under axioms (i)--(iii), axiom (iv) of Definition~7 is equivalent to the
+following apparently stronger statement:
+\begin{quote}
+$u\equiv0$ is the unique nonnegative continuous function satisfying
+\eqref{eq:ineq}, with no endpoint differentiability assumption.
+\end{quote}
+Consequently, the source paper's proposed example in which a nonzero solution
+is excluded only by the condition $u^\Delta(a)=0$ does not exist.
+\end{corollary}
+
+\begin{proof}
+The unconditional uniqueness statement plainly implies axiom (iv).  The
+reverse implication follows from Theorem~\ref{thm:auto}, because every
+nonnegative continuous solution of \eqref{eq:ineq} automatically belongs to
+the class quantified over in axiom (iv).
+\end{proof}
+
+\section*{A Family of Non-Product Examples}
+
+\begin{proposition}[Polynomial Kamke $\Delta$-functions]\label{prop:poly}
+Let $m\geq1$, and let
+$p_j\in\Rd([a,b]_{\T},[0,\infty))$ for $1\leq j\leq m$.  Then
+\begin{equation}\label{eq:poly}
+                  w(t,x)=\sum_{j=1}^m p_j(t)x^j
+\end{equation}
+is a Kamke $\Delta$-function.
+
+If the coefficient vectors
+$(p_1(t),\ldots,p_m(t))$ are not all proportional as $t$ varies, then
+\eqref{eq:poly} cannot be written as $q(t)h(x)$.
+\end{proposition}
+
+\begin{proof}
+For fixed $x$, the function $w(\cdot,x)$ is rd-continuous, and
+$w(t,0)=0$.  Every $p_j$ is bounded on the compact time-scale interval.
+For a fixed $R>0$, the mean-value theorem in the $x$ variable gives, for
+$x,y\in[0,R]$,
+\[
+ |w(t,x)-w(t,y)|
+ \leq
+ \left(\sum_{j=1}^m j\,\|p_j\|_\infty R^{j-1}\right)|x-y|,
+\]
+uniformly in $t$.  Thus axioms (i)--(iii) hold.
+
+Let $u$ be a nonnegative continuous function satisfying \eqref{eq:ineq}, and
+put $M=\max_{[a,b]_{\T}}u$.  For $0\leq x\leq M$,
+\[
+ w(t,x)\leq Q_M(t)x,
+ \qquad
+ Q_M(t):=\sum_{j=1}^m p_j(t)M^{j-1}.
+\]
+The coefficient $Q_M$ is nonnegative and rd-continuous.  Therefore
+\[
+ u(t)\leq\int_a^t Q_M(s)u(s)\Deltas.
+\]
+The time-scale Gronwall inequality (the same result used in Theorem~10 of the
+source paper) gives $u(t)\leq0$ on $[a,b]_{\T}$; hence $u\equiv0$.
+This proves axiom (iv), indeed in its unconditional form.
+
+Finally, suppose $w(t,x)=q(t)h(x)$.  At any time $t_0$ for which the
+coefficient vector is nonzero, $q(t_0)\neq0$, and equality for all $x\geq0$
+forces $h$ to be the polynomial $w(t_0,\cdot)/q(t_0)$.  Comparing polynomial
+coefficients then shows
+\[
+ (p_1(t),\ldots,p_m(t))
+ =\frac{q(t)}{q(t_0)}(p_1(t_0),\ldots,p_m(t_0))
+\]
+for every $t$.  Hence all coefficient vectors would be proportional, a
+contradiction.
+\end{proof}
+
+\begin{corollary}[Explicit non-product example]\label{cor:example}
+On every nondegenerate compact time-scale interval $[a,b]_{\T}$,
+\[
+                         \boxed{\;w(t,x)=x+(t-a)x^2\;}
+\]
+is a Kamke $\Delta$-function and is not of the form $q(t)h(x)$.
+\end{corollary}
+
+\begin{proof}
+Apply Proposition~\ref{prop:poly} with $p_1(t)=1$ and $p_2(t)=t-a$.
+For a direct factorization check, the $2\times2$ determinant using
+$t=a,b$ and $x=1,2$ is
+\[
+ \det\begin{pmatrix}w(a,1)&w(a,2)\\w(b,1)&w(b,2)\end{pmatrix}
+ =\det\begin{pmatrix}1&2\\1+b-a&2+4(b-a)\end{pmatrix}
+ =2(b-a)\neq0.
+\]
+A product $q(t)h(x)$ would give a rank-one matrix and determinant zero.
+\end{proof}
+
+\section*{Verification, Scope, and Novelty}
+
+The endpoint proof was audited against the two exhaustive cases in Remark~17
+of the source paper.  Its only time-scale identities are the right-scattered
+one-step integral formula, the right-dense difference-quotient formula, and
+$\int_a^t1\Deltas=t-a$, all stated in the source preliminaries.  The
+polynomial example uses the same Gronwall theorem that Oberta invokes for the
+linear example in Theorem~10.  No numerical or computer-assisted step enters
+the proof.
+
+The result answers precisely the two example directions in the final
+Kamke-$\Delta$ paragraph: one direction positively by a large non-product
+family, and the other negatively by proving impossibility.  It does not claim
+to modify the paper's main existence theorem or resolve its other concluding
+remarks.
+
+A bounded novelty check on August 11, 2026 searched the run's registry,
+solution, attempt, and proof-gap indexes for arXiv:2512.13602 and the phrases
+``Kamke $\Delta$-function,'' ``non-product,'' and ``endpoint
+$\Delta$-differentiability.''  Exact-title and close-phrase web searches found
+no independent answer.  OpenAlex listed one 2026 citing work, on fractional
+retarded dynamic equations, whose indexed title and abstract do not state
+either result here.  Novelty confidence is therefore moderate, not
+definitive, pending a specialist literature review.
+
+The recommended human-review focus is the quantifier use of uniform
+equicontinuity in \eqref{eq:uniformsmall}, the endpoint convention for
+$[a,b]_{\T}$, and the application of time-scale Gronwall to $Q_M$.
+
+\begin{thebibliography}{9}
+\bibitem{Oberta}
+D.~Oberta,
+\emph{On the existence of solutions of dynamic equations on time scales in
+Banach spaces}, arXiv:2512.13602v2 (2026); published online in
+Math. Methods Appl. Sci., DOI: \href{https://doi.org/10.1002/mma.70827}{10.1002/mma.70827}.
+
+\bibitem{BohnerPeterson}
+M.~Bohner and A.~Peterson,
+\emph{Dynamic Equations on Time Scales: An Introduction with Applications},
+Birkh\"auser, Boston, 2001.  See Theorem~6.4 for the Gronwall inequality
+used by the source paper and Proposition~\ref{prop:poly}.
+\end{thebibliography}
+
+\end{document}

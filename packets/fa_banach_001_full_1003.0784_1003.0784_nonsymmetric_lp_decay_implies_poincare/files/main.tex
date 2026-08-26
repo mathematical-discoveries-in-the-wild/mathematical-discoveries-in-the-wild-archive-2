@@ -1,0 +1,222 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Lp}{L^p(\mu)}
+\newcommand{\Var}{\operatorname{Var}_{\mu}}
+\newcommand{\E}{\mathcal E}
+
+\title{Contractive Centered $L^p$ Decay Forces Poincar\'e Without Symmetry}
+\author{Run fa\_banach\_001, agent\_lane\_01}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status and source question}
+
+This is a \texttt{candidate\_full\_likely\_valid} result for Patrick
+Cattiaux, Arnaud Guillin, and Cyril Roberto, \emph{Poincar\'e inequality and
+the $L^p$ convergence of semi-groups}, arXiv:1003.0784 \cite{CGR}.
+Section~4 on PDF page~12 discusses an invariant, not necessarily symmetric,
+Markov diffusion semigroup.  The authors assume that, for some $p>2$, the
+centered decay estimate
+\begin{equation}\label{eq:Hp}
+ N_p(P_t f)\le e^{-\lambda_p t}N_p(f),
+ \qquad N_p(f)=\|f-\mu(f)\|_p,
+\end{equation}
+holds with the crucial prefactor $K_p=1$.  They obtain an $L^2$ exponential
+estimate by duality and interpolation but state that, because they do not
+know that $K_2=1$, they cannot conclude the Poincar\'e inequality.
+
+\begin{center}
+\includegraphics[width=0.98\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+The theorem below closes precisely this converse under the diffusion
+hypotheses used by the source.
+
+\section*{Setting and proof intuition}
+
+Let $(P_t)_{t\ge0}$ be a Markov semigroup with invariant probability measure
+$\mu$, generator $L$, and carr\'e du champ
+\[
+ \Gamma(f,g)=\frac12\bigl(L(fg)-fLg-gLf\bigr).
+\]
+Assume the source's diffusion chain rule, so
+$\Gamma(\phi(f),\phi(f))=(\phi'(f))^2\Gamma(f,f)$ for smooth $\phi$.
+Symmetry is not assumed.
+
+Differentiating \eqref{eq:Hp} at zero gives the weighted inequality that the
+source labels (2.4).  The tempting substitution
+$h=\operatorname{sgn}(g)|g|^{2/p}$ makes its energy exactly quadratic, but
+the source correctly notes two problems: this map is not $C^2$ and $h$ need
+not have mean zero.
+
+Both are removed at once.  Smooth the fractional power and first shift $g$
+by a scalar $c_\varepsilon$ chosen so that the smoothed fractional power has
+mean zero.  Its weighted energy multiplier is at most one, while its
+$p$-th power converges to $|g-c|^2$.  The limiting $c$ need not be the mean:
+variance is no larger than the squared distance from any constant.
+
+\section*{Main result}
+
+\begin{theorem}[nonsymmetric converse]\label{thm:main}
+Suppose the invariant Markov diffusion semigroup above satisfies
+\eqref{eq:Hp} for some $p>2$ and $\lambda_p>0$, for every $f\in L^p(\mu)$
+and $t\ge0$.  Then
+\begin{equation}\label{eq:poincare}
+ \Var(g)\le \frac{p-1}{\lambda_p}
+       \int\Gamma(g,g)\,d\mu
+\end{equation}
+for every $g$ in the diffusion core (and hence in the closed form domain).
+In particular, centered $L^2$ convergence holds with prefactor one and rate
+at least $\lambda_p/(p-1)$.
+\end{theorem}
+
+\begin{proof}
+It is enough to work with real-valued core functions.  First let $h$ be a
+mean-zero core function.  Raising \eqref{eq:Hp} to the $p$-th power and
+taking the right derivative at $t=0$ gives
+\[
+ p\int |h|^{p-2}hLh\,d\mu
+ \le -p\lambda_p\int|h|^p\,d\mu.
+\]
+Invariance and the diffusion chain rule applied to $|h|^p$ give
+\[
+ -\int |h|^{p-2}hLh\,d\mu
+ =(p-1)\int|h|^{p-2}\Gamma(h,h)\,d\mu.
+\]
+Thus
+\begin{equation}\label{eq:weighted}
+ \lambda_p\int|h|^p\,d\mu
+ \le(p-1)\int|h|^{p-2}\Gamma(h,h)\,d\mu.
+\end{equation}
+
+Fix a bounded real core function $g$; the general form-domain statement
+follows by the standard truncation and closure argument.  Put
+$\alpha=2/p\in(0,1)$ and, for $\varepsilon>0$, define the smooth odd function
+\[
+ \psi_\varepsilon(s)
+ =s(s^2+\varepsilon)^{(\alpha-1)/2}.
+\]
+It is strictly increasing because
+\begin{equation}\label{eq:derivative}
+ \psi_\varepsilon'(s)
+ =(s^2+\varepsilon)^{(\alpha-3)/2}
+   (\varepsilon+\alpha s^2)>0.
+\end{equation}
+The continuous decreasing function
+\[
+ c\longmapsto\int\psi_\varepsilon(g-c)\,d\mu
+\]
+has opposite signs at the essential lower and upper bounds of $g$.
+Choose a zero $c_\varepsilon$; these centers stay in that bounded interval.
+Then
+$h_\varepsilon=\psi_\varepsilon(g-c_\varepsilon)$ has mean zero and belongs
+to the diffusion core by smooth functional calculus.
+
+Two elementary scalar estimates contain the whole argument.  Since
+$\alpha p=2$ and $\alpha-1<0$,
+\begin{equation}\label{eq:Lpbound}
+ |\psi_\varepsilon(s)|^p
+ =|s|^p(s^2+\varepsilon)^{(\alpha-1)p/2}
+ \le |s|^2.
+\end{equation}
+Also, \eqref{eq:derivative} implies
+$0<\psi_\varepsilon'(s)\le
+(s^2+\varepsilon)^{(\alpha-1)/2}$, whence
+\begin{align}
+ |\psi_\varepsilon(s)|^{p-2}
+ |\psi_\varepsilon'(s)|^2
+ &\le |s|^{p-2}
+       (s^2+\varepsilon)^{(\alpha-1)p/2} \notag\\
+ &=\left(\frac{s^2}{s^2+\varepsilon}\right)^{(p-2)/2}
+ \le1.\label{eq:energybound}
+\end{align}
+
+Apply \eqref{eq:weighted} to $h_\varepsilon$.  The diffusion chain rule and
+\eqref{eq:energybound} yield
+\begin{equation}\label{eq:beforelimit}
+ \lambda_p\int|\psi_\varepsilon(g-c_\varepsilon)|^p\,d\mu
+ \le(p-1)\int\Gamma(g,g)\,d\mu.
+\end{equation}
+Choose a sequence $\varepsilon\downarrow0$ along which
+$c_\varepsilon\to c$.  Pointwise,
+\[
+ |\psi_\varepsilon(g-c_\varepsilon)|^p
+ \longrightarrow |g-c|^2.
+\]
+The bound \eqref{eq:Lpbound}, together with boundedness of $g$ and the
+centers, permits dominated convergence in \eqref{eq:beforelimit}.  Therefore
+\[
+ \lambda_p\int|g-c|^2\,d\mu
+ \le(p-1)\int\Gamma(g,g)\,d\mu.
+\]
+Finally,
+$\Var(g)=\inf_{a\in\R}\int|g-a|^2d\mu\le\int|g-c|^2d\mu$, proving
+\eqref{eq:poincare}.
+
+For completeness, invariance also gives
+\[
+ \frac{d}{dt}\Var(P_tg)
+ =-2\int\Gamma(P_tg,P_tg)\,d\mu.
+\]
+Combining this identity with \eqref{eq:poincare} and Gronwall's lemma gives
+\[
+ \Var(P_tg)\le
+ e^{-2\lambda_p t/(p-1)}\Var(g),
+\]
+which is the asserted $K_2=1$ conclusion.
+\end{proof}
+
+\section*{Verification, scope, and novelty status}
+
+The included scalar script checks \eqref{eq:derivative},
+\eqref{eq:Lpbound}, and \eqref{eq:energybound} on 1,159,968 logarithmically
+distributed triples $(p,\varepsilon,s)$; all cases pass.  This is a regression
+check, not a substitute for the displayed proof.
+
+The hypothesis $K_p=1$ is essential to this route: if a prefactor greater
+than one is present, differentiation at zero does not yield
+\eqref{eq:weighted}.  The proof is specific to diffusions through the exact
+chain rule and does not assert a pure-jump analogue.  It requires no symmetry,
+duality, or interpolation.
+
+Eight focused attempts are recorded in the accompanying attempt note.  The
+first interpolation and finite-state operator-norm routes retained an
+uncontrolled $K_2$.  Direct differentiation isolated \eqref{eq:weighted}; the
+naive fractional power reproduced the source's centering obstruction.  The
+successful upgrade was the shifted smooth fractional power above.  Further
+checks established the energy bound, closure step, quantitative constant,
+and nonsymmetric $L^2$ consequence.
+
+Cheap run indexes and bounded web/arXiv searches on 17 August 2026 used the
+exact source sentence and the phrases \emph{$K_p=1$ Poincar\'e nonsymmetric
+semigroup}, \emph{centered $L^p$ exponential convergence Poincar\'e}, and the
+weighted formula \eqref{eq:weighted}.  They found the arXiv and published
+versions of \cite{CGR} and later related centered Sobolev results, but no
+resolution of this exact converse.  Novelty confidence is moderate-high
+pending expert review.
+
+\paragraph{Human-review recommendation.}
+Check the right-differentiation/core step leading to \eqref{eq:weighted} and
+the routine truncation/closure extension.  The scalar regularization and
+limiting argument are otherwise self-contained.
+
+\begin{thebibliography}{9}
+\bibitem{CGR}
+P.~Cattiaux, A.~Guillin, and C.~Roberto,
+\emph{Poincar\'e inequality and the $L^p$ convergence of semi-groups},
+Electron. Commun. Probab. 15 (2010), 270--280; arXiv:1003.0784.
+\end{thebibliography}
+
+\end{document}

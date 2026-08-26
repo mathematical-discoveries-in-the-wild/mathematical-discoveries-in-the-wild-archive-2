@@ -1,0 +1,500 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage[margin=1in]{geometry}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\setlength{\emergencystretch}{1em}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\K}{\mathcal{K}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\Pcal}{\mathcal{P}}
+\newcommand{\dd}{\,d}
+
+\title{Krylov Solvability for Scalar Friedrichs Transport Operators:\\
+Stable Groups, Quasi-Analytic Data, and a Smooth Obstruction}
+\author{Run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_09}}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status and scope}
+
+Candidate coefficient-wide strong partial resolution, likely valid, pending
+specialist review.  Question~3 of Caruso and Michelangeli asks for an
+investigation of Krylov solvability for
+\[
+ -\frac{d}{dx}+1
+ \quad\hbox{and}\quad
+ -\frac{d}{dx}+c(x)
+\]
+under suitable conditions on the datum and coefficient~\cite{CMFriedrichs}.
+This packet treats the full scalar coefficient class singled out there: for
+the maximal closed realization and
+\[
+ c\in L^2_{\mathrm{loc}}(\R),\qquad
+ 0<\delta\leq \operatorname{Re}c(x)\leq M<\infty\quad\text{a.e.},
+\]
+it proves Krylov solvability for every quasi-analytic datum, gives an exact
+weighted-derivative criterion for every smooth datum, and shows the positive
+class is dense.  The constant-coefficient construction from the preceding
+version supplies a Schwartz datum for which solvability fails, so mere
+$A$-smoothness is insufficient.
+
+Because the source question is an open-ended request to ``investigate'' rather
+than a precise universal conjecture, the packet is conservatively retained as
+\texttt{partial}.  Mathematically, however, the coefficient side is no longer
+left open: the theorem covers every scalar coefficient satisfying the source's
+bounded coercive-real-part hypothesis.  What is not supplied is a simpler
+closed-form classification of all smooth data beyond the exact closure
+criterion.
+
+\section*{Source question}
+
+The source question occurs in Section~4, PDF page~11.  The crop includes the
+constant operator (4.4), the variable operator (4.5), and Question~3.
+
+\begin{center}
+\includegraphics[width=\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+The question asks: ``To investigate the Krylov-solvability of the inverse
+problem $Af=g$ induced by (4.4) or (4.5) (or variants) under suitable
+conditions on $g$ and $c$.''  The paper then records
+$\widehat g\in C_c^\infty(\R)$ as a sufficient condition for (4.4).
+
+\section*{Definitions}
+
+For a closed operator $A$ on a Hilbert space $H$, put
+\[
+ C^\infty(A)=\bigcap_{n\geq0}\operatorname{dom}(A^n),\qquad
+ \K(A,g)=\operatorname{span}\{g,Ag,A^2g,\ldots\}.
+\]
+The inverse problem $Af=g$ is \emph{Krylov-solvable} when it has a solution in
+$\overline{\K(A,g)}$~\cite{CMUnbounded,CMNBounded}.  A nonzero
+$g\in C^\infty(A)$ is \emph{quasi-analytic for $A$} when
+\begin{equation}\label{eq:qa}
+ \sum_{n=1}^\infty \|A^n g\|^{-1/n}=\infty.
+\end{equation}
+This is the standard quasi-analytic-vector condition appearing in the
+Denjoy--Carleman/operator-theoretic correspondence~\cite{Chernoff}.
+
+\section*{Proof intuition}
+
+There are two changes of viewpoint.  First, a general stable-group lemma says
+that if $-A$ generates a group whose positive orbit decays exponentially,
+then the inverse is the orbit integral
+$A^{-1}g=\int_0^\infty e^{-tA}g\,dt$.  For a vector satisfying
+\eqref{eq:qa}, every scalar orbit coefficient is quasi-analytic.  Its entire
+Taylor jet at zero is determined by the Krylov vectors.  Any vector
+orthogonal to the Krylov closure therefore annihilates the whole orbit, and
+hence annihilates its integral.
+
+Second, the integrating factor $e^{-C}$, where
+$C(x)=\int_0^x c(s)\,ds$, does not give a bounded similarity on ordinary
+$L^2$.  It instead gives an exact \emph{unitary} equivalence to differentiation
+on the weighted space $L^2(e^{2\operatorname{Re}C}dx)$.  There the group is
+ordinary right translation, and coercivity of $\operatorname{Re}c$ is exactly
+what makes positive translations decay.  This proves the coefficient-wide
+positive theorem and also turns arbitrary-data solvability into an exact
+weighted derivative-approximation question.
+
+The positive condition is not cosmetic.  At $c=1$, Fourier transformation
+turns the problem into polynomial approximation in a datum-dependent measure.
+An affine lognormal moment construction produces a Schwartz datum with a
+nonzero polynomial-orthogonal witness that still pairs nontrivially with the
+resolvent.  Its power norms grow at least like $e^{n^2}$, placing it strictly
+outside the quasi-analytic class.
+
+\section*{A stable-group Krylov theorem}
+
+\begin{theorem}[Stable group plus quasi-analyticity]\label{thm:group}
+Let $A$ be closed and densely defined on a Hilbert space $H$.  Suppose $-A$
+generates a strongly continuous group $T(t)$ and, for some $M_0,\delta>0$,
+\begin{equation}\label{eq:stable}
+ \|T(t)\|\leq M_0e^{-\delta t}\qquad(t\geq0).
+\end{equation}
+Then $A$ is boundedly invertible.  For every nonzero $A$-quasi-analytic vector
+$g$, the unique solution of $Af=g$ is Krylov-solvable, and
+\begin{equation}\label{eq:orbit-inverse}
+ A^{-1}g=\int_0^\infty T(t)g\,dt
+ \in\overline{\K(A,g)}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The Bochner integral $R=\int_0^\infty T(t)\,dt$ converges in operator norm by
+\eqref{eq:stable}.  The standard generator identity
+\[
+ (-A)\int_0^N T(t)x\,dt=T(N)x-x
+\]
+and closedness, followed by $N\to\infty$, give $ARx=x$ for all $x\in H$.
+For $x\in\operatorname{dom}A$, differentiating the orbit and integrating gives
+$RAx=x$.  Hence $R=A^{-1}$.
+
+Fix a quasi-analytic $g$, put
+$M_g=\overline{\K(A,g)}$, and let $0\ne h\perp M_g$.  Define on $\R$
+\[
+ \phi_h(t)=\langle T(t)g,h\rangle.
+\]
+The smooth-vector theorem for groups gives
+\[
+ \phi_h^{(n)}(t)=\langle T(t)(-A)^ng,h\rangle.
+\]
+On every compact interval $I$ there is a constant $C_I$ such that
+\begin{equation}\label{eq:derivative-bound}
+ \sup_{t\in I}|\phi_h^{(n)}(t)|
+ \leq C_I\|A^ng\|\,\|h\|\qquad(n\geq0).
+\end{equation}
+Multiplication of the derivative majorants by a fixed positive constant does
+not change divergence of their inverse-root sum.  More explicitly, for
+$M_n=C_I\|A^ng\|\|h\|$ and
+$\beta_n=\inf_{k\geq n}M_k^{1/k}$, one has
+$\beta_n^{-1}\geq M_n^{-1/n}$; hence Carleman's criterion
+$\sum_n\beta_n^{-1}=\infty$ holds.  The Denjoy--Carleman theorem therefore
+makes $\phi_h$ quasi-analytic on every compact interval~\cite{Chernoff}.  Since
+\[
+ \phi_h^{(n)}(0)=\langle(-A)^ng,h\rangle=0\qquad(n\geq0),
+\]
+quasi-analyticity gives $\phi_h\equiv0$ on $\R$.  Thus $T(t)g$ is orthogonal
+to $M_g^\perp$ and belongs to $M_g$ for every $t$.  Closedness of $M_g$ and
+the norm-convergent integral in \eqref{eq:orbit-inverse} imply
+$A^{-1}g\in M_g$.
+\end{proof}
+
+\section*{The scalar variable-coefficient model}
+
+Let $c\in L^2_{\mathrm{loc}}(\R)$ satisfy
+\begin{equation}\label{eq:c-hyp}
+ 0<\delta\leq\operatorname{Re}c(x)\leq M<\infty\quad\text{a.e.}
+\end{equation}
+Set
+\[
+ C(x)=\int_0^x c(s)\,ds,\qquad
+ \omega(x)=e^{2\operatorname{Re}C(x)},\qquad
+ H_\omega=L^2(\R,\omega(x)\,dx).
+\]
+On $H_\omega$ define
+\[
+ Bq=-q',\qquad
+ \operatorname{dom}B=\{q\in H_\omega:q'\in H_\omega\},
+\]
+where the derivative is distributional.  Multiplication
+\[
+ U:H_\omega\to L^2(\R),\qquad Uq=e^Cq,
+\]
+is unitary.  Define $A_c=UBU^{-1}$.
+
+\begin{theorem}[Coefficient-wide resolution]\label{thm:coefficient}
+Under \eqref{eq:c-hyp}, $A_c$ is the maximal closed realization of
+$-d/dx+c(x)$ and is boundedly invertible.  If $c\in L^\infty(\R)$, then
+$\operatorname{dom}A_c=H^1(\R)$.  Moreover:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item Every nonzero $g\in C^\infty(A_c)$ satisfying
+\begin{equation}\label{eq:weighted-qa}
+ \sum_{n=1}^\infty
+ \left\|\left(\frac d{dx}\right)^n(e^{-C}g)
+ \right\|_{L^2(\omega dx)}^{-1/n}=\infty
+\end{equation}
+has a Krylov solution.
+\item For arbitrary $g\in C^\infty(A_c)$, put $q=e^{-C}g$.  The unique
+solution is
+\begin{equation}\label{eq:solution-formula}
+ f(x)=e^{C(x)}\int_x^\infty e^{-C(y)}g(y)\,dy,
+\end{equation}
+and it is a Krylov solution if and only if
+\begin{equation}\label{eq:exact-weighted-criterion}
+ x\longmapsto\int_x^\infty q(y)\,dy
+ \quad\text{belongs to}\quad
+ \overline{\operatorname{span}\{q,q',q'',\ldots\}}^{,H_\omega}.
+\end{equation}
+\item The $A_c$-analytic vectors, hence also the vectors satisfying
+\eqref{eq:weighted-qa}, form a dense subspace of $L^2(\R)$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+The unitary identity $\|Uq\|_2=\|q\|_{H_\omega}$ is immediate.  Since
+$C'=c$ locally in the weak sense,
+\[
+ UBU^{-1}f=e^C\bigl(-(e^{-C}f)'\bigr)=-f'+cf.
+\]
+Thus the unitary definition gives precisely the maximal distributional
+realization of the displayed expression.  When $c$ is bounded, multiplication
+by $c$ is bounded on $L^2$, so its domain is $H^1(\R)$.
+
+The group generated by $-B$ is right translation,
+\[
+ S(t)q(x)=q(x+t).
+\]
+Strong continuity follows first on compactly supported smooth functions and
+then by density, using the local comparability of translates of $\omega$.
+For $t\geq0$, the change of variable $y=x+t$ gives
+\begin{align}
+ \|S(t)q\|_{H_\omega}^2
+ &=\int_\R |q(y)|^2\omega(y-t)\,dy\notag\\
+ &=\int_\R |q(y)|^2\omega(y)
+   \exp\left(-2\int_{y-t}^{y}\operatorname{Re}c(s)\,ds\right)\,dy
+ \leq e^{-2\delta t}\|q\|_{H_\omega}^2.\label{eq:translation-decay}
+\end{align}
+For negative time the analogous estimate is
+$\|S(t)\|\leq e^{M|t|}$, so $S$ is a $C_0$ group.  Conjugating by $U$ gives
+\begin{equation}\label{eq:physical-group}
+ T_c(t)g(x)=
+ \exp\left(-\int_0^t c(x+s)\,ds\right)g(x+t),
+\end{equation}
+and \eqref{eq:translation-decay} gives
+$\|T_c(t)\|\leq e^{-\delta t}$ for $t\geq0$.  Theorem~\ref{thm:group}
+applies.
+
+If $g\in C^\infty(A_c)$ and $q=U^{-1}g=e^{-C}g$, unitary equivalence gives
+\begin{equation}\label{eq:powers}
+ \|A_c^ng\|_2=\|B^nq\|_{H_\omega}=\|q^{(n)}\|_{H_\omega},
+ \qquad
+ U^{-1}\overline{\K(A_c,g)}
+ =\overline{\operatorname{span}\{q,q',q'',\ldots\}}^{,H_\omega}.
+\end{equation}
+Thus \eqref{eq:weighted-qa} is exactly \eqref{eq:qa}, and part~(i) follows.
+Also,
+\[
+ B^{-1}q=\int_0^\infty S(t)q\,dt,
+\]
+which has the almost-everywhere representative
+$B^{-1}q(x)=\int_x^\infty q(y)\,dy$.  This integral is absolutely convergent
+for each fixed $x$ by Cauchy--Schwarz and the exponential lower growth of
+$\omega$.  Applying $U$ gives \eqref{eq:solution-formula}; comparing it with
+\eqref{eq:powers} proves the exact criterion in part~(ii).
+
+For completeness, standard Gaussian group regularization supplies density in
+part~(iii).  If $x\in H$ and $\rho_s$ is a centered Gaussian approximate
+identity, then
+\[
+ x_s=\int_\R \rho_s(t)T_c(t)x\,dt\longrightarrow x.
+\]
+Integration by parts expresses $A_c^nx_s$ using $\rho_s^{(n)}$; Gaussian
+derivative estimates give
+$\|A_c^nx_s\|\leq C_sD_s^n\sqrt{n!}\,\|x\|$.  Hence $x_s$ is an analytic
+vector.  Analytic vectors are quasi-analytic because Stirling's formula makes
+the inverse-root series dominate a constant multiple of the harmonic series.
+This is the familiar analytic-vector regularization mechanism~\cite{Nelson}.
+\end{proof}
+
+\section*{Sharpness at the constant coefficient}
+
+The next theorem records the full constant-model classification and the
+smooth obstruction from the preceding packet version.  Let $\F$ be the
+unitary Fourier transform with $\F(f')=i\xi\widehat f$.  For
+$A=-d/dx+1$ and nonzero $g\in C^\infty(A)$, put
+\[
+ d\mu_g(\xi)=|\widehat g(\xi)|^2\,d\xi,
+ \qquad r(\xi)=\frac1{1-i\xi},
+\]
+and write $\Pcal$ for the complex polynomials.
+
+\begin{theorem}[Exact constant criterion and obstruction]\label{thm:constant}
+For $A=-d/dx+1$ on $H^1(\R)\subset L^2(\R)$:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item The solution of $Af=g$ is Krylov if and only if
+$r\in\overline{\Pcal}^{L^2(\mu_g)}$.
+\item If $\int e^{\varepsilon|\xi|}\,d\mu_g(\xi)<\infty$ for some
+$\varepsilon>0$, then polynomials are dense in $L^2(\mu_g)$ and the problem
+is Krylov-solvable.  In particular, bounded Fourier support is sufficient
+without any smoothness assumption on $\widehat g$.
+\item There is a nonzero $g\in\mathcal S(\R)$ for which the solution is not
+Krylov.  This datum is not quasi-analytic for $A$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Under $\F$, $A$ is multiplication by $m(\xi)=1-i\xi$ and $A^{-1}$ is
+multiplication by $r=m^{-1}$.  The map
+\[
+ J_g:L^2(\mu_g)\to L^2(\R),\qquad J_gp=p\widehat g,
+\]
+is an isometry with closed range.  Since polynomials in $m$ and in $\xi$
+coincide,
+\[
+ \F\bigl(\overline{\K(A,g)}\bigr)
+ =J_g\left(\overline{\Pcal}^{L^2(\mu_g)}\right),
+ \qquad \widehat{A^{-1}g}=J_gr.
+\]
+This proves~(i).
+
+For~(ii), if $h\in L^2(\mu_g)$ is polynomial-orthogonal, the finite complex
+measure $d\eta=\overline h\,d\mu_g$ has an exponential moment of half the
+given order by Cauchy--Schwarz.  Its bilateral Laplace transform is holomorphic
+on a strip and every derivative at zero vanishes.  The identity theorem and
+uniqueness of Fourier transforms of finite measures give $\eta=0$
+\cite[Chapter~9]{RudinRCA}.  Thus the polynomial orthogonal complement is
+trivial.
+
+For~(iii), let $\nu$ be the lognormal probability measure
+\begin{equation}\label{eq:lognormal}
+ d\nu(x)=\frac1{x\sqrt{2\pi}}
+ \exp\left(-\frac{(\log x)^2}{2}\right)dx\qquad(x>0)
+\end{equation}
+and $h_0(x)=\sin(2\pi\log x)$.  If $X=e^Y$ with $Y$ standard normal, then
+for every integer $n\geq0$,
+\begin{equation}\label{eq:zero-moments}
+ \int_0^\infty x^nh_0(x)\,d\nu(x)
+ =\operatorname{Im}\exp\left(\frac{(n+2\pi i)^2}{2}\right)=0.
+\end{equation}
+The signed measure $\sigma=h_0\nu$ is nonzero, so its Cauchy transform
+\[
+ F(z)=\int_0^\infty\frac{1}{x-z}\,d\sigma(x),\qquad\operatorname{Im}z<0,
+\]
+is not identically zero.  Indeed, otherwise its Poisson convolutions would
+all vanish.  The approximate-identity limit would then force $\sigma=0$.
+Choose $z_0=u+iv$ with $v<0$ and $F(z_0)\ne0$.  Put
+\[
+ a=-1/v>0,\qquad b=-au,\qquad T(x)=ax+b,
+\]
+and transport $\nu$ by $T$.  If $\mu=T_\#\nu$ and $h(Tx)=h_0(x)$,
+equation \eqref{eq:zero-moments} says that $h$ annihilates every polynomial in
+$L^2(\mu)$, whereas
+\[
+ \int r(\xi)h(\xi)\,d\mu(\xi)
+ =\frac{i}{a}F(z_0)\ne0,
+\]
+because $1-i(ax+b)=-ia(x-z_0)$.  Hence
+$r\notin\overline{\Pcal}^{L^2(\mu)}$.
+
+Let $w$ be the density of $\mu$ and choose $\widehat g=\sqrt w$.  Before the
+affine change of variable, the square-root density, extended by zero to the
+negative half-line, is a constant multiple of
+\[
+ q_0(x)=x^{-1/2}\exp\left(-\frac{(\log x)^2}{4}\right)\qquad(x>0).
+\]
+Every derivative has the form
+$x^{-k-1/2}P_k(\log x)e^{-(\log x)^2/4}$.  The log-Gaussian dominates every
+exponential as $\log x\to\pm\infty$, proving flatness at zero and Schwartz
+decay at infinity.  Therefore $\widehat g$, and hence $g$, is Schwartz and
+$\mu_g=\mu$.  Part~(i) now proves non-solvability.
+
+Finally this example is outside the positive class of
+Theorem~\ref{thm:coefficient}.  With $\xi=aX+b$, for all large $n$ and on
+$Y=\log X\in[2n,2n+1]$, one has $|\xi|\geq aX/2$ and
+\[
+ \int_{2n}^{2n+1}e^{2ny-y^2/2}\frac{dy}{\sqrt{2\pi}}
+ \geq c_0e^{2n^2}.
+\]
+Consequently
+$\|A^ng\|\geq c_1(a/2)^ne^{n^2}$ for all large $n$, so
+$\sum_n\|A^ng\|^{-1/n}<\infty$.  The Schwartz datum is $A$-smooth but not
+$A$-quasi-analytic.
+\end{proof}
+
+\section*{Verification notes}
+
+The following points received separate adversarial checks.
+\begin{itemize}
+\item The integrating factor is used as a unitary map from the weighted
+space, not incorrectly as a bounded similarity on unweighted $L^2$.
+\item The translation estimate has the correct orientation: right
+translation compares $\omega(y-t)$ with $\omega(y)$ and decays for positive
+time because $\operatorname{Re}c\geq\delta$.
+\item The Denjoy--Carleman argument is applied to scalar group orbits on every
+compact real interval; the group, rather than only a semigroup, removes an
+endpoint uniqueness issue.
+\item The maximal-domain statement follows by unitary definition and the
+weak product rule.  The familiar $H^1$ domain is asserted only when $c$ is
+bounded.
+\item The negative example exhibits both a polynomial-orthogonal witness and
+a nonzero pairing with the specific resolvent; moment indeterminacy alone is
+not used.
+\item The lower power-norm bound confirms that the counterexample does not
+contradict the quasi-analytic theorem.
+\end{itemize}
+
+The accompanying script checks the lognormal moment formula at high precision
+and evaluates one sample Cauchy pairing as a regression test.  These numerical
+checks are not used in the proof.  The detailed report is
+\texttt{verification.md}.
+
+\section*{Novelty check and limitations}
+
+The run indexes and a bounded arXiv/web search were checked using the exact
+source title and authors, ``Krylov solvability Friedrichs'',
+``$-d/dx+c(x)$ Krylov'', ``analytic vector Krylov-solvable'', stable
+semigroups, and quasi-analytic vectors.  The closest works inspected were
+arXiv:1811.08202, 2001.08127, 2102.13626, and 2210.04752
+\cite{CMNBounded,CMUnbounded,CMPerturb,CarusoNormal}.  They contain the
+general framework, self-adjoint/skew-adjoint mechanisms, perturbation theory,
+and bounded or compact normal examples.  No later paper explicitly resolving
+Question~3, and no statement of Theorem~\ref{thm:group} in this Krylov form,
+was located in this bounded search.  This is not proof of novelty.
+
+The stable-group theorem is a short application of the classical
+Denjoy--Carleman theorem and may be folklore.  The candidate-new contribution
+is its coefficient-wide Friedrichs application together with the exact
+weighted model and the quasi-analytic-versus-smooth separation.  The
+coefficient may have unbounded imaginary part under the stated local
+regularity, but the realization is then the maximal domain rather than
+necessarily $H^1$.  Matrix-valued Friedrichs systems and a simpler intrinsic
+classification of every smooth datum remain outside the packet.
+
+\section*{Human-review recommendation}
+
+Preserve as a coefficient-wide strong partial-resolution candidate.  A
+reviewer should focus on the precise Denjoy--Carleman criterion used after
+\eqref{eq:derivative-bound}, the maximal-domain identification under only
+$c\in L^2_{\mathrm{loc}}$, and the density estimate in Gaussian group
+regularization.  If the natural interpretation of the open-ended source
+question is ``give useful sharp conditions across the scalar class'', this
+packet can reasonably be viewed as a full scalar resolution.  Protocol-wise,
+\texttt{partial} remains the safer label pending that judgment.
+
+\begin{thebibliography}{9}
+
+\bibitem{CMFriedrichs}
+N.~A. Caruso and A. Michelangeli,
+\emph{Open problems and perspectives on solving Friedrichs systems by Krylov
+approximation}, arXiv:2406.05777v2 (2024).
+
+\bibitem{CMUnbounded}
+N.~A. Caruso and A. Michelangeli,
+\emph{Krylov solvability of unbounded inverse linear problems},
+Integral Equations Operator Theory 93 (2021), Paper No.~1;
+arXiv:2001.08127.
+
+\bibitem{CMNBounded}
+N.~A. Caruso, A. Michelangeli, and P. Novati,
+\emph{On Krylov solutions to infinite-dimensional inverse linear problems},
+Calcolo 56 (2019), Paper No.~32; arXiv:1811.08202.
+
+\bibitem{CMPerturb}
+N.~A. Caruso and A. Michelangeli,
+\emph{Krylov solvability under perturbations of abstract inverse linear
+problems}, Journal of Applied Analysis 29 (2023), 3--29;
+arXiv:2102.13626.
+
+\bibitem{CarusoNormal}
+N.~A. Caruso,
+\emph{A note on the Krylov solvability of compact normal operators on Hilbert
+space}, Complex Analysis and Operator Theory 17 (2023);
+arXiv:2210.04752.
+
+\bibitem{Chernoff}
+P.~R. Chernoff,
+\emph{Quasi-analytic vectors and quasi-analytic functions},
+Bulletin of the American Mathematical Society 81 (1975), 637--646.
+
+\bibitem{Nelson}
+E.~Nelson,
+\emph{Analytic vectors}, Annals of Mathematics (2) 70 (1959), 572--615.
+
+\bibitem{RudinRCA}
+W.~Rudin, \emph{Real and Complex Analysis}, 3rd ed., McGraw--Hill, 1987.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,264 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.92in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+
+\definecolor{deepblue}{RGB}{27,72,112}
+\definecolor{softblue}{RGB}{235,243,249}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Hh}{\mathcal H}
+\newcommand{\dd}{\,d}
+\newcommand{\cl}{\overline}
+
+\title{Compact-Group Quotients Preserve Hilbert Representability\\
+and an Affirmative Answer to Problem 8.1(c)}
+\author{Candidate full solution -- run \texttt{fa\_banach\_001}, lane 14}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{deepblue}{softblue}{\parbox{0.89\textwidth}{
+\textbf{Candidate full answer to option (c); likely valid.}
+Every metrizable recurrent-transitive Hilbert system is an almost one-to-one
+factor of a Hilbert-representable system.  Options (a), (b), and Problem 8.2
+are not claimed.
+}}
+\end{center}
+
+\section*{Source question}
+
+Glasner and Weiss \cite{GW} prove in their Theorem 3.1 that every metrizable
+recurrent-transitive Hilbert system has an almost one-to-one extension which
+is a compact group-factor of a Hilbert-representable system.  On source PDF
+page 13, Problem 8.1 asks whether either extension can be removed and lists
+three precise alternatives.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{The structure-theorem context and Problems 8.1--8.2 in \cite{GW},
+source PDF page 13.}
+\end{figure}
+
+\noindent\textbf{Selected transcription (Problem 8.1(c)).}
+Is a metrizable recurrent-transitive Hilbert system always ``an almost 1-1
+factor of a Hilbert-representable system''?
+
+\section*{Definitions and source input}
+
+A compact metric dynamical system $(X,T)$ is \emph{Hilbert-representable} if
+there are a Hilbert space $\Hh$, a unitary operator $U$ on $\Hh$, and a weakly
+compact $U$-invariant set $Z\subset\Hh$ such that $(X,T)$ is isomorphic to
+$(Z,U|_Z)$.  A factor map is \emph{almost one-to-one} if the points in the
+target having singleton fibers form a dense set (equivalently in this compact
+metric setting, a dense $G_\delta$ set).
+
+The only dynamical input used below is the construction in the proof of
+\cite[Theorem 3.1]{GW}.  It gives a Hilbert-representable point-transitive
+system $(X,U)$, a compact subgroup $K$ of its uniform Ellis group
+$\Lambda_X$, and a diagram
+\[
+ X \longrightarrow \widetilde Y=X/K
+ \mathop{\longrightarrow}^{\rho} Y,
+\]
+where the first map is the $K$-orbit quotient and $\rho$ is almost one-to-one.
+
+\section*{Proof intuition}
+
+The apparent loss of Hilbert representability occurs at the quotient $X/K$.
+To recover it, replace a point $x$ by the probability measure uniformly
+distributed on its compact orbit $Kx$.  Encode this measure by all of its
+symmetric tensor moments.  The moments live in Hilbert tensor powers and
+transform unitarily under the dynamics.  They separate orbit measures because
+polynomials in weak linear coordinates are dense in the continuous functions
+on the weakly compact set.  A weighted direct sum of all moments therefore
+embeds $X/K$ into one weakly compact Hilbert system.
+
+The compact group in the source is initially a group of homeomorphisms of
+$X$.  A short cyclicity argument lifts it to strongly continuous commuting
+unitaries, so the moment construction applies to exactly the quotient in
+Theorem 3.1.
+
+\section*{Compact-group quotient lemma}
+
+Write $\Hh_{\R}$ for the realification of a real or complex Hilbert space, and
+$\Hh_{\R}^{\odot n}$ for its $n$th real symmetric Hilbert tensor power.
+
+\begin{lemma}[Tensor-moment quotient]
+Let $X\subset\Hh$ be weakly compact and invariant under a unitary $U$.  Let
+$K$ be a compact group with a strongly continuous unitary representation on
+$\Hh$ such that every $k\in K$ preserves $X$ and commutes with $U$.  Then the
+quotient dynamical system $(X/K,\bar U)$ is Hilbert-representable.
+\end{lemma}
+
+\begin{proof}
+Pass to $\Hh_{\R}$, on which all the operators are orthogonal and the weak
+topology on $X$ is unchanged.  Let $m_K$ be normalized Haar measure.  For
+$n\geq1$ define
+\[
+ M_n(x)=\int_K (kx)^{\otimes n}\dd m_K(k)
+ \quad\in\Hh_{\R}^{\odot n}.
+\]
+This Bochner integral exists because the orbit map is norm-continuous.  It is
+constant on $K$-orbits by invariance of Haar measure.
+
+Each $M_n:X\to\Hh_{\R}^{\odot n}$ is weak-to-weak continuous.  Indeed, for a
+pure symmetric tensor $v_1\odot\cdots\odot v_n$, its scalar pairing with
+$M_n(x)$ is an integral of
+\[
+ \prod_{j=1}^n \langle kx,v_j\rangle
+ =\prod_{j=1}^n \langle x,k^{-1}v_j\rangle.
+\]
+This is jointly continuous in $(k,x)\in K\times X$: the vectors $k^{-1}v_j$
+vary in norm and $X$ is bounded in norm.  Integration over compact $K$
+preserves continuity.  Finite linear combinations of pure tensors are dense,
+and the estimate $\|M_n(x)\|\leq R^n$, where
+$R=\sup_{x\in X}\|x\|$, extends the conclusion to every test tensor.
+
+The moments separate $K$-orbits.  To see this, let $\mu_x$ be the pushforward
+of $m_K$ under $k\mapsto kx$.  If $M_n(x)=M_n(y)$ for all $n\geq1$, then
+$\mu_x$ and $\mu_y$ have the same integrals against every finite product of
+real weak linear coordinates.  The algebra of such real polynomials contains
+the constants and separates points of the weakly compact Hausdorff space
+$X$.  The real Stone--Weierstrass theorem \cite{Rudin} gives
+$\mu_x=\mu_y$.  Haar measure has full support, so
+\[
+ \operatorname{supp}\mu_x=Kx,\qquad
+ \operatorname{supp}\mu_y=Ky.
+\]
+Thus $Kx=Ky$.
+
+Choose positive weights
+$a_n=2^{-n}(1+R)^{-n}$ and set
+\[
+ \Phi(x)=\bigoplus_{n=1}^{\infty}a_nM_n(x)
+ \quad\in\mathcal K:=\bigoplus_{n=1}^{\infty}\Hh_{\R}^{\odot n}.
+\]
+The bound $a_n\|M_n(x)\|\leq2^{-n}$ gives a uniformly square-summable tail,
+so coordinatewise weak continuity implies weak continuity of $\Phi$.  The map
+descends to a continuous injection $\bar\Phi:X/K\to\mathcal K$.  Since $X/K$
+is compact and the weak topology is Hausdorff, this is a homeomorphism onto a
+weakly compact set.
+
+Finally, commutation of $U$ with $K$ gives
+\[
+ M_n(Ux)=U^{\odot n}M_n(x).
+\]
+Hence $\bar\Phi$ intertwines $\bar U$ with the orthogonal operator
+$\bigoplus_{n\geq1}U^{\odot n}$ on $\mathcal K$.  This is a Hilbert
+representation of the quotient system.
+\end{proof}
+
+\section*{Lifting the compact kernel}
+
+\begin{lemma}[Uniform Ellis group lift]
+Let $(X,U)$ be a point-transitive Hilbert-representable metric system.  After
+choosing a cyclic Hilbert realization
+\[
+ X=\operatorname{weak\!\!-cl}\{U^nx_0:n\in\mathbb Z\},
+ \qquad
+ \Hh=\cl{\operatorname{span}}\{U^nx_0:n\in\mathbb Z\},
+\]
+the uniform Ellis group $\Lambda_X$ has a strongly continuous unitary
+representation on $\Hh$.  It extends its action on $X$, and its image commutes
+with $U$.
+\end{lemma}
+
+\begin{proof}
+Every transitive point $z\in X$ has $\|z\|=\|x_0\|$.  Indeed, as a weak limit
+of orbit points it satisfies $\|z\|\leq\|x_0\|$.  Since $x_0$ is in the weak
+orbit closure of the transitive point $z$, weak lower semicontinuity gives the
+reverse inequality.
+
+For $g\in\Lambda_X$, choose integers $n_j$ for which $U^{n_j}|_X$ converges
+uniformly to $g$ in a compatible weak metric.  Then
+$U^{n_j}x_0\to gx_0$ weakly.  The point $gx_0$ is transitive, so the preceding
+norm equality upgrades this convergence to norm convergence.  On every
+vector $p(U)x_0$ in the algebraic cyclic span,
+\[
+ U^{n_j}p(U)x_0=p(U)U^{n_j}x_0
+\]
+therefore converges in norm.  Uniform boundedness and density give a strong
+operator limit $\widehat g$ on $\Hh$.  Applying the same construction to
+$g^{-1}$ shows that $\widehat g$ is unitary.  It is independent of the
+approximating sequence, extends $g$ on $X$, and commutes with $U$.
+
+If $g_i\to g$ in $\Lambda_X$, then $g_ix_0\to gx_0$ weakly; all these points
+are transitive and have the same norm.  Thus the convergence is in norm, and
+cyclicity gives $\widehat g_i\to\widehat g$ strongly.  The lift is strongly
+continuous.
+\end{proof}
+
+\section*{Result}
+
+\begin{theorem}[Affirmative answer to Problem 8.1(c)]
+Every metrizable recurrent-transitive Hilbert system is an almost one-to-one
+factor of a Hilbert-representable system.
+\end{theorem}
+
+\begin{proof}
+Let $(Y,T)$ be such a system.  Apply the construction of
+\cite[Theorem 3.1]{GW}.  It supplies a point-transitive
+Hilbert-representable system $(X,U)$, a compact subgroup
+$K\leq\Lambda_X$, the quotient $\widetilde Y=X/K$, and an almost one-to-one
+factor map $\rho:\widetilde Y\to Y$.
+
+By the uniform Ellis group lift, $K$ acts strongly continuously on a cyclic
+Hilbert realization of $X$ by unitaries commuting with $U$.  The tensor-moment
+quotient lemma therefore shows that $\widetilde Y=X/K$ is
+Hilbert-representable.  The already constructed map
+$\rho:\widetilde Y\to Y$ is almost one-to-one, which is exactly option (c).
+\end{proof}
+
+\section*{Verification, limitations, and novelty}
+
+The proof uses no selection theorem and no computational assumption.  The
+moment map is defined on the whole quotient, not merely on a dense orbit.  Its
+separation argument uses all tensor degrees, so it does not assume finite
+generation of compact-group invariants.
+
+The conclusion does not establish that $Y$ itself is Hilbert-representable
+(option (a)), that $Y$ is a compact group-factor of a Hilbert-representable
+system (option (b)), or the algebraic assertion in Problem 8.2.
+
+Bounded searches on 9 August 2026 used the exact source question and arXiv id,
+``factor of a Hilbert-representable system'', ``almost 1-1'' with Hilbert
+representability, compact-group quotients, and symmetric tensor moments.  They
+found later surveys repeating the question.  Ben Yaacov--Ibarluc\'ia--Tsankov
+\cite{BIT} prove factor closure for the Hilbert compactification of a special
+pro-oligomorphic class, not the general quotient lemma or option (c) above.  No
+later general answer was found.  This is a bounded search, not a definitive
+priority claim.
+
+\section*{Human-review recommendation}
+
+Review first the lift of $\Lambda_X$ to the strong unitary closure, especially
+the weak-plus-equal-norm step on the cyclic transitive vector.  Then check that
+equality of the averaged tensor moments determines the Haar orbit measure via
+real Stone--Weierstrass.  These are the only non-source ingredients carrying
+the conclusion.
+
+\begin{thebibliography}{9}
+\bibitem{GW}
+E. Glasner and B. Weiss,
+\emph{On Hilbert dynamical systems}, arXiv:1005.0230, 2010.
+
+\bibitem{BIT}
+I. Ben Yaacov, T. Ibarluc\'ia, and T. Tsankov,
+\emph{Eberlein oligomorphic groups},
+Trans. Amer. Math. Soc. 370 (2018), 2181--2209; arXiv:1602.05097.
+
+\bibitem{Rudin}
+W. Rudin, \emph{Real and Complex Analysis}, 3rd ed.,
+McGraw--Hill, 1987.
+\end{thebibliography}
+
+\end{document}

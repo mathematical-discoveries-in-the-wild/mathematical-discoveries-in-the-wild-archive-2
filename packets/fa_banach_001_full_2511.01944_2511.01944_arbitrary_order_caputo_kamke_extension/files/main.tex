@@ -1,0 +1,279 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=0.82in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,microtype}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[hidelinks]{hyperref}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\C}{\mathcal C}
+\newcommand{\co}{\operatorname{co}}
+\newcommand{\cl}{\operatorname{cl}}
+\newcommand{\B}{\overline B}
+\newcommand{\Ga}{\Gamma}
+\newcommand{\diam}{\operatorname{diam}}
+
+\title{The Kamke--Noncompactness Existence Theorem\\
+Extends to Every Caputo Order}
+\author{Run \texttt{fa\_banach\_001}, lane 10}
+\date{12 August 2026}
+
+\begin{document}
+\maketitle
+
+\textbf{Status.} Candidate full positive answer to one of the explicit closing
+questions in arXiv:2511.01944.  The source proves its existence theorem only
+for $0<\alpha<1$ and asks for an extension to arbitrary $\alpha>0$.  The
+theorem below supplies that extension, including all initial data and an
+explicit full-interval criterion.
+
+\section{Statement}
+
+Let $E$ be a real Banach space, $\alpha>0$, and $m=\lceil\alpha\rceil$ (with
+$m=\alpha$ when $\alpha$ is an integer).  Given $u_0,\ldots,u_{m-1}\in E$, put
+\[
+ P(t)=\sum_{j=0}^{m-1}\frac{(t-a)^j}{j!}u_j.                 \tag{1}
+\]
+For this packet the arbitrary-order operators are defined by
+\[
+ D_{a+}^{\alpha}h=D^mJ^{m-\alpha}h,
+ \qquad {}^CD_{a+}^{\alpha}u=D_{a+}^{\alpha}(u-P),           \tag{1a}
+\]
+where $J^\rho$ is the Riemann--Liouville integral (and $J^0$ is the identity),
+whenever the right sides exist.  At integer order this is the ordinary
+$m$th derivative; below order one it is exactly the source's definition.
+Fix $\widetilde\delta,\beta>0$, set $\widetilde I=[a,a+\widetilde\delta]$, and
+consider the tube
+\[
+ R=\{(t,x):t\in\widetilde I,\ \|x-P(t)\|\leq\beta\}.
+\]
+A sublinear measure of noncompactness $\mu$ is understood in exactly the
+axiomatic sense of the source, and it has the \emph{singleton property} if
+$\mu(\{x\})=0$ for every $x\in E$.
+
+We call a continuous
+$w_\alpha:\widetilde I\times[0,\infty)\to[0,\infty)$ a Kamke function of
+order $\alpha$ when $w_\alpha(t,0)=0$ and zero is the unique nonnegative
+continuous function $z$ satisfying
+\[
+ z(t)\leq \frac1{\Ga(\alpha)}\int_a^t(t-s)^{\alpha-1}
+ w_\alpha(s,z(s))\,ds,\qquad
+ \frac{z(t)}{(t-a)^\alpha}\longrightarrow0.                \tag{2}
+\]
+This is the source definition, now made for every positive order.
+
+\begin{theorem}[arbitrary-order extension]\label{thm:main}
+Suppose $f:R\to E$ satisfies:
+\begin{enumerate}
+\item $f$ is uniformly continuous on $R$;
+\item $\|f(t,x)\|\leq M$ on $R$ for some $M>0$;
+\item for every $t\in\widetilde I$ and every nonempty bounded
+      $X\subseteq\B(P(t),\beta)$,
+\[
+ \mu(f(t,X))\leq w_\alpha(t,\mu(X)).                         \tag{3}
+\]
+\end{enumerate}
+Then the Caputo problem
+\[
+ {}^CD_{a+}^{\alpha}u(t)=f(t,u(t)),\qquad
+ u^{(j)}(a)=u_j\quad(0\leq j<m)                              \tag{4}
+\]
+has a solution on $I=[a,a+\delta]$, where
+\[
+ \boxed{\ \delta=\min\left\{\widetilde\delta,
+ \left(\frac{\beta\Ga(\alpha+1)}{M}\right)^{1/\alpha}
+ \right\}.\ }                                               \tag{5}
+\]
+The constructed $u$ is continuous, the derivative in (1a) exists and is
+continuous, and all identities in (4) hold.  It is obtained as a fixed point
+of the corresponding Volterra equation (12).
+\end{theorem}
+
+For $0<\alpha<1$, $m=1$ and $P\equiv u_0$, so Theorem~\ref{thm:main} is
+exactly the source theorem.  The moving tube is necessary for higher order:
+the prescribed initial derivatives generate $P$ before the nonlinear term is
+integrated.
+
+\begin{corollary}[whole prescribed interval]\label{cor:global}
+Under the hypotheses of Theorem~\ref{thm:main}, if
+\[
+ M\widetilde\delta^\alpha\leq\beta\Ga(\alpha+1),             \tag{6}
+\]
+then the solution exists on all of $\widetilde I$.  In particular, this gives
+the full-interval extension asked about separately by the source whenever its
+boundedness and noncompactness hypotheses hold on an invariant tube satisfying
+(6).
+\end{corollary}
+
+\section{Two kernel facts for every positive order}
+
+Write
+\[
+ (J^\alpha g)(t)=\frac1{\Ga(\alpha)}
+ \int_a^t(t-s)^{\alpha-1}g(s)\,ds.                           \tag{7}
+\]
+
+\begin{lemma}[uniform modulus]\label{lem:mod}
+If $\|g(t)\|\leq M$ on $I$, then
+\[
+ \|J^\alpha g(t)-J^\alpha g(s)\|\leq L_\alpha|t-s|^q,
+ \qquad q=\min\{\alpha,1\},                                \tag{8}
+\]
+where one can take
+\[
+ L_\alpha=\begin{cases}
+ 2M/\Ga(\alpha+1),&0<\alpha<1,\\
+ M,&\alpha=1,\\
+ M\delta^{\alpha-1}/\Ga(\alpha),&\alpha>1.
+ \end{cases}                                                  \tag{9}
+\]
+\end{lemma}
+
+\begin{proof}
+For $0<\alpha<1$, split the two Volterra integrals at the smaller time and
+integrate the difference of the decreasing kernels; this gives the first
+line.  At $\alpha=1$ the assertion is immediate.  For $\alpha>1$,
+$J^\alpha g$ is differentiable with derivative $J^{\alpha-1}g$, whose norm is
+at most $M\delta^{\alpha-1}/\Ga(\alpha)$.
+\end{proof}
+
+\begin{lemma}[noncompactness through the kernel]\label{lem:mnc}
+Let $H\subset\C(I,E)$ be bounded and uniformly equicontinuous.  For every
+$t\in I$,
+\[
+ \mu\left(\left\{\int_a^t(t-s)^{\alpha-1}h(s)\,ds:h\in H\right\}\right)
+ \leq\int_a^t(t-s)^{\alpha-1}\mu(H(s))\,ds.                 \tag{10}
+\]
+This holds for every $\alpha>0$.
+\end{lemma}
+
+\begin{proof}
+The source proves (10) by approximating the Bochner integrals with common
+Riemann sums and using homogeneity and subadditivity of $\mu$.  The proof uses
+only that the scalar kernel is nonnegative and integrable.  Both properties
+hold for $(t-s)^{\alpha-1}$ for every $\alpha>0$; its being singular when
+$\alpha<1$ is not otherwise used.  Passing to the limit is justified by the
+common equicontinuity modulus, exactly as in the source.
+\end{proof}
+
+For continuous $g$, the semigroup identity gives directly
+\[
+ D_{a+}^{\alpha}J^\alpha g
+ =D^mJ^{m-\alpha}J^\alpha g=D^mJ^m g=g.                     \tag{11}
+\]
+Moreover, the derivatives of $J^\alpha g$ through order $m-1$ vanish at
+$a$.  Consequently every fixed point of
+\[
+ u(t)=P(t)+J^\alpha(f(\cdot,u(\cdot)))(t).                  \tag{12}
+\]
+satisfies both the differential equation and the full initial jet in (4).
+
+\section{Proof of the theorem}
+
+The numerical choice (5) gives
+\[
+ \frac{M\delta^\alpha}{\Ga(\alpha+1)}\leq\beta.            \tag{13}
+\]
+Let $\omega_P$ be the modulus of continuity of $P$ on $I$, let $q,L_\alpha$
+be as in Lemma~\ref{lem:mod}, and define $X_0\subset\C(I,E)$ by
+\[
+ \begin{split}
+ X_0=\{u:\ &\|u(t)-P(t)\|\leq\beta,\quad u(a)=u_0,\\
+ &\|u(t)-u(s)\|\leq\omega_P(|t-s|)+L_\alpha|t-s|^q\}.
+ \end{split}                                                  \tag{14}
+\]
+It is nonempty, bounded, closed, convex, and uniformly equicontinuous.  Define
+on $X_0$
+\[
+ (Fu)(t)=P(t)+J^\alpha(f(\cdot,u(\cdot)))(t).                \tag{15}
+\]
+Equations (8) and (13) show $F(X_0)\subseteq X_0$.  Uniform continuity of
+$f$ makes $F$ continuous.
+
+Set
+\[
+ X_{k+1}=\cl\co F(X_k),\qquad v_k(t)=\mu(X_k(t)).             \tag{16}
+\]
+Then $X_{k+1}\subseteq X_k$.  The common modulus in (14) and the standard
+evaluation estimate for a sublinear measure of noncompactness make
+$\{v_k\}$ uniformly equicontinuous.  It is uniformly bounded and decreases
+pointwise, hence converges uniformly to a continuous $v_\infty\geq0$.
+
+Uniform continuity of $f$ and the common modulus (14) ensure that
+$f(\cdot,X_k(\cdot))$ is uniformly equicontinuous.  The singleton property
+removes the deterministic polynomial $P(t)$ from the measure estimate.
+Lemma~\ref{lem:mnc}, (3), and (16) give
+\[
+ v_{k+1}(t)\leq\frac1{\Ga(\alpha)}\int_a^t(t-s)^{\alpha-1}
+ w_\alpha(s,v_k(s))\,ds.                                    \tag{17}
+\]
+Uniform convergence of $v_k$ and uniform continuity of $w_\alpha$ on the
+compact range involved allow passage to the limit, so $v_\infty$ satisfies
+the first part of (2).
+
+It remains to verify the small-time condition in (2); this is the only step
+where the higher-order initial data might conceivably cause trouble.  Put
+\[
+ y(t)=P(t)+\frac{(t-a)^\alpha}{\Ga(\alpha+1)}f(a,u_0).        \tag{18}
+\]
+For every $u\in X_0$,
+\[
+ \|Fu(t)-y(t)\|
+ \leq\frac{(t-a)^\alpha}{\Ga(\alpha+1)}\gamma(t),            \tag{19}
+\]
+where
+\[
+ \gamma(t)=\sup_{u\in X_0}\sup_{a\leq s\leq t}
+ \|f(s,u(s))-f(a,u_0)\|\longrightarrow0.                    \tag{20}
+\]
+Indeed, (14) gives $u(s)\to u_0$ uniformly over $u\in X_0$ as $s\downarrow
+a$, and then uniform continuity of $f$ gives (20).  Inequality (19) persists
+under closed convex hulls.  Homogeneity, subadditivity, and the singleton
+property therefore yield
+\[
+ v_1(t)\leq\frac{(t-a)^\alpha\gamma(t)}{\Ga(\alpha+1)}
+ \mu(\B(0,1)).                                                \tag{21}
+\]
+Since $0\leq v_\infty\leq v_1$, the second part of (2) follows.  Hence
+$v_\infty\equiv0$.
+
+The usual measure of noncompactness on $\C(I,E)$ combines the common
+equicontinuity modulus with $\sup_t\mu(X_k(t))$.  Its value on $X_k$ tends to
+zero.  The intersection axiom consequently gives a nonempty relatively
+compact closed convex set
+\[
+ X_\infty=\bigcap_{k\geq1}X_k,\qquad F(X_\infty)\subseteq X_\infty. \tag{22}
+\]
+Schauder's theorem supplies a fixed point of $F$ in $X_\infty$.  By (11)--(12)
+it solves (4).  This proves Theorem~\ref{thm:main}; Corollary~\ref{cor:global}
+is immediate from (5).
+
+\section{Checks, scope, and literature screen}
+
+The proof was checked separately in the three kernel regimes
+$0<\alpha<1$, $\alpha=1$, and $\alpha>1$.  The only changes after order one
+are the polynomial initial jet and the Lipschitz, rather than fractional
+Hölder, modulus in Lemma~\ref{lem:mod}.  The decisive estimate (21) remains
+of exact order $(t-a)^\alpha$ because the whole initial polynomial is placed
+in the deterministic center $y(t)$.
+
+On 12 August 2026 the run indexes and current arXiv/web records were searched
+for the source identifier, its title, arbitrary-order Caputo equations in
+Banach spaces, Kamke functions, and measure-of-noncompactness existence
+theorems.  Related arbitrary-order, semigroup, Hilfer, weak-solution, and
+special-measure results were found, but no result matching this source's
+general sublinear-measure/Kamke theorem with its singleton hypothesis and
+arbitrary initial jet was located.  This bounded search supports, but cannot
+guarantee, novelty.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+D.~Oberta, \emph{On the existence of solutions of fractional differential
+equations in Banach spaces}, arXiv:2511.01944 (2025), especially Theorem 3.1
+and the closing questions in Section 5.
+\end{thebibliography}
+
+\end{document}

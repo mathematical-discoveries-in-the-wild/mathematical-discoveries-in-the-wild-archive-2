@@ -1,0 +1,248 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue]{hyperref}
+\usepackage{microtype}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\Rmet}{R}
+\newcommand{\cD}{\mathcal D}
+\newcommand{\Ball}{\operatorname{Ball}}
+
+\title{Variable-Coefficient Order-Zero Operators on Compact Fractafolds\\
+Are Calder\'on--Zygmund}
+\author{Run \texttt{fa\_banach\_001} --- candidate full solution}
+\date{August 11, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Ionescu, Rogers, and Strichartz conjectured that their
+variable-coefficient order-zero pseudodifferential operators on compact
+fractafolds are Calder\'on--Zygmund. We prove the conjecture in the standing
+compact, boundaryless setting of their Section 9. Their eigenfunction
+expansion reduces the kernel to an absolutely summable family of
+constant-coefficient kernels. They summed only the size estimates; the
+standard-kernel difference estimates are uniform over the same family and
+sum identically. The obstruction that smooth functions need not be closed
+under multiplication is therefore bypassed.
+\end{abstract}
+
+\section{The source conjecture}
+Let $X$ be a compact fractafold without boundary in the setting of
+Section 9 of Ionescu--Rogers--Strichartz \cite{IRS}. Write $\mu$ for its
+measure, $\Rmet$ for the resistance metric, $d$ for its resistance-metric
+dimension, and $-\Delta$ for its nonnegative Laplacian. A variable symbol
+$p\in S^0$ satisfies, for all integers $j,r\ge0$,
+\begin{equation}\label{eq:symbol}
+ \sup_{x\in X,\lambda>0}
+ \left| (\lambda\partial_\lambda)^r\Delta_x^j p(x,\lambda)\right|
+ <\infty.
+\end{equation}
+The associated operator is
+\[
+ Tu(x)=p(x,-\Delta)u(x)
+ =\sum_{\lambda\in\operatorname{spec}(-\Delta)}
+ p(x,\lambda)P_\lambda u(x),\qquad u\in\cD.
+\]
+The source proves that $T$ is bounded on $L^2(\mu)$, has a continuous
+off-diagonal kernel satisfying $|K(x,y)|\lesssim \Rmet(x,y)^{-d}$, and is
+bounded on every $L^q$, $1<q<\infty$. It then conjectures that $T$ is a
+Calder\'on--Zygmund operator in the sense of \cite{IR}.
+
+In that cited definition, besides $L^2$ boundedness and the size estimate, a
+kernel is standard if, for some $c>1$,
+\begin{equation}\label{eq:standard}
+ |K(x,y)-K(x,\bar y)|
+ \lesssim
+ \frac{\Rmet(y,\bar y)}{\Rmet(x,\bar y)}\,
+ \Rmet(x,y)^{-d}
+\end{equation}
+whenever $\Rmet(x,y)\ge c\Rmet(y,\bar y)$. The displayed modulus is Dini.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.88\textwidth]{figures/open_problem_crop.png}
+\caption{The source's uniform kernel expansion and conjecture (arXiv:1108.2246,
+PDF page 27).}
+\end{figure}
+
+\section{Idea of the proof}
+The source expands $p$ in an eigenbasis in its $x$-variable. After multiplying
+the $k$th coefficient by a high power of its eigenvalue, one obtains a bounded
+family of constant-coefficient $S^0$ symbols. The associated kernels have
+uniform Calder\'on--Zygmund estimates. Dividing back introduces scalar
+coefficients whose sup norms are absolutely summable for a sufficiently high
+power.
+
+The source uses this decomposition only to sum kernel sizes. But the
+Calder\'on--Zygmund difference is in the $y$-variable, while each expansion
+coefficient depends only on $x$. Thus the difference estimates sum by the same
+triangle inequality. No product of two functions is ever tested for membership
+in $\operatorname{dom}\Delta$.
+
+\section{Uniform constant-coefficient pieces}
+Choose an orthonormal eigenbasis $(\phi_k)$,
+\[
+ -\Delta\phi_k=\lambda_k\phi_k,
+ \qquad \lambda_k\ge0,
+\]
+and set
+\[
+ m_k(\lambda)=\int_X p(z,\lambda)\overline{\phi_k(z)}\,d\mu(z).
+\]
+We use $1+\lambda_k$ rather than $\lambda_k$ in order to include a possible
+zero mode without a separate case.
+
+\begin{lemma}\label{lem:uniform}
+For every integer $N\ge0$, the symbols
+\[
+ b_{k,N}(\lambda)=(1+\lambda_k)^N m_k(\lambda)
+\]
+form a bounded family in $S^0$: every $S^0$ seminorm is bounded independently
+of $k$.
+\end{lemma}
+
+\begin{proof}
+Self-adjointness and the absence of boundary give
+\begin{equation}\label{eq:ibp}
+ b_{k,N}(\lambda)
+ =\int_X (I-\Delta_z)^N p(z,\lambda)
+     \overline{\phi_k(z)}\,d\mu(z).
+\end{equation}
+The operators $\lambda\partial_\lambda$ and $\Delta_z$ commute. Hence, for
+every $r\ge0$, Cauchy--Schwarz and $\|\phi_k\|_2=1$ yield
+\[
+ |(\lambda\partial_\lambda)^r b_{k,N}(\lambda)|
+ \le \mu(X)^{1/2}
+ \max_{z\in X}|(I-\Delta_z)^N
+       (\lambda\partial_\lambda)^r p(z,\lambda)|.
+\]
+Expanding $(I-\Delta_z)^N$ and using \eqref{eq:symbol} gives a bound depending
+on $N,r,p$, but not on $k$ or $\lambda$.
+\end{proof}
+
+Let $B_{k,N}=b_{k,N}(-\Delta)$ and let $H_{k,N}(x,y)$ denote its kernel.
+The constant-coefficient kernel theorem of \cite[Theorem 3.6]{IRS}, together
+with the standard-kernel criterion of \cite{IR}, gives constants independent
+of $k$ such that
+\begin{align}
+ |H_{k,N}(x,y)|&\le C_N\Rmet(x,y)^{-d},\label{eq:uniform-size}\\
+ |H_{k,N}(x,y)-H_{k,N}(x,\bar y)|
+ &\le C_N\frac{\Rmet(y,\bar y)}{\Rmet(x,\bar y)}
+ \Rmet(x,y)^{-d}\label{eq:uniform-diff}
+\end{align}
+under the separation condition in \eqref{eq:standard}. Uniformity follows
+from Lemma \ref{lem:uniform}: the proof of the constant-coefficient theorem
+uses finitely many symbol seminorms for each displayed kernel estimate. In
+particular it first proves, uniformly,
+\[
+ |\Delta_y H_{k,N}(x,y)|\le C_N\Rmet(x,y)^{-2d-1},
+\]
+from which \eqref{eq:uniform-diff} follows by the Ionescu--Rogers criterion.
+
+\section{Summing the standard kernels}
+\begin{theorem}\label{thm:main}
+Under the standing compact, boundaryless hypotheses of Section 9 of
+\cite{IRS}, every variable-coefficient order-zero operator $p(x,-\Delta)$ is a
+Calder\'on--Zygmund operator in the precise sense cited by the source.
+Consequently it is of weak type $(1,1)$ and bounded on $L^q(\mu)$ for every
+$1<q<\infty$.
+\end{theorem}
+
+\begin{proof}
+The eigenfunction estimate and compact spectral summability used in the proof
+of \cite[Theorem 9.5]{IRS} allow us to choose $N$ so large that
+\begin{equation}\label{eq:summability}
+ A_N:=\sum_k
+ \frac{\|\phi_k\|_\infty}{(1+\lambda_k)^N}<\infty.
+\end{equation}
+Indeed, the source proves $\|\phi_k\|_\infty\le C(1+\lambda_k)^\alpha$
+for some $\alpha$ and then chooses an arbitrarily high spectral power with a
+summable tail.
+
+The eigenfunction expansion of $p(\cdot,\lambda)$ gives, first on finite
+spectral sums,
+\begin{align*}
+ Tu(x)
+ &=\sum_k \phi_k(x)m_k(-\Delta)u(x)\\
+ &=\sum_k\frac{\phi_k(x)}{(1+\lambda_k)^N}B_{k,N}u(x).
+\end{align*}
+Thus the off-diagonal kernel found in the source is
+\begin{equation}\label{eq:kernel-sum}
+ K(x,y)=\sum_k
+ \frac{\phi_k(x)}{(1+\lambda_k)^N}H_{k,N}(x,y).
+\end{equation}
+The series is locally uniformly convergent off the diagonal by
+\eqref{eq:summability} and \eqref{eq:uniform-size}. Moreover,
+\[
+ |K(x,y)|
+ \le C_N A_N\Rmet(x,y)^{-d}.
+\]
+
+For $\Rmet(x,y)\ge c\Rmet(y,\bar y)$, subtract \eqref{eq:kernel-sum} at
+$y$ and $\bar y$, then use \eqref{eq:uniform-diff}:
+\begin{align*}
+ |K(x,y)-K(x,\bar y)|
+ &\le \sum_k\frac{|\phi_k(x)|}{(1+\lambda_k)^N}
+ |H_{k,N}(x,y)-H_{k,N}(x,\bar y)|\\
+ &\le C_N A_N
+ \frac{\Rmet(y,\bar y)}{\Rmet(x,\bar y)}
+ \Rmet(x,y)^{-d}.
+\end{align*}
+This is \eqref{eq:standard} with a linear Dini modulus. The source already
+proved the required $L^2$ boundedness and kernel representation. Hence $T$ is
+Calder\'on--Zygmund. The endpoint and $L^q$ conclusions are the standard
+consequences recorded in \cite{IR}; the strong $L^q$ part was also proved
+directly in the source.
+\end{proof}
+
+\section{Verification, scope, and novelty}
+There is a second route to the same result: the estimates above permit
+termwise application of $\Delta_y$ in \eqref{eq:kernel-sum}; the resulting
+series converges locally uniformly off the diagonal and is bounded by
+$C A_N\Rmet(x,y)^{-2d-1}$. Applying the Ionescu--Rogers theorem directly then
+recovers \eqref{eq:standard}.
+
+The proof does not claim an extension to infinite blow-ups. In that setting
+the compact eigenbasis and summability step \eqref{eq:summability} need a
+replacement. It also uses the one-sided-in-$y$ standard-kernel definition
+explicitly cited by the source; no assertion of smoothness in the $x$ variable
+is made.
+
+A bounded novelty search covered the run's registry, solution, attempt, and
+proof-gap indexes; exact title and conjecture phrases; variable-coefficient
+fractal pseudodifferential operators; and later citations. It found the source,
+its published version, \cite{IR}, and an author research statement still
+presenting the assertion as a conjecture, but no later resolution. Novelty is
+therefore plausible but provisional.
+
+\paragraph{Human-review recommendation.}
+Review as a candidate full solution. The most sensitive point is the uniform
+dependence of the source's constant-coefficient kernel estimates on a bounded
+family of $S^0$ seminorms. This dependence is explicit in that proof, and the
+source already uses it for the size estimate in its own variable-coefficient
+expansion.
+
+\begin{thebibliography}{9}
+\bibitem{IRS}
+M. Ionescu, L. G. Rogers, and R. S. Strichartz,
+\emph{Pseudo-differential Operators on Fractals},
+arXiv:1108.2246; Rev. Mat. Iberoam. 29 (2013), 1159--1190.
+
+\bibitem{IR}
+M. Ionescu and L. G. Rogers,
+\emph{Complex Powers of the Laplacian on Affine Nested Fractals as
+Calder\'on--Zygmund Operators},
+arXiv:1002.2011.
+\end{thebibliography}
+
+\end{document}
+

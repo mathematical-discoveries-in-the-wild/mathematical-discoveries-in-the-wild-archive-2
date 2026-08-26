@@ -1,0 +1,217 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.92in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newcommand{\R}{\mathbb R}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\cE}{\mathcal E}
+\newcommand{\cR}{\mathcal R}
+\DeclareMathOperator{\rank}{rank}
+
+\title{Exponential semiaxes have an unavoidable square-root gap\\
+\large A full counterexample to the question in arXiv:1901.06639}
+\author{Autonomous mathematical discovery run \texttt{fa\_banach\_001}\\
+\texttt{agent\_lane\_02} \; (GPT5.6)}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{black}{gray!8}{\parbox{0.92\linewidth}{
+\textbf{Status.} Candidate full counterexample, likely valid, pending human
+review.  The source's constant-factor comparison is false for every sequence
+of semiaxes comparable to a geometric progression.}}
+\end{center}
+
+\section{Source question}
+
+Hinrichs, Krieg, Novak, Prochno, and Ullrich study the ellipsoid
+\[
+ \cE_\sigma=\left\{x\in\ell_2:
+       \sum_{j\ge1}\left(\frac{x_j}{\sigma_j}\right)^2\le1\right\}
+\]
+and the radius left after $n$ independent standard Gaussian measurements,
+\[
+ \cR_n(\sigma)=\sup\{\|x\|_2:x\in\cE_\sigma,\ G_nx=0\}.
+\]
+Optimal information has radius $\sigma_{n+1}$.  On PDF page 8 the source asks
+whether
+\[
+             \E\cR_n(\sigma)\asymp \sigma_{n+1}
+\]
+also holds when $\sigma_j\asymp a^j$, $0<a<1$; its Corollary 9 gives only
+$a^n\lesssim\E\cR_n(\sigma)\lesssim n^2a^n$ \cite{HKNPU}.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{The complete open-question passage and adjacent Corollary 9 on
+  source PDF page 8.}
+\end{figure}
+
+\section{Proof intuition}
+
+Use only the first $n+1$ coordinates.  The $n$ Gaussian measurements restricted
+to these coordinates have a one-dimensional kernel, and this random null line
+is already contained in the full kernel.  A unit direction of the line is
+uniform on the sphere, hence has the law $g/\|g\|_2$ for an $(n+1)$-dimensional
+standard Gaussian $g$.
+
+For geometric semiaxes, reversing coordinates splits the resulting line
+radius into two scales.  Its numerator $\|g\|_2$ is of order $\sqrt n$, whereas
+the denominator is a geometrically weighted Gaussian square sum with bounded
+mean.  A constant-probability intersection of these two elementary events
+therefore forces a $\sqrt n$ loss over the optimal radius.  No analysis of the
+rest of the infinite-dimensional kernel is needed.
+
+\section{Counterexample theorem}
+
+\begin{theorem}\label{thm:main}
+Let $0<a<1$, and let the nonincreasing positive semiaxes satisfy
+\[
+              c_0a^j\le \sigma_j\le C_0a^j\qquad(j\ge1)
+\]
+for constants $c_0,C_0>0$.  Then, for every integer $n\ge22$,
+\begin{equation}\label{eq:explicit}
+ \E\cR_n(\sigma)
+ \ge \frac{c_0\sqrt{1-a^2}}{4\sqrt2}\,
+        \sqrt{n+1}\,a^{n+1}.
+\end{equation}
+Consequently
+\[
+ \frac{\E\cR_n(\sigma)}{\sigma_{n+1}}
+ \ge \frac{c_0\sqrt{1-a^2}}{4\sqrt2\,C_0}\sqrt{n+1}
+ \longrightarrow\infty.
+\]
+In particular, the source's proposed comparison
+$\E\cR_n(\sigma)\asymp\sigma_{n+1}$ is false for every exponentially
+decaying sequence in the stated class.
+\end{theorem}
+
+\begin{proof}
+Let $A_n$ be the restriction of $G_n$ to its first $n+1$ columns.  Almost
+surely $\rank A_n=n$.  Choose a unit vector $v$ spanning $\ker A_n$ and extend
+it by zero after coordinate $n+1$.  Then $G_nv=0$.  The radius of
+$\cE_\sigma$ on the line $\R v$ is
+\[
+ L_n(\sigma)
+   :=\left(\sum_{j=1}^{n+1}\frac{v_j^2}{\sigma_j^2}\right)^{-1/2},
+ \qquad \cR_n(\sigma)\ge L_n(\sigma).
+\]
+
+The law of $A_n$ is invariant under right multiplication by every orthogonal
+matrix in dimension $n+1$.  Thus its null line is Haar distributed, and we may
+write, in distribution,
+\[
+                 v=\frac{g}{\|g\|_2},
+\]
+where $g_1,\dots,g_{n+1}$ are independent $N(0,1)$ variables.  Since
+$\sigma_j\ge c_0a^j$,
+\begin{align*}
+ L_n(\sigma)
+ &\ge c_0\frac{\|g\|_2}
+          {\bigl(\sum_{j=1}^{n+1}a^{-2j}g_j^2\bigr)^{1/2}} \\
+ &=c_0a^{n+1}\frac{\|g\|_2}{Q_n^{1/2}},
+ \qquad
+ Q_n:=\sum_{r=0}^{n}a^{2r}g_{n+1-r}^2.
+\end{align*}
+Now
+\[
+          \E Q_n=\sum_{r=0}^{n}a^{2r}\le\frac1{1-a^2},
+\]
+so Markov's inequality gives
+\begin{equation}\label{eq:qevent}
+ \Pp\left\{Q_n\le\frac4{1-a^2}\right\}\ge\frac34.
+\end{equation}
+Also $\|g\|_2^2$ is chi-square with $n+1$ degrees of freedom.  The elementary
+chi-square lower-tail estimate
+\[
+ \Pp\{\|g\|_2^2<(n+1)/2\}\le e^{-(n+1)/16}
+\]
+implies, when $n\ge22$,
+\begin{equation}\label{eq:normevent}
+ \Pp\{\|g\|_2^2\ge(n+1)/2\}\ge\frac34.
+\end{equation}
+No independence between the events in \eqref{eq:qevent} and
+\eqref{eq:normevent} is required: their intersection has probability at least
+$1/2$.  On that intersection,
+\[
+ L_n(\sigma)
+ \ge c_0a^{n+1}
+      \sqrt{\frac{n+1}{2}}\sqrt{\frac{1-a^2}{4}}
+ =c_0a^{n+1}\sqrt{\frac{(n+1)(1-a^2)}8}.
+\]
+Taking expectations and multiplying by the intersection probability proves
+\eqref{eq:explicit}.  Finally,
+$\sigma_{n+1}\le C_0a^{n+1}$ gives the displayed diverging ratio.
+\end{proof}
+
+\section{Sharper witness asymptotics}
+
+For the exact sequence $\sigma_j=a^j$, the random line itself has a clean
+limiting scale.  Let $h_0,h_1,\ldots$ be iid standard Gaussians and set
+$Q_\infty=\sum_{r\ge0}a^{2r}h_r^2$.  Reordering coordinates in the formula
+above gives a coupling under which
+\[
+ \frac{L_n}{\sqrt n\,a^{n+1}}
+ =\frac{(n^{-1}\sum_{r=0}^{n}h_r^2)^{1/2}}
+        {(\sum_{r=0}^{n}a^{2r}h_r^2)^{1/2}}
+ \longrightarrow Q_\infty^{-1/2}
+ \quad\text{almost surely}.
+\]
+The limit has a finite, strictly positive mean: indeed
+$Q_\infty\ge h_0^2+a^2h_1^2$, whose inverse square root is integrable in two
+Gaussian dimensions.  Fatou's lemma and $\cR_n\ge L_n$ therefore yield
+\[
+ \liminf_{n\to\infty}
+ \frac{\E\cR_n(a^j)}{\sqrt n\,a^{n+1}}
+ \ge \E Q_\infty^{-1/2}>0.
+\]
+The explicit elementary estimate in Theorem~\ref{thm:main}, rather than this
+limit statement, is the primary counterexample.
+
+\section{Verification, limitations, and novelty}
+
+The proof is finite-dimensional until its final inclusion in $\ker G_n$.
+It uses only orthogonal invariance, Markov's inequality, and a standard
+chi-square tail bound.  A Monte Carlo script included in the packet confirms
+that the witness ratio $L_n/(\sqrt n\,a^{n+1})$ stabilizes numerically; this is
+a sanity check, not part of the proof.
+
+The theorem answers the source's yes/no comparison completely and negatively.
+It does \emph{not} determine the exact order of $\E\cR_n(\sigma)$ between the
+new lower bound $\sqrt n\,a^n$ and the source upper bound $n^2a^n$.
+
+A bounded novelty audit on 11 August 2026 searched the run's registry,
+solution, attempt, and proof-gap indexes; the exact arXiv id, title, authors,
+and open-problem wording; arXiv queries combining random sections, ellipsoids,
+and exponential decay; and all 18 works then indexed by OpenAlex as citing
+DOI \texttt{10.1090/tran/8502}.  No later answer or occurrence of this
+random-line obstruction was found.  Nearby arXiv:2109.14504 concerns primarily
+polynomial semiaxes of generalized $\ell_p$-ellipsoids, and the 2022 survey
+arXiv:2209.07266 still records only a polynomial-loss exponential upper bound.
+Novelty is plausible but remains subject to specialist review.
+
+\paragraph{Human-review recommendation.}
+Verify the inclusion of the finite-coordinate null line in the full kernel,
+the uniform-sphere law, and the constants in the Markov/chi-square event
+intersection.  If those three points pass, classify this as a full negative
+answer.
+
+\begin{thebibliography}{9}
+\bibitem{HKNPU}
+A. Hinrichs, D. Krieg, E. Novak, J. Prochno, and M. Ullrich,
+\emph{Random sections of ellipsoids and the power of random information},
+Trans. Amer. Math. Soc. \textbf{374} (2021), no.~12, 8691--8713;
+arXiv:1901.06639, doi:10.1090/tran/8502.
+\end{thebibliography}
+
+\end{document}

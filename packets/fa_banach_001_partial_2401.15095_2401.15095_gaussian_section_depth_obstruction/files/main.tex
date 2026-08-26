@@ -1,0 +1,240 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\Fl}{\operatorname{Fl}}
+\newcommand{\depth}{\operatorname{depth}}
+
+\title{A Gaussian--Section Obstruction to Uniform Common Depth\\
+\large A negative range for Problem 2.3 of arXiv:2401.15095}
+\author{Autonomous proof packet for \texttt{fa\_banach\_001}}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+Candidate partial result, likely valid, pending human review.  The result gives
+a broad negative parameter range, not a full classification of all tuples in
+the source problem.
+
+\section{Source problem}
+
+Let $n=n_1+\cdots+n_r$ and let $\nu_i$ be the rank
+$k=n_1+\cdots+n_i$ tautological bundle over the real flag manifold
+$\Fl(n_1,\ldots,n_r)$.  Problem 2.3 of Antol\'in Camarena and Calles
+Loperena asks for all tuples for which every collection of $m$ mass
+assignments on $\nu_i$ admits a fiber and a point having ``sufficient depth''
+for all $m$ measures \cite[Problem 2.3, PDF p.~4]{source}.  The preceding
+paragraph explains that this means a depth bounded below by a positive
+constant depending only on the base.
+
+\begin{center}
+\includegraphics[width=0.98\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+For a probability measure $\mu$ on a Euclidean space, vanishing on affine
+hyperplanes, recall
+\[
+ \depth_{\mu}(x)=\inf\{\mu(H):H\text{ is a closed halfspace containing }x\}.
+\]
+
+\section{Idea of the proof}
+
+A nowhere-zero section of $E^{\oplus(m-1)}$ is a continuous choice of
+$m$ fiber points, with the first at the origin, that are not all equal.
+After normalization, two of these centers stay a definite distance apart in
+every fiber.  Put very narrow spherical Gaussians at the centers.  Every
+candidate common point is then far from at least one center, and the Tukey
+depth of the corresponding Gaussian is uniformly tiny.  Thus a topological
+section becomes an adversarial family of perfectly regular mass assignments.
+
+For the flag tautological bundle, $n-k+1$ fixed ambient vectors always give
+such a section by orthogonal projection: they cannot all be perpendicular to
+a $k$-plane.  A Stiefel--Whitney calculation shows that fewer summands cannot
+have a nowhere-zero section, making the sectional threshold exact.
+
+\section{The general bundle obstruction}
+
+Let $E\to B$ be a rank-$k$ Euclidean vector bundle.  Define its best universal
+simultaneous depth constant for $m$ assignments by
+\[
+ D_m(E)=\inf_{(\mu_1,\ldots,\mu_m)}
+ \sup_{b\in B,\,x\in E_b}\min_{1\leq j\leq m}
+ \depth_{\mu_j^b}(x),
+\]
+where the infimum runs over continuous mass assignments in the sense of the
+source.
+
+\begin{lemma}[spherical Gaussian depth]\label{lem:gauss}
+Let $\gamma_{c,\sigma}$ be the Gaussian probability measure on $\R^k$ with
+mean $c$ and covariance $\sigma^2I$.  If $\Phi$ is the standard normal
+distribution function, then
+\[
+ \depth_{\gamma_{c,\sigma}}(x)
+ =\Phi\!\left(-\frac{\lVert x-c\rVert}{\sigma}\right).
+\]
+\end{lemma}
+
+\begin{proof}
+For a unit vector $u$, the least-mass halfspace with inward normal $u$ that
+contains $x$ has boundary through $x$.  Its mass on the side away from $c$ is
+\[
+ \Phi\!\left(-\frac{\langle x-c,u\rangle}{\sigma}\right).
+\]
+Minimizing over $u$ is the same as maximizing
+$\langle x-c,u\rangle$, whose maximum is $\lVert x-c\rVert$.
+\end{proof}
+
+\begin{theorem}[Gaussian--section obstruction]\label{thm:general}
+If $E^{\oplus(m-1)}$ has a nowhere-zero continuous section, then
+\[
+ D_m(E)=0.
+\]
+Equivalently, for every $\eta>0$ there are $m$ mass assignments such that no
+fiber point has depth at least $\eta$ for all of them.
+\end{theorem}
+
+\begin{proof}
+Write a nowhere-zero section as
+\[
+ S(b)=(s_2(b),\ldots,s_m(b))\in E_b^{\oplus(m-1)}
+\]
+and normalize it so that
+\[
+ \sum_{j=2}^m\lVert s_j(b)\rVert^2=1
+ \qquad(b\in B).
+\]
+Set $c_1(b)=0$ and $c_j(b)=s_j(b)$ for $2\leq j\leq m$.  For each $b$, some
+$j\geq2$ satisfies
+$\lVert c_j(b)-c_1(b)\rVert\geq1/\sqrt{m-1}$.
+Consequently, for every $x\in E_b$, the triangle inequality gives
+\[
+ \max_{1\leq a\leq m}\lVert x-c_a(b)\rVert
+ \geq \frac{1}{2\sqrt{m-1}}.
+\]
+
+For $\sigma>0$, let $\mu_j^b$ be the spherical Gaussian on $E_b$ with center
+$c_j(b)$ and covariance $\sigma^2I_{E_b}$.  In an orthonormal bundle chart,
+the Gaussian integrals of bounded continuous test functions depend
+continuously on the center and the fiber frame, so these are continuous mass
+assignments.  They vanish on hyperplanes.
+
+By Lemma~\ref{lem:gauss}, for every $b$ and $x$,
+\[
+ \min_j\depth_{\mu_j^b}(x)
+ \leq
+ \Phi\!\left(-\frac{1}{2\sigma\sqrt{m-1}}\right).
+\]
+The right side tends to zero as $\sigma\downarrow0$.  Given $\eta>0$, choose
+$\sigma$ making it smaller than $\eta$.  This proves the claim.
+\end{proof}
+
+\section{Exact sectional threshold on the flag manifold}
+
+Let $B=\Fl(n_1,\ldots,n_r)$, let $\nu_i$ have fiber $V_i$, and put
+\[
+ n=n_1+\cdots+n_r,
+ \qquad k=n_1+\cdots+n_i<n.
+\]
+
+\begin{proposition}\label{prop:threshold}
+The least positive integer $q$ for which $\nu_i^{\oplus q}$ admits a
+nowhere-zero section is
+\[
+ q=n-k+1.
+\]
+\end{proposition}
+
+\begin{proof}
+Choose a fixed subspace $W\subset\R^n$ of dimension $n-k+1$, with orthonormal
+basis $e_1,\ldots,e_{n-k+1}$.  At a flag with $k$-plane $V_i$, define
+\[
+ s_a(V_i)=P_{V_i}e_a\in V_i,
+ \qquad 1\leq a\leq n-k+1.
+\]
+These sections cannot vanish simultaneously: otherwise
+$W\subseteq V_i^\perp$, contradicting
+$\dim W=n-k+1>n-k=\dim V_i^\perp$.  Hence their tuple is a nowhere-zero
+section of $\nu_i^{\oplus(n-k+1)}$.
+
+For the converse, the projection
+\[
+ \Fl(n_1,\ldots,n_r)\longrightarrow G_k(\R^n),
+ \qquad (V_1,\ldots,V_{r-1})\longmapsto V_i,
+\]
+pulls the Grassmannian tautological bundle back to $\nu_i$ and is injective in
+mod-$2$ cohomology, as in the projection used in the source's proof of its
+main theorem \cite[Section 3]{source}.  The standard Grassmannian calculation
+used there gives
+\[
+ w_k(\nu_i)^{n-k}\neq0.
+\]
+For $1\leq q\leq n-k$, this implies $w_k(\nu_i)^q\neq0$.  By the Whitney
+product formula, the top Stiefel--Whitney class of the rank-$qk$ bundle
+$\nu_i^{\oplus q}$ is
+\[
+ w_{qk}(\nu_i^{\oplus q})=w_k(\nu_i)^q\neq0.
+\]
+A bundle with a nowhere-zero section has zero top Stiefel--Whitney class.
+Thus no smaller $q$ works.
+\end{proof}
+
+\begin{corollary}[negative range for Problem 2.3]\label{cor:flag}
+If
+\[
+ \boxed{\qquad m\geq n-k+2,\qquad}
+\]
+then for every $\eta>0$ there are $m$ mass assignments on $\nu_i$ such that
+no flag $\mathcal F$ and point $x\in V_i$ give depth at least $\eta$ for all
+$m$ measures.  Hence no positive ``sufficient depth'' constant exists in this
+parameter range.
+\end{corollary}
+
+\begin{proof}
+Here $m-1\geq n-k+1$.  Pad the nowhere-zero section of
+$\nu_i^{\oplus(n-k+1)}$ from Proposition~\ref{prop:threshold} with zero
+components to obtain one of $\nu_i^{\oplus(m-1)}$, and apply
+Theorem~\ref{thm:general}.
+\end{proof}
+
+\section{Verification, scope, and novelty}
+
+The proof is exact and uses no numerical computation.  It gives a negative
+classification region complementary to the source's positive
+characteristic-class theorem.  The intermediate range
+$2\leq m\leq n-k+1$ remains open in general; the absence of a nowhere-zero
+center section there does not itself imply a positive common-depth theorem.
+
+A bounded run-index and arXiv/web search on 17 August 2026 used arXiv id
+2401.15095 and combinations of ``mass assignments'', ``Tukey depth'',
+``Gaussian centers'', ``nowhere-zero section'', and ``$n-k+2$''.  It found
+the source and related positive mass-partition results, but no exact negative
+statement matching Theorem~\ref{thm:general} or Corollary~\ref{cor:flag}.
+Novelty confidence is moderate.
+
+\section*{Human-review recommendation}
+
+Review is recommended.  The main checks are the exact Gaussian-depth formula,
+weak continuity of the fiberwise Gaussians, and the mod-$2$ cohomology
+injection/nonvanishing used to prove that the sectional threshold is exact.
+The negative corollary itself only needs the explicit projection section, so
+it remains valid even if the exact-minimality sentence requires adjustment.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+Omar Antol\'in Camarena and Jaime Calles Loperena,
+\emph{A Center Transversal Theorem for mass assignments},
+arXiv:2401.15095, 2024.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,261 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\Inf}{\operatorname{Inf}}
+\newcommand{\tr}{\operatorname{tr}}
+
+\title{Quantum KKL for Anticommuting-Pauli Observables\\
+\large A substantial partial result for the Montanaro--Osborne conjecture}
+\author{Automated Mathematics Run \texttt{fa\_banach\_001}, lane 2}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.9\linewidth}{\textbf{Status.}
+Candidate partial result, likely valid. The full quantum $L^2$-KKL
+conjecture remains open.}}
+\end{center}
+
+\section{Source problem}
+
+Rouz\'e, Wirth, and Zhang study quantum Talagrand, KKL, and Friedgut
+inequalities in arXiv:2209.07279, later published in \emph{Communications in
+Mathematical Physics} \cite{RWZ}. Their Remark 3.10 on page 13 recalls
+Montanaro and Osborne's Conjecture 3 from Section 12 of
+\cite{MO}. The source passage is reproduced below.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\linewidth]{figures/open_problem_crop.png}
+  \caption{Full-width crop of Remark 3.10 on page 13 of the source paper.}
+\end{figure}
+
+\paragraph{Transcription.}
+For a balanced quantum Boolean function
+$A\in M_2(\mathbb C)^{\otimes n}$, meaning $A=A^*$, $A^2=I$, and
+$\tr(A)=0$, is there a universal constant $C>0$ such that
+\[
+  \max_{1\le j\le n}\Inf_j^2(A)
+  \ge C\frac{\log n}{n}?
+\]
+Here $d_j$ deletes the Pauli--Fourier terms that are identity on qubit $j$,
+and $\Inf_j^2(A)=\lVert d_jA\rVert_2^2$ for normalized Schatten norm.
+The source proves the corresponding result for $L^p$-influences when
+$1\le p<2$ and explicitly states that this $p=2$ endpoint remains open
+\cite{RWZ}. A later random-restriction treatment also states that the exact
+conjecture remains open \cite{JLLZ}.
+
+\section{Definitions}
+
+Let $\mathcal P_n=\{I,X,Y,Z\}^{\otimes n}$ be the Hermitian Pauli strings.
+With normalized trace $2^{-n}\tr$, this is an orthonormal basis. For
+$\Gamma\in\mathcal P_n$, write
+\[
+ \operatorname{supp}(\Gamma)=\{j:\Gamma_j\ne I\}.
+\]
+For a Pauli expansion $A=\sum_\Gamma\widehat A(\Gamma)\Gamma$,
+orthogonality gives
+\begin{equation}\label{eq:influence-fourier}
+ \Inf_j^2(A)
+ =\sum_{\Gamma:\,j\in\operatorname{supp}(\Gamma)}
+   |\widehat A(\Gamma)|^2.
+\end{equation}
+
+We call $A$ an \emph{anticommuting-Pauli observable} if
+\begin{equation}\label{eq:A}
+ A=\sum_{s=1}^m c_s\Gamma_s,
+ \qquad c_s\in\mathbb R,
+ \qquad \sum_{s=1}^m c_s^2=1,
+\end{equation}
+where the $\Gamma_s$ are distinct nonidentity Pauli strings satisfying
+$\Gamma_s\Gamma_t=-\Gamma_t\Gamma_s$ whenever $s\ne t$.
+Such observables arise naturally from Clifford generators and
+fermion-to-qubit encodings.
+
+\section{Proof intuition}
+
+The unitarity of \eqref{eq:A} is immediate: all cross terms cancel in
+$A^2$. The influence problem becomes a weighted incidence problem. Give
+$\Gamma_s$ weight $w_s=c_s^2$. Every pair of strings must locally
+anticommute on at least one qubit. At a fixed qubit, pairs locally
+anticommute only across the three Pauli labels $X,Y,Z$; if their three total
+weights are $x,y,z$, the covered pair weight is
+$xy+xz+yz\le(x+y+z)^2/3$. Thus $n$ qubits can cover all pairs only if some
+qubit carries substantial total weight. A single dominant coefficient is
+handled separately by observing that one qubit in its support already has at
+least that much influence. Balancing these two alternatives yields an
+explicit $\Theta(n^{-1/2})$ bound.
+
+The argument does not extend automatically to a general quantum Boolean
+function. In a general Pauli expansion, commuting pairs may have identical
+products with cancelling signed coefficients in $A^2=I$. Controlling that
+cancellation geometry is precisely what remains open.
+
+\section{The partial theorem}
+
+\begin{theorem}[Anticommuting-Pauli quantum KKL]\label{thm:main}
+Let $A$ be an anticommuting-Pauli observable on $n$ qubits. Then $A$ is a
+balanced quantum Boolean function and
+\begin{equation}\label{eq:rho}
+ \max_{1\le j\le n}\Inf_j^2(A)
+ \ge \rho_n
+ :=\frac{\sqrt{24n+9}-3}{4n}
+ =\frac{6}{\sqrt{24n+9}+3}.
+\end{equation}
+Consequently,
+\begin{equation}\label{eq:root}
+ \max_j\Inf_j^2(A)
+ \ge \frac{6}{\sqrt{33}+3}\frac1{\sqrt n}
+ \ge \frac{3e}{\sqrt{33}+3}\frac{\log n}{n}.
+\end{equation}
+In particular, the Montanaro--Osborne conjecture holds for this class, with
+the stronger order $n^{-1/2}$.
+\end{theorem}
+
+\begin{proof}
+Hermiticity is clear. Since $\Gamma_s^2=I$ and distinct terms anticommute,
+\[
+ A^2=\sum_s c_s^2I+
+ \sum_{s<t}c_sc_t(\Gamma_s\Gamma_t+\Gamma_t\Gamma_s)=I.
+\]
+Every $\Gamma_s$ is nonidentity and hence traceless, so $\tr(A)=0$.
+
+Put $w_s=c_s^2$, so $w_s\ge0$ and $\sum_sw_s=1$. For each qubit $j$ and
+$\alpha\in\{X,Y,Z\}$, define
+\[
+ u_{j,\alpha}=\sum_{s:(\Gamma_s)_j=\alpha}w_s,
+ \qquad
+ q_j=u_{j,X}+u_{j,Y}+u_{j,Z}.
+\]
+By \eqref{eq:influence-fourier}, $q_j=\Inf_j^2(A)$. Set
+$Q=\max_jq_j$.
+
+Two Pauli strings anticommute exactly when the number of coordinates at
+which they carry two distinct nonidentity Pauli labels is odd. Therefore
+each unordered pair $s<t$ is locally anticommuting on at least one qubit.
+Counting the pair weight $w_sw_t$ at every such qubit gives
+\begin{align}
+ \sum_{s<t}w_sw_t
+ &\le \sum_{j=1}^n
+ \bigl(u_{j,X}u_{j,Y}+u_{j,X}u_{j,Z}+u_{j,Y}u_{j,Z}\bigr)\notag\\
+ &\le \frac13\sum_{j=1}^nq_j^2
+ \le \frac n3Q^2.\label{eq:cover}
+\end{align}
+The middle inequality follows from
+$xy+xz+yz=( (x+y+z)^2-(x^2+y^2+z^2))/2\le(x+y+z)^2/3$.
+
+Let $a=\max_sw_s$. Since a string attaining $a$ is nonidentity, some
+qubit lies in its support, and hence $Q\ge a$. Also
+$\sum_sw_s^2\le a\sum_sw_s=a$. Thus \eqref{eq:cover} and
+\[
+ \sum_{s<t}w_sw_t=\frac{1-\sum_sw_s^2}{2}
+\]
+imply
+\[
+ Q\ge \max\left\{a,\sqrt{\frac{3(1-a)}{2n}}\right\}.
+\]
+The first branch increases in $a$ and the second decreases. Their intersection
+solves
+$a^2=3(1-a)/(2n)$, whose positive root is
+\[
+ a=\frac{\sqrt{24n+9}-3}{4n}
+  =\frac{6}{\sqrt{24n+9}+3}=\rho_n.
+\]
+This proves \eqref{eq:rho}.
+
+For $n\ge1$, $\sqrt{24n+9}+3\le(\sqrt{33}+3)\sqrt n$, giving the first
+inequality in \eqref{eq:root}. Finally, the maximum of
+$(\log x)/\sqrt x$ on $x\ge1$ is $2/e$, so
+$n^{-1/2}\ge e(\log n)/(2n)$. This proves the second inequality.
+\end{proof}
+
+\begin{corollary}[Equal-coefficient incidence form]
+If $\Gamma_1,\dots,\Gamma_m$ are distinct nonidentity pairwise
+anticommuting Pauli strings and
+$A=m^{-1/2}\sum_{s=1}^m\Gamma_s$, then some qubit belongs to at least
+$m\rho_n$ of their supports.
+\end{corollary}
+
+\begin{proof}
+For this $A$, equation \eqref{eq:influence-fourier} says that the influence
+of qubit $j$ is exactly the fraction of strings whose support contains $j$.
+Apply Theorem~\ref{thm:main}.
+\end{proof}
+
+\section{A current construction stress test}
+
+Slote's August 2026 Parseval-limit construction \cite{Slote} produces
+homogeneous unitary Pauli expansions with exponentially many equal
+coefficients. It begins with an equal-weight, pairwise-anticommuting core
+$P_1,\dots,P_L$, then attaches many commuting diagonal suffix terms. This
+makes it a natural possible counterexample mechanism.
+
+It does not evade the theorem. Each core index $\ell$ carries total squared
+Fourier mass $1/L$, so the influence of a core qubit is exactly its weighted
+incidence among the $P_\ell$. Applying Theorem~\ref{thm:main} to the
+normalized core gives a core influence of order at least the inverse square
+root of the number of core qubits. This is much larger than the KKL scale for
+the full construction. Thus the construction refutes quantum Fourier
+entropy--influence but not quantum KKL.
+
+\section{Verification, novelty, and limitations}
+
+The script \texttt{code/verify\_small\_cases.py} exhausts every subset of the
+15 nonidentity two-qubit Pauli strings, retains the pairwise-anticommuting
+families, and checks the theorem and the intermediate pair-cover inequality
+for deterministic weight samples. It also checks random greedy families on
+three qubits. No violation was found. This is a finite consistency check and
+is not used in the proof.
+
+A bounded novelty search was run through 9 August 2026. The sources checked
+included arXiv:0810.2435, 2209.07279, 2411.12399, and 2608.01424, plus exact
+and close web searches for ``pairwise anticommuting Pauli influence KKL'',
+``anticommuting Pauli quantum KKL'', and ``Clifford quantum KKL influence''.
+The searches found standard uses of anticommuting Pauli families and the
+known $p<2$ quantum KKL variants, but not the weighted incidence theorem
+above. Novelty confidence is moderate, not definitive.
+
+The full $L^2$ conjecture remains open. The theorem covers only Pauli
+expansions whose entire nonzero support is pairwise anticommuting. It does not
+control general unitaries with cancellations among products of commuting
+Pauli terms. The exponent $1/2$ is a universal lower bound for this class; no
+claim of sharpness of the exact constant is made.
+
+\paragraph{Human-review recommendation.}
+Review as a likely-valid substantial partial result. The highest-value checks
+are the inequality direction in the weighted pair cover \eqref{eq:cover}, the
+Fourier normalization in \eqref{eq:influence-fourier}, and the one-variable
+optimization producing \(\rho_n\).
+
+\begin{thebibliography}{9}
+\bibitem{MO}
+A.~Montanaro and T.~J. Osborne,
+\emph{Quantum Boolean functions}, Chicago Journal of Theoretical Computer
+Science (2010), arXiv:0810.2435.
+
+\bibitem{RWZ}
+C.~Rouz\'e, M.~Wirth, and H.~Zhang,
+\emph{Quantum Talagrand, KKL and Friedgut's theorems and the learnability of
+quantum Boolean functions}, Communications in Mathematical Physics
+\textbf{405} (2024), Article 95, arXiv:2209.07279.
+
+\bibitem{JLLZ}
+Y.~Jiao, W.~Lin, S.~Luo, and D.~Zhou,
+\emph{Quantum KKL-type inequalities revisited}, arXiv:2411.12399 (2024).
+
+\bibitem{Slote}
+J.~Slote,
+\emph{Dense Hamiltonians at the Parseval limit: The noncommutative BH
+constant is exponential and the quantum FEI conjecture is false},
+arXiv:2608.01424 (2026).
+\end{thebibliography}
+
+\end{document}

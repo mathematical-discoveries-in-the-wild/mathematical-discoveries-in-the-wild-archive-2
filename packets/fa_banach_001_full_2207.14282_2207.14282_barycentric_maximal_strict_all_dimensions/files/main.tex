@@ -1,0 +1,260 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=0.84in]{geometry}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\diag}{\operatorname{diag}}
+
+\title{Barycentric Maximal R\'enyi Divergence Is Strictly Smaller\\
+in Every Finite Dimension}
+\author{Run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_11}}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source Conjecture and Result}
+
+Mosonyi, Bunth, and Vrana prove that the barycentric maximal R\'enyi
+divergence is bounded above by the maximal R\'enyi divergence.  They
+conjecture that the inequality is strict for every noncommuting invertible
+pair, and prove this only when the underlying Hilbert space is
+two-dimensional \cite[Sec.~6.4]{MBV}.
+
+\begin{quote}
+\small
+\emph{Source target (paraphrased).}  For $0<\alpha<1$ and noncommuting
+$\rho,\sigma>0$, is
+$D_\alpha^{\mathrm{bary},\max}(\rho\Vert\sigma)
+ <D_\alpha^{\max}(\rho\Vert\sigma)$ in every finite dimension?
+\end{quote}
+
+We prove the conjecture.  The source's chosen directional derivative is
+strictly negative in every dimension; the missing fact is that its scalar
+coefficient kernel is conditionally negative definite.  Status:
+\emph{candidate full solution, likely valid}, subject to human review.
+
+\begin{theorem}\label{thm:main}
+Let $\rho,\sigma$ be positive definite operators on a finite-dimensional
+complex Hilbert space and suppose $\rho\sigma\ne\sigma\rho$.  Then, for every
+$\alpha\in(0,1)$,
+\[
+ D_\alpha^{\mathrm{bary},\max}(\rho\Vert\sigma)
+ <
+ D_\alpha^{\max}(\rho\Vert\sigma).
+ \tag{1}\label{eq:result}
+\]
+\end{theorem}
+
+\section*{The Source Derivative}
+
+Put $d=\dim\mathcal H$ and choose an orthonormal eigenbasis for
+\[
+ R:=\sigma^{-1/2}\rho\sigma^{-1/2}
+   =\diag(\lambda_1,\ldots,\lambda_d).
+\]
+Repeated eigenvalues are allowed, and let $S=(S_{ij})$ be the matrix of
+$\sigma$ in this basis.  The source evaluates the derivative of its
+barycentric variational objective along the segment from the normalized
+geometric-mean candidate to the maximally mixed state.  Its formula is
+\[
+ \partial_\pi
+ =-1+\frac1d\sum_{i,j=1}^d
+ S_{ij}(S^{-1})_{ji}\Lambda_{\alpha,i,j},
+ \tag{2}\label{eq:source-derivative}
+\]
+where $\Lambda_{\alpha,i,i}=1$ and, for $\lambda_i\ne\lambda_j$,
+\[
+ \Lambda_{\alpha,i,j}
+ =\alpha(1-\alpha)
+ (\log\lambda_i-\log\lambda_j)
+ \frac{\lambda_i-\lambda_j}
+ {(\lambda_i^\alpha-\lambda_j^\alpha)
+  (\lambda_i^{1-\alpha}-\lambda_j^{1-\alpha})}.
+ \tag{3}\label{eq:Lambda}
+\]
+The source's variational reduction shows that $\partial_\pi<0$ implies
+\eqref{eq:result}.  It proves this sign from \eqref{eq:source-derivative}
+only for $d=2$.
+
+\section*{Conditional Negative Definiteness}
+
+Recall that an even function $\psi:\R\to\R$ with $\psi(0)=0$ is
+conditionally negative definite if, for all finite $(x_i)$ and complex
+$(c_i)$ with $\sum_i c_i=0$,
+\[
+ \sum_{i,j}\overline{c_i}c_j\psi(x_i-x_j)\leq0.
+\]
+
+\begin{lemma}\label{lem:cnd}
+For every $\alpha\in(0,1)$, the continuous even function
+\[
+ \psi_\alpha(x):=
+ \frac{\alpha(1-\alpha)x\sinh(x/2)}
+ {2\sinh(\alpha x/2)\sinh((1-\alpha)x/2)}-1,
+ \qquad \psi_\alpha(0):=0,
+ \tag{4}\label{eq:psi}
+\]
+is conditionally negative definite, and
+$\psi_\alpha(x)>0$ for $x\ne0$.
+\end{lemma}
+
+\begin{proof}
+Let $\beta=1-\alpha$ and
+$h(x)=(x/2)\coth(x/2)$, with $h(0)=1$.  The addition formula for
+$\sinh$ gives
+\[
+ \psi_\alpha(x)
+ =\beta\bigl(h(\alpha x)-1\bigr)
+  +\alpha\bigl(h(\beta x)-1\bigr).
+ \tag{5}\label{eq:decompose}
+\]
+The Mittag--Leffler expansion of $\coth$ yields the locally uniformly
+convergent series
+\[
+ h(x)-1
+ =2\sum_{n=1}^{\infty}
+ \frac{x^2}{x^2+4\pi^2n^2}.
+ \tag{6}\label{eq:partial-fraction}
+\]
+For $a>0$,
+\[
+ \frac{x^2}{x^2+a^2}
+ =a\int_0^\infty e^{-at}\bigl(1-\cos(tx)\bigr)\,dt
+ \tag{7}\label{eq:levy}
+\]
+is conditionally negative definite: when $\sum_i c_i=0$, the corresponding
+quadratic form is
+\[
+ -a\int_0^\infty e^{-at}
+ \left|\sum_i c_i e^{itx_i}\right|^2\,dt\leq0.
+\]
+Positive sums, locally uniform limits, rescalings, and positive linear
+combinations preserve conditional negative definiteness.  Equations
+\eqref{eq:decompose}--\eqref{eq:levy} prove the first assertion.
+Every summand in \eqref{eq:partial-fraction} is positive away from zero, so
+the second assertion follows as well.
+\end{proof}
+
+\section*{A Double-Commutator Sign Lemma}
+
+\begin{lemma}\label{lem:trace}
+Let $S>0$ be a $d\times d$ matrix and let
+$\Psi=(\Psi_{ij})$ have the form
+$\Psi_{ij}=\|v_i-v_j\|^2$ for real vectors $v_1,\ldots,v_d$.  Then
+\[
+ \Tr\!\left[S^{-1}(S\mathbin{\circ}\Psi)\right]\leq0,
+ \tag{8}\label{eq:trace-sign}
+\]
+where $\circ$ is the Schur product.  Equality holds exactly when
+$S_{ij}=0$ whenever $v_i\ne v_j$.
+\end{lemma}
+
+\begin{proof}
+Writing $v_i=(v_{ik})_k$, set
+$V_k=\diag(v_{1k},\ldots,v_{dk})$.  Entrywise,
+\[
+ S\mathbin{\circ}\Psi
+ =\sum_k[V_k,[V_k,S]].
+ \tag{9}\label{eq:double}
+\]
+Diagonalize $S$ as $S u_a=s_a u_a$, $s_a>0$.  For any self-adjoint $V$,
+a direct expansion gives the quantitative identity
+\[
+ \Tr S^{-1}[V,[V,S]]
+ =-2\sum_{a<b}\frac{(s_a-s_b)^2}{s_as_b}
+       |\langle u_a,Vu_b\rangle|^2\leq0.
+ \tag{10}\label{eq:squares}
+\]
+Equality in \eqref{eq:squares} is equivalent to $[S,V]=0$.  Summing over
+$k$ proves \eqref{eq:trace-sign}; simultaneous equality says
+$(v_{ik}-v_{jk})S_{ij}=0$ for every $i,j,k$, which is the stated
+condition.
+\end{proof}
+
+\section*{Proof of Theorem~\ref{thm:main}}
+
+\begin{proof}
+Set $x_i=\log\lambda_i$.  Rewriting \eqref{eq:Lambda} in hyperbolic form
+shows
+\[
+ \Lambda_{\alpha,i,j}-1=\psi_\alpha(x_i-x_j).
+ \tag{11}\label{eq:distance-kernel}
+\]
+By Lemma~\ref{lem:cnd}, the finite matrix
+$\Psi_{ij}:=\psi_\alpha(x_i-x_j)$ is a squared-distance matrix: explicitly,
+with $J=I-d^{-1}{\bf1}{\bf1}^{*}$,
+$G=-\tfrac12J\Psi J\geq0$; factoring $G$ as a Gram matrix produces real
+vectors $v_i$ satisfying $\Psi_{ij}=\|v_i-v_j\|^2$.
+
+Since
+\[
+ \sum_{i,j}S_{ij}(S^{-1})_{ji}
+ =\Tr(SS^{-1})=d,
+\]
+equations \eqref{eq:source-derivative} and
+\eqref{eq:distance-kernel} give
+\[
+ d\,\partial_\pi
+ =\sum_{i,j}S_{ij}(S^{-1})_{ji}\Psi_{ij}
+ =\Tr\!\left[S^{-1}(S\mathbin{\circ}\Psi)\right]\leq0
+ \tag{12}\label{eq:derivative-trace}
+\]
+by Lemma~\ref{lem:trace}.
+
+It remains to rule out equality.  Lemma~\ref{lem:cnd} says
+$v_i=v_j$ exactly when $x_i=x_j$, equivalently
+$\lambda_i=\lambda_j$.  Equality in \eqref{eq:derivative-trace} would
+therefore force $S_{ij}=0$ whenever $\lambda_i\ne\lambda_j$.  Thus $S$
+would commute with $\diag(\lambda_i)$, i.e.\
+$[\sigma,R]=0$.  Because
+$R=\sigma^{-1/2}\rho\sigma^{-1/2}$, this is equivalent to
+$[\rho,\sigma]=0$, contrary to the hypothesis.  Hence
+$\partial_\pi<0$.
+
+The normalized geometric-mean candidate and the maximally mixed state are
+both positive definite states.  Therefore a sufficiently short positive
+step along the source's segment strictly lowers its variational objective.
+The source reduction following \eqref{eq:source-derivative} now yields
+\eqref{eq:result}.
+\end{proof}
+
+\section*{Novelty Check and Verification}
+
+The cheap run indexes contained no answer.  Bounded searches through
+17 August 2026 used the exact conjecture, title, arXiv id, citations, and
+the terms \emph{barycentric maximal R\'enyi}, \emph{strict inequality}, and
+\emph{conditionally negative definite}.  They found arXiv v5, the 2024
+publication, and later applications, but no extension of the
+two-dimensional theorem.  This is not a priority claim.
+
+The companion script checks the hyperbolic decomposition, a 20,000-term
+partial-fraction approximation, finite Schoenberg embeddings, the
+double-commutator identity, commuting equality cases, and 5,280 random
+strict derivative instances in dimensions $2$ through $12$.  These checks
+are auxiliary; the proof above is exact.
+
+\section*{Human Review Recommendation}
+
+Verify \eqref{eq:decompose} and the normalization in
+\eqref{eq:source-derivative}.  Then check the transpose convention in
+\eqref{eq:derivative-trace} and the equality implication
+$[S,V_k]=0$ for every $k$.  Those are the only nonstandard steps.
+
+\begin{thebibliography}{9}
+\small
+\bibitem{MBV}
+M. Mosonyi, G. Bunth, and P. Vrana,
+\emph{Geometric relative entropies and barycentric R\'enyi divergences},
+Linear Algebra Appl. \textbf{699} (2024), 159--276;
+arXiv:2207.14282v5.
+\end{thebibliography}
+
+\end{document}

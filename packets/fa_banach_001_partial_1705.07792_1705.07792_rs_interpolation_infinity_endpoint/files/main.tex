@@ -1,0 +1,296 @@
+\documentclass[10pt]{article}
+\usepackage[margin=0.9in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+\usepackage{xcolor}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\cI}{\mathcal I}
+\newcommand{\cJ}{\mathcal J}
+\newcommand{\1}{\mathbf 1}
+
+\title{The missing \(L^\infty\) endpoint for complex interpolation\
+of the atomic variation spaces \(R^s\)}
+\author{Automated mathematics discovery run \texttt{fa\_banach\_001}\\
+Lane 13, model GPT5.6}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Candidate complete endpoint theorem, likely valid, subject to human review.
+This removes the condition \(q_1\ne\infty\) from the two \(R^s\)
+inclusions in Theorem 4.4 of Amenta--Lorist--Veraar.  It is classified as a
+substantial partial result relative to the paper's broader interpolation
+questions: it does not settle the zero-loss \(V^s\) inclusion or the reverse
+\(R^s\) inclusion.}}
+\end{center}
+
+\section{Source statement and endpoint left out}
+
+For a complex Banach space \(Y\), a bounded interval \(J\), and
+\(1\leq s<\infty\), Amenta--Lorist--Veraar define an \(R^s(J;Y)\)-atom to
+be a function
+\[
+ a=\sum_{I\in\cI}c_I\1_I,
+ \qquad
+ \Big(\sum_{I\in\cI}\|c_I\|_Y^s\Big)^{1/s}\leq1,
+ \tag{1}
+\]
+where \(\cI\) is a family of mutually disjoint subintervals of \(J\).
+The space \(R^s(J;Y)\) consists of the \(L^\infty\)-convergent sums
+\(f=\sum_k\lambda_k a_k\), with norm the infimum of
+\(\sum_k|\lambda_k|\) over all such representations.  Their endpoint
+convention is
+\[
+ R^\infty(J;Y):=L^\infty(J;Y).
+ \tag{2}
+\]
+
+Writing
+\(q_\theta=[q_0,q_1]_\theta\), Theorem 4.4 of the source proves
+\[
+ R^{q_\theta}(J;Y)
+ \hookrightarrow
+ [R^{q_0}(J;Y),R^{q_1}(J;Y)]_\theta
+ \tag{3}
+\]
+and its ordered multi-interval \(R_0^s\) analogue, but in both statements
+adds the restriction \(q_1\ne\infty\) \cite{ALV}.  The page reproduced
+below also records the paper's separate open questions about the
+\(V^s\)-scale and reverse inclusions.
+
+\begin{center}
+  \begin{minipage}{0.96\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \\[-0.2em]
+  {\small\textbf{Source context.} Theorem 4.4 on page 13, including the two
+  \(q_1\ne\infty\) restrictions and the adjacent interpolation questions.}
+  \end{minipage}
+\end{center}
+
+\section{Result}
+
+\begin{theorem}[single-interval endpoint]\label{thm:single}
+Let \(Y\) be a complex Banach space, let \(J\subset\mathbb R\) be a
+bounded interval, let \(1\leq q<\infty\), and let
+\(0<\theta<1\).  Put
+\[
+ \frac1r=\frac{1-\theta}{q},
+ \qquad\text{equivalently}\qquad r=\frac{q}{1-\theta}.
+\]
+Then the missing endpoint inclusion holds:
+\[
+ R^r(J;Y)
+ \hookrightarrow
+ [R^q(J;Y),L^\infty(J;Y)]_\theta.
+ \tag{4}
+\]
+With the standard norms for the complex method and vector-valued sequence
+spaces, the inclusion in \((4)\) is contractive.
+\end{theorem}
+
+\begin{theorem}[ordered multi-interval endpoint]\label{thm:multi}
+Let \(\cJ=(J_k)_{k\in\N}\) be an ordered family of mutually disjoint
+bounded intervals.  Under the hypotheses and notation of
+Theorem~\ref{thm:single},
+\[
+ R_0^r(\cJ;Y)
+ \hookrightarrow
+ [R_0^q(\cJ;Y),R_0^\infty(\cJ;Y)]_\theta.
+ \tag{5}
+\]
+Here \(R_0^\infty\) is the \(c_0\)-sum of the intervalwise
+\(L^\infty\) spaces, exactly as prescribed by the source definition.
+\end{theorem}
+
+\begin{corollary}
+The two \(R^s\) assertions (4.2) and (4.4) of Theorem 4.4 in
+\cite{ALV} remain true for every \(1\leq q_0\leq q_1\leq\infty\); the
+displayed condition \(q_1\ne\infty\) can be deleted.
+\end{corollary}
+
+\section{Proof intuition}
+
+An atom in \(R^r\) already comes with precisely the data needed for
+interpolation: its coefficient vector lies in \(\ell^r(Y)\), while the
+same step-function synthesis map sends \(\ell^q(Y)\) into \(R^q\) and
+\(\ell^\infty(Y)\) into \(L^\infty\).  Interpolating this one linear map
+places every \(R^r\)-atom in the desired complex interpolation space with
+uniform norm.  The outer atomic norm is an \(\ell^1\)-sum, so summing the
+atoms completes the proof.  The multi-interval statement then follows by
+the standard fact that complex interpolation commutes with \(c_0\)-sums.
+
+The only point requiring care is identification of the limit: the atomic
+series is given to converge in \(L^\infty\), while the proof also makes it
+converge in the interpolation space.  Both limits agree because the
+interpolation space embeds continuously into \(L^\infty\).
+
+\section{Proofs}
+
+\begin{proof}[Proof of Theorem~\ref{thm:single}]
+Fix a family \(\cI\) of mutually disjoint subintervals of \(J\), and
+define its synthesis operator
+\[
+ T_{\cI}c:=\sum_{I\in\cI}c_I\1_I.
+ \tag{6}
+\]
+For \(c\in\ell^q(\cI;Y)\), the normalized function
+\(T_{\cI}c/\|c\|_{\ell^q}\) is an \(R^q\)-atom (unless \(c=0\)).
+Consequently
+\[
+ \|T_{\cI}:\ell^q(\cI;Y)\to R^q(J;Y)\|\leq1.
+ \tag{7}
+\]
+Disjointness also gives the endpoint estimate
+\[
+ \|T_{\cI}c\|_{L^\infty(J;Y)}
+ \leq \|c\|_{\ell^\infty(\cI;Y)},
+ \tag{8}
+\]
+so \(T_{\cI}:\ell^\infty(\cI;Y)\to L^\infty(J;Y)\) has norm at most
+one.
+
+The complex interpolation theorem for operators, together with the
+standard vector-valued sequence-space identity
+\[
+ [\ell^q(\cI;Y),\ell^\infty(\cI;Y)]_\theta
+ =\ell^r(\cI;Y),
+ \qquad \frac1r=\frac{1-\theta}{q},
+ \tag{9}
+\]
+therefore yields
+\[
+ \|T_{\cI}c\|_{[R^q(J;Y),L^\infty(J;Y)]_\theta}
+ \leq \|c\|_{\ell^r(\cI;Y)}.
+ \tag{10}
+\]
+Identity \((9)\) is valid for arbitrary counting index sets; alternatively,
+each \(c\in\ell^r\) has countable support and is the \(\ell^r\)-limit of
+finite-support vectors, so the usual finite-dimensional identity and
+completion suffice.  In particular, every \(R^r\)-atom has interpolation
+norm at most one.
+
+Now take \(f\in R^r(J;Y)\) and an atomic representation
+\[
+ f=\sum_{k=1}^\infty\lambda_k a_k,
+ \qquad (\lambda_k)\in\ell^1,
+ \tag{11}
+\]
+converging in \(L^\infty(J;Y)\).  By \((10)\), the partial sums in
+\((11)\) are Cauchy in
+\(X_\theta:=[R^q(J;Y),L^\infty(J;Y)]_\theta\) and converge there to some
+\(g\), with
+\[
+ \|g\|_{X_\theta}\leq\sum_{k=1}^\infty|\lambda_k|.
+ \tag{12}
+\]
+The identity maps both \(R^q(J;Y)\) and \(L^\infty(J;Y)\) contractively
+into \(L^\infty(J;Y)\), so operator interpolation gives a contractive
+embedding \(X_\theta\hookrightarrow L^\infty(J;Y)\).  Thus the same
+partial sums converge in \(L^\infty\) to \(g\).  Their prescribed
+\(L^\infty\)-limit is \(f\), hence \(g=f\).  Taking the infimum in
+\((12)\) over all atomic representations proves \((4)\).
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:multi}]
+Affine reparametrization of each \(J_k\) onto a fixed bounded interval
+\(J_*\) is an isometry for every \(R^u\)-norm, including \(u=\infty\).
+Therefore
+\[
+ R_0^u(\cJ;Y)
+ \cong c_0\bigl(\N;R^u(J_*;Y)\bigr)
+ \qquad(1\leq u\leq\infty)
+ \tag{13}
+\]
+isometrically.  Complex interpolation commutes with \(c_0\)-sums
+\cite[Remark 3, Section 1.18.1]{Triebel}.  Applying
+Theorem~\ref{thm:single} coordinatewise, with its constant independent of
+the interval, gives
+\[
+\begin{aligned}
+ R_0^r(\cJ;Y)
+ &\cong c_0\bigl(\N;R^r(J_*;Y)\bigr)\\
+ &\hookrightarrow
+ c_0\bigl(\N;[R^q(J_*;Y),L^\infty(J_*;Y)]_\theta\bigr)\\
+ &=
+ [c_0(\N;R^q(J_*;Y)),c_0(\N;L^\infty(J_*;Y))]_\theta\\
+ &\cong [R_0^q(\cJ;Y),R_0^\infty(\cJ;Y)]_\theta.
+\end{aligned}
+\]
+This is \((5)\).
+\end{proof}
+
+\section{Verification and scope}
+
+The proof uses only three exact ingredients: the two endpoint bounds
+\((7)\)--\((8)\), interpolation of vector-valued \(\ell^p\) spaces, and
+interpolation of \(c_0\)-sums.  Infinite atomic families cause no
+measurability or convergence problem: an \(\ell^r\) coefficient vector
+has countable support, and the synthesis operator is bounded on the whole
+compatible endpoint couple.  The outer atomic series is controlled in the
+interpolation norm by the same \(\ell^1\) coefficient sum used in the
+definition of \(R^r\).
+
+This packet does \emph{not} prove
+\(V^{q_\theta}\hookrightarrow[V^{q_0},V^{q_1}]_\theta\) without an
+epsilon loss.  It also does not prove
+\([R^{q_0},R^{q_1}]_\theta\hookrightarrow R^{q_\theta}\).
+The reverse \(V^s\) inclusion, which was described as unclear in the 2017
+source, is explicitly proved by an increment-operator argument in a 2026
+follow-up \cite[Lemma 2.4]{DLV}; it is therefore not claimed here.
+
+\section{Novelty audit and reviewer focus}
+
+The run's registry, solution, attempt, and proof-gap indexes were searched
+for arXiv:1705.07792, the exact paper title, \(R^s\), bounded variation,
+the \(q_1=\infty\) endpoint, and complex interpolation.  Exact and close
+full-text searches of the local arXiv source corpus found only the source
+theorem.  Bounded web searches on 11 August 2026 used the same terms and
+inspected the 2026 follow-up by Deng--Lorist--Veraar.  That paper proves the
+reverse \(V^s\) inclusion and continues to cite the 2017 paper for the
+opposite-direction \(R^s\) result; no statement of the endpoint theorem
+\((4)\)--\((5)\) was located.
+
+Novelty confidence is moderate rather than high because the proof is a
+short direct consequence of the atomic definition and standard complex
+interpolation.  The most useful human check is whether the original
+restriction concealed a convention not visible in Definition 4.2.  Under
+the printed definitions, the synthesis argument applies verbatim.  A
+reviewer should also check the standard \(c_0\)-sum identity at the
+\(L^\infty\) endpoint; this is exactly the identity already invoked in the
+source's proof of its multi-interval statements.
+
+{\small
+\begin{thebibliography}{9}
+\bibitem{ALV}
+A. Amenta, E. Lorist, and M. Veraar,
+\emph{Fourier multipliers in Banach function spaces with UMD
+concavifications}, Trans. Amer. Math. Soc. 371 (2019), 4837--4868;
+arXiv:\href{https://arxiv.org/abs/1705.07792}{1705.07792}.
+
+\bibitem{BL}
+J. Bergh and J. L\"ofstr\"om,
+\emph{Interpolation Spaces: An Introduction}, Springer, 1976.
+
+\bibitem{Triebel}
+H. Triebel,
+\emph{Interpolation Theory, Function Spaces, Differential Operators},
+North-Holland, 1978.
+
+\bibitem{DLV}
+C. Deng, E. Lorist, and M. Veraar,
+\emph{Operator-valued Fourier multipliers of bounded \(s\)-variation},
+arXiv:\href{https://arxiv.org/abs/2601.04803}{2601.04803}, 2026.
+\end{thebibliography}
+}
+
+\end{document}

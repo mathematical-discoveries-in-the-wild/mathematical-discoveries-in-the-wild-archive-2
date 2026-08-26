@@ -1,0 +1,230 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newcommand{\Sp}{\mathsf{S}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\R}{\mathbb{R}}
+\DeclareMathOperator{\diag}{diag}
+
+\title{A Rank-One Splitting Counterexample to\\
+Tang--Zhang's Schatten-Norm Conjecture}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 9}
+\date{August 9, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.9\textwidth}{\textbf{Status.}
+Candidate counterexample, likely valid, pending expert review.  For every
+$1<p<2$, Conjecture 3.1 of Tang--Zhang is false already for two real
+$2\times2$ rank-one matrices.}}
+\end{center}
+
+\section{Source problem}
+
+Tang and Zhang~\cite{TangZhang} define $c_p(m)$ to be the least constant such
+that
+\[
+ \left\|\sum_{k=1}^m A_k\right\|_p
+ \le c_p(m)\left\|\sum_{k=1}^m |A_k|\right\|_p
+ \qquad(A_k\in M_n(\C)),
+\]
+where $|A|=(A^*A)^{1/2}$ and $\|\cdot\|_p$ is the Schatten $p$-norm.
+Their Conjecture 3.1 proposes
+\begin{equation}\label{eq:source-conjecture}
+ c_p(m)=
+ \frac{\sqrt{x_{p,m}(x_{p,m}+m-1)}}
+ {(x_{p,m}^{,p}+m-1)^{1/p}},
+ \qquad x_{p,m}^{,p}=2x_{p,m}+m-1.
+\end{equation}
+The conjecture and its rank-one heuristic occur on page 4 of the source PDF.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{Conjecture 3.1 and the proposed rank-one extremal family in
+  Tang--Zhang~\cite[p.~4]{TangZhang}.}
+  \label{fig:source}
+\end{figure}
+
+\section{Proof intuition}
+
+The source heuristic uses matrices $A_k=u v_k^*$ with a \emph{common} left
+vector $u$.  Their sum therefore has rank one.  That is stable at the
+Hilbert--Schmidt exponent $p=2$, but it cannot be extremal below $2$.
+
+Indeed, rotate one left vector away from the other by a small amount
+$\delta$.  The principal singular value suffers only a linear loss in
+$\delta$, while a new singular value is born with squared size proportional
+to $\delta$.  Its contribution to the $p$-th power of the Schatten norm is
+therefore proportional to $\delta^{p/2}$.  When $1<p<2$, we have $p/2<1$, so
+$\delta^{p/2}$ dominates the linear loss.  The denominator is unchanged,
+because it depends only on the right vectors.  This turns every proposed
+two-matrix extremizer into a strict violation.
+
+\section{Counterexample theorem}
+
+\begin{theorem}\label{thm:main}
+For every $1<p<2$, the value proposed by \eqref{eq:source-conjecture} is
+strictly smaller than $c_p(2)$.  More precisely, there exist real rank-one
+matrices $A_1,A_2\in M_2(\R)$ such that
+\[
+ \frac{\|A_1+A_2\|_p}{\||A_1|+|A_2|\|_p}
+ > \frac{\sqrt{x(x+1)}}{(x^p+1)^{1/p}},
+ \qquad x^p=2x+1.
+\]
+Consequently Conjecture 3.1 of Tang--Zhang is false.
+\end{theorem}
+
+\begin{proof}
+Fix $1<p<2$, put $q=p/2\in(1/2,1)$, and let $x>1$ be the positive solution
+of $x^p=2x+1$.  Set
+\[
+ \beta=\frac{x-1}{x+1}\in(0,1).
+\]
+For a parameter $\alpha\in(0,1]$, take unit vectors in $\R^2$
+\[
+ u_1=v_1=e_1,\qquad
+ u_2=\alpha e_1+\sqrt{1-\alpha^2}\,e_2,\qquad
+ v_2=\beta e_1+\sqrt{1-\beta^2}\,e_2
+\]
+and define
+\[
+ A_1=u_1v_1^{\mathsf T},\qquad A_2=u_2v_2^{\mathsf T}.
+\]
+Since $u_i$ and $v_i$ are unit vectors,
+\[
+ A_i^*A_i=v_iv_i^{\mathsf T},\qquad |A_i|=v_iv_i^{\mathsf T}.
+\]
+The two eigenvalues of $|A_1|+|A_2|$ are $1+\beta$ and $1-\beta$.
+
+Write $U=[u_1\ u_2]$ and $V=[v_1\ v_2]$.  Then
+$A_1+A_2=UV^{\mathsf T}$, and the left and right Gram matrices are
+\[
+ G_U=U^{\mathsf T}U=
+ \begin{pmatrix}1&\alpha\\ \alpha&1\end{pmatrix},\qquad
+ G_V=V^{\mathsf T}V=
+ \begin{pmatrix}1&\beta\\ \beta&1\end{pmatrix}.
+\]
+The squared singular values of $UV^{\mathsf T}$ are the eigenvalues of
+$G_UG_V$.  These Gram matrices are simultaneously diagonalized by
+$(1,1)^{\mathsf T}$ and $(1,-1)^{\mathsf T}$, so the squared singular values
+are
+\[
+ (1+\alpha)(1+\beta),\qquad (1-\alpha)(1-\beta).
+\]
+It follows that the $p$-th power of the ratio is
+\begin{equation}\label{eq:ratio}
+ \mathcal R_p(\alpha,\beta)^p=
+ \frac{((1+\alpha)(1+\beta))^q+
+       ((1-\alpha)(1-\beta))^q}
+ {(1+\beta)^p+(1-\beta)^p}.
+\end{equation}
+
+At $\alpha=1$, the substitution $(1+\beta)/(1-\beta)=x$ gives directly
+\[
+ \mathcal R_p(1,\beta)
+ =\frac{\sqrt{x(x+1)}}{(x^p+1)^{1/p}},
+\]
+which is exactly the conjectured value for $m=2$.
+
+We now split the common left vector.  Let $\alpha=1-\delta$ with
+$0<\delta<1$.  The change in the numerator of \eqref{eq:ratio} is
+\begin{align*}
+ D(\delta)
+ &= (1-\beta)^q\delta^q
+   -(1+\beta)^q\bigl(2^q-(2-\delta)^q\bigr).
+\end{align*}
+For $0<q<1$ and $0<\delta<1$,
+\[
+ 2^q-(2-\delta)^q
+ =\int_{2-\delta}^{2}q t^{q-1}\,dt
+ \le q\delta,
+\]
+because $t\ge1$ throughout the interval.  Hence
+\begin{equation}\label{eq:gain}
+ D(\delta)\ge
+ (1-\beta)^q\delta^q-q(1+\beta)^q\delta.
+\end{equation}
+Define
+\[
+ T=\left[
+ \frac{1}{q}\left(\frac{1-\beta}{1+\beta}\right)^q
+ \right]^{1/(1-q)},
+ \qquad
+ \delta=\frac12\min\{1,T\}.
+\]
+Then $0<\delta<1$ and $\delta<T$.  The right-hand side of
+\eqref{eq:gain} is therefore strictly positive.  The denominator in
+\eqref{eq:ratio} has not changed, so
+\[
+ \mathcal R_p(1-\delta,\beta)>\mathcal R_p(1,\beta).
+\]
+The matrices constructed above consequently violate the proposed constant.
+\end{proof}
+
+\section{Numerical illustration and verification}
+
+The proof is exact and requires no computation.  As a transparent numerical
+illustration, take $p=4/3$, $\alpha=9/10$, and $\beta=13/20$.  Thus
+\[
+ A_1=\begin{pmatrix}1&0\\0&0\end{pmatrix},\qquad
+ A_2=\frac1{200}
+ \begin{pmatrix}
+ 117&9\sqrt{231}\\
+ 13\sqrt{19}&\sqrt{4389}
+ \end{pmatrix}.
+\]
+The squared singular values of $A_1+A_2$ are $627/200$ and $7/200$, while
+the eigenvalues of $|A_1|+|A_2|$ are $33/20$ and $7/20$.  A 100-digit
+evaluation gives a ratio
+\[
+ 1.01791549015466577995682703563,
+\]
+whereas the conjectured value is
+\[
+ 1.01375834364417921376942970795.
+\]
+The deterministic script \path{code/verify_rank_one_split.py} checks the
+closed formulas at six representative exponents and this illustration.  The
+seeded exploratory script \path{code/lee_cp_extremal_search.py} searches
+arbitrary small complex matrices; it is included only to document how the
+analytic pattern was found.
+
+\section{Scope, novelty, and review recommendation}
+
+The theorem disproves the proposed formula for every $1<p<2$ already at
+$m=n=2$.  It does not determine the true constant $c_p(2)$, decide the
+formula for $p>2$, or determine $c_p(m)$ for general $m$.
+
+The local run indexes were searched for the arXiv id, exact title, Lee's
+conjecture, and the scalar equation in \eqref{eq:source-conjecture}.  Bounded
+web searches on August 9, 2026 used the exact title, the DOI together with
+``counterexample,'' the title together with ``counterexample Schatten p,''
+and the exact scalar equation.  They located the accepted source version and
+publisher record but no later resolution or this rank-one-splitting argument.
+Novelty confidence is therefore positive but conservative pending expert
+literature review.
+
+Human review is strongly recommended.  The key points to check are the two
+Gram-matrix spectral calculations and the scalar estimate
+$2^q-(2-\delta)^q\le q\delta$.
+
+\begin{thebibliography}{9}
+\bibitem{TangZhang}
+Q. Tang and S. Zhang,
+\emph{Generalizing Lee's conjecture on the sum of absolute values of matrices},
+Linear Algebra Appl. \textbf{731} (2026), 196--204;
+arXiv:2510.16846v2;
+\href{https://doi.org/10.1016/j.laa.2025.11.015}{doi:10.1016/j.laa.2025.11.015}.
+\end{thebibliography}
+
+\end{document}

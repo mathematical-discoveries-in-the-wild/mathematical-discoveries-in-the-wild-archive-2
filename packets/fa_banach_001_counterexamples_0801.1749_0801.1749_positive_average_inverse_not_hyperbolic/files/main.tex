@@ -1,0 +1,169 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+
+\title{A positive averaging operator whose inverse\\does not preserve hyperbolicity}
+\author{A counterexample to Problem 2 of arXiv:0801.1749}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+Candidate counterexample, likely valid, pending human review.  An explicit
+infinite-order constant-coefficient differential operator preserves every
+strictly positive polynomial and has strictly positive-definite moment
+matrices, but its inverse sends the hyperbolic polynomial $x^6$ to a
+polynomial with nonreal zeros.  Thus Problem~2 has a negative answer.
+
+\section{Source question}
+
+Let $D=d/dx$.  The source calls a linear operator on $\R[x]$ a
+\emph{positivity-preserver} if it maps every polynomial positive on all of
+$\R$ to another such polynomial, and a \emph{hyperbolicity-preserver} if it
+maps every real-rooted polynomial to a real-rooted polynomial.  Problem~2 on
+source PDF page~3 asks whether every positivity-preserver of the form
+\[
+ U=\alpha_0+\alpha_1D+\alpha_2D^2+\cdots
+\]
+has a hyperbolicity-preserver as its inverse~\cite{BGS}.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section{Proof intuition}
+
+Every probability measure with all moments gives a constant-coefficient
+positivity-preserver by averaging translations:
+\[
+ (U_\mu p)(x)=\int_\R p(x+t)\,d\mu(t).
+\]
+The two-point average has symbol $\cosh z$, so its formal inverse has symbol
+$\operatorname{sech}z$.  Already
+\[
+ \operatorname{sech}(D)x^6=x^6-15x^4+75x^2-61
+\]
+is not real-rooted.  To rule out any objection that this seed measure has
+finite support and degenerate high-order moment matrices, add one percent of
+a Gaussian.  Strict positive definiteness is restored, while the inverse
+image of $x^6$ retains a pair of nonreal conjugate roots.
+
+\section{The counterexample}
+
+Let $\gamma$ be standard Gaussian measure and set
+\begin{equation}\label{eq:mu}
+ \mu=\frac{99}{200}(\delta_{-1}+\delta_1)+\frac1{100}\gamma.
+\end{equation}
+Define
+\begin{equation}\label{eq:U}
+ (Up)(x)=\int_\R p(x+t)\,d\mu(t)
+ =\left(\frac{99}{100}\cosh D+\frac{1}{100}e^{D^2/2}\right)p(x).
+\end{equation}
+
+\begin{theorem}\label{thm:main}
+The operator $U:\R[x]\to\R[x]$ in \eqref{eq:U} is an invertible,
+infinite-order, constant-coefficient positivity-preserver.  Every finite
+Hankel moment form associated with $U$ is positive definite.  Nevertheless
+$U^{-1}$ is not a hyperbolicity-preserver.
+\end{theorem}
+
+\begin{proof}
+The translation identity $e^{tD}p(x)=p(x+t)$ and the Gaussian moment formula
+give \eqref{eq:U}.  Thus $U$ is a constant-coefficient formal differential
+operator with infinitely many nonzero coefficients.  If $p(x)>0$ for every
+$x\in\R$, then every integrand $p(x+t)$ is positive, and hence
+$(Up)(x)>0$ for every $x$.  Therefore $U$ preserves positivity.
+
+The moments $m_k=\int t^k\,d\mu(t)$ determine its Hankel forms.  For every
+nonzero polynomial $q$,
+\[
+ \sum_{i,j}m_{i+j}q_iq_j
+ =\int_\R q(t)^2\,d\mu(t)
+ \ge \frac1{100}\int_\R q(t)^2\,d\gamma(t)>0.
+\]
+The final inequality holds because a nonzero polynomial cannot vanish on a
+set of full Gaussian measure.  Thus all finite moment matrices are strictly
+positive definite.
+
+The formal symbol of $U$ is
+\[
+ M(z)=\frac{99}{100}\cosh z+\frac1{100}e^{z^2/2}.
+\]
+Since $M(0)=1$, it has a unique reciprocal formal power series $N(z)$, and
+$V=N(D)$ is the two-sided inverse of $U$ on $\R[x]$: all series truncate on
+each input polynomial.  Through degree six,
+\begin{align*}
+ M(z)&=1+\frac12z^2+\frac{17}{400}z^4
+          +\frac{19}{12000}z^6+O(z^8),\\
+ N(z)&=1-\frac12z^2+\frac{83}{400}z^4
+          -\frac{1009}{12000}z^6+O(z^8).
+\end{align*}
+Consequently
+\begin{equation}\label{eq:q}
+ V(x^6)=x^6-15x^4+\frac{747}{10}x^2-\frac{3027}{50}.
+\end{equation}
+
+The input $x^6$ is hyperbolic.  To inspect the output, put $y=x^2$ and
+multiply the resulting cubic by $50$:
+\[
+ R(y)=50y^3-750y^2+3735y-3027.
+\]
+Its discriminant is
+\begin{equation}\label{eq:disc}
+ \operatorname{Disc}(R)=-668917845000<0.
+\end{equation}
+A real cubic with negative discriminant has one real zero and a nonreal
+conjugate pair.  Hence the polynomial in \eqref{eq:q} has nonreal zeros and
+is not hyperbolic.  Thus $U^{-1}=V$ is not a
+hyperbolicity-preserver.
+\end{proof}
+
+\section{Deep upgrade, novelty, and scope}
+
+The first attempt used the transparent seed
+$U_0=\cosh D=(e^D+e^{-D})/2$.  Its inverse already fails on $x^6$; writing
+$y=x^2$ factors the corresponding cubic as
+\[
+ y^3-15y^2+75y-61=(y-1)(y^2-14y+61),
+\]
+whose quadratic factor has negative discriminant.  The deep upgrade in
+Theorem~\ref{thm:main} mixes in a Gaussian.  This forces
+$\int q^2\,d\mu>0$ for every nonzero $q$, so the counterexample lies in the
+strict interior of the moment cone rather than on a finite-support boundary.
+The symbolic coefficient and discriminant calculations are independently
+reproduced in \texttt{code/verify\_counterexample.py}.
+
+A bounded primary-source search used the exact wording of Problem~2,
+``positivity-preserver'', ``hyperbolicity-preserver'', inverse, moment
+measure, $\cosh(D)$, and $\operatorname{sech}(D)$.  It found the source and
+later moment/generator work, including arXiv:2308.10455~\cite{Dio}, but no
+primary paper stating this counterexample.  Novelty confidence is moderate;
+correctness confidence is high.
+
+This disproves Problem~2 only.  It does not classify all positivity
+preservers as requested in the much broader Problem~1.  The argument uses
+the source's algebraic convention for infinite-order operators: formal power
+series in $D$ act unambiguously on polynomials because only finitely many
+derivatives survive.
+
+\begin{thebibliography}{2}
+\bibitem{BGS}
+J.~Borcea, A.~Guterman, and B.~Shapiro,
+\emph{Preserving positive polynomials and beyond}, arXiv:0801.1749.
+
+\bibitem{Dio}
+P.~J. di Dio,
+\emph{On positivity preservers with constant coefficients and their
+generators}, arXiv:2308.10455.
+\end{thebibliography}
+
+\end{document}

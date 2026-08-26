@@ -1,0 +1,255 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\1}{I}
+\newcommand{\spec}{\operatorname{Spec}}
+\newcommand{\Span}{\operatorname{span}}
+
+\title{Nonemptiness of the Clifford Spectrum\\
+for Three Hermitian Matrices of Arbitrary Finite Size}
+\author{Candidate solution packet for arXiv:2602.15302}
+\date{9 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.9\textwidth}{\textbf{Status.}
+Candidate full solution, likely valid pending expert review.  The proof gives
+a quantitative strengthening of the arbitrary-size, three-matrix conjecture
+highlighted in the source paper.}}
+\end{center}
+
+\section{Source problem and scope}
+
+Cerjan, Lauric, and Loring prove that the Clifford spectrum of any three
+$2\times2$ Hermitian matrices is nonempty \cite{CLL2026}.  Their abstract
+describes a conjecture for three $n\times n$ matrices of arbitrary size, while
+the introduction says that general nonemptiness of the Clifford spectrum
+remains open and calls their $2\times2$ theorem ``the smallest nontrivial
+case'' (source PDF, page 3).  The earlier paper of Cerjan and Loring records
+the broader all-tuples conjecture explicitly \cite[Conjecture 8.1]{CL2024}.
+
+The relevant passage from page 3 of the source paper is reproduced below.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+For the three-matrix case, fix the Pauli matrices
+\[
+ \sigma_1=\begin{pmatrix}0&1\\1&0\end{pmatrix},\qquad
+ \sigma_2=\begin{pmatrix}0&-i\\i&0\end{pmatrix},\qquad
+ \sigma_3=\begin{pmatrix}1&0\\0&-1\end{pmatrix}.
+\]
+Given Hermitian matrices $A_1,A_2,A_3\in M_n(\C)$ and
+$\lambda=(\lambda_1,\lambda_2,\lambda_3)\in\R^3$, their localizer is
+\[
+ L_\lambda(A)=\sum_{j=1}^3(A_j-\lambda_j\1_n)\otimes\sigma_j.
+\]
+The standard Pauli Clifford spectrum is
+\[
+ \Lambda^{\mathrm C}(A)=
+ \{\lambda\in\R^3:L_\lambda(A)\text{ is singular}\}.
+\]
+The source problem in the present scope asks whether this set is nonempty for
+every finite $n$, not only for $n=2$.
+
+\section{Proof intuition}
+
+Far from the matrices, the localizer is governed by the universal Pauli term
+$-\sum_j\lambda_j\1_n\otimes\sigma_j$.  On a large sphere this term has a
+uniform spectral gap, so the actual localizer can be deformed to it without
+crossing zero.  The negative eigenspaces of the universal term form $n$ copies
+of the Hopf line bundle over $S^2$.  Their determinant has winding number
+$\pm n$ and is therefore nontrivial.
+
+If the localizer had no singularity inside the sphere, however, its negative
+spectral subspaces would make a vector bundle over the whole ball.  Every
+bundle over a ball is trivial, so its determinant would restrict to a trivial
+line bundle on the boundary.  The nonzero Hopf winding gives the
+contradiction.  The size of the universal gap also locates a singularity in a
+closed ball determined by the norm of the localizer at the origin.
+
+\section{The theorem}
+
+\begin{theorem}[Arbitrary finite size, with a norm bound]
+\label{thm:main}
+Let $n\geq1$ and let $A_1,A_2,A_3\in M_n(\C)$ be Hermitian.  Set
+\[
+ K=\sum_{j=1}^3 A_j\otimes\sigma_j,
+ \qquad C=\lVert K\rVert.
+\]
+Then there is a $\lambda\in\R^3$ such that
+\[
+ \lVert\lambda\rVert_2\leq C
+ \qquad\text{and}\qquad
+ L_\lambda(A)\text{ is singular}.
+\]
+In particular, $\Lambda^{\mathrm C}(A)$ is nonempty for every finite $n$.
+\end{theorem}
+
+\begin{lemma}[The boundary Hopf class]
+\label{lem:hopf}
+For $\omega\in S^2$, let $H_+(\omega)$ be the $+1$ eigenspace of
+$\omega\cdot\sigma=\sum_{j=1}^3\omega_j\sigma_j$.  The line bundle $H_+$
+over $S^2$ has a transition function of winding number $-1$.  Consequently,
+the determinant line of $H_+^{\oplus n}$ has winding number $-n$ and is
+nontrivial.
+\end{lemma}
+
+\begin{proof}
+Write
+\[
+ \omega=(\sin\theta\cos\phi,\sin\theta\sin\phi,\cos\theta).
+\]
+On the complement of the south pole and the complement of the north pole,
+respectively, normalized $+1$ eigenvectors are
+\[
+ u_N(\theta,\phi)=
+ \begin{pmatrix}\cos(\theta/2)\\ e^{i\phi}\sin(\theta/2)\end{pmatrix},
+ \qquad
+ u_S(\theta,\phi)=
+ \begin{pmatrix}e^{-i\phi}\cos(\theta/2)\\ \sin(\theta/2)\end{pmatrix}.
+\]
+Direct multiplication verifies
+$(\omega\cdot\sigma)u_N=u_N$ and
+$(\omega\cdot\sigma)u_S=u_S$.  On the overlap,
+$u_S=e^{-i\phi}u_N$.  Thus the equatorial transition function is
+$e^{-i\phi}$, of winding $-1$.  For $n$ direct summands the transition matrix
+is $e^{-i\phi}\1_n$, whose determinant is $e^{-in\phi}$.  Its nonzero
+winding proves that the determinant line, and hence the vector bundle, is
+nontrivial.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+If $C=0$, then $L_0(A)=K=0$ and the assertion holds with $\lambda=0$.
+Assume henceforth that $C>0$.
+
+Fix any $R>C$.  We first prove that $L_\lambda(A)$ is singular at some point
+of the closed ball $B_R=\{\lambda:\lVert\lambda\rVert_2\leq R\}$.  Suppose,
+to the contrary, that it is invertible everywhere on $B_R$.  Because the
+localizer is Hermitian and depends continuously on $\lambda$, the negative
+spectral projections
+\[
+ P(\lambda)=\mathbf 1_{(-\infty,0)}(L_\lambda(A))
+\]
+vary continuously and define a complex vector bundle $E\to B_R$.
+
+For $\omega\in S^2$ and $t\in[0,1]$, consider the boundary homotopy
+\[
+ F_t(\omega)=tK-R\1_n\otimes(\omega\cdot\sigma).
+\]
+Its endpoint at $t=1$ is the actual boundary localizer $L_{R\omega}(A)$.
+Since $(\omega\cdot\sigma)^2=\1_2$, the operator
+$R\1_n\otimes(\omega\cdot\sigma)$ has inverse norm $1/R$.  More directly,
+for every vector $v$,
+\begin{align*}
+ \lVert F_t(\omega)v\rVert
+ &\geq R\lVert v\rVert-t\lVert Kv\rVert\\
+ &\geq (R-tC)\lVert v\rVert
+ \geq (R-C)\lVert v\rVert>0.
+\end{align*}
+Thus $F_t(\omega)$ is invertible throughout $S^2\times[0,1]$.
+
+At $t=0$, the negative eigenspace of
+$F_0(\omega)=-R\1_n\otimes(\omega\cdot\sigma)$ is
+\[
+ \C^n\otimes H_+(\omega)\cong H_+(\omega)^{\oplus n}.
+\]
+It has rank $n$.  The negative spectral projections of $F_t$ give a homotopy
+of boundary bundles, so
+\[
+ E|_{\partial B_R}\cong H_+^{\oplus n}
+\]
+up to bundle homotopy; in particular their determinant lines have the same
+winding number.  Lemma~\ref{lem:hopf} says this number is $-n\neq0$.
+
+On the other hand, $B_R$ is contractible, so the vector bundle $E\to B_R$ is
+trivial.  Its determinant line is therefore trivial, and its restriction to
+$\partial B_R\cong S^2$ must have winding number zero.  This contradicts the
+preceding paragraph.  Hence every $R>C$ contains a point $\lambda_R$ at which
+$L_{\lambda_R}(A)$ is singular.
+
+Choose $R_k=C+1/k$.  The points $\lambda_{R_k}$ lie in the fixed compact ball
+$B_{C+1}$, so a subsequence converges to some $\lambda$ with
+$\lVert\lambda\rVert_2\leq C$.  Since the determinant is continuous,
+\[
+ \det L_\lambda(A)=
+ \lim_{k\to\infty}\det L_{\lambda_{R_k}}(A)=0.
+\]
+This proves the theorem.
+\end{proof}
+
+\begin{remark}[Other three-generator representations]
+Every finite-dimensional complex representation of the three-generator
+Clifford relations is a direct sum of irreducible chiral representations.  An
+orientation reversal changes the sign of the Hopf winding but not its
+nonvanishing.  Hence each irreducible summand has a nonempty spectrum by the
+same proof, and a direct-sum localizer is singular wherever one summand is.
+The theorem was stated with the source paper's Pauli convention to keep the
+scope exact.
+\end{remark}
+
+\section{Verification and limitations}
+
+The proof is finite-dimensional and does not address triples of unbounded or
+infinite-dimensional self-adjoint operators.  It also does not settle the
+broader conjecture for an arbitrary number of matrices; the obstruction used
+here is specifically the nontrivial boundary class of the Pauli map on
+$S^2$.
+
+The boundary gap, negative rank, explicit transition function, extension
+contradiction, and limiting norm bound were audited separately in
+\path{VERIFICATION.md}.  The optional script
+\path{code/verify_boundary_obstruction.py} checks the gap and winding on
+random finite examples, but no numerical statement is used in the proof.
+
+\section{Novelty check}
+
+A bounded search on 9 August 2026 covered the run's four lightweight indexes,
+the exact arXiv identifier and title, and arXiv/web combinations of
+``Clifford spectrum'' with ``Hopf line bundle,'' ``negative spectral
+subspace,'' ``Chern class,'' ``Pauli,'' and ``nonempty.''  It found the source
+$2\times2$ theorem \cite{CLL2026} and the earlier general conjecture
+\cite{CL2024}, but no proof of the arbitrary-$n$ three-matrix case and no
+appearance of the argument above.  Novelty confidence is therefore moderate,
+not definitive, pending specialist review and broader citation-database
+searches.
+
+\section{Human-review recommendation}
+
+The packet is ready for expert review as a candidate full solution.  The
+highest-value checks are the match between the source's intended Clifford
+representation and the Pauli convention, and the standard implication that
+the boundary negative bundle induced by an invertible filling must have
+trivial determinant class.  The matrix estimate and Hopf transition
+calculation are explicit.
+
+\begin{thebibliography}{9}
+
+\bibitem{CLL2026}
+A. Cerjan, V. Lauric, and T. A. Loring,
+\emph{Clifford spectrum of three 2 by 2 matrices},
+arXiv:2602.15302v1, 2026.
+
+\bibitem{CL2024}
+A. Cerjan and T. A. Loring,
+\emph{Even spheres as joint spectra of matrix models},
+J. Math. Anal. Appl. \textbf{531} (2024), 127892;
+arXiv:2305.12026v2.
+
+\end{thebibliography}
+
+\end{document}

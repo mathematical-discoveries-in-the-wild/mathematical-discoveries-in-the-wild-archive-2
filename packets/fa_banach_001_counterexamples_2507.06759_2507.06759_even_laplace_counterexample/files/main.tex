@@ -1,0 +1,198 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\PhiG}{\Phi}
+\newcommand{\phig}{\varphi}
+
+\title{An even log-concave counterexample\\to the Gaussian Gr\"unbaum bound}
+\author{Autonomous mathematical discovery packet\\
+Run \texttt{fa\_banach\_001}, lane 0, \texttt{agent\_lane\_00}}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Candidate full counterexample, likely valid, pending human review.  The proof
+is exact and has no computational dependency.}}
+\end{center}
+
+\section{Source question}
+
+Fradelizi, Langharst, Liu, Mar\'in Sola, and Tang~\cite{FLLMT} prove a
+one-dimensional Gaussian-form Gr\"unbaum inequality for
+$\gamma$-transport-concave measures.  If $B=(a,b)$ has mass $t>0$ and
+conditional barycenter
+\[
+ g_B=\frac{\int_a^b x\,d\mu(x)}{\mu(B)},
+\]
+their Corollary 5.2 gives
+\begin{equation}\label{eq:proposed}
+ \mu((a,g_B])\ge
+ \PhiG\!\left(-\frac{I_\gamma(t)}{t}\right),
+ \qquad
+ I_\gamma(t)=\phig(\PhiG^{-1}(t)),
+\end{equation}
+where $\PhiG$ and $\phig$ are the standard Gaussian distribution function
+and density.  On page 30 they ask whether the same conclusion might hold for
+measures that are even.  Figure~\ref{fig:source} records the exact passage.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+\caption{The open-problem signal in arXiv:2507.06759v2, page 30.}
+\label{fig:source}
+\end{figure}
+
+\section{Proof intuition}
+
+On the negative half-line the centered Laplace density is exponential.  Its
+conditional mean lies one scale length from the origin, leaving exactly an
+$e^{-1}$ fraction of the half-line mass farther into the tail.  This is the
+extremal one-dimensional log-concave Gr\"unbaum behavior, and it is smaller
+than the stronger Gaussian expression in \eqref{eq:proposed}.  A sufficiently
+long but finite interval retains the strict gap.  Taking $(-5,0)$ makes the
+comparison elementary: the two sides can be separated at the rational number
+$1/5$.
+
+\section{Counterexample}
+
+\begin{theorem}\label{thm:main}
+Let $\mu$ be the centered Laplace probability measure on $\R$,
+\[
+ d\mu(x)=\frac12 e^{-|x|}\,dx,
+\]
+and let $B=(-5,0)$.  Then $\mu$ is even, log-concave, and a convex measure in
+the sense of~\cite{FLLMT}.  If $t=\mu(B)$ and $g=g_B$, then
+\[
+ \mu((-5,g])<\frac15<
+ \PhiG\!\left(-\frac{I_\gamma(t)}{t}\right).
+\]
+Consequently, the proposed extension of \eqref{eq:proposed} to even measures
+is false, even within the class of even log-concave convex measures.
+\end{theorem}
+
+\begin{proof}
+The density is even, and
+\[
+ \log\!\left(\tfrac12e^{-|x|}\right)=-\log2-|x|
+\]
+is concave.  Its reciprocal $2e^{|x|}$ is convex, so $\mu$ is also a convex
+measure under the source definition.
+
+On $(-5,0)$ the density is $e^x/2$.  Direct integration gives
+\begin{align}
+ t&=\frac{1-e^{-5}}2,\label{eq:t}\\
+ g&=\frac{\frac12\int_{-5}^{0}xe^x\,dx}{t}
+   =-1+\frac{5}{e^5-1},\label{eq:g}\\
+ \mu((-5,g])&=\frac{e^g-e^{-5}}2.\label{eq:left}
+\end{align}
+In particular $-1<g<0$, so the conditional barycenter lies in $B$.
+
+We first bound \eqref{eq:left}.  From
+$e>1+1+\frac12+\frac16=\frac83$ we obtain $e^5>101$.  Hence
+\[
+ g=-1+\frac5{e^5-1}< -1+\frac5{100}=-\frac{19}{20}.
+\]
+The exponential series also gives
+\[
+ e^{19/20}>
+ 1+\frac{19}{20}+\frac12\left(\frac{19}{20}\right)^2
+ +\frac16\left(\frac{19}{20}\right)^3
+ =\frac{122119}{48000}>\frac52.
+\]
+Therefore $e^g<e^{-19/20}<2/5$, and \eqref{eq:left} yields
+\begin{equation}\label{eq:leftbound}
+ \mu((-5,g])<\frac{e^g}{2}<\frac15.
+\end{equation}
+
+It remains to bound the Gaussian side.  Put
+$x=I_\gamma(t)/t$.  Since $I_\gamma(t)\le\phig(0)=1/\sqrt{2\pi}<2/5$
+and, by $e^5>101$, equation \eqref{eq:t} gives $t>50/101$, we have
+\begin{equation}\label{eq:xbound}
+ x<\frac{2/5}{50/101}=\frac{101}{125}=:c.
+\end{equation}
+Here we used the elementary Archimedean estimate $\pi>25/8$.
+
+For $y\ge0$ one has $e^{-y}\le1-y+y^2/2$ (differentiate the
+difference twice).  Thus
+\[
+ e^{-u^2/2}\le1-\frac{u^2}{2}+\frac{u^4}{8}.
+\]
+Moreover,
+\[
+ c-\frac{c^3}{6}+\frac{c^5}{40}
+ =\frac{2668545614003}{3662109375000}<\frac34.
+\]
+Using monotonicity of $\PhiG$ and \eqref{eq:xbound},
+\begin{align*}
+ \PhiG(-x)&>\PhiG(-c)\\
+ &=\frac12-\frac1{\sqrt{2\pi}}
+     \int_0^c e^{-u^2/2}\,du\\
+ &>\frac12-\frac25
+   \left(c-\frac{c^3}{6}+\frac{c^5}{40}\right)
+ >\frac12-\frac25\cdot\frac34=\frac15.
+\end{align*}
+Together with \eqref{eq:leftbound}, this proves the strict reverse of
+\eqref{eq:proposed}.
+\end{proof}
+
+\section{Smooth positive counterexamples}
+
+The example is already positive and continuous, but its density is not
+differentiable at the origin.  This is inessential.  Let
+$\mu_\varepsilon=\mu*\gamma_\varepsilon$, where
+$\gamma_\varepsilon$ is a centered Gaussian of variance $\varepsilon^2$.
+The density of $\mu_\varepsilon$ is positive, smooth, even, and log-concave;
+log-concavity follows from the Pr\'ekopa--Leindler theorem~\cite{Prekopa}.
+A positive log-concave density has a convex reciprocal, so these are convex
+measures as well.
+
+As $\varepsilon\downarrow0$, the densities converge to the Laplace density
+in $L^1$.  On the fixed bounded interval $B$, both its mass and its truncated
+first moment converge.  Hence $g_{B,\varepsilon}\to g_B$, and the mass of
+$(-5,g_{B,\varepsilon}]$ converges to the left side of Theorem~\ref{thm:main}.
+The Gaussian expression is continuous in $t\in(0,1)$.  The strict gap in the
+theorem therefore persists for every sufficiently small $\varepsilon>0$.
+
+\section{Verification, scope, and novelty}
+
+The accompanying script evaluates the closed formulas at 80 decimal digits
+and checks the rational polynomial bound; it is a regression test, not part
+of the proof.  A bounded search through 11 August 2026 covered the run
+indexes, exact arXiv id and title, the exact source phrase, current arXiv v2,
+publication metadata, and combinations of \emph{even measure},
+\emph{transport concavity}, \emph{Laplace}, and \emph{Gr\"unbaum}.  No later
+answer or matching counterexample was found.
+
+This packet refutes the proposed extension under evenness, including the
+stronger even log-concave/convex-measure variant.  It does not weaken the
+source's proved theorem under $\gamma$-transport concavity; indeed, the source
+proves that an even $\gamma$-transport-concave density must be Gaussian, while
+the Laplace density is not Gaussian.
+
+\begin{thebibliography}{9}
+\bibitem{FLLMT}
+M. Fradelizi, D. Langharst, J. Liu, F. Mar\'in Sola, and S. Tang,
+\emph{Gr\"unbaum's inequality for Gaussian and convex probability measures},
+arXiv:2507.06759v2 (2025), especially Corollary 5.2 and p.~30.
+
+\bibitem{Prekopa}
+A. Pr\'ekopa,
+\emph{Logarithmic concave measures with applications to stochastic
+programming}, Acta Sci. Math. (Szeged) 32 (1971), 301--316.
+\end{thebibliography}
+
+\end{document}
+

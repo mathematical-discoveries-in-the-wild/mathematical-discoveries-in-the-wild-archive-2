@@ -1,0 +1,256 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=25mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,urlcolor=blue!55!black,citecolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newcommand{\E}{\mathbf E}
+\newcommand{\Ent}{\operatorname{Ent}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\eps}{\varepsilon}
+
+\title{Entropy factorization on every $\ell_p$ sphere}
+\author{Candidate full solution to Conjecture 1 in arXiv:2407.13457}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{blue!55!black}{blue!5}{\parbox{0.92\textwidth}{
+\textbf{Status: candidate full result; likely valid; human review needed.}
+The conjectured entropy factorization holds for every $p>0$ and every block
+weight vector.  In fact, the same theorem holds for every symmetrized
+Dirichlet law with arbitrary positive parameters.}}
+\end{center}
+
+\section*{Source conjecture}
+Caputo and Salez ask whether cone measure on every $\ell_p$ sphere satisfies
+the same arbitrary-block entropy factorization known for the Euclidean sphere
+\cite[Conjecture 1, p.~16]{CS}.  Their 2026 journal publication retains this
+conjecture.  The exact arXiv source text is reproduced below.
+
+\begin{center}
+\includegraphics[width=0.97\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+For a probability measure $\nu$ and a nonnegative $F\in L\log L(\nu)$, write
+\[
+ \Ent_\nu(F)=\int F\log F\,d\nu-
+ \left(\int F\,d\nu\right)\log\left(\int F\,d\nu\right).
+\]
+If the variables are indexed by $[n]$, let $\Ent_A(F)$ denote entropy in the
+coordinates in $A$, conditionally on all coordinates in $A^c$.  For a
+probability vector $\theta=(\theta_A)_{A\subset[n]}$, put
+\[
+ \theta_{**}:=\min_{1\le i<j\le n}
+       \sum_{A\supset\{i,j\}}\theta_A,
+ \qquad
+ \theta_*:=\min_{1\le i\le n}\sum_{A\ni i}\theta_A.
+\]
+
+\section*{Proof intuition}
+Under cone measure, the signs of the coordinates are independent fair signs,
+independent of the magnitudes
+\[
+ Z_i=|X_i|^p,
+ \qquad Z\sim\operatorname{Dirichlet}(1/p,\ldots,1/p).
+\]
+The magnitude layer already has the desired $\theta_{**}$ factorization: it is
+a direct entropy-dual form of the Dirichlet Brascamp--Lieb inequality in
+\cite[Proposition 14, p.~13]{BCELM}.  The sign layer has ordinary product
+Shearer factorization with the larger constant $\theta_*\ge\theta_{**}$.
+
+The only issue is that a block update resamples signs and magnitudes together.
+The entropy chain rule splits each joint block entropy into exactly those two
+pieces.  Convexity of conditional entropy shows that the magnitude term needed
+after averaging all signs is no larger than the magnitude term actually
+present in the joint block update.  Adding the two estimates proves the
+conjecture, without constructing any geometric regularizer.
+
+\section*{A Dirichlet factorization lemma}
+Let
+\[
+ \Delta_{n-1}=\{z\in[0,1]^n:\textstyle\sum_i z_i=1\}
+\]
+and let $\mu_\alpha$ be the Dirichlet law with arbitrary parameters
+$\alpha=(\alpha_1,\ldots,\alpha_n)\in(0,\infty)^n$.
+
+\begin{lemma}\label{lem:dirichlet}
+For every nonnegative $h\in L\log L(\mu_\alpha)$,
+\begin{equation}\label{eq:dir-factor}
+ \theta_{**}\Ent_{\mu_\alpha}(h)
+ \le \sum_{A\subset[n]}\theta_A\,
+       \E_{\mu_\alpha}[\Ent_A(h)].
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+If $\theta_{**}=1$, every set with positive weight contains every pair and
+hence equals $[n]$, so the claim is immediate.  Suppose $\theta_{**}<1$ and
+set $c_A=\theta_A/(1-\theta_{**})$.
+
+Apply the Dirichlet Brascamp--Lieb inequality
+\cite[Proposition 14]{BCELM} to functions $g_A$ depending on the coordinates
+in $A^c$.  Its coefficient condition holds because, for every $i\ne j$,
+\begin{align*}
+ \sum_{A:A^c\cap\{i,j\}\ne\varnothing}c_A
+ &=\frac{1-\sum_{A\supset\{i,j\}}\theta_A}
+         {1-\theta_{**}}\le1.
+\end{align*}
+(When $A=[n]$, $g_A$ is constant and its factor is harmless.)
+Thus
+\[
+ \int\prod_A g_A^{c_A}\,d\mu_\alpha
+ \le\prod_A\left(\int g_A\,d\mu_\alpha\right)^{c_A}.
+\]
+The standard entropy--Brascamp--Lieb duality, recalled as Theorem 1 in the
+source paper \cite{CS}, converts this into
+\[
+ \sum_A\theta_A\Ent_{\mu_\alpha}(\E_Ah)
+ \le(1-\theta_{**})\Ent_{\mu_\alpha}(h).
+\]
+Finally, the conditional entropy chain rule
+\[
+ \Ent(h)=\Ent(\E_Ah)+\E[\Ent_A(h)]
+\]
+and $\sum_A\theta_A=1$ give \eqref{eq:dir-factor}.
+\end{proof}
+
+\section*{The symmetrized Dirichlet theorem}
+Let $\sigma_n$ be uniform measure on $\{-1,1\}^n$, independent of
+$Z\sim\mu_\alpha$.  Equivalently, $(Z,\eps)$ induces on
+\[
+ \Sigma_{n-1}^{\pm}=\{y\in\R^n:\textstyle\sum_i|y_i|=1\}
+\]
+the symmetrized Dirichlet law via $y_i=\eps_iZ_i$.  This is precisely the
+class for which \cite[Remark 16, p.~14]{BCELM} identified a sign/ergodicity
+obstruction.
+
+\begin{theorem}\label{thm:sym-dir}
+For arbitrary $\alpha_i>0$, every probability vector $\theta$, and every
+nonnegative $F\in L\log L(\mu_\alpha\otimes\sigma_n)$,
+\begin{equation}\label{eq:joint}
+ \theta_{**}\Ent(F)
+ \le\sum_{A\subset[n]}\theta_A\,
+       \E[\Ent_A(F)].
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Write $\bar F(z)=\E_\eps F(z,\eps)$.  The global entropy chain rule gives
+\begin{equation}\label{eq:global-chain}
+ \Ent(F)=\Ent_Z(\bar F)+\E_Z\Ent_\eps(F).
+\end{equation}
+
+Fix a block $A$.  Given $(Z_{A^c},\eps_{A^c})$, the block variables consist
+of the conditional Dirichlet vector $Z_A$ and independent fair signs $\eps_A$.
+Applying the chain rule inside this conditional law gives
+\begin{equation}\label{eq:block-chain}
+ \E\Ent_A(F)=M_A+S_A,
+\end{equation}
+where
+\begin{align*}
+ M_A&=\E_{Z_{A^c},\eps_{A^c}}
+ \Ent_{Z_A\mid Z_{A^c}}\!\left(\E_{\eps_A}F\right),\\
+ S_A&=\E_Z\E_{\eps_{A^c}}\Ent_{\eps_A}(F).
+\end{align*}
+
+Lemma~\ref{lem:dirichlet}, applied to $\bar F$, controls the magnitude part.
+For each fixed $Z_{A^c}$, conditional entropy is a convex functional of its
+nonnegative argument.  (Its second variation in direction $u$ is
+$\E[u^2/h]-(\E u)^2/\E h\ge0$.)  Since
+\[
+ \bar F=\E_{\eps_{A^c}}\bigl[\E_{\eps_A}F\bigr],
+\]
+this convexity and Lemma~\ref{lem:dirichlet} yield
+\begin{equation}\label{eq:mag}
+ \theta_{**}\Ent_Z(\bar F)
+ \le\sum_A\theta_A M_A.
+\end{equation}
+
+For every fixed $z$, ordinary Shearer's inequality on the product sign space
+gives
+\[
+ \theta_*\Ent_\eps(F(z,\cdot))
+ \le\sum_A\theta_A\E_{\eps_{A^c}}\Ent_{\eps_A}(F(z,\cdot)).
+\]
+Moreover $\theta_{**}\le\theta_*$: choose an index attaining the minimum in
+$\theta_*$ and pair it with any other index.  Integrating in $z$ therefore
+gives
+\begin{equation}\label{eq:sign}
+ \theta_{**}\E_Z\Ent_\eps(F)\le\sum_A\theta_A S_A.
+\end{equation}
+Adding \eqref{eq:mag} and \eqref{eq:sign}, then using
+\eqref{eq:global-chain}--\eqref{eq:block-chain}, proves \eqref{eq:joint}.
+The argument first applies to bounded positive $F$; standard $L\log L$
+truncation gives the stated form.
+\end{proof}
+
+\section*{Resolution of the source conjecture}
+\begin{corollary}\label{cor:lp}
+For every $n\ge2$, $p>0$, probability vector $\theta$, and cone measure
+$\mathbb P$ on the $\ell_p$ sphere $\mathbb S_p^{n-1}$,
+\[
+ \theta_{**}\Ent_{\mathbb P}(f)
+ \le\sum_{A\subset[n]}\theta_A\,
+       \E_{\mathbb P}[\Ent_A(f)]
+ \qquad(f\in L\log L).
+\]
+Thus Conjecture 1 in \cite{CS} is true.
+\end{corollary}
+
+\begin{proof}
+Under cone measure,
+\[
+ Z_i=|X_i|^p\sim\operatorname{Dirichlet}(1/p,\ldots,1/p),
+ \qquad \eps_i=\operatorname{sgn}(X_i)
+\]
+are independent, with the signs fair and independent.  The coordinatewise
+map $(z,\eps)\mapsto(\eps_i z_i^{1/p})_{i=1}^n$ is an almost-sure bijection
+onto $\mathbb S_p^{n-1}$ and preserves every complementary-coordinate
+$\sigma$-field.  Conditional block entropies are therefore unchanged, and
+Theorem~\ref{thm:sym-dir} with $\alpha_i=1/p$ applies.
+\end{proof}
+
+\section*{Scope, verification, and novelty}
+The proof covers all $p>0$, including $p<1$, because it uses only Dirichlet
+laws with positive parameters; no norm convexity or boundary regularity is
+invoked.  Dirichlet coordinates are positive almost surely, so coordinate
+signs and complementary $\sigma$-fields are unambiguous modulo null sets.
+The theorem proves the conjectured constant but does not assert that it is
+optimal for every choice of $p$ and $\theta$.
+
+The run's four cheap indexes contained no entry for arXiv:2407.13457.
+Targeted searches through 13 August 2026 used the exact conjecture phrase,
+``symmetrized Dirichlet'', ``cone measure'', and arbitrary-block
+$\ell_p$-sphere entropy factorization.  They found the source, its 2026
+journal publication (which retains the conjecture), and the cited 2011
+Dirichlet result, but no later primary-source resolution.  Novelty remains
+provisional pending expert literature review.
+
+The accompanying deterministic Gauss--Jacobi script tests fifteen genuinely
+sign-dependent functions for $n=3$ and Dirichlet parameters
+$0.2,0.5,1,2,5$; all pass.  This is supporting QA, not part of the proof.
+The recommended human-review focus is the one-line Brascamp--Lieb coefficient
+calculation in Lemma~\ref{lem:dirichlet} and the convexity comparison leading
+to \eqref{eq:mag}.
+
+\begin{thebibliography}{9}
+\bibitem{CS}
+P.~Caputo and J.~Salez,
+\emph{Entropy factorization via curvature},
+J. Funct. Anal. 291 (2026), 111498; arXiv:2407.13457.
+
+\bibitem{BCELM}
+F.~Barthe, D.~Cordero-Erausquin, M.~Ledoux, and B.~Maurey,
+\emph{Correlation and Brascamp--Lieb inequalities for Markov semigroups},
+Int. Math. Res. Not. 2011 (2011), 2177--2216; arXiv:0907.2858.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,275 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=0.82in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+\usepackage[T1]{fontenc}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\A}{\mathbb A}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\HS}{\operatorname{HS}}
+\newcommand{\ocl}{\operatorname{ocl}}
+\newcommand{\AP}{\operatorname{AP}}
+\newcommand{\ran}{\operatorname{ran}}
+\newcommand{\mix}{\operatorname{mix}}
+
+\title{Compactness implies discrete spectrum for arbitrary\\
+Kaplansky--Hilbert dynamical systems}
+\author{Candidate full solution to Remark 3.8 of arXiv:2505.14132}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\paragraph{Status.}
+\textbf{Candidate full solution; likely valid, pending expert review.}
+The result answers affirmatively the implication left open in Remark 3.8 of
+Haase--Kreidler~\cite{HK}: for an arbitrary KH-dynamical system, order-density
+of the conditionally almost-periodic vectors implies discrete spectrum.  In
+fact, every such vector already belongs to the discrete-spectrum part.
+
+\section{Source question}
+
+Let $(\A,S;E,T)$ be a KH-dynamical $G$-system: $\A$ is a Stone algebra,
+$E$ is a Kaplansky--Hilbert module over $\A$, $S:G\to\operatorname{Aut}(\A)$,
+and each $T_t$ is an $S_t$-covariant unitary.  Write
+\[
+ E_{\rm ds}=\ocl\!\bigcup\{M\subseteq E:M\text{ is a finite-rank,
+ $T$-invariant KH-submodule}\}.
+\]
+A vector $x\in E$ is \emph{conditionally almost periodic} if, for every
+$\varepsilon>0$, there is a finite $F\subseteq E$ such that
+\begin{equation}\label{eq:ap}
+ \inf_{y\in F}|T_t x-y|\leq \varepsilon\one\qquad(t\in G).
+\end{equation}
+The source asks whether order-density of these vectors forces
+$E=E_{\rm ds}$~\cite[Remark 3.8]{HK}.  The source proves this for KH-systems
+coming from measure-preserving extensions, using an ambient global
+$L^2$-space, but explicitly leaves the abstract KH case open.
+
+\begin{center}
+\includegraphics[width=0.98\textwidth]{figures/open_problem_crop.png}
+\end{center}
+\noindent\emph{Source evidence:} arXiv:2505.14132v3, PDF p.~14, Remark 3.8.
+
+\section{Proof intuition}
+
+Condition~\eqref{eq:ap} supplies a finite-rank module whose orthogonal
+projection $P$ almost contains the whole orbit of $x$.  Conjugating $P$ back
+along the dynamics produces finite-rank projections $Q_t$ which all almost
+fix the \emph{same} vector $x$.  We take the order-closed cyclic convex hull
+of the $Q_t$ inside the KH-module $\HS(E)$.  A lattice-valued version of the
+minimum-norm argument for Hilbert spaces gives a fixed point in this hull.
+It is an invariant Hilbert--Schmidt operator $A_\varepsilon$, and the hull
+construction preserves
+$|x-A_\varepsilon x|\leq\varepsilon\one$.  The equivariant spectral theorem
+puts the range of every invariant Hilbert--Schmidt operator in $E_{\rm ds}$.
+Letting $\varepsilon\downarrow0$ proves $x\in E_{\rm ds}$.
+
+The cyclic (mix-closed) hull is the crucial feature: it lets one select the
+smaller of two $\A$-valued norms on complementary idempotent pieces, which is
+what makes the minimum-norm element exist.
+
+\section{A cyclic convex fixed-point lemma}
+
+For a bounded subset $C$ of a KH-module, call $C$ \emph{mix-closed} if
+every mixing $\sum_i p_i z_i$, with $(p_i)$ a partition of unity by
+idempotents and $z_i\in C$, belongs to $C$.
+
+\begin{lemma}[cyclic convex fixed point]\label{lem:fixed}
+Let $(\A,R;H,U)$ be a KH-dynamical $G$-system.  Every nonempty bounded,
+order-closed, convex, mix-closed, $U$-invariant subset $C\subseteq H$
+contains a fixed point of $U$.
+\end{lemma}
+
+\begin{proof}
+Set
+\[
+ h:=\inf_{z\in C}|z|^2\in\A_+.
+\]
+The set of squared norms is downward directed.  Indeed, for $u,v\in C$,
+the Stone property supplies an idempotent $p\in\A$ which selects the two
+order regions so that
+\[
+ p|u|^2+p^c|v|^2=|u|^2\wedge|v|^2.
+\]
+(Under $\A=C(\Omega)$, take the clopen closure of the region
+$|u|^2<|v|^2$; on its boundary the functions agree.)  Since $C$ is
+mix-closed, $w=pu+p^cv$ belongs to $C$, and
+$|w|^2=|u|^2\wedge|v|^2$.
+
+For every nonempty finite $K\subseteq C$, choose $z_K\in C$ with
+\[
+ r_K:=|z_K|^2=\bigwedge_{z\in K}|z|^2.
+\]
+Ordered by inclusion, $r_K\downarrow h$.  Convexity puts
+$(z_K+z_L)/2$ in $C$, so the parallelogram identity gives
+\begin{align*}
+ |z_K-z_L|^2
+ &=2r_K+2r_L-4\left|\frac{z_K+z_L}{2}\right|^2\\
+ &\leq 2(r_K-h)+2(r_L-h).
+\end{align*}
+For $K,L\supseteq K_0$, the last expression is at most
+$4(r_{K_0}-h)$, which decreases to zero.  Hence $(z_K)$ is
+order-Cauchy.  Order completeness and order-closedness give
+$z_K\to z_0\in C$ in order, and order continuity of the modulus yields
+$|z_0|^2=h$.
+
+This minimizer is unique: if $|u|^2=|v|^2=h$, applying the same identity
+to their midpoint gives $|u-v|^2\leq0$.  Finally, $U_tC=C$ and covariance
+imply
+\[
+ R_t h
+ =\inf_{z\in C}R_t|z|^2
+ =\inf_{z\in C}|U_tz|^2=h.
+\]
+Thus $U_tz_0$ is another minimizer, and uniqueness gives
+$U_tz_0=z_0$ for every $t\in G$.
+\end{proof}
+
+\section{Full answer}
+
+The implemented action on $\HS(E)$ is
+\[
+ \mathcal T_t(B)=T_tBT_{t^{-1}}.
+\]
+The Hilbert--Schmidt space is a KH-module and $\mathcal T$ is an
+$S$-covariant unitary action~\cite[Secs. 5--6]{EHK}.  Its fixed space is
+$\HS_T(E)$, the invariant Hilbert--Schmidt operators.
+
+\begin{theorem}\label{thm:main}
+For every KH-dynamical system $(\A,S;E,T)$,
+\[
+ \AP_T(E)\subseteq E_{\rm ds}.
+\]
+Consequently, the following are equivalent:
+\begin{enumerate}
+\item $E$ has discrete spectrum, i.e. $E=E_{\rm ds}$;
+\item $\AP_T(E)$ is order-dense in $E$.
+\end{enumerate}
+In particular, the open implication (ii)$\Rightarrow$(i) in Remark 3.8 of
+\cite{HK} is true for arbitrary KH-dynamical systems.
+\end{theorem}
+
+\begin{proof}
+Fix $x\in\AP_T(E)$ and $\varepsilon>0$.  Choose a finite set
+$F\subseteq E$ satisfying~\eqref{eq:ap}, put $m=|F|$, and let
+\[
+ M=\ocl\operatorname{span}_{\A}F.
+\]
+This is a finite-rank KH-submodule of rank at most $m$~\cite[Sec. 2.5]{EHK}.
+Let $P$ be its orthogonal projection.  The Pythagorean identity gives, for
+$z\in E$ and $y\in M$,
+\[
+ |(I-P)z|^2\leq |z-y|^2.
+\]
+Taking the infimum over $y\in F$ in~\eqref{eq:ap} therefore yields
+\begin{equation}\label{eq:Papprox}
+ |(I-P)T_t x|\leq\varepsilon\one\qquad(t\in G).
+\end{equation}
+
+For $t\in G$ define the $\A$-linear orthogonal projection
+\[
+ Q_t=T_{t^{-1}}PT_t=\mathcal T_{t^{-1}}(P).
+\]
+Since $P$ has rank at most $m$, $P\in\HS(E)$ and
+$|P|_{\HS}^2\leq m\one$.  Covariant unitarity gives the same bound for
+every $Q_t$.  Moreover, by~\eqref{eq:Papprox},
+\begin{equation}\label{eq:Qapprox}
+ |x-Q_tx|
+ =S_{t^{-1}}|(I-P)T_tx|
+ \leq\varepsilon\one.
+\end{equation}
+
+Inside the lattice ball
+$\{B\in\HS(E):|B|_{\HS}\leq\sqrt m\,\one\}$, let $C$ be the smallest
+order-closed, convex, mix-closed set containing the orbit
+$\{Q_t:t\in G\}$.  Equivalently, intersect all such subsets of the ball.
+The family is nonempty because the ball itself is admissible.  The
+implemented action permutes the orbit and preserves each of the defining
+properties, so $\mathcal T_tC=C$.
+
+Lemma~\ref{lem:fixed} supplies $A_\varepsilon\in C$ fixed by
+$\mathcal T$, hence $A_\varepsilon\in\HS_T(E)$.  The constraint set
+\[
+ D_\varepsilon=\{B\in\HS(E):|x-Bx|\leq\varepsilon\one\}
+\]
+is order-closed, convex, and mix-closed.  For order-closedness, use the
+bounded evaluation map
+\[
+ |Bx|\leq |B|_{\HS}|x|.
+\]
+By~\eqref{eq:Qapprox}, $D_\varepsilon$ contains every $Q_t$; hence
+$C\subseteq D_\varepsilon$ and
+\begin{equation}\label{eq:Aapprox}
+ |x-A_\varepsilon x|\leq\varepsilon\one.
+\end{equation}
+
+The KH decomposition theorem identifies
+\[
+ E_{\rm ds}
+ =\ocl\sum\{\ran B:B\in\HS_T(E)\}
+ \qquad\text{\cite[Theorem 6.9]{EHK}}.
+\]
+Thus $A_\varepsilon x\in E_{\rm ds}$.  Apply~\eqref{eq:Aapprox} with
+$\varepsilon=1/n$.  Then $A_{1/n}x\to x$ in norm (and hence in order),
+so the order-closedness of $E_{\rm ds}$ gives $x\in E_{\rm ds}$.  This
+proves $\AP_T(E)\subseteq E_{\rm ds}$.
+
+If $\AP_T(E)$ is order-dense, the inclusion forces $E_{\rm ds}=E$.
+Conversely, every vector in an invariant finite-rank KH-submodule has a
+uniformly totally order-bounded orbit~\cite[Proposition 2.5]{HK}; the
+definition of $E_{\rm ds}$ then gives order-density of $\AP_T(E)$ whenever
+$E=E_{\rm ds}$.
+\end{proof}
+
+\section{Verification, scope, and novelty}
+
+\begin{itemize}
+\item The proof uses no global $L^2$ realization, invariant measure, group
+amenability, or topology on $G$.
+\item The fixed-point lemma was checked directly from order completeness,
+mixing, convexity, and the parallelogram identity.  The critical evaluation
+map is order-continuous because its lattice norm is dominated by
+$|B|_{\HS}|x|$.
+\item A tempting rank-one convexification can collapse to zero when supports
+move under $S$.  The conjugate-projection construction avoids this: every
+operator in the initial orbit approximately fixes the same $x$, and that
+closed cyclic convex constraint survives the fixed-point step.
+\item The conclusion is stronger than the requested density implication:
+each conditionally almost-periodic vector lies in $E_{\rm ds}$.
+\item Bounded novelty searches on 13 August 2026 covered the run indexes,
+the revised arXiv source, and web/arXiv phrases combining
+``KH-dynamical system'', ``conditionally almost periodic'', ``order-dense'',
+``compact/discrete spectrum'', and ``cyclic convex fixed point''.  No later
+answer to this exact abstract implication was found.  The source revision of
+9 February 2026 still states it as open.  Novelty confidence is moderate:
+the cyclic convex fixed-point lemma may be known in Banach--Kantorovich
+language even though this application was not located.
+\end{itemize}
+
+\paragraph{Human-review recommendation.}
+Prioritize the three interfaces in the proof: (1) the least lattice-norm
+construction in Lemma~\ref{lem:fixed}; (2) invariance of the smallest bounded
+order-closed convex mix-closed hull under the semilinear implemented action;
+and (3) the use of the Edeko--Haase--Kreidler characterization of
+$E_{\rm ds}$ by ranges of invariant Hilbert--Schmidt operators.  No other
+unproved dependency remains.
+
+\begin{thebibliography}{9}
+\bibitem{HK}
+M. Haase and H. Kreidler,
+\emph{Precompactness notions in Kaplansky--Hilbert modules and extensions
+with discrete spectrum}, arXiv:2505.14132v3, 2026.
+
+\bibitem{EHK}
+N. Edeko, M. Haase, and H. Kreidler,
+\emph{A decomposition theorem for unitary group representations on
+Kaplansky--Hilbert modules and the Furstenberg--Zimmer structure theorem},
+Analysis Mathematica 50 (2024), 377--454; arXiv:2104.04865.
+\end{thebibliography}
+
+\end{document}

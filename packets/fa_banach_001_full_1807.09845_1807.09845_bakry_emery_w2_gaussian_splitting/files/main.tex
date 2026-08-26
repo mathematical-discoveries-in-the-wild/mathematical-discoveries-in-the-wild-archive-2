@@ -1,0 +1,300 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Id}{\mathrm I}
+\newcommand{\HS}{\mathrm{HS}}
+\newcommand{\Law}{\operatorname{Law}}
+\newcommand{\tr}{\operatorname{tr}}
+
+\title{A quadratic-Wasserstein Gaussian splitting estimate\\
+for the Bakry--\'Emery stability problem}
+\author{Candidate full solution packet for arXiv:1807.09845}
+\date{13 August 2026}
+
+\begin{document}
+\maketitle
+
+\paragraph{Status.}
+Candidate full solution, likely valid, requiring expert review.  Under exactly
+the hypotheses of Courtade and Fathi's Theorem~1.1, the argument below gives
+the missing $W_2$ estimate for every $k\le n$, and in particular for $k<n$.
+The quantitative bound obtained is
+\[
+  W_2\bigl(\mu,\gamma_{p,E}\otimes\bar\mu\bigr)
+  \le 13k\sqrt\varepsilon .
+\]
+
+\section{Source question}
+
+The source is T.~A.~Courtade and M.~Fathi, \emph{Stability of the
+Bakry--\'Emery theorem on $\R^n$} \cite{CourtadeFathi}.
+It is arXiv:1807.09845, later published in \emph{Journal of Functional
+Analysis} 279 (2020), 108523.  Remark~1.1 on page~3 states:
+\begin{quote}
+When $k=n$, it is possible to improve the topology, and get an estimate of
+order $\sqrt\varepsilon$ in the stronger $W_2$ distance.  The authors do not
+know how to get a $W_2$ estimate when $k<n$.
+\end{quote}
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The hypotheses referred to in that remark are these.  The probability measure
+$\mu=e^{-V}dx$ on $\R^n$ satisfies $\nabla^2V\ge \Id_n$.  There are
+$u_1,\ldots,u_k\in H^1(\mu)$ such that
+\[
+ \int u_i\,d\mu=0,\qquad \int u_i^2\,d\mu=1,
+ \qquad \int \nabla u_i\cdot\nabla u_j\,d\mu=0\quad(i\ne j),
+\]
+and
+\[
+ \int |\nabla u_i|^2\,d\mu\le 1+\varepsilon .
+\]
+The desired product has a standard Gaussian factor on a $k$-plane $E$, with
+barycenter $p\in E$, and the other factor is the marginal $\bar\mu$ of $\mu$
+on $E^\perp$.
+
+\section{Proof intuition}
+
+Let $T$ be the Brenier map sending the standard Gaussian to $\mu$.
+Caffarelli's contraction theorem says that its Jacobian $A=\nabla T$ is a
+symmetric positive contraction.  Thus $B=\Id-A$ measures precisely the
+failure of $T$ to be the identity in a direction.
+
+The near-extremizers $u_i$ pull back to near-extremizers of the Gaussian
+Poincar\'e inequality.  Their first Hermite-chaos directions form a
+well-conditioned $k$-plane, and on that plane the Hilbert--Schmidt energy of
+$B$ is $O(k\varepsilon)$.  This is the rigidity input.
+
+The coupling is the second idea.  Split a standard Gaussian as $G=Y+Z$ along
+the selected plane and independently resample only $Y$.  Couple
+$T(Y+Z)$ to
+\[
+ p+Y+P_{E^\perp}T(Y'+Z),
+\]
+where $Y'$ is an independent copy of $Y$.  The latter random vector has
+exactly the product law $\gamma_{p,E}\otimes\bar\mu$.  Gaussian Poincar\'e
+controls both the direct displacement in $E$ and the effect of resampling on
+the orthogonal component by the same Jacobian defect.  This bypasses the
+Poisson-equation regularity obstruction mentioned in the source.
+
+\section{The result}
+
+\begin{theorem}[Quadratic-Wasserstein splitting]
+Let $\mu=e^{-V}dx$ be a probability measure on $\R^n$ with
+$\nabla^2V\ge\Id_n$.  Suppose that $u_1,\ldots,u_k$ satisfy all of the
+normalization, gradient-orthogonality, and energy assumptions displayed
+above, for some $1\le k\le n$ and $\varepsilon\ge0$.  Then there are a
+$k$-dimensional subspace $E\subset\R^n$ and $p\in E$ such that
+\[
+ W_2\bigl(\mu,\gamma_{p,E}\otimes\bar\mu\bigr)
+ \le 13k\sqrt\varepsilon,
+\]
+where $\bar\mu=(P_{E^\perp})_\#\mu$.
+\end{theorem}
+
+We first isolate the coupling estimate.
+
+\begin{lemma}[Partial resampling coupling]\label{lem:coupling}
+Let $T=\nabla\phi$ send the standard Gaussian $\gamma_n$ to $\mu$, and assume
+$0\le A:=\nabla T\le\Id$ almost everywhere.  Let $E$ be any $k$-plane, let
+$P=P_E$, put $B=\Id-A$, and set
+\[
+ \delta_E:=\E\|BP\|_{\HS}^2.
+\]
+If $p=\E[PT(G)]$, then
+\[
+ W_2^2\bigl(\mu,\gamma_{p,E}\otimes(P_{E^\perp})_\#\mu\bigr)
+ \le 3\delta_E .
+\]
+In particular, $\delta_E\le k$ and the left-hand side is at most $3k$.
+\end{lemma}
+
+\begin{proof}
+Write $G=Y+Z$, where $Y\sim\gamma_E$ and $Z\sim\gamma_{E^\perp}$ are
+independent, and let $Y'$ be an independent copy of $Y$, also independent of
+$Z$.  Couple
+\[
+ X=T(Y+Z),\qquad
+ \widetilde X=p+Y+P_{E^\perp}T(Y'+Z).
+\]
+The two summands of $\widetilde X$ are independent.  Moreover,
+$Y'+Z\sim\gamma_n$, so
+\[
+ \Law(\widetilde X)=\gamma_{p,E}\otimes(P_{E^\perp})_\#\mu.
+\]
+
+Apply the vector-valued Gaussian Poincar\'e inequality to
+$P(T(G)-G)$.  Symmetry of $A$ gives
+\begin{align*}
+ \E|PT(G)-p-Y|^2
+ &\le \E\|P(A-\Id)\|_{\HS}^2\\
+ &=\E\|(A-\Id)P\|_{\HS}^2=\delta_E.
+\end{align*}
+For fixed $Z=z$, apply the same inequality in the $Y$ variable to
+$f_z(Y)=P_{E^\perp}T(Y+z)$.  The identity for two independent copies and then
+Gaussian Poincar\'e give
+\begin{align*}
+ &\E|P_{E^\perp}T(Y+Z)-P_{E^\perp}T(Y'+Z)|^2\\
+ &\qquad=2\E_Z\Var_Y(f_Z(Y))
+ \le2\E\|P_{E^\perp}AP\|_{\HS}^2
+ \le2\delta_E,
+\end{align*}
+because $P_{E^\perp}AP=-P_{E^\perp}BP$.  The two displayed costs lie in
+orthogonal subspaces, so their sum is the squared cost of this coupling.
+Finally $0\le B\le\Id$ implies $\delta_E\le k$.
+\end{proof}
+
+\begin{proof}[Proof of the theorem]
+Caffarelli's contraction theorem \cite{Caffarelli}, in the form already used
+in the source paper, supplies the Brenier map $T$ from $\gamma_n$ to $\mu$
+with $A=\nabla T$ symmetric and $0\le A\le\Id$ almost everywhere.  The
+standard approximation argument covers the stated Sobolev regularity; all
+estimates below are $L^2$ estimates.
+
+First suppose
+\begin{equation}\label{eq:small}
+ \varepsilon\le\frac1{36k}.
+\end{equation}
+Let $G\sim\gamma_n$, define
+\[
+ q_i=\nabla u_i(T(G)),\qquad v_i=u_i\circ T,
+\]
+and note that $\nabla v_i=Aq_i$.  Since $\Var_{\gamma_n}(v_i)=1$, Gaussian
+Poincar\'e and the assumed energy bound imply
+\[
+ 1\le\E|Aq_i|^2\le\E|q_i|^2\le1+\varepsilon.
+\]
+For a positive contraction $A$, one has
+$(\Id-A)^2\le\Id-A^2$.  Consequently,
+\begin{equation}\label{eq:Bq}
+ \E|Bq_i|^2
+ \le\E\bigl(|q_i|^2-|Aq_i|^2\bigr)
+ \le\varepsilon.
+\end{equation}
+
+Project $v_i$ onto the first Gaussian chaos:
+\[
+ v_i(x)=w_i\cdot x+z_i(x),
+\]
+where $z_i$ is orthogonal to constants and linear functions.  The improved
+Gaussian Poincar\'e inequality on that orthogonal complement yields
+\[
+ \E z_i^2\le\varepsilon,\qquad
+ \E|\nabla z_i|^2\le2\varepsilon,\qquad
+ 1-\varepsilon\le|w_i|^2\le1.
+\]
+Indeed, $1=|w_i|^2+\E z_i^2$ and
+$\E|\nabla v_i|^2=|w_i|^2+\E|\nabla z_i|^2\le1+\varepsilon$, while
+$\E|\nabla z_i|^2\ge2\E z_i^2$.
+
+Put $\widehat w_i=w_i/|w_i|$.  Condition \eqref{eq:small} gives
+$\sqrt\varepsilon\le1/6$.  Combining \eqref{eq:Bq},
+$Aq_i-w_i=\nabla z_i$, and
+$|w_i-\widehat w_i|=1-|w_i|\le\varepsilon$, we obtain
+\begin{align}
+ \|q_i-\widehat w_i\|_{L^2(\gamma_n)}
+ &\le\sqrt\varepsilon+\sqrt{2\varepsilon}+\varepsilon
+ <\sqrt{7\varepsilon},\label{eq:qhat}\\
+ \|B\widehat w_i\|_{L^2(\gamma_n)}
+ &\le\|Bq_i\|_2+\|B(\widehat w_i-q_i)\|_2
+ <\sqrt{14\varepsilon}.
+ \label{eq:Bhat}
+\end{align}
+
+The $q_i$ are mutually orthogonal in $L^2(\gamma_n;\R^n)$, and each has norm
+at least one, because the Bakry--\'Emery Poincar\'e inequality gives
+$1=\Var_\mu(u_i)\le\int|\nabla u_i|^2d\mu$.  Hence, for every
+$c\in\R^k$,
+\begin{align*}
+ \left|\sum_i c_i\widehat w_i\right|
+ &\ge \left\|\sum_i c_iq_i\right\|_2
+      -\left\|\sum_i c_i(q_i-\widehat w_i)\right\|_2\\
+ &\ge\bigl(1-\sqrt{7k\varepsilon}\bigr)|c|
+ \ge\frac12|c|.
+\end{align*}
+Thus the $\widehat w_i$ span a $k$-plane $E$.  If
+$W:\R^k\to E$ is defined by $Wc=\sum_i c_i\widehat w_i$, the last inequality
+says
+\[
+ WW^*\ge\frac14P_E.
+\]
+Using positivity and \eqref{eq:Bhat},
+\begin{align*}
+ \delta_E
+ &=\E\tr(B^2P_E)
+ \le4\E\tr(B^2WW^*)
+ =4\sum_{i=1}^k\E|B\widehat w_i|^2
+ <56k\varepsilon.
+\end{align*}
+Lemma~\ref{lem:coupling} now gives
+\[
+ W_2^2\bigl(\mu,\gamma_{p,E}\otimes\bar\mu\bigr)
+ <168k\varepsilon,
+\]
+and therefore, since $k\ge1$,
+\[
+ W_2\bigl(\mu,\gamma_{p,E}\otimes\bar\mu\bigr)
+ <\sqrt{168k\varepsilon}\le13k\sqrt\varepsilon.
+\]
+
+It remains to treat $\varepsilon>1/(36k)$.  Choose any $k$-plane $E$.
+The last assertion of Lemma~\ref{lem:coupling} yields
+\[
+ W_2\bigl(\mu,\gamma_{p,E}\otimes\bar\mu\bigr)\le\sqrt{3k}
+ <6\sqrt3\,k\sqrt\varepsilon<13k\sqrt\varepsilon.
+\]
+This completes all cases, including $k<n$.
+\end{proof}
+
+\section{Verification and limitations}
+
+The proof uses only (i) Caffarelli contraction for the Gaussian-to-$\mu$
+Brenier map, (ii) ordinary and second-chaos Gaussian Poincar\'e inequalities,
+and (iii) partial Gaussian resampling.  The coupling has been checked directly:
+its second marginal is exactly the requested product, not an approximation.
+The two places most deserving expert scrutiny are the $L^2$ approximation
+passage for nonsmooth $u_i$ and the operator trace inequality used to pass from
+the approximate directions to their span.  Both are standard and are written
+explicitly in the proof.
+
+The constant $13$ is not claimed sharp.  The source also asks whether the
+$\sqrt\varepsilon$ rate itself can be improved to order $\varepsilon$; this
+packet does not answer that separate optimal-rate question.
+
+The bounded novelty search (recorded in \texttt{novelty.md}) covered the run's
+four lightweight indexes and primary arXiv searches using the exact title,
+the exact source sentence, ``uniformly log-concave Poincar\'e stability
+$W_2$'', and ``Gaussian factor splitting $W_2$''.  It found the source paper
+and adjacent EPI, RCD, and interpolation results, but no later paper giving the
+stated $k<n$ estimate.  This is not an exhaustive citation-graph review, so
+novelty confidence is moderate rather than definitive.
+
+\paragraph{Human-review recommendation.}
+Prioritize review.  The argument is short, gives the exact missing topology
+under the exact source hypotheses, and appears to remove the stated
+regularity obstruction rather than assume it away.
+
+\begin{thebibliography}{9}
+\bibitem{CourtadeFathi}
+T.~A. Courtade and M. Fathi,
+\emph{Stability of the Bakry--\'Emery theorem on $\R^n$},
+arXiv:1807.09845; J. Funct. Anal. 279 (2020), 108523.
+
+\bibitem{Caffarelli}
+L.~A. Caffarelli,
+\emph{Monotonicity properties of optimal transportation and the FKG and
+related inequalities},
+Comm. Math. Phys. 214 (2000), 547--563.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,201 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newcommand{\HS}{\mathcal S_2}
+\newcommand{\TC}{\mathcal S_1}
+\newcommand{\ran}{\operatorname{Ran}}
+\newcommand{\supp}{\operatorname{supp}}
+
+\title{A projection-support formula for Hilbert--Schmidt closure}
+\author{Candidate partial answer to Question 4.14 of arXiv:2511.23121}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\fbox{\parbox{0.94\linewidth}{\textbf{Status: candidate partial
+result, likely valid.}  The Hilbert--Schmidt closure projection is exactly
+the complement of a join of support projections of trace-class test
+vectors.  For $M=\mathcal B(H)$ this completely classifies all
+finite-corank projections, including a sharp corank-one dichotomy.  The
+formula does not yet eliminate the trace-class test-vector condition for an
+arbitrary von Neumann algebra, so it is not claimed as a complete intrinsic
+classification in the full generality requested by the source.}}
+
+\section{Source question and notation}
+
+Let $M\subseteq\mathcal B(H)$ be a von Neumann algebra and put
+\[
+ K=\HS(H),\qquad A=M\,\bar\otimes\,M^{\mathrm{op}}\subseteq\mathcal B(K).
+\]
+Under the correspondence in Daws's paper, an HS quantum relation is
+$V=eK$ for a projection $e\in A$.  Its Hilbert--Schmidt closure is
+\[
+ V^{\mathrm{hsc}}=(\overline V^{\,w^*})\cap\HS(H),
+\]
+and corresponds to a projection $e^{\mathrm{hsc}}\in A$ with
+$e\leq e^{\mathrm{hsc}}$.  Question~4.14 asks for a description of
+$e\mapsto e^{\mathrm{hsc}}$ at the level of
+$M\bar\otimes M^{\mathrm{op}}$ \cite[Question~4.14]{Daws}.
+
+Write $D=\TC(H)\subset K$.  For $\xi\in K$, let
+\[
+ \omega_\xi(a)=\langle a\xi,\xi\rangle\quad(a\in A),
+ \qquad s_A(\omega_\xi)\in A
+\]
+denote the support projection of this normal positive functional.
+
+\section{The support-hull formula}
+
+\begin{theorem}[Projection-support formula]\label{thm:formula}
+For every projection $e\in A$,
+\begin{equation}\label{eq:main}
+ e^{\mathrm{hsc}}
+ =1-\bigvee\bigl\{s_A(\omega_\xi):
+                 \xi\in\TC(H),\ e\xi=0\bigr\}.
+\end{equation}
+Equivalently, if
+\[
+ W_e=\overline{\TC(H)\cap(1-e)K}^{\,\|\cdot\|_2},
+\]
+then the orthogonal projection $r_e$ onto $W_e$ belongs to $A$ and
+\begin{equation}\label{eq:re}
+                  e^{\mathrm{hsc}}=1-r_e.
+\end{equation}
+In particular,
+\begin{equation}\label{eq:fixed}
+ e=e^{\mathrm{hsc}}quad\Longleftrightarrow\quad
+ \overline{\TC(H)\cap\ker e}^{\,\|\cdot\|_2}=\ker e.
+\end{equation}
+\end{theorem}
+
+\paragraph{Proof intuition.}
+The source identifies $V^{\mathrm{hsc}}$ as the Hilbert-space annihilator
+of the trace-class vectors normal to $V$.  Thus its orthogonal complement
+is the closed trace-class part of $\ker e$.  That subspace is automatically
+reducing for the commutant of $A$, so its projection lies in $A$.  Support
+projections package the same closed subspace as a join inside the projection
+lattice of $A$.
+
+\begin{proof}
+Proposition~4.11 of the source gives
+\begin{equation}\label{eq:source}
+ V^{\mathrm{hsc}}=(\TC(H)\cap V^\perp)^\perp
+                 =(\TC(H)\cap(1-e)K)^\perp,
+\end{equation}
+where both orthogonal complements are taken in $K$.
+
+Let $A'$ be the commutant of the displayed action of $A$ on $K$.
+Trace-class operators form a two-sided operator ideal, hence $D$ is
+invariant under the left and right bounded multiplications comprising
+$A'$.  Since $e\in A$, the space $(1-e)K$ is also $A'$-invariant.
+Consequently $W_e$ is invariant under the self-adjoint algebra $A'$ and is
+therefore reducing for $A'$.  Its orthogonal projection $r_e$ commutes with
+$A'$, so
+\[
+                         r_e\in(A')'=A.
+\]
+Equation~\eqref{eq:source} now says that
+$\ran(e^{\mathrm{hsc}})=W_e^\perp$, proving
+\eqref{eq:re}.
+
+It remains to identify $r_e$ as the join in \eqref{eq:main}.  For any
+$\xi\in K$, the projection onto $\overline{A'\xi}$ belongs to $A$ and is
+the smallest projection $p\in A$ satisfying $p\xi=\xi$; this is precisely
+$s_A(\omega_\xi)$.  The set
+$D\cap(1-e)K$ is $A'$-invariant.  Hence
+\[
+ W_e=\overline{\operatorname{span}}
+       \{\overline{A'\xi}:\xi\in D,\ e\xi=0\},
+\]
+whose projection is the join of the corresponding support projections.
+Substitution in \eqref{eq:re} proves \eqref{eq:main}.  Finally,
+$e=e^{\mathrm{hsc}}$ is equivalent to $r_e=1-e$, which is exactly
+\eqref{eq:fixed}.
+\end{proof}
+
+\section{The full-factor and finite-corank cases}
+
+\begin{corollary}\label{cor:factor}
+Suppose $M=\mathcal B(H)$ in its defining representation.  Then
+$A=\mathcal B(K)$ and, for every projection $e$ on $K$,
+\begin{equation}\label{eq:factor}
+ e^{\mathrm{hsc}}
+ =1-P_{\overline{\ker(e)\cap\TC(H)}^{\,\|\cdot\|_2}}.
+\end{equation}
+If $F=\ker e$ is finite-dimensional, then
+\begin{equation}\label{eq:finite}
+                  e^{\mathrm{hsc}}=1-P_{F\cap\TC(H)}.
+\end{equation}
+In particular, when $F=\mathbb C\xi$,
+\[
+ e^{\mathrm{hsc}}=
+ \begin{cases}
+ e,&\xi\in\TC(H),\\
+ 1,&\xi\notin\TC(H).
+ \end{cases}
+\]
+\end{corollary}
+
+\begin{proof}
+For $M=\mathcal B(H)$, the standard action gives
+$M\bar\otimes M^{\mathrm{op}}=\mathcal B(\HS(H))$; thus
+Theorem~\ref{thm:formula} immediately gives \eqref{eq:factor}.  If $F$ is
+finite-dimensional, its linear subspace $F\cap\TC(H)$ is closed in $F$,
+so the closure in \eqref{eq:factor} may be removed.  In dimension one the
+intersection is either all of $F$ or $\{0\}$.
+\end{proof}
+
+The source's Example~4.12 is the second alternative: its normal vector is
+the diagonal Hilbert--Schmidt operator with diagonal $(1/n)$, which is not
+trace class, and the closure fills the entire diagonal defect.  The
+corollary shows that this phenomenon is universal for every corank-one
+projection, not special to a diagonal model.
+
+\section{Commutative interpretation and remaining gap}
+
+For the standard representation $M=L^\infty(X)\subseteq\mathcal B(L^2X)$,
+the algebra $A$ identifies with $L^\infty(X\times X)$ on
+$K=L^2(X\times X)$.  If $e=1_E$, formula~\eqref{eq:main} says that
+$1-e^{\mathrm{hsc}}$ is the indicator of the essential union of supports
+of all trace-class kernels supported in $E^c$.  Here the trace-class
+kernels are the image of
+\(L^2(X)\widehat\otimes_\pi\overline{L^2(X)}\) in $L^2(X\times X)$.
+For a countable atomic $X$, the matrix units show that every projection is
+fixed.  In the diffuse case the fixed-point problem is a form of operator
+synthesis: which measurable complements are generated, in $L^2$, by the
+trace-class kernels they support?
+
+Thus Theorem~\ref{thm:formula} is an exact projection-lattice description
+and gives nontrivial complete special cases.  What remains open is a
+representation-free characterization of the join in \eqref{eq:main} using
+only intrinsic structure of an arbitrary $M\bar\otimes M^{\mathrm{op}}$,
+or an equally explicit classification of its fixed projections.  The
+paper's separate abstract Hilbert-module reconstruction question for
+operator-valued weights is not addressed here.
+
+\section{Novelty note}
+
+The proof is a short consequence of Proposition~4.11 once support
+projections are brought into the picture.  The source does not state
+formula~\eqref{eq:main} or the finite-corank classification.  Searches of
+the local run corpus through 11 August 2026 found no duplicate result, but
+the argument may be regarded as an implicit reformulation by specialists.
+Novelty confidence is therefore moderate, while mathematical-validity
+confidence is high.  Independent expert review is requested.
+
+\begin{thebibliography}{9}
+\bibitem{Daws}
+M.~Daws,
+\emph{Quantum graphs in infinite-dimensions: Hilbert--Schmidts and Hilbert
+modules}, arXiv:2511.23121v1 (2025),
+\url{https://arxiv.org/abs/2511.23121}.
+\end{thebibliography}
+
+\end{document}

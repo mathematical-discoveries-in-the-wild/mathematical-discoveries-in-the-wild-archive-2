@@ -1,0 +1,243 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\emergencystretch=3em
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\newcommand{\D}{\mathbb D}
+\newcommand{\T}{\mathbb T}
+\newcommand{\dm}{\,dm}
+\newcommand{\Hp}{H^p}
+\newcommand{\Bop}{\mathbf B}
+
+\title{Explicit Two-Sided Bounds for the Backward Shift on $H^6$}
+\author{Run fa\_banach\_001, lane 10}
+\date{August 11, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source Question}
+
+Karlovych and Shargorodsky ask in Open Problem 5.4 of
+arXiv:2308.04072 to determine the exact norm of the backward shift
+\[
+  (\Bop f)(z)=\frac{f(z)-f(0)}{z}
+\]
+on $H^p$ for $1\le p<\infty$ \cite{KS}.  The source passage is reproduced in
+Figure~\ref{fig:open}.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=.94\textwidth]{figures/open_problem_crop.png}
+\caption{Open Problem 5.4 in the source PDF, page 15.}
+\label{fig:open}
+\end{figure}
+
+The problem has subsequently been solved at $p=1$ by Brevig and Seip
+\cite{BS}, and at $p=4$ by Bampouras and Llinares \cite{BL}; of course the
+values at $p=2$ and $p=\infty$ were already known.  This packet gives a
+rigorous explicit bracket at the next even exponent $p=6$.  It does not claim
+the exact $H^6$ norm.
+
+\section*{Definitions}
+
+Normalized arclength measure on $\T$ is denoted by $m$.  For $1\le p<\infty$,
+\[
+  \|f\|_{H^p}^p=\int_{\T}|f(\zeta)|^p\dm(\zeta).
+\]
+Write $\varphi=(1+\sqrt5)/2$.  We use the known sharp values
+\[
+ \|\Bop\|_{H^1}=\frac2{\sqrt3},\qquad
+ \|\Bop\|_{H^2}=1,\qquad
+ \|\Bop\|_{H^4}=\varphi^{1/4},\qquad
+ \|\Bop\|_{H^\infty}=2.
+\]
+
+\section*{Proof Intuition}
+
+For the lower bound, test the operator on an affine function of a disk
+automorphism $I$.  Because $I$ is inner, every mixed moment
+$\int I^j\overline I^k$ reduces to a power of $I(0)$.  At $p=6$ this makes
+both norms exact degree-six polynomials in two rational parameters.  A
+near-optimal rational choice gives the stated exact lower bound.
+
+For the upper bound, the Hardy spaces form the usual complex interpolation
+scale.  Interpolating the new sharp $H^4$ norm with the sharp $H^\infty$ norm
+gives a global estimate for $4\le p\le\infty$, and hence the $H^6$ upper
+bound.  The same argument between the other known endpoints gives the
+piecewise estimate recorded below.
+
+\section*{The Inner-Function Calculation}
+
+\begin{lemma}\label{lem:moments}
+For $0\le a<1$, let
+\[
+  I_a(z)=\frac{a+z}{1+az}.
+\]
+For real $c$, define $D(a,c)=\|I_a-c\|_{H^6}^6$.  Then
+\begin{align*}
+D(a,c)={}&1+9c^2+9c^4+c^6-6ac-18ac^3-6ac^5\\
+&\quad+6a^2c^2+6a^2c^4-2a^3c^3,
+\end{align*}
+and
+\[
+  D(a,a)=(1-a^2)(a^4+4a^2+1).
+\]
+\end{lemma}
+
+\begin{proof}
+The function $I_a$ is inner and $I_a(0)=a$.  Hence for integers
+$0\le j,k\le3$,
+\[
+ \int_{\T}I_a^j\overline{I_a}^{,k}\dm=a^{|j-k|}.
+\]
+Indeed, if $j\ge k$, unimodularity on $\T$ reduces the integrand to
+$I_a^{j-k}$, whose mean is $I_a(0)^{j-k}$; the other case follows by
+conjugation.  Expanding
+\[
+  D(a,c)=\|(I_a-c)^3\|_{H^2}^2
+\]
+and inserting these moments gives the displayed polynomial.  Substitution
+$c=a$ and factorization gives the second identity.
+\end{proof}
+
+\section*{Main Partial Result}
+
+\begin{theorem}[Explicit $H^6$ bracket]\label{thm:h6}
+The backward shift on $H^6$ satisfies
+\[
+ \left(\frac{6229716996096}{1533633162625}\right)^{1/6}
+ \le \|\Bop\|_{H^6}
+ \le 2^{1/3}\varphi^{1/6}.
+\]
+Numerically,
+\[
+  1.2631583709 \le \|\Bop\|_{H^6}\le1.3651318687.
+\]
+\end{theorem}
+
+\begin{proof}
+For the lower bound take
+\[
+ a=\frac{32}{35},\qquad c=\frac{11}{28},\qquad f=I_a-c.
+\]
+Since $f(0)=a-c$ and $|z|=1$ on $\T$,
+\[
+  \|\Bop f\|_{H^6}^6
+  =\|I_a-a\|_{H^6}^6=D(a,a).
+\]
+Lemma~\ref{lem:moments} and exact rational arithmetic give
+\[
+ \frac{\|\Bop f\|_{H^6}^6}{\|f\|_{H^6}^6}
+ =\frac{D(32/35,32/35)}{D(32/35,11/28)}
+ =\frac{6229716996096}{1533633162625}.
+\]
+Taking sixth roots proves the lower estimate.
+
+For the upper bound, use the standard complex interpolation identity for
+Hardy spaces \cite[Chapter 7]{Duren}.  Interpolating $\Bop:H^4\to H^4$,
+whose sharp norm is $\varphi^{1/4}$ by \cite{BL}, with
+$\Bop:H^\infty\to H^\infty$, whose norm is $2$, yields
+\[
+ \|\Bop\|_{H^p}\le
+ (\varphi^{1/4})^{4/p}2^{1-4/p}
+ =\varphi^{1/p}2^{1-4/p},\qquad 4\le p\le\infty.
+\]
+Putting $p=6$ gives the claimed upper estimate.
+\end{proof}
+
+\begin{theorem}[Interpolation bounds for all finite exponents]
+For $1\le p<\infty$,
+\[
+\|\Bop\|_{H^p}\le
+\begin{cases}
+ (2/\sqrt3)^{2/p-1},&1\le p\le2,\\[2mm]
+ \varphi^{1/2-1/p},&2\le p\le4,\\[2mm]
+ \varphi^{1/p}2^{1-4/p},&4\le p<\infty.
+\end{cases}
+\]
+\end{theorem}
+
+\begin{proof}
+Interpolate respectively between the sharp endpoint pairs
+$(H^1,H^2)$, $(H^2,H^4)$, and $(H^4,H^\infty)$.  Solving
+$1/p=(1-\theta)/p_0+\theta/p_1$ and applying the operator interpolation
+inequality gives exactly the three displayed exponents.
+\end{proof}
+
+\section*{Verification and Upgrade Attempts}
+
+The script \texttt{code/verify\_h6\_bound.py} independently expands the mixed
+moments, verifies the factorization of $D(a,a)$, checks the exact rational
+quotient, and prints the numerical endpoints.
+
+Several routes toward the exact $H^6$ value were tested before stopping:
+\begin{enumerate}
+\item A current-literature check found the $H^1$ and May 2026 $H^4$ solutions,
+but no $H^6$ solution.
+\item Optimizing the affine-inner family numerically gives
+$a\approx0.9146566921$, $c\approx0.3930991838$, and sixth-power ratio
+$4.0620742602$; the rational pair in Theorem~\ref{thm:h6} is within
+$10^{-5}$ at the sixth-power level.
+\item A degree-six harmonic moment-majorant was sought with equality on the
+candidate circle.  The resulting polynomial is divisible by the circle
+equation only once, not twice, so it cannot be globally nonnegative.  Thus the
+natural scalar/SOS certificate cannot prove exactness.
+\item Direct Euler--Lagrange expansion at $p=6$ introduces three independent
+mixed correlations; the single sharp Fourier-symmetry lemma that closes the
+$H^4$ proof does not control them simultaneously.
+\item Optimized finite Taylor polynomials of degrees up to six remained below
+the affine-inner value and therefore supplied evidence but no upper bound.
+\item Powers $(I-c)^k$, $2\le k\le6$, were numerically optimized and gave
+strictly smaller ratios.
+\item General real polynomials of degree up to four in one inner function did
+not improve the affine family in bounded numerical searches.
+\item Interpolation gives the rigorous upper estimate above, but its equality
+conditions are incompatible with the known $H^4$ extremals and do not identify
+an $H^6$ extremizer.
+\end{enumerate}
+These obstructions leave a genuine gap of about $0.102$ in operator norm, so
+the exact $H^6$ problem remains open in this packet.
+
+\section*{Scope and Novelty Check}
+
+This is a partial answer to Open Problem 5.4, not a determination of the exact
+norm.  The exact cases currently identified are $p=1,2,4,\infty$.  Cheap run
+indexes were searched for arXiv:2308.04072, backward shift, $H^p$, and Hardy
+space norm.  Web/arXiv searches on August 11, 2026 used the exact phrases
+``norm of the backward shift operator on $H^p$'', ``backward shift on $H^4$'',
+and ``backward shift $H^6$ exact norm''.  They found \cite{BS,BL} but no exact
+$H^6$ result.
+
+The May 2026 paper \cite{BL} announces a forthcoming preprint by Jim\'enez and
+Vukoti\'c on general norm estimates.  That preprint was not findable by exact
+title at the time of this check, so overlap with the explicit lower-bound
+family remains possible.  Novelty confidence is therefore moderate; proof
+validity does not depend on novelty.
+
+\section*{Human-Review Recommendation}
+
+The core proof is elementary.  Review should check the mixed-moment expansion
+in Lemma~\ref{lem:moments}, the exact rational substitution, and use of the
+standard Hardy-space interpolation scale including the $H^\infty$ endpoint.
+
+\begin{thebibliography}{9}
+\bibitem{KS} O. Karlovych and E. Shargorodsky,
+\emph{Bounded compact and dual compact approximation properties of Hardy
+spaces: new results and open problems}, arXiv:2308.04072 (2023).
+\bibitem{BS} O. F. Brevig and K. Seip,
+\emph{The norm of the backward shift on $H^1$ is $2/\sqrt3$},
+Pure Appl. Funct. Anal. 9 (2024), 991--994; arXiv:2309.11360.
+\bibitem{BL} K. Bampouras and A. Llinares,
+\emph{The norm of the backward shift on $H^4$ is $\sqrt[4]{\varphi}$},
+arXiv:2605.10469 (2026).
+\bibitem{Duren} P. L. Duren, \emph{Theory of $H^p$ Spaces}, Academic Press,
+1970.
+\end{thebibliography}
+
+\end{document}

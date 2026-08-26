@@ -1,0 +1,204 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\e}{\mathrm{e}}
+\DeclareMathOperator{\spec}{\sigma}
+
+\title{Uniformly stable frozen potentials can generate an\\
+exponentially unstable parabolic system}
+\author{Candidate partial result for arXiv:2208.10324}
+\date{17 August 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+Candidate partial result, likely valid, pending human review.  The result is a
+complete negative theorem for pointwise spectral stability as a boundedness
+criterion.  It does not characterize all non-dissipative potentials.
+
+\section{Source problem and scope}
+
+Dobrick and Gl\"uck study Neumann parabolic systems coupled by a matrix-valued
+potential~\cite{DobrickGlueck}.  In their concluding remarks (source PDF,
+page~16) they observe that, outside potentials dissipative for an
+$\ell^p$-norm, it is not clear in general how to check boundedness of the
+solutions.  The source passage is reproduced below.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The broad request does not prescribe a single candidate criterion.  This
+packet settles the strongest naive one negatively: even if every frozen matrix
+has the same strictly negative spectrum and its matrix semigroup is uniformly
+exponentially stable, the spatially coupled PDE can be exponentially unstable.
+
+\section{Proof intuition}
+
+Choose a smooth Neumann vector field
+$u(x)=(1,\cos x,\cos 2x)^T$.  We want it to be an eigenfunction with any
+prescribed positive eigenvalue $\lambda$.  Starting from the stable scalar
+matrix $-aI$, the missing forcing is
+$w=(a+\lambda)u-u''$.  At every point, $u$ and $w$ are linearly independent.
+Hence one can choose a smooth linear functional $\eta^T$ satisfying
+$\eta^Tu=1$ and $\eta^Tw=0$.  The rank-one matrix $N=w\eta^T$ then sends
+$u$ to $w$ but satisfies $N^2=0$.  Consequently $V=-aI+N$ retains the frozen
+spectrum $\{-a\}$, while $u''+Vu=\lambda u$.  Spatial variation in the
+nilpotent directions is therefore invisible to every pointwise eigenvalue but
+creates an exact growing PDE mode.
+
+\section{The obstruction theorem}
+
+\begin{theorem}\label{thm:main}
+Let $a>0$ and $\lambda>0$.  There exists a bounded smooth real potential
+$V\colon[0,\pi]\to\R^{3\times3}$ with the following properties.
+\begin{enumerate}
+  \item For every $x\in[0,\pi]$,
+  \[
+     \spec(V(x))=\{-a\}
+  \]
+  with algebraic multiplicity three.
+  \item The frozen semigroups are uniformly exponentially stable: for every
+  $\beta<a$ there is $C_\beta<\infty$ such that
+  \[
+     \sup_{x\in[0,\pi]}\|\e^{tV(x)}\|
+       \le C_\beta\e^{-\beta t}\qquad(t\ge0).
+  \]
+  \item The Neumann system
+  \[
+     \partial_tU=\partial_x^2U+V(x)U,\qquad
+     \partial_xU(t,0)=\partial_xU(t,\pi)=0,
+  \]
+  has the classical solution
+  \[
+     U(t,x)=\e^{\lambda t}
+       \begin{pmatrix}1\\ \cos x\\ \cos 2x\end{pmatrix}.
+  \]
+  In particular, its solution semigroup is unbounded in every $L^p$ norm,
+  $1\le p\le\infty$, and in the uniform norm.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Put
+\[
+ u(x)=\begin{pmatrix}1\\ \cos x\\ \cos 2x\end{pmatrix},
+ \qquad
+ w(x)=(a+\lambda)u(x)-u''(x).
+\]
+Write $c=\cos x$ and $d=\cos 2x$.  Since
+\[
+ u=(1,c,d)^T,
+ \qquad
+ u''=(0,-c,-4d)^T,
+\]
+we have
+\[
+ u\times w=-u\times u''=(3cd,-4d,c)^T.
+\]
+It follows that
+\begin{equation}\label{eq:D}
+ D(x):=\|u\|^2\|w\|^2-(u^Tw)^2
+      =\|u\times w\|^2
+      =c^2+(9c^2+16)d^2>0.
+\end{equation}
+Indeed, $c$ and $d$ cannot vanish simultaneously, since
+$d=2c^2-1$.  Define the smooth column vector
+\[
+ \eta(x)=\frac{\|w(x)\|^2u(x)-(u(x)^Tw(x))w(x)}{D(x)}.
+\]
+The Gram-determinant identity~\eqref{eq:D} gives
+\[
+ \eta^Tu=1,
+ \qquad
+ \eta^Tw=0.
+\]
+Set
+\[
+ N(x)=w(x)\eta(x)^T,
+ \qquad V(x)=-aI_3+N(x).
+\]
+The denominator $D$ is positive on the compact interval, so $V$ is smooth and
+bounded.  Moreover,
+\[
+ N^2=w(\eta^Tw)\eta^T=0,
+ \qquad Nu=w(\eta^Tu)=w.
+\]
+Thus $N(x)$ is nilpotent for every $x$, and all three eigenvalues of
+$V(x)=-aI_3+N(x)$ equal $-a$.  Since $N^2=0$,
+\[
+ \e^{tV(x)}=\e^{-at}(I_3+tN(x)).
+\]
+The norm of $N(x)$ is uniformly bounded on $[0,\pi]$; absorbing the linear
+factor $1+t\sup_x\|N(x)\|$ into $C_\beta\e^{(a-\beta)t}$ proves the asserted
+uniform frozen stability.
+
+Finally,
+\[
+ u''+Vu=u''-au+Nu
+          =u''-au+(a+\lambda)u-u''=\lambda u.
+\]
+Also $u'(0)=u'(\pi)=0$.  Hence $U(t,x)=\e^{\lambda t}u(x)$ is a classical
+Neumann solution.  Its norm is $\e^{\lambda t}\|u\|$ in each of the stated
+spaces, proving unboundedness.
+\end{proof}
+
+\section{Relation to the source dissipativity hypothesis}
+
+For concreteness take $a=\lambda=1$.  At $x=\pi/2$, direct substitution gives
+\[
+ V(\pi/2)=
+ \begin{pmatrix}
+ 2&0&1\\
+ 0&-1&0\\
+ -9&0&-4
+ \end{pmatrix}.
+\]
+This matrix is not dissipative for any standard $\ell^p$-norm.  For
+$1<p<\infty$, testing the source paper's duality criterion at the first basis
+vector gives $e_1^TVe_1=2>0$.  At $p=1$ the first-column criterion would require
+$2\le-9$, and at $p=\infty$ the first-row criterion would require $2\le-1$;
+both fail.  Thus the example lies genuinely beyond the paper's dissipative
+regime, while retaining much stronger pointwise spectral stability than mere
+nonpositivity of the frozen spectral bounds.
+
+\section{Verification, novelty search, and limitations}
+
+The accompanying script \texttt{code/verify\_construction.py} symbolically
+checks the Gram denominator, $\eta^Tu=1$, $\eta^Tw=0$, $N^2=0$, the PDE
+eigenfunction identity, and the displayed matrix at $x=\pi/2$.  These checks
+are supplementary; all identities are proved above.
+
+A bounded search was performed in the run registry and attempt/solution
+indexes for arXiv:2208.10324 and the terms ``matrix potential'', ``parabolic
+system'', ``pointwise stable'', ``Hurwitz'', and ``diffusion instability''.
+An arXiv search used the same close variants and searches for later work by
+the source authors.  It found general Turing and reaction--diffusion
+instability literature, but no primary source stating this fixed-spectrum,
+uniformly frozen-stable construction.  Novelty confidence is therefore
+moderate rather than definitive; the algebraic result itself has high
+confidence.
+
+The theorem does not give a positive boundedness criterion and does not address
+the source's separate non-elliptic direction.  It proves that criteria based
+only on pointwise spectra---even supplemented by uniform exponential stability
+of all frozen ODEs---cannot solve the boundedness problem.  Human review should
+focus on the construction of $\eta$, the strict positivity in~\eqref{eq:D},
+and this scope boundary.
+
+\begin{thebibliography}{1}
+\bibitem{DobrickGlueck}
+A.~Dobrick and J.~Gl\"uck,
+\emph{Convergence to equilibrium for linear parabolic systems coupled by
+matrix-valued potentials}, arXiv:2208.10324, version of 6 July 2023.
+\end{thebibliography}
+
+\end{document}
